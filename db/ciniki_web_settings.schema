@@ -1,0 +1,42 @@
+#
+# Description
+# -----------
+# The ciniki_web_settings table stores the settings for the website
+# and each page within the site.
+#
+# Page Examples:
+#
+# - about.page = yes
+# - about.photo = no
+# - about.image_id = 0
+# - home.page = yes
+# - home.redirect = about
+# - gallery.page = yes
+# - friends.page = yes
+# - contact.page = yes
+# - events.page = yes
+#
+# Site configuration settings:
+#
+# - site.theme = default
+#
+# Fields
+# ------
+# id:				The database id of the domain.
+# business_id:		The business the domain is part of.
+#
+# detail_key:		The decimal notated index key to the setting value.
+#
+# detail_value:		The value of the setting.
+#
+# date_added:		The date and time the domain was added to the table.
+# last_updated:		The date and time the domain was last updated.
+#
+create table ciniki_web_settings (
+	business_id int not null,
+	detail_key varchar(255) not null,
+	detail_value varchar(255) not null,
+	date_added datetime not null,
+	last_updated datetime not null,
+	primary key (business_id, detail_key)
+) ENGINE=InnoDB, COMMENT='v1.01';

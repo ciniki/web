@@ -1,0 +1,59 @@
+#
+# Description
+# -----------
+# The ciniki_web_domains table is used to track which domains
+# are attached to a business.  Multiple domains can be 
+# attached to one business.
+#
+# Fields
+# ------
+# id:				The database id of the domain.
+# business_id:		The business the domain is part of.
+# domain:			The domain name OR the sitename.  The type determines how the
+#					domain is used when looking up websites. 
+#
+#					This field is not unique in the database, as a domain could
+#					have a status deleted with one business and active with another.
+#
+# flags: 			0x01 - The domain is just a sitename used in http://master.domain/sitename
+#					0x02 - 
+#					0x04 - 
+#					0x08 -
+#					0x10 - The domain is a fully qualified domain.
+#					0x20 - Designate this site as primary *future*
+#					0x40 - The domain is registed here *future*
+#					0x80 - subdomain (this domain is a subdomain of another *future)
+#
+#					The domain can be set as both a sitename, and domain name so it can be used
+#					as either http://master.domain/domain.com OR http://domain.com/
+#
+#					The business can have both a sitename and a domain name, each being different
+#					but both accessable.  If there is one set as primary, it should redirect 
+#					requests to primary domain.
+#
+# status: 			0 - unknown
+#					1 - active
+#					10 - api only, no web hosting *future
+#					20 - expired
+#					50 - suspended
+#					60 - deleted
+#
+# root_id:			The parent root domain if not this one.  If this
+#					record is a sub domain, then this points to the
+#					root domain if hosted here. (not used currently)
+#
+# date_added:		The date and time the domain was added to the table.
+# last_updated:		The date and time the domain was last updated.
+#
+create table ciniki_web_domains (
+	id int not null auto_increment,
+	business_id int not null,
+	domain varchar(255) not null,
+	flags tinyint unsigned not null,
+	status tinyint unsigned not null,
+	root_id int not null,
+	date_added datetime not null,
+	last_updated datetime not null,
+	primary key (id),
+	index(business_id, domain)
+) ENGINE=InnoDB, COMMENT='v1.01';
