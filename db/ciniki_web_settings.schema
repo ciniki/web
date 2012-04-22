@@ -6,15 +6,17 @@
 #
 # Page Examples:
 #
-# - about.page = yes
-# - about.photo = no
-# - about.image_id = 0
-# - home.page = yes
-# - home.redirect = about
-# - gallery.page = yes
-# - friends.page = yes
-# - contact.page = yes
-# - events.page = yes
+# - page.about.active = yes
+# - page.about.photo = no
+# - page.about.image_id = 0
+# - page.home.active = yes
+# - page.home.redirect = about
+# - page.home.redirect_url = /gallery/category
+# - page.gallery.active = yes
+# - page.gallery.organization = category | media | location
+# - page.friends.active = yes
+# - page.contact.active = yes
+# - page.events.active = yes
 #
 # Site configuration settings:
 #

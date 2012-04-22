@@ -65,10 +65,12 @@ if( $ciniki['config']['web']['master.domain'] == $_SERVER['HTTP_HOST'] ) {
 	if( $uri == '' ) {
 		$ciniki['request']['page'] = 'masterindex';
 		$ciniki['request']['business_id'] = $ciniki['config']['core']['master_business_id'];
+		$ciniki['request']['base_url'] = '';
 		exit;
 	} elseif( $uri_split[0] == 'about' ) {
 		$ciniki['request']['page'] = 'about';
 		$ciniki['request']['business_id'] = $ciniki['config']['core']['master_business_id'];
+		$ciniki['request']['base_url'] = '';
 		$uri_split = array_shift($uri_split);
 		exit;
 	} else {
@@ -83,6 +85,7 @@ if( $ciniki['config']['web']['master.domain'] == $_SERVER['HTTP_HOST'] ) {
 		}
 		$ciniki['request']['business_id'] = $rc['business_id'];
 		$ciniki['business']['modules'] = $rc['modules'];
+		$ciniki['request']['base_url'] = '/' + $uri_split[0];
 
 		//
 		// Remove the client name from the URI list
@@ -107,8 +110,19 @@ if( $ciniki['config']['web']['master.domain'] == $_SERVER['HTTP_HOST'] ) {
 	if( $ciniki['request']['page'] != '' ) {
 		$url_split = array_shift($uri_split);
 	}
+	$ciniki['request']['base_url'] = '';
 }
 
+//
+// Get the details for the business
+//
+require_once($ciniki['config']['core']['modules_dir'] . '/businesses/web/details.php');
+$rc = ciniki_businesses_webDetails($ciniki, $ciniki['request']['business_id']);
+if( $rc['stat'] != 'ok' ) {
+	print_error('Website not configured.');
+	exit;
+}
+$ciniki['business']['details'] = $rc['details'];
 //
 // Get the web settings for the business
 //
@@ -118,41 +132,65 @@ if( $rc['stat'] != 'ok' ) {
 	print_error('Website not configured.');
 	exit;
 }
-$ciniki['business']['settings'] = $rc['settings'];
+$settings = $rc['settings'];
+
+// print "<pre>"; print_r($ciniki); print "</pre>";
+
 // Theme, pages, settings
+
+//
+// Check if no page specified, which means home page
+//
+if( $ciniki['request']['page'] == '' ) {
+	$ciniki['request']['page'] = 'home';
+}
 
 //
 // Check if home page is a redirect to another page
 //
-if( $ciniki['request']['page'] == 'home' && $ciniki['business']['settings']['home.page'] == 'yes' 
-	&& $ciniki['business']['settings']['home.redirect'] != '' ) {
-	$ciniki['request']['page'] = $ciniki['business']['settings']['home.redirect'];
+if( $ciniki['request']['page'] == 'home' && $settings['page.home.active'] == 'yes' 
+	&& isset($settings['page.home.redirect']) && $settings['page.home.redirect'] != '' ) {
+	$ciniki['request']['page'] = $settings['page.home.redirect'];
 }
 
 //
 // Process the request
 //
-if( $ciniki['request']['page'] == 'home' && $ciniki['business']['settings']['home.page'] == 'yes' ) {
+
+// Master Home page
+if( $ciniki['request']['page'] == 'masterindex' && $settings['page.home.active'] == 'yes' ) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generateMasterIndex.php');
-	$rc = ciniki_web_generateMasterIndex($ciniki);
-} elseif( $ciniki['request']['page'] == 'home' && $ciniki['business']['settings']['home.page'] == 'yes' ) {
-	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generateHome.php');
-	$rc = ciniki_web_generateHome($ciniki);
-} elseif( $ciniki['request']['page'] == 'about' && $ciniki['business']['settings']['about.page'] == 'yes' ) {
-	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generateAbout.php');
-	$rc = ciniki_web_generateAbout($ciniki);
-} elseif( $ciniki['request']['page'] == 'contact' && $ciniki['business']['settings']['contact.page'] == 'yes' ) {
-	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generateContact.php');
-	$rc = ciniki_web_generateContact($ciniki);
-} elseif( $ciniki['request']['page'] == 'events' && $ciniki['business']['settings']['events.page'] == 'yes' ) {
-	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generateEvents.php');
-	$rc = ciniki_web_generateEvents($ciniki);
-} elseif( $ciniki['request']['page'] == 'friends' && $ciniki['business']['settings']['friends.page'] == 'yes' ) {
-	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generateFriends.php');
-	$rc = ciniki_web_generateFriends($ciniki);
-} elseif( $ciniki['request']['page'] == 'gallery' && $ciniki['business']['settings']['gallery.page'] == 'yes' ) {
-	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generateGallery.php');
-	$rc = ciniki_web_generateGallery($ciniki);
+	$rc = ciniki_web_generateMasterIndex($ciniki, $settings);
+} 
+// Home Page
+elseif( $ciniki['request']['page'] == 'home' && $settings['page.home.active'] == 'yes' ) {
+	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageHome.php');
+	$rc = ciniki_web_generatePageHome($ciniki, $settings);
+} 
+// About
+elseif( $ciniki['request']['page'] == 'about' && $settings['page.about.active'] == 'yes' ) {
+	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageAbout.php');
+	$rc = ciniki_web_generatePageAbout($ciniki, $settings);
+} 
+// Contact
+elseif( $ciniki['request']['page'] == 'contact' && $settings['page.contact.active'] == 'yes' ) {
+	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageContact.php');
+	$rc = ciniki_web_generatePageContact($ciniki, $settings);
+} 
+// Events
+elseif( $ciniki['request']['page'] == 'events' && $settings['page.events.active'] == 'yes' ) {
+	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageEvents.php');
+	$rc = ciniki_web_generatePageEvents($ciniki, $settings);
+} 
+// Friends
+elseif( $ciniki['request']['page'] == 'friends' && $settings['page.friends.active'] == 'yes' ) {
+	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageFriends.php');
+	$rc = ciniki_web_generatePageFriends($ciniki, $settings);
+} 
+// Gallery
+elseif( $ciniki['request']['page'] == 'gallery' && $settings['page.gallery.active'] == 'yes' ) {
+	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageGallery.php');
+	$rc = ciniki_web_generatePageGallery($ciniki, $settings);
 } else {
 	print_error('Unknown page ' . $ciniki['request']['page']);
 }
@@ -166,8 +204,8 @@ if( $rc['stat'] != 'ok' ) {
 // Output the page contents
 // FIXME: Add caching in here
 //
-if( $ciniki['response']['content'] != '' ) {
-	print $ciniki['response']['content'];
+if( isset($rc['content']) && $rc['content'] != '' ) {
+	print $rc['content'];
 }
 
 //

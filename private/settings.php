@@ -27,6 +27,9 @@ function ciniki_web_settings($ciniki, $business_id) {
 	//
 	// Make sure the required defaults have been set
 	//
+	if( !isset($settings['site.layout']) || $settings['site.layout'] == '' ) {
+		$settings['site.layout'] = 'default';
+	}
 	if( !isset($settings['site.theme']) || $settings['site.theme'] == '' ) {
 		$settings['site.theme'] = 'default';
 	}
