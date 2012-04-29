@@ -28,10 +28,18 @@ function ciniki_web_settings($ciniki, $business_id) {
 	// Make sure the required defaults have been set
 	//
 	if( !isset($settings['site.layout']) || $settings['site.layout'] == '' ) {
-		$settings['site.layout'] = 'default';
+		if( isset($ciniki['config']['web']['default.layout']) && $ciniki['config']['web']['default.layout'] != '' ) {
+			$settings['site.layout'] = $ciniki['config']['web']['default.layout'];
+		} else {
+			$settings['site.layout'] = 'default';
+		}
 	}
 	if( !isset($settings['site.theme']) || $settings['site.theme'] == '' ) {
-		$settings['site.theme'] = 'default';
+		if( isset($ciniki['config']['web']['default.theme']) && $ciniki['config']['web']['default.theme'] != '' ) {
+			$settings['site.theme'] = $ciniki['config']['web']['default.theme'];
+		} else {
+			$settings['site.theme'] = 'default';
+		}
 	}
 	
 	return array('stat'=>'ok', 'settings'=>$settings);

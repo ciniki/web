@@ -49,15 +49,16 @@ function ciniki_web_pageSettingsUpdate($ciniki) {
 	$settings_fields = array(
 		'page.home.active',
 		'page.about.active',
+		'page.gallery.active',
+		'page.events.active',
+		'page.friends.active',
+		'page.links.active',
 		'page.contact.active',
 		'page.contact.name.display',
 		'page.contact.address.display',
 		'page.contact.phone.display',
 		'page.contact.fax.display',
 		'page.contact.email.display',
-		'page.events.active',
-		'page.friends.active',
-		'page.gallery.active',
 		);
 
 	//

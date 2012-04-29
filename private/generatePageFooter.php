@@ -24,6 +24,9 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
 		. "</footer>"
 		. "";
 
+	// Close page-container
+	$content .= "</div>\n";
+
 	$content .= "</body>"
 		. "</html>"
 		. "";

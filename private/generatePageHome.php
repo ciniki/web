@@ -17,6 +17,7 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 	// Make sure everything gets generated ok before returning the content
 	//
 	$content = '';
+	$page_content = '';
 
 	//
 	// FIXME: Check if anything has changed, and if not load from cache
@@ -42,12 +43,15 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
-	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processContent.php');
-	$rc = ciniki_web_processContent($ciniki, $rc['content']['page.contact.content']);	
-	if( $rc['stat'] != 'ok' ) {
-		return $rc;
+
+	if( isset($rc['content']['page.home.content']) ) {
+		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processContent.php');
+		$rc = ciniki_web_processContent($ciniki, $rc['content']['page.home.content']);	
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$page_content = $rc['content'];
 	}
-	$page_content = $rc['content'];
 
 	$content .= "<div id='content'>"
 		. $page_content

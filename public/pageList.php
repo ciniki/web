@@ -50,6 +50,9 @@ function ciniki_web_pageList($ciniki) {
 	if( isset($modules['ciniki.artcatalog']) ) {
 		$pages['gallery'] = array('display_name'=>'Gallery', 'active'=>'no');
 	}
+	if( isset($modules['ciniki.links']) ) {
+		$pages['links'] = array('display_name'=>'Links', 'active'=>'no');
+	}
 
 	//
 	// Load current settings
@@ -81,6 +84,9 @@ function ciniki_web_pageList($ciniki) {
 	}
 	if( isset($settings['page.friends.active']) && $settings['page.friends.active'] == 'yes' ) {
 		$pages['friends']['active'] = 'yes';
+	}
+	if( isset($settings['page.links.active']) && $settings['page.links.active'] == 'yes' ) {
+		$pages['links']['active'] = 'yes';
 	}
 	if( isset($settings['page.gallery.active']) && $settings['page.gallery.active'] == 'yes' ) {
 		$pages['gallery']['active'] = 'yes';

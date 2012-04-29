@@ -71,12 +71,12 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 			$content .= "<br/>" . $event['description'];
 		}
 		if( $event['url'] != '' ) {
-			if( !preg_match('/\s*http:\/\//', $event_url) ) {
+			if( !preg_match('/^\s*http/', $event['url']) ) {
 				$url = "http://" . $event['url'];
 			} else {
 				$url = $event['url'];
 			}
-			$content .= "<br/><a href='" . $url . "' title='" . $event['name'] . "'>" . $url . "</a>";
+			$content .= "<br/><a target='_blank' href='" . $url . "' title='" . $event['name'] . "'>" . $url . "</a>";
 		}
 		$content .= "</dd>";
 	}

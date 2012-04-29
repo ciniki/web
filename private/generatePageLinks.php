@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This function will generate the friends page for the website
+// This function will generate the links page for the website
 //
 // Arguments
 // ---------
@@ -10,7 +10,7 @@
 // Returns
 // -------
 //
-function ciniki_web_generatePageFriends($ciniki, $settings) {
+function ciniki_web_generatePageLinks($ciniki, $settings) {
 
 	//
 	// Store the content created by the page
@@ -27,7 +27,7 @@ function ciniki_web_generatePageFriends($ciniki, $settings) {
 	// Add the header
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageHeader.php');
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Friends');
+	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Links');
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
 	}
@@ -37,15 +37,15 @@ function ciniki_web_generatePageFriends($ciniki, $settings) {
 	// Generate the content of the page
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbDetailsQuery.php');
-	$rc = ciniki_core_dbDetailsQuery($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'web', 'content', 'page.friends');
+	$rc = ciniki_core_dbDetailsQuery($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'web', 'content', 'page.links');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
 
 	$page_content = '';
-	if( isset($rc['content']) && isset($rc['content']['page.friends.content']) ) {
+	if( isset($rc['content']) && isset($rc['content']['page.links.content']) ) {
 		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processContent.php');
-		$rc = ciniki_web_processContent($ciniki, $rc['content']['page.friends.content']);	
+		$rc = ciniki_web_processContent($ciniki, $rc['content']['page.links.content']);	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
@@ -54,7 +54,7 @@ function ciniki_web_generatePageFriends($ciniki, $settings) {
 	
 	$content .= "<div id='content'>\n"
 		. "<article class='page'>\n"
-		. "<header class='entry-title'><h1 class='entry-title'>Friends</h1></header>\n"
+		. "<header class='entry-title'><h1 class='entry-title'>Links</h1></header>\n"
 		. "<div class='entry-content'>\n"
 		. "";
 	if( $page_content != '' ) {
@@ -62,10 +62,10 @@ function ciniki_web_generatePageFriends($ciniki, $settings) {
 	}
 
 	//
-	// Get the list of friends to be displayed
+	// Get the list of links to be displayed
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/friends/web/friends.php');
-	$rc = ciniki_friends_webFriends($ciniki, $ciniki['request']['business_id']);
+	require_once($ciniki['config']['core']['modules_dir'] . '/links/web/list.php');
+	$rc = ciniki_links_web_list($ciniki, $ciniki['request']['business_id']);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -76,13 +76,13 @@ function ciniki_web_generatePageFriends($ciniki, $settings) {
 	}
 
 	foreach($categories as $cnum => $c) {
-		if( $c['category']['cname'] != '' ) {
+		if( isset($c['category']['cname']) && $c['category']['cname'] != '' ) {
 			$content .= "<h2>" . $c['category']['cname'] . "</h2>";
 		}
-		foreach($c['category']['friends'] as $fnum => $friend) {
+		foreach($c['category']['links'] as $fnum => $link) {
 			$content .= "<p>";
-			if( isset($friend['friend']['url']) ) {
-				$url = $friend['friend']['url'];
+			if( isset($link['link']['url']) ) {
+				$url = $link['link']['url'];
 			} else {
 				$url = '';
 			}
@@ -90,15 +90,15 @@ function ciniki_web_generatePageFriends($ciniki, $settings) {
 				$url = "http://" . $url;
 			}
 			if( $url != '' ) {
-				$content .= "<a target='_blank' href='" . $url . "' title='" . $friend['friend']['name'] . "'>" . $friend['friend']['name'] . "</a>";
+				$content .= "<a target='_blank' href='" . $url . "' title='" . $link['link']['name'] . "'>" . $link['link']['name'] . "</a>";
 			} else {
-				$content .= $friend['friend']['name'];
+				$content .= $link['link']['name'];
 			}
-			if( isset($friend['friend']['description']) && $friend['friend']['description'] != '' ) {
-				$content .= "<br/>" . $friend['friend']['description'];
+			if( isset($link['link']['description']) && $link['link']['description'] != '' ) {
+				$content .= "<br/>" . $link['link']['description'];
 			}
 			if( $url != '' ) {
-				$content .= "<br/><a target='_blank' href='" . $url . "' title='" . $friend['friend']['name'] . "'>" . $url . "</a>";
+				$content .= "<br/><a target='_blank' href='" . $url . "' title='" . $link['link']['name'] . "'>" . $url . "</a>";
 			}
 			$content .= "</p>";
 		}

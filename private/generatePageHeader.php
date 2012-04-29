@@ -34,6 +34,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 
 	// Generate header of the page
 	$content .= "<body>\n"
+		. "<div id='page-container'>\n"
 		. "<header>\n"
 		. "<hgroup>\n"
 		. "<h1 id='site-title'><span><a href='" . $ciniki['request']['base_url'] . "/' title='" . $ciniki['business']['details']['name'] . "' rel='home'>" . $ciniki['business']['details']['name'] . "</a></span></h1>\n";
@@ -57,14 +58,14 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 	if( isset($settings['page.about.active']) && $settings['page.about.active'] == 'yes' ) {
 		$content .= "<li class='menu-item'><a href='" . $ciniki['request']['base_url'] . "/about'>About</a></li>";
 	}
+	if( isset($settings['page.gallery.active']) && $settings['page.gallery.active'] == 'yes' ) {
+		$content .= "<li class='menu-item'><a href='" . $ciniki['request']['base_url'] . "/gallery'>Gallery</a></li>";
+	}
 	if( isset($settings['page.events.active']) && $settings['page.events.active'] == 'yes' ) {
 		$content .= "<li class='menu-item'><a href='" . $ciniki['request']['base_url'] . "/events'>Events</a></li>";
 	}
-	if( isset($settings['page.friends.active']) && $settings['page.friends.active'] == 'yes' ) {
-		$content .= "<li class='menu-item'><a href='" . $ciniki['request']['base_url'] . "/friends'>Friends</a></li>";
-	}
-	if( isset($settings['page.gallery.active']) && $settings['page.gallery.active'] == 'yes' ) {
-		$content .= "<li class='menu-item'><a href='" . $ciniki['request']['base_url'] . "/gallery'>Gallery</a></li>";
+	if( isset($settings['page.links.active']) && $settings['page.links.active'] == 'yes' ) {
+		$content .= "<li class='menu-item'><a href='" . $ciniki['request']['base_url'] . "/links'>Links</a></li>";
 	}
 	if( isset($settings['page.contact.active']) && $settings['page.contact.active'] == 'yes' ) {
 		$content .= "<li class='menu-item'><a href='" . $ciniki['request']['base_url'] . "/contact'>Contact</a></li>";
@@ -72,9 +73,10 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 	$content .= "</ul>\n"
 		. "</div>\n";
 		
-	$content .= "<hr class='section-divider' />\n";
-	$content .= "</header>\n"
+	$content .= "</nav>\n"
+		. "</header>\n"
 		. "";
+	$content .= "<hr class='section-divider' />\n";
 
 	return array('stat'=>'ok', 'content'=>$content);
 }
