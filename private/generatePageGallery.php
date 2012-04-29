@@ -28,24 +28,30 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 	// Check if we are at the main page or a category or year gallery
 	//
 	if( isset($ciniki['request']['uri_split'][0]) 
-		&& $ciniki['request']['uri_split'][0] != '' && $ciniki['request']['uri_split'][0] == 'category' 
+		&& $ciniki['request']['uri_split'][0] != '' 
+		&& ($ciniki['request']['uri_split'][0] == 'category' || $ciniki['request']['uri_split'][0] == 'year')
 		&& $ciniki['request']['uri_split'][1] != '' ) {
 		$page_title = urldecode($ciniki['request']['uri_split'][1]);
 
 		//
 		// Get the gallery for the specified category
 		//
-		$page_content .= 'gallery for category ' . $page_title;
+		require_once($ciniki['config']['core']['modules_dir'] . '/artcatalog/web/categoryImages.php');
+		$rc = ciniki_artcatalog_web_categoryImages($ciniki, $settings, $ciniki['request']['business_id'], 
+			$ciniki['request']['uri_split'][0], urldecode($ciniki['request']['uri_split'][1]));
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$images = $rc['images'];
 
-	} elseif( isset($ciniki['request']['uri_split'][0]) 
-		&&$ciniki['request']['uri_split'][0] != '' && $ciniki['request']['uri_split'][0] == 'year' 
-		&& $ciniki['request']['uri_split'][1] != '' ) {
-		$page_title = urldecode($ciniki['request']['uri_split'][1]);
+		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageGalleryThumbnails.php');
+		$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $rc['images'], 150);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$page_content .= $rc['content'];
 
-		//
-		// Get the gallery for the specified year
-		//
-		$page_content .= 'gallery for year ' . $page_title;
+		// $page_content .= '<pre>' . print_r($images, true) . '</pre>';
 
 	} else {
 		//
@@ -77,17 +83,30 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		if( !isset($rc['categories']) ) {
 			// FIXME: load photo list with category = ''
 			require_once($ciniki['config']['core']['modules_dir'] . '/artcatalog/web/categoryImages.php');
-			$rc = ciniki_artcatalog_web_categoryImages($ciniki, $settings, $ciniki['request']['business_id'], '');
+			$rc = ciniki_artcatalog_web_categoryImages($ciniki, $settings, $ciniki['request']['business_id'], 'category', '');
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			$page_content .= 'all thumbnail, no categories specified';
-			$page_content .= '<pre>' . print_r($rc['images'], true) . '</pre>';
+			$images = $rc['images'];
+
+			require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageGalleryThumbnails.php');
+			$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $rc['images'], 150);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= $rc['content'];
+
+			//$page_content .= 'all thumbnail, no categories specified';
+			//$page_content .= '<pre>' . print_r($rc['images'], true) . '</pre>';
 		} else {
 			// FIXME: load photo list with specified category
-			$page_content .= 'category list ';
-			$page_content .= '<pre>' . print_r($rc['categories'], true) . '</pre>';
-
+			$page_content .= "<ul>\n";
+			foreach($rc['categories'] AS $cnum => $category) {
+				$name = $category['category']['name'];
+				$page_content .= "<li class='gallery-menu-item'><a href='" . $ciniki['request']['base_url'] . "/gallery/category/" . urlencode($name) . "' "
+					. "title='" . $name . "'>" . $name . "</a></li>\n";
+			}
+			$page_content .= "</ul>\n";
 		}
 	}
 

@@ -42,7 +42,7 @@ if( $rc['stat'] != 'ok' ) {
 //
 // Setup the defaults
 //
-$ciniki['request'] = array('business_id'=>0, 'page'=>'', 'args'=>array());
+$ciniki['request'] = array('business_id'=>0, 'page'=>'', 'args'=>array(), 'cache_url'=>'/ciniki-web-cache', 'cache_dir'=>$ciniki['config']['core']['modules_dir'] . '/web/cache');
 $ciniki['session'] = array();
 $ciniki['business'] = array('modules'=>array());
 
@@ -58,7 +58,33 @@ if( !is_array($ciniki['request']['uri_split']) ) {
 // Determine which site and page should be displayed
 // FIXME: Check for redirects from sitename or domain names to primary domain name.
 //
-if( $ciniki['config']['web']['master.domain'] == $_SERVER['HTTP_HOST'] ) {
+if( $ciniki['config']['web']['master.domain'] != $_SERVER['HTTP_HOST'] ) {
+	//
+	// Lookup client domain in database
+	//
+	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/lookupClientDomain.php');
+	$rc = ciniki_web_lookupClientDomain($ciniki, $_SERVER['HTTP_HOST'], 'domain');
+	//
+	// If a business if found, then setup the details
+	//
+	if( $rc['stat'] == 'ok' ) {
+		$ciniki['request']['business_id'] = $rc['business_id'];
+		$ciniki['business']['modules'] = $rc['modules'];
+
+		$ciniki['request']['page'] = $ciniki['request']['uri_split'][0];
+		if( $ciniki['request']['page'] != '' ) {
+			$uris = $ciniki['request']['uri_split'];
+			array_shift($uris);
+			$ciniki['request']['uri_split'] = $uris;
+		}
+		$ciniki['request']['base_url'] = '';
+	}
+}
+
+// 
+// If nothing was found, assume the master business
+//
+if( $ciniki['request']['business_id'] == 0 ) {
 	//
 	// Check which page, or if they requested a clients website
 	//
@@ -95,33 +121,14 @@ if( $ciniki['config']['web']['master.domain'] == $_SERVER['HTTP_HOST'] ) {
 		if( count($ciniki['request']['uri_split']) > 1 ) {
 			$uris = $ciniki['request']['uri_split'];
 			array_shift($uris);
+			$ciniki['request']['page'] = $uris[0];
+			array_shift($uris);
 			$ciniki['request']['uri_split'] = $uris;
-			$ciniki['request']['page'] = $ciniki['request']['uri_split'][0];
 		} else {
 			$ciniki['request']['url_split'] = array();
 			$ciniki['request']['page'] = '';
 		}
 	}
-} else {
-	//
-	// Lookup client domain in database
-	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/lookupClientDomain.php');
-	$rc = ciniki_web_lookupClientDomain($ciniki, $_SERVER['HTTP_HOST'], 'domain');
-	if( $rc['stat'] != 'ok' ) {
-		print_error($rc, 'Unknown business');
-		exit;
-	}
-	$ciniki['request']['business_id'] = $rc['business_id'];
-	$ciniki['business']['modules'] = $rc['modules'];
-
-	$ciniki['request']['page'] = $ciniki['request']['uri_split'][0];
-	if( $ciniki['request']['page'] != '' ) {
-		$uris = $ciniki['request']['uri_split'];
-		array_shift($uris);
-		$ciniki['request']['uri_split'] = $uris;
-	}
-	$ciniki['request']['base_url'] = '';
 }
 
 //
