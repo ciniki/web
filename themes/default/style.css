@@ -7,6 +7,20 @@ body {
 	background: #000;
 }
 
+#site-title {
+	color: #439BBD;
+}
+#site-title a,
+#site-title a:visited,
+#site-title a:hover,
+#site-title a:active {
+	text-decoration: none;
+}
+
+#site-description {
+	font-style: italic;
+}
+
 header h1 {
 	color: #439BBD;
 }
@@ -59,6 +73,11 @@ div.image-gallery-thumbnail img {
 	font-size: 1.15em;
 	font-weight: normal;
 	color: #ddd;
+}
+
+#content a.event-url {
+	font-size: 0.9em;
+	color: #999;
 }
 
 hr.section-divider {

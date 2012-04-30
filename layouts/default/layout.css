@@ -18,6 +18,12 @@
 	height: 125px;
 }
 
+#content div.image-gallery-thumbnail img {
+	width: 125px;
+	height: 125px;
+}
+
+
 #content dl.event-list {
 	width: 120em;
 }
@@ -38,11 +44,18 @@
 	display: table-cell;
 	padding-bottom: 1em;
 }
+
 #content table.event-list td {
 	display: table-cell;
-	padding-left: 2em;
+	padding-left: 1.5em;
 	padding-bottom: 1em;
 }
+
+#content span.event-date {
+	display: inline-block;
+	white-space: pre;
+}
+
 
 
 /* 9. CUSTOM LAYOUT & TYPOGRAPHY (Mummy bear)
