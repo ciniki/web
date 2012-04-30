@@ -18,7 +18,7 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
 	$content = '';
 
 	// Generate the footer content
-	$content .= "<hr class='section-divider' />\n";
+	$content .= "<hr class='section-divider footer-section-divider' />\n";
 	$content .= "<footer>"
 		. "All content &copy; Copyright " . date('Y') . " by " . $ciniki['business']['details']['name']. "."
 		. "</footer>"

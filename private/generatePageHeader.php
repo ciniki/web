@@ -29,6 +29,25 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 		. "";
 
 	// Add required layout, theme and js files
+	if( file_exists($ciniki['request']['layout_dir'] . '/' . $settings['site.layout'] . '/style.css') ) {
+		$content .= "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['layout_url'] 
+			. '/' . $settings['site.layout'] . "/style.css' />\n";
+	} else if( file_exists($ciniki['request']['layout_dir'] . '/default/style.css') ) {
+		$content .= "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['layout_url'] 
+			. "/default/style.css' />\n";
+	}
+	if( file_exists($ciniki['request']['theme_dir'] . '/' . $settings['site.theme'] . '/style.css') ) {
+		$content .= "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['theme_url'] 
+			. '/' . $settings['site.theme'] . "/style.css' />\n";
+	} else if( file_exists($ciniki['request']['theme_dir'] . '/default/style.css') ) {
+		$content .= "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['theme_url'] 
+			. "/default/style.cssl' />\n";
+	}
+	
+	//
+	// Header to support mobile device resize
+	//
+	$content .= '<meta name="viewport" content="width=device-width, initial-scale=1.0">' . "\n";
 
 	$content .= "</head>\n";
 
@@ -76,7 +95,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 	$content .= "</nav>\n"
 		. "</header>\n"
 		. "";
-	$content .= "<hr class='section-divider' />\n";
+	$content .= "<hr class='section-divider header-section-divider' />\n";
 
 	return array('stat'=>'ok', 'content'=>$content);
 }

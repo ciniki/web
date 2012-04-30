@@ -63,8 +63,9 @@ function ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $images, $
 			}
 		}
 
-		$content .= "<div class='page-gallery-thumbnail'><img title='" . $img['title'] . "' "
+		$content .= "<div class='image-gallery-thumbnail'><img title='" . $img['title'] . "' "
 			. "alt='" . $img['title'] . "' src='$img_url' /></div>";
+			// width='" . $maxlength . "px' height='" . $maxlength . "px' /></div>";
 	}
 
 

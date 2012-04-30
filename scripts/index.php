@@ -42,7 +42,14 @@ if( $rc['stat'] != 'ok' ) {
 //
 // Setup the defaults
 //
-$ciniki['request'] = array('business_id'=>0, 'page'=>'', 'args'=>array(), 'cache_url'=>'/ciniki-web-cache', 'cache_dir'=>$ciniki['config']['core']['modules_dir'] . '/web/cache');
+$ciniki['request'] = array('business_id'=>0, 'page'=>'', 'args'=>array(), 
+	'cache_url'=>'/ciniki-web-cache', 
+	'cache_dir'=>$ciniki['config']['core']['modules_dir'] . '/web/cache',
+	'layout_dir'=>$ciniki['config']['core']['modules_dir'] . '/web/layouts',
+	'layout_url'=>'/ciniki-web-layouts',
+	'theme_dir'=>$ciniki['config']['core']['modules_dir'] . '/web/themes',
+	'theme_url'=>'/ciniki-web-themes',
+	);
 $ciniki['session'] = array();
 $ciniki['business'] = array('modules'=>array());
 

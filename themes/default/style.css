@@ -1,0 +1,58 @@
+html {
+	background: #000;
+}
+
+body {
+	color: #aaa;
+	background: #000;
+}
+
+header h1 {
+	color: #439BBD;
+}
+
+#main-menu-container {
+	background: #aaa;
+}
+
+#main-menu-container li a {
+	color: #333;
+}
+
+#main-menu-container li.menu-item {
+	border-color: #fff;
+}
+
+div.image-gallery-thumbnail {
+	border: 8px solid #ffffff;
+	display: inline-block;
+	margin: 5px;
+	padding: 0px;
+}
+
+div.image-gallery-thumbnail img {
+	padding: 0px;
+	margin: 0px;
+}
+
+#content h1.entry-title {
+	color: #439BBD;
+}
+
+#content a {
+	text-decoration: none;
+}
+
+hr.section-divider {
+	border: 0px solid #555;
+	border-top: 1px solid #555;
+}
+
+hr.header-section-divider {
+	border: 1px solid #000;
+	color: #000;
+}
+
+footer {
+	color: #777;
+}

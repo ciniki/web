@@ -22,7 +22,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 	//
 	
 
-	$page_title = "Gallery";
+	$page_title = "Galleries";
 
 	//
 	// Check if we are at the main page or a category or year gallery
@@ -45,11 +45,11 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		$images = $rc['images'];
 
 		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageGalleryThumbnails.php');
-		$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $rc['images'], 150);
+		$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $rc['images'], 125);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
-		$page_content .= $rc['content'];
+		$page_content .= "<div class='image-gallery'>" . $rc['content'] . "</div>";
 
 		// $page_content .= '<pre>' . print_r($images, true) . '</pre>';
 
@@ -81,7 +81,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 			return $rc;
 		}
 		if( !isset($rc['categories']) ) {
-			// FIXME: load photo list with category = ''
+			$page_title = 'Gallery';
 			require_once($ciniki['config']['core']['modules_dir'] . '/artcatalog/web/categoryImages.php');
 			$rc = ciniki_artcatalog_web_categoryImages($ciniki, $settings, $ciniki['request']['business_id'], 'category', '');
 			if( $rc['stat'] != 'ok' ) {
@@ -89,17 +89,18 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 			}
 			$images = $rc['images'];
 
+
 			require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageGalleryThumbnails.php');
 			$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $rc['images'], 150);
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			$page_content .= $rc['content'];
+			$page_content .= "<div class='image-gallery'>" . $rc['content'] . "</div>";
 
 			//$page_content .= 'all thumbnail, no categories specified';
 			//$page_content .= '<pre>' . print_r($rc['images'], true) . '</pre>';
 		} else {
-			// FIXME: load photo list with specified category
+			$page_title = 'Galleries';
 			$page_content .= "<ul>\n";
 			foreach($rc['categories'] AS $cnum => $category) {
 				$name = $category['category']['name'];
@@ -129,7 +130,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 	//
 	$content .= "<div id='content'>\n"
 		. "<article class='page'>\n"
-		. "<header class='entry-title'><h1 class='entry-title'>Gallery</h1></header>\n"
+		. "<header class='entry-title'><h1 class='entry-title'>$page_title</h1></header>\n"
 		. "<div class='entry-content'>\n"
 		. "";
 	if( $page_content != '' ) {
