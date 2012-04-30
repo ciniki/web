@@ -29,13 +29,30 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 		. "";
 
 	// Add required layout, theme and js files
-	if( file_exists($ciniki['request']['layout_dir'] . '/' . $settings['site.layout'] . '/style.css') ) {
+	if( file_exists($ciniki['request']['layout_dir'] . '/' . $settings['site.layout'] . '/global.css') ) {
 		$content .= "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['layout_url'] 
-			. '/' . $settings['site.layout'] . "/style.css' />\n";
-	} else if( file_exists($ciniki['request']['layout_dir'] . '/default/style.css') ) {
+			. '/' . $settings['site.layout'] . "/global.css' />\n";
+	} else if( file_exists($ciniki['request']['layout_dir'] . '/default/global.css') ) {
 		$content .= "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['layout_url'] 
-			. "/default/style.css' />\n";
+			. "/default/global.css' />\n";
 	}
+	if( file_exists($ciniki['request']['layout_dir'] . '/' . $settings['site.layout'] . '/layout.css') ) {
+		$content .= "<link rel='stylesheet' type='text/css' media='all and (min-width: 33.236em)' href='" . $ciniki['request']['layout_url'] 
+			. '/' . $settings['site.layout'] . "/layout.css' />\n"
+			. "<!--[if (lt IE 9) & (!IEMobile)]>\n"
+			. "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['layout_url'] 
+			. '/' . $settings['site.layout'] . "/layout.css' />\n"
+		  	. "<![endif]-->\n"
+			. "";
+	} else if( file_exists($ciniki['request']['layout_dir'] . '/default/layout.css') ) {
+		$content .= "<link rel='stylesheet' type='text/css' media='all and (min-width: 33.236em)' href='" . $ciniki['request']['layout_url'] 
+			. "/default/layout.css' />\n"
+			. "<!--[if (lt IE 9) & (!IEMobile)]>\n"
+			. "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['layout_url'] . "/default/layout.css' />\n"
+		  	. "<![endif]-->\n"
+			. "";
+	}
+
 	if( file_exists($ciniki['request']['theme_dir'] . '/' . $settings['site.theme'] . '/style.css') ) {
 		$content .= "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['theme_url'] 
 			. '/' . $settings['site.theme'] . "/style.css' />\n";

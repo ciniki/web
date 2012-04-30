@@ -15,7 +15,11 @@ header h1 {
 	background: #aaa;
 }
 
-#main-menu-container li a {
+#main-menu-container li a,
+#main-menu-container li a:visited,
+#main-menu-container li a:hover,
+#main-menu-container li a:active {
+	text-decoration: none;
 	color: #333;
 }
 
@@ -39,8 +43,22 @@ div.image-gallery-thumbnail img {
 	color: #439BBD;
 }
 
-#content a {
+#content h2 {
+	color: #ccc;
+}
+
+#content a,
+#content a:visited,
+#content a:hover,
+#content a:active {
 	text-decoration: none;
+	color: inherit;
+}
+
+#content span.event-title {
+	font-size: 1.15em;
+	font-weight: normal;
+	color: #ddd;
 }
 
 hr.section-divider {

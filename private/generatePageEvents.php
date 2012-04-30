@@ -27,7 +27,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 	// Add the header
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageHeader.php');
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Events');
+	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Upcoming Events');
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
 	}
@@ -46,9 +46,10 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 
 	$content .= "<div id='content'>\n"
 		. "<article class='page'>\n"
-		. "<header class='entry-title'><h1 class='entry-title'>Events</h1></header>\n"
+		. "<header class='entry-title'><h1 class='entry-title'>Upcoming Events</h1></header>\n"
 		. "<div class='entry-content'>\n"
-		. "<dl>\n"
+//		. "<dl class='event-list'>\n"
+		. "<table class='event-list'>\n"
 		. "";
 	foreach($events as $event_num => $e) {
 		$event = $e['event'];
@@ -65,10 +66,12 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 		if( $event['end_year'] != '' && $event['start_year'] != $event['end_year'] ) {
 			$event_date .= "/" . $event['end_year'];
 		}
-		$content .= "<dt>$event_date</dt>"
-			. "<dd><b>" . $event['name'] . "</b>";
+	//	$content .= "<dt>$event_date</dt>"
+	//		. "<dd><b>" . $event['name'] . "</b>";
+		$content .= "<tr><th><span class='event-date'>$event_date</span></th>"
+			. "<td><span class='event-title'>" . $event['name'] . "</span>";
 		if( $event['description'] != '' ) {
-			$content .= "<br/>" . $event['description'];
+			$content .= "<br/><span class='event-description'>" . $event['description'] . "</span>";
 		}
 		if( $event['url'] != '' ) {
 			if( !preg_match('/^\s*http/', $event['url']) ) {
@@ -76,11 +79,13 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 			} else {
 				$url = $event['url'];
 			}
-			$content .= "<br/><a target='_blank' href='" . $url . "' title='" . $event['name'] . "'>" . $url . "</a>";
+			$content .= "<br/><a class='event-url' target='_blank' href='" . $url . "' title='" . $event['name'] . "'>" . $url . "</a>";
 		}
-		$content .= "</dd>";
+		// $content .= "</dd>";
+		$content .= "</td></tr>";
 	}
-	$content .= "</dl>\n"
+	// $content .= "</dl>\n"
+	$content .= "</table>\n"
 		. "</div>\n"
 		. "</article>\n"
 		. "</div>\n"
