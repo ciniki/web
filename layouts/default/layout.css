@@ -41,6 +41,11 @@
 	margin-left: 1em;
 }
 
+#content table.links-list,
+#content table.event-list {
+	border-collapse: collapse;
+}
+
 #content table.links-list th,
 #content table.event-list th {
 	display: table-cell;
@@ -52,6 +57,13 @@
 	display: table-cell;
 	padding-left: 1.5em;
 	padding-bottom: 1em;
+}
+
+#content table.links-list th,
+#content table.links-list td,
+#content table.event-list th,
+#content table.event-list td {
+	border-top: 1px solid;
 }
 
 #content span.links-category,
@@ -76,6 +88,7 @@ body { width: 100%; }
 #content table.event-list th {
 	display: block;
 	padding-bottom: 0em;
+	border-top-width: 0px;
 }
 
 #content table.links-list td,
@@ -85,7 +98,8 @@ body { width: 100%; }
 
 #content table.links-list td,
 #content table.event-list td {
-	margin-left: 5em;
+	padding-left: 5em;
+	margin-left: 0px;
 }
 
 }

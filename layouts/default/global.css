@@ -163,6 +163,11 @@ hgroup {
 	margin-bottom: 1em;
 }
 
+#content table.links-list,
+#content table.event-list {
+	width: 100%;
+}
+
 #content table.links-list th,
 #content table.event-list th {
 	display: block;
@@ -172,8 +177,11 @@ hgroup {
 #content table.links-list td,
 #content table.event-list td {
 	display: block;
-	margin-left: 1em;
+	padding-left: 1em;
+	margin-left: 0px;
 	padding-bottom: 1em;
+	border-top: 1px solid;
+	padding-top: 0.25em;
 }
 
 #content div.image-gallery {

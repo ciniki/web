@@ -82,6 +82,13 @@ div.image-gallery-thumbnail img {
 	color: #999;
 }
 
+#content table.links-list th,
+#content table.links-list td,
+#content table.event-list th,
+#content table.event-list td {
+	border-color: #aaa;
+}
+
 #content span.links-category {
 	font-size: 1.15em;
 }
