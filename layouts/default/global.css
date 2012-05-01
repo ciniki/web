@@ -163,11 +163,13 @@ hgroup {
 	margin-bottom: 1em;
 }
 
+#content table.links-list th,
 #content table.event-list th {
 	display: block;
 	text-align: left;
 }
 
+#content table.links-list td,
 #content table.event-list td {
 	display: block;
 	margin-left: 1em;

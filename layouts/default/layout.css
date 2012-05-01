@@ -24,6 +24,7 @@
 }
 
 
+#content dl.links-list,
 #content dl.event-list {
 	width: 120em;
 }
@@ -40,17 +41,20 @@
 	margin-left: 1em;
 }
 
+#content table.links-list th,
 #content table.event-list th {
 	display: table-cell;
 	padding-bottom: 1em;
 }
 
+#content table.links-list td,
 #content table.event-list td {
 	display: table-cell;
 	padding-left: 1.5em;
 	padding-bottom: 1em;
 }
 
+#content span.links-category,
 #content span.event-date {
 	display: inline-block;
 	white-space: pre;
@@ -68,15 +72,18 @@ body { width: 100%; }
 	margin-left: 5em;
 }
 
+#content table.links-list th,
 #content table.event-list th {
 	display: block;
 	padding-bottom: 0em;
 }
 
+#content table.links-list td,
 #content table.event-list td {
 	display: block;
 }
 
+#content table.links-list td,
 #content table.event-list td {
 	margin-left: 5em;
 }

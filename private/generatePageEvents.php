@@ -51,6 +51,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 //		. "<dl class='event-list'>\n"
 		. "<table class='event-list'>\n"
 		. "";
+	$prev_year = '';
 	foreach($events as $event_num => $e) {
 		$event = $e['event'];
 		$event_date = $event['start_month'];
@@ -74,12 +75,15 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 			$content .= "<br/><span class='event-description'>" . $event['description'] . "</span>";
 		}
 		if( $event['url'] != '' ) {
-			if( !preg_match('/^\s*http/', $event['url']) ) {
-				$url = "http://" . $event['url'];
+			$url = $event['url'];
+			if( $url != '' && !preg_match('/^\s*http/i', $url) ) {
+				$display_url = $url;
+				$url = "http://" . $url;
 			} else {
-				$url = $event['url'];
+				$display_url = preg_replace('/^\s*http:\/\//i', '', $url);
+				$display_url = preg_replace('/\/$/i', '', $display_url);
 			}
-			$content .= "<br/><a class='event-url' target='_blank' href='" . $url . "' title='" . $event['name'] . "'>" . $url . "</a>";
+			$content .= "<br/><a class='event-url' target='_blank' href='" . $url . "' title='" . $event['name'] . "'>" . $display_url . "</a>";
 		}
 		// $content .= "</dd>";
 		$content .= "</td></tr>";

@@ -75,34 +75,56 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 		$categories = array();
 	}
 
+	$content .= "<table class='links-list'>\n"
+		. "";
+	$prev_category = NULL;
 	foreach($categories as $cnum => $c) {
+		if( $prev_category != NULL ) {
+			$content .= "</td></tr>\n";
+		}
 		if( isset($c['category']['cname']) && $c['category']['cname'] != '' ) {
-			$content .= "<h2>" . $c['category']['cname'] . "</h2>";
+			$content .= "<tr><th>"
+				. "<span class='links-category'>" . $c['category']['cname'] . "</span></th>"
+				. "<td>";
+			// $content .= "<h2>" . $c['category']['cname'] . "</h2>";
+		} else {
+			$content .= "<tr><th>"
+				. "<span class='links-category'></span></th>"
+				. "<td>";
 		}
 		foreach($c['category']['links'] as $fnum => $link) {
-			$content .= "<p>";
+			//$content .= "<p>";
 			if( isset($link['link']['url']) ) {
 				$url = $link['link']['url'];
 			} else {
 				$url = '';
 			}
-			if( $url != '' && !preg_match('/^\s*http/', $url) ) {
+			if( $url != '' && !preg_match('/^\s*http/i', $url) ) {
+				$display_url = $url;
 				$url = "http://" . $url;
+			} else {
+				$display_url = preg_replace('/^\s*http:\/\//i', '', $url);
+				$display_url = preg_replace('/\/$/i', '', $display_url);
 			}
+			$content .= "<span class='links-title'>";
 			if( $url != '' ) {
 				$content .= "<a target='_blank' href='" . $url . "' title='" . $link['link']['name'] . "'>" . $link['link']['name'] . "</a>";
 			} else {
 				$content .= $link['link']['name'];
 			}
+			$content .= "</span>";
 			if( isset($link['link']['description']) && $link['link']['description'] != '' ) {
-				$content .= "<br/>" . $link['link']['description'];
+				$content .= "<br/><span class='links-description'>" . $link['link']['description'] . "</span>";
 			}
 			if( $url != '' ) {
-				$content .= "<br/><a target='_blank' href='" . $url . "' title='" . $link['link']['name'] . "'>" . $url . "</a>";
+				$content .= "<br/><a class='links-url' target='_blank' href='" . $url . "' title='" . $link['link']['name'] . "'>" . $display_url . "</a>";
 			}
-			$content .= "</p>";
+			$content .= "<br/><br/>";
+			// $content .= "</p>";
 		}
 	}
+
+	$content .= "</td></tr>\n</table>\n";
 
 	$content .= "</div>"
 		. "</article>"

@@ -69,15 +69,21 @@ div.image-gallery-thumbnail img {
 	color: inherit;
 }
 
+#content span.links-title,
 #content span.event-title {
 	font-size: 1.15em;
 	font-weight: normal;
 	color: #ddd;
 }
 
+#content a.links-url,
 #content a.event-url {
 	font-size: 0.9em;
 	color: #999;
+}
+
+#content span.links-category {
+	font-size: 1.15em;
 }
 
 hr.section-divider {
