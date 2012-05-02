@@ -177,6 +177,25 @@ if( $ciniki['request']['page'] == 'home' && $settings['page.home.active'] == 'ye
 	&& isset($settings['page.home.redirect']) && $settings['page.home.redirect'] != '' ) {
 	$ciniki['request']['page'] = $settings['page.home.redirect'];
 }
+//
+// If home page is not active, search for the next page to call home
+//
+if( $ciniki['request']['page'] == 'home' && $settings['page.home.active'] != 'yes' ) {
+	if( $settings['page.about.active'] == 'yes' ) {
+		$ciniki['request']['page'] = 'about';
+	} elseif( $settings['page.gallery.active'] == 'yes' ) {
+		$ciniki['request']['page'] = 'gallery';
+	} elseif( $settings['page.contact.active'] == 'yes' ) {
+		$ciniki['request']['page'] = 'contact';
+	} elseif( $settings['page.events.active'] == 'yes' ) {
+		$ciniki['request']['page'] = 'events';
+	} elseif( $settings['page.links.active'] == 'yes' ) {
+		$ciniki['request']['page'] = 'links';
+	} else {
+		print_error(NULL, 'Website not configured');
+		exit;
+	}
+}
 
 //
 // Process the request

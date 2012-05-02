@@ -31,7 +31,7 @@ function ciniki_web_domainDelete($ciniki) {
     // check permission to run this function for this business
     //  
     require_once($ciniki['config']['core']['modules_dir'] . '/web/private/checkAccess.php');
-    $rc = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.deleteDomain'); 
+    $rc = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.domainDelete'); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }   

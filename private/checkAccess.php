@@ -50,7 +50,9 @@ function ciniki_web_checkAccess($ciniki, $business_id, $method) {
 	// Users who are an owner or employee of a business can see the business 
 	// FIXME: Add proper methods here
 	if( $method == 'ciniki.web.pageList' 
-		|| $method == 'ciniki.web.pageSettings'
+		|| $method == 'ciniki.web.pageSettingsGet'
+		|| $method == 'ciniki.web.pageSettingsHistory'
+		|| $method == 'ciniki.web.pageSettingsUpdate'
 		) {
 		$strsql = "SELECT business_id, user_id FROM ciniki_business_users "
 			. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "

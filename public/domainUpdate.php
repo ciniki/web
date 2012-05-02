@@ -34,7 +34,7 @@ function ciniki_web_domainUpdate($ciniki) {
     // check permission to run this function for this business
     //  
     require_once($ciniki['config']['core']['modules_dir'] . '/web/private/checkAccess.php');
-    $rc = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.updateDomain'); 
+    $rc = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.domainUpdate'); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }   
