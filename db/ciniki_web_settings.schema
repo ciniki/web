@@ -20,7 +20,8 @@
 #
 # Site configuration settings:
 #
-# - site.theme = default
+# - site-theme = default
+# - site-header-image = image to use in the header of the page
 #
 # Fields
 # ------

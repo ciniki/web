@@ -53,9 +53,73 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 		$page_content = $rc['content'];
 	}
 
-	$content .= "<div id='content'>"
-		. $page_content
-		. "</div>";
+	$content .= "<div id='content'>\n"
+		. "";
+	if( $page_content != '' ) {
+		$content .= "<article class='page'>\n"
+			. "<div class='entry-content'>\n"
+			. $page_content
+			. "</div>"
+			. "</article>"
+			. "";
+	}
+
+	//
+	// List the latest work
+	//
+	if( isset($ciniki['business']['modules']['ciniki.artcatalog']) 
+		&& $settings['page-gallery-active'] == 'yes' ) {
+
+		require_once($ciniki['config']['core']['modules_dir'] . '/artcatalog/web/latestImages.php');
+		$rc = ciniki_artcatalog_web_latestImages($ciniki, $settings, $ciniki['request']['business_id'], 6);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$images = $rc['images'];
+
+		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageGalleryThumbnails.php');
+		$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $rc['images'], 150);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$content .= "<article class='page'>\n"
+			. "<header class='entry-title'><h1 class='entry-title'>Latest Work</h1></header>\n"
+			. "<div class='image-gallery'>" . $rc['content'] . "</div>"
+			. "</article>\n"
+			. "";
+	}
+
+	//
+	// List any upcoming events
+	//
+	if( isset($ciniki['business']['modules']['ciniki.events']) 
+		&& $settings['page-events-active'] == 'yes' ) {
+		$content .= "<article class='page'>\n"
+			. "<header class='entry-title'><h1 class='entry-title'>Upcoming Events</h1></header>\n"
+			. "";
+		//
+		// Load and parse the events
+		//
+		require_once($ciniki['config']['core']['modules_dir'] . '/events/web/upcoming.php');
+		$rc = ciniki_events_webUpcoming($ciniki, $ciniki['request']['business_id'], 2);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$events = $rc['events'];
+
+		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processEvents.php');
+		$rc = ciniki_web_processEvents($ciniki, $settings, $events);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$content .= $rc['content'];
+
+		$content .= "</article>\n"
+			. "";
+	}
+
+	$content .= "</div>"
+		. "";
 
 	//
 	// Add the footer

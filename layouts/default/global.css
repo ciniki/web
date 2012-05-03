@@ -151,6 +151,10 @@ hgroup {
 	display: block;
 }
 
+article {
+	margin-bottom: 2em;
+}
+
 #content h1.entry-title {
 	font-size: 1.5em;
 }

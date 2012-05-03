@@ -13,14 +13,19 @@
 	border: 0px;
 }
 
+#content div.image-gallery {
+	padding: 0px;
+}
+
 #content div.image-gallery div.image-gallery-thumbnail {
-	width: 125px;
-	height: 125px;
+	width: 130px;
+	height: 130px;
+	margin: 7px;
 }
 
 #content div.image-gallery-thumbnail img {
-	width: 125px;
-	height: 125px;
+	width: 130px;
+	height: 130px;
 }
 
 

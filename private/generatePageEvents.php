@@ -38,7 +38,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 	// Generate the content of the page
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/events/web/upcoming.php');
-	$rc = ciniki_events_webUpcoming($ciniki, $ciniki['request']['business_id']);
+	$rc = ciniki_events_webUpcoming($ciniki, $ciniki['request']['business_id'], 0);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -48,49 +48,16 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 		. "<article class='page'>\n"
 		. "<header class='entry-title'><h1 class='entry-title'>Upcoming Events</h1></header>\n"
 		. "<div class='entry-content'>\n"
-//		. "<dl class='event-list'>\n"
-		. "<table class='event-list'>\n"
 		. "";
-	$prev_year = '';
-	foreach($events as $event_num => $e) {
-		$event = $e['event'];
-		$event_date = $event['start_month'];
-		$event_date .= " " . $event['start_day'];
-		if( $event['end_day'] != '' && $event['start_day'] != $event['end_day'] ) {
-			if( $event['end_month'] != '' && $event['end_month'] == $event['start_month'] ) {
-				$event_date .= " - " . $event['end_day'];
-			} else {
-				$event_date .= " - " . $event['end_month'] . " " . $event['end_day'];
-			}
-		}
-		$event_date .= ", " . $event['start_year'];
-		if( $event['end_year'] != '' && $event['start_year'] != $event['end_year'] ) {
-			$event_date .= "/" . $event['end_year'];
-		}
-	//	$content .= "<dt>$event_date</dt>"
-	//		. "<dd><b>" . $event['name'] . "</b>";
-		$content .= "<tr><th><span class='event-date'>$event_date</span></th>"
-			. "<td><span class='event-title'>" . $event['name'] . "</span>";
-		if( $event['description'] != '' ) {
-			$content .= "<br/><span class='event-description'>" . $event['description'] . "</span>";
-		}
-		if( $event['url'] != '' ) {
-			$url = $event['url'];
-			if( $url != '' && !preg_match('/^\s*http/i', $url) ) {
-				$display_url = $url;
-				$url = "http://" . $url;
-			} else {
-				$display_url = preg_replace('/^\s*http:\/\//i', '', $url);
-				$display_url = preg_replace('/\/$/i', '', $display_url);
-			}
-			$content .= "<br/><a class='event-url' target='_blank' href='" . $url . "' title='" . $event['name'] . "'>" . $display_url . "</a>";
-		}
-		// $content .= "</dd>";
-		$content .= "</td></tr>";
+
+	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processEvents.php');
+	$rc = ciniki_web_processEvents($ciniki, $settings, $events);
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
 	}
-	// $content .= "</dl>\n"
-	$content .= "</table>\n"
-		. "</div>\n"
+	$content .= $rc['content'];
+
+	$content .= "</div>\n"
 		. "</article>\n"
 		. "</div>\n"
 		. "";
