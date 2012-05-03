@@ -173,14 +173,14 @@ if( $ciniki['request']['page'] == '' ) {
 //
 // Check if home page is a redirect to another page
 //
-if( $ciniki['request']['page'] == 'home' && $settings['page.home.active'] == 'yes' 
-	&& isset($settings['page.home.redirect']) && $settings['page.home.redirect'] != '' ) {
-	$ciniki['request']['page'] = $settings['page.home.redirect'];
+if( $ciniki['request']['page'] == 'home' && $settings['page-home-active'] == 'yes' 
+	&& isset($settings['page-home-redirect']) && $settings['page-home-redirect'] != '' ) {
+	$ciniki['request']['page'] = $settings['page-home-redirect'];
 }
 //
 // If home page is not active, search for the next page to call home
 //
-if( $ciniki['request']['page'] == 'home' && $settings['page.home.active'] != 'yes' ) {
+if( $ciniki['request']['page'] == 'home' && $settings['page-home-active'] != 'yes' ) {
 	if( $settings['page-about-active'] == 'yes' ) {
 		$ciniki['request']['page'] = 'about';
 	} elseif( $settings['page-gallery-active'] == 'yes' ) {
