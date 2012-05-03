@@ -6,17 +6,17 @@
 #
 # Page Examples:
 #
-# - page.about.active = yes
-# - page.about.photo = no
-# - page.about.image_id = 0
-# - page.home.active = yes
-# - page.home.redirect = about
-# - page.home.redirect_url = /gallery/category
-# - page.gallery.active = yes
-# - page.gallery.organization = category | media | location
-# - page.friends.active = yes
-# - page.contact.active = yes
-# - page.events.active = yes
+# - page-about-active = yes
+# - page-about-photo = no
+# - page-about-image = 0	The ID of the image in the images module
+# - page-home-active = yes
+# - page-home-redirect = about
+# - page-home-redirect_url = /gallery/category
+# - page-gallery-active = yes
+# - page-gallery-organization = category | media | location
+# - page-friends-active = yes
+# - page-contact-active = yes
+# - page-events-active = yes
 #
 # Site configuration settings:
 #

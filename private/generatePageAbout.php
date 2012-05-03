@@ -37,15 +37,15 @@ function ciniki_web_generatePageAbout($ciniki, $settings) {
 	//
 	// Generate the content of the page
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbDetailsQuery.php');
-	$rc = ciniki_core_dbDetailsQuery($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'web', 'content', 'page.about');
+	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbDetailsQueryDash.php');
+	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'web', 'content', 'page-about');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
 
-	if( isset($rc['content']['page.about.content']) ) {
+	if( isset($rc['content']['page-about-content']) ) {
 		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processContent.php');
-		$rc = ciniki_web_processContent($ciniki, $rc['content']['page.about.content']);	
+		$rc = ciniki_web_processContent($ciniki, $rc['content']['page-about-content']);	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
@@ -55,7 +55,24 @@ function ciniki_web_generatePageAbout($ciniki, $settings) {
 	$content .= "<div id='content'>\n"
 		. "<article class='page'>\n"
 		. "<header class='entry-title'><h1 class='entry-title'>About</h1></header>\n"
-		. "<div class='entry-content'>\n"
+		. "";
+	if( isset($settings['page-about-image']) && $settings['page-about-image'] != '' && $settings['page-about-image'] > 0 ) {
+		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/getScaledImageURL.php');
+		$rc = ciniki_web_getScaledImageURL($ciniki, $settings['page-about-image'], '500', 0);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$content .= "<aside><div class='image'><img title='' alt='About' src='" . $rc['url'] . "' /></div></aside>";
+		// $content .= "<aside><img title='About' alt='About' src='" . $rc['url'] . "' /></aside>";
+	}
+	//
+	// Check for the first paragraph, and insert image after
+	//
+	if( preg_match('/<\/p><p>/', $page_content) ) {
+		// $page_content .= preg_replace('/<\/p><p>/', "</p>$aside<p>", $page_content, 1);
+	}
+
+	$content .= "<div class='entry-content'>\n"
 		. $page_content
 		. "</div>"
 		. "</article>"

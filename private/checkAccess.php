@@ -32,7 +32,7 @@ function ciniki_web_checkAccess($ciniki, $business_id, $method) {
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
-	if( !isset($rc['modules']) || !isset($rc['modules']['ciniki.artcatalog']) ) {
+	if( !isset($rc['modules']) || !isset($rc['modules']['ciniki.web']) ) {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'608', 'msg'=>'Access denied.'));
 	}
 	$modules = $rc['modules'];
@@ -49,7 +49,7 @@ function ciniki_web_checkAccess($ciniki, $business_id, $method) {
 	//
 	// Users who are an owner or employee of a business can see the business 
 	// FIXME: Add proper methods here
-	if( $method == 'ciniki.web.pageList' 
+	if( $method == 'ciniki.web.siteSettings' 
 		|| $method == 'ciniki.web.pageSettingsGet'
 		|| $method == 'ciniki.web.pageSettingsHistory'
 		|| $method == 'ciniki.web.pageSettingsUpdate'

@@ -58,14 +58,14 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		// Generate the content of the page
 		//
 		require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbDetailsQuery.php');
-		$rc = ciniki_core_dbDetailsQuery($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'web', 'content', 'page.gallery');
+		$rc = ciniki_core_dbDetailsQuery($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'web', 'content', 'page-gallery');
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
 
-		if( isset($rc['content']['page.gallery.content']) ) {
+		if( isset($rc['content']['page-gallery-content']) ) {
 			require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processContent.php');
-			$rc = ciniki_web_processContent($ciniki, $rc['content']['page.gallery.content']);	
+			$rc = ciniki_web_processContent($ciniki, $rc['content']['page-gallery-content']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}

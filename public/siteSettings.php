@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_web_pageList($ciniki) {
+function ciniki_web_siteSettings($ciniki) {
 	//
 	// Find all the required and optional arguments
 	//
@@ -28,7 +28,7 @@ function ciniki_web_pageList($ciniki) {
 	// Check access to business_id as owner, and load module list
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/checkAccess.php');
-	$ac = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.pageList');
+	$ac = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.siteSettings');
 	if( $ac['stat'] != 'ok' ) {
 		return $ac;
 	}
@@ -79,32 +79,42 @@ function ciniki_web_pageList($ciniki) {
 	//
 	// Set which pages are active from the settings
 	//
-	if( isset($settings['page.home.active']) && $settings['page.home.active'] == 'yes' ) {
+	if( isset($settings['page-home-active']) && $settings['page-home-active'] == 'yes' ) {
 		$pages['home']['active'] = 'yes';
 	}
 	if( isset($settings['page-about-active']) && $settings['page-about-active'] == 'yes' ) {
 		$pages['about']['active'] = 'yes';
 	}
-	if( isset($settings['page.contact.active']) && $settings['page.contact.active'] == 'yes' ) {
+	if( isset($settings['page-contact-active']) && $settings['page-contact-active'] == 'yes' ) {
 		$pages['contact']['active'] = 'yes';
 	}
-	if( isset($settings['page.events.active']) && $settings['page.events.active'] == 'yes' ) {
+	if( isset($settings['page-events-active']) && $settings['page-events-active'] == 'yes' ) {
 		$pages['events']['active'] = 'yes';
 	}
-	if( isset($settings['page.friends.active']) && $settings['page.friends.active'] == 'yes' ) {
+	if( isset($settings['page-friends-active']) && $settings['page-friends-active'] == 'yes' ) {
 		$pages['friends']['active'] = 'yes';
 	}
-	if( isset($settings['page.links.active']) && $settings['page.links.active'] == 'yes' ) {
+	if( isset($settings['page-links-active']) && $settings['page-links-active'] == 'yes' ) {
 		$pages['links']['active'] = 'yes';
 	}
-	if( isset($settings['page.gallery.active']) && $settings['page.gallery.active'] == 'yes' ) {
+	if( isset($settings['page-gallery-active']) && $settings['page-gallery-active'] == 'yes' ) {
 		$pages['gallery']['active'] = 'yes';
 	}
-	if( isset($settings['page.signup.active']) && $settings['page.signup.active'] == 'yes' ) {
+	if( isset($settings['page-signup-active']) && $settings['page-signup-active'] == 'yes' ) {
 		$pages['signup']['active'] = 'yes';
 	}
-	if( isset($settings['page.api.active']) && $settings['page.api.active'] == 'yes' ) {
+	if( isset($settings['page-api-active']) && $settings['page-api-active'] == 'yes' ) {
 		$pages['api']['active'] = 'yes';
+	}
+
+	//
+	// Setup other settings
+	//
+	$rc_settings = array();
+	if( isset($settings['site-theme']) && $settings['site-theme'] != '' ) {
+		array_push($rc_settings, array('setting'=>array('name'=>'theme', 'display_name'=>'Theme', 'value'=>$settings['site-theme'])));
+	} else {
+		array_push($rc_settings, array('setting'=>array('name'=>'theme', 'display_name'=>'Theme', 'value'=>'default')));
 	}
 
 	$rc_pages = array();
@@ -112,6 +122,6 @@ function ciniki_web_pageList($ciniki) {
 		array_push($rc_pages, array('page'=>array('name'=>$page, 'display_name'=>$pagedetails['display_name'], 'active'=>$pagedetails['active'])));
 	}
 
-	return array('stat'=>'ok', 'pages'=>$rc_pages);
+	return array('stat'=>'ok', 'pages'=>$rc_pages, 'settings'=>$rc_settings);
 }
 ?>

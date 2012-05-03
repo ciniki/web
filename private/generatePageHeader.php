@@ -29,19 +29,19 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 		. "";
 
 	// Add required layout, theme and js files
-	if( file_exists($ciniki['request']['layout_dir'] . '/' . $settings['site.layout'] . '/global.css') ) {
+	if( file_exists($ciniki['request']['layout_dir'] . '/' . $settings['site-layout'] . '/global.css') ) {
 		$content .= "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['layout_url'] 
-			. '/' . $settings['site.layout'] . "/global.css' />\n";
+			. '/' . $settings['site-layout'] . "/global.css' />\n";
 	} else if( file_exists($ciniki['request']['layout_dir'] . '/default/global.css') ) {
 		$content .= "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['layout_url'] 
 			. "/default/global.css' />\n";
 	}
-	if( file_exists($ciniki['request']['layout_dir'] . '/' . $settings['site.layout'] . '/layout.css') ) {
+	if( file_exists($ciniki['request']['layout_dir'] . '/' . $settings['site-layout'] . '/layout.css') ) {
 		$content .= "<link rel='stylesheet' type='text/css' media='all and (min-width: 33.236em)' href='" . $ciniki['request']['layout_url'] 
-			. '/' . $settings['site.layout'] . "/layout.css' />\n"
+			. '/' . $settings['site-layout'] . "/layout.css' />\n"
 			. "<!--[if (lt IE 9) & (!IEMobile)]>\n"
 			. "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['layout_url'] 
-			. '/' . $settings['site.layout'] . "/layout.css' />\n"
+			. '/' . $settings['site-layout'] . "/layout.css' />\n"
 		  	. "<![endif]-->\n"
 			. "";
 	} else if( file_exists($ciniki['request']['layout_dir'] . '/default/layout.css') ) {
@@ -53,12 +53,12 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 			. "";
 	}
 
-	if( file_exists($ciniki['request']['theme_dir'] . '/' . $settings['site.theme'] . '/style.css') ) {
+	if( file_exists($ciniki['request']['theme_dir'] . '/' . $settings['site-theme'] . '/style.css') ) {
 		$content .= "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['theme_url'] 
-			. '/' . $settings['site.theme'] . "/style.css' />\n";
+			. '/' . $settings['site-theme'] . "/style.css' />\n";
 	} else if( file_exists($ciniki['request']['theme_dir'] . '/default/style.css') ) {
 		$content .= "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['theme_url'] 
-			. "/default/style.cssl' />\n";
+			. "/default/style.css' />\n";
 	}
 	
 	//
@@ -91,19 +91,19 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 		. "<ul id='main-menu' class='menu'>\n"
 		. "<li class='menu-item'><a href='" . $ciniki['request']['base_url'] . "/'>Home</a></li>"
 		. "";
-	if( isset($settings['page.about.active']) && $settings['page.about.active'] == 'yes' ) {
+	if( isset($settings['page-about-active']) && $settings['page-about-active'] == 'yes' ) {
 		$content .= "<li class='menu-item'><a href='" . $ciniki['request']['base_url'] . "/about'>About</a></li>";
 	}
-	if( isset($settings['page.gallery.active']) && $settings['page.gallery.active'] == 'yes' ) {
+	if( isset($settings['page-gallery-active']) && $settings['page-gallery-active'] == 'yes' ) {
 		$content .= "<li class='menu-item'><a href='" . $ciniki['request']['base_url'] . "/gallery'>Gallery</a></li>";
 	}
-	if( isset($settings['page.events.active']) && $settings['page.events.active'] == 'yes' ) {
+	if( isset($settings['page-events-active']) && $settings['page-events-active'] == 'yes' ) {
 		$content .= "<li class='menu-item'><a href='" . $ciniki['request']['base_url'] . "/events'>Events</a></li>";
 	}
-	if( isset($settings['page.links.active']) && $settings['page.links.active'] == 'yes' ) {
+	if( isset($settings['page-links-active']) && $settings['page-links-active'] == 'yes' ) {
 		$content .= "<li class='menu-item'><a href='" . $ciniki['request']['base_url'] . "/links'>Links</a></li>";
 	}
-	if( isset($settings['page.contact.active']) && $settings['page.contact.active'] == 'yes' ) {
+	if( isset($settings['page-contact-active']) && $settings['page-contact-active'] == 'yes' ) {
 		$content .= "<li class='menu-item'><a href='" . $ciniki['request']['base_url'] . "/contact'>Contact</a></li>";
 	}
 	$content .= "</ul>\n"

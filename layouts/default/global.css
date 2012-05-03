@@ -202,7 +202,8 @@ hgroup {
 aside { width: 100%; }
 
 hr.footer-section-divider {
-	margin-top: 2em;
+	margin-top: 5em;
+	clear: both;
 }
 
 footer {

@@ -72,6 +72,12 @@
 	white-space: pre;
 }
 
+aside {
+	float: right;
+	clear: right;
+	width: 25em;
+	height: auto;
+}
 
 
 /* 9. CUSTOM LAYOUT & TYPOGRAPHY (Mummy bear)
@@ -79,6 +85,8 @@
 @media screen and (min-width: 30em) and (max-width: 63.236em) {
 
 body { width: 100%; }
+
+#page-container { width: 30em; }
 
 #content dl dd {
 	margin-left: 5em;
@@ -100,6 +108,13 @@ body { width: 100%; }
 #content table.event-list td {
 	padding-left: 5em;
 	margin-left: 0px;
+}
+
+aside {
+	float: none;
+	width: auto;
+	height: auto;
+	margin: 0 0 2.2em;
 }
 
 }

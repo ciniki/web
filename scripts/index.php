@@ -181,15 +181,15 @@ if( $ciniki['request']['page'] == 'home' && $settings['page.home.active'] == 'ye
 // If home page is not active, search for the next page to call home
 //
 if( $ciniki['request']['page'] == 'home' && $settings['page.home.active'] != 'yes' ) {
-	if( $settings['page.about.active'] == 'yes' ) {
+	if( $settings['page-about-active'] == 'yes' ) {
 		$ciniki['request']['page'] = 'about';
-	} elseif( $settings['page.gallery.active'] == 'yes' ) {
+	} elseif( $settings['page-gallery-active'] == 'yes' ) {
 		$ciniki['request']['page'] = 'gallery';
-	} elseif( $settings['page.contact.active'] == 'yes' ) {
+	} elseif( $settings['page-contact-active'] == 'yes' ) {
 		$ciniki['request']['page'] = 'contact';
-	} elseif( $settings['page.events.active'] == 'yes' ) {
+	} elseif( $settings['page-events-active'] == 'yes' ) {
 		$ciniki['request']['page'] = 'events';
-	} elseif( $settings['page.links.active'] == 'yes' ) {
+	} elseif( $settings['page-links-active'] == 'yes' ) {
 		$ciniki['request']['page'] = 'links';
 	} else {
 		print_error(NULL, 'Website not configured');
@@ -202,42 +202,52 @@ if( $ciniki['request']['page'] == 'home' && $settings['page.home.active'] != 'ye
 //
 
 // Master Home page
-if( $ciniki['request']['page'] == 'masterindex' && $settings['page.home.active'] == 'yes' ) {
+if( $ciniki['request']['page'] == 'masterindex' && $settings['page-home-active'] == 'yes' ) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generateMasterIndex.php');
 	$rc = ciniki_web_generateMasterIndex($ciniki, $settings);
 } 
+// Signup Page
+elseif( $ciniki['request']['page'] == 'signup' && $settings['page-signup-active'] == 'yes' ) {
+	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageSignup.php');
+	$rc = ciniki_web_generatePageSignup($ciniki, $settings);
+} 
+// API Page
+elseif( $ciniki['request']['page'] == 'api' && $settings['page-api-active'] == 'yes' ) {
+	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageAPI.php');
+	$rc = ciniki_web_generatePageAPI($ciniki, $settings);
+} 
 // Home Page
-elseif( $ciniki['request']['page'] == 'home' && $settings['page.home.active'] == 'yes' ) {
+elseif( $ciniki['request']['page'] == 'home' && $settings['page-home-active'] == 'yes' ) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageHome.php');
 	$rc = ciniki_web_generatePageHome($ciniki, $settings);
 } 
 // About
-elseif( $ciniki['request']['page'] == 'about' && $settings['page.about.active'] == 'yes' ) {
+elseif( $ciniki['request']['page'] == 'about' && $settings['page-about-active'] == 'yes' ) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageAbout.php');
 	$rc = ciniki_web_generatePageAbout($ciniki, $settings);
 } 
 // Gallery
-elseif( $ciniki['request']['page'] == 'gallery' && $settings['page.gallery.active'] == 'yes' ) {
+elseif( $ciniki['request']['page'] == 'gallery' && $settings['page-gallery-active'] == 'yes' ) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageGallery.php');
 	$rc = ciniki_web_generatePageGallery($ciniki, $settings);
 }
 // Events
-elseif( $ciniki['request']['page'] == 'events' && $settings['page.events.active'] == 'yes' ) {
+elseif( $ciniki['request']['page'] == 'events' && $settings['page-events-active'] == 'yes' ) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageEvents.php');
 	$rc = ciniki_web_generatePageEvents($ciniki, $settings);
 } 
 // Friends
-elseif( $ciniki['request']['page'] == 'friends' && $settings['page.friends.active'] == 'yes' ) {
+elseif( $ciniki['request']['page'] == 'friends' && $settings['page-friends-active'] == 'yes' ) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageFriends.php');
 	$rc = ciniki_web_generatePageFriends($ciniki, $settings);
 } 
 // Links
-elseif( $ciniki['request']['page'] == 'links' && $settings['page.links.active'] == 'yes' ) {
+elseif( $ciniki['request']['page'] == 'links' && $settings['page-links-active'] == 'yes' ) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageLinks.php');
 	$rc = ciniki_web_generatePageLinks($ciniki, $settings);
 } 
 // Contact
-elseif( $ciniki['request']['page'] == 'contact' && $settings['page.contact.active'] == 'yes' ) {
+elseif( $ciniki['request']['page'] == 'contact' && $settings['page-contact-active'] == 'yes' ) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageContact.php');
 	$rc = ciniki_web_generatePageContact($ciniki, $settings);
 } 

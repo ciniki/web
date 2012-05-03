@@ -37,15 +37,15 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 	// Generate the content of the page
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbDetailsQuery.php');
-	$rc = ciniki_core_dbDetailsQuery($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'web', 'content', 'page.links');
+	$rc = ciniki_core_dbDetailsQuery($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'web', 'content', 'page-links');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
 
 	$page_content = '';
-	if( isset($rc['content']) && isset($rc['content']['page.links.content']) ) {
+	if( isset($rc['content']) && isset($rc['content']['page-links-content']) ) {
 		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processContent.php');
-		$rc = ciniki_web_processContent($ciniki, $rc['content']['page.links.content']);	
+		$rc = ciniki_web_processContent($ciniki, $rc['content']['page-links-content']);	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}

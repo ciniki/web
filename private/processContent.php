@@ -16,7 +16,7 @@ function ciniki_web_processContent($ciniki, $unprocessed_content) {
 		return array('stat'=>'ok', 'content'=>'');
 	}
 
-	$processed_content = '<p>' . preg_replace('/\n\s*\n/m', '</p><p>', $unprocessed_content) . '</p>';
+	$processed_content = "<p class='intro'>" . preg_replace('/\n\s*\n/m', '</p><p>', $unprocessed_content) . '</p>';
 	$processed_content = preg_replace('/\n/m', '<br/>', $processed_content);
 
 	return array('stat'=>'ok', 'content'=>$processed_content);

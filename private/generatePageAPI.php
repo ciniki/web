@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This function will generate the home page for the website
+// This function will generate the about page for the website
 //
 // Arguments
 // ---------
@@ -10,7 +10,7 @@
 // Returns
 // -------
 //
-function ciniki_web_generatePageHome($ciniki, $settings) {
+function ciniki_web_generatePageAPI($ciniki, $settings) {
 
 	//
 	// Store the content created by the page
@@ -28,34 +28,39 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 	// Add the header
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageHeader.php');
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Home');
+	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'API');
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
 	}
 	$content .= $rc['content'];
 
-	
 	//
 	// Generate the content of the page
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbDetailsQuery.php');
-	$rc = ciniki_core_dbDetailsQuery($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'web', 'content', 'page-home');
+	$rc = ciniki_core_dbDetailsQuery($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'web', 'content', 'page-api');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
 
-	if( isset($rc['content']['page-home-content']) ) {
+	if( isset($rc['content']['page-api-content']) ) {
 		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processContent.php');
-		$rc = ciniki_web_processContent($ciniki, $rc['content']['page-home-content']);	
+		$rc = ciniki_web_processContent($ciniki, $rc['content']['page-api-content']);	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
 		$page_content = $rc['content'];
 	}
 
-	$content .= "<div id='content'>"
+	$content .= "<div id='content'>\n"
+		. "<article class='page'>\n"
+		. "<header class='entry-title'><h1 class='entry-title'>API</h1></header>\n"
+		. "<div class='entry-content'>\n"
 		. $page_content
-		. "</div>";
+		. "</div>"
+		. "</article>"
+		. "</div>"
+		. "";
 
 	//
 	// Add the footer
