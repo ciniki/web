@@ -44,11 +44,11 @@ function ciniki_web_generatePageContact($ciniki, $settings) {
 	$contact_details = $rc['details'];
 
 	$contact_content = '';
-	if( isset($settings['page-contact-name.display']) && $settings['page-contact-name.display'] == 'yes' 
+	if( isset($settings['page-contact-name-display']) && $settings['page-contact-name-display'] == 'yes' 
 		&& isset($contact_details['contact.person.name']) && $contact_details['contact.person.name'] != '' ) {
 		$contact_content .= $contact_details['contact.person.name'] . "<br/>\n";
 	}
-	if( isset($settings['page-contact-address.display']) && $settings['page-contact-address.display'] == 'yes' ) {
+	if( isset($settings['page-contact-address-display']) && $settings['page-contact-address-display'] == 'yes' ) {
 		if( isset($contact_details['contact.address.street1']) && $contact_details['contact.address.street1'] != '' ) {
 			$contact_content .= $contact_details['contact.address.street1'] . "<br/>\n";
 		}
@@ -74,15 +74,15 @@ function ciniki_web_generatePageContact($ciniki, $settings) {
 			$contact_content .= $contact_details['contact.address.postal'] . "<br/>\n";
 		}
 	}
-	if( isset($settings['page-contact-phone.display']) && $settings['page-contact-phone.display'] == 'yes' 
+	if( isset($settings['page-contact-phone-display']) && $settings['page-contact-phone-display'] == 'yes' 
 		&& isset($contact_details['contact.phone.number']) && $contact_details['contact.phone.number'] != '' ) {
 		$contact_content .= "phone: " . $contact_details['contact.phone.number'] . "<br/>\n";
 	}
-	if( isset($settings['page-contact-fax.display']) && $settings['page-contact-fax.display'] == 'yes' 
+	if( isset($settings['page-contact-fax-display']) && $settings['page-contact-fax-display'] == 'yes' 
 		&& isset($contact_details['contact.fax.number']) && $contact_details['contact.fax.number'] != '' ) {
 		$contact_content .= "fax: " . $contact_details['contact.fax.number'] . "<br/>\n";
 	}
-	if( isset($settings['page-contact-email.display']) && $settings['page-contact-email.display'] == 'yes' 
+	if( isset($settings['page-contact-email-display']) && $settings['page-contact-email-display'] == 'yes' 
 		&& isset($contact_details['contact.email.address']) && $contact_details['contact.email.address'] != '' ) {
 		$contact_content .= "<a href='mailto:" . $contact_details['contact.email.address'] . "' />" . $contact_details['contact.email.address'] . "</a><br/>\n";
 	}
@@ -91,8 +91,8 @@ function ciniki_web_generatePageContact($ciniki, $settings) {
 	//
 	// Generate the content of the page
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbDetailsQuery.php');
-	$rc = ciniki_core_dbDetailsQuery($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'web', 'content', 'page-contact');
+	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbDetailsQueryDash.php');
+	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'web', 'content', 'page-contact');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
