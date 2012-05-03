@@ -102,7 +102,6 @@ function ciniki_web_siteSettingsUpdate($ciniki) {
 	//
 	foreach($settings_fields as $field) {
 		if( isset($ciniki['request']['args'][$field]) ) {
-			error_log("Updating: " . $field);
 			$strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) "
 				. "VALUES ('" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['business_id']) . "'"
 				. ", '" . ciniki_core_dbQuote($ciniki, $field) . "' "

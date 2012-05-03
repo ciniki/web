@@ -94,9 +94,6 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 	//
 	if( isset($ciniki['business']['modules']['ciniki.events']) 
 		&& $settings['page-events-active'] == 'yes' ) {
-		$content .= "<article class='page'>\n"
-			. "<header class='entry-title'><h1 class='entry-title'>Upcoming Events</h1></header>\n"
-			. "";
 		//
 		// Load and parse the events
 		//
@@ -105,17 +102,19 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
-		$events = $rc['events'];
-
-		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processEvents.php');
-		$rc = ciniki_web_processEvents($ciniki, $settings, $events);
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
+		if( isset($rc['events']) && count($rc['events']) > 0 ) {
+			$events = $rc['events'];
+			require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processEvents.php');
+			$rc = ciniki_web_processEvents($ciniki, $settings, $events);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$content .= "<article class='page'>\n"
+				. "<header class='entry-title'><h1 class='entry-title'>Upcoming Events</h1></header>\n"
+				. $rc['content']
+				. "</article>\n"
+				. "";
 		}
-		$content .= $rc['content'];
-
-		$content .= "</article>\n"
-			. "";
 	}
 
 	$content .= "</div>"
