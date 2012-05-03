@@ -194,13 +194,13 @@ article {
 }
 
 #content div.image-gallery div.image-gallery-thumbnail {
-	width: 100px;
-	height: 100px;
+	width: 115px;
+	height: 115px;
 }
 
 #content div.image-gallery-thumbnail img {
-	width: 100px;
-	height: 100px;
+	width: 115px;
+	height: 115px;
 }
 
 aside { width: 100%; }
