@@ -21,10 +21,10 @@ function ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $images, $
 		//
 		// Check for cached file, if not generate
 		//
-		$img_filename = $ciniki['request']['cache_dir'] . '/' . ($ciniki['request']['business_id']%10) . '/' 
+		$img_filename = $ciniki['request']['cache_dir'] . '/' . ($ciniki['request']['business_id']%100) . '/' 
 			. sprintf('%07d', $ciniki['request']['business_id'])
 			. '/t' . $maxlength . '/' . sprintf('%010d', $img['image_id']) . '.jpg';
-		$img_url = $ciniki['request']['cache_url'] . '/' . ($ciniki['request']['business_id']%10) . '/' 
+		$img_url = $ciniki['request']['cache_url'] . '/' . ($ciniki['request']['business_id']%100) . '/' 
 			. sprintf('%07d', $ciniki['request']['business_id']) 
 			. '/t' . $maxlength . '/' . sprintf('%010d', $img['image_id']) . '.jpg';
 
