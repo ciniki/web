@@ -34,6 +34,7 @@ function ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $images, $
 		$utc_offset = date_offset_get(new DateTime);
 		if( !file_exists($img_filename) 
 			|| (filemtime($img_filename) - $utc_offset) < $img['last_updated'] ) {
+			error_log('img: ' . (filemtime($img_filename) - $utc_offset) . " $utc_offset::" . $img['last_updated']);
 			//
 			// Load the image from the database
 			//
