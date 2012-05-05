@@ -13,11 +13,6 @@
 function ciniki_web_lookupClientDomain($ciniki, $domain, $type) {
 
 	//
-	// FIXME: Add timezone information
-	//
-	date_default_timezone_set('America/Toronto');
-
-	//
 	// Strip the www from the domain before looking up
 	//
 	$domain = preg_replace('/^www\./', '', $domain);
