@@ -10,11 +10,13 @@
 // Returns
 // -------
 //
-function ciniki_web_processEvents($ciniki, $settings, $events) {
+function ciniki_web_processEvents($ciniki, $settings, $events, $limit) {
 
 	$content = "<table class='event-list'>\n"
 		. "";
+	$count = 0;
 	foreach($events as $event_num => $e) {
+		if( $limit > 0 && $count >= $limit ) { break; }
 		$event = $e['event'];
 		$event_date = $event['start_month'];
 		$event_date .= " " . $event['start_day'];
@@ -46,6 +48,7 @@ function ciniki_web_processEvents($ciniki, $settings, $events) {
 			$content .= "<br/><a class='event-url' target='_blank' href='" . $url . "' title='" . $event['name'] . "'>" . $display_url . "</a>";
 		}
 		$content .= "</td></tr>";
+		$count++;
 	}
 	$content .= "</table>\n"
 		. "";

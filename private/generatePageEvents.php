@@ -34,24 +34,25 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 	$content .= $rc['content'];
 
 	
+	$content .= "<div id='content'>\n"
+		. "";
 	//
 	// Generate the content of the page
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/events/web/upcoming.php');
-	$rc = ciniki_events_webUpcoming($ciniki, $ciniki['request']['business_id'], 0);
+	require_once($ciniki['config']['core']['modules_dir'] . '/events/web/list.php');
+	$rc = ciniki_events_web_list($ciniki, $ciniki['request']['business_id'], 'upcoming', 0);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
 	$events = $rc['events'];
 
-	$content .= "<div id='content'>\n"
-		. "<article class='page'>\n"
+	$content .= "<article class='page'>\n"
 		. "<header class='entry-title'><h1 class='entry-title'>Upcoming Events</h1></header>\n"
 		. "<div class='entry-content'>\n"
 		. "";
 
 	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processEvents.php');
-	$rc = ciniki_web_processEvents($ciniki, $settings, $events);
+	$rc = ciniki_web_processEvents($ciniki, $settings, $events, 0);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -59,7 +60,40 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 
 	$content .= "</div>\n"
 		. "</article>\n"
-		. "</div>\n"
+		. "";
+
+	//
+	// Include past events if the user wants
+	//
+	if( isset($settings['page-events-past']) && $settings['page-events-past'] == 'yes' ) {
+		//
+		// Generate the content of the page
+		//
+		require_once($ciniki['config']['core']['modules_dir'] . '/events/web/list.php');
+		$rc = ciniki_events_web_list($ciniki, $ciniki['request']['business_id'], 'past', 10);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$events = $rc['events'];
+
+		$content .= "<article class='page'>\n"
+			. "<header class='entry-title'><h1 class='entry-title'>Past Events</h1></header>\n"
+			. "<div class='entry-content'>\n"
+			. "";
+
+		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processEvents.php');
+		$rc = ciniki_web_processEvents($ciniki, $settings, $events, 0);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$content .= $rc['content'];
+
+		$content .= "</div>\n"
+			. "</article>\n"
+			. "";
+	}
+
+	$content .= "</div>\n"
 		. "";
 
 	//

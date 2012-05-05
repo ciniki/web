@@ -37,7 +37,7 @@ function ciniki_web_generatePageContact($ciniki, $settings) {
 	// Check which parts of the business contact information to display automatically
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/businesses/web/contact.php');
-	$rc = ciniki_businesses_webContact($ciniki, $ciniki['request']['business_id']);
+	$rc = ciniki_businesses_web_contact($ciniki, $ciniki['request']['business_id']);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}

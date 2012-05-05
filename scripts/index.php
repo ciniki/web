@@ -142,7 +142,7 @@ if( $ciniki['request']['business_id'] == 0 ) {
 // Get the details for the business
 //
 require_once($ciniki['config']['core']['modules_dir'] . '/businesses/web/details.php');
-$rc = ciniki_businesses_webDetails($ciniki, $ciniki['request']['business_id']);
+$rc = ciniki_businesses_web_details($ciniki, $ciniki['request']['business_id']);
 if( $rc['stat'] != 'ok' ) {
 	print_error($rc, 'Website not configured.');
 	exit;
