@@ -37,7 +37,7 @@ function ciniki_web_clearCache($ciniki) {
 	// Remove the business cache directory
 	//
 	$business_cache_dir = $ciniki['config']['core']['modules_dir'] . '/web/cache'
-		. '/' . ($args['business_id']%100) . '/'
+		. '/' . sprintf('%02d', ($args['business_id']%100)) . '/'
 		. sprintf('%07d', $args['business_id']);
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/recursiveRmdir.php');
 	$rc = ciniki_core_recursiveRmdir($ciniki, $business_cache_dir);

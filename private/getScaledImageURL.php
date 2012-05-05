@@ -32,7 +32,7 @@ function ciniki_web_getScaledImageURL($ciniki, $image_id, $maxwidth, $maxheight)
 	//
 	// Build working path, and final url
 	//
-	$filename = '/' . ($ciniki['request']['business_id']%100) . '/'
+	$filename = '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/'
 		. sprintf('%07d', $ciniki['request']['business_id'])
 		. '/w' . $maxwidth . '/' . sprintf('%010d', $img['id']) . '.jpg';
 	$img_filename = $ciniki['request']['cache_dir'] . $filename;
