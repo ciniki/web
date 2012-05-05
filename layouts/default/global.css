@@ -192,9 +192,19 @@ article {
 	text-align: right;
 }
 
+#content div.image-categories,
 #content div.image-gallery {
 	margin: 0 auto;
 	text-align: center;
+}
+
+#content div.image-categories div.image-categories-thumbnail {
+	width: 260px;
+}
+
+#content div.image-categories-thumbnail img {
+	width: 260px;
+	height: 260px;
 }
 
 #content div.image-gallery div.image-gallery-thumbnail {

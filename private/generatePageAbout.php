@@ -58,7 +58,7 @@ function ciniki_web_generatePageAbout($ciniki, $settings) {
 		. "";
 	if( isset($settings['page-about-image']) && $settings['page-about-image'] != '' && $settings['page-about-image'] > 0 ) {
 		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/getScaledImageURL.php');
-		$rc = ciniki_web_getScaledImageURL($ciniki, $settings['page-about-image'], '500', 0);
+		$rc = ciniki_web_getScaledImageURL($ciniki, $settings['page-about-image'], 'original', '500', 0);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}

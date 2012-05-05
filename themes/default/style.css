@@ -41,11 +41,29 @@ header h1 {
 	border-color: #000;
 }
 
+div.image-categories-thumbnail {
+	border: 5px solid #aaa;
+	display: inline-block;
+	margin: 8px;
+	padding: 0px;
+	line-height: 0.7em;
+}
+
+span.image-categories-name {
+	display: block;
+	background-color: #fff;
+	color: #333;
+	margin: 0px;
+	font-size: 1.2em;
+	padding-top: 1.1em;
+	padding-bottom: 0.7em;
+}
+
 div.image-gallery-thumbnail {
 	border: 1px solid #aaa;
 	display: inline-block;
-	margin: 5px;
-	padding: 8px;
+	margin: 4px;
+	padding: 7px;
 }
 
 div.image-gallery-thumbnail img {

@@ -10,12 +10,12 @@
 // Returns
 // -------
 //
-function ciniki_web_getScaledImageURL($ciniki, $image_id, $maxwidth, $maxheight) {
+function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $maxheight) {
 
 	//
 	// Load last_updated date to check against the cache
 	//
-	$strsql = "SELECT id, UNIX_TIMESTAMP(ciniki_images.last_updated) "
+	$strsql = "SELECT id, UNIX_TIMESTAMP(ciniki_images.last_updated) AS last_updated "
 		. "FROM ciniki_images "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $image_id) . "' "
 		. "AND business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
@@ -41,13 +41,14 @@ function ciniki_web_getScaledImageURL($ciniki, $image_id, $maxwidth, $maxheight)
 	//
 	// Check last_updated against the file timestamp, if the file exists
 	//
-	if( !file_exists($img_filename)
-		|| filemtime($img_filename) < $img['last_updated'] ) {
+	$utc_offset = date_offset_get(new DateTime);
+	if( !file_exists($img_filename) 
+		|| (filemtime($img_filename) - $utc_offset) < $img['last_updated'] ) {
 		//
 		// Load the image from the database
 		//
 		require_once($ciniki['config']['core']['modules_dir'] . '/images/private/loadImage.php');
-		$rc = ciniki_images_loadImage($ciniki, $img['id'], 'original');
+		$rc = ciniki_images_loadImage($ciniki, $img['id'], $version);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}

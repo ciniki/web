@@ -17,6 +17,15 @@
 	padding: 0px;
 }
 
+#content div.image-categories div.image-categories-thumbnail {
+	width: 290px;
+}
+
+#content div.image-categories-thumbnail img {
+	width: 290px;
+	height: 290px;
+}
+
 #content div.image-gallery div.image-gallery-thumbnail {
 	width: 130px;
 	height: 130px;
@@ -95,6 +104,15 @@ body { width: 100%; }
 
 #content dl dd {
 	margin-left: 5em;
+}
+
+#content div.image-categories div.image-categories-thumbnail {
+	width: 190px;
+}
+
+#content div.image-categories-thumbnail img {
+	width: 190px;
+	height: 190px;
 }
 
 #content table.links-list th,
