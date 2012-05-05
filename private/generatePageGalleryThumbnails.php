@@ -31,8 +31,9 @@ function ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $images, $
 		//
 		// If the image file doesn't exist on disk, create it, or if it's been updated in the database since creation
 		//
+		$utc_offset = date_offset_get(new DateTime);
 		if( !file_exists($img_filename) 
-			|| filemtime($img_filename) < $img['last_updated'] ) {
+			|| (filemtime($img_filename) - $utc_offset) < $img['last_updated'] ) {
 			//
 			// Load the image from the database
 			//
@@ -44,6 +45,18 @@ function ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $images, $
 			$image = $rc['image'];
 			
 			$image->thumbnailImage($maxlength, 0);
+
+			//
+			// Check if they image is marked as sold, and add red dot
+			//
+			if( isset($img['sold']) && $img['sold'] == 'yes' ) {
+				$draw = new ImagickDraw();
+				$draw->setFillColor('red');
+				$draw->setStrokeColor(new ImagickPixel('white') );
+				$size = $maxlength/20;
+				$draw->circle($maxlength-($size*2), $maxlength-($size*2), $maxlength-$size, $maxlength-$size);
+				$image->drawImage($draw);
+			}
 
 			//
 			// Check directory exists
