@@ -71,6 +71,15 @@ div.image-gallery-thumbnail img {
 	margin: 0px;
 }
 
+div.gallery-image {
+	line-height: 0.7em;
+}
+
+div.gallery-image-wrap {
+	border: 8px solid #fff;
+	display: inline-block;
+}
+
 #content h1.entry-title {
 	color: #439BBD;
 }

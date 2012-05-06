@@ -10,7 +10,7 @@
 // Returns
 // -------
 //
-function ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $images, $maxlength) {
+function ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $base_url, $images, $maxlength) {
 
 	//
 	// Store the content created by the page
@@ -76,8 +76,10 @@ function ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $images, $
 			}
 		}
 
-		$content .= "<div class='image-gallery-thumbnail'><img title='" . $img['title'] . "' "
-			. "alt='" . $img['title'] . "' src='$img_url' /></div>";
+		$content .= "<div class='image-gallery-thumbnail'>"
+			. "<a href='" . $base_url . "/" . $img['permalink'] . "'>"
+			. "<img title='" . $img['title'] . "' "
+			. "alt='" . $img['title'] . "' src='$img_url' /></a></div>";
 			// width='" . $maxlength . "px' height='" . $maxlength . "px' /></div>";
 	}
 

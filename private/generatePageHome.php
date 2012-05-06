@@ -78,7 +78,8 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 		$images = $rc['images'];
 
 		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageGalleryThumbnails.php');
-		$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $rc['images'], 150);
+		$img_base_url = $ciniki['request']['base_url'] . "/gallery/latest";
+		$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $rc['images'], 150);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}

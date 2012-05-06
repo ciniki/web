@@ -217,6 +217,11 @@ article {
 	height: 115px;
 }
 
+#content div.gallery-image {
+	margin: 0 auto;
+	text-align: center;
+}
+
 aside { width: 100%; }
 
 hr.footer-section-divider {
