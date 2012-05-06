@@ -84,6 +84,11 @@
 #content span.event-date {
 	display: inline-block;
 	white-space: pre;
+	max-width: 100%;
+}
+
+#content div.gallery-image {
+	max-width: 100%;
 }
 
 aside {
