@@ -44,38 +44,6 @@ function ciniki_web_siteSettingsUpdate($ciniki) {
 	}
 
 	//
-	// Check to see if an image was uploaded
-	//
-	if( isset($_FILES['uploadfile']['error']) && $_FILES['uploadfile']['error'] == UPLOAD_ERR_INI_SIZE ) {
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'640', 'msg'=>'Upload failed, file too large.'));
-	}
-	// FIXME: Add other checkes for $_FILES['uploadfile']['error']
-
-	$image_id = 0;
-	if( isset($_FILES) && isset($_FILES['page-about-image']) && $_FILES['page-about-image']['tmp_name'] != '' ) {
-		//
-		// Add the image into the database
-		//
-		require_once($ciniki['config']['core']['modules_dir'] . '/images/private/insertFromUpload.php');
-		$rc = ciniki_images_insertFromUpload($ciniki, $args['business_id'], $ciniki['session']['user']['id'], 
-			$_FILES['page-about-image'], 1, 'About webpage image', '', 'no');
-		// If a duplicate image is found, then use that id instead of uploading a new one
-		if( $rc['stat'] != 'ok' && $rc['err']['code'] != '330' ) {
-			ciniki_core_dbTransactionRollback($ciniki, 'users');
-			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'641', 'msg'=>'Internal Error', 'err'=>$rc['err']));
-		}
-
-		if( !isset($rc['id']) ) {
-			ciniki_core_dbTransactionRollback($ciniki, 'users');
-			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'642', 'msg'=>'Invalid file type'));
-		}
-		//
-		// Set the request variable, so it will be updated in the database
-		//
-		$ciniki['request']['args']['page-about-image'] = $rc['id'];
-	}
-
-	//
 	// The list of valid settings for web pages
 	//
 	$settings_fields = array(
@@ -156,7 +124,7 @@ function ciniki_web_siteSettingsUpdate($ciniki) {
 	//
 	// Commit the changes to the database
 	//
-	$rc = ciniki_core_dbTransactionCommit($ciniki, 'wineproduction');
+	$rc = ciniki_core_dbTransactionCommit($ciniki, 'web');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
