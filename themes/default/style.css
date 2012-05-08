@@ -83,6 +83,38 @@ div.gallery-image-wrap {
 	display: inline-block;
 }
 
+div.gallery-image-details {
+	line-height: 1.5em;
+	margin-top: 1em;
+	text-align: left;
+	width: auto;
+	display: inline-block;
+}
+
+div.gallery-image-details span.image-title {
+	font-size: 1.2em;
+	color: #333;
+}
+
+div.gallery-image-details span.image-details {
+	font-size: 1.0em;
+	display: block;
+	padding-left: 1em;
+}
+
+div.gallery-image-details span.image-awards-title {
+	font-size: 1.2em;
+	display: block;
+	color: #333;
+	margin-top: 1em;
+}
+
+div.gallery-image-details span.image-awards {
+	font-size: 1.0em;
+	display: block;
+	padding-left: 1em;
+}
+
 #content h1.entry-title {
 	color: #439BBD;
 }

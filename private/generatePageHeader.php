@@ -91,20 +91,24 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 		. "<ul id='main-menu' class='menu'>\n"
 		. "<li class='menu-item'><a href='" . $ciniki['request']['base_url'] . "/'>Home</a></li>"
 		. "";
+	$hide_menu_class = '';
+	if( $ciniki['request']['page'] != 'home' ) {
+		$hide_menu_class = ' compact-hidden';
+	}
 	if( isset($settings['page-about-active']) && $settings['page-about-active'] == 'yes' ) {
-		$content .= "<li class='menu-item'><a href='" . $ciniki['request']['base_url'] . "/about'>About</a></li>";
+		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/about'>About</a></li>";
 	}
 	if( isset($settings['page-gallery-active']) && $settings['page-gallery-active'] == 'yes' ) {
-		$content .= "<li class='menu-item'><a href='" . $ciniki['request']['base_url'] . "/gallery'>Gallery</a></li>";
+		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/gallery'>Gallery</a></li>";
 	}
 	if( isset($settings['page-events-active']) && $settings['page-events-active'] == 'yes' ) {
-		$content .= "<li class='menu-item'><a href='" . $ciniki['request']['base_url'] . "/events'>Events</a></li>";
+		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/events'>Events</a></li>";
 	}
 	if( isset($settings['page-links-active']) && $settings['page-links-active'] == 'yes' ) {
-		$content .= "<li class='menu-item'><a href='" . $ciniki['request']['base_url'] . "/links'>Links</a></li>";
+		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/links'>Links</a></li>";
 	}
 	if( isset($settings['page-contact-active']) && $settings['page-contact-active'] == 'yes' ) {
-		$content .= "<li class='menu-item'><a href='" . $ciniki['request']['base_url'] . "/contact'>Contact</a></li>";
+		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/contact'>Contact</a></li>";
 	}
 	$content .= "</ul>\n"
 		. "</div>\n";

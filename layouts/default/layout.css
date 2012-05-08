@@ -13,6 +13,10 @@
 	border: 0px;
 }
 
+#main-menu-container ul.menu li.compact-hidden {
+	display: inline-block;
+}
+
 #content div.image-gallery {
 	padding: 0px;
 }

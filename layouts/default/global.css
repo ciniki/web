@@ -147,6 +147,10 @@ hgroup {
 	border-bottom: 1px solid #000;
 }
 
+#main-menu-container ul.menu li.compact-hidden {
+	display: none;
+}
+
 #main-menu-container ul.menu li.menu-item a {
 	display: block;
 }
@@ -219,9 +223,17 @@ article {
 
 #content div.gallery-image {
 	text-align: center;
-	width: 100%;
+	max-width: 100%;
 	padding: 0px;
 	margin: 0 auto;
+}
+
+#content div.gallery-image div.gallery-image-container {
+	display: inline-block;
+	margin: 0px;
+	max-width: 100%;
+	width: auto;
+	text-align: left;
 }
 
 #content div.gallery-image-wrap {

@@ -166,12 +166,42 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
-		$page_content .= "<div class='gallery-image'><div class='gallery-image-wrap'>"
-			. "<img title='$name' alt='$name' src='" . $rc['url'] . "' />"
-			. "</div>"
+		$page_content .= "<div class='gallery-image'><div class='gallery-image-container'><div class='gallery-image-wrap'>"
+			. "<img title='" . $img['name'] . "' alt='" . $img['name'] . "' src='" . $rc['url'] . "' />"
+			. "</div><br/>"
 			. "<div class='gallery-image-details'>"
-			. "<span class='image-title'>$name</span>"
-			. "</div></div>";
+			. "<span class='image-title'>" . $img['name'] . "</span>"
+			. "<span class='image-details'>";
+		$comma = "";
+		if( $img['size'] != '' ) { 
+			$page_content .= $img['size'];
+			$comma = ", ";
+		}
+		if( $img['framed_size'] != '' ) { 
+			$page_content .= " (framed: " . $img['framed_size'] . ")";
+			$comma = ", ";
+		}
+		if( $img['price'] != '' && $img['forsale'] == 'yes' ) { 
+			$page_content .= $comma . preg_replace('/^\s*([^$])/', '\$$1', $img['price']);
+			$comma = ", ";
+		}
+		if( $img['sold'] == 'yes' ) {
+			$page_content .= " <b> SOLD</b>";
+			$comma = ", ";
+		}
+		$page_content .= "</span>\n"
+			. "";
+		if( $img['awards'] != '' ) {
+			require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processContent.php');
+			$rc = ciniki_web_processContent($ciniki, $img['awards']);	
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= "<span class='image-awards-title'>Awards</span>"
+				. "<span class='image-awards'>" . $rc['content'] . "</span>"
+				. "";
+		}
+		$page_content .= "</div></div></div>";
 	
 	} elseif( isset($ciniki['request']['uri_split'][0]) 
 		&& $ciniki['request']['uri_split'][0] != '' 
