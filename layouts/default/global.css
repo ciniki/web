@@ -144,7 +144,6 @@ hgroup {
 #main-menu-container ul.menu li.menu-item {
 	display: block;
 	padding: 0.5em;
-	border-bottom: 1px solid #000;
 }
 
 #main-menu-container ul.menu li.compact-hidden {

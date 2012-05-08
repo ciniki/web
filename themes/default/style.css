@@ -10,6 +10,7 @@ body {
 #site-title {
 	color: #439BBD;
 }
+
 #site-title a,
 #site-title a:visited,
 #site-title a:hover,
@@ -21,12 +22,16 @@ body {
 	font-style: italic;
 }
 
-header h1 {
-	color: #439BBD;
+header h1,
+header h1 a:visited,
+header h1 a:hover,
+header h1 a:active {
+	color: #279;
 }
 
 #main-menu-container {
-	background: #555;
+	background-color: transparent;
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#888888', endColorstr='#555555');
 }
 
 #main-menu-container li a,
@@ -34,7 +39,21 @@ header h1 {
 #main-menu-container li a:hover,
 #main-menu-container li a:active {
 	text-decoration: none;
-	color: #ccc;
+	color: #ddd;
+}
+
+#main-menu-container li.menu-item {
+	border: 2px solid #222;
+	margin-bottom: 5px;
+	background-color: #555;
+	border-radius: 10px;
+	font-size: 1.1em;
+	text-align: center;
+	text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+	box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+	background: -webkit-gradient(linear, left top, left bottom, from(#888), to(#555));
+	background: -moz-linear-gradient(top,  #888,  #555);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#888888', endColorstr='#555555');
 }
 
 #main-menu-container li.menu-item {
@@ -115,10 +134,6 @@ div.gallery-image-details span.image-awards {
 	padding-left: 1em;
 }
 
-#content h1.entry-title {
-	color: #439BBD;
-}
-
 #content h2 {
 	color: #333;
 }
@@ -183,4 +198,32 @@ hr.header-section-divider {
 
 footer {
 	color: #888;
+}
+
+/* Styles for larger screens */
+@media screen and (min-width: 30em) {
+
+#main-menu-container {
+	background-color: #444;
+	border: 2px solid #222;
+	border-radius: 10px;
+	background: -webkit-gradient(linear, left top, left bottom, from(#888), to(#555));
+	background: -moz-linear-gradient(top,  #888,  #555);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#888888', endColorstr='#555555');
+}
+
+#main-menu-container ul.menu li.menu-item {
+	border: 0px solid #000;
+	background-color: transparent;
+	border-radius: 10px;
+	font-size: 1.1em;
+	text-align: center;
+	text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+	box-shadow: none;
+	background: transparent;
+	filter: none;
+	padding-left: 0.7em;
+	padding-right: 0.7em;
+}
+
 }

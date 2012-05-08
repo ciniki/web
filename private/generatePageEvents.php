@@ -51,12 +51,16 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 		. "<div class='entry-content'>\n"
 		. "";
 
-	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processEvents.php');
-	$rc = ciniki_web_processEvents($ciniki, $settings, $events, 0);
-	if( $rc['stat'] != 'ok' ) {
-		return $rc;
+	if( count($events) > 0 ) {
+		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processEvents.php');
+		$rc = ciniki_web_processEvents($ciniki, $settings, $events, 0);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$content .= $rc['content'];
+	} else {
+		$content .= "<p>No upcoming events</p>";
 	}
-	$content .= $rc['content'];
 
 	$content .= "</div>\n"
 		. "</article>\n"
