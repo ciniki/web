@@ -230,17 +230,48 @@ article {
 #content div.gallery-image div.gallery-image-container {
 	display: inline-block;
 	margin: 0px;
-	max-width: 100%;
-	width: auto;
 	text-align: left;
+	width: auto;
 }
 
 #content div.gallery-image-wrap {
 	margin: 0px;
+	display: block;
 }
 
 #content div.gallery-image-wrap img {
-	line-height: 1px;
+	display: block;
+}
+
+#content div.gallery-image-wrap span.gallery-image-prev {
+	position: absolute;
+	float: left;
+	margin: 0px;
+	display: block;
+	vertical-align: center;
+	z-index: 2;
+	cursor: pointer;
+}
+#content div.gallery-image-wrap span.gallery-image-next {
+	position: absolute;
+	float: right;
+	margin: 0px;
+	text-align: right;
+	display: block;
+	vertical-align: center;
+	z-index: 2;
+	cursor: pointer;
+}
+#content div.gallery-image-wrap span.gallery-image-prev a,
+#content div.gallery-image-wrap span.gallery-image-next a {
+	display: block;
+	height: 100%;
+	vertical-align: center;
+	border: 0px solid red;
+	z-index: 3;
+}
+
+#content div.gallery-image-wrap img {
 	width: 100%;
 	margin: 0px;
 	padding: 0px;

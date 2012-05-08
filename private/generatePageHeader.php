@@ -43,6 +43,10 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 			. "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['layout_url'] 
 			. '/' . $settings['site-layout'] . "/layout.css' />\n"
 		  	. "<![endif]-->\n"
+			. "<!--[if IE 8]>\n"
+			. "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['layout_url'] 
+			. '/' . $settings['site-layout'] . "/ie8.css' />\n"
+			. "<![endif]-->\n"
 			. "";
 	} else if( file_exists($ciniki['request']['layout_dir'] . '/default/layout.css') ) {
 		$content .= "<link rel='stylesheet' type='text/css' media='all and (min-width: 33.236em)' href='" . $ciniki['request']['layout_url'] 
@@ -66,10 +70,24 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 	//
 	$content .= '<meta name="viewport" content="width=device-width, initial-scale=1.0">' . "\n";
 
+	//
+	// Include any inline javascript
+	//
+	if( isset($ciniki['request']['inline_javascript']) && $ciniki['request']['inline_javascript'] != '' ) {
+		$content .= $ciniki['request']['inline_javascript'];
+	}
+
 	$content .= "</head>\n";
 
 	// Generate header of the page
-	$content .= "<body>\n"
+	$content .= "<body";
+	if( isset($ciniki['request']['onresize']) && $ciniki['request']['onresize'] != '' ) {
+		$content .= " onresize='" . $ciniki['request']['onresize'] . "'";
+	}
+	if( isset($ciniki['request']['onload']) && $ciniki['request']['onload'] != '' ) {
+		$content .= " onload='" . $ciniki['request']['onload'] . "'";
+	}
+	$content .= ">\n"
 		. "<div id='page-container'>\n"
 		. "<header>\n"
 		. "<hgroup>\n"
