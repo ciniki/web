@@ -22,8 +22,8 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
 	$content .= "<footer>"
 		. "<span class='copyright'>All content &copy; Copyright " . date('Y') . " by " . $ciniki['business']['details']['name'] . ".</span>"
 		. "<br/>";
-	if( $ciniki['config']['web']['poweredby.url'] != '' ) {
-		$content .= "<span class='poweredby'>Powered by <a href='" . $ciniki['config']['web']['poweredby.url'] . "'>" . $ciniki['config']['web']['poweredby.name'] . "</a>.</span>"
+	if( $ciniki['config']['web']['poweredby.url'] != '' && $ciniki['config']['core']['master_business_id'] != $ciniki['request']['business_id'] ) {
+		$content .= "<span class='poweredby'>Powered by <a href='" . $ciniki['config']['web']['poweredby.url'] . "'>" . $ciniki['config']['web']['poweredby.name'] . "</a></span>"
 			. "";
 	}
 	$content .= "</footer>"

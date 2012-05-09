@@ -94,9 +94,28 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 	}
 	$content .= ">\n";
 
-	$content .= "<header>\n"
-		. "<hgroup>\n"
-		. "<h1 id='site-title'><span><a href='" . $ciniki['request']['base_url'] . "/' title='" . $ciniki['business']['details']['name'] . "' rel='home'>" . $ciniki['business']['details']['name'] . "</a></span></h1>\n";
+	$content .= "<header>\n";
+	if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
+		$content .= "<hgroup class='header-image'>\n";
+	} else {
+		$content .= "<hgroup>\n";
+	}
+	//
+	// Decide if there is a header image to be displayed, or display an h1 title
+	//
+	if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
+		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/getScaledImageURL.php');
+		$rc = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '150');
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$content .= "<span><a href='" . $ciniki['request']['base_url'] . "/' title='" . $ciniki['business']['details']['name'] . "' rel='home'>"
+			. "<img alt='Home' src='" . $rc['url'] . "' />"
+			. "</a></span>\n";
+	} else {
+		$content .= "<h1 id='site-title'><span><a href='" . $ciniki['request']['base_url'] . "/' title='" . $ciniki['business']['details']['name'] . "' rel='home'>" . $ciniki['business']['details']['name'] . "</a></span></h1>\n";
+	}
+
 
 	
 	if( isset($ciniki['business']['details']['tagline']) && $ciniki['business']['details']['tagline'] != '' ) {
@@ -115,7 +134,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 		. "<li class='menu-item'><a href='" . $ciniki['request']['base_url'] . "/'>Home</a></li>"
 		. "";
 	$hide_menu_class = '';
-	if( $ciniki['request']['page'] != 'home' ) {
+	if( $ciniki['request']['page'] != 'home' && $ciniki['request']['page'] != 'masterindex' ) {
 		$hide_menu_class = ' compact-hidden';
 	}
 	if( isset($settings['page-about-active']) && $settings['page-about-active'] == 'yes' ) {

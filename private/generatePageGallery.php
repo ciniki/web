@@ -123,6 +123,10 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 			$prev = NULL;
 			if( $offset > 0 && isset($rc['rows'][0]) ) {
 				$prev = $rc['rows'][0];
+			} elseif( $offset == 0 ) {
+				//
+				// Get the last image in the series
+				//
 			}
 			$next = NULL;
 			if( $offset > 0 && isset($rc['rows'][2]) ) {
@@ -169,8 +173,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
-				if( isset($rc['prev']) && $next != NULL 
-					&& $next['permalink'] != $rc['prev']['permalink']   // Check more than 2 images, and going to loop
+				if( isset($rc['prev']) 
 					&& $rc['prev']['permalink'] != $image_permalink		// Check not a single image, and going to loop
 					) {
 					$prev = $rc['prev'];

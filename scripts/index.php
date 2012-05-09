@@ -71,6 +71,11 @@ if( $ciniki['config']['web']['master.domain'] != $_SERVER['HTTP_HOST'] ) {
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/lookupClientDomain.php');
 	$rc = ciniki_web_lookupClientDomain($ciniki, $_SERVER['HTTP_HOST'], 'domain');
+	if( $rc['stat'] != 'ok' ) {
+		// Assume master business
+//		print_error($rc, 'unknown business ' . $ciniki['request']['uri_split'][0]);
+//		exit;
+	}
 	//
 	// If a business if found, then setup the details
 	//
@@ -99,15 +104,18 @@ if( $ciniki['request']['business_id'] == 0 ) {
 		$ciniki['request']['page'] = 'masterindex';
 		$ciniki['request']['business_id'] = $ciniki['config']['core']['master_business_id'];
 		$ciniki['request']['base_url'] = '';
-		exit;
-	} elseif( $ciniki['request']['uri_split'][0] == 'about' ) {
-		$ciniki['request']['page'] = 'about';
+	} elseif( $ciniki['request']['uri_split'][0] == 'about' 
+		|| $ciniki['request']['uri_split'][0] == 'contact'
+		|| $ciniki['request']['uri_split'][0] == 'signup'
+		|| $ciniki['request']['uri_split'][0] == 'documentation'
+		|| $ciniki['request']['uri_split'][0] == 'support'
+		) {
+		$ciniki['request']['page'] = $ciniki['request']['uri_split'][0];
 		$ciniki['request']['business_id'] = $ciniki['config']['core']['master_business_id'];
 		$ciniki['request']['base_url'] = '';
 		$uris = $ciniki['request']['uri_split'];
 		array_shift($uris);
 		$ciniki['request']['uri_split'] = $uris;
-		exit;
 	} else {
 		//
 		// Lookup client name in database
@@ -254,6 +262,7 @@ elseif( $ciniki['request']['page'] == 'contact' && $settings['page-contact-activ
 // Unknown page
 else {
 	print_error($rc, 'Unknown page ' . $ciniki['request']['page']);
+	exit;
 }
 
 if( $rc['stat'] != 'ok' ) {

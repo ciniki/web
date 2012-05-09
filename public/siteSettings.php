@@ -116,6 +116,12 @@ function ciniki_web_siteSettings($ciniki) {
 	} else {
 		array_push($rc_settings, array('setting'=>array('name'=>'theme', 'display_name'=>'Theme', 'value'=>'default')));
 	}
+	if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
+		array_push($rc_settings, array('setting'=>array('name'=>'site-header-image', 'display_name'=>'Header Image', 'value'=>$settings['site-header-image'])));
+	} else {
+		array_push($rc_settings, array('setting'=>array('name'=>'site-header-image', 'display_name'=>'Header Image', 'value'=>'0')));
+	}
+
 
 	$rc_pages = array();
 	foreach($pages as $page => $pagedetails) {

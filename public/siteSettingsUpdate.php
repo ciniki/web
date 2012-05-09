@@ -64,6 +64,7 @@ function ciniki_web_siteSettingsUpdate($ciniki) {
 		'page-signup-active',
 		'page-api-active',
 		'site-theme',
+		'site-header-image',
 		);
 
 	//

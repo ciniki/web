@@ -200,7 +200,7 @@ footer {
 }
 
 /* Styles for larger screens */
-@media screen and (min-width: 30em) {
+@media screen and (min-width: 33em) {
 
 #main-menu-container {
 	background-color: #444;

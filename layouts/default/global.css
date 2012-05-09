@@ -129,6 +129,10 @@ hgroup {
 	margin-bottom: 1em;
 }
 
+hgroup.header-image {
+	margin-bottom: 0em;
+}
+
 #main-menu-container {
 	padding-left: 0px;
 	padding-right: 0px;
