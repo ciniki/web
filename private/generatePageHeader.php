@@ -87,9 +87,14 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 	if( isset($ciniki['request']['onload']) && $ciniki['request']['onload'] != '' ) {
 		$content .= " onload='" . $ciniki['request']['onload'] . "'";
 	}
-	$content .= ">\n"
-		. "<div id='page-container'>\n"
-		. "<header>\n"
+	$content .= ">\n";
+		$content .= "<div id='page-container'";
+	if( isset($ciniki['request']['page-container-class']) && $ciniki['request']['page-container-class'] != '' ) {
+		$content .= " class='" . $ciniki['request']['page-container-class'] . "'\n";
+	}
+	$content .= ">\n";
+
+	$content .= "<header>\n"
 		. "<hgroup>\n"
 		. "<h1 id='site-title'><span><a href='" . $ciniki['request']['base_url'] . "/' title='" . $ciniki['business']['details']['name'] . "' rel='home'>" . $ciniki['business']['details']['name'] . "</a></span></h1>\n";
 

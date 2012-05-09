@@ -294,6 +294,10 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 			return $rc;
 		}
 		//
+		// Set the page to wide if possible
+		//
+		$ciniki['request']['page-container-class'] = 'page-container-wide';
+		//
 		// Javascript to resize the image, and arrow overlays once the image is loaded.
 		// This is done so the image can be properly fit to the size of the screen.
 		//

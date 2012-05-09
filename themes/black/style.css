@@ -63,6 +63,10 @@ div.image-categories-thumbnail {
 	line-height: 0.7em;
 }
 
+div.image-categories-thumbnail img {
+	border: 0px none;
+}
+
 span.image-categories-name {
 	display: block;
 	background-color: #fff;
@@ -81,6 +85,7 @@ div.image-gallery-thumbnail {
 }
 
 div.image-gallery-thumbnail img {
+	border: 0px none;
 	padding: 0px;
 	margin: 0px;
 }

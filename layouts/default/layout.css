@@ -165,7 +165,8 @@ aside {
 
 body { width: 100%; }
 
-#page-container { width: 40em; }
+
+#page-container.page-container-wide { width: 40em; }
 
 aside { width: 30em; }
 
