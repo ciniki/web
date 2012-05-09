@@ -10,7 +10,7 @@
 // Returns
 // -------
 //
-function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $maxheight) {
+function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $maxheight, $quality='60') {
 
 	//
 	// Load last_updated date to check against the cache
@@ -76,7 +76,7 @@ function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $
 		//
 		$h = fopen($img_filename, 'w');
 		if( $h ) {
-			$image->setImageCompressionQuality(60);
+			$image->setImageCompressionQuality($quality);
 			fwrite($h, $image->getImageBlob());
 			fclose($h);
 		} else {

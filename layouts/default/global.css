@@ -125,6 +125,16 @@ div.image-gallery-thumbnail {
 
 header a { text-decoration: none; }
 
+header div.signin {
+	display: inline-block;
+	float: right;
+	margin-top: -10px;
+	width: 50px;
+	top: 0px;
+	right: 20px;
+	padding-right: 20px;
+}
+
 hgroup {
 	margin-bottom: 1em;
 }

@@ -95,6 +95,13 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 	$content .= ">\n";
 
 	$content .= "<header>\n";
+	//
+	// Display a sign in button, for the master business
+	//
+	if( $ciniki['request']['business_id'] == $ciniki['config']['core']['master_business_id'] 
+		&& isset($ciniki['config']['core']['manage.url']) && $ciniki['config']['core']['manage.url'] != '' ) {
+		$content .= "<div class='signin'><a href='" . $ciniki['config']['core']['manage.url'] . "'><span>Sign in</span></a></div>\n";
+	}
 	if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
 		$content .= "<hgroup class='header-image'>\n";
 	} else {
@@ -105,7 +112,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 	//
 	if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
 		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/getScaledImageURL.php');
-		$rc = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '150');
+		$rc = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '125', '85');
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
