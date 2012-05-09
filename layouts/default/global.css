@@ -223,12 +223,13 @@ article {
 #content div.gallery-image {
 	text-align: center;
 	max-width: 100%;
+	width: 100%;
 	padding: 0px;
 	margin: 0 auto;
 }
 
 #content div.gallery-image div.gallery-image-container {
-	display: inline-block;
+	display: block;
 	margin: 0px;
 	text-align: left;
 	width: auto;
@@ -243,7 +244,7 @@ article {
 	display: block;
 }
 
-#content div.gallery-image-wrap span.gallery-image-prev {
+#content div.gallery-image-wrap a.gallery-image-prev {
 	position: absolute;
 	float: left;
 	margin: 0px;
@@ -252,7 +253,7 @@ article {
 	z-index: 2;
 	cursor: pointer;
 }
-#content div.gallery-image-wrap span.gallery-image-next {
+#content div.gallery-image-wrap a.gallery-image-next {
 	position: absolute;
 	float: right;
 	margin: 0px;
@@ -262,13 +263,18 @@ article {
 	z-index: 2;
 	cursor: pointer;
 }
-#content div.gallery-image-wrap span.gallery-image-prev a,
-#content div.gallery-image-wrap span.gallery-image-next a {
+#content div.gallery-image-wrap a.gallery-image-prev,
+#content div.gallery-image-wrap a.gallery-image-next {
 	display: block;
 	height: 100%;
 	vertical-align: center;
 	border: 0px solid red;
 	z-index: 3;
+}
+
+#content div.gallery-image-wrap a.gallery-image-prev span,
+#content div.gallery-image-wrap a.gallery-image-next span {
+	visibility: hidden;
 }
 
 #content div.gallery-image-wrap img {

@@ -93,6 +93,11 @@
 
 #content div.gallery-image {
 	max-width: 100%;
+	width: auto;
+}
+#content div.gallery-image div.gallery-image-wrap {
+	display: inline-block;
+	width: auto;
 }
 
 aside {
@@ -101,7 +106,6 @@ aside {
 	width: 25em;
 	height: auto;
 }
-
 
 /* 9. CUSTOM LAYOUT & TYPOGRAPHY (Mummy bear)
 ----------------------------------------------------------------------------------------*/
@@ -122,6 +126,10 @@ body { width: 100%; }
 #content div.image-categories-thumbnail img {
 	width: 190px;
 	height: 190px;
+}
+
+#content div.gallery-image {
+	width: 100%;
 }
 
 #content table.links-list th,
@@ -150,3 +158,16 @@ aside {
 }
 
 }
+
+/* 10. CUSTOM LAYOUT & TYPOGRAPHY (Mummy bear)
+----------------------------------------------------------------------------------------*/
+@media screen and (min-width: 40em) and (max-width: 63.236em) {
+
+body { width: 100%; }
+
+#page-container { width: 40em; }
+
+aside { width: 30em; }
+
+}
+

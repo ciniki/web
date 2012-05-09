@@ -20,8 +20,13 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
 	// Generate the footer content
 	$content .= "<hr class='section-divider footer-section-divider' />\n";
 	$content .= "<footer>"
-		. "All content &copy; Copyright " . date('Y') . " by " . $ciniki['business']['details']['name']. "."
-		. "</footer>"
+		. "<span class='copyright'>All content &copy; Copyright " . date('Y') . " by " . $ciniki['business']['details']['name'] . ".</span>"
+		. "<br/>";
+	if( $ciniki['config']['web']['poweredby.url'] != '' ) {
+		$content .= "<span class='poweredby'>Powered by <a href='" . $ciniki['config']['web']['poweredby.url'] . "'>" . $ciniki['config']['web']['poweredby.name'] . "</a>.</span>"
+			. "";
+	}
+	$content .= "</footer>"
 		. "";
 
 	// Close page-container

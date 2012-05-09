@@ -293,14 +293,24 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
+		//
+		// Javascript to resize the image, and arrow overlays once the image is loaded.
+		// This is done so the image can be properly fit to the size of the screen.
+		//
 		$ciniki['request']['inline_javascript'] = "<script type='text/javascript'>\n"
 			. "function gallery_resize_arrows() {"
-				. "var i = document.getElementById('gallery-image');"
+				. "var i = document.getElementById('gallery-image-img');"
+//				. "var ratio = i.height/i.width;"
+//				. "if( ratio < 0.8 ) { i.style.width = '100%'; }"
+//				. "else {i.style.height = c.height + 'px'; alert(c.offsetHeight);}"
 				. "document.getElementById('gallery-image-prev').style.height = i.height + 'px';"
 				. "document.getElementById('gallery-image-prev').style.width = (i.width/2) + 'px';"
 				. "document.getElementById('gallery-image-next').style.height = i.height + 'px';"
 				. "document.getElementById('gallery-image-next').style.width = (i.width/2) + 'px';"
 				. "document.getElementById('gallery-image-next').style.marginLeft = (i.width/2) + 'px';"
+				. "var d = document.getElementById('gallery-image-details');"
+				. "var w = document.getElementById('gallery-image-wrap');"
+				. "d.style.width = w.offsetWidth + 'px';"
 			. "}\n"
 			. "function scrollto_header() {"
 				. "var e = document.getElementById('entry-title');"
@@ -309,17 +319,18 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 			. "</script>\n";
 		$ciniki['request']['onresize'] = "gallery_resize_arrows();";
 		$ciniki['request']['onload'] = "scrollto_header();";
-		$page_content .= "<div class='gallery-image'><div class='gallery-image-container'>";
-		$page_content .= "<div class='gallery-image-wrap'>";
+//		$page_content .= "<div class='gallery-image'><div id='gallery-image-container' class='gallery-image-container'>";
+		$page_content .= "<div class='gallery-image'>";
+		$page_content .= "<div id='gallery-image-wrap' class='gallery-image-wrap'>";
 		if( $prev != null ) {
-			$page_content .= "<span id='gallery-image-prev' class='gallery-image-prev'><a href='" . $prev['permalink'] . "'></a></span>";
+			$page_content .= "<a id='gallery-image-prev' class='gallery-image-prev' href='" . $prev['permalink'] . "'><span>Prev</span></a>";
 		}
 		if( $next != null ) {
-			$page_content .= "<span id='gallery-image-next' class='gallery-image-next'><a href='" . $next['permalink'] . "'></a></span>";
+			$page_content .= "<a id='gallery-image-next' class='gallery-image-next' href='" . $next['permalink'] . "'><span>Next</span></a>";
 		}
-		$page_content .= "<img id='gallery-image' title='" . $img['name'] . "' alt='" . $img['name'] . "' src='" . $rc['url'] . "' onload='javascript: gallery_resize_arrows();' />";
+		$page_content .= "<img id='gallery-image-img' title='" . $img['name'] . "' alt='" . $img['name'] . "' src='" . $rc['url'] . "' onload='javascript: gallery_resize_arrows();' />";
 		$page_content .= "</div><br/>"
-			. "<div class='gallery-image-details'>"
+			. "<div id='gallery-image-details' class='gallery-image-details'>"
 			. "<span class='image-title'>" . $img['name'] . "</span>"
 			. "<span class='image-details'>";
 		$comma = "";
@@ -351,7 +362,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 				. "<span class='image-awards'>" . $rc['content'] . "</span>"
 				. "";
 		}
-		$page_content .= "</div></div></div>";
+		$page_content .= "</div></div>";
 	
 	} elseif( isset($ciniki['request']['uri_split'][0]) 
 		&& $ciniki['request']['uri_split'][0] != '' 
