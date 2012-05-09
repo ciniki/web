@@ -159,12 +159,11 @@ aside {
 
 }
 
-/* 10. CUSTOM LAYOUT & TYPOGRAPHY (Mummy bear)
+/* 10. CUSTOM LAYOUT & TYPOGRAPHY (Older Sister bear)
 ----------------------------------------------------------------------------------------*/
 @media screen and (min-width: 40em) and (max-width: 63.236em) {
 
 body { width: 100%; }
-
 
 #page-container.page-container-wide { width: 40em; }
 
