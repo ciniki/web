@@ -201,6 +201,7 @@ hr.header-section-divider {
 footer {
 	color: #777;
 }
+/*
 #content div.gallery-image-wrap a span.gallery-image-prev {
 	position:absolute;width:90px;height:100%;display:block;background-color:#fff;opacity:0;filter:alpha(opacity = 0);background-repeat:no-repeat;
 }
@@ -208,6 +209,7 @@ a.nav-overlay span{display:none;}
 a.nav-overlay:hover{background-color:transparent;opacity:1;filter:none;}
 a.overlay-prev{left:0px;}
 a.overlay-next{right:0px;}
+*/
 
 
 /* Styles for larger screens */

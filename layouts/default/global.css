@@ -237,7 +237,6 @@ article {
 #content div.gallery-image {
 	text-align: center;
 	max-width: 100%;
-	width: 100%;
 	padding: 0px;
 	margin: 0 auto;
 }
@@ -251,7 +250,7 @@ article {
 
 #content div.gallery-image-wrap {
 	margin: 0px;
-	display: block;
+	display: inline-block;
 }
 
 #content div.gallery-image-wrap img {
@@ -292,7 +291,6 @@ article {
 }
 
 #content div.gallery-image-wrap img {
-	width: 100%;
 	margin: 0px;
 	padding: 0px;
 }

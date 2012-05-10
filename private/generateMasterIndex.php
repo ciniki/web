@@ -65,6 +65,38 @@ function ciniki_web_generateMasterIndex($ciniki, $settings) {
 	}
 
 	//
+	// Grab the list of businesses from the database and display
+	//
+	require_once($ciniki['config']['core']['modules_dir'] . '/businesses/web/featured.php');
+	$rc = ciniki_businesses_web_featured($ciniki, $settings);
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+	$businesses = $rc['businesses'];
+	if( count($businesses) > 0 ) {
+		$content .= "<article class='page'>\n"
+			. "<header class='entry-title'><h1 class='entry-title'>Featured Businesses</h1></header>\n"
+			. "<div class='button-list'>"
+			. "";
+		foreach($businesses as $bnum => $b) {
+			$business = $b['business'];
+			if( isset($business['domain']) && $business['domain'] != '' ) {
+				$url = "http://" . $business['domain'] . "";
+			} else {
+				$url = "http://" . $ciniki['config']['web']['master.domain'] . "/" . $business['sitename'];
+			}
+			$content .= "<div class='button-list-wrap'><div class='button-list-button'>"
+				. "<a title='" . $business['name'] . "' alt='" . $business['name'] . "' href='$url'><span>" . $business['name'] . "</span></a>"
+				. "</div></div>"
+				. "\n";
+		}
+		$content .= "</div>"
+			. "</article>\n"
+			. "";
+		
+	}
+
+	//
 	// List the latest work
 	//
 	if( isset($ciniki['business']['modules']['ciniki.artcatalog']) 

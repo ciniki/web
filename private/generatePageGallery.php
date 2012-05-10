@@ -307,17 +307,23 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		$ciniki['request']['inline_javascript'] = "<script type='text/javascript'>\n"
 			. "function gallery_resize_arrows() {"
 				. "var i = document.getElementById('gallery-image-img');"
-//				. "var ratio = i.height/i.width;"
-//				. "if( ratio < 0.8 ) { i.style.width = '100%'; }"
-//				. "else {i.style.height = c.height + 'px'; alert(c.offsetHeight);}"
+				. "var t = document.getElementById('entry-title');"
+				. "var d = document.getElementById('gallery-image-details');"
+				. "var cheight = (t.offsetHeight + i.offsetHeight);"
+				. "var wheight = window.innerHeight;"
+				. "console.log(cheight +','+ wheight);"
+				. "if( cheight > wheight ) {"
+					. "i.style.maxHeight = (wheight - t.offsetHeight - t.offsetHeight - 30) + 'px';"
+					. "i.style.width = 'auto';"
+					. "}"
 				. "document.getElementById('gallery-image-prev').style.height = i.height + 'px';"
 				. "document.getElementById('gallery-image-prev').style.width = (i.width/2) + 'px';"
 				. "document.getElementById('gallery-image-next').style.height = i.height + 'px';"
 				. "document.getElementById('gallery-image-next').style.width = (i.width/2) + 'px';"
 				. "document.getElementById('gallery-image-next').style.marginLeft = (i.width/2) + 'px';"
-				. "var d = document.getElementById('gallery-image-details');"
 				. "var w = document.getElementById('gallery-image-wrap');"
 				. "d.style.width = w.offsetWidth + 'px';"
+				. "window.scrollTo(0, t.offsetTop - 10);"
 			. "}\n"
 			. "function scrollto_header() {"
 				. "var e = document.getElementById('entry-title');"
@@ -326,8 +332,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 			. "</script>\n";
 		$ciniki['request']['onresize'] = "gallery_resize_arrows();";
 		$ciniki['request']['onload'] = "scrollto_header();";
-//		$page_content .= "<div class='gallery-image'><div id='gallery-image-container' class='gallery-image-container'>";
-		$page_content .= "<div class='gallery-image'>";
+		$page_content .= "<div id='gallery-image' class='gallery-image'>";
 		$page_content .= "<div id='gallery-image-wrap' class='gallery-image-wrap'>";
 		if( $prev != null ) {
 			$page_content .= "<a id='gallery-image-prev' class='gallery-image-prev' href='" . $prev['permalink'] . "'><span>Prev</span></a>";
