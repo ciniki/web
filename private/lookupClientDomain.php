@@ -20,17 +20,19 @@ function ciniki_web_lookupClientDomain($ciniki, $domain, $type) {
 	//
 	// Query the database for the domain
 	//
-	$strsql = "SELECT business_id, flags "
-		. "FROM ciniki_web_domains "
-		. "WHERE domain = '" . ciniki_core_dbQuote($ciniki, $domain) . "' "
-		. "";
 	if( $type == 'sitename' ) {
-		$strsql .= "AND (flags&0x01) = 0x01 ";
+		$strsql = "SELECT id AS business_id "
+			. "FROM ciniki_businesses "
+			. "WHERE sitename = '" . ciniki_core_dbQuote($ciniki, $domain) . "' "
+			. "AND status = 1 "
+			. "";
 	} else {
-		$strsql .= "AND (flags&0x10) = 0x10 ";
+		$strsql = "SELECT business_id "
+			. "FROM ciniki_business_domains "
+			. "WHERE domain = '" . ciniki_core_dbQuote($ciniki, $domain) . "' "
+			. "AND status < 50 "
+			. "";
 	}
-	$strsql .= "AND status < 50 "
-		. "";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
 	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'businesses', 'business');
 	if( $rc['stat'] != 'ok' ) {
