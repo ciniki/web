@@ -283,7 +283,6 @@ article {
 	display: block;
 	height: 100%;
 	vertical-align: center;
-	border: 0px solid red;
 	z-index: 3;
 }
 
@@ -296,6 +295,18 @@ article {
 	visibility: visible;
 	vertical-align: middle;
 	z-index: 0;
+}
+
+#content div.gallery-image-wrap a.gallery-image-prev div {
+	background: #ccc url(img/prev.png);
+}
+
+#content div.gallery-image-wrap a.gallery-image-next {
+	margin-left: -100px;
+}
+#content div.gallery-image-wrap a.gallery-image-next div {
+	background: #ccc url(img/next.png);
+	margin-left: 100px;
 }
 
 #content div.gallery-image-wrap img {
