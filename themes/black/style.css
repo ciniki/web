@@ -171,7 +171,17 @@ div.gallery-image-details span.image-awards {
 #content span.links-category {
 	font-size: 1.1em;
 }
-
+#content div.gallery-image-wrap a.gallery-image-prev div,
+#content div.gallery-image-wrap a.gallery-image-next div {
+	background: #ccc;
+	text-align: center;
+	font-size: 1.1em;
+	color: #000;
+}
+#content div.gallery-image-wrap a.gallery-image-prev div {
+}
+#content div.gallery-image-wrap a.gallery-image-next div {
+}
 aside div.image {
 	max-width: 100%;
 	border: 8px solid #fff;
@@ -201,6 +211,7 @@ hr.header-section-divider {
 footer {
 	color: #777;
 }
+
 /*
 #content div.gallery-image-wrap a span.gallery-image-prev {
 	position:absolute;width:90px;height:100%;display:block;background-color:#fff;opacity:0;filter:alpha(opacity = 0);background-repeat:no-repeat;
@@ -221,7 +232,7 @@ a.overlay-next{right:0px;}
 	border-radius: 10px;
 	background: -webkit-gradient(linear, left top, left bottom, from(#bbb), to(#888));
 	background: -moz-linear-gradient(top,  #bbb,  #888);
-	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#bbb', endColorstr='#888');
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#bbbbbb', endColorstr='#888888');
 }
 
 #main-menu-container ul.menu li.menu-item {

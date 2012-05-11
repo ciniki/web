@@ -313,13 +313,15 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 				// Detect IE
 				. "try {"
 					. "var bwidth = parseInt(getComputedStyle(w, null).getPropertyValue('border-right-width'), 10);"
+					. "var mheight = parseInt(getComputedStyle(t, null).getPropertyValue('margin-bottom'), 10);"
 				. "} catch(e) {"
 					. "var bwidth = parseInt(w.currentStyle.borderWidth, 10);"
+					. "var mheight = 20;"
 				. "}"
 				. "var cheight = (t.offsetHeight + i.offsetHeight);"
 				. "var wheight = window.innerHeight;"
 				. "if( cheight > wheight ) {"
-					. "i.style.maxHeight = (wheight - t.offsetHeight - t.offsetHeight - (bwidth*2)-10) + 'px';"
+					. "i.style.maxHeight = (wheight - t.offsetHeight - mheight - (bwidth*2)-20) + 'px';"
 					. "i.style.width = 'auto';"
 					. "}"
 				. "var cwidth = i.offsetWidth;"
@@ -341,10 +343,24 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 					. "}"
 				. "}"
 				. "document.getElementById('gallery-image-prev').style.height = i.height + 'px';"
-				. "document.getElementById('gallery-image-prev').style.width = (i.width/2) + 'px';"
+//				. "document.getElementById('gallery-image-prev').style.width = (i.width/2) + 'px';"
 				. "document.getElementById('gallery-image-next').style.height = i.height + 'px';"
-				. "document.getElementById('gallery-image-next').style.width = (i.width/2) + 'px';"
-				. "document.getElementById('gallery-image-next').style.marginLeft = (i.width/2) + 'px';"
+//				. "document.getElementById('gallery-image-next').style.width = (i.width/2) + 'px';"
+//				. "document.getElementById('gallery-image-prev').style.width = (window.innerWidth/2) + 'px';"
+//				. "document.getElementById('gallery-image-next').style.width = (window.innerWidth/2) + 'px';"
+				//. "document.getElementById('gallery-image-prev').style.width = (wwidth/2) + 'px';"
+				//. "document.getElementById('gallery-image-next').style.width = (wwidth/2) + 'px';"
+				. "document.getElementById('gallery-image-prev').style.width = (i.offsetLeft) + 'px';"
+				. "document.getElementById('gallery-image-next').style.width = (i.offsetLeft-2) + 'px';"
+				. "document.getElementById('gallery-image-prev').style.left = '0px';"
+				. "document.getElementById('gallery-image-next').style.left = (i.offsetLeft+i.width) + 'px';"
+//				. "document.getElementById('gallery-image-next').style.marginLeft = (i.width/2) + 'px';"
+				. "var p = document.getElementById('gallery-image-prev-img');"
+				. "p.style.left = (i.offsetLeft-20) + 'px';"
+				. "p.style.top = ((i.height/2)-20) + 'px';"
+				. "var n = document.getElementById('gallery-image-next-img');"
+				. "n.style.left = '0px';"
+				. "n.style.top = ((i.height/2)-20) + 'px';"
 				. "var w = document.getElementById('gallery-image-wrap');"
 				. "d.style.width = w.offsetWidth + 'px';"
 				. "window.scrollTo(0, t.offsetTop - 10);"
@@ -359,10 +375,10 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		$page_content .= "<div id='gallery-image' class='gallery-image'>";
 		$page_content .= "<div id='gallery-image-wrap' class='gallery-image-wrap'>";
 		if( $prev != null ) {
-			$page_content .= "<a id='gallery-image-prev' class='gallery-image-prev' href='" . $prev['permalink'] . "'><span>Prev</span></a>";
+			$page_content .= "<a id='gallery-image-prev' class='gallery-image-prev' href='" . $prev['permalink'] . "'><div id='gallery-image-prev-img'>&lt;</div></a>";
 		}
 		if( $next != null ) {
-			$page_content .= "<a id='gallery-image-next' class='gallery-image-next' href='" . $next['permalink'] . "'><span>Next</span></a>";
+			$page_content .= "<a id='gallery-image-next' class='gallery-image-next' href='" . $next['permalink'] . "'><div id='gallery-image-next-img'>&gt;</div></a>";
 		}
 		$page_content .= "<img id='gallery-image-img' title='" . $img['name'] . "' alt='" . $img['name'] . "' src='" . $rc['url'] . "' onload='javascript: gallery_resize_arrows();' />";
 		$page_content .= "</div><br/>"
