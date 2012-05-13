@@ -362,6 +362,22 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 				. "var e = document.getElementById('entry-title');"
 				. "window.scrollTo(0, e.offsetTop - 10);"
 			. "}\n"
+			. "document.onkeydown = function(e) {"
+			. "";
+		if( $prev != null ) {
+			$ciniki['request']['inline_javascript'] .=  ""
+				. "if( e.keyCode == 37 || e.keyCode == 72 ) {"
+					. "document.location.href='" . $prev['permalink'] . "';"
+				. "}";
+		}
+		if( $next != null ) {
+			$ciniki['request']['inline_javascript'] .=  ""
+				. "if( e.keyCode == 39 || e.keyCode == 76 ) {"
+					. "document.location.href='" . $next['permalink'] . "';"
+				. "}";
+		}
+		$ciniki['request']['inline_javascript'] .=  ""
+			. "}\n"
 			. "</script>\n";
 		$ciniki['request']['onresize'] = "gallery_resize_arrows();";
 		$ciniki['request']['onload'] = "scrollto_header();";

@@ -32,9 +32,15 @@ function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $
 	//
 	// Build working path, and final url
 	//
-	$filename = '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/'
-		. sprintf('%07d', $ciniki['request']['business_id'])
-		. '/w' . $maxwidth . '/' . sprintf('%010d', $img['id']) . '.jpg';
+	if( $maxwidth == 0 ) {
+		$filename = '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/'
+			. sprintf('%07d', $ciniki['request']['business_id'])
+			. '/h' . $maxheight . '/' . sprintf('%010d', $img['id']) . '.jpg';
+	} else {
+		$filename = '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/'
+			. sprintf('%07d', $ciniki['request']['business_id'])
+			. '/w' . $maxwidth . '/' . sprintf('%010d', $img['id']) . '.jpg';
+	}
 	$img_filename = $ciniki['request']['cache_dir'] . $filename;
 	$img_url = $ciniki['request']['cache_url'] . $filename;
 
