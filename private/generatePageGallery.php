@@ -205,7 +205,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 				return $rc;
 			}
 			if( !isset($rc['position']['pos_num']) ) {
-				return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'652', 'msg'=>'Unable to load image'));
+				return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'654', 'msg'=>'Unable to load image'));
 			}
 			$offset = $rc['position']['pos_num'];
 			//
@@ -223,7 +223,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 			} elseif( $offset > 0 ) {
 				$strsql .= "LIMIT " . ($offset-1) . ", 3";
 			} else {
-				return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'653', 'msg'=>'Unable to load image'));
+				return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'664', 'msg'=>'Unable to load image'));
 			}
 			$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'artcatalog', 'next');
 			if( $rc['stat'] != 'ok' ) {
