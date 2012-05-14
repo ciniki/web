@@ -82,6 +82,10 @@ if( $ciniki['config']['web']['master.domain'] != $_SERVER['HTTP_HOST'] ) {
 	if( $rc['stat'] == 'ok' ) {
 		$ciniki['request']['business_id'] = $rc['business_id'];
 		$ciniki['business']['modules'] = $rc['modules'];
+		if( isset($rc['redirect']) && $rc['redirect'] != '' ) {
+			Header('HTTP/1.1 301 Moved Permanently'); 
+			Header('Location: http://' . $rc['redirect'] . $_SERVER['REQUEST_URI']);
+		}
 
 		$ciniki['request']['page'] = $ciniki['request']['uri_split'][0];
 		if( $ciniki['request']['page'] != '' ) {
@@ -129,6 +133,10 @@ if( $ciniki['request']['business_id'] == 0 ) {
 		$ciniki['request']['business_id'] = $rc['business_id'];
 		$ciniki['business']['modules'] = $rc['modules'];
 		$ciniki['request']['base_url'] = '/' . $ciniki['request']['uri_split'][0];
+		if( isset($rc['redirect']) && $rc['redirect'] != '' ) {
+			Header('HTTP/1.1 301 Moved Permanently'); 
+			Header('Location: http://' . $rc['redirect'] . preg_replace('/^\/[^\/]+/', '', $_SERVER['REQUEST_URI']));
+		}
 
 		//
 		// Remove the client name from the URI list

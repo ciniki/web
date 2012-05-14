@@ -21,13 +21,14 @@ function ciniki_web_lookupClientDomain($ciniki, $domain, $type) {
 	// Query the database for the domain
 	//
 	if( $type == 'sitename' ) {
-		$strsql = "SELECT id AS business_id "
+		$strsql = "SELECT id AS business_id, 'no' AS isprimary "
 			. "FROM ciniki_businesses "
 			. "WHERE sitename = '" . ciniki_core_dbQuote($ciniki, $domain) . "' "
 			. "AND status = 1 "
 			. "";
 	} else {
-		$strsql = "SELECT business_id "
+		$strsql = "SELECT business_id, "
+			. "IF((flags&0x01)=0x01, 'yes', 'no') AS isprimary "
 			. "FROM ciniki_business_domains "
 			. "WHERE domain = '" . ciniki_core_dbQuote($ciniki, $domain) . "' "
 			. "AND status < 50 "
@@ -46,6 +47,26 @@ function ciniki_web_lookupClientDomain($ciniki, $domain, $type) {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'610', 'msg'=>'Configuration error'));
 	}
 	$business_id = $rc['business']['business_id'];
+
+	//
+	// Get primary domain if not primary
+	//
+	$redirect = '';
+	if( $rc['business']['isprimary'] == 'no' ) {
+		$strsql = "SELECT domain "
+			. "FROM ciniki_business_domains "
+			. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+			. "AND (flags&0x01) = 0x01 "
+			. "AND status < 50 "
+			. "";
+		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'businesses', 'business');
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		if( isset($rc['business']) && $rc['business']['domain'] != '' ) {
+			$redirect = $rc['business']['domain'];
+		}
+	}
 
 	//
 	// Get the list of active modules for the business
@@ -68,6 +89,6 @@ function ciniki_web_lookupClientDomain($ciniki, $domain, $type) {
 	}
 	$modules = $rc['modules'];
 
-	return array('stat'=>'ok', 'business_id'=>$business_id, 'modules'=>$modules);
+	return array('stat'=>'ok', 'business_id'=>$business_id, 'modules'=>$modules, 'redirect'=>$redirect);
 }
 ?>

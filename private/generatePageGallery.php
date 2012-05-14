@@ -279,8 +279,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
-				if( isset($rc['prev']) && $next != NULL 
-					&& $next['permalink'] != $rc['prev']['permalink']   // Check more than 2 images, and going to loop
+				if( isset($rc['prev']) 
 					&& $rc['prev']['permalink'] != $image_permalink		// Check not a single image, and going to loop
 					) {
 					$prev = $rc['prev'];
