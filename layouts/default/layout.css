@@ -101,6 +101,10 @@
 	width: auto;
 }
 
+#content div.button-list div.button-list-wrap {
+	width: 32%;
+}
+
 aside {
 	float: right;
 	clear: right;
@@ -149,6 +153,10 @@ body { width: 100%; }
 #content table.event-list td {
 	padding-left: 5em;
 	margin-left: 0px;
+}
+
+#content div.button-list div.button-list-wrap {
+	width: 100%;
 }
 
 aside {

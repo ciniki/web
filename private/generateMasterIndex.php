@@ -39,14 +39,14 @@ function ciniki_web_generateMasterIndex($ciniki, $settings) {
 	// Generate the content of the page
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbDetailsQueryDash.php');
-	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'web', 'content', 'page-home');
+	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'web', 'content', 'page-about');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
 
-	if( isset($rc['content']['page-home-content']) ) {
+	if( isset($rc['content']['page-about-content']) ) {
 		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processContent.php');
-		$rc = ciniki_web_processContent($ciniki, $rc['content']['page-home-content']);	
+		$rc = ciniki_web_processContent($ciniki, $rc['content']['page-about-content']);	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
@@ -54,15 +54,22 @@ function ciniki_web_generateMasterIndex($ciniki, $settings) {
 	}
 
 	$content .= "<div id='content'>\n"
+		. "<article class='page'>\n"
 		. "";
-	if( $page_content != '' ) {
-		$content .= "<article class='page'>\n"
-			. "<div class='entry-content'>\n"
-			. $page_content
-			. "</div>"
-			. "</article>"
-			. "";
+	if( isset($settings['page-about-image']) && $settings['page-about-image'] != '' && $settings['page-about-image'] > 0 ) {
+		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/getScaledImageURL.php');
+		$rc = ciniki_web_getScaledImageURL($ciniki, $settings['page-about-image'], 'original', '500', 0);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$content .= "<aside><div class='image borderless'><img title='' alt='About' src='" . $rc['url'] . "' /></div></aside>";
 	}
+
+	$content .= "<div class='entry-content'>\n"
+		. $page_content
+		. "</div>"
+		. "</article>"
+		. "";
 
 	//
 	// Grab the list of businesses from the database and display
@@ -94,32 +101,6 @@ function ciniki_web_generateMasterIndex($ciniki, $settings) {
 			. "</article>\n"
 			. "";
 		
-	}
-
-	//
-	// List the latest work
-	//
-	if( isset($ciniki['business']['modules']['ciniki.artcatalog']) 
-		&& $settings['page-gallery-active'] == 'yes' ) {
-
-		require_once($ciniki['config']['core']['modules_dir'] . '/artcatalog/web/latestImages.php');
-		$rc = ciniki_artcatalog_web_latestImages($ciniki, $settings, $ciniki['request']['business_id'], 6);
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
-		}
-		$images = $rc['images'];
-
-		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageGalleryThumbnails.php');
-		$img_base_url = $ciniki['request']['base_url'] . "/gallery/latest";
-		$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $rc['images'], 150);
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
-		}
-		$content .= "<article class='page'>\n"
-			. "<header class='entry-title'><h1 class='entry-title'>Latest Work</h1></header>\n"
-			. "<div class='image-gallery'>" . $rc['content'] . "</div>"
-			. "</article>\n"
-			. "";
 	}
 
 	//

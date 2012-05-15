@@ -315,6 +315,21 @@ article {
 	z-index: 5;
 }
 
+#content div.button-list {
+	width: 100%;
+}
+
+#content div.button-list div.button-list-wrap {
+	width: 100%;
+	text-align: center;
+	display: inline-block;
+}
+
+#content div.button-list div.button-list-wrap a {
+	width: 100%;
+	display: inline-block;
+}
+
 aside { width: 100%; }
 
 hr.footer-section-divider {
