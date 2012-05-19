@@ -121,6 +121,11 @@ function ciniki_web_siteSettings($ciniki) {
 	} else {
 		array_push($rc_settings, array('setting'=>array('name'=>'site-header-image', 'display_name'=>'Header Image', 'value'=>'0')));
 	}
+	if( isset($settings['site-featured']) && $settings['site-featured'] == 'yes' ) {
+		$featured = 'yes';
+	} else {
+		$featured = 'no';
+	}
 
 
 	$rc_pages = array();
@@ -128,6 +133,6 @@ function ciniki_web_siteSettings($ciniki) {
 		array_push($rc_pages, array('page'=>array('name'=>$page, 'display_name'=>$pagedetails['display_name'], 'active'=>$pagedetails['active'])));
 	}
 
-	return array('stat'=>'ok', 'pages'=>$rc_pages, 'settings'=>$rc_settings);
+	return array('stat'=>'ok', 'featured'=>$featured, 'pages'=>$rc_pages, 'settings'=>$rc_settings);
 }
 ?>
