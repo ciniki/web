@@ -330,6 +330,28 @@ article {
 	display: inline-block;
 }
 
+#content form {
+	width: 100%;
+}
+
+#content form label {
+	width: 100%;
+	display: block;
+}
+
+#content form input.text {
+	width: 95%;
+}
+
+#content form input.submit {
+	margin-top: 1em;
+	cursor: pointer;
+}
+
+#content form p.formhelp {
+	width: 100%;
+}
+
 aside { width: 100%; }
 
 hr.footer-section-divider {

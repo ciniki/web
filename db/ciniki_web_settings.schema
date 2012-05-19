@@ -23,6 +23,9 @@
 # - site-theme = default
 # - site-header-image = image to use in the header of the page
 #
+# Featured on master business homepage
+# - featured = yes
+#
 # Fields
 # ------
 # id:				The database id of the domain.

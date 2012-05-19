@@ -55,8 +55,15 @@ $ciniki['business'] = array('modules'=>array());
 
 // 
 // Split the request URI into parts
+//
 $uri = preg_replace('/^\//', '', $_SERVER['REQUEST_URI']);
-$ciniki['request']['uri_split'] = preg_split('/\//', $uri);
+$u = preg_split('/\?/', $uri);
+$ciniki['request']['uri_split'] = preg_split('/\//', $u[0]);
+if( isset($u[1]) ) {
+	$ciniki['request']['query_string'] = $u[1];
+} else {
+	$ciniki['request']['query_string'] = '';
+}
 if( !is_array($ciniki['request']['uri_split']) ) {
 	$ciniki['request']['uri_split'] = array($ciniki['request']['uri_split']);
 }

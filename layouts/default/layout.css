@@ -42,21 +42,18 @@
 }
 
 
-#content dl.links-list,
-#content dl.event-list {
+#content dl {
 	width: 120em;
 }
 
 #content dl dt {
 	display: block;
 	vertical-align: top;
-	width: 10em;
-	clear: both;
 }
 
 #content dl dd {
 	display: inline-block;
-	margin-left: 1em;
+	margin-left: 1.5em;
 }
 
 #content table.links-list,
@@ -105,6 +102,15 @@
 	width: 32%;
 }
 
+#content form input.text {
+	max-width: 30em;
+}
+
+#content form div.submit {
+	max-width: 30em;
+}
+
+
 aside {
 	float: right;
 	clear: right;
@@ -121,7 +127,7 @@ body { width: 100%; }
 #page-container { width: 30em; }
 
 #content dl dd {
-	margin-left: 5em;
+	margin-left: 3em;
 }
 
 #content div.image-categories div.image-categories-thumbnail {
@@ -157,6 +163,14 @@ body { width: 100%; }
 
 #content div.button-list div.button-list-wrap {
 	width: 100%;
+}
+
+#content form div.input {
+	width: 100%;
+}
+
+#content form input.text {
+	width: 95%;
 }
 
 aside {

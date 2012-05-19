@@ -97,6 +97,9 @@ function ciniki_web_siteSettingsUpdate($ciniki) {
 		'page-home-content',
 		'page-about-content',
 		'page-contact-content',
+		'page-signup-content',
+		'page-signup-submit',
+		'page-signup-success',
 		);
 
 	//
