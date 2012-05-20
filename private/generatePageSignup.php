@@ -165,10 +165,11 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 				$err = 25;
 			} else {
 				$user_id = $rc['insert_id'];
+				$ciniki['session'] = array('user'=>array('id'=>$user_id), 'change_log_id'=>'SIGNUP');
 			}
 		} elseif( $err == 0 && $_SESSION['user_id'] > 0 ) {
 			$user_id = $_SESSION['user_id'];
-			$ciniki['session'] = array('user'=>array('id'=>$user_id));
+			$ciniki['session'] = array('user'=>array('id'=>$user_id), 'change_log_id'=>'SIGNUP');
 		}
 
 		//
@@ -337,6 +338,33 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 				'Reply-To: "' . $ciniki['config']['core']['system.email.name'] . '" <' . $ciniki['config']['core']['system.email'] . ">\r\n" .
 				'X-Mailer: PHP/' . phpversion();
 			mail($_SESSION['email_address'], $subject, $msg, $headers, '-f' . $ciniki['config']['core']['system.email']);
+
+			//
+			// Email a notification to the owners of the master business
+			//
+			require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQueryList.php');
+			require_once($ciniki['config']['core']['modules_dir'] . '/users/private/emailUser.php');
+	
+			$strsql = "SELECT user_id FROM ciniki_business_users "
+				. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['core']['master_business_id']) . "' "
+				. "AND permission_group = 'owners' "
+				. "";
+			$rc = ciniki_core_dbQueryList($ciniki, $strsql, 'businesses', 'user_ids', 'user_id');
+			if( $rc['stat'] == 'ok' ) {
+				foreach($rc['user_ids'] as $uid) {
+					// 
+					// Don't email the submitter, they will get a separate email
+					//
+					if( $uid != $ciniki['session']['user']['id'] ) {
+						$rc = ciniki_users_emailUser($ciniki, $uid, 'Sign Up: ' . $_SESSION['business_name'],
+							"New business added: " . $_SESSION['business_name'] . "\n"
+							. "User: " . $_SESSION['firstname'] . " " . $_SESSION['lastname'] . "\n"
+							. "Email: " . $_SESSION['email_address'] . "\n"
+							. "\n\n"
+						);
+					}
+				}
+			}
 
 			$page_title = 'Verification';
 			if( isset($page_details['page-signup-success']) ) {
