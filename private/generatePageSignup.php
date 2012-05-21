@@ -62,6 +62,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 	$email_address_err = '';
 	$username_err = '';
 	$password_err = '';
+	$useragrees_err = '';
 
 	//
 	// FIXME: Check if anything has changed, and if not load from cache
@@ -423,6 +424,11 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 			$err = 16;
 		}
 
+		if( !isset($_POST['useragrees']) || $_POST['useragrees'] != 'yes' ) {
+			$useragrees_err = 'You must agree to the user agreement if you would like to sign up.';
+			$err = 31;
+		}
+
 		//
 		// Check the business name or sitename does not already exist
 		//
@@ -583,6 +589,14 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 			}
 			$aside_content .= "<h2>Requirements</h2>" . $rc['content'];
 		}
+		if( isset($page_details['page-signup-agreement']) ) {
+			require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processContent.php');
+			$rc = ciniki_web_processContent($ciniki, $page_details['page-signup-agreement']);	
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$aside_content .= "<h2>User Agreement</h2>" . $rc['content'];
+		}
 
 		// 
 		// Grab submitted information incase there was a form error, we can keep it filled in
@@ -601,6 +615,8 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 		if( isset($_POST['email_address']) ) { $email_address = $_POST['email_address']; }
 		$username = '';
 		if( isset($_POST['username']) ) { $username = $_POST['username']; }
+		$useragrees = '';
+		if( isset($_POST['useragrees']) ) { $useragrees = $_POST['useragrees']; }
 
 		//
 		// Check for a page error
@@ -672,9 +688,22 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 			$page_content .= "<p class='formhelp'>";
 		}
 		$page_content .= "Password must be at least 8 characters, and contain 1 number.  This password will protect your business information, so longer and more cryptic is better.</p></div>";
-//		$page_content .= "<div class='button-list'><div class='button-list-wrap'>";
+		if( $password_err != '' ) {
+			$page_content .= "<p class='formerror'>";
+		} else {
+			$page_content .= "<p class='formhelp'>";
+		}
+		$page_content .= "<label for='useragrees'></label><input type='checkbox' class='' name='useragrees' value='yes'";
+		if( $useragrees == 'yes' ) { $page_content .= " checked"; }
+		$page_content .= "> I agree to the User Agreement.";
+		if( $useragrees_err != '' ) {
+			$page_content .= "<p class='formerror'>$useragrees_err</p>";
+		}
+
+		// Submit button
 		$page_content .= "<div class='submit'><input type='submit' class='submit' name='signup' value='Sign up'></div>";
-//		$page_content .= "</div></div>";
+
+
 	}
 
 	$content .= "<div id='content'>\n"
