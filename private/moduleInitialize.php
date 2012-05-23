@@ -95,6 +95,10 @@ function ciniki_web_moduleInitialize($ciniki, $business_id) {
 			. "'" . ciniki_core_dbQuote($ciniki, $business_id) . "', "
 			. "'page-events-active', 'yes', UTC_TIMESTAMP(), UTC_TIMESTAMP())";
 		ciniki_core_dbInsert($ciniki, $strsql, 'web');
+		$strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) VALUES ("
+			. "'" . ciniki_core_dbQuote($ciniki, $business_id) . "', "
+			. "'page-events-past', 'yes', UTC_TIMESTAMP(), UTC_TIMESTAMP())";
+		ciniki_core_dbInsert($ciniki, $strsql, 'web');
 	}
 
 	//
