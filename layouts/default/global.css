@@ -129,10 +129,11 @@ header div.signin {
 	display: inline-block;
 	float: right;
 	margin-top: -10px;
-	width: 50px;
+	width: 8em;
 	top: 0px;
 	right: 20px;
 	padding-right: 20px;
+	text-align: right;
 }
 
 hgroup {

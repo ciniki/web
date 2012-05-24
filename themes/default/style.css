@@ -29,6 +29,10 @@ header h1 a:active {
 	color: #279;
 }
 
+header div.signin a {
+	text-decoration: none;
+}
+
 #main-menu-container {
 	background-color: transparent;
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#888888', endColorstr='#555555');
