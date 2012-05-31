@@ -22,9 +22,11 @@
 #
 # - site-theme = default
 # - site-header-image = image to use in the header of the page
+# - site-google-analytics-account = The account code for google analytics eg: UA-32107818-1
 #
 # Featured on master business homepage
 # - site-featured = yes
+
 #
 # Fields
 # ------
