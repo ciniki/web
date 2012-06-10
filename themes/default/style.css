@@ -118,10 +118,12 @@ div.gallery-image-details span.image-title {
 	color: #333;
 }
 
+div.gallery-image-details span.image-description,
 div.gallery-image-details span.image-details {
 	font-size: 1.0em;
 	display: block;
 	padding-left: 1em;
+	padding-top: 0.4em;
 }
 
 div.gallery-image-details span.image-awards-title {

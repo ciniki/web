@@ -58,7 +58,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 			. "IF((ciniki_artcatalog.flags&0x01)=1, 'yes', 'no') AS forsale, "
 			. "IF((ciniki_artcatalog.flags&0x02)=2, 'yes', 'no') AS sold, "
 			. "IF((ciniki_artcatalog.webflags&0x01)=1, 'yes', 'no') AS hidden, "
-			. "media, size, framed_size, price, location, awards, notes, "
+			. "media, size, framed_size, price, location, description, awards, notes, "
 			. "date_added, last_updated "
 			. "FROM ciniki_artcatalog "
 			. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
@@ -412,6 +412,9 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		}
 		$page_content .= "</span>\n"
 			. "";
+		if( $img['description'] != '' ) {
+			$page_content .= "<span class='image-description'>" . preg_replace('/\n/', '<br/>', $img['description']) . "</span>";
+		}
 		if( $img['awards'] != '' ) {
 			require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processContent.php');
 			$rc = ciniki_web_processContent($ciniki, $img['awards']);	
