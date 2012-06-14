@@ -28,6 +28,17 @@ header h1 a:active {
 	color: #63BBDD;
 }
 
+header div.signin a {
+	border-left: 1px solid #555;
+	border-bottom: 1px solid #555;
+	border-right: 1px solid #555;
+	padding: 0.2em 0.6em 0.2em 0.6em;
+	border-bottom-left-radius: 0.5em;
+	border-bottom-right-radius: 0.5em;
+	background: #444;
+	text-decoration: none;
+}
+
 #main-menu-container {
 	background-color: transparent;
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#bbbbbb', endColorstr='#888888');

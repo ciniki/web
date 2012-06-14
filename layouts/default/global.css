@@ -118,23 +118,29 @@ div.image-gallery-thumbnail {
     margin: 0 auto;
     }
 
+#page-container.signin {
+	padding-top: 0em;
+}
+
+header div.signin {
+	display: inline-block;
+	float: right;
+	margin-bottom: 1.0em;
+	width: 8em;
+	top: 0px;
+	right: 20px;
+	padding-right: 20px;
+	text-align: right;
+	width: 100%;
+}
+
+
 #site-title {
 	font-size: 2.5em;
 	margin-bottom: 0px;
 }
 
 header a { text-decoration: none; }
-
-header div.signin {
-	display: inline-block;
-	float: right;
-	margin-top: -10px;
-	width: 8em;
-	top: 0px;
-	right: 20px;
-	padding-right: 20px;
-	text-align: right;
-}
 
 hgroup {
 	margin-bottom: 1em;

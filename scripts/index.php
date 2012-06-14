@@ -275,6 +275,11 @@ elseif( $ciniki['request']['page'] == 'downloads' && $settings['page-downloads-a
 	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageDownloads.php');
 	$rc = ciniki_web_generatePageDownloads($ciniki, $settings);
 } 
+// Account
+elseif( $ciniki['request']['page'] == 'account' && $settings['page-account-active'] == 'yes' ) {
+	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageAccount.php');
+	$rc = ciniki_web_generatePageAccount($ciniki, $settings);
+} 
 // Contact
 elseif( $ciniki['request']['page'] == 'contact' && $settings['page-contact-active'] == 'yes' ) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageContact.php');

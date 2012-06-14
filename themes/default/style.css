@@ -30,6 +30,13 @@ header h1 a:active {
 }
 
 header div.signin a {
+	border-left: 1px solid #bbb;
+	border-bottom: 1px solid #bbb;
+	border-right: 1px solid #bbb;
+	padding: 0.2em 0.6em 0.2em 0.6em;
+	border-bottom-left-radius: 0.5em;
+	border-bottom-right-radius: 0.5em;
+	background: #eef;
 	text-decoration: none;
 }
 

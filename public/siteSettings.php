@@ -55,6 +55,7 @@ function ciniki_web_siteSettings($ciniki) {
 	}
 	if( isset($modules['ciniki.filedepot']) ) {
 		$pages['downloads'] = array('display_name'=>'Downloads', 'active'=>'no');
+		$pages['account'] = array('display_name'=>'Account', 'active'=>'no');
 	}
 
 	// 
@@ -111,6 +112,9 @@ function ciniki_web_siteSettings($ciniki) {
 	}
 	if( isset($settings['page-downloads-active']) && $settings['page-downloads-active'] == 'yes' ) {
 		$pages['downloads']['active'] = 'yes';
+	}
+	if( isset($settings['page-account-active']) && $settings['page-account-active'] == 'yes' ) {
+		$pages['account']['active'] = 'yes';
 	}
 
 	//

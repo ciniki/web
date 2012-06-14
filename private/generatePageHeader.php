@@ -105,20 +105,50 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 		$content .= " onload='" . $ciniki['request']['onload'] . "'";
 	}
 	$content .= ">\n";
-		$content .= "<div id='page-container'";
+
+	//
+	// Check if we are to display a sign in button
+	//
+	$signin_content = '';
+	if( $ciniki['request']['business_id'] == $ciniki['config']['core']['master_business_id'] 
+		&& isset($ciniki['config']['core']['manage.url']) && $ciniki['config']['core']['manage.url'] != '' ) {
+		$signin_content .= "<div class='signin'><a href='" . $ciniki['config']['core']['manage.url'] . "'><span>Sign in</span></a></div>\n";
+	} 
+	// Display a customer signin for regular businesses
+	elseif( $ciniki['request']['business_id'] != $ciniki['config']['core']['master_business_id']
+		&& isset($settings['page-account-active']) && $settings['page-account-active'] == 'yes'
+		&& ((isset($settings['page-downloads-customers']) && $settings['page-downloads-customers'] == 'yes')
+		// || () // Used if there are other pages that allow customer only content
+		)) {
+		if( isset($ciniki['session']['customer']['id']) > 0 ) {
+			$signin_content .= "<div class='signin'><a href='" . $ciniki['request']['base_url'] . "/account'><span>My Account</span></a></div>\n";
+		} else {
+			$signin_content .= "<div class='signin'><a href='" . $ciniki['request']['base_url'] . "/account'><span>Sign In</span></a></div>\n";
+		}
+	}
+
+	//
+	// Setup the page-container
+	//
+	$content .= "<div id='page-container'";
+	$page_container_class = '';
 	if( isset($ciniki['request']['page-container-class']) && $ciniki['request']['page-container-class'] != '' ) {
-		$content .= " class='" . $ciniki['request']['page-container-class'] . "'\n";
+		$page_container_class = $ciniki['request']['page-container-class'];
+	}
+	if( $signin_content != '' ) {
+		if( $page_container_class != '' ) { $page_container_class .= " "; }
+		$page_container_class .= 'signin';
+	}
+	if( $page_container_class != '' ) {
+		$content .= " class='$page_container_class'";
 	}
 	$content .= ">\n";
 
 	$content .= "<header>\n";
-	//
-	// Display a sign in button, for the master business
-	//
-	if( $ciniki['request']['business_id'] == $ciniki['config']['core']['master_business_id'] 
-		&& isset($ciniki['config']['core']['manage.url']) && $ciniki['config']['core']['manage.url'] != '' ) {
-		$content .= "<div class='signin'><a href='" . $ciniki['config']['core']['manage.url'] . "'><span>Sign in</span></a></div>\n";
-	}
+
+	// Add signin button if any.
+	$content .= $signin_content;
+
 	if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
 		$content .= "<hgroup class='header-image'>\n";
 	} else {
