@@ -53,6 +53,9 @@ function ciniki_web_siteSettings($ciniki) {
 	if( isset($modules['ciniki.links']) ) {
 		$pages['links'] = array('display_name'=>'Links', 'active'=>'no');
 	}
+	if( isset($modules['ciniki.filedepot']) ) {
+		$pages['downloads'] = array('display_name'=>'Downloads', 'active'=>'no');
+	}
 
 	// 
 	// If this is the master business, allow extra options
@@ -105,6 +108,9 @@ function ciniki_web_siteSettings($ciniki) {
 	}
 	if( isset($settings['page-api-active']) && $settings['page-api-active'] == 'yes' ) {
 		$pages['api']['active'] = 'yes';
+	}
+	if( isset($settings['page-downloads-active']) && $settings['page-downloads-active'] == 'yes' ) {
+		$pages['downloads']['active'] = 'yes';
 	}
 
 	//

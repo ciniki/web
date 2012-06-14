@@ -29,6 +29,7 @@ if( ciniki_core_loadCinikiConfig($ciniki, $ciniki_root) == false ) {
 
 // standard functions
 require_once($ciniki_root . '/ciniki-api/core/private/dbQuote.php');
+require_once($ciniki_root . '/ciniki-api/core/private/loadMethod.php');
 
 //
 // Initialize Database
@@ -268,6 +269,11 @@ elseif( $ciniki['request']['page'] == 'friends' && $settings['page-friends-activ
 elseif( $ciniki['request']['page'] == 'links' && $settings['page-links-active'] == 'yes' ) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageLinks.php');
 	$rc = ciniki_web_generatePageLinks($ciniki, $settings);
+} 
+// Downloads
+elseif( $ciniki['request']['page'] == 'downloads' && $settings['page-downloads-active'] == 'yes' ) {
+	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageDownloads.php');
+	$rc = ciniki_web_generatePageDownloads($ciniki, $settings);
 } 
 // Contact
 elseif( $ciniki['request']['page'] == 'contact' && $settings['page-contact-active'] == 'yes' ) {

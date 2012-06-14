@@ -176,6 +176,12 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 	if( isset($settings['page-links-active']) && $settings['page-links-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/links'>Links</a></li>";
 	}
+	if( isset($settings['page-downloads-active']) && $settings['page-downloads-active'] == 'yes' 
+		&& isset($settings['page-downloads-public']) && $settings['page-downloads-public'] == 'yes'
+		) {
+		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/downloads'>Downloads</a></li>";
+	}
+
 	if( isset($settings['page-contact-active']) && $settings['page-contact-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/contact'>Contact</a></li>";
 	}

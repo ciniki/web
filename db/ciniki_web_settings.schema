@@ -17,6 +17,13 @@
 # - page-friends-active = yes
 # - page-contact-active = yes
 # - page-events-active = yes
+# - page-downloads-active = yes
+#
+# The file depot will update these settings, based on availablity of downloads.  This 
+# will be used by the web delivery to determine when menu options should be displayed, or login button displayed
+#
+# - page-downloads-public = yes		Are there publically available downloads
+# - page-downloads-customer = yes		Are there customer only available downloads
 #
 # Site configuration settings:
 #
