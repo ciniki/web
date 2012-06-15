@@ -207,7 +207,12 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/links'>Links</a></li>";
 	}
 	if( isset($settings['page-downloads-active']) && $settings['page-downloads-active'] == 'yes' 
-		&& isset($settings['page-downloads-public']) && $settings['page-downloads-public'] == 'yes'
+		&& ( 
+			(isset($settings['page-downloads-public']) && $settings['page-downloads-public'] == 'yes')
+			|| 
+			(isset($settings['page-downloads-customers']) && $settings['page-downloads-customers'] == 'yes' 
+				&& isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 )
+			)
 		) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/downloads'>Downloads</a></li>";
 	}

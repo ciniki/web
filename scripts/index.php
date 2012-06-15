@@ -51,7 +51,11 @@ $ciniki['request'] = array('business_id'=>0, 'page'=>'', 'args'=>array(),
 	'theme_dir'=>$ciniki['config']['core']['modules_dir'] . '/web/themes',
 	'theme_url'=>'/ciniki-web-themes',
 	);
+session_start();
 $ciniki['session'] = array();
+if( isset($_SESSION['customer']) ) {
+	$ciniki['session']['customer'] = $_SESSION['customer'];
+}
 $ciniki['business'] = array('modules'=>array());
 
 // 

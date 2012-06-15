@@ -240,11 +240,35 @@ div.gallery-image-details span.image-awards {
 	color: #c00;
 }
 
-#content form div.submit {
+#content form div.bigsubmit {
 	text-align: center;
 }
 
+#content form div.submit {
+	text-align: right;
+}
+
+#content a.color,
+#content a.color:visited,
+#content a.color:hover,
+#content a.color:active {
+	color: #439BBD;
+}
+
 #content form input.submit {
+	font-size: 1.0em;
+	border-radius: 8px;
+	text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+	padding: 0.45em 1.5em 0.45em 1.5em;
+	color: #d9eef7;	
+	border: 2px solid #0076a3;	
+	background: #0095cd;	
+	background: -webkit-gradient(linear, left top, left bottom, from(#00adee), to(#0078a5));	
+	background: -moz-linear-gradient(top,  #00adee,  #0078a5);	
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0078a5');
+}
+
+#content form input.bigsubmit {
 	font-size: 1.3em;
 	border: 2px solid #da7c0c;
 	border-radius: 10px;

@@ -115,6 +115,11 @@ header div.signin {
 }
 
 #content form div.submit {
+	max-width: 31.2em;
+	padding-right: 0em;
+}
+
+#content form div.bigsubmit {
 	max-width: 30em;
 }
 
@@ -179,6 +184,10 @@ body { width: 100%; }
 
 #content form input.text {
 	width: 95%;
+}
+
+#content form div.submit {
+	width: 99%;
 }
 
 aside {

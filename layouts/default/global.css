@@ -350,7 +350,8 @@ article {
 	width: 95%;
 }
 
-#content form input.submit {
+#content form input.submit,
+#content form input.bigsubmit {
 	margin-top: 1em;
 	cursor: pointer;
 }

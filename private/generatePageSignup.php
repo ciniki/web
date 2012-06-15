@@ -701,7 +701,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 		}
 
 		// Submit button
-		$page_content .= "<div class='submit'><input type='submit' class='submit' name='signup' value='Sign up'></div>";
+		$page_content .= "<div class='bigsubmit'><input type='submit' class='bigsubmit' name='signup' value='Sign up'></div>";
 
 
 	}
