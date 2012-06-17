@@ -163,6 +163,13 @@ function ciniki_web_generatePageAccount($ciniki, $settings) {
 		} 
 
 		//
+		// FIXME: manage subscriptions
+		// FIXME: view wine orders
+		// FIXME: change email address
+		//
+
+
+		//
 		// Account mainpage
 		//
 		else {
