@@ -24,7 +24,10 @@ function ciniki_web_generatePageDownloads($ciniki, $settings) {
 			header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
 			header('Cache-Control: no-cache, must-revalidate');
 			header('Pragma: no-cache');
-			//  header('Content-Type: application/vnd.ms-excel');
+			$finfo = finfo_open(FILEINFO_MIME);
+			if( $finfo ) {
+				header('Content-Type: ' . finfo_file($finfo, $rc['storage_filename']));
+			}
 			header('Content-Disposition: attachment;filename="' . $rc['filename'] . '"');
 			header('Content-Length: ' . filesize($rc['storage_filename']));
 			header('Cache-Control: max-age=0');
@@ -123,14 +126,7 @@ function ciniki_web_generatePageDownloads($ciniki, $settings) {
 		}
 		foreach($c['category']['files'] as $fnum => $download) {
 			//$content .= "<p>";
-			$url = $ciniki['request']['base_url'] . '/downloads/' . $download['file']['permalink'];
-//			if( $url != '' && !preg_match('/^\s*http/i', $url) ) {
-//				$display_url = $url;
-//				$url = "http://" . $url;
-//			} else {
-//				$display_url = preg_replace('/^\s*http:\/\//i', '', $url);
-//				$display_url = preg_replace('/\/$/i', '', $display_url);
-//			}
+			$url = $ciniki['request']['base_url'] . '/downloads/' . $download['file']['permalink'] . '.' . $download['file']['extension'];
 			$content .= "<span class='links-title'>";
 			if( $url != '' ) {
 				$content .= "<a target='_blank' href='" . $url . "' title='" . $download['file']['name'] . "'>" . $download['file']['name'] . "</a>";
