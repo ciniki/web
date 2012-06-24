@@ -37,7 +37,7 @@ function ciniki_web_siteSettingsUpdate($ciniki) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionCommit.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuote.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbInsert.php');
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbAddChangeLog.php');
+	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbAddModuleHistory.php');
 	$rc = ciniki_core_dbTransactionStart($ciniki, 'web');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -89,8 +89,8 @@ function ciniki_web_siteSettingsUpdate($ciniki) {
 				ciniki_core_dbTransactionRollback($ciniki, 'web');
 				return $rc;
 			}
-			ciniki_core_dbAddChangeLog($ciniki, 'web', $args['business_id'], 'ciniki_web_settings', $field, 
-				'detail_value', $ciniki['request']['args'][$field]);
+			ciniki_core_dbAddModuleHistory($ciniki, 'web', 'ciniki_web_history', $args['business_id'], 
+				2, 'ciniki_web_settings', $field, 'detail_value', $ciniki['request']['args'][$field]);
 		}
 	}
 
@@ -125,8 +125,8 @@ function ciniki_web_siteSettingsUpdate($ciniki) {
 				ciniki_core_dbTransactionRollback($ciniki, 'web');
 				return $rc;
 			}
-			ciniki_core_dbAddChangeLog($ciniki, 'web', $args['business_id'], 'ciniki_web_content', $field, 
-				'detail_value', $ciniki['request']['args'][$field]);
+			ciniki_core_dbAddModuleHistory($ciniki, 'web', 'ciniki_web_history', $args['business_id'], 
+				2, 'ciniki_web_content', $field, 'detail_value', $ciniki['request']['args'][$field]);
 		}
 	}
 
@@ -137,7 +137,6 @@ function ciniki_web_siteSettingsUpdate($ciniki) {
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
-
 
 	return array('stat'=>'ok');
 }
