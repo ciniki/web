@@ -41,7 +41,7 @@ function ciniki_web_pageSettingsHistory($ciniki) {
 
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbGetModuleHistory.php');
 	// Check if the history is for the content or the settings
-	if( preg_match('/.*\.content/', $args['field']) ) {
+	if( preg_match('/.*-content/', $args['field']) ) {
 		return ciniki_core_dbGetModuleHistory($ciniki, 'web', 'ciniki_web_history', $args['business_id'], 'ciniki_web_content', $args['field'], 'detail_value', 'setting');
 	}
 	return ciniki_core_dbGetModuleHistory($ciniki, 'web', 'ciniki_web_history', $args['business_id'], 'ciniki_web_settings', $args['field'], 'detail_value', 'setting');
