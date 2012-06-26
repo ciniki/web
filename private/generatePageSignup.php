@@ -130,7 +130,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 			require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionRollback.php');
 			require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionCommit.php');
 			require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbInsert.php');
-			require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbAddChangeLog.php');
+			require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbAddModuleHistory.php');
 			$rc = ciniki_core_dbTransactionStart($ciniki, 'businesses');
 			if( $rc['stat'] != 'ok' ) { 
 				ciniki_core_dbTransactionRollback($ciniki, 'businesses');
@@ -197,8 +197,10 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 				$err = 4;
 			} else {
 				$business_id = $rc['insert_id'];
-				ciniki_core_dbAddChangeLog($ciniki, 'businesses', $business_id, 'ciniki_businesses', '', 'name', $_SESSION['business_name']);
-				ciniki_core_dbAddChangeLog($ciniki, 'businesses', $business_id, 'ciniki_businesses', '', 'sitename', $_SESSION['sitename']);
+				ciniki_core_dbAddModuleHistory($ciniki, 'businesses', 'ciniki_business_history', $business_id, 
+					1, 'ciniki_businesses', '', 'name', $_SESSION['business_name']);
+				ciniki_core_dbAddModuleHistory($ciniki, 'businesses', 'ciniki_business_history', $business_id, 
+					1, 'ciniki_businesses', '', 'sitename', $_SESSION['sitename']);
 			}
 		}
 
@@ -218,7 +220,8 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 					. "you continue to have problems, contact support.";
 				$err = 5;
 			} else {
-				ciniki_core_dbAddChangeLog($ciniki, 'businesses', $business_id, 'ciniki_business_details', 'contact.person.name', 'detail_value', $_SESSION['firstname'] . " " . $_SESSION['lastname']);
+				ciniki_core_dbAddModuleHistory($ciniki, 'businesses', 'ciniki_business_history', $business_id, 
+					1, 'ciniki_business_details', 'contact.person.name', 'detail_value', $_SESSION['firstname'] . " " . $_SESSION['lastname']);
 			}
 		}
 		if( $err == 0 ) {
@@ -234,7 +237,8 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 					. "you continue to have problems, contact support.";
 				$err = 6;
 			} else {
-				ciniki_core_dbAddChangeLog($ciniki, 'businesses', $business_id, 'ciniki_business_details', 'contact.email.address', 'detail_value', $_SESSION['email_address']);
+				ciniki_core_dbAddModuleHistory($ciniki, 'businesses', 'ciniki_business_history', $business_id, 
+					1, 'ciniki_business_details', 'contact.email.address', 'detail_value', $_SESSION['email_address']);
 			}
 		}
 
