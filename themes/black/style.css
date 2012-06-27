@@ -187,6 +187,74 @@ div.gallery-image-details span.image-awards {
 	text-align: center;
 }
 
+#content form label {
+	font-size: 1.0em;
+	font-weight: bold;
+	margin-top: 1.0em;
+}
+
+#content form input.text {
+	font-size: 1.0em;
+	font-weight: normal;
+	padding: 0.5em;
+	border-radius: 0.5em;
+	border: 1px solid #aaa;
+	color: #555;
+}
+
+#content form p.formerror,
+#content form p.formhelp {
+	font-size: 0.8em;
+	font-weight: normal;
+	padding-left: 0.5em;
+	color: #999;
+	max-width: 38em;
+}
+
+#content form p.pageerror {
+	font-size: 1.2em;
+	color: #c00;
+	max-width: 25em;
+}
+
+#content form p.formerror {
+	color: #c00;
+}
+
+#content form div.bigsubmit {
+	text-align: center;
+}
+
+#content form div.submit {
+	text-align: right;
+}
+
+#content form input.submit {
+	font-size: 1.0em;
+	border-radius: 8px;
+	text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+	padding: 0.45em 1.5em 0.45em 1.5em;
+	color: #d9eef7;	
+	border: 2px solid #0076a3;	
+	background: #0095cd;	
+	background: -webkit-gradient(linear, left top, left bottom, from(#00adee), to(#0078a5));	
+	background: -moz-linear-gradient(top,  #00adee,  #0078a5);	
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0078a5');
+}
+
+#content form input.bigsubmit {
+	font-size: 1.3em;
+	border: 2px solid #da7c0c;
+	border-radius: 10px;
+	color: #fef4e9;
+	text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+	padding: 0.7em 2.0em 0.7em 2.0em;
+	background: #f78d1d;
+	background: -webkit-gradient(linear, left top, left bottom, from(#faa51a), to(#f47a20));
+	background: -moz-linear-gradient(top,  #faa51a,  #f47a20);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#faa51a', endColorstr='#f47a20');
+}
+
 aside div.image {
 	max-width: 100%;
 	border: 8px solid #fff;
