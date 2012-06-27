@@ -59,7 +59,11 @@ function ciniki_web_generatePageDownloads($ciniki, $settings) {
 	// Add the header
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageHeader.php');
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Downloads');
+	$page_title = 'Downloads';
+	if( isset($settings['page-downloads-name']) && $settings['page-downloads-name'] != '' ) {
+		$page_title = $settings['page-downloads-name'];
+	}
+	$rc = ciniki_web_generatePageHeader($ciniki, $settings, $page_title);
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
 	}
@@ -86,7 +90,7 @@ function ciniki_web_generatePageDownloads($ciniki, $settings) {
 	
 	$content .= "<div id='content'>\n"
 		. "<article class='page'>\n"
-		. "<header class='entry-title'><h1 class='entry-title'>Downloads</h1></header>\n"
+		. "<header class='entry-title'><h1 class='entry-title'>$page_title</h1></header>\n"
 		. "<div class='entry-content'>\n"
 		. "";
 	if( $page_content != '' ) {

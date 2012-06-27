@@ -62,6 +62,7 @@ function ciniki_web_siteSettingsUpdate($ciniki) {
 		'page-contact-fax-display',
 		'page-contact-email-display',
 		'page-downloads-active',
+		'page-downloads-name',
 		'page-account-active',
 		'page-signup-active',
 		'page-api-active',

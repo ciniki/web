@@ -214,7 +214,13 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 				&& isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 )
 			)
 		) {
-		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/downloads'>Downloads</a></li>";
+		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/downloads'>";
+		if( isset($settings['page-downloads-name']) && $settings['page-downloads-name'] != '' ) {
+			$content .= $settings['page-downloads-name'];
+		} else {
+			$content .= "Downloads";
+		}
+		$content .= "</a></li>";
 	}
 
 	if( isset($settings['page-contact-active']) && $settings['page-contact-active'] == 'yes' ) {
