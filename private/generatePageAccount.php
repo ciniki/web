@@ -56,7 +56,7 @@ function ciniki_web_generatePageAccount($ciniki, $settings) {
 						. "<article class='page'>\n"
 						. "<header class='entry-title'><h1 class='entry-title'>Account</h1></header>\n";
 					$content .= "<div class='entry-content'>"
-						. "<p>A link has been sent to you email to get a new password.</p>\n"
+						. "<p>A link has been sent to your email to get a new password.</p>\n"
 						. "</div>";
 					$content .= "</article>\n"
 						. "</div>\n";
