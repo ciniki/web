@@ -159,6 +159,7 @@ div.gallery-image-details span.image-awards {
 	color: inherit;
 }
 
+#content span.contact-title,
 #content span.links-title,
 #content span.event-title {
 	font-size: 1.2em;
@@ -166,9 +167,15 @@ div.gallery-image-details span.image-awards {
 	color: #ddd;
 }
 
+#content a.contact-email {
+	color: #338BAD;
+	color: #999;
+}
+
 #content a.links-url,
 #content a.event-url {
 	font-size: 0.9em;
+	color: #337B9D;
 	color: #999;
 }
 

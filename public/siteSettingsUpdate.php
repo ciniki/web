@@ -37,6 +37,7 @@ function ciniki_web_siteSettingsUpdate($ciniki) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionCommit.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuote.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbInsert.php');
+	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbAddModuleHistory.php');
 	$rc = ciniki_core_dbTransactionStart($ciniki, 'web');
 	if( $rc['stat'] != 'ok' ) {
@@ -56,8 +57,9 @@ function ciniki_web_siteSettingsUpdate($ciniki) {
 		'page-friends-active',
 		'page-links-active',
 		'page-contact-active',
-		'page-contact-name-display',
-		'page-contact-addr-ss-display',
+		'page-contact-business-name-display',
+		'page-contact-person-name-display',
+		'page-contact-address-display',
 		'page-contact-phone-display',
 		'page-contact-fax-display',
 		'page-contact-email-display',
@@ -92,6 +94,57 @@ function ciniki_web_siteSettingsUpdate($ciniki) {
 			}
 			ciniki_core_dbAddModuleHistory($ciniki, 'web', 'ciniki_web_history', $args['business_id'], 
 				2, 'ciniki_web_settings', $field, 'detail_value', $ciniki['request']['args'][$field]);
+		}
+	}
+
+	$user_prefix_fields = array(
+		'page-contact-user-display-flags',
+		);
+
+
+	//
+	// Check the list of business users to see if their information should be displayed on the website
+	//
+	$strsql = "SELECT DISTINCT ciniki_business_users.user_id AS id "
+		. "FROM ciniki_business_users "
+		. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+		. "";
+	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'businesses', 'user');
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+	if( isset($rc['rows']) ) {
+		$users = $rc['rows'];
+		foreach($users as $unum => $user) {
+			$uid = $user['id'];
+			foreach($user_prefix_fields as $field) {
+				$field .= "-$uid";
+				if( isset($ciniki['request']['args'][$field]) ) {
+					$strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) "
+						. "VALUES ('" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['business_id']) . "'"
+						. ", '" . ciniki_core_dbQuote($ciniki, $field) . "' "
+						. ", '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args'][$field]) . "'"
+						. ", UTC_TIMESTAMP(), UTC_TIMESTAMP()) "
+						. "ON DUPLICATE KEY UPDATE detail_value = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args'][$field]) . "' "
+						. ", last_updated = UTC_TIMESTAMP() "
+						. "";
+					$rc = ciniki_core_dbInsert($ciniki, $strsql, 'web');
+					if( $rc['stat'] != 'ok' ) {
+						ciniki_core_dbTransactionRollback($ciniki, 'web');
+						return $rc;
+					}
+					ciniki_core_dbAddModuleHistory($ciniki, 'web', 'ciniki_web_history', $args['business_id'], 
+						2, 'ciniki_web_settings', $field, 'detail_value', $ciniki['request']['args'][$field]);
+				}
+			}
+		}
+		//
+		// Update the page-contact-user-display field
+		//
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'updateUserDisplay');
+		$rc = ciniki_web_updateUserDisplay($ciniki, $args['business_id']);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
 		}
 	}
 
