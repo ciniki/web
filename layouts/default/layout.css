@@ -13,6 +13,9 @@
 header div.signin {
 }
 
+header span.title {
+	display: inline;
+}
 
 #main-menu-container ul.menu li.menu-item {
 	display: inline-block;

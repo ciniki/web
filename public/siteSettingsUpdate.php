@@ -70,6 +70,7 @@ function ciniki_web_siteSettingsUpdate($ciniki) {
 		'page-api-active',
 		'site-theme',
 		'site-header-image',
+		'site-logo-display',
 		'site-google-analytics-account',
 		'site-featured',
 		);

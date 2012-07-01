@@ -134,6 +134,13 @@ header div.signin {
 	width: 100%;
 }
 
+header span.title {
+	display: block;
+}
+
+#page-container.logo header div.signin {
+	margin-bottom: 0em;
+}
 
 #site-title {
 	font-size: 2.5em;

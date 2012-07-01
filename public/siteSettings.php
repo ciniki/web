@@ -66,7 +66,6 @@ function ciniki_web_siteSettings($ciniki) {
 		$pages['api'] = array('display_name'=>'API', 'active'=>'no');
 	}
 
-
 	//
 	// Load current settings
 	//
@@ -131,6 +130,11 @@ function ciniki_web_siteSettings($ciniki) {
 		array_push($rc_advanced, array('setting'=>array('name'=>'site-header-image', 'display_name'=>'Header Image', 'value'=>$settings['site-header-image'])));
 	} else {
 		array_push($rc_advanced, array('setting'=>array('name'=>'site-header-image', 'display_name'=>'Header Image', 'value'=>'0')));
+	}
+	if( isset($settings['site-logo-display']) && $settings['site-logo-display'] != '' ) {
+		array_push($rc_advanced, array('setting'=>array('name'=>'site-logo-display', 'display_name'=>'Header Logo', 'value'=>$settings['site-logo-display'])));
+	} else {
+		array_push($rc_advanced, array('setting'=>array('name'=>'site-logo-display', 'display_name'=>'Header Logo', 'value'=>'no')));
 	}
 	if( isset($settings['site-featured']) && $settings['site-featured'] == 'yes' ) {
 		$featured = 'yes';

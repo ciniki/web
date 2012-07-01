@@ -39,6 +39,10 @@ header div.signin a {
 	text-decoration: none;
 }
 
+header span.logo img {
+	padding-right: 0.5em;
+}
+
 #main-menu-container {
 	background-color: transparent;
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#bbbbbb', endColorstr='#888888');
