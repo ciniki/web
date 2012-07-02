@@ -98,7 +98,6 @@ function ciniki_web_generatePageAccount($ciniki, $settings) {
 				$rc = ciniki_customers_changeTempPassword($ciniki, $ciniki['request']['business_id'], 
 					$_POST['email'], $_POST['temppassword'], $_POST['newpassword']);
 				if( $rc['stat'] != 'ok' ) {
-					error_log(print_r($rc, true));
 					$err_msg = "Unable to set your new password, please try again.";
 					$display_form = 'reset';
 				} else {
@@ -144,6 +143,17 @@ function ciniki_web_generatePageAccount($ciniki, $settings) {
 			//
 			// Check if customer wants to change their password
 			//
+			if( isset($_POST['oldpassword']) && $_POST['oldpassword'] != '' 
+				&& isset($_POST['newpassword']) && $_POST['newpassword'] != '' ) {
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'changePassword');
+				$rc = ciniki_customers_web_changePassword($ciniki, $ciniki['request']['business_id'], 
+					$_POST['oldpassword'], $_POST['newpassword']);
+				if( $rc['stat'] != 'ok' ) {
+					$chgpwd_err_msg = "Unable to set your new password, please try again.";
+				} else {
+					$chgpwd_err_msg = "Your password has been updated.";
+				}
+			}
 		}
 	}
 
