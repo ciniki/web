@@ -160,6 +160,8 @@ function ciniki_web_siteSettingsUpdate($ciniki) {
 		'page-signup-agreement',
 		'page-signup-submit',
 		'page-signup-success',
+		'page-account-content',
+		'page-account-content-subscriptions',
 		);
 
 	//

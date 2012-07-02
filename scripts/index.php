@@ -55,6 +55,8 @@ session_start();
 $ciniki['session'] = array();
 if( isset($_SESSION['customer']) ) {
 	$ciniki['session']['customer'] = $_SESSION['customer'];
+	$ciniki['session']['change_log_id'] = $_SESSION['change_log_id'];
+	$ciniki['session']['user'] = array('id'=>'-2');
 }
 $ciniki['business'] = array('modules'=>array());
 

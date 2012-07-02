@@ -349,8 +349,15 @@ article {
 }
 
 #content form label {
+	margin-top: 0em;
 	width: 100%;
 	display: block;
+}
+
+#content form label.checkbox {
+	margin-top: 0em;
+	display: inline-block;
+	width: auto;
 }
 
 #content form input.text {

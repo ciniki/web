@@ -213,11 +213,18 @@ div.gallery-image-details span.image-awards {
 	color: #555;
 }
 
+#content form input.checkbox {
+	font-size: 1.0em;
+	padding: 0.5em;
+	border-radius: 0.5em;
+	border: 1px solid #aaa;
+	color: #fff;
+}
+
 #content form p.formerror,
 #content form p.formhelp {
-	font-size: 0.8em;
+	font-size: 1.0em;
 	font-weight: normal;
-	padding-left: 0.5em;
 	color: #999;
 	max-width: 38em;
 }

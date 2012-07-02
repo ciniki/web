@@ -14,6 +14,18 @@ function ciniki_web_generatePageAccount($ciniki, $settings) {
 	// Make sure everything gets generated ok before returning the content
 	//
 	$content = '';
+	$subscription_err_msg = '';
+	$chgpwd_err_msg = '';
+
+	//
+	// Load the business modules
+	//
+	$modules = array();
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'getActiveModules');
+	$rc = ciniki_businesses_getActiveModules($ciniki, $ciniki['request']['business_id']);
+	if( $rc['stat'] == 'ok' ) {
+		$modules = $rc['modules'];
+	}
 
 	//
 	// Check if a form was submitted
@@ -23,6 +35,8 @@ function ciniki_web_generatePageAccount($ciniki, $settings) {
 	if( isset($_POST['action']) ) {
 		if( $_POST['action'] == 'logout' ) {
 			$ciniki['session']['customer'] = array();
+			$ciniki['session']['user'] = array();
+			$ciniki['session']['change_log_id'] = '';
 			unset($_SESSION['customer']);
 		}
 		elseif( $_POST['action'] == 'signin' ) {
@@ -31,7 +45,7 @@ function ciniki_web_generatePageAccount($ciniki, $settings) {
 				&& isset($_POST['password']) && $_POST['password'] != '' 
 				) {
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'auth');
-				$rc = ciniki_customers_auth($ciniki, $ciniki['request']['business_id'], $_POST['email'], $_POST['password']);
+				$rc = ciniki_customers_web_auth($ciniki, $ciniki['request']['business_id'], $_POST['email'], $_POST['password']);
 				if( $rc['stat'] != 'ok' ) {
 					$err_msg = "Unable to authenticate, please try again or click Forgot your password to get a new one";
 					$display_form = 'login';
@@ -93,6 +107,44 @@ function ciniki_web_generatePageAccount($ciniki, $settings) {
 				}
 			}
 		}
+		//
+		// Update subscriptions, or password
+		//
+		elseif( $_POST['action'] == 'accountupdate' 
+			&& isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 ) {
+
+			if( isset($modules['ciniki.subscriptions']) ) {
+				//
+				// Pull in subscription list for user
+				//
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'subscriptions', 'web', 'list');
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'subscriptions', 'web', 'subscribe');
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'subscriptions', 'web', 'unsubscribe');
+				$rc = ciniki_subscriptions_web_list($ciniki, $settings, $ciniki['request']['business_id']);
+				if( $rc['stat'] == 'ok' ) {
+					$subscriptions = $rc['subscriptions'];
+					foreach($subscriptions as $snum => $subscription) {
+						$sid = $subscription['subscription']['id'];
+						// Check if the subscribed to the subscription
+						if( isset($_POST["subscription-$sid"]) && $_POST["subscription-$sid"] == $sid ) {
+							if( $subscription['subscription']['subscribed'] == 'no' ) {
+								ciniki_subscriptions_web_subscribe($ciniki, $settings, $ciniki['request']['business_id'], $sid);
+								$subscription_err_msg = 'Your subscriptions have been updated.';
+							}
+						} else {
+							if( $subscription['subscription']['subscribed'] == 'yes' ) {
+								ciniki_subscriptions_web_unsubscribe($ciniki, $settings, $ciniki['request']['business_id'], $sid);
+								$subscription_err_msg = 'Your subscriptions have been updated.';
+							}
+						}
+					}
+				}
+			}
+
+			//
+			// Check if customer wants to change their password
+			//
+		}
 	}
 
 	//
@@ -150,31 +202,93 @@ function ciniki_web_generatePageAccount($ciniki, $settings) {
 	// Check if the customer is logged in or not
 	//
 	elseif( isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 ) {
-	
+		//
+		// Get any content for the account page
+		//
+		require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbDetailsQueryDash.php');
+		$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', 
+			$ciniki['request']['business_id'], 'web', 'content', 'page-account');
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+
+		$content_details = array();
+		if( isset($rc['content']) ) {
+			$content_details = $rc['content'];
+		}
+
+		//
+		// Start building the html output
+		//
 		$content .= "<div id='content'>\n"
 			. "<article class='page'>\n"
 			. "<header class='entry-title'><h1 class='entry-title'>Account</h1></header>\n";
 		
-		//
-		// Change password form
-		//
-		if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'changepassword' ) {
-			$content .= "change password";
-		} 
-
-		//
-		// FIXME: manage subscriptions
-		// FIXME: view wine orders
-		// FIXME: change email address
-		//
-
-
-		//
-		// Account mainpage
-		//
-		else {
-			$content .= "Account information";
+		if( isset($content_details['page-account-content']) ) {
+			require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processContent.php');
+			$rc = ciniki_web_processContent($ciniki, $content_details['page-account-content']);	
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$content .= $rc['content'];
 		}
+
+		$content .= "<form action='' method='POST'>";
+		$content .= "<input type='hidden' name='action' value='accountupdate'/>";
+
+		if( isset($modules['ciniki.subscriptions']) ) {
+			//
+			// Pull in subscription list
+			//
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'subscriptions', 'web', 'list');
+			$rc = ciniki_subscriptions_web_list($ciniki, $settings, $ciniki['request']['business_id']);
+			if( $rc['stat'] == 'ok' ) {
+				$subscriptions = $rc['subscriptions'];
+				$content .= "<h1 class='entry-title'>Subscriptions</h1>";
+				// Check for any content the business provided
+				if( isset($content_details['page-account-content-subscriptions']) ) {
+					require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processContent.php');
+					$rc = ciniki_web_processContent($ciniki, $content_details['page-account-content-subscriptions']);	
+					if( $rc['stat'] != 'ok' ) {
+						return $rc;
+					}
+					$content .= $rc['content'];
+				}
+
+				if( $subscription_err_msg != '' ) {
+					$content .= "<p class='formerror'>$subscription_err_msg</p>";
+				}
+
+				foreach($subscriptions as $snum => $subscription) {
+					$sid = $subscription['subscription']['id'];
+					$content .= "<input id='subscription-$sid' type='checkbox' class='checkbox' name='subscription-$sid' value='$sid' ";
+					if( $subscription['subscription']['subscribed'] == 'yes' ) {
+						$content .= " checked";
+					}
+					$content .= "/>";
+					$content .= " <label class='checkbox' for='subscription-$sid'>" . $subscription['subscription']['name'] . "</label><br/>";
+				}
+				$content .= "<br/><br/>";
+			}
+		}
+
+		//
+		// Allow user to change password
+		//
+		$content .= "<h1 class='entry-title'>Change Password</h1>"
+			. "<p>If you would like to change your password, enter your old password followed by a new one</p>"
+			. "";
+
+		if( $chgpwd_err_msg != '' ) {
+			$content .= "<p class='formerror'>$chgpwd_err_msg</p>";
+		}
+
+		$content .= "<label for='oldpassword'>Old Password:</label><input class='text' id='oldpassword' type='password' name='oldpassword' />";
+		$content .= "<label for='newpassword'>New Password:</label><input class='text' id='newpassword' type='password' name='newpassword' />";
+
+
+		$content .= "<div class='submit'><input type='submit' class='submit' value='Save Changes'></div>\n";
+		$content .= "</form>";
 
 		$content .= "<form action='' method='POST'>\n"
 			. "<input type='hidden' name='action' value='logout'>\n"
