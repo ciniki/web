@@ -252,7 +252,7 @@ function ciniki_web_generatePageAccount($ciniki, $settings) {
 			//
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'subscriptions', 'web', 'list');
 			$rc = ciniki_subscriptions_web_list($ciniki, $settings, $ciniki['request']['business_id']);
-			if( $rc['stat'] == 'ok' ) {
+			if( $rc['stat'] == 'ok' && isset($rc['subscriptions']) ) {
 				$subscriptions = $rc['subscriptions'];
 				$content .= "<h1 class='entry-title'>Subscriptions</h1>";
 				// Check for any content the business provided
