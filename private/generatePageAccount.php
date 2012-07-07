@@ -59,7 +59,7 @@ function ciniki_web_generatePageAccount($ciniki, $settings) {
 			if( isset($_POST['email']) && $_POST['email'] != '' ) {
 				$url = 'http://' . $_SERVER['HTTP_HOST'] . $ciniki['request']['base_url'] . '/account/reset';
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'passwordRequestReset');
-				$rc = ciniki_customers_passwordRequestReset($ciniki, $ciniki['request']['business_id'], $_POST['email'], $url);
+				$rc = ciniki_customers_web_passwordRequestReset($ciniki, $ciniki['request']['business_id'], $_POST['email'], $url);
 				if( $rc['stat'] != 'ok' ) {
 					$err_msg = 'You must enter a valid email address to get a new password.';
 					$display_form = 'forgot';
@@ -95,7 +95,7 @@ function ciniki_web_generatePageAccount($ciniki, $settings) {
 				$display_form = 'reset';
 			} else {
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'changeTempPassword');
-				$rc = ciniki_customers_changeTempPassword($ciniki, $ciniki['request']['business_id'], 
+				$rc = ciniki_customers_web_changeTempPassword($ciniki, $ciniki['request']['business_id'], 
 					$_POST['email'], $_POST['temppassword'], $_POST['newpassword']);
 				if( $rc['stat'] != 'ok' ) {
 					$err_msg = "Unable to set your new password, please try again.";
