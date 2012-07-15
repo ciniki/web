@@ -1,7 +1,11 @@
 <?php
 //
+// Description
+// -----------
 // This script will deliver the website for clients,
 // or the default page for main domain.
+//
+// All web requests for business websites are funnelled through this script.
 //
 
 
@@ -266,11 +270,6 @@ elseif( $ciniki['request']['page'] == 'events' && $settings['page-events-active'
 	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageEvents.php');
 	$rc = ciniki_web_generatePageEvents($ciniki, $settings);
 } 
-// Friends
-elseif( $ciniki['request']['page'] == 'friends' && $settings['page-friends-active'] == 'yes' ) {
-	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageFriends.php');
-	$rc = ciniki_web_generatePageFriends($ciniki, $settings);
-} 
 // Links
 elseif( $ciniki['request']['page'] == 'links' && $settings['page-links-active'] == 'yes' ) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageLinks.php');
@@ -314,26 +313,6 @@ if( isset($rc['content']) && $rc['content'] != '' ) {
 // Done
 //
 exit;
-
-function print_master_index() {
-	print "<html>";
-	print "Master domain index page";
-	//
-	// Show about button, and login button
-	//
-
-	//
-	// Show logo
-	//
-
-	//
-	// Show list of customers
-	//
-	// $rc = ciniki_web_publicBusinesses($ciniki);
-	//
-	print "</html>";
-	exit;
-}
 
 //
 // Supporting functions for the main page
