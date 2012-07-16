@@ -33,11 +33,9 @@
 #
 # Featured on master business homepage
 # - site-featured = yes
-
 #
 # Fields
 # ------
-# id:				The database id of the domain.
 # business_id:		The business the domain is part of.
 #
 # detail_key:		The decimal notated index key to the setting value.

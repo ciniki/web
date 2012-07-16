@@ -9,7 +9,6 @@
 #
 # Fields
 # ------
-# id:				The database id of the domain.
 # business_id:		The business the domain is part of.
 #
 # detail_key:		The key to the page content.
