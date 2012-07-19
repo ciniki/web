@@ -2,10 +2,13 @@
 //
 // Description
 // -----------
-// This function will generate the about page for the website
+// This function will generate the header for the website, to be displayed 
+// at the top of the all pages.
 //
 // Arguments
 // ---------
+// ciniki:
+// settings:		The web settings structure, similar to ciniki variable but only web specific information.
 //
 // Returns
 // -------

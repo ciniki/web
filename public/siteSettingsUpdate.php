@@ -54,7 +54,6 @@ function ciniki_web_siteSettingsUpdate($ciniki) {
 		'page-gallery-active',
 		'page-events-active',
 		'page-events-past',
-		'page-friends-active',
 		'page-links-active',
 		'page-contact-active',
 		'page-contact-business-name-display',

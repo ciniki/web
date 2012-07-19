@@ -2,10 +2,13 @@
 //
 // Description
 // -----------
-// This function will generate the about page for the website
+// This function will generate the footer to be displayed at the bottom
+// of every web page.
 //
 // Arguments
 // ---------
+// ciniki:
+// settings:		The web settings structure, similar to ciniki variable but only web specific information.
 //
 // Returns
 // -------

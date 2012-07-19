@@ -2,10 +2,15 @@
 //
 // Description
 // -----------
-// This method will add a new domain to a business.  
+// This method will clear the web cache for a business.  All files in the cache will
+// get recreated the next time they are required.  This will slow down page loads,
+// and should be done sparingly, if at all.
 //
 // Arguments
 // ---------
+// api_key:
+// auth_token:
+// business_id:		The ID of the business to clear the cache for.
 //
 // Returns
 // -------

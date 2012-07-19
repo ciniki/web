@@ -2,10 +2,12 @@
 //
 // Description
 // -----------
-// This function will generate the contact page for the website
+// This function will generate the contact page for the website.
 //
 // Arguments
 // ---------
+// ciniki:
+// settings:		The web settings structure, similar to ciniki variable but only web specific information.
 //
 // Returns
 // -------
@@ -67,14 +69,9 @@ function ciniki_web_generatePageContact($ciniki, $settings) {
 		if( isset($contact_details['contact.address.city']) && $contact_details['contact.address.city'] != '' ) {
 			$contact_content .= $contact_details['contact.address.city'] . "\n";
 		}
-//		if( isset($contact_details['contact.address.province']) && $contact_details['contact.address.province'] != '' ) {
-//			$contact_content .= $contact_details['contact.address.province'];
-//		}
 		if( isset($contact_details['contact.address.city']) && $contact_details['contact.address.city'] != ''
 			&& isset($contact_details['contact.address.province']) && $contact_details['contact.address.province'] != '' ) {
 			$contact_content .= ", " . $contact_details['contact.address.province'] . "";
-//		} else {
-//			$contact_content .= "<br/>\n";
 		}
 		if( isset($contact_details['contact.address.postal']) && $contact_details['contact.address.postal'] != '' ) {
 			$contact_content .= "  " . $contact_details['contact.address.postal'] . "<br/>\n";

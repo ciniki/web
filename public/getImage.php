@@ -4,12 +4,10 @@
 // -----------
 // This function will return the image binary data in jpg format.
 //
-// Info
-// ----
-// Status: defined
-//
 // Arguments
 // ---------
+// api_key:
+// auth_token:
 // image_id:			The ID if the image requested.
 // version:				The version of the image (regular, thumbnail)
 //

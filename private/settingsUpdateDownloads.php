@@ -2,13 +2,30 @@
 //
 // Description
 // ===========
-// This function will check the revelant modules which are used by the downloads page.
+// When file uploaded to the file depot module are available to the public
+// this function makes sure page-downloads-public settings is set to 'yes'.
+//
+// If the file is only available to customers, the setting 
+// page-downloads-customers is set to 'yes'.
+//
+// The web module uses these flags to determine if there should be a menu option
+// enabled for Downloads.
+//
+// Arguments
+// =========
+// ciniki:
+// modules:		The array of modules enabled for the business.  This is returned by the 
+//				ciniki_web_checkAccess function.
+// business_id:	The ID of the business to check for downloads.
 //
 // Returns
 // =======
 //
 function ciniki_web_settingsUpdateDownloads($ciniki, $modules, $business_id) {
 
+	//
+	// Default set the flags to 'no'
+	//
 	$public = 'no';
 	$customers = 'no';
 

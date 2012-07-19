@@ -2,17 +2,26 @@
 //
 // Description
 // -----------
-// This method will return a list of the users who have permissions within a business.
+// This method will return the list of owners and employee's for a business, whos
+// contact information could be displayed on contact page.
+//
+// The returned email element is the email address of the users account, the contact.email.address
+// is the publically available contact email address for the user, which can be different.
 //
 // Arguments
 // ---------
 // api_key:
 // auth_token:
-// business_id: 			The ID of the business to lock.
+// business_id: 			The ID of the business to get the users for.
 //
 // Returns
 // -------
-// <rsp stat="ok" />
+// <users>
+//		<user id="4" firstname="Andrew" lastname="Rivett" email="andrew@ciniki.ca" display_name="Andrew"
+//			employee.title="President" contact.phone.number="555-555-1234" contact.cell.number="555-555-1234"
+//			contact.fax.number="123-456-7890" contact.email.address="andrew@ciniki.com" />
+//		...
+// </users>
 //
 function ciniki_web_businessUsers($ciniki) {
 	//

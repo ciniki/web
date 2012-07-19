@@ -2,10 +2,12 @@
 //
 // Description
 // -----------
-// This function will generate the home page for the website
+// This function will generate the home page for the website.
 //
 // Arguments
 // ---------
+// ciniki:
+// settings:		The web settings structure, similar to ciniki variable but only web specific information.
 //
 // Returns
 // -------

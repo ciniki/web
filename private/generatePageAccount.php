@@ -2,7 +2,14 @@
 //
 // Description
 // -----------
-// This function will generate the downloads page for the website
+// This function will generate a customers account page.  This page allows the customer
+// to login to their account, change their password and subscribe/unsubscribe to public
+// subscriptions (newsletters).
+//
+// Arguments
+// ---------
+// ciniki:
+// settings:		The web settings structure, similar to ciniki variable but only web specific information.
 //
 // Returns
 // -------

@@ -44,9 +44,6 @@ function ciniki_web_siteSettings($ciniki) {
 	if( isset($modules['ciniki.events']) ) {
 		$pages['events'] = array('display_name'=>'Events', 'active'=>'no');
 	}
-	if( isset($modules['ciniki.friends']) ) {
-		$pages['friends'] = array('display_name'=>'Friends', 'active'=>'no');
-	}
 	if( isset($modules['ciniki.artcatalog']) ) {
 		$pages['gallery'] = array('display_name'=>'Gallery', 'active'=>'no');
 	}
@@ -93,9 +90,6 @@ function ciniki_web_siteSettings($ciniki) {
 	}
 	if( isset($settings['page-events-active']) && $settings['page-events-active'] == 'yes' ) {
 		$pages['events']['active'] = 'yes';
-	}
-	if( isset($settings['page-friends-active']) && $settings['page-friends-active'] == 'yes' ) {
-		$pages['friends']['active'] = 'yes';
 	}
 	if( isset($settings['page-links-active']) && $settings['page-links-active'] == 'yes' ) {
 		$pages['links']['active'] = 'yes';

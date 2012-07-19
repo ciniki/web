@@ -6,6 +6,8 @@
 //
 // Arguments
 // ---------
+// ciniki:
+// unprocessed_content:		The unprocessed text content that needs to be turned into html.
 //
 // Returns
 // -------

@@ -2,10 +2,13 @@
 //
 // Description
 // -----------
-// This function will generate the gallery page for the website
+// This function will generate the html content for the list of images to be displayed.
+// The returned content will be HTML with links to the cached images for the browser to retrieve.
 //
 // Arguments
 // ---------
+// ciniki:
+// settings:		The web settings structure, similar to ciniki variable but only web specific information.
 //
 // Returns
 // -------

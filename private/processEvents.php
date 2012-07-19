@@ -2,10 +2,14 @@
 //
 // Description
 // -----------
-// This function will process a list of events, and format the html
+// This function will process a list of events, and format the html.
 //
 // Arguments
 // ---------
+// ciniki:
+// settings:		The web settings structure, similar to ciniki variable but only web specific information.
+// events:			The array of events as returned by ciniki_events_web_list.
+// limit:			The number of events to show.  Only 2 events are shown on the homepage.
 //
 // Returns
 // -------

@@ -6,6 +6,18 @@
 //
 // Arguments
 // ---------
+// api_key:
+// auth_token:
+// business_id:		The ID of the business to get the page settings for.
+// page:			The page to get the settings for.  It can be one of the
+// 					following values:
+//
+// 					- home
+// 					- about
+//					- contact
+//					- gallery
+//					- events
+//					- links
 //
 // Returns
 // -------

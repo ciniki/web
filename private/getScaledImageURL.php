@@ -2,10 +2,19 @@
 //
 // Description
 // -----------
-// This function will return the cache-url to an image, and generate the image cache if it does not exist.
+// This function will return the cache-url to an image, and generate the image cache 
+// if it does not exist.  This allows a normal url to be presented to the browser, and
+// proper caching in the browser.
 //
 // Arguments
 // ---------
+// ciniki:
+// image_id:		The ID of the image in the images module to prepare for the website.
+// version:			The version of the image, original or thumbnail.  Thumbnail down not
+//					refer to the size, but the square cropped version of the original.
+// maxwidth:		The maximum width the rendered photo should be.
+// maxheight:		The maximum height the rendered photo should be.
+// quality:			The quality setting for jpeg output.  The default if unspecified is 60.
 //
 // Returns
 // -------

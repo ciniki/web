@@ -7,7 +7,9 @@
 //
 // Arguments
 // =========
+// ciniki:
 // business_id: 		The ID of the business the request is for.
+// method:				The method being requested.
 // 
 // Returns
 // =======

@@ -1,0 +1,2 @@
+The web module delivers the website for the business.  Information for the web
+pages may be from other modules.  

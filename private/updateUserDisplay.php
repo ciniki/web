@@ -2,10 +2,19 @@
 //
 // Description
 // -----------
-// This function will lookup the client domain in the database, and return the business id.
+// Whenever contact information is added about a owner or employee, that
+// information can be added to the contact page on the website if the
+// page-contact-user-display-flags-<user_id>.  This function check if there are any
+// users who have this flag turned on, and then make sure the global
+// page-contact-user-display setting to is set to 'yes'. 
+//
+// The generatePageContact function uses this to determine if owner/employee
+// contact information should be listed on the website.
 //
 // Arguments
 // ---------
+// ciniki:
+// business_id:			
 //
 // Returns
 // -------

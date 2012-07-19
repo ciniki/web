@@ -2,10 +2,14 @@
 //
 // Description
 // -----------
-// This function will lookup the client domain in the database, and return the business id.
+// This function will lookup the client domain or sitename in the database, and return the business id.
+// The request for the business website can be in the form of businessdomain.com or ciniki.com/businesssitename.
 //
 // Arguments
 // ---------
+// ciniki:
+// domain:		The domain or sitename to lookup.
+// type:		The type of lookup: domain or sitename.
 //
 // Returns
 // -------

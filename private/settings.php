@@ -2,10 +2,12 @@
 //
 // Description
 // -----------
-// This function will lookup the client domain in the database, and return the business id.
+// This function will return the list of web settings for a business.
 //
 // Arguments
 // ---------
+// ciniki:
+// business_id:		The ID of the business to get the web settings for.
 //
 // Returns
 // -------

@@ -2,10 +2,13 @@
 //
 // Description
 // -----------
-// This function will generate the about page for the website
+// This function will generate the API documentation available to the public.  This
+// is currently a placeholder.
 //
 // Arguments
 // ---------
+// ciniki:
+// settings:		The web settings structure, similar to ciniki variable but only web specific information.
 //
 // Returns
 // -------

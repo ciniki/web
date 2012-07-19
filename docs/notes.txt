@@ -1,0 +1,10 @@
+The web module pulls information from other modules sometimes directly, and other
+times via functions located in the web directory of the other modules.  The functions
+in the web directories should only be used for web information.
+
+There is currently some information that is pulled directly from other modules and 
+it should be moved to functions in the web directory of the other modules.
+
+All page requests come through the index.php file.  Request for customer password
+protected information also comes through the index.php file, but public images and 
+documents are requested through the cache directory.

@@ -2,10 +2,12 @@
 //
 // Description
 // -----------
-// This function will generate the about page for the website
+// This function will generate the sign up page for the master website (ciniki.com).
 //
 // Arguments
 // ---------
+// ciniki:
+// settings:		The web settings structure, similar to ciniki variable but only web specific information.
 //
 // Returns
 // -------
