@@ -27,7 +27,7 @@ function ciniki_web_siteSettingsUpdate($ciniki) {
 	// Check access to business_id as owner, and load module list
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/checkAccess.php');
-	$ac = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.pageSettingsUpdate');
+	$ac = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.siteSettingsUpdate');
 	if( $ac['stat'] != 'ok' ) {
 		return $ac;
 	}
