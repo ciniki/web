@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This method will return the list of settings for page.
+// This method will return the list of settings for a specific page.
 //
 // Arguments
 // ---------
@@ -19,8 +19,15 @@
 //					- events
 //					- links
 //
+// content:			(optional) Should the content for the page be returned as well.  (yes or no)
+//
 // Returns
 // -------
+// <rsp stat="ok">
+//		<settings page-about-active="yes" page-about-image="27">
+//			<page-about-content>The about page content</page-about-content>
+//		</settings>
+// </rsp>
 //
 function ciniki_web_pageSettingsGet($ciniki) {
 	//

@@ -2,6 +2,7 @@
 //
 // Description
 // -----------
+// This method will get the history for a site setting or content.
 //
 // Arguments
 // ---------
@@ -12,6 +13,12 @@
 //
 // Returns
 // -------
+// <rsp stat="ok">
+//		<history>
+//			<action user_id="2" date="Jul 20, 2012 12:38 AM" value="yes" user_display_name="Andrew">&lt; 1 min</action>
+//			<action user_id="2" date="Jul 20, 2012 12:38 AM" value="no" user_display_name="Andrew">&lt; 1 min</action>
+//		</history>
+// </rsp>
 //
 function ciniki_web_pageSettingsHistory($ciniki) {
 	//

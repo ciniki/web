@@ -9,6 +9,15 @@
 // ---------
 // ciniki:
 // settings:		The web settings structure, similar to ciniki variable but only web specific information.
+// base_url:		The base URL to prepend to all images.  This should be the domain or master domain plus sitename.
+//					It should also include anything that will prepend the image permalink.  eg http://ciniki.com/sitename/gallery
+//
+//					It should not contain a trailing slash.
+//
+// images:			The array of images to use for the gallery.  Each element of the array must contain 'image_id' element
+//					as a reference to an image ID in the ciniki images module.
+//
+// maxlength:		The maxlength of the thumbnail image, as it will be square.
 //
 // Returns
 // -------

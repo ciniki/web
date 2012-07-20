@@ -4,11 +4,50 @@
 // -----------
 // This method will update any valid page settings and content in the database.
 //
+// The contact display values are taken from the business settings.
+//
 // Arguments
 // ---------
+// api_key:
+// auth_token:
+// business_id:							The ID of the business to update the settings for.
+// page-home-active:					(optional) Display the home page (yes or no)
+// page-about-active:					(optional) Display the about page (yes or no)
+// page-about-image:					(optional) The image_id from the ciniki images module to be displayed on the about page.
+// page-gallery-active:					(optional) Display the gallery page (yes or no)
+// page-events-active:					(optional) Display the events page (yes or no)
+// page-events-past:					(optional) Display the past events (yes or no)
+// page-links-active:					(optional) Display the links page (yes or no)
+// page-contact-active:					(optional) Display the contact page (yes or no)
+// page-contact-business-name-display:	(optional) Display the business name as part of the contact info (yes or no)
+// page-contact-person-name-display:	(optional) Display the business contact person name (yes or no)
+// page-contact-address-display:		(optional) Display the business address (yes or no)
+// page-contact-phone-display:			(optional) Display the business phone number (yes or no)
+// page-contact-fax-display:			(optional) Display the business fax number (yes or no)
+// page-contact-email-display:			(optional) Display the business email address (yes or no)
+// page-downloads-active:				(optional) Display the download page (yes or no)
+// page-downloads-name:					(optional) The name to be used in the menu for the downloads page.  eg (Reports, Newletters, etc)
+// page-account-active:					(optional) Allow customers to login and display an account page (yes or no)
+// page-signup-active:					(optional) Display a signup page, only valid for master business (ciniki.com)
+// page-api-active:						(optional) Display api documentation, only valid for master business (ciniki.com)
+// site-theme:							(optional) The theme to use for the website.  (default, black)
+// site-header-image:					(optional) The ID of the image from the ciniki images module to display in the site header.
+// site-logo-display:					(optional) Display the business logo in the site header (yes or no)
+// site-google-analytics-account:		(optional) The google account code for google analytics.
+// site-featured:						(optional) Display the site name as a featured site on the master business homepage (ciniki.com)
+// page-home-content:					(optional) The content to be displayed on the home page.
+// page-about-content:					(optional) The content to be displayed on the about page.
+// page-contact-content:				(optional) The content to be displayed on the contact page.
+// page-signup-content:					(optional) The content to be displayed on the signup page.
+// page-signup-agreement:				(optional) The content of the signup agreement statement.
+// page-signup-submit:					(optional) The content to be displayed after the submission on the signup page.
+// page-signup-success:					(optional) The content to be displayed after sucessful signup.
+// page-account-content:				(optional) The content to be displayed on the account page.
+// page-account-content-subscriptions:	(optional) The content to be displayed on the account page for subscriptions.
 //
 // Returns
 // -------
+// <rsp stat="ok" />
 //
 function ciniki_web_siteSettingsUpdate($ciniki) {
 	//

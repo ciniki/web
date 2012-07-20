@@ -6,9 +6,17 @@
 //
 // Arguments
 // ---------
+// api_key:
+// auth_token:
+// business_id:		The ID of the business to get the site settings for.
+// content:			(optional) Should the site content be returned as well. (yes or no)
 //
 // Returns
 // -------
+// <rsp stat="ok">
+//		<settings site-google-analytics-account="UA-812942303-1" site-header-image="0" site-theme="black" />
+// </rsp>
+// 
 //
 function ciniki_web_siteSettingsGet($ciniki) {
 	//

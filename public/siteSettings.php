@@ -3,13 +3,34 @@
 // Description
 // -----------
 // This method will return the list of available pages for the business,
-// and which ones have been activated.
+// and which ones have been activated.  In addition, the theme and header
+// information will be returned.
 //
 // Arguments
 // ---------
+// api_key:
+// auth_token:
+// business_id:		The ID of the business to get the site settings for.
 //
 // Returns
 // -------
+// <rsp stat="ok" featured="no">
+//		<pages>
+//			<page name="home" display_name="Home" active="yes" />
+//			<page name="about" display_name="About" active="yes" />
+//			<page name="contact" display_name="Contact" active="yes" />
+//			<page name="events" display_name="Events" active="no" />
+//			<page name="gallery" display_name="Gallery" active="yes" />
+//			<page name="links" display_name="Links" active="yes" />
+//		</pages>
+//		<settings>
+//			<setting name="theme" display_name="Theme" value="black" />
+//		</settings>
+//		<advanced>
+//			<setting name="site-header-image" display_name="Header Image" value="0" />
+//			<setting name="site-logo-display" display_name="Header Logo" value="no" />
+//		</advanced>
+// </rsp>
 //
 function ciniki_web_siteSettings($ciniki) {
 	//

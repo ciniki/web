@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This function will return the image binary data in jpg format.
+// This method will return the image binary data in jpg format.
 //
 // Arguments
 // ---------

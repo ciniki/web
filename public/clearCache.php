@@ -14,7 +14,7 @@
 //
 // Returns
 // -------
-// <rsp stat="ok">
+// <rsp stat="ok" />
 //
 function ciniki_web_clearCache($ciniki) {
 	//

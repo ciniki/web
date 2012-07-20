@@ -9,6 +9,7 @@
 // ---------
 // ciniki:
 // settings:		The web settings structure, similar to ciniki variable but only web specific information.
+// title:			The title to use for the page.
 //
 // Returns
 // -------
