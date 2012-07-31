@@ -42,7 +42,7 @@ function ciniki_web_settingsUpdateDownloads($ciniki, $modules, $business_id) {
 			. "AND (sharing_flags&0x01) = 0x01 "
 			. "AND status = 1 "
 			. "";
-		$rc = ciniki_core_dbCount($ciniki, $strsql, 'filedepot', 'public');
+		$rc = ciniki_core_dbCount($ciniki, $strsql, 'ciniki.filedepot', 'public');
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
@@ -59,7 +59,7 @@ function ciniki_web_settingsUpdateDownloads($ciniki, $modules, $business_id) {
 			. "AND (sharing_flags&0x02) = 0x02 "
 			. "AND status = 1 "
 			. "";
-		$rc = ciniki_core_dbCount($ciniki, $strsql, 'filedepot', 'customers');
+		$rc = ciniki_core_dbCount($ciniki, $strsql, 'ciniki.filedepot', 'customers');
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
@@ -83,7 +83,7 @@ function ciniki_web_settingsUpdateDownloads($ciniki, $modules, $business_id) {
 		. "ON DUPLICATE KEY UPDATE detail_value = '" . ciniki_core_dbQuote($ciniki, $public) . "' "
 		. ", last_updated = UTC_TIMESTAMP() "
 		. "";
-	$rc = ciniki_core_dbInsert($ciniki, $strsql, 'web');
+	$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -99,10 +99,17 @@ function ciniki_web_settingsUpdateDownloads($ciniki, $modules, $business_id) {
 		. "ON DUPLICATE KEY UPDATE detail_value = '" . ciniki_core_dbQuote($ciniki, $customers) . "' "
 		. ", last_updated = UTC_TIMESTAMP() "
 		. "";
-	$rc = ciniki_core_dbInsert($ciniki, $strsql, 'web');
+	$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
+
+	//
+	// Update the last_change date in the business modules
+	// Ignore the result, as we don't want to stop user updates if this fails.
+	//
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
+	ciniki_businesses_updateModuleChangeDate($ciniki, $args['business_id'], 'ciniki', 'web');
 
 	return array('stat'=>'ok');
 }

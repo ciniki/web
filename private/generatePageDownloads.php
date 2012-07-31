@@ -76,7 +76,7 @@ function ciniki_web_generatePageDownloads($ciniki, $settings) {
 	// Generate the content of the page
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbDetailsQueryDash.php');
-	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'web', 'content', 'page-downloads');
+	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-downloads');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}

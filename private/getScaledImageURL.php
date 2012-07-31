@@ -29,7 +29,7 @@ function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $image_id) . "' "
 		. "AND business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
 		. "";
-	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'images', 'image');
+	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.images', 'image');
 	if( $rc['stat'] != 'ok' ) {	
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'644', 'msg'=>'Unable to load image', 'err'=>$rc['err']));
 	}

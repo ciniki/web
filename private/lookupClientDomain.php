@@ -39,7 +39,7 @@ function ciniki_web_lookupClientDomain($ciniki, $domain, $type) {
 			. "";
 	}
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
-	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'businesses', 'business');
+	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'business');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -63,7 +63,7 @@ function ciniki_web_lookupClientDomain($ciniki, $domain, $type) {
 			. "AND (flags&0x01) = 0x01 "
 			. "AND status < 50 "
 			. "";
-		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'businesses', 'business');
+		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'business');
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
@@ -84,7 +84,7 @@ function ciniki_web_lookupClientDomain($ciniki, $domain, $type) {
 		. "AND ciniki_business_modules.status = 1 "														// Business is active
 		. "";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashIDQuery.php');
-	$rc = ciniki_core_dbHashIDQuery($ciniki, $strsql, 'businesses', 'modules', 'module_id');
+	$rc = ciniki_core_dbHashIDQuery($ciniki, $strsql, 'ciniki.businesses', 'modules', 'module_id');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}

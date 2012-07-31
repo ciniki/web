@@ -45,7 +45,7 @@ function ciniki_web_siteSettingsGet($ciniki) {
 	// Get the settings from the database
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbDetailsQueryDash.php');
-	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_settings', 'business_id', $args['business_id'], 'web', 'settings', 'site');
+	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_settings', 'business_id', $args['business_id'], 'ciniki.web', 'settings', 'site');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -59,7 +59,7 @@ function ciniki_web_siteSettingsGet($ciniki) {
 	// If requested, also get the site content
 	//
 	if( isset($args['content']) && $args['content'] == 'yes' ) {
-		$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $args['business_id'], 'web', 'content', 'site');
+		$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $args['business_id'], 'ciniki.web', 'content', 'site');
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}

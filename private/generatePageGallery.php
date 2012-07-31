@@ -66,7 +66,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 			. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
 			. "AND permalink = '" . ciniki_core_dbQuote($ciniki, $image_permalink) . "' "
 			. "";
-		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'artcatalog', 'piece');
+		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.artcatalog', 'piece');
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
@@ -94,7 +94,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 				. "AND (webflags&0x01) = 0 "
 				. "AND date_added > '" . ciniki_core_dbQuote($ciniki, $img['date_added']) . "' "
 				. "";
-			$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'artcatalog', 'position');
+			$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.artcatalog', 'position');
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -118,7 +118,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 			} else {
 				return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'653', 'msg'=>'Unable to load image'));
 			}
-			$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'artcatalog', 'next');
+			$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.artcatalog', 'next');
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -149,7 +149,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 					. "ORDER BY ciniki_artcatalog.date_added DESC " 	// SORT to get the newest image first
 					. "LIMIT 1"
 					. "";
-				$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'artcatalog', 'next');
+				$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.artcatalog', 'next');
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
@@ -171,7 +171,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 					. "ORDER BY ciniki_artcatalog.date_added ASC " 	// SORT to get the oldest image first
 					. "LIMIT 1"
 					. "";
-				$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'artcatalog', 'prev');
+				$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.artcatalog', 'prev');
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
@@ -202,7 +202,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 				. "AND category = '" . ciniki_core_dbQuote($ciniki, $img['category']) . "' "
 				. "AND date_added > '" . ciniki_core_dbQuote($ciniki, $img['date_added']) . "' "
 				. "";
-			$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'artcatalog', 'position');
+			$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.artcatalog', 'position');
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -227,7 +227,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 			} else {
 				return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'664', 'msg'=>'Unable to load image'));
 			}
-			$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'artcatalog', 'next');
+			$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.artcatalog', 'next');
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -255,7 +255,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 					. "ORDER BY ciniki_artcatalog.date_added DESC " 	// SORT to get the newest image first
 					. "LIMIT 1"
 					. "";
-				$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'artcatalog', 'next');
+				$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.artcatalog', 'next');
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
@@ -277,7 +277,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 					. "ORDER BY ciniki_artcatalog.date_added ASC " 	// SORT to get the oldest image first
 					. "LIMIT 1"
 					. "";
-				$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'artcatalog', 'prev');
+				$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.artcatalog', 'prev');
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
@@ -459,7 +459,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		// Get any user specified content for the gallery page
 		//
 		require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbDetailsQueryDash.php');
-		$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'web', 'content', 'page-gallery');
+		$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-gallery');
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}

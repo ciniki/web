@@ -60,7 +60,7 @@ function ciniki_web_businessUsers($ciniki) {
 		. "AND ciniki_business_users.status = 1 "
 		. "";
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryTree');
-	$rc = ciniki_core_dbHashQueryTree($ciniki, $strsql, 'businesses', array(
+	$rc = ciniki_core_dbHashQueryTree($ciniki, $strsql, 'ciniki.businesses', array(
 		array('container'=>'users', 'fname'=>'user_id', 'name'=>'user', 
 			'fields'=>array('id'=>'user_id', 'firstname', 'lastname', 'email', 'display_name'),
 			'details'=>array('detail_key'=>'detail_value'),

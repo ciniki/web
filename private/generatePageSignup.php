@@ -85,7 +85,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 	// Grab the content required for the page
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbDetailsQueryDash.php');
-	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'web', 'content', 'page-signup');
+	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-signup');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -133,9 +133,9 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 			require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionCommit.php');
 			require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbInsert.php');
 			require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbAddModuleHistory.php');
-			$rc = ciniki_core_dbTransactionStart($ciniki, 'businesses');
+			$rc = ciniki_core_dbTransactionStart($ciniki, 'ciniki.businesses');
 			if( $rc['stat'] != 'ok' ) { 
-				ciniki_core_dbTransactionRollback($ciniki, 'businesses');
+				ciniki_core_dbTransactionRollback($ciniki, 'ciniki.businesses');
 				$page_error = "We seem to have hit a snag, and were unable to setup your business.  Please try again and if "
 					. "you continue to have problems, contact support.";
 				$err = 23;
@@ -160,9 +160,9 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 				. "SHA1('" . ciniki_core_dbQuote($ciniki, '') . "'), "
 				. "UTC_TIMESTAMP(), "
 				. "UTC_TIMESTAMP())";
-			$rc = ciniki_core_dbInsert($ciniki, $strsql, 'users');
+			$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.users');
 			if( $rc['stat'] != 'ok' ) { 
-				ciniki_core_dbTransactionRollback($ciniki, 'businesses');
+				ciniki_core_dbTransactionRollback($ciniki, 'ciniki.businesses');
 				$page_error = "We seem to have hit a snag, and were unable to setup your business.  Please try again and if "
 					. "you continue to have problems, contact support.";
 				$err = 25;
@@ -185,23 +185,23 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 				. "'" . ciniki_core_dbQuote($ciniki, $_SESSION['business_name']) . "' "
 				. ", '" . ciniki_core_dbQuote($ciniki, $_SESSION['sitename']) . "' "
 				. ", 1, UTC_TIMESTAMP(), UTC_TIMESTAMP())";
-			$rc = ciniki_core_dbInsert($ciniki, $strsql, 'businesses');
+			$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.businesses');
 			if( $rc['stat'] != 'ok' ) { 
-				ciniki_core_dbTransactionRollback($ciniki, 'businesses');
+				ciniki_core_dbTransactionRollback($ciniki, 'ciniki.businesses');
 				$page_error = "We seem to have hit a snag, and were unable to setup your business.  Please try again and if "
 					. "you continue to have problems, contact support.";
 				$err = 22;
 			}
 			if( !isset($rc['insert_id']) || $rc['insert_id'] < 1 ) {
-				ciniki_core_dbTransactionRollback($ciniki, 'businesses');
+				ciniki_core_dbTransactionRollback($ciniki, 'ciniki.businesses');
 				$page_error = "We seem to have hit a snag, and were unable to setup your business.  Please try again and if "
 					. "you continue to have problems, contact support.";
 				$err = 4;
 			} else {
 				$business_id = $rc['insert_id'];
-				ciniki_core_dbAddModuleHistory($ciniki, 'businesses', 'ciniki_business_history', $business_id, 
+				ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.businesses', 'ciniki_business_history', $business_id, 
 					1, 'ciniki_businesses', '', 'name', $_SESSION['business_name']);
-				ciniki_core_dbAddModuleHistory($ciniki, 'businesses', 'ciniki_business_history', $business_id, 
+				ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.businesses', 'ciniki_business_history', $business_id, 
 					1, 'ciniki_businesses', '', 'sitename', $_SESSION['sitename']);
 			}
 		}
@@ -215,14 +215,14 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 				. "'contact.person.name', "
 				. "'" . ciniki_core_dbQuote($ciniki, $_SESSION['firstname'] . " " . $_SESSION['lastname']) . "', "
 				. "UTC_TIMESTAMP(), UTC_TIMESTAMP()) ";
-			$rc = ciniki_core_dbInsert($ciniki, $strsql, 'businesses');
+			$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.businesses');
 			if( $rc['stat'] != 'ok' ) {
-				ciniki_core_dbTransactionRollback($ciniki, 'businesses');
+				ciniki_core_dbTransactionRollback($ciniki, 'ciniki.businesses');
 				$page_error = "We seem to have hit a snag, and were unable to setup your business.  Please try again and if "
 					. "you continue to have problems, contact support.";
 				$err = 5;
 			} else {
-				ciniki_core_dbAddModuleHistory($ciniki, 'businesses', 'ciniki_business_history', $business_id, 
+				ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.businesses', 'ciniki_business_history', $business_id, 
 					1, 'ciniki_business_details', 'contact.person.name', 'detail_value', $_SESSION['firstname'] . " " . $_SESSION['lastname']);
 			}
 		}
@@ -232,14 +232,14 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 				. "'contact.email.address', "
 				. "'" . ciniki_core_dbQuote($ciniki, $_SESSION['email_address']) . "', "
 				. "UTC_TIMESTAMP(), UTC_TIMESTAMP()) ";
-			$rc = ciniki_core_dbInsert($ciniki, $strsql, 'businesses');
+			$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.businesses');
 			if( $rc['stat'] != 'ok' ) {
-				ciniki_core_dbTransactionRollback($ciniki, 'businesses');
+				ciniki_core_dbTransactionRollback($ciniki, 'ciniki.businesses');
 				$page_error = "We seem to have hit a snag, and were unable to setup your business.  Please try again and if "
 					. "you continue to have problems, contact support.";
 				$err = 6;
 			} else {
-				ciniki_core_dbAddModuleHistory($ciniki, 'businesses', 'ciniki_business_history', $business_id, 
+				ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.businesses', 'ciniki_business_history', $business_id, 
 					1, 'ciniki_business_details', 'contact.email.address', 'detail_value', $_SESSION['email_address']);
 			}
 		}
@@ -253,9 +253,9 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 				. "'" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
 				. ", '" . ciniki_core_dbQuote($ciniki, $user_id) . "' "
 				. ", 'ciniki', 'owners', 1, UTC_TIMESTAMP(), UTC_TIMESTAMP())";
-			$rc = ciniki_core_dbInsert($ciniki, $strsql, 'businesses');
+			$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.businesses');
 			if( $rc['stat'] != 'ok' ) {
-				ciniki_core_dbTransactionRollback($ciniki, 'businesses');
+				ciniki_core_dbTransactionRollback($ciniki, 'ciniki.businesses');
 				$page_error = "We seem to have hit a snag, and were unable to setup your business.  Please try again and if "
 					. "you continue to have problems, contact support.";
 				$err = 21;
@@ -270,18 +270,21 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 			foreach($modules as $module) {
 				$mod = preg_split('/\./', $module);
 				$strsql = "INSERT INTO ciniki_business_modules (business_id, "
-					. "package, module, status, ruleset, date_added, last_updated) VALUES ("
+					. "package, module, status, ruleset, date_added, last_updated, last_change) VALUES ("
 					. "'" . ciniki_core_dbQuote($ciniki, $business_id) . "', "
 					. "'" . ciniki_core_dbQuote($ciniki, $mod[0]) . "', "
 					. "'" . ciniki_core_dbQuote($ciniki, $mod[1]) . "', "
-					. "1, '', UTC_TIMESTAMP(), UTC_TIMESTAMP())";
-				$rc = ciniki_core_dbInsert($ciniki, $strsql, 'businesses');
+					. "1, '', UTC_TIMESTAMP(), UTC_TIMESTAMP(), UTC_TIMESTAMP())";
+				$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.businesses');
 				if( $rc['stat'] != 'ok' ) {
-					ciniki_core_dbTransactionRollback($ciniki, 'businesses');
+					ciniki_core_dbTransactionRollback($ciniki, 'ciniki.businesses');
 					$page_error = "We seem to have hit a snag, and were unable to setup your business.  Please try again and if "
 						. "you continue to have problems, contact support.";
 					$err = 7;
 				}
+				//
+				// Check if there is an initialization script for the module when the business is enabled
+				//
 				if( $mod[0] == 'ciniki' 
 					&& file_exists($ciniki['config']['core']['modules_dir'] . '/' . $mod[1] . '/private/moduleInitialize.php') 
 					) {
@@ -306,9 +309,9 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 				. "'" . ciniki_core_dbQuote($ciniki, $_SESSION['plan_monthly']) . "', "
 				. "0, 0, 'paypal', "
 				. "UTC_TIMESTAMP(), UTC_TIMESTAMP())";
-			$rc = ciniki_core_dbInsert($ciniki, $strsql, 'businesses');
+			$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.businesses');
 			if( $rc['stat'] != 'ok' ) {
-				ciniki_core_dbTransactionRollback($ciniki, 'businesses');
+				ciniki_core_dbTransactionRollback($ciniki, 'ciniki.businesses');
 				$page_error = "We seem to have hit a snag, and were unable to setup your business.  Please try again and if "
 					. "you continue to have problems, contact support.";
 				$err = 8;
@@ -319,7 +322,14 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 		// Commit, and display success message
 		//
 		if( $err == 0 ) {
-			ciniki_core_dbTransactionCommit($ciniki, 'businesses');
+			ciniki_core_dbTransactionCommit($ciniki, 'ciniki.businesses');
+
+			//
+			// Update the last_change date in the business modules
+			// Ignore the result, as we don't want to stop user updates if this fails.
+			//
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
+			ciniki_businesses_updateModuleChangeDate($ciniki, $args['business_id'], 'ciniki', 'businesses');
 
 			//
 			// Email user welcome message
@@ -356,7 +366,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 				. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['core']['master_business_id']) . "' "
 				. "AND permission_group = 'owners' "
 				. "";
-			$rc = ciniki_core_dbQueryList($ciniki, $strsql, 'businesses', 'user_ids', 'user_id');
+			$rc = ciniki_core_dbQueryList($ciniki, $strsql, 'ciniki.businesses', 'user_ids', 'user_id');
 			if( $rc['stat'] == 'ok' ) {
 				foreach($rc['user_ids'] as $uid) {
 					// 
@@ -444,7 +454,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 			. "OR sitename = '" . ciniki_core_dbQuote($ciniki, $sitename) . "' "
 			. "";
 		require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
-		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'businesses', 'business');
+		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'business');
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
@@ -462,7 +472,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 				. "WHERE username = '" . ciniki_core_dbQuote($ciniki, $_POST['username']) . "' "
 				. "OR email = '" . ciniki_core_dbQuote($ciniki, $_POST['email_address']) . "' "
 				. "";
-			$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'businesses', 'user');
+			$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'user');
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -482,7 +492,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 						. "WHERE email = '" . ciniki_core_dbQuote($ciniki, $_POST['email_address']) . "' "
 						. "AND password = SHA1('" . ciniki_core_dbQuote($ciniki, $_POST['password']) . "') "
 						. "";
-					$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'businesses', 'user');
+					$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'user');
 					if( $rc['stat'] != 'ok' ) {
 						return $rc;
 					}
@@ -508,7 +518,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 				. "AND business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['core']['master_business_id']) . "' "
 				. "AND (flags&0x01) = 1 "
 				. "";
-			$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'businesses', 'plan');
+			$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'plan');
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -581,7 +591,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 		// Generate the content of the page
 		//
 		require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbDetailsQueryDash.php');
-		$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'web', 'content', 'page-signup');
+		$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-signup');
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
@@ -642,7 +652,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 			. "ORDER BY name "
 			. "";
 		require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashIDQuery.php');
-		$rc = ciniki_core_dbHashIDQuery($ciniki, $strsql, 'businesses', 'plans', 'id');
+		$rc = ciniki_core_dbHashIDQuery($ciniki, $strsql, 'ciniki.businesses', 'plans', 'id');
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}

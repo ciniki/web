@@ -24,7 +24,7 @@ function ciniki_web_moduleInitialize($ciniki, $business_id) {
 		. "AND ciniki_business_modules.status = 1 "														// Business is active
 		. "";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashIDQuery.php');
-	$rc = ciniki_core_dbHashIDQuery($ciniki, $strsql, 'businesses', 'modules', 'module_id');
+	$rc = ciniki_core_dbHashIDQuery($ciniki, $strsql, 'ciniki.businesses', 'modules', 'module_id');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -41,7 +41,7 @@ function ciniki_web_moduleInitialize($ciniki, $business_id) {
 	$strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) VALUES ("
 		. "'" . ciniki_core_dbQuote($ciniki, $business_id) . "', "
 		. "'page-home-active', 'yes', UTC_TIMESTAMP(), UTC_TIMESTAMP())";
-	ciniki_core_dbInsert($ciniki, $strsql, 'web');
+	ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
 
 	//
 	// Active about page
@@ -49,11 +49,11 @@ function ciniki_web_moduleInitialize($ciniki, $business_id) {
 	$strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) VALUES ("
 		. "'" . ciniki_core_dbQuote($ciniki, $business_id) . "', "
 		. "'page-about-active', 'yes', UTC_TIMESTAMP(), UTC_TIMESTAMP())";
-	ciniki_core_dbInsert($ciniki, $strsql, 'web');
+	ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
 	$strsql = "INSERT INTO ciniki_web_content (business_id, detail_key, detail_value, date_added, last_updated) VALUES ("
 		. "'" . ciniki_core_dbQuote($ciniki, $business_id) . "', "
 		. "'page-about-content', 'Sample about page', UTC_TIMESTAMP(), UTC_TIMESTAMP())";
-	ciniki_core_dbInsert($ciniki, $strsql, 'web');
+	ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
 
 	//
 	// Active contact page 
@@ -61,15 +61,15 @@ function ciniki_web_moduleInitialize($ciniki, $business_id) {
 	$strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) VALUES ("
 		. "'" . ciniki_core_dbQuote($ciniki, $business_id) . "', "
 		. "'page-contact-active', 'yes', UTC_TIMESTAMP(), UTC_TIMESTAMP())";
-	ciniki_core_dbInsert($ciniki, $strsql, 'web');
+	ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
 	$strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) VALUES ("
 		. "'" . ciniki_core_dbQuote($ciniki, $business_id) . "', "
 		. "'page-contact-name-display', 'yes', UTC_TIMESTAMP(), UTC_TIMESTAMP())";
-	ciniki_core_dbInsert($ciniki, $strsql, 'web');
+	ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
 	$strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) VALUES ("
 		. "'" . ciniki_core_dbQuote($ciniki, $business_id) . "', "
 		. "'page-contact-email-display', 'yes', UTC_TIMESTAMP(), UTC_TIMESTAMP())";
-	ciniki_core_dbInsert($ciniki, $strsql, 'web');
+	ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
 
 	//
 	// Active artcatalog gallery
@@ -78,14 +78,14 @@ function ciniki_web_moduleInitialize($ciniki, $business_id) {
 		$strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) VALUES ("
 			. "'" . ciniki_core_dbQuote($ciniki, $business_id) . "', "
 			. "'page-gallery-active', 'yes', UTC_TIMESTAMP(), UTC_TIMESTAMP())";
-		ciniki_core_dbInsert($ciniki, $strsql, 'web');
+		ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
 		//
 		// Set the theme to blue on black by default if artcatalog specified
 		//
 		$strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) VALUES ("
 			. "'" . ciniki_core_dbQuote($ciniki, $business_id) . "', "
 			. "'site-theme', 'black', UTC_TIMESTAMP(), UTC_TIMESTAMP())";
-		ciniki_core_dbInsert($ciniki, $strsql, 'web');
+		ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
 	}
 
 	//
@@ -95,11 +95,11 @@ function ciniki_web_moduleInitialize($ciniki, $business_id) {
 		$strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) VALUES ("
 			. "'" . ciniki_core_dbQuote($ciniki, $business_id) . "', "
 			. "'page-events-active', 'yes', UTC_TIMESTAMP(), UTC_TIMESTAMP())";
-		ciniki_core_dbInsert($ciniki, $strsql, 'web');
+		ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
 		$strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) VALUES ("
 			. "'" . ciniki_core_dbQuote($ciniki, $business_id) . "', "
 			. "'page-events-past', 'yes', UTC_TIMESTAMP(), UTC_TIMESTAMP())";
-		ciniki_core_dbInsert($ciniki, $strsql, 'web');
+		ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
 	}
 
 	//
@@ -109,8 +109,15 @@ function ciniki_web_moduleInitialize($ciniki, $business_id) {
 		$strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) VALUES ("
 			. "'" . ciniki_core_dbQuote($ciniki, $business_id) . "', "
 			. "'page-links-active', 'yes', UTC_TIMESTAMP(), UTC_TIMESTAMP())";
-		ciniki_core_dbInsert($ciniki, $strsql, 'web');
+		ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
 	}
+
+	//
+	// Update the last_change date in the business modules
+	// Ignore the result, as we don't want to stop user updates if this fails.
+	//
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
+	ciniki_businesses_updateModuleChangeDate($ciniki, $args['business_id'], 'ciniki', 'web');
 
 	return array('stat'=>'ok');
 }

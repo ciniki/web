@@ -14,7 +14,7 @@
 // Arguments
 // ---------
 // ciniki:
-// business_id:			
+// business_id:			The ID of the business to update the contact information for.
 //
 // Returns
 // -------
@@ -30,7 +30,7 @@ function ciniki_web_updateUserDisplay($ciniki, $business_id) {
 		. "AND detail_value > 0 "
 		. "";
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
-	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'web', 'users');
+	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'users');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -48,7 +48,7 @@ function ciniki_web_updateUserDisplay($ciniki, $business_id) {
 		. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
 		. "AND detail_key = 'page-contact-user-display' "
 		. "";
-	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'web', 'setting');
+	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'setting');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -68,14 +68,20 @@ function ciniki_web_updateUserDisplay($ciniki, $business_id) {
 			. "ON DUPLICATE KEY UPDATE detail_value = '" . ciniki_core_dbQuote($ciniki, $detail_value) . "' "
 			. ", last_updated = UTC_TIMESTAMP() "
 			. "";
-		$rc = ciniki_core_dbInsert($ciniki, $strsql, 'web');
+		$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
 		if( $rc['stat'] != 'ok' ) {
-			ciniki_core_dbTransactionRollback($ciniki, 'web');
 			return $rc;
 		}
-		ciniki_core_dbAddModuleHistory($ciniki, 'web', 'ciniki_web_history', $business_id, 
+		ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $business_id, 
 			2, 'ciniki_web_settings', $field, 'detail_value', $detail_value);
 	}
+
+	//
+	// Update the last_change date in the business modules
+	// Ignore the result, as we don't want to stop user updates if this fails.
+	//
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
+	ciniki_businesses_updateModuleChangeDate($ciniki, $args['business_id'], 'ciniki', 'web');
 
 	return array('stat'=>'ok');
 }
