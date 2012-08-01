@@ -81,7 +81,7 @@ function ciniki_web_updateUserDisplay($ciniki, $business_id) {
 	// Ignore the result, as we don't want to stop user updates if this fails.
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
-	ciniki_businesses_updateModuleChangeDate($ciniki, $args['business_id'], 'ciniki', 'web');
+	ciniki_businesses_updateModuleChangeDate($ciniki, $business_id, 'ciniki', 'web');
 
 	return array('stat'=>'ok');
 }
