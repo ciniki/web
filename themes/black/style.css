@@ -239,6 +239,10 @@ div.gallery-image-details span.image-awards {
 	color: #c00;
 }
 
+#content form p.formerror a {
+	color: #a00;
+}
+
 #content form div.bigsubmit {
 	text-align: center;
 }

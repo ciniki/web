@@ -47,8 +47,19 @@ function ciniki_web_generatePageAccount($ciniki, $settings) {
 			unset($_SESSION['customer']);
 		}
 		elseif( $_POST['action'] == 'signin' ) {
+			//
+			// Check the referrer and that cookies are enabled
+			//
+			if( !isset($_SESSION['loginform']) ) {
+				$err_msg = "It appears that you do not have cookies enabled in your browser.  They are "
+					. "required for you to login.  Please check your browser settings and try again.  <br/><br/>Here is a link to help: "
+					. "<a target='_blank' href='http://support.google.com/accounts/bin/answer.py?hl=en&answer=61416'>How to enable cookies</a>."
+					. "";
+				$display_form = 'login';
+			}
+
 			// Verify the customer and create a session
-			if( isset($_POST['email']) && $_POST['email'] != '' 
+			elseif( isset($_POST['email']) && $_POST['email'] != '' 
 				&& isset($_POST['password']) && $_POST['password'] != '' 
 				) {
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'auth');
@@ -322,6 +333,10 @@ function ciniki_web_generatePageAccount($ciniki, $settings) {
 	// Display login form
 	//
 	if( $display_form == 'login' || $display_form == 'forgot' ) {
+		//
+		// Set a session variable, to test for cookies being turned on
+		//
+		$_SESSION['loginform'] = 'yes';
 		$post_email = '';
 		if( isset($_POST['email']) ) {
 			$post_email = $_POST['email'];
