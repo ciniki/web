@@ -44,6 +44,7 @@ function ciniki_web_checkAccess($ciniki, $business_id, $method) {
 	if( $method == 'ciniki.web.siteSettings' 
 		|| $method == 'ciniki.web.pageSettingsGet'
 		|| $method == 'ciniki.web.pageSettingsHistory'
+		|| $method == 'ciniki.web.businessUsers'
 		|| $method == 'ciniki.web.siteSettingsUpdate'
 		) {
 		$strsql = "SELECT business_id, user_id FROM ciniki_business_users "
