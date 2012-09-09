@@ -36,7 +36,7 @@ function ciniki_web_siteSettings($ciniki) {
 	//
 	// Find all the required and optional arguments
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/prepareArgs.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/prepareArgs.php');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
 		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'),
 		));
@@ -48,7 +48,7 @@ function ciniki_web_siteSettings($ciniki) {
 	//
 	// Check access to business_id as owner, and load module list
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/checkAccess.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/checkAccess.php');
 	$ac = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.siteSettings');
 	if( $ac['stat'] != 'ok' ) {
 		return $ac;
@@ -79,7 +79,7 @@ function ciniki_web_siteSettings($ciniki) {
 	// 
 	// If this is the master business, allow extra options
 	//
-	if( $ciniki['config']['core']['master_business_id'] == $args['business_id'] ) {
+	if( $ciniki['config']['ciniki.core']['master_business_id'] == $args['business_id'] ) {
 		$pages['signup'] = array('display_name'=>'Signup', 'active'=>'no');
 		$pages['api'] = array('display_name'=>'API', 'active'=>'no');
 	}
@@ -87,7 +87,7 @@ function ciniki_web_siteSettings($ciniki) {
 	//
 	// Load current settings
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbDetailsQuery.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbDetailsQuery.php');
 	$rc = ciniki_core_dbDetailsQuery($ciniki, 'ciniki_web_settings', 'business_id', $args['business_id'], 'ciniki.web', 'settings', '');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;

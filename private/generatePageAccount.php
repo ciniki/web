@@ -233,7 +233,7 @@ function ciniki_web_generatePageAccount($ciniki, $settings) {
 		//
 		// Get any content for the account page
 		//
-		require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbDetailsQueryDash.php');
+		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbDetailsQueryDash.php');
 		$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-account');
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
@@ -252,7 +252,7 @@ function ciniki_web_generatePageAccount($ciniki, $settings) {
 			. "<header class='entry-title'><h1 class='entry-title'>Account</h1></header>\n";
 		
 		if( isset($content_details['page-account-content']) ) {
-			require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processContent.php');
+			require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/processContent.php');
 			$rc = ciniki_web_processContent($ciniki, $content_details['page-account-content']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
@@ -274,7 +274,7 @@ function ciniki_web_generatePageAccount($ciniki, $settings) {
 				$content .= "<h1 class='entry-title'>Subscriptions</h1>";
 				// Check for any content the business provided
 				if( isset($content_details['page-account-content-subscriptions']) ) {
-					require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processContent.php');
+					require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/processContent.php');
 					$rc = ciniki_web_processContent($ciniki, $content_details['page-account-content-subscriptions']);	
 					if( $rc['stat'] != 'ok' ) {
 						return $rc;

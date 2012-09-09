@@ -61,7 +61,7 @@ function ciniki_web_generatePageDownloads($ciniki, $settings) {
 	//
 	// Add the header
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageHeader.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageHeader.php');
 	$page_title = 'Downloads';
 	if( isset($settings['page-downloads-name']) && $settings['page-downloads-name'] != '' ) {
 		$page_title = $settings['page-downloads-name'];
@@ -75,7 +75,7 @@ function ciniki_web_generatePageDownloads($ciniki, $settings) {
 	//
 	// Generate the content of the page
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbDetailsQueryDash.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbDetailsQueryDash.php');
 	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-downloads');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -83,7 +83,7 @@ function ciniki_web_generatePageDownloads($ciniki, $settings) {
 
 	$page_content = '';
 	if( isset($rc['content']) && isset($rc['content']['page-downloads-content']) ) {
-		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processContent.php');
+		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/processContent.php');
 		$rc = ciniki_web_processContent($ciniki, $rc['content']['page-downloads-content']);	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
@@ -103,7 +103,7 @@ function ciniki_web_generatePageDownloads($ciniki, $settings) {
 	//
 	// Get the list of downloads to be displayed
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/filedepot/web/list.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/filedepot/web/list.php');
 	$rc = ciniki_filedepot_web_list($ciniki, $ciniki['request']['business_id']);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -162,7 +162,7 @@ function ciniki_web_generatePageDownloads($ciniki, $settings) {
 	//
 	// Add the footer
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageFooter.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageFooter.php');
 	$rc = ciniki_web_generatePageFooter($ciniki, $settings);
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;

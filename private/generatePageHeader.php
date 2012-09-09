@@ -114,12 +114,12 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 	// Check if we are to display a sign in button
 	//
 	$signin_content = '';
-	if( $ciniki['request']['business_id'] == $ciniki['config']['core']['master_business_id'] 
-		&& isset($ciniki['config']['core']['manage.url']) && $ciniki['config']['core']['manage.url'] != '' ) {
-		$signin_content .= "<div class='signin'><a href='" . $ciniki['config']['core']['manage.url'] . "'><span>Sign in</span></a></div>\n";
+	if( $ciniki['request']['business_id'] == $ciniki['config']['ciniki.core']['master_business_id'] 
+		&& isset($ciniki['config']['ciniki.core']['manage.url']) && $ciniki['config']['ciniki.core']['manage.url'] != '' ) {
+		$signin_content .= "<div class='signin'><a href='" . $ciniki['config']['ciniki.core']['manage.url'] . "'><span>Sign in</span></a></div>\n";
 	} 
 	// Display a customer signin for regular businesses
-	elseif( $ciniki['request']['business_id'] != $ciniki['config']['core']['master_business_id']
+	elseif( $ciniki['request']['business_id'] != $ciniki['config']['ciniki.core']['master_business_id']
 		&& isset($settings['page-account-active']) && $settings['page-account-active'] == 'yes'
 		&& ((isset($settings['page-downloads-customers']) && $settings['page-downloads-customers'] == 'yes')
 		// || () // Used if there are other pages that allow customer only content
@@ -167,7 +167,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 	// Decide if there is a header image to be displayed, or display an h1 title
 	//
 	if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
-		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/getScaledImageURL.php');
+		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/getScaledImageURL.php');
 		$rc = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '125', '85');
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;

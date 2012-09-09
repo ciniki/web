@@ -292,7 +292,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		//
 		// Load the image
 		//
-		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/getScaledImageURL.php');
+		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/getScaledImageURL.php');
 		$rc = ciniki_web_getScaledImageURL($ciniki, $img['image_id'], 'original', 0, 600);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
@@ -418,7 +418,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 			$page_content .= "<span class='image-description'>" . preg_replace('/\n/', '<br/>', $img['description']) . "</span>";
 		}
 		if( $img['awards'] != '' ) {
-			require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processContent.php');
+			require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/processContent.php');
 			$rc = ciniki_web_processContent($ciniki, $img['awards']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
@@ -438,7 +438,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		//
 		// Get the gallery for the specified category
 		//
-		require_once($ciniki['config']['core']['modules_dir'] . '/artcatalog/web/categoryImages.php');
+		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/artcatalog/web/categoryImages.php');
 		$rc = ciniki_artcatalog_web_categoryImages($ciniki, $settings, $ciniki['request']['business_id'], 
 			$ciniki['request']['uri_split'][0], urldecode($ciniki['request']['uri_split'][1]));
 		if( $rc['stat'] != 'ok' ) {
@@ -446,7 +446,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		}
 		$images = $rc['images'];
 
-		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageGalleryThumbnails.php');
+		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageGalleryThumbnails.php');
 		$img_base_url = $ciniki['request']['base_url'] . "/gallery/category/" . $ciniki['request']['uri_split'][1];
 		$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $rc['images'], 125);
 		if( $rc['stat'] != 'ok' ) {
@@ -458,14 +458,14 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		//
 		// Get any user specified content for the gallery page
 		//
-		require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbDetailsQueryDash.php');
+		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbDetailsQueryDash.php');
 		$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-gallery');
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
 
 		if( isset($rc['content']['page-gallery-content']) ) {
-			require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processContent.php');
+			require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/processContent.php');
 			$rc = ciniki_web_processContent($ciniki, $rc['content']['page-gallery-content']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
@@ -477,7 +477,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		// List the categories the user has created in the artcatalog, 
 		// OR just show all the thumbnails if they haven't created any categories
 		//
-		require_once($ciniki['config']['core']['modules_dir'] . '/artcatalog/web/categories.php');
+		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/artcatalog/web/categories.php');
 		$rc = ciniki_artcatalog_web_categories($ciniki, $settings, $ciniki['request']['business_id']);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
@@ -487,14 +487,14 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 			// No categories specified, just show thumbnails of all artwork
 			//
 			$page_title = 'Gallery';
-			require_once($ciniki['config']['core']['modules_dir'] . '/artcatalog/web/categoryImages.php');
+			require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/artcatalog/web/categoryImages.php');
 			$rc = ciniki_artcatalog_web_categoryImages($ciniki, $settings, $ciniki['request']['business_id'], 'category', '');
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
 			$images = $rc['images'];
 
-			require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageGalleryThumbnails.php');
+			require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageGalleryThumbnails.php');
 			$img_base_url = $ciniki['request']['base_url'] . "/gallery/image";
 			$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $rc['images'], 150, 0);
 			if( $rc['stat'] != 'ok' ) {
@@ -506,7 +506,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 			$page_content .= "<div class='image-categories'>";
 			foreach($rc['categories'] AS $cnum => $category) {
 				$name = $category['category']['name'];
-				require_once($ciniki['config']['core']['modules_dir'] . '/web/private/getScaledImageURL.php');
+				require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/getScaledImageURL.php');
 				$rc = ciniki_web_getScaledImageURL($ciniki, $category['category']['image_id'], 'thumbnail', '240', 0);
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
@@ -529,7 +529,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 	//
 	// Add the header
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageHeader.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageHeader.php');
 	$rc = ciniki_web_generatePageHeader($ciniki, $settings, $page_title);
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
@@ -556,7 +556,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 	//
 	// Add the footer
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageFooter.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageFooter.php');
 	$rc = ciniki_web_generatePageFooter($ciniki, $settings);
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;

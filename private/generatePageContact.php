@@ -28,7 +28,7 @@ function ciniki_web_generatePageContact($ciniki, $settings) {
 	//
 	// Add the header
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageHeader.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageHeader.php');
 	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Contact');
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
@@ -38,7 +38,7 @@ function ciniki_web_generatePageContact($ciniki, $settings) {
 	//
 	// Check which parts of the business contact information to display automatically
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/businesses/web/contact.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/businesses/web/contact.php');
 	$rc = ciniki_businesses_web_contact($ciniki, $settings, $ciniki['request']['business_id']);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -125,14 +125,14 @@ function ciniki_web_generatePageContact($ciniki, $settings) {
 	//
 	// Generate the content of the page
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbDetailsQueryDash.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbDetailsQueryDash.php');
 	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-contact');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
 
 	if( isset($rc['content']['page-contact-content']) ) {
-		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processContent.php');
+		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/processContent.php');
 		$rc = ciniki_web_processContent($ciniki, $rc['content']['page-contact-content']);	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
@@ -162,7 +162,7 @@ function ciniki_web_generatePageContact($ciniki, $settings) {
 	//
 	// Add the footer
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageFooter.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageFooter.php');
 	$rc = ciniki_web_generatePageFooter($ciniki, $settings);
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;

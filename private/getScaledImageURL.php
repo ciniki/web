@@ -62,7 +62,7 @@ function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $
 		//
 		// Load the image from the database
 		//
-		require_once($ciniki['config']['core']['modules_dir'] . '/images/private/loadImage.php');
+		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/images/private/loadImage.php');
 		$rc = ciniki_images_loadImage($ciniki, $img['id'], $version);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;

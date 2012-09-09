@@ -18,7 +18,7 @@ function ciniki_web_checkAccess($ciniki, $business_id, $method) {
 	//
 	// Check if the business is active and the module is enabled
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/businesses/private/checkModuleAccess.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/businesses/private/checkModuleAccess.php');
 	$rc = ciniki_businesses_checkModuleAccess($ciniki, $business_id, 'ciniki', 'web');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -53,7 +53,7 @@ function ciniki_web_checkAccess($ciniki, $business_id, $method) {
 			. "AND package = 'ciniki' "
 			. "AND (permission_group = 'owners' OR permission_group = 'employees') "
 			. "";
-		require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
+		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbHashQuery.php');
 		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'user');
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;

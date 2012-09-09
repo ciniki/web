@@ -20,8 +20,8 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 	// and don't need to worry, just use https for Production.  If ssl is turned on, then
 	// check to make sure that signup was called from https, if not redirect.
 	//
-	if( isset($ciniki['config']) && isset($ciniki['config']['core']) && isset($ciniki['config']['core']['ssl']) 
-		&& $ciniki['config']['core']['ssl'] == 'off' 
+	if( isset($ciniki['config']) && isset($ciniki['config']['ciniki.core']) && isset($ciniki['config']['ciniki.core']['ssl']) 
+		&& $ciniki['config']['ciniki.core']['ssl'] == 'off' 
 		&& (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != 'on') ) { 
 		$verify_base_url = 'http://' . $_SERVER['HTTP_HOST'] . $ciniki['request']['base_url'] . '/signup/verify';
 	} else {
@@ -73,7 +73,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 	//
 	// Add the header
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageHeader.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageHeader.php');
 	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Signup');
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
@@ -84,7 +84,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 	//
 	// Grab the content required for the page
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbDetailsQueryDash.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbDetailsQueryDash.php');
 	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-signup');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -128,11 +128,11 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 		// Turn off autocommit
 		//  
 		if( $err == 0 ) {
-			require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionStart.php');
-			require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionRollback.php');
-			require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionCommit.php');
-			require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbInsert.php');
-			require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbAddModuleHistory.php');
+			require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbTransactionStart.php');
+			require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbTransactionRollback.php');
+			require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbTransactionCommit.php');
+			require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbInsert.php');
+			require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbAddModuleHistory.php');
 			$rc = ciniki_core_dbTransactionStart($ciniki, 'ciniki.businesses');
 			if( $rc['stat'] != 'ok' ) { 
 				ciniki_core_dbTransactionRollback($ciniki, 'ciniki.businesses');
@@ -286,9 +286,9 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 				// Check if there is an initialization script for the module when the business is enabled
 				//
 				if( $mod[0] == 'ciniki' 
-					&& file_exists($ciniki['config']['core']['modules_dir'] . '/' . $mod[1] . '/private/moduleInitialize.php') 
+					&& file_exists($ciniki['config']['ciniki.core']['modules_dir'] . '/' . $mod[1] . '/private/moduleInitialize.php') 
 					) {
-					require_once($ciniki['config']['core']['modules_dir'] . '/' . $mod[1] . '/private/moduleInitialize.php');
+					require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/' . $mod[1] . '/private/moduleInitialize.php');
 					$method_function = $mod[0] . '_' . $mod[1] . '_moduleInitialize';
 					if( is_callable($method_function) ) {
 						$method_function($ciniki, $business_id);
@@ -346,24 +346,24 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 				. "\n\n"
 				. "Email: " . $_SESSION['email_address'] . "\n"
 				. "Username: " . $_SESSION['username'] . "\n"
-				. "Manage: " . $ciniki['config']['core']['manage.url'] . "\n";
+				. "Manage: " . $ciniki['config']['ciniki.core']['manage.url'] . "\n";
 			if( preg_match('/ciniki\.web/', $_SESSION['plan_modules']) ) {
-				$msg .= "Your website: http://" . $ciniki['config']['web']['master.domain'] . '/' . $_SESSION['sitename'] . "\n";
+				$msg .= "Your website: http://" . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $_SESSION['sitename'] . "\n";
 			}
 			$msg .= "\n\n";
-			$headers = 'From: "' . $ciniki['config']['core']['system.email.name'] . '" <' . $ciniki['config']['core']['system.email'] . ">\r\n" .
-				'Reply-To: "' . $ciniki['config']['core']['system.email.name'] . '" <' . $ciniki['config']['core']['system.email'] . ">\r\n" .
+			$headers = 'From: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
+				'Reply-To: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
 				'X-Mailer: PHP/' . phpversion();
-			mail($_SESSION['email_address'], $subject, $msg, $headers, '-f' . $ciniki['config']['core']['system.email']);
+			mail($_SESSION['email_address'], $subject, $msg, $headers, '-f' . $ciniki['config']['ciniki.core']['system.email']);
 
 			//
 			// Email a notification to the owners of the master business
 			//
-			require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQueryList.php');
-			require_once($ciniki['config']['core']['modules_dir'] . '/users/private/emailUser.php');
+			require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbQueryList.php');
+			require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/users/private/emailUser.php');
 	
 			$strsql = "SELECT user_id FROM ciniki_business_users "
-				. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['core']['master_business_id']) . "' "
+				. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_business_id']) . "' "
 				. "AND permission_group = 'owners' "
 				. "";
 			$rc = ciniki_core_dbQueryList($ciniki, $strsql, 'ciniki.businesses', 'user_ids', 'user_id');
@@ -385,7 +385,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 
 			$page_title = 'Verification';
 			if( isset($page_details['page-signup-success']) ) {
-				require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processContent.php');
+				require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/processContent.php');
 				$rc = ciniki_web_processContent($ciniki, $page_details['page-signup-success']);	
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
@@ -453,7 +453,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 			. "WHERE name = '" . ciniki_core_dbQuote($ciniki, $_POST['business_name']) . "' "
 			. "OR sitename = '" . ciniki_core_dbQuote($ciniki, $sitename) . "' "
 			. "";
-		require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
+		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbHashQuery.php');
 		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'business');
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
@@ -515,7 +515,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 			$strsql = "SELECT id, name, monthly, trial_days, modules "
 				. "FROM ciniki_business_plans "
 				. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $_POST['plan']) . "' "
-				. "AND business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['core']['master_business_id']) . "' "
+				. "AND business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_business_id']) . "' "
 				. "AND (flags&0x01) = 1 "
 				. "";
 			$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'plan');
@@ -559,10 +559,10 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 //				. "<a href='$verify_url'>$verify_url</a>";
 				. "$verify_url"
 				. "\n\n";
-			$headers = 'From: "' . $ciniki['config']['core']['system.email.name'] . '" <' . $ciniki['config']['core']['system.email'] . ">\r\n" .
-				'Reply-To: "' . $ciniki['config']['core']['system.email.name'] . '" <' . $ciniki['config']['core']['system.email'] . ">\r\n" .
+			$headers = 'From: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
+				'Reply-To: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
 				'X-Mailer: PHP/' . phpversion();
-			mail($_SESSION['email_address'], $subject, $msg, $headers, '-f' . $ciniki['config']['core']['system.email']);
+			mail($_SESSION['email_address'], $subject, $msg, $headers, '-f' . $ciniki['config']['ciniki.core']['system.email']);
 
 		}
 
@@ -572,7 +572,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 		if( $err == 0 ) {
 			$page_title = 'Submitted';
 			if( isset($page_details['page-signup-submit']) ) {
-				require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processContent.php');
+				require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/processContent.php');
 				$rc = ciniki_web_processContent($ciniki, $page_details['page-signup-submit']);	
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
@@ -590,7 +590,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 		//
 		// Generate the content of the page
 		//
-		require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbDetailsQueryDash.php');
+		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbDetailsQueryDash.php');
 		$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-signup');
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
@@ -598,7 +598,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 		$page_content = "<form action='" . $ciniki['request']['base_url'] . "/signup/submit' method='post'>\n";
 
 		if( isset($page_details['page-signup-content']) ) {
-			require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processContent.php');
+			require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/processContent.php');
 			$rc = ciniki_web_processContent($ciniki, $page_details['page-signup-content']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
@@ -606,7 +606,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 			$aside_content .= "<h2>Requirements</h2>" . $rc['content'];
 		}
 		if( isset($page_details['page-signup-agreement']) ) {
-			require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processContent.php');
+			require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/processContent.php');
 			$rc = ciniki_web_processContent($ciniki, $page_details['page-signup-agreement']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
@@ -648,10 +648,10 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 		$strsql = "SELECT id, name, description, monthly, trial_days "
 			. "FROM ciniki_business_plans "
 			. "WHERE (flags&0x01) = 1 "
-			. "AND business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['core']['master_business_id']) . "' "
+			. "AND business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_business_id']) . "' "
 			. "ORDER BY name "
 			. "";
-		require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashIDQuery.php');
+		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbHashIDQuery.php');
 		$rc = ciniki_core_dbHashIDQuery($ciniki, $strsql, 'ciniki.businesses', 'plans', 'id');
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
@@ -735,7 +735,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 	//
 	// Add the footer
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageFooter.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageFooter.php');
 	$rc = ciniki_web_generatePageFooter($ciniki, $settings);
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;

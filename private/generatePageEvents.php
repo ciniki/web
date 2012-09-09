@@ -28,7 +28,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 	//
 	// Add the header
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageHeader.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageHeader.php');
 	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Upcoming Events');
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
@@ -41,7 +41,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 	//
 	// Generate the content of the page
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/events/web/list.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/events/web/list.php');
 	$rc = ciniki_events_web_list($ciniki, $ciniki['request']['business_id'], 'upcoming', 0);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -54,7 +54,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 		. "";
 
 	if( count($events) > 0 ) {
-		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processEvents.php');
+		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/processEvents.php');
 		$rc = ciniki_web_processEvents($ciniki, $settings, $events, 0);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
@@ -75,7 +75,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 		//
 		// Generate the content of the page
 		//
-		require_once($ciniki['config']['core']['modules_dir'] . '/events/web/list.php');
+		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/events/web/list.php');
 		$rc = ciniki_events_web_list($ciniki, $ciniki['request']['business_id'], 'past', 10);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
@@ -87,7 +87,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 			. "<div class='entry-content'>\n"
 			. "";
 
-		require_once($ciniki['config']['core']['modules_dir'] . '/web/private/processEvents.php');
+		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/processEvents.php');
 		$rc = ciniki_web_processEvents($ciniki, $settings, $events, 0);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
@@ -105,7 +105,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 	//
 	// Add the footer
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/generatePageFooter.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageFooter.php');
 	$rc = ciniki_web_generatePageFooter($ciniki, $settings);
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
