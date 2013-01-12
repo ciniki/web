@@ -115,12 +115,14 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 		}
 		// Check the session is not older than 5 minutes
 		if( $_SESSION['time'] < (time()-300) ) {
-			$page_err = "I'm sorry, but for security reason you did not complete this action in time.  Please start again.";
+			error_log('WEB-ERR: Session timed out');
+			$page_err = "I'm sorry, but for security reasons you did not complete this action in time.  Please start again.";
 			$err = 2;
 		}
 
 		if( $_SESSION['key'] != $_GET['t'] ) {
-			$page_err = "Something went very wrong, please try again.";
+			error_log('WEB-ERR: Session key miss-match ' . $_SESSION['key'] . '-' . $_GET['t']);
+			$page_err = "I'm sorry, but we were unable to verify your email.  For security purposes, the link must be followed within 5 minutes of signing up.  <br/><br/>If you are still having difficulty, please email support at <a href=\"mailto:andrew@ciniki.ca\">andrew@ciniki.ca</a> and include your signup details.";
 			$err = 3;
 		}
 
