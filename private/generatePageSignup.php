@@ -254,7 +254,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 				. "package, permission_group, status, date_added, last_updated) VALUES ("
 				. "'" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
 				. ", '" . ciniki_core_dbQuote($ciniki, $user_id) . "' "
-				. ", 'ciniki', 'owners', 1, UTC_TIMESTAMP(), UTC_TIMESTAMP())";
+				. ", 'ciniki', 'owners', 10, UTC_TIMESTAMP(), UTC_TIMESTAMP())";
 			$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.businesses');
 			if( $rc['stat'] != 'ok' ) {
 				ciniki_core_dbTransactionRollback($ciniki, 'ciniki.businesses');
