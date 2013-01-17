@@ -51,6 +51,7 @@ function ciniki_web_checkAccess($ciniki, $business_id, $method) {
 			. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
 			. "AND user_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['session']['user']['id']) . "' "
 			. "AND package = 'ciniki' "
+			. "AND status = 10 "
 			. "AND (permission_group = 'owners' OR permission_group = 'employees') "
 			. "";
 		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbHashQuery.php');
