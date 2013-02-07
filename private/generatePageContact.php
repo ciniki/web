@@ -26,19 +26,9 @@ function ciniki_web_generatePageContact($ciniki, $settings) {
 	
 
 	//
-	// Add the header
-	//
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageHeader.php');
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Contact');
-	if( $rc['stat'] != 'ok' ) {	
-		return $rc;
-	}
-	$content .= $rc['content'];
-
-	//
 	// Check which parts of the business contact information to display automatically
 	//
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/businesses/web/contact.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'web', 'contact');
 	$rc = ciniki_businesses_web_contact($ciniki, $settings, $ciniki['request']['business_id']);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -125,14 +115,14 @@ function ciniki_web_generatePageContact($ciniki, $settings) {
 	//
 	// Generate the content of the page
 	//
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbDetailsQueryDash.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
 	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-contact');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
 
 	if( isset($rc['content']['page-contact-content']) ) {
-		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/processContent.php');
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 		$rc = ciniki_web_processContent($ciniki, $rc['content']['page-contact-content']);	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
@@ -141,12 +131,62 @@ function ciniki_web_generatePageContact($ciniki, $settings) {
 	}
 
 	//
+	// Check if map is to be displayed
+	//
+	if( isset($settings['page-contact-google-map']) && $settings['page-contact-google-map'] == 'yes' 
+		&& isset($settings['page-contact-map-latitude']) && $settings['page-contact-map-latitude'] != '' 
+		&& isset($settings['page-contact-map-longitude']) && $settings['page-contact-map-longitude'] != '' 
+		) {
+		$ciniki['request']['inline_javascript'] .= ''
+			. '<script type="text/javascript">'
+			. 'function gmap_initialize() {'
+				. 'var myLatlng = new google.maps.LatLng(' . $settings['page-contact-map-latitude'] . ',' . $settings['page-contact-map-longitude'] . ');'
+				. 'var mapOptions = {'
+					. 'zoom: 13,'
+					. 'center: myLatlng,'
+					. 'panControl: false,'
+					. 'zoomControl: true,'
+					. 'scaleControl: true,'
+					. 'mapTypeId: google.maps.MapTypeId.ROADMAP'
+				. '};'
+				. 'var map = new google.maps.Map(document.getElementById("googlemap"), mapOptions);'
+				. 'var marker = new google.maps.Marker({'
+					. 'position: myLatlng,'
+					. 'map: map,'
+					. 'title:"",'
+					. '});'
+			. '};'
+			. 'function loadMap() {'
+				. 'var script = document.createElement("script");'
+				. 'script.type = "text/javascript";'
+				. 'script.src = "http://maps.googleapis.com/maps/api/js?key=' . $ciniki['config']['ciniki.web']['google.maps.api.key'] . '&sensor=false&callback=gmap_initialize";'
+				. 'document.body.appendChild(script);'
+			. '};'
+			. 'window.onload = loadMap;'
+			. '</script>';
+		$map_content .= '<aside><div class="googlemap" id="googlemap"></div></aside>';
+	}
+
+	//
+	// Add the header
+	//
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
+	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Contact');
+	if( $rc['stat'] != 'ok' ) {	
+		return $rc;
+	}
+	$content .= $rc['content'];
+
+	//
 	// Put together all the contact content
 	//
 	$content .= "<div id='content'>\n"
 		. "<article class='page'>\n"
-		. "<header class='entry-title'><h1 class='entry-title'>Contact</h1></header>\n"
-		. "<div class='entry-content'>\n";
+		. "<header class='entry-title'><h1 class='entry-title'>Contact</h1></header>\n";
+	if( isset($map_content) && $map_content != '' ) {
+		$content .= $map_content;
+	}
+	$content .= "<div class='entry-content'>\n";
 	if( $contact_content != '' ) {
 		$content .= "<p>" . $contact_content . "</p>";
 	}
@@ -162,7 +202,7 @@ function ciniki_web_generatePageContact($ciniki, $settings) {
 	//
 	// Add the footer
 	//
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageFooter.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageFooter');
 	$rc = ciniki_web_generatePageFooter($ciniki, $settings);
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;

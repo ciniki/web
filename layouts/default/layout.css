@@ -17,6 +17,10 @@ header span.title {
 	display: inline;
 }
 
+#site-description {
+	margin-top: 0.5em;
+}
+
 #main-menu-container ul.menu li.menu-item {
 	display: inline-block;
 	padding: 0.4em;
@@ -132,6 +136,14 @@ aside {
 	clear: right;
 	width: 25em;
 	height: auto;
+}
+
+aside div.googlemap {
+	height: 22em;
+}
+
+aside div.googlemap img {
+	max-width: inherit;
 }
 
 /* 9. CUSTOM LAYOUT & TYPOGRAPHY (Mummy bear)

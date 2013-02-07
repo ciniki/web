@@ -315,6 +315,12 @@ aside div.image img {
 	margin: 0px;
 }
 
+aside div.googlemap {
+	border: 8px solid #ccc;
+	padding: 5px;
+	margin-bottom: 1em;
+}
+
 hr.section-divider {
 	border: 0px solid #aaa;
 	border-top: 1px solid #aaa;
