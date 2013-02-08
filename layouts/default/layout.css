@@ -138,14 +138,6 @@ aside {
 	height: auto;
 }
 
-aside div.googlemap {
-	height: 22em;
-}
-
-aside div.googlemap img {
-	max-width: inherit;
-}
-
 /* 9. CUSTOM LAYOUT & TYPOGRAPHY (Mummy bear)
 ----------------------------------------------------------------------------------------*/
 @media screen and (min-width: 30em) and (max-width: 63.236em) {

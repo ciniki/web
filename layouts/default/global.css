@@ -376,6 +376,14 @@ article {
 
 aside { width: 100%; }
 
+aside div.googlemap {
+	height: 22em;
+}
+
+aside div.googlemap img {
+	max-width: inherit;
+}
+
 hr.footer-section-divider {
 	margin-top: 5em;
 	clear: both;

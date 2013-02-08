@@ -164,7 +164,7 @@ function ciniki_web_generatePageContact($ciniki, $settings) {
 			. '};'
 			. 'window.onload = loadMap;'
 			. '</script>';
-		$map_content .= '<aside><div class="googlemap" id="googlemap"></div></aside>';
+		$map_content = '<aside><div class="googlemap" id="googlemap"></div></aside>';
 	}
 
 	//
