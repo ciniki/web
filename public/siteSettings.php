@@ -65,7 +65,7 @@ function ciniki_web_siteSettings($ciniki) {
 	if( isset($modules['ciniki.events']) ) {
 		$pages['events'] = array('display_name'=>'Events', 'active'=>'no');
 	}
-	if( isset($modules['ciniki.artcatalog']) ) {
+	if( isset($modules['ciniki.artcatalog']) || isset($modules['ciniki.gallery']) ) {
 		$pages['gallery'] = array('display_name'=>'Gallery', 'active'=>'no');
 	}
 	if( isset($modules['ciniki.links']) ) {

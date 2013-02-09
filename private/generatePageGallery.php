@@ -22,15 +22,26 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 	//
 	// FIXME: Check if anything has changed, and if not load from cache
 	//
-	
+		
 
 	$page_title = "Galleries";
+	if( isset($ciniki['business']['modules']['ciniki.artcatalog']) ) {
+		$pkg = 'ciniki';
+		$mod = 'artcatalog';
+		$category_uri_component = 'category';
+	} elseif( isset($ciniki['business']['modules']['ciniki.gallery']) ) {
+		$pkg = 'ciniki';
+		$mod = 'gallery';
+		$category_uri_component = 'album';
+	} else {
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'267', 'msg'=>'No gallery module enabled'));
+	}
 
 	//
 	// Check if we are to display an image, from the gallery, or latest images
 	//
 	if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' 
-		&& ((($ciniki['request']['uri_split'][0] == 'category' || $ciniki['request']['uri_split'][0] == 'year')
+		&& ((($ciniki['request']['uri_split'][0] == 'album' || $ciniki['request']['uri_split'][0] == 'category' || $ciniki['request']['uri_split'][0] == 'year')
 			&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' 
 			&& isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' 
 			)
@@ -56,25 +67,14 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		// 
 		// Get the image details
 		//
-		$strsql = "SELECT ciniki_artcatalog.id, name, permalink, image_id, type, catalog_number, category, year, flags, webflags, "
-			. "IF((ciniki_artcatalog.flags&0x01)=1, 'yes', 'no') AS forsale, "
-			. "IF((ciniki_artcatalog.flags&0x02)=2, 'yes', 'no') AS sold, "
-			. "IF((ciniki_artcatalog.webflags&0x01)=1, 'yes', 'no') AS hidden, "
-			. "media, size, framed_size, price, location, description, awards, notes, "
-			. "date_added, last_updated "
-			. "FROM ciniki_artcatalog "
-			. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
-			. "AND permalink = '" . ciniki_core_dbQuote($ciniki, $image_permalink) . "' "
-			. "";
-		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.artcatalog', 'piece');
+		ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'imageDetails');
+		$imageDetails = $pkg . '_' . $mod . '_web_imageDetails';
+		$rc = $imageDetails($ciniki, $settings, $ciniki['request']['business_id'], $image_permalink);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
-		if( !isset($rc['piece']) ) {
-			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'651', 'msg'=>'Unable to find artwork'));
-		}
-		$img = $rc['piece'];
-		$page_title = $img['name'];
+		$img = $rc['image'];
+		$page_title = $img['title'];
 		$prev = NULL;
 		$next = NULL;
 
@@ -83,210 +83,29 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		// Latest category is special, and doesn't contain the keyword category, is also shortened url
 		//
 		if( $ciniki['request']['uri_split'][0] == 'latest' ) {
-			$image_permalink = $ciniki['request']['uri_split'][1];
-			//
-			// Get the position of the image in the gallery.
-			// Count the number of items before the specified image, then use
-			// that number to LIMIT a query
-			//
-			$strsql = "SELECT COUNT(*) AS pos_num FROM ciniki_artcatalog "
-				. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
-				. "AND (webflags&0x01) = 0 "
-				. "AND date_added > '" . ciniki_core_dbQuote($ciniki, $img['date_added']) . "' "
-				. "";
-			$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.artcatalog', 'position');
+			ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'galleryNextPrev');
+			$galleryNextPrev = $pkg . '_' . $mod . '_web_galleryNextPrev';
+			$rc = $galleryNextPrev($ciniki, $settings, $ciniki['request']['business_id'], $image_permalink, $img, 'latest');
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			if( !isset($rc['position']['pos_num']) ) {
-				return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'652', 'msg'=>'Unable to load image'));
-			}
-			$offset = $rc['position']['pos_num'];
-			//
-			// Get the previous and next photos
-			//
-			$strsql = "SELECT id, name, permalink "
-				. "FROM ciniki_artcatalog "
-				. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
-				. "AND (webflags&0x01) = 0 "
-				. "ORDER BY ciniki_artcatalog.date_added DESC "
-				. "";
-			if( $offset == 0 ) {
-				$strsql .= "LIMIT 3 ";
-			} elseif( $offset > 0 ) {
-				$strsql .= "LIMIT " . ($offset-1) . ", 3";
-			} else {
-				return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'653', 'msg'=>'Unable to load image'));
-			}
-			$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.artcatalog', 'next');
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
-			}
-			$prev = NULL;
-			if( $offset > 0 && isset($rc['rows'][0]) ) {
-				$prev = $rc['rows'][0];
-			} elseif( $offset == 0 ) {
-				//
-				// Get the last image in the series
-				//
-			}
-			$next = NULL;
-			if( $offset > 0 && isset($rc['rows'][2]) ) {
-				$next = $rc['rows'][2];
-			} elseif( $offset == 0 && isset($rc['rows'][1]) ) {
-				$next = $rc['rows'][1];
-			}
-
-			//
-			// If the image requested is at the end of the gallery, then
-			// get the first image
-			//
-			if( $rc['num_rows'] < 3 ) {
-				$strsql = "SELECT id, name, permalink "
-					. "FROM ciniki_artcatalog "
-					. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
-					. "AND (webflags&0x01) = 0 "
-					. "ORDER BY ciniki_artcatalog.date_added DESC " 	// SORT to get the newest image first
-					. "LIMIT 1"
-					. "";
-				$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.artcatalog', 'next');
-				if( $rc['stat'] != 'ok' ) {
-					return $rc;
-				}
-				if( isset($rc['next']) 
-					&& $rc['next']['permalink'] != $image_permalink	// Make sure it's not the same image
-					) {
-					$next = $rc['next'];
-				}
-				
-			}
-			//
-			// If the image is at begining of the gallery, then get the last image
-			//
-			if( $offset == 0 ) {
-				$strsql = "SELECT id, name, permalink "
-					. "FROM ciniki_artcatalog "
-					. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
-					. "AND (webflags&0x01) = 0 "
-					. "ORDER BY ciniki_artcatalog.date_added ASC " 	// SORT to get the oldest image first
-					. "LIMIT 1"
-					. "";
-				$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.artcatalog', 'prev');
-				if( $rc['stat'] != 'ok' ) {
-					return $rc;
-				}
-				if( isset($rc['prev']) 
-					&& $rc['prev']['permalink'] != $image_permalink		// Check not a single image, and going to loop
-					) {
-					$prev = $rc['prev'];
-				}
-			}
-
+			$next = $rc['next'];
+			$prev = $rc['prev'];
 		} elseif( $ciniki['request']['uri_split'][0] == 'image' ) {
-			$image_permalink = $ciniki['request']['uri_split'][1];
 			//
 			// There is no next and previous images if request is direct to the image
 			//
 			$next = NULL;
 			$prev = NULL;
 		} else {
-			$image_permalink = $ciniki['request']['uri_split'][2];
-			//
-			// Get the position of the image in the gallery.
-			// Count the number of items before the specified image, then use
-			// that number to LIMIT a query
-			//
-			$strsql = "SELECT COUNT(*) AS pos_num FROM ciniki_artcatalog "
-				. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
-				. "AND (webflags&0x01) = 0 "
-				. "AND category = '" . ciniki_core_dbQuote($ciniki, $img['category']) . "' "
-				. "AND date_added > '" . ciniki_core_dbQuote($ciniki, $img['date_added']) . "' "
-				. "";
-			$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.artcatalog', 'position');
+			ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'galleryNextPrev');
+			$galleryNextPrev = $pkg . '_' . $mod . '_web_galleryNextPrev';
+			$rc = $galleryNextPrev($ciniki, $settings, $ciniki['request']['business_id'], $image_permalink, $img, $category_uri_component);
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			if( !isset($rc['position']['pos_num']) ) {
-				return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'654', 'msg'=>'Unable to load image'));
-			}
-			$offset = $rc['position']['pos_num'];
-			//
-			// Get the previous and next photos
-			//
-			$strsql = "SELECT id, name, permalink "
-				. "FROM ciniki_artcatalog "
-				. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
-				. "AND (webflags&0x01) = 0 "
-				. "AND category = '" . ciniki_core_dbQuote($ciniki, $img['category']) . "' "
-				. "ORDER BY ciniki_artcatalog.date_added DESC "
-				. "";
-			if( $offset == 0 ) {
-				$strsql .= "LIMIT 3 ";
-			} elseif( $offset > 0 ) {
-				$strsql .= "LIMIT " . ($offset-1) . ", 3";
-			} else {
-				return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'664', 'msg'=>'Unable to load image'));
-			}
-			$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.artcatalog', 'next');
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
-			}
-			$prev = NULL;
-			if( $offset > 0 && isset($rc['rows'][0]) && $rc['rows'][0]['permalink'] != $image_permalink ) {
-				$prev = $rc['rows'][0];
-			}
-			$next = NULL;
-			if( $offset > 0 && isset($rc['rows'][2]) ) {
-				$next = $rc['rows'][2];
-			} elseif( $offset == 0 && isset($rc['rows'][1]) ) {
-				$next = $rc['rows'][1];
-			}
-
-			//
-			// If the image requested is at the end of the gallery, then
-			// get the first image
-			//
-			if( $rc['num_rows'] < 3 ) {
-				$strsql = "SELECT id, name, permalink "
-					. "FROM ciniki_artcatalog "
-					. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
-					. "AND (webflags&0x01) = 0 "
-					. "AND category = '" . ciniki_core_dbQuote($ciniki, $img['category']) . "' "
-					. "ORDER BY ciniki_artcatalog.date_added DESC " 	// SORT to get the newest image first
-					. "LIMIT 1"
-					. "";
-				$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.artcatalog', 'next');
-				if( $rc['stat'] != 'ok' ) {
-					return $rc;
-				}
-				if( isset($rc['next']) 
-					&& $rc['next']['permalink'] != $image_permalink	// Make sure it's not the same image
-					) {
-					$next = $rc['next'];
-				}
-			}
-			//
-			// If the image is at begining of the gallery, then get the last image
-			//
-			if( $offset == 0 ) {
-				$strsql = "SELECT id, name, permalink "
-					. "FROM ciniki_artcatalog "
-					. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
-					. "AND (webflags&0x01) = 0 "
-					. "AND category = '" . ciniki_core_dbQuote($ciniki, $img['category']) . "' "
-					. "ORDER BY ciniki_artcatalog.date_added ASC " 	// SORT to get the oldest image first
-					. "LIMIT 1"
-					. "";
-				$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.artcatalog', 'prev');
-				if( $rc['stat'] != 'ok' ) {
-					return $rc;
-				}
-				if( isset($rc['prev']) 
-					&& $rc['prev']['permalink'] != $image_permalink		// Check not a single image, and going to loop
-					) {
-					$prev = $rc['prev'];
-				}
-			}
+			$next = $rc['next'];
+			$prev = $rc['prev'];
 		}
 
 		//
@@ -297,6 +116,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
+
 		//
 		// Set the page to wide if possible
 		//
@@ -390,30 +210,11 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		if( $next != null ) {
 			$page_content .= "<a id='gallery-image-next' class='gallery-image-next' href='" . $next['permalink'] . "'><div id='gallery-image-next-img'></div></a>";
 		}
-		$page_content .= "<img id='gallery-image-img' title='" . $img['name'] . "' alt='" . $img['name'] . "' src='" . $rc['url'] . "' onload='javascript: gallery_resize_arrows();' />";
+		$page_content .= "<img id='gallery-image-img' title='" . $img['title'] . "' alt='" . $img['title'] . "' src='" . $rc['url'] . "' onload='javascript: gallery_resize_arrows();' />";
 		$page_content .= "</div><br/>"
 			. "<div id='gallery-image-details' class='gallery-image-details'>"
-			. "<span class='image-title'>" . $img['name'] . "</span>"
-			. "<span class='image-details'>";
-		$comma = "";
-		if( $img['size'] != '' ) { 
-			$page_content .= $img['size'];
-			$comma = ", ";
-		}
-		if( $img['framed_size'] != '' ) { 
-			$page_content .= " (framed: " . $img['framed_size'] . ")";
-			$comma = ", ";
-		}
-		if( $img['price'] != '' && $img['forsale'] == 'yes' ) { 
-			$page_content .= $comma . preg_replace('/^\s*([^$])/', '\$$1', $img['price']);
-			$comma = ", ";
-		}
-		if( $img['sold'] == 'yes' ) {
-			$page_content .= " <b> SOLD</b>";
-			$comma = ", ";
-		}
-		$page_content .= "</span>\n"
-			. "";
+			. "<span class='image-title'>" . $img['title'] . '</span>'
+			. "<span class='image-details'>" . $img['details'] . '</span>';
 		if( $img['description'] != '' ) {
 			$page_content .= "<span class='image-description'>" . preg_replace('/\n/', '<br/>', $img['description']) . "</span>";
 		}
@@ -429,17 +230,23 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		}
 		$page_content .= "</div></div>";
 	
-	} elseif( isset($ciniki['request']['uri_split'][0]) 
+	} 
+
+	//
+	// Generate the gallery page, showing the thumbnails
+	//
+	elseif( isset($ciniki['request']['uri_split'][0]) 
 		&& $ciniki['request']['uri_split'][0] != '' 
-		&& ($ciniki['request']['uri_split'][0] == 'category' || $ciniki['request']['uri_split'][0] == 'year')
+		&& ($ciniki['request']['uri_split'][0] == 'album' || $ciniki['request']['uri_split'][0] == 'category' || $ciniki['request']['uri_split'][0] == 'year')
 		&& $ciniki['request']['uri_split'][1] != '' ) {
 		$page_title = urldecode($ciniki['request']['uri_split'][1]);
 
 		//
-		// Get the gallery for the specified category
+		// Get the gallery for the specified album
 		//
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'artcatalog', 'web', 'categoryImages');
-		$rc = ciniki_artcatalog_web_categoryImages($ciniki, $settings, $ciniki['request']['business_id'], 
+		ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'categoryImages');
+		$categoryImages = $pkg . '_' . $mod . '_web_categoryImages';
+		$rc = $categoryImages($ciniki, $settings, $ciniki['request']['business_id'], 
 			$ciniki['request']['uri_split'][0], urldecode($ciniki['request']['uri_split'][1]));
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
@@ -447,17 +254,19 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		$images = $rc['images'];
 
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
-		$img_base_url = $ciniki['request']['base_url'] . "/gallery/category/" . $ciniki['request']['uri_split'][1];
+		$img_base_url = $ciniki['request']['base_url'] . "/gallery/$category_uri_component/" . $ciniki['request']['uri_split'][1];
 		$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $rc['images'], 125);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
 		$page_content .= "<div class='image-gallery'>" . $rc['content'] . "</div>";
 
-	} else {
-		//
-		// Get any user specified content for the gallery page
-		//
+	} 
+
+	//
+	// Generate the main gallery page, showing the galleries/albums
+	//
+	else {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
 		$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-gallery');
 		if( $rc['stat'] != 'ok' ) {
@@ -477,8 +286,9 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		// List the categories the user has created in the artcatalog, 
 		// OR just show all the thumbnails if they haven't created any categories
 		//
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'artcatalog', 'web', 'categories');
-		$rc = ciniki_artcatalog_web_categories($ciniki, $settings, $ciniki['request']['business_id']);
+		ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'categories');
+		$categories = $pkg . '_' . $mod . '_web_categories';
+		$rc = $categories($ciniki, $settings, $ciniki['request']['business_id']); 
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
@@ -487,8 +297,9 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 			// No categories specified, just show thumbnails of all artwork
 			//
 			$page_title = 'Gallery';
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'artcatalog', 'web', 'categoryImages');
-			$rc = ciniki_artcatalog_web_categoryImages($ciniki, $settings, $ciniki['request']['business_id'], 'category', '');
+			ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'categoryImages');
+			$categoryImages = $pkg . '_' . $mod . '_web_categoryImages';
+			$rc = $categoryImages($ciniki, $settings, $ciniki['request']['business_id'], $category_uri_component, '');
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -512,7 +323,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 					return $rc;
 				}
 				$page_content .= "<div class='image-categories-thumbnail'>"
-					. "<a href='" . $ciniki['request']['base_url'] . "/gallery/category/" . urlencode($name) . "' "
+					. "<a href='" . $ciniki['request']['base_url'] . "/gallery/$category_uri_component/" . urlencode($name) . "' "
 						. "title='" . $name . "'>"
 					. "<img title='$name' alt='$name' src='" . $rc['url'] . "' />"
 					. "<span class='image-categories-name'>$name</span>"
@@ -521,8 +332,6 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 			$page_content .= "</div>";
 		}
 	}
-
-
 
 	$content = '';
 
