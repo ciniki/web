@@ -214,6 +214,14 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 	if( isset($settings['page-signup-active']) && $settings['page-signup-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/signup'>Sign Up</a></li>";
 	}
+	if( isset($settings['page-exhibitions-exhibition']) && $settings['page-exhibitions-exhibition'] > 0
+		&& isset($settings['page-exhibitions-exhibitors-active']) && $settings['page-exhibitions-exhibitors-active'] == 'yes' ) {
+		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/exhibitors'>Exhibitors</a></li>";
+	}
+	if( isset($settings['page-exhibitions-exhibition']) && $settings['page-exhibitions-exhibition'] > 0
+		&& isset($settings['page-exhibitions-sponsors-active']) && $settings['page-exhibitions-sponsors-active'] == 'yes' ) {
+//		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/sponsors'>Sponsors</a></li>";
+	}
 	if( isset($settings['page-gallery-active']) && $settings['page-gallery-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/gallery'>Gallery</a></li>";
 	}

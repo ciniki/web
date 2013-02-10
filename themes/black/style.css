@@ -92,6 +92,7 @@ span.image-categories-name {
 	padding-bottom: 0.7em;
 }
 
+div.image-exhibitors-thumbnail,
 div.image-gallery-thumbnail {
 	border: 8px solid #ffffff;
 	display: inline-block;
@@ -164,6 +165,8 @@ div.gallery-image-details span.image-awards {
 }
 
 #content span.contact-title,
+#content span.exhibitors-title,
+#content span.sponsors-title,
 #content span.links-title,
 #content span.event-title {
 	font-size: 1.2em;
@@ -176,6 +179,8 @@ div.gallery-image-details span.image-awards {
 	color: #999;
 }
 
+#content a.exhibitors-url,
+#content a.sponsors-url,
 #content a.links-url,
 #content a.event-url {
 	font-size: 0.9em;
@@ -183,6 +188,10 @@ div.gallery-image-details span.image-awards {
 	color: #999;
 }
 
+#content table.exhibitors-list > tbody > tr > th,
+#content table.exhibitors-list > tbody > tr > td,
+#content table.sponsors-list > tbody > tr > th,
+#content table.sponsors-list > tbody > tr > td,
 #content table.links-list th,
 #content table.links-list td,
 #content table.event-list th,
@@ -190,6 +199,7 @@ div.gallery-image-details span.image-awards {
 	border-color: #999;
 }
 
+#content span.exhibitors-category,
 #content span.links-category {
 	font-size: 1.1em;
 }

@@ -198,17 +198,28 @@ article {
 	margin-bottom: 1em;
 }
 
+#content table.exhibitors-list,
+#content table.sponsors-list,
 #content table.links-list,
 #content table.event-list {
 	width: 100%;
 }
 
+#content table.exhibitors-list > tbody > tr > th,
+#content table.sponsors-list > tbody > tr > th,
 #content table.links-list th,
 #content table.event-list th {
 	display: block;
 	text-align: left;
+	vertical-align: top;
 }
 
+#content table.exhibitors-list > tbody > tr > th {
+	min-width: 15em;
+}
+
+#content table.exhibitors-list > tbody > tr > td,
+#content table.sponsors-list > tbody > tr > td,
 #content table.links-list td,
 #content table.event-list td {
 	display: block;
@@ -217,6 +228,30 @@ article {
 	padding-bottom: 1em;
 	border-top: 1px solid;
 	padding-top: 0.25em;
+	vertical-align: top;
+}
+
+#content table.exhibitors-list > tbody > tr > td,
+#content table.sponsors-list > tbody > tr > td {
+	padding-left: 0em;
+}
+
+#content table.exhibitors-category-list > tbody > tr > th,
+#content table.exhibitors-category-list > tbody > tr > td,
+#content table.sponsors-category-list > tbody > tr > th,
+#content table.sponsors-category-list > tbody > tr > td {
+	vertical-align: top;
+}
+
+#content table.exhibitors-list table.exhibitors-category-list td.exhibitors-images {
+	padding-right: 2em;
+	margin-right: 2em;
+	border-right: 1px solid red;
+}
+
+#content table.exhibitors-list td.exhibitors-more {
+	text-align: right;
+	vertical-align: bottom;
 }
 
 #content div.events-more {
@@ -238,11 +273,13 @@ article {
 	height: 260px;
 }
 
+#content div.image-exhibitors-thumbnail,
 #content div.image-gallery div.image-gallery-thumbnail {
 	width: 115px;
 	height: 115px;
 }
 
+#content div.image-exhibitors-thumbnail img,
 #content div.image-gallery-thumbnail img {
 	width: 115px;
 	height: 115px;

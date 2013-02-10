@@ -14,6 +14,9 @@
 // page-home-active:					(optional) Display the home page (yes or no)
 // page-about-active:					(optional) Display the about page (yes or no)
 // page-about-image:					(optional) The image_id from the ciniki images module to be displayed on the about page.
+// page-exhibitions-exhibition:			(optional) The ID of the exhibition to be used for exhibitors and sponsors.  This should be the currently active exhibition.
+// page-exhibitions-exhibitors-active:	(optional) Display the exhibitors page (yes or no)
+// page-exhibitions-sponsors-active:	(optional) Display the sponsors page (yes or no)
 // page-gallery-active:					(optional) Display the gallery page (yes or no)
 // page-events-active:					(optional) Display the events page (yes or no)
 // page-events-past:					(optional) Display the past events (yes or no)
@@ -90,6 +93,9 @@ function ciniki_web_siteSettingsUpdate($ciniki) {
 		'page-home-active',
 		'page-about-active',
 		'page-about-image',
+		'page-exhibitions-exhibition',
+		'page-exhibitions-exhibitors-active',
+		'page-exhibitions-sponsors-active',
 		'page-gallery-active',
 		'page-events-active',
 		'page-events-past',

@@ -49,7 +49,7 @@ function ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $base_url,
 			//
 			// Load the image from the database
 			//
-			require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/images/private/loadImage.php');
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'loadImage');
 			$rc = ciniki_images_loadImage($ciniki, $img['image_id'], 'thumbnail');
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;

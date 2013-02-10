@@ -166,6 +166,8 @@ div.gallery-image-details span.image-awards {
 	color: inherit;
 }
 
+#content span.exhibitors-title,
+#content span.sponsors-title,
 #content span.links-title,
 #content span.event-title {
 	font-size: 1.2em;
@@ -173,12 +175,18 @@ div.gallery-image-details span.image-awards {
 	color: #222;
 }
 
+#content a.exhibitors-url,
+#content a.sponsors-url,
 #content a.links-url,
 #content a.event-url {
 	font-size: 0.9em;
 	color: #777;
 }
 
+#content table.exhibitors-list > tbody > tr > th,
+#content table.exhibitors-list > tbody > tr > td,
+#content table.sponsors-list > tbody > tr > th,
+#content table.sponsors-list > tbody > tr > td,
 #content table.links-list th,
 #content table.links-list td,
 #content table.event-list th,
@@ -186,6 +194,7 @@ div.gallery-image-details span.image-awards {
 	border-color: #777;
 }
 
+#content span.exhibitors-category,
 #content span.links-category {
 	font-size: 1.1em;
 }
