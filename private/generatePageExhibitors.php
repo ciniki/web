@@ -86,7 +86,7 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
 		}
 
 		if( $url != '' ) {
-			$content .= "<br/><a class='participant-url' target='_blank' href='" . $url . "' title='" . $participant['name'] . "'>" . $display_url . "</a>";
+			$page_content .= "<br/><a class='participant-url' target='_blank' href='" . $url . "' title='" . $participant['name'] . "'>" . $display_url . "</a>";
 		}
 
 		//
