@@ -93,6 +93,7 @@ span.image-categories-name {
 	padding-bottom: 0.7em;
 }
 
+div.image-exhibitors-thumbnail,
 div.image-gallery-thumbnail {
 	border: 1px solid #aaa;
 	display: inline-block;
@@ -100,6 +101,7 @@ div.image-gallery-thumbnail {
 	padding: 7px;
 }
 
+div.image-exhibitors-thumbnail img,
 div.image-gallery-thumbnail img {
 	padding: 0px;
 	margin: 0px;
@@ -175,7 +177,10 @@ div.gallery-image-details span.image-awards {
 	color: #222;
 }
 
-#content a.exhibitors-url,
+#content a.exhibitors-url {
+	color: #439bbd;
+}
+
 #content a.sponsors-url,
 #content a.links-url,
 #content a.event-url {
@@ -310,9 +315,9 @@ div.gallery-image-details span.image-awards {
 
 aside div.image {
 	max-width: 100%;
-	border: 8px solid #ccc;
+	border: 2px solid #ccc;
 	height: auto;
-	padding: 5px;
+	padding: 9px;
 	margin-bottom: 1em;
 	line-height: 0em;
 }
@@ -325,7 +330,7 @@ aside div.image img {
 }
 
 aside div.googlemap {
-	border: 8px solid #ccc;
+	border: 2px solid #222;
 	padding: 5px;
 	margin-bottom: 1em;
 }

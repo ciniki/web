@@ -121,8 +121,8 @@ function ciniki_web_siteSettings($ciniki) {
 	if( isset($settings['page-gallery-active']) && $settings['page-gallery-active'] == 'yes' ) {
 		$pages['gallery']['active'] = 'yes';
 	}
-	if( (isset($settings['page-exhibitors-active']) && $settings['page-exhibitors-active'] == 'yes')
-		|| (isset($settings['page-sponsors-active']) && $settings['page-sponsors-active'] == 'yes') ) {
+	if( (isset($settings['page-exhibitions-exhibitors-active']) && $settings['page-exhibitions-exhibitors-active'] == 'yes')
+		|| (isset($settings['page-exhibitions-sponsors-active']) && $settings['page-exhibitions-sponsors-active'] == 'yes') ) {
 		$pages['exhibitions']['active'] = 'yes';
 	}
 	if( isset($settings['page-signup-active']) && $settings['page-signup-active'] == 'yes' ) {

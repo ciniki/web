@@ -243,10 +243,8 @@ article {
 	vertical-align: top;
 }
 
-#content table.exhibitors-list table.exhibitors-category-list td.exhibitors-images {
-	padding-right: 2em;
-	margin-right: 2em;
-	border-right: 1px solid red;
+#content table.exhibitors-list table.exhibitors-category-list td.exhibitors-image {
+	padding-right: 0.5em;
 }
 
 #content table.exhibitors-list td.exhibitors-more {

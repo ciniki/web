@@ -167,7 +167,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 	// Decide if there is a header image to be displayed, or display an h1 title
 	//
 	if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
-		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/getScaledImageURL.php');
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 		$rc = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '125', '85');
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;

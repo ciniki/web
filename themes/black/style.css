@@ -179,7 +179,10 @@ div.gallery-image-details span.image-awards {
 	color: #999;
 }
 
-#content a.exhibitors-url,
+#content a.exhibitors-url {
+	color: #ddd;
+}
+
 #content a.sponsors-url,
 #content a.links-url,
 #content a.event-url {
@@ -301,6 +304,12 @@ aside div.image img {
 	line-height: 1px;
 	width: 100%;
 	margin: 0px;
+}
+
+aside div.googlemap {
+	border: 8px solid #fff;
+	padding: 5px;
+	margin-bottom: 1em;
 }
 
 hr.section-divider {

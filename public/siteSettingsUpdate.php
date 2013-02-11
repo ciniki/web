@@ -91,6 +91,7 @@ function ciniki_web_siteSettingsUpdate($ciniki) {
 	//
 	$settings_fields = array(
 		'page-home-active',
+		'page-home-image',
 		'page-about-active',
 		'page-about-image',
 		'page-exhibitions-exhibition',

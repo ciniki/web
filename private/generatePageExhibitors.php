@@ -86,7 +86,7 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
 		}
 
 		if( $url != '' ) {
-			$page_content .= "<br/><a class='participant-url' target='_blank' href='" . $url . "' title='" . $participant['name'] . "'>" . $display_url . "</a>";
+			$page_content .= "<br/>Website: <a class='exhibitors-url' target='_blank' href='" . $url . "' title='" . $participant['name'] . "'>" . $display_url . "</a>";
 		}
 
 		//
@@ -113,7 +113,7 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
 			. "";
 
 		if( count($participants) > 0 ) {
-			$page_content = "<table class='exhibitors-list'><tbody>\n"
+			$page_content .= "<table class='exhibitors-list'><tbody>\n"
 				. "";
 			$prev_category = NULL;
 			foreach($participants as $cnum => $c) {
@@ -132,6 +132,7 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
 				$page_content .= "<table class='exhibitors-category-list'><tbody>\n";
 				foreach($c['category']['participants'] as $pnum => $participant) {
 					$participant = $participant['participant'];
+					$participant_url = $ciniki['request']['base_url'] . "/exhibitors/" . $participant['permalink'];
 
 					// Setup the exhibitor image
 					$page_content .= "<tr><td class='exhibitors-image' rowspan='3'>";
@@ -142,7 +143,7 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
 							return $rc;
 						}
 						$page_content .= "<div class='image-exhibitors-thumbnail'>"
-							. "<img title='' alt='" . $participant['name'] . "' src='" . $rc['url'] . "' />"
+							. "<a href='$participant_url' title='" . $participant['name'] . "'><img title='' alt='" . $participant['name'] . "' src='" . $rc['url'] . "' /></a>"
 							. "</div></aside>";
 					}
 					$page_content .= "</td>";
@@ -150,7 +151,7 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
 					// Setup the details
 					$page_content .= "<td class='exhibitors-details'>";
 					$page_content .= "<span class='exhibitors-title'>";
-					$page_content .= "<a target='_blank' href='" . $ciniki['request']['base_url'] . "/exhibitors/" . $participant['permalink'] . "' title='" . $participant['name'] . "'>" . $participant['name'] . "</a>";
+					$page_content .= "<a href='$participant_url' title='" . $participant['name'] . "'>" . $participant['name'] . "</a>";
 					$page_content .= "</span>";
 					$page_content .= "</td></tr>";
 					$page_content .= "<tr><td class='exhibitors-description'>";
@@ -158,7 +159,7 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
 						$page_content .= "<span class='exhibitors-description'>" . $participant['description'] . "</span>";
 					}
 					$page_content .= "</td></tr>";
-					$page_content .= "<tr><td class='exhibitors-more'><a href='" . $ciniki['request']['base_url'] . "/exhibitors/" . $participant['permalink'] . "'>... more</a></td></tr>";
+					$page_content .= "<tr><td class='exhibitors-more'><a href='$participant_url'>... more</a></td></tr>";
 				}
 				$page_content .= "</tbody></table>";
 			}

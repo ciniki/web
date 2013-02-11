@@ -36,7 +36,15 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 	}
 	$content .= $rc['content'];
 
-	
+	if( isset($settings['page-home-image']) && $settings['page-home-image'] != '' && $settings['page-home-image'] > 0 ) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+		$rc = ciniki_web_getScaledImageURL($ciniki, $settings['page-home-image'], 'original', '500', 0);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$page_content .= "<aside><div class='image'><img title='' alt='" . $ciniki['business']['details']['name'] . "' src='" . $rc['url'] . "' /></div></aside>";
+	}
+
 	//
 	// Generate the content of the page
 	//
@@ -52,7 +60,7 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
-		$page_content = $rc['content'];
+		$page_content .= $rc['content'];
 	}
 
 	$content .= "<div id='content'>\n"
