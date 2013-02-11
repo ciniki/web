@@ -181,7 +181,7 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
 	//
 	// Add the header
 	//
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageHeader.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
 	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'About');
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
@@ -196,7 +196,7 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
 	//
 	// Add the footer
 	//
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageFooter.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageFooter');
 	$rc = ciniki_web_generatePageFooter($ciniki, $settings);
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;

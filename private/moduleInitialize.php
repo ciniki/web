@@ -23,7 +23,7 @@ function ciniki_web_moduleInitialize($ciniki, $business_id) {
 		. "WHERE ciniki_business_modules.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
 		. "AND ciniki_business_modules.status = 1 "														// Business is active
 		. "";
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbHashIDQuery.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashIDQuery');
 	$rc = ciniki_core_dbHashIDQuery($ciniki, $strsql, 'ciniki.businesses', 'modules', 'module_id');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -33,7 +33,7 @@ function ciniki_web_moduleInitialize($ciniki, $business_id) {
 	}
 	$modules = $rc['modules'];
 
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbInsert.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbInsert');
 
 	//
 	// Active the home page

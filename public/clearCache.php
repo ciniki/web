@@ -20,7 +20,7 @@ function ciniki_web_clearCache($ciniki) {
 	//
 	// Find all the required and optional arguments
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/prepareArgs.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
 		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'), 
 		));
@@ -32,7 +32,7 @@ function ciniki_web_clearCache($ciniki) {
 	//
 	// Check access to business_id as owner
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/checkAccess.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
 	$ac = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.clearCache');
 	if( $ac['stat'] != 'ok' ) {
 		return $ac;
@@ -44,7 +44,7 @@ function ciniki_web_clearCache($ciniki) {
 	$business_cache_dir = $ciniki['config']['core']['modules_dir'] . '/web/cache'
 		. '/' . sprintf('%02d', ($args['business_id']%100)) . '/'
 		. sprintf('%07d', $args['business_id']);
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/recursiveRmdir.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'recursiveRmdir');
 	$rc = ciniki_core_recursiveRmdir($ciniki, $business_cache_dir);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;

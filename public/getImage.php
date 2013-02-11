@@ -27,8 +27,8 @@ function ciniki_web_getImage($ciniki) {
 	//
 	// Check args
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/prepareArgs.php');
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuote.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
 		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'), 
 		'image_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No image specified'), 
@@ -44,13 +44,13 @@ function ciniki_web_getImage($ciniki) {
 	// Make sure this module is activated, and 
 	// check session user permission to run this function for this business
 	//  
-	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/checkAccess.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
 	$rc = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.getImage', array()); 
 	if( $rc['stat'] != 'ok' ) { 
 		return $rc;
 	}
 	
-	require_once($ciniki['config']['core']['modules_dir'] . '/images/private/getImage.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'getImage');
 	return ciniki_images_getImage($ciniki, $args['business_id'], $args['image_id'], $args['version'], $args['maxlength']);
 }
 ?>

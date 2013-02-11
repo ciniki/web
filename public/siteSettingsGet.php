@@ -22,7 +22,7 @@ function ciniki_web_siteSettingsGet($ciniki) {
 	//
 	// Find all the required and optional arguments
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/prepareArgs.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
 		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'),
 		'content'=>array('required'=>'no', 'blank'=>'yes', 'errmsg'=>'No content specified'),
@@ -35,7 +35,7 @@ function ciniki_web_siteSettingsGet($ciniki) {
 	//
 	// Check access to business_id as owner, and load module list
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/web/private/checkAccess.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
 	$ac = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.siteSettingsGet');
 	if( $ac['stat'] != 'ok' ) {
 		return $ac;
@@ -44,7 +44,7 @@ function ciniki_web_siteSettingsGet($ciniki) {
 	//
 	// Get the settings from the database
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbDetailsQueryDash.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
 	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_settings', 'business_id', $args['business_id'], 'ciniki.web', 'settings', 'site');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;

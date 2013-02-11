@@ -29,7 +29,7 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 	//
 	// Add the header
 	//
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageHeader.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
 	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Home');
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
@@ -48,14 +48,14 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 	//
 	// Generate the content of the page
 	//
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbDetailsQueryDash.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
 	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-home');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
 
 	if( isset($rc['content']['page-home-content']) ) {
-		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/processContent.php');
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 		$rc = ciniki_web_processContent($ciniki, $rc['content']['page-home-content']);	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
@@ -80,14 +80,14 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 	if( isset($ciniki['business']['modules']['ciniki.artcatalog']) 
 		&& $settings['page-gallery-active'] == 'yes' ) {
 
-		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/artcatalog/web/latestImages.php');
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'artcatalog', 'web', 'latestImages');
 		$rc = ciniki_artcatalog_web_latestImages($ciniki, $settings, $ciniki['request']['business_id'], 6);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
 		$images = $rc['images'];
 
-		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageGalleryThumbnails.php');
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
 		$img_base_url = $ciniki['request']['base_url'] . "/gallery/latest";
 		$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $rc['images'], 150);
 		if( $rc['stat'] != 'ok' ) {
@@ -108,7 +108,7 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 		//
 		// Load and parse the events
 		//
-		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/events/web/list.php');
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'list');
 		$rc = ciniki_events_web_list($ciniki, $ciniki['request']['business_id'], 'upcoming', 3);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
@@ -116,7 +116,7 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 		$number_of_events = count($rc['events']);
 		if( isset($rc['events']) && $number_of_events > 0 ) {
 			$events = $rc['events'];
-			require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/processEvents.php');
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processEvents');
 			$rc = ciniki_web_processEvents($ciniki, $settings, $events, 2);
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
@@ -139,7 +139,7 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 	//
 	// Add the footer
 	//
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageFooter.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageFooter');
 	$rc = ciniki_web_generatePageFooter($ciniki, $settings);
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;

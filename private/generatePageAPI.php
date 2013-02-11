@@ -30,7 +30,7 @@ function ciniki_web_generatePageAPI($ciniki, $settings) {
 	//
 	// Add the header
 	//
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageHeader.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
 	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'API');
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
@@ -40,14 +40,14 @@ function ciniki_web_generatePageAPI($ciniki, $settings) {
 	//
 	// Generate the content of the page
 	//
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbDetailsQueryDash.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
 	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-api');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
 
 	if( isset($rc['content']['page-api-content']) ) {
-		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/processContent.php');
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 		$rc = ciniki_web_processContent($ciniki, $rc['content']['page-api-content']);	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
@@ -68,7 +68,7 @@ function ciniki_web_generatePageAPI($ciniki, $settings) {
 	//
 	// Add the footer
 	//
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageFooter.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageFooter');
 	$rc = ciniki_web_generatePageFooter($ciniki, $settings);
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
