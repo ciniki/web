@@ -137,6 +137,9 @@ function ciniki_web_generatePageContact($ciniki, $settings) {
 		&& isset($settings['page-contact-map-latitude']) && $settings['page-contact-map-latitude'] != '' 
 		&& isset($settings['page-contact-map-longitude']) && $settings['page-contact-map-longitude'] != '' 
 		) {
+		if( !isset($ciniki['request']['inline_javascript']) ) {
+			$ciniki['request']['inline_javascript'] = '';
+		}
 		$ciniki['request']['inline_javascript'] .= ''
 			. '<script type="text/javascript">'
 			. 'function gmap_initialize() {'
