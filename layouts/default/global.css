@@ -409,6 +409,10 @@ article {
 	width: 100%;
 }
 
+#content article {
+	clear: both;
+}
+
 aside { width: 100%; }
 
 aside div.googlemap {
