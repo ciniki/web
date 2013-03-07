@@ -22,6 +22,10 @@ function ciniki_web_sync_objects($ciniki, &$sync, $business_id, $args) {
 		'type'=>'settings',
 		'name'=>'Web Setting',
 		'table'=>'ciniki_web_settings',
+		'refs'=>array(
+			'page-home-image'=>array('ref'=>'ciniki.images.image'),
+			'page-about-image'=>array('ref'=>'ciniki.images.image'),
+			),
 		'history_table'=>'ciniki_web_history',
 		);
 	
