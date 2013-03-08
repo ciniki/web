@@ -144,7 +144,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 			ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $args['business_id'], 
 				2, 'ciniki_web_settings', $field, 'detail_value', $ciniki['request']['args'][$field]);
 			$ciniki['syncqueue'][] = array('push'=>'ciniki.web.setting',
-				'args'=>array('id'=$field));
+				'args'=>array('id'=>$field));
 		}
 	}
 
@@ -187,7 +187,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 					ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $args['business_id'], 
 						2, 'ciniki_web_settings', $field, 'detail_value', $ciniki['request']['args'][$field]);
 					$ciniki['syncqueue'][] = array('push'=>'ciniki.web.setting',
-						'args'=>array('id'=$field));
+						'args'=>array('id'=>$field));
 				}
 			}
 		}
@@ -237,7 +237,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 			ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $args['business_id'], 
 				2, 'ciniki_web_content', $field, 'detail_value', $ciniki['request']['args'][$field]);
 			$ciniki['syncqueue'][] = array('push'=>'ciniki.web.content',
-				'args'=>array('id'=$field));
+				'args'=>array('id'=>$field));
 		}
 	}
 
