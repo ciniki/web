@@ -35,6 +35,7 @@
 // page-api-active:						(optional) Display api documentation, only valid for master business (ciniki.com)
 // site-theme:							(optional) The theme to use for the website.  (default, black)
 // site-header-image:					(optional) The ID of the image from the ciniki images module to display in the site header.
+// site-header-title:					(optional) Display the business name and tagline.  Allows user to turn off if they have a header image as logo.
 // site-logo-display:					(optional) Display the business logo in the site header (yes or no)
 // site-google-analytics-account:		(optional) The google account code for google analytics.
 // site-featured:						(optional) Display the site name as a featured site on the master business homepage (ciniki.com)
@@ -133,7 +134,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-api-active',
 		'site-theme',
 		'site-header-image',
-		'site-logo-display',
+		'site-header-title',
+//		'site-logo-display',
 		'site-google-analytics-account',
 		'site-featured',
 		);
@@ -167,6 +169,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 			if( $field == 'page-home-image' 
 				|| $field == 'page-about-image' 
 				|| $field == 'site-header-image' 
+				|| !isset($settings[$field]) 
+				|| $settings[$field] != $ciniki['request']['args'][$field]
 				) {
 				if( isset($settings[$field]) && $settings[$field] != '0' ) {
 					//
@@ -181,7 +185,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 						return $rc;
 					}
 				} 
-				if( $ciniki['request']['args'][$field] != '0' ) {
+				if( $ciniki['request']['args'][$field] != '0' && $ciniki['request']['args'][$field] != '' ) {
 					//
 					// Add the new reference
 					//

@@ -26,6 +26,10 @@
 //		<settings>
 //			<setting name="theme" display_name="Theme" value="black" />
 //		</settings>
+//		<header>
+//			<setting name="site-header-image" display_name="Header Image" value="0" />
+//			<setting name="site-header-title" display_name="Header Logo" value="no" />
+//		</header>
 //		<advanced>
 //			<setting name="site-header-image" display_name="Header Image" value="0" />
 //			<setting name="site-logo-display" display_name="Header Logo" value="no" />
@@ -142,6 +146,7 @@ function ciniki_web_siteSettings($ciniki) {
 	// Setup other settings
 	//
 	$rc_settings = array();
+	$rc_header = array();
 	$rc_advanced = array();
 	if( isset($settings['site-theme']) && $settings['site-theme'] != '' ) {
 		array_push($rc_settings, array('setting'=>array('name'=>'theme', 'display_name'=>'Theme', 'value'=>$settings['site-theme'])));
@@ -149,15 +154,22 @@ function ciniki_web_siteSettings($ciniki) {
 		array_push($rc_settings, array('setting'=>array('name'=>'theme', 'display_name'=>'Theme', 'value'=>'default')));
 	}
 	if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
-		array_push($rc_advanced, array('setting'=>array('name'=>'site-header-image', 'display_name'=>'Header Image', 'value'=>$settings['site-header-image'])));
+		array_push($rc_header, array('setting'=>array('name'=>'site-header-image', 'display_name'=>'Header Image', 'value'=>$settings['site-header-image'])));
+//		array_push($rc_advanced, array('setting'=>array('name'=>'site-header-image', 'display_name'=>'Header Image', 'value'=>$settings['site-header-image'])));
 	} else {
-		array_push($rc_advanced, array('setting'=>array('name'=>'site-header-image', 'display_name'=>'Header Image', 'value'=>'0')));
+		array_push($rc_header, array('setting'=>array('name'=>'site-header-image', 'display_name'=>'Header Image', 'value'=>'0')));
+//		array_push($rc_advanced, array('setting'=>array('name'=>'site-header-image', 'display_name'=>'Header Image', 'value'=>'0')));
 	}
-	if( isset($settings['site-logo-display']) && $settings['site-logo-display'] != '' ) {
-		array_push($rc_advanced, array('setting'=>array('name'=>'site-logo-display', 'display_name'=>'Header Logo', 'value'=>$settings['site-logo-display'])));
+	if( isset($settings['site-header-title']) && $settings['site-header-title'] != '' ) {
+		array_push($rc_header, array('setting'=>array('name'=>'site-header-title', 'display_name'=>'Header Title', 'value'=>$settings['site-header-title'])));
 	} else {
-		array_push($rc_advanced, array('setting'=>array('name'=>'site-logo-display', 'display_name'=>'Header Logo', 'value'=>'no')));
+		array_push($rc_header, array('setting'=>array('name'=>'site-header-title', 'display_name'=>'Header Title', 'value'=>'no')));
 	}
+//	if( isset($settings['site-logo-display']) && $settings['site-logo-display'] != '' ) {
+//		array_push($rc_advanced, array('setting'=>array('name'=>'site-logo-display', 'display_name'=>'Header Logo', 'value'=>$settings['site-logo-display'])));
+//	} else {
+//		array_push($rc_advanced, array('setting'=>array('name'=>'site-logo-display', 'display_name'=>'Header Logo', 'value'=>'no')));
+//	}
 	if( isset($settings['site-featured']) && $settings['site-featured'] == 'yes' ) {
 		$featured = 'yes';
 	} else {
@@ -170,6 +182,6 @@ function ciniki_web_siteSettings($ciniki) {
 		array_push($rc_pages, array('page'=>array('name'=>$page, 'display_name'=>$pagedetails['display_name'], 'active'=>$pagedetails['active'])));
 	}
 
-	return array('stat'=>'ok', 'featured'=>$featured, 'pages'=>$rc_pages, 'settings'=>$rc_settings, 'advanced'=>$rc_advanced);
+	return array('stat'=>'ok', 'featured'=>$featured, 'pages'=>$rc_pages, 'settings'=>$rc_settings, 'header'=>$rc_header, 'advanced'=>$rc_advanced);
 }
 ?>

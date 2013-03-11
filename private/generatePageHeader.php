@@ -158,15 +158,25 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 	// Add signin button if any.
 	$content .= $signin_content;
 
-	if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
-		$content .= "<hgroup class='header-image'>\n";
-	} else {
-		$content .= "<hgroup>\n";
-	}
+//	if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
+//		$content .= "<hgroup>\n";
+//	} else {
+//	}
 	//
 	// Decide if there is a header image to be displayed, or display an h1 title
 	//
-	if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
+	if( !isset($settings['site-header-title']) || $settings['site-header-title'] == 'yes' ) {
+		$content .= "<hgroup>\n";
+		$content .= "<h1 id='site-title'>";
+		if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+			$rc = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '100', '85');
+			$content .= "<span class='logo'><a href='" . $ciniki['request']['base_url'] . "/' title='" . $ciniki['business']['details']['name'] 
+				. "' rel='home'><img alt='Home' src='" . $rc['url'] . "' /></a></span>";
+		}
+		$content .= "<span class='title'><a href='" . $ciniki['request']['base_url'] . "/' title='" . $ciniki['business']['details']['name'] . "' rel='home'>" . $ciniki['business']['details']['name'] . "</a></span></h1>\n";
+	} else {
+		$content .= "<hgroup class='header-image'>\n";
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 		$rc = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '125', '85');
 		if( $rc['stat'] != 'ok' ) {
@@ -175,17 +185,27 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 		$content .= "<span><a href='" . $ciniki['request']['base_url'] . "/' title='" . $ciniki['business']['details']['name'] . "' rel='home'>"
 			. "<img alt='Home' src='" . $rc['url'] . "' />"
 			. "</a></span>\n";
-	} else {
-		$content .= "<h1 id='site-title'>";
-		if( isset($settings['site-logo-display']) && $settings['site-logo-display'] == 'yes' 
-			&& isset($ciniki['business']['details']['logo_id']) && $ciniki['business']['details']['logo_id'] > 0 ) {
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-			$rc = ciniki_web_getScaledImageURL($ciniki, $ciniki['business']['details']['logo_id'], 'original', 0, '100', '85');
-			$content .= "<span class='logo'><a href='" . $ciniki['request']['base_url'] . "/' title='" . $ciniki['business']['details']['name'] 
-				. "' rel='home'><img alt='Home' src='" . $rc['url'] . "' /></a></span>";
-		}
-		$content .= "<span class='title'><a href='" . $ciniki['request']['base_url'] . "/' title='" . $ciniki['business']['details']['name'] . "' rel='home'>" . $ciniki['business']['details']['name'] . "</a></span></h1>\n";
 	}
+//	if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
+//		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+//		$rc = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '125', '85');
+//		if( $rc['stat'] != 'ok' ) {
+//			return $rc;
+//		}
+//		$content .= "<span><a href='" . $ciniki['request']['base_url'] . "/' title='" . $ciniki['business']['details']['name'] . "' rel='home'>"
+//			. "<img alt='Home' src='" . $rc['url'] . "' />"
+//			. "</a></span>\n";
+//	} else {
+//		$content .= "<h1 id='site-title'>";
+//		if( isset($settings['site-logo-display']) && $settings['site-logo-display'] == 'yes' 
+//			&& isset($ciniki['business']['details']['logo_id']) && $ciniki['business']['details']['logo_id'] > 0 ) {
+//			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+//			$rc = ciniki_web_getScaledImageURL($ciniki, $ciniki['business']['details']['logo_id'], 'original', 0, '100', '85');
+//			$content .= "<span class='logo'><a href='" . $ciniki['request']['base_url'] . "/' title='" . $ciniki['business']['details']['name'] 
+//				. "' rel='home'><img alt='Home' src='" . $rc['url'] . "' /></a></span>";
+//		}
+//		$content .= "<span class='title'><a href='" . $ciniki['request']['base_url'] . "/' title='" . $ciniki['business']['details']['name'] . "' rel='home'>" . $ciniki['business']['details']['name'] . "</a></span></h1>\n";
+//	}
 
 
 	
