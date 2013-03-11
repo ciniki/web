@@ -74,6 +74,21 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		return $ac;
 	}
 
+	//
+	// Grab the existing settings
+	//
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
+	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_settings', 'business_id',
+		$args['business_id'], 'ciniki.web', 'settings', '');
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+	if( !isset($rc['settings']) ) {
+		$settings = array();
+	} else {
+		$settings = $rc['settings'];
+	}
+
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionStart');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionRollback');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionCommit');
@@ -145,14 +160,50 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 				2, 'ciniki_web_settings', $field, 'detail_value', $ciniki['request']['args'][$field]);
 			$ciniki['syncqueue'][] = array('push'=>'ciniki.web.setting',
 				'args'=>array('id'=>$field));
+
+			//
+			// Check for image updates
+			//
+			if( $field == 'page-home-image' 
+				|| $field == 'page-about-image' 
+				|| $field == 'site-header-image' 
+				) {
+				if( isset($settings[$field]) && $settings[$field] != '0' ) {
+					//
+					// Remove the old reference
+					//
+					ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'refClear');
+					$rc = ciniki_images_refClear($ciniki, $args['business_id'], array(
+						'object'=>'ciniki.web.setting', 
+						'object_id'=>$field));
+					if( $rc['stat'] == 'fail' ) {
+						ciniki_core_dbTransactionRollback($ciniki, 'ciniki.gallery');
+						return $rc;
+					}
+				} 
+				if( $ciniki['request']['args'][$field] != '0' ) {
+					//
+					// Add the new reference
+					//
+					ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'refAdd');
+					$rc = ciniki_images_refAdd($ciniki, $args['business_id'], array(
+						'image_id'=>$ciniki['request']['args'][$field], 
+						'object'=>'ciniki.web.setting', 
+						'object_id'=>$field,
+						'object_field'=>'detail_value'));
+					if( $rc['stat'] != 'ok' ) {
+						ciniki_core_dbTransactionRollback($ciniki, 'ciniki.gallery');
+						return $rc;
+					}
+				}
+			}
 		}
 	}
+
 
 	$user_prefix_fields = array(
 		'page-contact-user-display-flags',
 		);
-
-
 	//
 	// Check the list of business users to see if their information should be displayed on the website
 	//
