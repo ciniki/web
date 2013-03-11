@@ -163,7 +163,7 @@ function ciniki_web_siteSettings($ciniki) {
 	if( isset($settings['site-header-title']) && $settings['site-header-title'] != '' ) {
 		array_push($rc_header, array('setting'=>array('name'=>'site-header-title', 'display_name'=>'Header Title', 'value'=>$settings['site-header-title'])));
 	} else {
-		array_push($rc_header, array('setting'=>array('name'=>'site-header-title', 'display_name'=>'Header Title', 'value'=>'no')));
+		array_push($rc_header, array('setting'=>array('name'=>'site-header-title', 'display_name'=>'Header Title', 'value'=>'yes')));
 	}
 //	if( isset($settings['site-logo-display']) && $settings['site-logo-display'] != '' ) {
 //		array_push($rc_advanced, array('setting'=>array('name'=>'site-logo-display', 'display_name'=>'Header Logo', 'value'=>$settings['site-logo-display'])));
