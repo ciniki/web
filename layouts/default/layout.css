@@ -147,7 +147,8 @@ header span.title {
 	padding-right: 0em;
 }
 
-#content form div.bigsubmit {
+#content form div.bigsubmit,
+#content form div.bigsubmit2 {
 	max-width: 30em;
 }
 

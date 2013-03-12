@@ -400,7 +400,8 @@ article {
 }
 
 #content form input.submit,
-#content form input.bigsubmit {
+#content form input.bigsubmit,
+#content form input.bigsubmit2 {
 	margin-top: 1em;
 	cursor: pointer;
 }

@@ -59,12 +59,34 @@ function ciniki_web_generateMasterIndex($ciniki, $settings) {
 		. "<article class='page'>\n"
 		. "";
 	if( isset($settings['page-about-image']) && $settings['page-about-image'] != '' && $settings['page-about-image'] > 0 ) {
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-		$rc = ciniki_web_getScaledImageURL($ciniki, $settings['page-about-image'], 'original', '500', 0);
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
+		if( isset($settings['page-signup-active']) && $settings['page-signup-active'] == 'yes' ) {
+			$content .= "<aside>"
+				. "<h2>New Customers</h2>"
+				. "<form action='/signup'>"
+				. "<div class='bigsubmit'><input type='submit' class='bigsubmit' name='signup' value='Get Started' /></div>"
+				. "</form>"
+				. "<br/><br/><br/>"
+				. "<h2>Existing customers</h2>"
+				. "<form action='/manage' method='POST'>"
+				. "<div class='input'>"
+					. "<label for='username'>Username</label>"
+					. "<input type='text' class='text' name='username' value='' />"
+				. "</div>"
+				. "<div class='input'>"
+					. "<label for='password'>Password</label>"
+					. "<input type='password' class='text' name='password' value='' />"
+				. "</div>"
+				. "<div class='submit'><input type='submit' class='submit' name='signin' value='Sign In' /></div>"
+				. "</form>"
+				. "</aside>";
+		} else {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+			$rc = ciniki_web_getScaledImageURL($ciniki, $settings['page-about-image'], 'original', '500', 0);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$content .= "<aside><div class='image borderless'><img title='' alt='About' src='" . $rc['url'] . "' /></div></aside>";
 		}
-		$content .= "<aside><div class='image borderless'><img title='' alt='About' src='" . $rc['url'] . "' /></div></aside>";
 	}
 
 	$content .= "<div class='entry-content'>\n"

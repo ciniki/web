@@ -272,7 +272,8 @@ div.gallery-image-details span.image-awards {
 	color: #900;
 }
 
-#content form div.bigsubmit {
+#content form div.bigsubmit,
+#content form div.bigsubmit2 {
 	text-align: center;
 }
 
@@ -301,6 +302,7 @@ div.gallery-image-details span.image-awards {
 }
 
 #content form input.bigsubmit {
+	min-width: 15em;
 	font-size: 1.3em;
 	border: 2px solid #da7c0c;
 	border-radius: 10px;
@@ -311,6 +313,20 @@ div.gallery-image-details span.image-awards {
 	background: -webkit-gradient(linear, left top, left bottom, from(#faa51a), to(#f47a20));
 	background: -moz-linear-gradient(top,  #faa51a,  #f47a20);
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#faa51a', endColorstr='#f47a20');
+}
+
+#content form input.bigsubmit2 {
+	min-width: 15em;
+	font-size: 1.3em;
+	border: 2px solid #0076a3;
+	border-radius: 10px;
+	color: #d9eef7;
+	text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+	padding: 0.7em 2.0em 0.7em 2.0em;
+	background: #0095cd;
+	background: -webkit-gradient(linear, left top, left bottom, from(#00adee), to(#0078a5));
+	background: -moz-linear-gradient(top,  #00adee,  #0078a5);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0078a5');
 }
 
 aside div.image {
