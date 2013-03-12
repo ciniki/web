@@ -66,7 +66,7 @@ function ciniki_web_generateMasterIndex($ciniki, $settings) {
 //				. "<div class='bigsubmit'><input type='submit' class='bigsubmit' name='signup' value='Get Started' /></div>"
 //				. "</form>"
 //				. "<br/><br/><br/>"
-				. "<h2>Existing customers</h2>"
+				. "<h2>Sign in to your account</h2>"
 				. "<form action='/manage' method='POST'>"
 				. "<div class='input'>"
 					. "<label for='username'>Username</label>"
