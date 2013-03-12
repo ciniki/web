@@ -95,7 +95,7 @@ function ciniki_web_generateMasterIndex($ciniki, $settings) {
 				$url = "http://" . $ciniki['config']['ciniki.web']['master.domain'] . "/" . $business['sitename'];
 			}
 			$content .= "<div class='button-list-wrap'><div class='button-list-button'>"
-				. "<a title='" . $business['name'] . "' alt='" . $business['name'] . "' href='$url'><span>" . $business['name'] . "</span></a>"
+				. "<a target='_blank' title='" . $business['name'] . "' alt='" . $business['name'] . "' href='$url'><span>" . $business['name'] . "</span></a>"
 				. "</div></div>"
 				. "\n";
 		}
