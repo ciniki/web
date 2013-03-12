@@ -156,7 +156,10 @@ div.gallery-image-details span.image-awards {
 	padding-left: 1em;
 }
 
-#content h1.entry-title {
+#content h1,
+#content h1.entry-title,
+#content b.entry-title,
+#content h2.highlight-colour {
 	color: #439BBD;
 }
 

@@ -55,45 +55,46 @@ function ciniki_web_generateMasterIndex($ciniki, $settings) {
 		$page_content = $rc['content'];
 	}
 
-	$content .= "<div id='content'>\n"
-		. "<article class='page'>\n"
-		. "";
+	$aside_content = "";
 //	if( isset($settings['page-about-image']) && $settings['page-about-image'] != '' && $settings['page-about-image'] > 0 ) {
-		if( isset($settings['page-signup-active']) && $settings['page-signup-active'] == 'yes' ) {
-			$content .= "<aside>"
-//				. "<h2>New Customers</h2>"
-//				. "<form action='/signup'>"
-//				. "<div class='bigsubmit'><input type='submit' class='bigsubmit' name='signup' value='Get Started' /></div>"
-//				. "</form>"
-//				. "<br/><br/><br/>"
-				. "<h2>Sign in to your account</h2>"
-				. "<form action='/manage' method='POST'>"
-				. "<div class='input'>"
-					. "<label for='username'>Username</label>"
-					. "<input type='text' class='text' name='username' value='' />"
-				. "</div>"
-				. "<div class='input'>"
-					. "<label for='password'>Password</label>"
-					. "<input type='password' class='text' name='password' value='' />"
-				. "</div>"
-				. "<div class='submit'><input type='submit' class='submit' name='signin' value='Sign In' /></div>"
-				. "</form>"
-				. "</aside>";
+	if( isset($settings['page-signup-active']) && $settings['page-signup-active'] == 'yes' ) {
+		$aside_content .= "<h1 class='entry-title'>New Customers</h1>"
+			. "<form action='/signup'>"
+			. "<div class='bigsubmit2'><input type='submit' class='bigsubmit2' name='signup' value='Get Started Today' /></div>"
+			. "</form>"
+			. "<br/><br/><br/>"
+			. "<h1 class='entry-title'>Already a customer, Sign in</h1>"
+			. "<form action='/manage' method='POST'>"
+			. "<div class='input'>"
+				. "<label for='username'>Username</label>"
+				. "<input type='text' class='text' name='username' value='' />"
+			. "</div>"
+			. "<div class='input'>"
+				. "<label for='password'>Password</label>"
+				. "<input type='password' class='text' name='password' value='' />"
+			. "</div>"
+			. "<div class='submit'><input type='submit' class='submit' name='signin' value='Sign In' /></div>"
+			. "</form>";
 //		} else {
-		} elseif( isset($settings['page-about-image']) && $settings['page-about-image'] != '' && $settings['page-about-image'] > 0 ) {
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-			$rc = ciniki_web_getScaledImageURL($ciniki, $settings['page-about-image'], 'original', '500', 0);
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
-			}
-			$content .= "<aside><div class='image borderless'><img title='' alt='About' src='" . $rc['url'] . "' /></div></aside>";
+	} elseif( isset($settings['page-about-image']) && $settings['page-about-image'] != '' && $settings['page-about-image'] > 0 ) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+		$rc = ciniki_web_getScaledImageURL($ciniki, $settings['page-about-image'], 'original', '500', 0);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
 		}
+		$aside_content .= "<div class='image borderless'><img title='' alt='About' src='" . $rc['url'] . "' /></div>";
+	}
 //	}
 
-	$content .= "<div class='entry-content'>\n"
-		. $page_content
+	$content .= "<div id='content'>\n"
+		. "<article class='page'>\n"
+		. "<aside>" . $page_content . "</aside>"
+		. "<div class='entry-content'>\n"
+		. $aside_content
 		. "</div>"
-		. "</article>"
+		. "";
+		
+	$content .= "</article>"
 		. "";
 
 	//

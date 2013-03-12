@@ -186,7 +186,9 @@ article {
 	margin-bottom: 2em;
 }
 
-#content h1.entry-title {
+#content b.entry-title,
+#content h1 {
+	font-weight: normal;
 	font-size: 1.5em;
 }
 
