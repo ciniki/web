@@ -436,6 +436,10 @@ footer {
 	text-align: center;
 }
 
+div.hide-babybear {
+	display: none;
+}
+
 
 /* 7. BROWSER AND NON-SEMANTIC STYLING
 ----------------------------------------------------------------------------------------*/

@@ -62,8 +62,9 @@ function ciniki_web_generateMasterIndex($ciniki, $settings) {
 			. "<form action='/signup'>"
 			. "<div class='bigsubmit2'><input type='submit' class='bigsubmit2' name='signup' value='Get Started Today' /></div>"
 			. "</form>"
-			. "<br/><br/><br/>"
-			. "<h1 class='entry-title'>Already a customer, Sign in</h1>"
+			. "<br/><br/>"
+			. "<div class='hide-babybear'>"
+			. "<br/><h1 class='entry-title'>Already a customer, Sign in</h1>"
 			. "<form action='/manage' method='POST'>"
 			. "<div class='input'>"
 				. "<label for='username'>Username</label>"
@@ -74,7 +75,8 @@ function ciniki_web_generateMasterIndex($ciniki, $settings) {
 				. "<input type='password' class='text' name='password' value='' />"
 			. "</div>"
 			. "<div class='submit'><input type='submit' class='submit' name='signin' value='Sign In' /></div>"
-			. "</form>";
+			. "</form>"
+			. "</div>";
 //		} else {
 	} elseif( isset($settings['page-about-image']) && $settings['page-about-image'] != '' && $settings['page-about-image'] > 0 ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');

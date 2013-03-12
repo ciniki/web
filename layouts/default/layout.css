@@ -152,13 +152,14 @@ header span.title {
 	max-width: 30em;
 }
 
-
 aside {
 	float: right;
 	clear: right;
 	width: 25em;
 	height: auto;
 }
+
+div.hide-babybear { display: block; }
 
 /* 9. CUSTOM LAYOUT & TYPOGRAPHY (Mummy bear)
 ----------------------------------------------------------------------------------------*/
@@ -236,6 +237,8 @@ aside {
 	margin: 0 0 2.2em;
 }
 
+div.hide-babybear { display: block; }
+
 }
 
 /* 10. CUSTOM LAYOUT & TYPOGRAPHY (Older Sister bear)
@@ -247,6 +250,8 @@ body { width: 100%; }
 #page-container.page-container-wide { width: 40em; }
 
 aside { width: 30em; }
+
+div.hide-babybear { display: block; }
 
 }
 
