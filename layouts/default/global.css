@@ -138,6 +138,15 @@ header div.signin {
 	width: 100%;
 }
 
+header div.title-logo {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+header div.title-block {
+	display: inline-block;
+}
+
 header span.title {
 	display: block;
 }
@@ -154,7 +163,7 @@ header span.title {
 header a { text-decoration: none; }
 
 hgroup {
-	margin-bottom: 1em;
+	margin-bottom: 0.5em;
 }
 
 hgroup.header-image {
@@ -251,6 +260,7 @@ article {
 
 #content table.exhibitors-list table.exhibitors-category-list td.exhibitors-image {
 	padding-right: 0.5em;
+	min-width: 9.5em;
 }
 
 #content table.exhibitors-list td.exhibitors-more {
