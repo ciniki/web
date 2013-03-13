@@ -88,7 +88,7 @@ function ciniki_web_generateMasterIndex($ciniki, $settings) {
 	}
 //	}
 
-	$content .= "<div id='content'>\n"
+	$content .= "<div id='content' class='evensplit'>\n"
 		. "<article class='page'>\n"
 		. "<aside>" . $page_content . "</aside>"
 		. "<div class='entry-content'>\n"

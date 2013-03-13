@@ -437,6 +437,12 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 			$password_err = 'yes';
 			$err = 15;
 		}
+
+		if( $_POST['password'] != $_POST['password2'] ) {
+			$password_err = "I'm sorry, but the passwords you entered did not match.";
+			$err = 26;
+		}
+
 		if( !preg_match('/[0-9]/', $_POST['password']) ) {
 			$password_err = 'yes';
 			$err = 16;
@@ -605,7 +611,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			$aside_content .= "<h2>Requirements</h2>" . $rc['content'];
+			$aside_content .= "<b class='entry-title'>Requirements</b>" . $rc['content'];
 		}
 		if( isset($page_details['page-signup-agreement']) ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
@@ -613,7 +619,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			$aside_content .= "<h2>User Agreement</h2>" . $rc['content'];
+			$aside_content .= "<b class='entry-title'>User Agreement</b>" . $rc['content'];
 		}
 
 		// 
@@ -646,7 +652,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 		//
 		// Get the list of plans from the database and display, allowing user to select one to signup for
 		//
-		$page_content .= "<h2>Choose a plan</h2>";
+		$page_content .= "<b class='entry-title'>Choose a plan</b>";
 		$strsql = "SELECT id, name, description, monthly, trial_days "
 			. "FROM ciniki_business_plans "
 			. "WHERE (flags&0x01) = 1 "
@@ -670,8 +676,7 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 		}
 		$page_content .= "</dl>";
 
-
-		$page_content .= "<h2>Your information</h2>";
+		$page_content .= "<b class='entry-title'>Your information</b>";
 	// Form fields: first_name, last_name, business_name, sitename, email_address, username, password, password_again
 		$page_content .= "<div class='input'><label for='firstname'>First Name</label><input type='text' class='text' name='firstname' value='$firstname'>";
 		if( $firstname_err != '' ) {
@@ -700,17 +705,17 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 		}
 		$page_content .= "</div>";
 		$page_content .= "<div class='input'><label for='password'>Password</label><input type='password' class='text' name='password' value=''>";
-		if( $password_err != '' ) {
+		if( $password_err != '' && $password_err != 'yes' ) {
+			$page_content .= "<p class='formerror'>$password_err</p>";
+		}
+		if( $password_err != '' && $password_err == 'yes' ) {
 			$page_content .= "<p class='formerror'>";
 		} else {
 			$page_content .= "<p class='formhelp'>";
 		}
-		$page_content .= "Password must be at least 8 characters, and contain 1 number.  This password will protect your business information, so longer and more cryptic is better.</p></div>";
-		if( $password_err != '' ) {
-			$page_content .= "<p class='formerror'>";
-		} else {
-			$page_content .= "<p class='formhelp'>";
-		}
+		$page_content .= "Password must be at least 8 characters, and contain 1 number.  This password will protect your business information, so longer and more cryptic is better.</p>";
+		$page_content .= "</div>";
+		$page_content .= "<div class='input'><label for='password2'>Retype Password</label><input type='password' class='text' name='password2' value=''>";
 		$page_content .= "<label for='useragrees'></label><input type='checkbox' class='' name='useragrees' value='yes'";
 		if( $useragrees == 'yes' ) { $page_content .= " checked"; }
 		$page_content .= "> I agree to the User Agreement.";
@@ -721,13 +726,12 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 		// Submit button
 		$page_content .= "<div class='bigsubmit'><input type='submit' class='bigsubmit' name='signup' value='Sign up'></div>";
 
-
 	}
 
-	$content .= "<div id='content'>\n"
+	$content .= "<div id='content' class='evensplit'>\n"
 		. "<article class='page'>\n"
-		. "<header class='entry-title'><h1 class='entry-title'>$page_title</h1></header>\n"
 		. "<aside>$aside_content</aside>"
+//		. "<header class='entry-title'><h1 class='entry-title'>$page_title</h1></header>\n"
 		. "<div class='entry-content'>\n"
 		. $page_content
 		. "</div>"

@@ -159,6 +159,17 @@ aside {
 	height: auto;
 }
 
+#content.evensplit form input.text, 
+#content.evensplit form div.submit, 
+#content.evensplit form div.bigsubmit, 
+#content.evensplit form div.bigsubmit2  {
+	max-width: 27em;
+}
+
+#content.evensplit aside {
+	width: 27em;
+}
+
 div.hide-babybear { display: block; }
 
 /* 9. CUSTOM LAYOUT & TYPOGRAPHY (Mummy bear)
