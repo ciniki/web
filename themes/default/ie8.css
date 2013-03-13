@@ -1,0 +1,10 @@
+#main-menu-container {
+	border: 2px solid black;
+}
+
+#main-menu-container ul.menu li.menu-item {
+	margin: 0px;
+	padding-left: 15px;
+	padding-right: 15px;
+	border: 0px;
+}

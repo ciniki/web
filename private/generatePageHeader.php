@@ -46,6 +46,14 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 			. "<!--[if (lt IE 9) & (!IEMobile)]>\n"
 			. "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['layout_url'] 
 			. '/' . $settings['site-layout'] . "/layout.css' />\n"
+			. "<script>\n"
+				. "document.createElement('header');\n"
+				. "document.createElement('nav');\n"
+				. "document.createElement('section');\n"
+				. "document.createElement('article');\n"
+				. "document.createElement('aside');\n"
+				. "document.createElement('footer');\n"
+			. "</script>\n"
 		  	. "<![endif]-->\n"
 			. "<!--[if IE 8]>\n"
 			. "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['layout_url'] 
@@ -65,17 +73,39 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 		$content .= "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['theme_url'] 
 			. '/' . $settings['site-theme'] . "/style.css' />\n";
 		if( file_exists($ciniki['request']['theme_dir'] . '/' . $settings['site-theme'] . '/ie9.css') ) {
-			$content .= "<!--[if (lt IE 10) & (!IEMobile)]>\n"
+			$content .= "<!--[if (IE 9) & (!IEMobile)]>\n"
 				. "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['theme_url'] 
 				. '/' . $settings['site-theme'] . "/ie9.css' />\n"
+				. "<![endif]-->\n";
+		}
+		if( file_exists($ciniki['request']['theme_dir'] . '/' . $settings['site-theme'] . '/ie8.css') ) {
+			$content .= "<!--[if (IE 8) & (!IEMobile)]>\n"
+				. "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['theme_url'] 
+				. '/' . $settings['site-theme'] . "/ie8.css' />\n"
+				. "<![endif]-->\n";
+		}
+		if( file_exists($ciniki['request']['theme_dir'] . '/' . $settings['site-theme'] . '/ie.css') ) {
+			$content .= "<!--[if (lt IE 8)]>\n"
+				. "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['theme_url'] 
+				. '/' . $settings['site-theme'] . "/ie.css' />\n"
 				. "<![endif]-->\n";
 		}
 	} else if( file_exists($ciniki['request']['theme_dir'] . '/default/style.css') ) {
 		$content .= "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['theme_url'] 
 			. "/default/style.css' />\n";
 		if( file_exists($ciniki['request']['theme_dir'] . '/default/ie9.css') ) {
-			$content .= "<!--[if (lt IE 10) & (!IEMobile)]>\n"
+			$content .= "<!--[if (IE 9) & (!IEMobile)]>\n"
 				. "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['theme_url'] . "/default/ie9.css' />\n"
+				. "<![endif]-->\n";
+		}
+		if( file_exists($ciniki['request']['theme_dir'] . '/default/ie8.css') ) {
+			$content .= "<!--[if (IE 8) & (!IEMobile)]>\n"
+				. "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['theme_url'] . "/default/ie8.css' />\n"
+				. "<![endif]-->\n";
+		}
+		if( file_exists($ciniki['request']['theme_dir'] . '/default/ie.css') ) {
+			$content .= "<!--[if (lt IE 8)]>\n"
+				. "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['theme_url'] . "/default/ie.css' />\n"
 				. "<![endif]-->\n";
 		}
 	}

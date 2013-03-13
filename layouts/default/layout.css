@@ -159,7 +159,10 @@ aside {
 	height: auto;
 }
 
-#content.evensplit form input.text, 
+#content.evensplit form input.text {
+	max-width: 26em;
+}
+
 #content.evensplit form div.submit, 
 #content.evensplit form div.bigsubmit, 
 #content.evensplit form div.bigsubmit2  {
@@ -235,11 +238,22 @@ body { width: 100%; }
 
 #content form input.text {
 	width: 95%;
+	width: 100%;
+	max-width: 100%;
+}
+
+#content.evensplit form input.text {
+	max-width: 96%;
 }
 
 #content form div.submit {
-	width: 99%;
+	width: 100%;
 }
+
+#content.evensplit form div.submit {
+	max-width: 100%;
+}
+
 
 aside {
 	float: none;

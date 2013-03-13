@@ -1,4 +1,8 @@
 #main-menu-container, 
+#content div.button-list div.button-list-button a,
+#content form input.submit,
+#content form input.bigsubmit,
+#content form input.bigsubmit2,
 #main-menu-container li.menu-item {
 	filter: none; 
 }
