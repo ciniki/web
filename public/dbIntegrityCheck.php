@@ -68,7 +68,7 @@ function ciniki_web_dbIntegrityCheck(&$ciniki) {
 			. "AND detail_key in ('page-home-image', 'page-about-image', 'site-header-image') "
 			. "AND detail_value > 0 "
 			. "";
-		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, $module, 'item');
+		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'item');
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
