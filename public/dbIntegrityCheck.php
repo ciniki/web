@@ -43,6 +43,31 @@ function ciniki_web_dbIntegrityCheck(&$ciniki) {
 
 	if( $args['fix'] == 'yes' ) {
 		//
+		// Remove any image definitions of undefined
+		//
+		$strsql = "UPDATE ciniki_web_settings SET detail_value = 0 "
+			. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+			. "AND detail_key in ('page-home-image', 'page-about-image', 'site-header-image') "
+			. "AND detail_value = 'undefined' "
+			. "";
+		$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.images');
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+
+		$strsql = "UPDATE ciniki_web_history SET new_value = '0' "
+			. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+			. "AND table_name = 'ciniki_web_settings' "
+			. "AND table_key in ('page-home-image', 'page-about-image', 'site-header-image') "
+			. "AND table_field = 'detail_value' "
+			. "AND new_value = 'undefined' "
+			. "";
+		$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.images');
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+
+		//
 		// Load existing image refs
 		//
 		$strsql = "SELECT CONCAT_WS('-', object_id, image_id) AS refid "
