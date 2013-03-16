@@ -211,6 +211,10 @@ div.gallery-image-details span.image-awards {
 	font-size: 1.1em;
 }
 
+#content a.external-link {
+	color: #439BBD;
+}
+
 #content div.button-list div.button-list-wrap {
 	padding-right: 0.3em;
 	padding-bottom: 0.5em;

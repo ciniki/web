@@ -287,15 +287,20 @@ article {
 	height: 260px;
 }
 
-#content div.image-exhibitors-thumbnail,
-#content div.image-gallery div.image-gallery-thumbnail {
-	width: 115px;
+#content div.image-exhibitors-thumbnail {
 	height: 115px;
 }
 
-#content div.image-exhibitors-thumbnail img,
+#content div.image-gallery div.image-gallery-thumbnail {
+	width: 115px; 
+	height: 115px;
+}
+
+#content div.image-exhibitors-thumbnail img {
+	height: 115px;
+}
 #content div.image-gallery-thumbnail img {
-	width: 115px;
+	width: 115px; 
 	height: 115px;
 }
 

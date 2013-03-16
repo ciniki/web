@@ -30,11 +30,13 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
 	// Check if we are to display an exhibitor
 	//
 	if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'exhibitions', 'web', 'participantDetails');
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
+
 		//
 		// Get the exhibitor information
 		//
 		$exhibitor_permalink = $ciniki['request']['uri_split'][0];
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'exhibitions', 'web', 'participantDetails');
 		$rc = ciniki_exhibitions_web_participantDetails($ciniki, $settings, 
 			$ciniki['request']['business_id'], 
 			$settings['page-exhibitions-exhibition'], $exhibitor_permalink);
@@ -71,18 +73,16 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
 			}
 			$page_content .= $rc['content'];
 		}
-		
+
 		if( isset($participant['url']) ) {
-			$url = $participant['url'];
+			$rc = ciniki_web_processURL($ciniki, $participant['url']);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$url = $rc['url'];
+			$display_url = $rc['display'];
 		} else {
 			$url = '';
-		}
-		if( $url != '' && !preg_match('/^\s*http/i', $url) ) {
-			$display_url = $url;
-			$url = "http://" . $url;
-		} else {
-			$display_url = preg_replace('/^\s*http:\/\//i', '', $url);
-			$display_url = preg_replace('/\/$/i', '', $display_url);
 		}
 
 		if( $url != '' ) {
@@ -182,7 +182,7 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
 	// Add the header
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'About');
+	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Exhibitors');
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
 	}
