@@ -297,7 +297,9 @@ article {
 
 #content div.image-exhibitors-thumbnail img {
 	height: 115px;
+	max-width: none;
 }
+
 #content div.image-gallery-thumbnail img {
 	width: 115px; 
 	height: 115px;

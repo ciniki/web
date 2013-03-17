@@ -20,16 +20,127 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
 	//
 	$content = '';
 	$page_content = '';
+	$page_title = 'Exhibitors';
 
 	//
 	// FIXME: Check if anything has changed, and if not load from cache
 	//
 
+	//
+	// Check if we are to display the gallery image for an exhibitor
+	//
+	//
+	// Check if we are to display an image, from the gallery, or latest images
+	//
+	if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' 
+		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] == 'gallery' 
+		&& isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' 
+		) {
+		$exhibitor_permalink = $ciniki['request']['uri_split'][0];
+		$image_permalink = $ciniki['request']['uri_split'][2];
+
+		//
+		// Load the participant to get all the details, and the list of images.
+		// It's one query, and we can find the requested image, and figure out next
+		// and prev from the list of images returned
+		//
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'exhibitions', 'web', 'participantDetails');
+		$rc = ciniki_exhibitions_web_participantDetails($ciniki, $settings, 
+			$ciniki['request']['business_id'], 
+			$settings['page-exhibitions-exhibition'], $exhibitor_permalink);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$participant = $rc['participant'];
+
+		if( !isset($participant['images']) || count($participant['images']) < 1 ) {
+			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'490', 'msg'=>'Unable to find image'));
+		}
+
+		$first = NULL;
+		$last = NULL;
+		$img = NULL;
+		$next = NULL;
+		$prev = NULL;
+		foreach($participant['images'] as $iid => $image) {
+			if( $first == NULL ) {
+				$first = $image;
+			}
+			if( $image['permalink'] == $image_permalink ) {
+				$img = $image;
+			} elseif( $next == NULL && $img != NULL ) {
+				$next = $image;
+			} elseif( $img == NULL ) {
+				$prev = $image;
+			}
+			$last = $image;
+		}
+
+		if( count($participant['images']) == 1 ) {
+			$prev = NULL;
+			$next = NULL;
+		} elseif( $prev == NULL ) {
+			// The requested image was the first in the list, set previous to last
+			$prev = $last;
+		} elseif( $next == NULL ) {
+			// The requested image was the last in the list, set previous to last
+			$next = $first;
+		}
+		
+		$page_title = $participant['name'] . ' - ' . $img['title'];
+	
+		//
+		// Load the image
+		//
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+		$rc = ciniki_web_getScaledImageURL($ciniki, $img['image_id'], 'original', 0, 600);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$img_url = $rc['url'];
+
+		//
+		// Set the page to wide if possible
+		//
+		$ciniki['request']['page-container-class'] = 'page-container-wide';
+
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateGalleryJavascript');
+		$rc = ciniki_web_generateGalleryJavascript($ciniki, $next, $prev);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$ciniki['request']['inline_javascript'] = $rc['javascript'];
+
+		$ciniki['request']['onresize'] = "gallery_resize_arrows();";
+		$ciniki['request']['onload'] = "scrollto_header();";
+		$page_content .= "<article class='page'>\n"
+			. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$page_title</h1></header>\n"
+			. "<div class='entry-content'>\n"
+			. "";
+		$page_content .= "<div id='gallery-image' class='gallery-image'>";
+		$page_content .= "<div id='gallery-image-wrap' class='gallery-image-wrap'>";
+		if( $prev != null ) {
+			$page_content .= "<a id='gallery-image-prev' class='gallery-image-prev' href='" . $prev['permalink'] . "'><div id='gallery-image-prev-img'></div></a>";
+		}
+		if( $next != null ) {
+			$page_content .= "<a id='gallery-image-next' class='gallery-image-next' href='" . $next['permalink'] . "'><div id='gallery-image-next-img'></div></a>";
+		}
+		$page_content .= "<img id='gallery-image-img' title='" . $img['title'] . "' alt='" . $img['title'] . "' src='" . $img_url . "' onload='javascript: gallery_resize_arrows();' />";
+		$page_content .= "</div><br/>"
+			. "<div id='gallery-image-details' class='gallery-image-details'>"
+			. "<span class='image-title'>" . $img['title'] . '</span>'
+			. "<span class='image-details'></span>";
+		if( $img['description'] != '' ) {
+			$page_content .= "<span class='image-description'>" . preg_replace('/\n/', '<br/>', $img['description']) . "</span>";
+		}
+		$page_content .= "</div></div>";
+		$page_content .= "</div></article>";
+	}
 
 	//
 	// Check if we are to display an exhibitor
 	//
-	if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
+	elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'exhibitions', 'web', 'participantDetails');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
 
@@ -44,6 +155,7 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
 			return $rc;
 		}
 		$participant = $rc['participant'];
+		$page_title = $participant['name'];
 		$page_content .= "<article class='page'>\n"
 			. "<header class='entry-title'><h1 class='entry-title'>" . $participant['name'] . "</h1></header>\n"
 			. "";
@@ -88,12 +200,21 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
 		if( $url != '' ) {
 			$page_content .= "<br/>Website: <a class='exhibitors-url' target='_blank' href='" . $url . "' title='" . $participant['name'] . "'>" . $display_url . "</a>";
 		}
-
-		//
-		// FIXME: Add thumbnails for additional images
-		//
-
 		$page_content .= "</article>";
+
+		if( isset($participant['images']) && count($participant['images']) > 0 ) {
+			$page_content .= "<article class='page'>"	
+				. "<header class='entry-title'><h1 class='entry-title'>Gallery</h1></header>\n"
+				. "";
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
+			$img_base_url = $ciniki['request']['base_url'] . "/exhibitors/" . $participant['permalink'] . "/gallery";
+			$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $participant['images'], 125);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= "<div class='image-gallery'>" . $rc['content'] . "</div>";
+			$page_content .= "</article>";
+		}
 	}
 
 	//
@@ -182,7 +303,7 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
 	// Add the header
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Exhibitors');
+	$rc = ciniki_web_generatePageHeader($ciniki, $settings, $page_title);
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
 	}
