@@ -214,14 +214,12 @@ article {
 }
 
 #content table.exhibitors-list,
-#content table.sponsors-list,
 #content table.links-list,
 #content table.event-list {
 	width: 100%;
 }
 
 #content table.exhibitors-list > tbody > tr > th,
-#content table.sponsors-list > tbody > tr > th,
 #content table.links-list th,
 #content table.event-list th {
 	display: block;
@@ -234,7 +232,6 @@ article {
 }
 
 #content table.exhibitors-list > tbody > tr > td,
-#content table.sponsors-list > tbody > tr > td,
 #content table.links-list td,
 #content table.event-list td {
 	display: block;
@@ -246,15 +243,16 @@ article {
 	vertical-align: top;
 }
 
-#content table.exhibitors-list > tbody > tr > td,
-#content table.sponsors-list > tbody > tr > td {
+#content table.exhibitors-list > tbody > tr > td {
 	padding-left: 0em;
 }
 
+#content table.exhibitors-category-list {
+	width: 100%;
+}
+
 #content table.exhibitors-category-list > tbody > tr > th,
-#content table.exhibitors-category-list > tbody > tr > td,
-#content table.sponsors-category-list > tbody > tr > th,
-#content table.sponsors-category-list > tbody > tr > td {
+#content table.exhibitors-category-list > tbody > tr > td {
 	vertical-align: top;
 }
 
@@ -266,6 +264,7 @@ article {
 #content table.exhibitors-list td.exhibitors-more {
 	text-align: right;
 	vertical-align: bottom;
+	width: 100%;
 }
 
 #content div.events-more {
