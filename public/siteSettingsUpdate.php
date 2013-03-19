@@ -65,6 +65,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		return $rc;
 	}
 	$args = $rc['args'];
+	error_log(serialize($ciniki['request']['args']));
 
 	//
 	// Check access to business_id as owner, and load module list
@@ -166,11 +167,11 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 			//
 			// Check for image updates
 			//
-			if( $field == 'page-home-image' 
-				|| $field == 'page-about-image' 
-				|| $field == 'site-header-image' 
-				|| !isset($settings[$field]) 
-				|| $settings[$field] != $ciniki['request']['args'][$field]
+			if( ($field == 'page-home-image' 
+					|| $field == 'page-about-image' 
+					|| $field == 'site-header-image' )
+				&& (!isset($settings[$field]) 
+					|| $settings[$field] != $ciniki['request']['args'][$field] )
 				) {
 				if( isset($settings[$field]) && $settings[$field] != '0' ) {
 					//
