@@ -266,9 +266,18 @@ elseif( $ciniki['request']['page'] == 'exhibitors' && $settings['page-exhibition
 	$rc = ciniki_web_generatePageExhibitors($ciniki, $settings);
 }
 // Sponsors
-elseif( $ciniki['request']['page'] == 'sponsors' && $settings['page-exhibitions-sponsors-active'] == 'yes' ) {
+elseif( $ciniki['request']['page'] == 'sponsors' 
+	&& ( 
+		(isset($settings['page-exhibitions-sponsors-active']) && $settings['page-exhibitions-sponsors-active'] == 'yes') 
+		|| (isset($settings['page-sponsors-active']) && $settings['page-sponsors-active'] == 'yes') 
+	) ) {
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageSponsors.php');
 	$rc = ciniki_web_generatePageSponsors($ciniki, $settings);
+}
+// Members
+elseif( $ciniki['request']['page'] == 'members' && $settings['page-members-active'] == 'yes' ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageMembers.php');
+	$rc = ciniki_web_generatePageMembers($ciniki, $settings);
 }
 // Gallery
 elseif( $ciniki['request']['page'] == 'gallery' && $settings['page-gallery-active'] == 'yes' ) {

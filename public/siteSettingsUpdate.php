@@ -115,6 +115,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-exhibitions-exhibitors-active',
 		'page-exhibitions-sponsors-active',
 		'page-gallery-active',
+		'page-members-active',
+		'page-sponsors-active',
 		'page-events-active',
 		'page-events-past',
 		'page-links-active',

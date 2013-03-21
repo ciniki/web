@@ -25,29 +25,43 @@ function ciniki_web_generatePageSponsors($ciniki, $settings) {
 	// FIXME: Check if anything has changed, and if not load from cache
 	//
 
+	$page_title = "Sponsors";
+	if( isset($ciniki['business']['modules']['ciniki.exhibitions']) ) {
+		$pkg = 'ciniki';
+		$mod = 'exhibitions';
+	} elseif( isset($ciniki['business']['modules']['ciniki.artclub']) ) {
+		$pkg = 'ciniki';
+		$mod = 'artclub';
+	} else {
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'946', 'msg'=>'No sponsor module enabled'));
+	}
+
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'exhibitions', 'web', 'participantList');
-	$rc = ciniki_exhibitions_web_participantList($ciniki, $settings, $ciniki['request']['business_id'], $settings['page-exhibitions-exhibition'], 'sponsor');
+	ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'sponsorList');
+	$sponsorList = $pkg . '_' . $mod . '_web_sponsorList';
+	$rc = $sponsorList($ciniki, $settings, $ciniki['request']['business_id']);
+//	ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'participantList');
+//	$rc = ciniki_exhibitions_web_participantList($ciniki, $settings, $ciniki['request']['business_id'], $settings['page-exhibitions-exhibition'], 'sponsor');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
-	$participants = $rc['categories'];
+	$sponsors = $rc['categories'];
 
 	$page_content .= "<article class='page'>\n"
 		. "<header class='entry-title'><h1 class='entry-title'>Sponsors</h1></header>\n"
 		. "<div class='entry-content'>\n"
 		. "";
 
-	if( count($participants) > 0 ) {
+	if( count($sponsors) > 0 ) {
 		$page_content .= "<table class='exhibitors-list'><tbody><tr><td>\n";
-		foreach($participants as $cnum => $c) {
+		foreach($sponsors as $cnum => $c) {
 			$page_content .= "<table class='exhibitors-category-list'><tbody>\n";
-			foreach($c['category']['participants'] as $pnum => $participant) {
-				$participant = $participant['participant'];
-				if( isset($participant['url']) ) {
-					$rc = ciniki_web_processURL($ciniki, $participant['url']);
+			foreach($c['category']['sponsors'] as $pnum => $sponsor) {
+				$sponsor = $sponsor['sponsor'];
+				if( isset($sponsor['url']) ) {
+					$rc = ciniki_web_processURL($ciniki, $sponsor['url']);
 					if( $rc['stat'] != 'ok' ) {
 						return $rc;
 					}
@@ -59,13 +73,13 @@ function ciniki_web_generatePageSponsors($ciniki, $settings) {
 
 				// Setup the exhibitor image
 				$page_content .= "<tr><td class='exhibitors-image' rowspan='3'>";
-				if( isset($participant['image_id']) && $participant['image_id'] > 0 ) {
-					$rc = ciniki_web_getScaledImageURL($ciniki, $participant['image_id'], 'original', 0, 150);
+				if( isset($sponsor['image_id']) && $sponsor['image_id'] > 0 ) {
+					$rc = ciniki_web_getScaledImageURL($ciniki, $sponsor['image_id'], 'original', 0, 150);
 					if( $rc['stat'] != 'ok' ) {
 						return $rc;
 					}
 					$page_content .= "<div class='image-exhibitors-thumbnail'>"
-						. "<a target='_blank' href='$url' title='" . $participant['name'] . "'><img title='' alt='" . $participant['name'] . "' src='" . $rc['url'] . "' /></a>"
+						. "<a target='_blank' href='$url' title='" . $sponsor['name'] . "'><img title='' alt='" . $sponsor['name'] . "' src='" . $rc['url'] . "' /></a>"
 						. "</div></aside>";
 				}
 				$page_content .= "</td>";
@@ -73,12 +87,12 @@ function ciniki_web_generatePageSponsors($ciniki, $settings) {
 				// Setup the details
 				$page_content .= "<td class='exhibitors-details'>";
 				$page_content .= "<span class='exhibitors-title'>";
-				$page_content .= "<a target='_blank' href='$url' title='" . $participant['name'] . "'>" . $participant['name'] . "</a>";
+				$page_content .= "<a target='_blank' href='$url' title='" . $sponsor['name'] . "'>" . $sponsor['name'] . "</a>";
 				$page_content .= "</span>";
 				$page_content .= "</td></tr>";
 				$page_content .= "<tr><td class='exhibitors-description'>";
-				if( isset($participant['description']) && $participant['description'] != '' ) {
-					$page_content .= "<span class='exhibitors-description'>" . $participant['description'] . "</span>";
+				if( isset($sponsor['description']) && $sponsor['description'] != '' ) {
+					$page_content .= "<span class='exhibitors-description'>" . $sponsor['description'] . "</span>";
 				}
 				$page_content .= "</td></tr>";
 				$page_content .= "<tr><td class='exhibitors-more'><a target='_blank' class='external-link' href='$url'>$display_url</a></td></tr>";
