@@ -71,31 +71,42 @@ header span.title {
 	margin-left: 1.5em;
 }
 
-#content table.exhibitors-list,
+#content table.members-list,
 #content table.sponsors-list,
+#content table.exhibitors-list,
 #content table.links-list,
 #content table.event-list {
 	border-collapse: collapse;
 }
 
-#content table.exhibitors-list > tbody > tr > th,
+#content table.members-list > tbody > tr > th,
 #content table.sponsors-list > tbody > tr > th,
+#content table.exhibitors-list > tbody > tr > th,
 #content table.links-list th,
 #content table.event-list th {
 	display: table-cell;
 	padding-bottom: 1em;
 }
 
-#content table.exhibitors-list > tbody > tr,
-#content table.sponsors-list > tbody > tr {
+#content table.members-list > tbody > tr,
+#content table.sponsors-list > tbody > tr,
+#content table.exhibitors-list > tbody > tr {
 	padding-bottom: 1em;
 }
 
-#content table.exhibitors-list > tbody > tr > td,
-#content table.sponsors-list > tbody > tr > td {
+#content table.members-list > tbody > tr > td,
+#content table.sponsors-list > tbody > tr > td,
+#content table.exhibitors-list > tbody > tr > td {
 	display: table-cell;
 	padding-left: 0em;
 	padding-bottom: 1em;
+}
+
+#content table.members-list table.members-category-list td.members-image,
+#content table.sponsors-list table.sponsors-category-list td.sponsors-image,
+#content table.exhibitors-list table.exhibitors-category-list td.exhibitors-image {
+	padding-right: 0.5em;
+	min-width: 9.5em;
 }
 
 #content table.links-list td,
@@ -105,10 +116,12 @@ header span.title {
 	padding-bottom: 1em;
 }
 
-#content table.exhibitors-list > tbody > tr > th,
-#content table.exhibitors-list > tbody > tr > td,
+#content table.members-list > tbody > tr > th,
+#content table.members-list > tbody > tr > td,
 #content table.sponsors-list > tbody > tr > th,
 #content table.sponsors-list > tbody > tr > td,
+#content table.exhibitors-list > tbody > tr > th,
+#content table.exhibitors-list > tbody > tr > td,
 #content table.links-list th,
 #content table.links-list td,
 #content table.event-list th,
@@ -116,6 +129,8 @@ header span.title {
 	border-top: 1px solid;
 }
 
+#content span.members-category,
+#content span.sponsors-category,
 #content span.exhibitors-category,
 #content span.links-category,
 #content span.event-date {
@@ -200,8 +215,16 @@ body { width: 100%; }
 	width: 100%;
 }
 
-#content table.exhibitors-list > tbody > tr > th,
+#content table.members-list table.members-category-list td.members-image,
+#content table.sponsors-list table.sponsors-category-list td.sponsors-image,
+#content table.exhibitors-list table.exhibitors-category-list td.exhibitors-image {
+	padding-right: 0.1em;
+	min-width: 9.0em;
+}
+
+#content table.members-list > tbody > tr > th,
 #content table.sponsors-list > tbody > tr > th,
+#content table.exhibitors-list > tbody > tr > th,
 #content table.links-list th,
 #content table.event-list th {
 	display: block;
@@ -209,15 +232,17 @@ body { width: 100%; }
 	border-top-width: 0px;
 }
 
-#content table.exhibitors-list > tbody > tr > td,
+#content table.members-list > tbody > tr > td,
 #content table.sponsors-list > tbody > tr > td,
+#content table.exhibitors-list > tbody > tr > td,
 #content table.links-list td,
 #content table.event-list td {
 	display: block;
 }
 
-#content table.exhibitors-list >tbody > tr > td,
-#content table.sponsors-list >tbody > tr > td {
+#content table.members-list >tbody > tr > td,
+#content table.sponsors-list >tbody > tr > td,
+#content table.exhibitors-list >tbody > tr > td {
 	padding-left: 0em;
 	margin-left: 0px;
 }

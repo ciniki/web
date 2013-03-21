@@ -96,6 +96,8 @@ span.image-categories-name {
 	padding-bottom: 0.7em;
 }
 
+div.image-members-thumbnail,
+div.image-sponsors-thumbnail,
 div.image-exhibitors-thumbnail,
 div.image-gallery-thumbnail {
 	border: 8px solid #ffffff;
@@ -169,8 +171,9 @@ div.gallery-image-details span.image-awards {
 }
 
 #content span.contact-title,
-#content span.exhibitors-title,
+#content span.members-title,
 #content span.sponsors-title,
+#content span.exhibitors-title,
 #content span.links-title,
 #content span.event-title {
 	font-size: 1.2em;
@@ -187,6 +190,7 @@ div.gallery-image-details span.image-awards {
 	color: #ddd;
 }
 
+#content a.members-url,
 #content a.sponsors-url,
 #content a.links-url,
 #content a.event-url {
@@ -195,10 +199,12 @@ div.gallery-image-details span.image-awards {
 	color: #999;
 }
 
-#content table.exhibitors-list > tbody > tr > th,
-#content table.exhibitors-list > tbody > tr > td,
+#content table.members-list > tbody > tr > th,
+#content table.members-list > tbody > tr > td,
 #content table.sponsors-list > tbody > tr > th,
 #content table.sponsors-list > tbody > tr > td,
+#content table.exhibitors-list > tbody > tr > th,
+#content table.exhibitors-list > tbody > tr > td,
 #content table.links-list th,
 #content table.links-list td,
 #content table.event-list th,
@@ -206,6 +212,8 @@ div.gallery-image-details span.image-awards {
 	border-color: #999;
 }
 
+#content span.members-category,
+#content span.sponsors-category,
 #content span.exhibitors-category,
 #content span.links-category {
 	font-size: 1.1em;

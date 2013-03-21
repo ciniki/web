@@ -196,7 +196,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 		}
 
 		if( $url != '' ) {
-			$page_content .= "<br/>Website: <a class='exhibitors-url' target='_blank' href='" . $url . "' title='" . $member['name'] . "'>" . $display_url . "</a>";
+			$page_content .= "<br/>Website: <a class='members-url' target='_blank' href='" . $url . "' title='" . $member['name'] . "'>" . $display_url . "</a>";
 		}
 		$page_content .= "</article>";
 
@@ -232,40 +232,40 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 			. "";
 
 		if( count($members) > 0 ) {
-			$page_content .= "<table class='exhibitors-list'><tbody><tr><td>\n"
+			$page_content .= "<table class='members-list'><tbody><tr><th></th><td>\n"
 				. "";
 			$prev_category = NULL;
-			$page_content .= "<table class='exhibitors-category-list'><tbody>\n";
+			$page_content .= "<table class='members-category-list'><tbody>\n";
 			foreach($members as $mnum => $member) {
 				$member = $member['member'];
 				$member_url = $ciniki['request']['base_url'] . "/members/" . $member['permalink'];
 
 				// Setup the member image
-				$page_content .= "<tr><td class='exhibitors-image' rowspan='3'>";
+				$page_content .= "<tr><td class='members-image' rowspan='3'>";
 				if( isset($member['image_id']) && $member['image_id'] > 0 ) {
 					ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 					$rc = ciniki_web_getScaledImageURL($ciniki, $member['image_id'], 'thumbnail', '150', 0);
 					if( $rc['stat'] != 'ok' ) {
 						return $rc;
 					}
-					$page_content .= "<div class='image-exhibitors-thumbnail'>"
+					$page_content .= "<div class='image-members-thumbnail'>"
 						. "<a href='$member_url' title='" . $member['name'] . "'><img title='' alt='" . $member['name'] . "' src='" . $rc['url'] . "' /></a>"
 						. "</div></aside>";
 				}
 				$page_content .= "</td>";
 
 				// Setup the details
-				$page_content .= "<td class='exhibitors-details'>";
-				$page_content .= "<span class='exhibitors-title'>";
+				$page_content .= "<td class='members-details'>";
+				$page_content .= "<span class='members-title'>";
 				$page_content .= "<a href='$member_url' title='" . $member['name'] . "'>" . $member['name'] . "</a>";
 				$page_content .= "</span>";
 				$page_content .= "</td></tr>";
-				$page_content .= "<tr><td class='exhibitors-description'>";
+				$page_content .= "<tr><td class='members-description'>";
 				if( isset($member['description']) && $member['description'] != '' ) {
-					$page_content .= "<span class='exhibitors-description'>" . $member['description'] . "</span>";
+					$page_content .= "<span class='members-description'>" . $member['description'] . "</span>";
 				}
 				$page_content .= "</td></tr>";
-				$page_content .= "<tr><td class='exhibitors-more'><a href='$member_url'>... more</a></td></tr>";
+				$page_content .= "<tr><td class='members-more'><a href='$member_url'>... more</a></td></tr>";
 			}
 			$page_content .= "</tbody></table>";
 

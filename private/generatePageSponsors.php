@@ -55,9 +55,9 @@ function ciniki_web_generatePageSponsors($ciniki, $settings) {
 		. "";
 
 	if( count($sponsors) > 0 ) {
-		$page_content .= "<table class='exhibitors-list'><tbody><tr><td>\n";
+		$page_content .= "<table class='sponsors-list'><tbody><tr><th></th><td>\n";
 		foreach($sponsors as $cnum => $c) {
-			$page_content .= "<table class='exhibitors-category-list'><tbody>\n";
+			$page_content .= "<table class='sponsors-category-list'><tbody>\n";
 			foreach($c['category']['sponsors'] as $pnum => $sponsor) {
 				$sponsor = $sponsor['sponsor'];
 				if( isset($sponsor['url']) ) {
@@ -72,30 +72,30 @@ function ciniki_web_generatePageSponsors($ciniki, $settings) {
 				}
 
 				// Setup the exhibitor image
-				$page_content .= "<tr><td class='exhibitors-image' rowspan='3'>";
+				$page_content .= "<tr><td class='sponsors-image' rowspan='3'>";
 				if( isset($sponsor['image_id']) && $sponsor['image_id'] > 0 ) {
 					$rc = ciniki_web_getScaledImageURL($ciniki, $sponsor['image_id'], 'original', 0, 150);
 					if( $rc['stat'] != 'ok' ) {
 						return $rc;
 					}
-					$page_content .= "<div class='image-exhibitors-thumbnail'>"
+					$page_content .= "<div class='image-sponsors-thumbnail'>"
 						. "<a target='_blank' href='$url' title='" . $sponsor['name'] . "'><img title='' alt='" . $sponsor['name'] . "' src='" . $rc['url'] . "' /></a>"
 						. "</div></aside>";
 				}
 				$page_content .= "</td>";
 
 				// Setup the details
-				$page_content .= "<td class='exhibitors-details'>";
-				$page_content .= "<span class='exhibitors-title'>";
+				$page_content .= "<td class='sponsors-details'>";
+				$page_content .= "<span class='sponsors-title'>";
 				$page_content .= "<a target='_blank' href='$url' title='" . $sponsor['name'] . "'>" . $sponsor['name'] . "</a>";
 				$page_content .= "</span>";
 				$page_content .= "</td></tr>";
-				$page_content .= "<tr><td class='exhibitors-description'>";
+				$page_content .= "<tr><td class='sponsors-description'>";
 				if( isset($sponsor['description']) && $sponsor['description'] != '' ) {
-					$page_content .= "<span class='exhibitors-description'>" . $sponsor['description'] . "</span>";
+					$page_content .= "<span class='sponsors-description'>" . $sponsor['description'] . "</span>";
 				}
 				$page_content .= "</td></tr>";
-				$page_content .= "<tr><td class='exhibitors-more'><a target='_blank' class='external-link' href='$url'>$display_url</a></td></tr>";
+				$page_content .= "<tr><td class='sponsors-more'><a target='_blank' class='external-link' href='$url'>$display_url</a></td></tr>";
 			}
 			$page_content .= "</tbody></table>";
 		}

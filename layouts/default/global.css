@@ -213,12 +213,19 @@ article {
 	margin-bottom: 1em;
 }
 
+#content table.members-list,
+#content table.sponsors-list {
+	width: 100%;
+}
+
 #content table.exhibitors-list,
 #content table.links-list,
 #content table.event-list {
 	width: 100%;
 }
 
+#content table.members-list > tbody > tr > th,
+#content table.sponsors-list > tbody > tr > th,
 #content table.exhibitors-list > tbody > tr > th,
 #content table.links-list th,
 #content table.event-list th {
@@ -227,10 +234,17 @@ article {
 	vertical-align: top;
 }
 
+#content table.members-list > tbody > tr > th,
+#content table.sponsors-list > tbody > tr > th {
+	min-width: 15em;
+}
+
 #content table.exhibitors-list > tbody > tr > th {
 	min-width: 15em;
 }
 
+#content table.members-list > tbody > tr > td,
+#content table.sponsors-list > tbody > tr > td,
 #content table.exhibitors-list > tbody > tr > td,
 #content table.links-list td,
 #content table.event-list td {
@@ -243,24 +257,33 @@ article {
 	vertical-align: top;
 }
 
+#content table.members-list > tbody > tr > td,
+#content table.sponsors-list > tbody > tr > td,
 #content table.exhibitors-list > tbody > tr > td {
 	padding-left: 0em;
 }
 
+#content table.members-category-list,
+#content table.sponsors-category-list,
 #content table.exhibitors-category-list {
 	width: 100%;
 }
 
-#content table.exhibitors-category-list > tbody > tr > th,
+#content table.members-category-list > tbody > tr > td,
+#content table.sponsors-category-list > tbody > tr > td,
 #content table.exhibitors-category-list > tbody > tr > td {
 	vertical-align: top;
 }
 
+#content table.members-list table.members-category-list td.members-image,
+#content table.sponsors-list table.sponsors-category-list td.sponsors-image,
 #content table.exhibitors-list table.exhibitors-category-list td.exhibitors-image {
-	padding-right: 0.5em;
-	min-width: 9.5em;
+	padding-right: 0.1em;
+	min-width: 9.0em;
 }
 
+#content table.members-list td.members-more,
+#content table.sponsors-list td.sponsors-more,
 #content table.exhibitors-list td.exhibitors-more {
 	text-align: right;
 	vertical-align: bottom;
@@ -286,6 +309,8 @@ article {
 	height: 260px;
 }
 
+#content div.image-members-thumbnail,
+#content div.image-sponsors-thumbnail,
 #content div.image-exhibitors-thumbnail {
 	height: 115px;
 }
@@ -295,6 +320,8 @@ article {
 	height: 115px;
 }
 
+#content div.image-members-thumbnail img,
+#content div.image-sponsors-thumbnail img,
 #content div.image-exhibitors-thumbnail img {
 	height: 115px;
 	max-width: none;
