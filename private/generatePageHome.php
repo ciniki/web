@@ -104,7 +104,7 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 	// List any upcoming events
 	//
 	if( isset($ciniki['business']['modules']['ciniki.events']) 
-		&& $settings['page-events-active'] == 'yes' ) {
+		&& isset($settings['page-events-active']) && $settings['page-events-active'] == 'yes' ) {
 		//
 		// Load and parse the events
 		//
