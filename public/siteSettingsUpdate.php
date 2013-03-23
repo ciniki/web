@@ -65,7 +65,6 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		return $rc;
 	}
 	$args = $rc['args'];
-	error_log(serialize($ciniki['request']['args']));
 
 	//
 	// Check access to business_id as owner, and load module list
