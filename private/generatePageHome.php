@@ -78,7 +78,9 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 	// List the latest work
 	//
 	if( isset($ciniki['business']['modules']['ciniki.artcatalog']) 
-		&& $settings['page-gallery-active'] == 'yes' ) {
+		&& $settings['page-gallery-active'] == 'yes' 
+		&& (!isset($settings['page-home-gallery-latest']) || $settings['page-home-gallery-latest'] == 'yes') 
+		) {
 
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'artcatalog', 'web', 'latestImages');
 		$rc = ciniki_artcatalog_web_latestImages($ciniki, $settings, $ciniki['request']['business_id'], 6);
@@ -104,7 +106,9 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 	// List any upcoming events
 	//
 	if( isset($ciniki['business']['modules']['ciniki.events']) 
-		&& isset($settings['page-events-active']) && $settings['page-events-active'] == 'yes' ) {
+		&& isset($settings['page-events-active']) && $settings['page-events-active'] == 'yes' 
+		&& (!isset($settings['page-home-events']) || $settings['page-home-events'] == 'yes') 
+		) {
 		//
 		// Load and parse the events
 		//
