@@ -78,7 +78,7 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 	// List the latest work
 	//
 	if( isset($ciniki['business']['modules']['ciniki.artcatalog']) 
-		&& isset($settings['page-gallery-active'] && $settings['page-gallery-active'] == 'yes' 
+		&& isset($settings['page-gallery-active']) && $settings['page-gallery-active'] == 'yes' 
 		&& (!isset($settings['page-home-gallery-latest']) || $settings['page-home-gallery-latest'] == 'yes') 
 		) {
 
