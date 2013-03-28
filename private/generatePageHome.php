@@ -96,7 +96,13 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 			return $rc;
 		}
 		$content .= "<article class='page'>\n"
-			. "<header class='entry-title'><h1 class='entry-title'>Latest Work</h1></header>\n"
+			. "<header class='entry-title'><h1 class='entry-title'>";
+		if( isset($settings['page-home-gallery-latest-title']) && $settings['page-home-gallery-latest-title'] != '' ) {
+			$content .= $settings['page-home-gallery-latest-title'];
+		} else {
+			$content .= "Latest Work";
+		}
+		$content .= "</h1></header>\n"
 			. "<div class='image-gallery'>" . $rc['content'] . "</div>"
 			. "</article>\n"
 			. "";
@@ -125,11 +131,11 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 		}
 		$content .= "<article class='page'>\n"
 			. "<header class='entry-title'><h1 class='entry-title'>";
-//		if( isset($settings['page-home-gallery-random-title']) && $settings['page-home-gallery-random-title'] != '' ) {
-//			$content .= $settings['page-home-gallery-title'];
-//		} else {
+		if( isset($settings['page-home-gallery-random-title']) && $settings['page-home-gallery-random-title'] != '' ) {
+			$content .= $settings['page-home-gallery-random-title'];
+		} else {
 			$content .= 'Example Work';
-//		}
+		}
 		$content .= "</h1></header>\n"
 			. "<div class='image-gallery'>" . $rc['content'] . "</div>"
 			. "</article>\n"
