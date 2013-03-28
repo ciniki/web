@@ -103,6 +103,40 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 	}
 
 	//
+	// List the random gallery images
+	//
+	if( isset($ciniki['business']['modules']['ciniki.artcatalog']) 
+		&& isset($settings['page-gallery-active']) && $settings['page-gallery-active'] == 'yes' 
+		&& isset($settings['page-home-gallery-random']) && $settings['page-home-gallery-random'] == 'yes' 
+		) {
+
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'artcatalog', 'web', 'randomImages');
+		$rc = ciniki_artcatalog_web_randomImages($ciniki, $settings, $ciniki['request']['business_id'], 6);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$images = $rc['images'];
+
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
+		$img_base_url = $ciniki['request']['base_url'] . "/gallery/image";
+		$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $rc['images'], 150);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$content .= "<article class='page'>\n"
+			. "<header class='entry-title'><h1 class='entry-title'>";
+//		if( isset($settings['page-home-gallery-random-title']) && $settings['page-home-gallery-random-title'] != '' ) {
+//			$content .= $settings['page-home-gallery-title'];
+//		} else {
+			$content .= 'Example Work';
+//		}
+		$content .= "</h1></header>\n"
+			. "<div class='image-gallery'>" . $rc['content'] . "</div>"
+			. "</article>\n"
+			. "";
+	}
+
+	//
 	// List any upcoming events
 	//
 	if( isset($ciniki['business']['modules']['ciniki.events']) 
