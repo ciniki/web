@@ -53,7 +53,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 		$member = $rc['member'];
 
 		if( !isset($member['images']) || count($member['images']) < 1 ) {
-			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'490', 'msg'=>'Unable to find image'));
+			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'967', 'msg'=>'Unable to find image'));
 		}
 
 		$first = NULL;
