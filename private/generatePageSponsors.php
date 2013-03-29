@@ -42,8 +42,6 @@ function ciniki_web_generatePageSponsors($ciniki, $settings) {
 	ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'sponsorList');
 	$sponsorList = $pkg . '_' . $mod . '_web_sponsorList';
 	$rc = $sponsorList($ciniki, $settings, $ciniki['request']['business_id']);
-//	ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'participantList');
-//	$rc = ciniki_exhibitions_web_participantList($ciniki, $settings, $ciniki['request']['business_id'], $settings['page-exhibitions-exhibition'], 'sponsor');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -55,8 +53,21 @@ function ciniki_web_generatePageSponsors($ciniki, $settings) {
 		. "";
 
 	if( count($sponsors) > 0 ) {
-		$page_content .= "<table class='sponsors-list'><tbody><tr><th></th><td>\n";
+		$page_content .= "<table class='sponsors-list'><tbody>\n";
+		$prev_category = NULL;
 		foreach($sponsors as $cnum => $c) {
+			if( $prev_category != NULL ) {
+				$page_content .= "</td></tr>\n";
+			}
+			if( isset($c['category']['name']) && $c['category']['name'] != '' ) {
+				$page_content .= "<tr><th>"
+					. "<span class='exhibitors-category'>" . $c['category']['name'] . "</span></th>"
+					. "<td>";
+			} else {
+				$page_content .= "<tr><th>"
+					. "<span class='exhibitors-category'></span></th>"
+					. "<td>";
+			}
 			$page_content .= "<table class='sponsors-category-list'><tbody>\n";
 			foreach($c['category']['sponsors'] as $pnum => $sponsor) {
 				$sponsor = $sponsor['sponsor'];
