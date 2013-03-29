@@ -139,6 +139,13 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 			. "";
 	}
 
+	//
+	// Check if there is custom CSS to include
+	//
+	if( isset($settings['site-custom-css']) && $settings['site-custom-css'] ) {
+		$content .= "<style>" . $settings['site-custom-css'] . "</style>";
+	}
+
 	$content .= "</head>\n";
 
 	// Generate header of the page

@@ -5,6 +5,7 @@
 # The content is stored in this table instead of settings for faster load time.
 #
 # Examples:
+# - site-custom-css
 # - page.about.content = The about content to display on the content page.
 #
 # Fields
