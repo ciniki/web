@@ -227,7 +227,11 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 			//
 			// No categories specified, just show thumbnails of all artwork
 			//
-			$page_title = 'Gallery';
+			if( isset($settings['page-gallery-name']) && $settings['page-gallery-name'] != '' ) {
+				$page_title = $settings['page-gallery-name'];
+			} else {
+				$page_title = 'Gallery';
+			}
 			ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'categoryImages');
 			$categoryImages = $pkg . '_' . $mod . '_web_categoryImages';
 			$rc = $categoryImages($ciniki, $settings, $ciniki['request']['business_id'], $category_uri_component, '');
@@ -244,7 +248,11 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 			}
 			$page_content .= "<div class='image-gallery'>" . $rc['content'] . "</div>";
 		} else {
-			$page_title = 'Galleries';
+			if( isset($settings['page-gallery-name']) && $settings['page-gallery-name'] != '' ) {
+				$page_title = $settings['page-gallery-name'];
+			} else {
+				$page_title = 'Galleries';
+			}
 			$page_content .= "<div class='image-categories'>";
 			foreach($rc['categories'] AS $cnum => $category) {
 				$name = $category['category']['name'];

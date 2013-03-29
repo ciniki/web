@@ -287,7 +287,13 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/members'>Members</a></li>";
 	}
 	if( isset($settings['page-gallery-active']) && $settings['page-gallery-active'] == 'yes' ) {
-		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/gallery'>Gallery</a></li>";
+		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/gallery'>";
+		if( isset($settings['page-gallery-name']) && $settings['page-gallery-name'] != '' ) {
+			$content .= $settings['page-gallery-name'];
+		} else {
+			$content .= "Gallery";
+		}
+		$content .= "</a></li>";
 	}
 	if( isset($settings['page-events-active']) && $settings['page-events-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/events'>Events</a></li>";
