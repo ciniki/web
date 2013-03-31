@@ -78,10 +78,6 @@ a img {
 	color: #63BBDD;
 }
 
-#content h2 {
-	color: #ccc;
-}
-
 #content a,
 #content a:visited,
 #content a:hover,
@@ -89,6 +85,14 @@ a img {
 	text-decoration: none;
 	color: inherit;
 	color: #539BBD;
+}
+
+#content h2,
+#content h2 a,
+#content h2 a:visited,
+#content h2 a:hover,
+#content h2 a:active {
+	color: #ccc;
 }
 
 div.image-categories-thumbnail-wrap {
@@ -204,8 +208,27 @@ div.gallery-image-details span.image-awards {
 	color: #ddd;
 }
 
-#content span.links-title a {
-	color: #ddd;
+#content span.members-title a,
+#content span.members-title a:visited,
+#content span.members-title a:hover,
+#content span.members-title a:active,
+#content span.sponsors-title a,
+#content span.sponsors-title a:visited,
+#content span.sponsors-title a:hover,
+#content span.sponsors-title a:active,
+#content span.exhibitors-title a,
+#content span.exhibitors-title a:visited,
+#content span.exhibitors-title a:hover,
+#content span.exhibitors-title a:active,
+#content span.event-title a,
+#content span.event-title a:visited,
+#content span.event-title a:hover,
+#content span.event-title a:active,
+#content span.links-title a,
+#content span.links-title a:visited,
+#content span.links-title a:hover,
+#content span.links-title a:active {
+	color: inherit;
 }
 
 #content a.contact-email {

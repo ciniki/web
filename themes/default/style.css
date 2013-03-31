@@ -222,9 +222,32 @@ div.gallery-image-details span.image-awards {
 #content a.sponsors-url,
 #content a.links-url,
 #content a.event-url {
-	font-size: 0.9em;
-	color: #777;
+	font-size: 1.0em;
 }
+
+#content span.members-title a,
+#content span.members-title a:visited,
+#content span.members-title a:hover,
+#content span.members-title a:active,
+#content span.sponsors-title a,
+#content span.sponsors-title a:visited,
+#content span.sponsors-title a:hover,
+#content span.sponsors-title a:active,
+#content span.exhibitors-title a,
+#content span.exhibitors-title a:visited,
+#content span.exhibitors-title a:hover,
+#content span.exhibitors-title a:active,
+#content span.event-title a,
+#content span.event-title a:visited,
+#content span.event-title a:hover,
+#content span.event-title a:active,
+#content span.links-title a,
+#content span.links-title a:visited,
+#content span.links-title a:hover,
+#content span.links-title a:active {
+	color: inherit;
+}
+
 
 #content table.members-list > tbody > tr > th,
 #content table.members-list > tbody > tr > td,
