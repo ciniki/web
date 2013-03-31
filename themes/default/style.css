@@ -82,27 +82,43 @@ a img {
 div.image-categories-thumbnail-wrap {
 	display: inline-block;
 	margin: 8px;
-	padding: 0px;
+	padding: 8px;
+	border: 0px solid #fff;
+	line-height: 0.7em;
+	background: #fff;
 }
 
 div.image-categories-thumbnail {
-	line-height: 0.7em;
-	background: #fff;
+	margin: 0px;
+}
+
+div.image-categories-thumbnail img {
+	border: 0px none;
+	padding: 0px;
+	margin: 0px;
+	padding: 8px;
 	border: 1px solid #aaa;
-	padding: 9px;
 }
 
 span.image-categories-name {
-	display: block;
+	display: inline-block;
 	background-color: #fff;
 	color: #333;
 	margin: 0px;
-	font-size: 1.2em;
-	padding-top: 0.7em;
+	font-size: 1.1em;
+	padding-top: 0.8em;
 	padding-bottom: 0.7em;
-	font-style: italic;
-	line-height: 1.2em; 
+	line-height: 1.2em;
 	vertical-align: top;
+	font-style: italic;
+}
+
+#content span.image-categories-name a,
+#content span.image-categories-name a:visited,
+#content span.image-categories-name a:hover,
+#content span.image-categories-name a:active {
+	display: inline-block;
+	color: inherit;
 }
 
 div.image-members-thumbnail,
@@ -119,6 +135,7 @@ div.image-members-thumbnail img,
 div.image-sponsors-thumbnail img,
 div.image-exhibitors-thumbnail img,
 div.image-gallery-thumbnail img {
+	border: 0px;
 	padding: 0px;
 	margin: 0px;
 }

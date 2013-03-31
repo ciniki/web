@@ -104,6 +104,7 @@ div.image-categories-thumbnail-wrap {
 div.image-categories-thumbnail {
 	padding: 0px;
 	margin: 0px;
+	border: 0px;
 }
 
 div.image-categories-thumbnail img {
@@ -129,7 +130,6 @@ span.image-categories-name {
 #content span.image-categories-name a:active {
 	display: inline-block;
 	color: inherit;
-	vertical-align: middle;
 }
 
 div.image-members-thumbnail,

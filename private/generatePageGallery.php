@@ -262,9 +262,9 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 					return $rc;
 				}
 				$page_content .= "<div class='image-categories-thumbnail-wrap'>"
-					. "<div class='image-categories-thumbnail'>"
 					. "<a href='" . $ciniki['request']['base_url'] . "/gallery/$category_uri_component/" . urlencode($name) . "' "
 						. "title='" . $name . "'>"
+					. "<div class='image-categories-thumbnail'>"
 					. "<img title='$name' alt='$name' src='" . $rc['url'] . "' />"
 					. "</div>"
 					. "<span class='image-categories-name'>$name</span>"

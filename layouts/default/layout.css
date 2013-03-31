@@ -37,12 +37,16 @@ header span.title {
 }
 
 #content div.image-categories div.image-categories-thumbnail-wrap {
-	width: 290px;
+	width: 280px;
+}
+
+#content div.image-categories div.image-categories-thumbnail {
+	width: 280px;
 }
 
 #content div.image-categories-thumbnail img {
-	width: 290px;
-	height: 290px;
+	width: 280px;
+	height: 280px;
 }
 
 #content div.image-gallery div.image-gallery-thumbnail {
@@ -203,6 +207,10 @@ body { width: 100%; }
 }
 
 #content div.image-categories div.image-categories-thumbnail-wrap {
+	width: 190px;
+}
+
+#content div.image-categories div.image-categories-thumbnail {
 	width: 190px;
 }
 
