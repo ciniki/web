@@ -81,8 +81,8 @@ a img {
 
 div.image-categories-thumbnail-wrap {
 	display: inline-block;
-	margin: 8px;
-	padding: 8px;
+	margin: 10px;
+	padding: 0px;
 	border: 0px solid #fff;
 	line-height: 0.7em;
 	background: #fff;
@@ -90,14 +90,14 @@ div.image-categories-thumbnail-wrap {
 
 div.image-categories-thumbnail {
 	margin: 0px;
+	padding: 8px;
+	border: 1px solid #aaa;
 }
 
 div.image-categories-thumbnail img {
 	border: 0px none;
 	padding: 0px;
 	margin: 0px;
-	padding: 8px;
-	border: 1px solid #aaa;
 }
 
 span.image-categories-name {
@@ -108,6 +108,8 @@ span.image-categories-name {
 	font-size: 1.1em;
 	padding-top: 0.8em;
 	padding-bottom: 0.7em;
+	padding-right: 8px;
+	padding-left: 8px;
 	line-height: 1.2em;
 	vertical-align: top;
 	font-style: italic;

@@ -303,7 +303,11 @@ article {
 	text-align: center;
 }
 
-#content div.image-categories div.image-categories-thumbnail-wrap {
+/* #content div.image-categories div.image-categories-thumbnail-wrap {
+	width: 260px;
+} */
+
+#content span.image-categories-name {
 	width: 260px;
 }
 
