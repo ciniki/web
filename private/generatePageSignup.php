@@ -303,13 +303,14 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 		// Setup subscription
 		//
 		if( $err == 0 ) {
-			$strsql = "INSERT INTO ciniki_business_subscriptions (business_id, status, currency, "
-				. "monthly, discount_percent, discount_amount, payment_type, "
+			$strsql = "INSERT INTO ciniki_business_subscriptions (business_id, status, "
+				. "signup_date, trial_start_date, trial_days, currency, "
+				. "monthly, discount_percent, discount_amount, payment_type, payment_frequency, "
 				. "date_added, last_updated) VALUES ("
 				. "'" . ciniki_core_dbQuote($ciniki, $business_id) . "', "
-				. "2, 'USD', "
+				. "2, UTC_TIMESTAMP(), UTC_TIMESTAMP(), '60', 'USD', "
 				. "'" . ciniki_core_dbQuote($ciniki, $_SESSION['plan_monthly']) . "', "
-				. "0, 0, 'paypal', "
+				. "0, 0, 'paypal', 10, "
 				. "UTC_TIMESTAMP(), UTC_TIMESTAMP())";
 			$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.businesses');
 			if( $rc['stat'] != 'ok' ) {
