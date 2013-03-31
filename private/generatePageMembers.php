@@ -167,9 +167,9 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			$page_content .= "<aside><div class='image'>"
+			$page_content .= "<aside><div class='image-wrap'><div class='image'>"
 				. "<img title='' alt='" . $member['name'] . "' src='" . $rc['url'] . "' />"
-				. "</div></aside>";
+				. "</div></div></aside>";
 		}
 		
 		//
