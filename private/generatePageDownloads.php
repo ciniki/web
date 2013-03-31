@@ -114,7 +114,7 @@ function ciniki_web_generatePageDownloads($ciniki, $settings) {
 		$categories = array();
 	}
 
-	$content .= "<table class='links-list'>\n"
+	$content .= "<table class='downloads-list'>\n"
 		. "";
 	$prev_category = NULL;
 	foreach($categories as $cnum => $c) {
@@ -123,18 +123,18 @@ function ciniki_web_generatePageDownloads($ciniki, $settings) {
 		}
 		if( isset($c['category']['name']) && $c['category']['name'] != '' ) {
 			$content .= "<tr><th>"
-				. "<span class='links-category'>" . $c['category']['name'] . "</span></th>"
+				. "<span class='downloads-category'>" . $c['category']['name'] . "</span></th>"
 				. "<td>";
 			// $content .= "<h2>" . $c['category']['name'] . "</h2>";
 		} else {
 			$content .= "<tr><th>"
-				. "<span class='links-category'></span></th>"
+				. "<span class='downloads-category'></span></th>"
 				. "<td>";
 		}
 		foreach($c['category']['files'] as $fnum => $download) {
 			//$content .= "<p>";
 			$url = $ciniki['request']['base_url'] . '/downloads/' . $download['file']['permalink'] . '.' . $download['file']['extension'];
-			$content .= "<span class='links-title'>";
+			$content .= "<span class='downloads-title'>";
 			if( $url != '' ) {
 				$content .= "<a target='_blank' href='" . $url . "' title='" . $download['file']['name'] . "'>" . $download['file']['name'] . "</a>";
 			} else {
@@ -142,10 +142,10 @@ function ciniki_web_generatePageDownloads($ciniki, $settings) {
 			}
 			$content .= "</span>";
 			if( isset($download['file']['description']) && $download['file']['description'] != '' ) {
-				$content .= "<br/><span class='links-description'>" . $download['file']['description'] . "</span>";
+				$content .= "<br/><span class='downloads-description'>" . $download['file']['description'] . "</span>";
 			}
 //			if( $url != '' ) {
-//				$content .= "<br/><a class='links-url' target='_blank' href='" . $url . "' title='" . $download['file']['name'] . "'>" . $display_url . "</a>";
+//				$content .= "<br/><a class='downloads-url' target='_blank' href='" . $url . "' title='" . $download['file']['name'] . "'>" . $display_url . "</a>";
 //			}
 			$content .= "<br/><br/>";
 			// $content .= "</p>";

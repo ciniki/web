@@ -208,6 +208,7 @@ div.gallery-image-details span.image-awards {
 #content span.sponsors-title,
 #content span.exhibitors-title,
 #content span.links-title,
+#content span.downloads-title,
 #content span.event-title {
 	font-size: 1.2em;
 	font-weight: normal;
@@ -221,6 +222,7 @@ div.gallery-image-details span.image-awards {
 #content a.members-url,
 #content a.sponsors-url,
 #content a.links-url,
+#content a.downloads-url,
 #content a.event-url {
 	font-size: 1.0em;
 }
@@ -255,6 +257,8 @@ div.gallery-image-details span.image-awards {
 #content table.sponsors-list > tbody > tr > td,
 #content table.exhibitors-list > tbody > tr > th,
 #content table.exhibitors-list > tbody > tr > td,
+#content table.downloads-list th,
+#content table.downloads-list td,
 #content table.links-list th,
 #content table.links-list td,
 #content table.event-list th,
@@ -265,6 +269,7 @@ div.gallery-image-details span.image-awards {
 #content span.members-category,
 #content span.sponsors-category,
 #content span.exhibitors-category,
+#content span.downloads-category,
 #content span.links-category {
 	font-size: 1.1em;
 }

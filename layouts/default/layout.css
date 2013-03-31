@@ -78,6 +78,7 @@ header span.title {
 #content table.members-list,
 #content table.sponsors-list,
 #content table.exhibitors-list,
+#content table.downloads-list,
 #content table.links-list,
 #content table.event-list {
 	border-collapse: collapse;
@@ -86,6 +87,7 @@ header span.title {
 #content table.members-list > tbody > tr > th,
 #content table.sponsors-list > tbody > tr > th,
 #content table.exhibitors-list > tbody > tr > th,
+#content table.downloads-list th,
 #content table.links-list th,
 #content table.event-list th {
 	display: table-cell;
@@ -113,6 +115,7 @@ header span.title {
 	min-width: 9.5em;
 }
 
+#content table.downloads-list td,
 #content table.links-list td,
 #content table.event-list td {
 	display: table-cell;
@@ -126,6 +129,8 @@ header span.title {
 #content table.sponsors-list > tbody > tr > td,
 #content table.exhibitors-list > tbody > tr > th,
 #content table.exhibitors-list > tbody > tr > td,
+#content table.downloads-list th,
+#content table.downloads-list td,
 #content table.links-list th,
 #content table.links-list td,
 #content table.event-list th,
@@ -136,6 +141,7 @@ header span.title {
 #content span.members-category,
 #content span.sponsors-category,
 #content span.exhibitors-category,
+#content span.downloads-category,
 #content span.links-category,
 #content span.event-date {
 	display: inline-block;
@@ -233,6 +239,7 @@ body { width: 100%; }
 #content table.members-list > tbody > tr > th,
 #content table.sponsors-list > tbody > tr > th,
 #content table.exhibitors-list > tbody > tr > th,
+#content table.downloads-list th,
 #content table.links-list th,
 #content table.event-list th {
 	display: block;
@@ -243,6 +250,7 @@ body { width: 100%; }
 #content table.members-list > tbody > tr > td,
 #content table.sponsors-list > tbody > tr > td,
 #content table.exhibitors-list > tbody > tr > td,
+#content table.downloads-list td,
 #content table.links-list td,
 #content table.event-list td {
 	display: block;
@@ -255,6 +263,7 @@ body { width: 100%; }
 	margin-left: 0px;
 }
 
+#content table.downloads-list td,
 #content table.links-list td,
 #content table.event-list td {
 	padding-left: 5em;

@@ -219,6 +219,7 @@ article {
 }
 
 #content table.exhibitors-list,
+#content table.downloads-list,
 #content table.links-list,
 #content table.event-list {
 	width: 100%;
@@ -227,6 +228,7 @@ article {
 #content table.members-list > tbody > tr > th,
 #content table.sponsors-list > tbody > tr > th,
 #content table.exhibitors-list > tbody > tr > th,
+#content table.downloads-list th,
 #content table.links-list th,
 #content table.event-list th {
 	display: block;
@@ -246,6 +248,7 @@ article {
 #content table.members-list > tbody > tr > td,
 #content table.sponsors-list > tbody > tr > td,
 #content table.exhibitors-list > tbody > tr > td,
+#content table.downloads-list td,
 #content table.links-list td,
 #content table.event-list td {
 	display: block;
