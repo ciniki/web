@@ -64,8 +64,13 @@ function ciniki_web_generatePageAbout($ciniki, $settings) {
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
-		$content .= "<aside><div class='image'><img title='' alt='About' src='" . $rc['url'] . "' /></div></aside>";
-		// $content .= "<aside><img title='About' alt='About' src='" . $rc['url'] . "' /></aside>";
+		//$content .= "<aside><div class='image'><img title='' alt='About' src='" . $rc['url'] . "' /></div></aside>";
+		$content .= "<aside><div class='image-wrap'>"
+			. "<div class='image'><img title='' alt='" . $ciniki['business']['details']['name'] . "' src='" . $rc['url'] . "' /></div>";
+		if( isset($settings['page-about-image-caption']) && $settings['page-about-image-caption'] != '' ) {
+			$content .= "<div class='image-caption'>" . $settings['page-about-image-caption'] . "</div>";
+		}
+		$content .= "</div></aside>";
 	}
 	//
 	// Check for the first paragraph, and insert image after

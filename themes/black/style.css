@@ -302,12 +302,15 @@ div.gallery-image-details span.image-awards {
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#faa51a', endColorstr='#f47a20');
 }
 
+aside div.image-wrap {
+	margin-bottom: 1em;
+}
+
 aside div.image {
 	max-width: 100%;
 	border: 8px solid #fff;
 	height: auto;
 	padding: 0px;
-	margin-bottom: 1em;
 	height: auto;
 	line-height: 0em;
 }
@@ -315,7 +318,16 @@ aside div.image {
 aside div.image img {
 	line-height: 1px;
 	width: 100%;
+	padding: 0px;
 	margin: 0px;
+}
+
+aside div.image-wrap div.image-caption {
+	text-align: center;
+	font-style: italic;
+	padding: 9px;
+	color: #ddd;
+	line-height: 1.5em;
 }
 
 aside div.googlemap {

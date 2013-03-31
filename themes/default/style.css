@@ -350,12 +350,15 @@ div.gallery-image-details span.image-awards {
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0078a5');
 }
 
+aside div.image-wrap {
+	margin-bottom: 1em;
+}
+
 aside div.image {
 	max-width: 100%;
 	border: 2px solid #ccc;
 	height: auto;
 	padding: 9px;
-	margin-bottom: 1em;
 	line-height: 0em;
 }
 
@@ -364,6 +367,15 @@ aside div.image img {
 	width: 100%;
 	padding: 0px;
 	margin: 0px;
+}
+
+aside div.image-wrap div.image-caption {
+	text-align: center;
+	font-style: italic;
+	font-size: 1.0em;
+	padding: 9px;
+	color: #444;
+	line-height: 1.5em;
 }
 
 aside div.googlemap {
