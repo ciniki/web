@@ -314,6 +314,10 @@ div.hide-babybear { display: block; }
 
 }
 
+span.exhibitors-description {
+	display: inline;
+}
+
 /* 10. CUSTOM LAYOUT & TYPOGRAPHY (Older Sister bear)
 ----------------------------------------------------------------------------------------*/
 @media screen and (min-width: 40em) and (max-width: 63.236em) {

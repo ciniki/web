@@ -494,6 +494,10 @@ div.hide-babybear {
 	display: none;
 }
 
+span.exhibitors-description {
+	display: none;
+}
+
 
 /* 7. BROWSER AND NON-SEMANTIC STYLING
 ----------------------------------------------------------------------------------------*/
