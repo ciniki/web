@@ -79,12 +79,17 @@ a img {
 	border-color: #000;
 }
 
-div.image-categories-thumbnail {
-	border: 5px solid #aaa;
+div.image-categories-thumbnail-wrap {
 	display: inline-block;
 	margin: 8px;
 	padding: 0px;
+}
+
+div.image-categories-thumbnail {
 	line-height: 0.7em;
+	background: #fff;
+	border: 1px solid #aaa;
+	padding: 9px;
 }
 
 span.image-categories-name {
@@ -93,8 +98,11 @@ span.image-categories-name {
 	color: #333;
 	margin: 0px;
 	font-size: 1.2em;
-	padding-top: 1.1em;
+	padding-top: 0.7em;
 	padding-bottom: 0.7em;
+	font-style: italic;
+	line-height: 1.2em; 
+	vertical-align: top;
 }
 
 div.image-members-thumbnail,
@@ -176,7 +184,7 @@ div.gallery-image-details span.image-awards {
 #content a:hover,
 #content a:active {
 	text-decoration: none;
-	color: inherit;
+	color: #439BBD;
 }
 
 #content span.members-title,
@@ -219,10 +227,6 @@ div.gallery-image-details span.image-awards {
 #content span.exhibitors-category,
 #content span.links-category {
 	font-size: 1.1em;
-}
-
-#content a.external-link {
-	color: #439BBD;
 }
 
 #content div.button-list div.button-list-wrap {

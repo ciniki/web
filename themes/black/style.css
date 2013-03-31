@@ -74,26 +74,62 @@ a img {
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#bbbbbb', endColorstr='#888888');
 }
 
-div.image-categories-thumbnail {
-	border: 8px solid #fff;
+#content h1 {
+	color: #63BBDD;
+}
+
+#content h2 {
+	color: #ccc;
+}
+
+#content a,
+#content a:visited,
+#content a:hover,
+#content a:active {
+	text-decoration: none;
+	color: inherit;
+	color: #539BBD;
+}
+
+div.image-categories-thumbnail-wrap {
 	display: inline-block;
 	margin: 6px;
 	padding: 0px;
+	border: 8px solid #fff;
+	border-radius: 10px;
 	line-height: 0.7em;
+	background: #fff;
+}
+
+div.image-categories-thumbnail {
+	padding: 0px;
+	margin: 0px;
 }
 
 div.image-categories-thumbnail img {
 	border: 0px none;
+	border-radius: 10px;
 }
 
 span.image-categories-name {
-	display: block;
+	display: inline-block;
 	background-color: #fff;
 	color: #333;
 	margin: 0px;
-	font-size: 1.2em;
+	font-size: 1.1em;
 	padding-top: 1.1em;
 	padding-bottom: 0.7em;
+	line-height: 1.2em;
+	vertical-align: top;
+}
+
+#content span.image-categories-name a,
+#content span.image-categories-name a:visited,
+#content span.image-categories-name a:hover,
+#content span.image-categories-name a:active {
+	display: inline-block;
+	color: inherit;
+	vertical-align: middle;
 }
 
 div.image-members-thumbnail,
@@ -101,15 +137,18 @@ div.image-sponsors-thumbnail,
 div.image-exhibitors-thumbnail,
 div.image-gallery-thumbnail {
 	border: 8px solid #ffffff;
+	border-radius: 10px;
 	display: inline-block;
 	margin: 5px;
 	padding: 0px;
+	background: #fff;
 }
 
 div.image-gallery-thumbnail img {
 	border: 0px none;
 	padding: 0px;
 	margin: 0px;
+	border-radius: 10px;
 }
 
 div.gallery-image {
@@ -154,22 +193,6 @@ div.gallery-image-details span.image-awards {
 	padding-left: 1em;
 }
 
-#content h1.entry-title {
-	color: #439BBD;
-}
-
-#content h2 {
-	color: #ccc;
-}
-
-#content a,
-#content a:visited,
-#content a:hover,
-#content a:active {
-	text-decoration: none;
-	color: inherit;
-}
-
 #content span.contact-title,
 #content span.members-title,
 #content span.sponsors-title,
@@ -181,9 +204,12 @@ div.gallery-image-details span.image-awards {
 	color: #ddd;
 }
 
+#content span.links-title a {
+	color: #ddd;
+}
+
 #content a.contact-email {
-	color: #338BAD;
-	color: #999;
+	color: #539BBD;
 }
 
 #content a.exhibitors-url {
@@ -194,9 +220,8 @@ div.gallery-image-details span.image-awards {
 #content a.sponsors-url,
 #content a.links-url,
 #content a.event-url {
-	font-size: 0.9em;
-	color: #337B9D;
-	color: #999;
+	font-size: 1.0em;
+	color: #539BBD;
 }
 
 #content table.members-list > tbody > tr > th,

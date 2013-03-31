@@ -36,7 +36,7 @@ header span.title {
 	padding: 0px;
 }
 
-#content div.image-categories div.image-categories-thumbnail {
+#content div.image-categories div.image-categories-thumbnail-wrap {
 	width: 290px;
 }
 
@@ -202,7 +202,7 @@ body { width: 100%; }
 	margin-left: 3em;
 }
 
-#content div.image-categories div.image-categories-thumbnail {
+#content div.image-categories div.image-categories-thumbnail-wrap {
 	width: 190px;
 }
 
