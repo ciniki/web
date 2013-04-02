@@ -294,6 +294,11 @@ elseif( $ciniki['request']['page'] == 'links' && $settings['page-links-active'] 
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageLinks.php');
 	$rc = ciniki_web_generatePageLinks($ciniki, $settings);
 } 
+// Newsletters
+elseif( $ciniki['request']['page'] == 'newsletters' && $settings['page-newsletters-active'] == 'yes' ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageNewsletters.php');
+	$rc = ciniki_web_generatePageNewsletters($ciniki, $settings);
+} 
 // Downloads
 elseif( $ciniki['request']['page'] == 'downloads' && $settings['page-downloads-active'] == 'yes' ) {
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageDownloads.php');

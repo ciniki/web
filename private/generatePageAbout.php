@@ -75,9 +75,9 @@ function ciniki_web_generatePageAbout($ciniki, $settings) {
 	//
 	// Check for the first paragraph, and insert image after
 	//
-	if( preg_match('/<\/p><p>/', $page_content) ) {
+//	if( preg_match('/<\/p><p>/', $page_content) ) {
 		// $page_content .= preg_replace('/<\/p><p>/', "</p>$aside<p>", $page_content, 1);
-	}
+//	}
 
 	$content .= "<div class='entry-content'>\n"
 		. $page_content

@@ -311,6 +311,9 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 	if( isset($settings['page-sponsors-active']) && $settings['page-sponsors-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/sponsors'>Sponsors</a></li>";
 	}
+	if( isset($settings['page-newsletters-active']) && $settings['page-newsletters-active'] == 'yes' ) {
+		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/newsletters'>Newsletters</a></li>";
+	}
 	if( isset($settings['page-downloads-active']) && $settings['page-downloads-active'] == 'yes' 
 		&& ( 
 			(isset($settings['page-downloads-public']) && $settings['page-downloads-public'] == 'yes')

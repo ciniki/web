@@ -190,13 +190,19 @@ div.gallery-image-details span.image-awards {
 #content h1,
 #content h1.entry-title,
 #content b.entry-title,
-#content h2.highlight-colour {
+#content h2 {
 	color: #439BBD;
 }
 
 #content h2 {
-	color: #333;
+	margin-top: 1.5em;
+	margin-bottom: 0.5em;
+	padding-bottom: 0px;
+	color: #439BBD;
 }
+/* #content h2 {
+	color: #333;
+} */
 
 #content a,
 #content a:visited,
