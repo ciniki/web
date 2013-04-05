@@ -111,6 +111,8 @@ div.image-categories-thumbnail {
 	border: 0px;
 }
 
+div.image-sponsors-thumbnail img,
+div.image-members-thumbnail img,
 div.image-categories-thumbnail img {
 	border: 0px none;
 	border-radius: 10px;
