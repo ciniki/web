@@ -14,7 +14,7 @@
 // Returns
 // -------
 //
-function ciniki_web_generatePageAccount($ciniki, $settings) {
+function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 
 	//
 	// Store the content created by the page
@@ -372,7 +372,7 @@ function ciniki_web_generatePageAccount($ciniki, $settings) {
 			. "<div class='submit'><input type='submit' class='submit' value='Sign In' /></div>\n"
 			. "</form>"
 			. "<br/>"
-			. "<div id='forgot-link'><p><a class='color' href='javascript: swapLoginForm(\"forgotpassword\");'>Forgot your password?</a></p></div>\n"
+			. "<div id='forgot-link'><p><a class='color' href='javscript:void(0)' onclick='swapLoginForm(\"forgotpassword\");return false;'>Forgot your password?</a></p></div>\n"
 			. "</div>\n"
 			. "<div id='forgotpassword-form' style='display:";
 		if( $display_form == 'forgot' ) { $content .= "block;"; } else { $content .= "none;"; }

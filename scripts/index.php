@@ -63,6 +63,8 @@ if( isset($_SESSION['customer']) ) {
 	$ciniki['session']['user'] = array('id'=>'-2');
 }
 $ciniki['business'] = array('modules'=>array());
+$ciniki['syncqueue'] = array();
+$ciniki['emailqueue'] = array();
 
 // 
 // Split the request URI into parts
@@ -325,11 +327,31 @@ if( $rc['stat'] != 'ok' ) {
 	exit;
 }
 
+
 //
-// Output the page contents
-// FIXME: Add caching in here
+// FIXME: Check for emailqueue
 //
-if( isset($rc['content']) && $rc['content'] != '' ) {
+if( isset($ciniki['emailqueue']) && count($ciniki['emailqueue']) > 0 ) {
+	ob_start();
+	print $rc['content'];
+	header("Connection: close");
+	$contentlength = ob_get_length();
+	header("Content-Length: $contentlength");
+	ob_end_flush();
+	ob_flush();
+	flush();
+	session_write_close();
+	while(ob_get_level() > 0) {
+		ob_end_clean();
+	}
+
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/emailQueueProcess.php');
+	ciniki_core_emailQueueProcess($ciniki);
+} elseif( $rc['content'] != '' ) {
+	//
+	// Output the page contents
+	// FIXME: Add caching in here
+	//
 	print $rc['content'];
 }
 
@@ -371,6 +393,5 @@ print "<!DOCTYPE html>\n";
 </html>
 <?php
 }
-
 
 ?>

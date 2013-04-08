@@ -12,7 +12,7 @@
 // Returns
 // -------
 //
-function ciniki_web_generatePageSignup($ciniki, $settings) {
+function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 
 	//
 	// This page must be run from SSL, unless otherwise specified in the config.
@@ -354,10 +354,14 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 				$msg .= "Your website: http://" . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $_SESSION['sitename'] . "\n";
 			}
 			$msg .= "\n\n";
-			$headers = 'From: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
-				'Reply-To: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
-				'X-Mailer: PHP/' . phpversion();
-			mail($_SESSION['email_address'], $subject, $msg, $headers, '-f' . $ciniki['config']['ciniki.core']['system.email']);
+//			$headers = 'From: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
+//				'Reply-To: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
+//				'X-Mailer: PHP/' . phpversion();
+//			mail($_SESSION['email_address'], $subject, $msg, $headers, '-f' . $ciniki['config']['ciniki.core']['system.email']);
+			$ciniki['emailqueue'][] = array('to'=>$_SESSION['email_address'],
+				'subject'=>$subject,
+				'textmsg'=>$msg,
+				);
 
 			//
 			// Email a notification to the owners of the master business
@@ -568,10 +572,14 @@ function ciniki_web_generatePageSignup($ciniki, $settings) {
 //				. "<a href='$verify_url'>$verify_url</a>";
 				. "$verify_url"
 				. "\n\n";
-			$headers = 'From: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
-				'Reply-To: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
-				'X-Mailer: PHP/' . phpversion();
-			mail($_SESSION['email_address'], $subject, $msg, $headers, '-f' . $ciniki['config']['ciniki.core']['system.email']);
+//			$headers = 'From: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
+//				'Reply-To: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
+//				'X-Mailer: PHP/' . phpversion();
+//			mail($_SESSION['email_address'], $subject, $msg, $headers, '-f' . $ciniki['config']['ciniki.core']['system.email']);
+			$ciniki['emailqueue'][] = array('to'=>$_SESSION['email_address'],
+				'subject'=>$subject,
+				'textmsg'=>$msg,
+				);
 
 		}
 
