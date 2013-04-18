@@ -145,12 +145,14 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 						// Check if the subscribed to the subscription
 						if( isset($_POST["subscription-$sid"]) && $_POST["subscription-$sid"] == $sid ) {
 							if( $subscription['subscription']['subscribed'] == 'no' ) {
-								ciniki_subscriptions_web_subscribe($ciniki, $settings, $ciniki['request']['business_id'], $sid);
+								ciniki_subscriptions_web_subscribe($ciniki, $settings, $ciniki['request']['business_id'], 
+									$sid, $ciniki['session']['customer']['id']);
 								$subscription_err_msg = 'Your subscriptions have been updated.';
 							}
 						} else {
 							if( $subscription['subscription']['subscribed'] == 'yes' ) {
-								ciniki_subscriptions_web_unsubscribe($ciniki, $settings, $ciniki['request']['business_id'], $sid);
+								ciniki_subscriptions_web_unsubscribe($ciniki, $settings, $ciniki['request']['business_id'], 
+									$sid, $ciniki['session']['customer']['id']);
 								$subscription_err_msg = 'Your subscriptions have been updated.';
 							}
 						}
@@ -178,11 +180,55 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 	//
 	// Check if user submitted a new password
 	//
-	if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'newpassword' ) {
-		// Require old password, and new password
-		$content .= 'set new password';
-	}
+//	if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'newpassword' ) {
+//		// Require old password, and new password
+//		$content .= 'set new password';
+//	}
 
+	//
+	// Check if this page was opened from an unsubscribe link
+	//
+	if( isset($ciniki['request']['uri_split'][0]) 
+		&& $ciniki['request']['uri_split'][0] == 'unsubscribe' 
+		&& isset($_GET['e']) && $_GET['e'] != '' 
+		&& isset($_GET['s']) && $_GET['s'] != ''
+		&& isset($_GET['k']) && $_GET['k'] != ''
+		) {
+
+		$strsql = "SELECT ciniki_subscription_customers.subscription_id AS id, ciniki_subscription_customers.customer_id, "
+			. "ciniki_subscriptions.name "
+			. "FROM ciniki_mail, ciniki_subscription_customers, ciniki_subscriptions, ciniki_customer_emails "
+			. "WHERE ciniki_mail.unsubscribe_key = '" . ciniki_core_dbQuote($ciniki, $_GET['k']) . "' "
+			. "AND ciniki_mail.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+			. "AND ciniki_mail.customer_id = ciniki_subscription_customers.customer_id "
+			. "AND ciniki_subscription_customers.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+			. "AND ciniki_subscription_customers.subscription_id = ciniki_subscriptions.id "
+			. "AND ciniki_subscriptions.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+			. "AND ciniki_subscriptions.uuid = '" . ciniki_core_dbQuote($ciniki, $_GET['s']) . "' "
+			. "AND ciniki_customer_emails.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+			. "AND ciniki_subscription_customers.customer_id = ciniki_customer_emails.customer_id "
+			. "AND ciniki_customer_emails.email = '" . ciniki_core_dbQuote($ciniki, $_GET['e']) . "' "
+			. "";
+		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.mail', 'subscription');
+		if( isset($rc['subscription']) && isset($rc['subscription']['id']) ) {
+			$subscription_name = $rc['subscription']['name'];
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'subscriptions', 'web', 'unsubscribe');
+			ciniki_subscriptions_web_unsubscribe($ciniki, $settings, $ciniki['request']['business_id'], 
+				$rc['subscription']['id'], $rc['subscription']['customer_id']);
+		}
+
+		$content .= "<div id='content'>\n"
+			. "<article class='page'>\n"
+			. "<header class='entry-title'><h1 class='entry-title'>Unsubscribe</h1></header>\n"
+			. "<div class='entry-content'>\n";
+
+		$content .= "You have been unsubscribed from the Mailing List: " . $subscription_name;
+		
+		$content .= "</div>\n"
+			. "</article>\n"
+			. "</div>\n";
+		$display_form = 'yes';
+	}
 
 	//
 	// Check if this page was directed to from the recovery password email link
@@ -249,7 +295,8 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 		//
 		$content .= "<div id='content'>\n"
 			. "<article class='page'>\n"
-			. "<header class='entry-title'><h1 class='entry-title'>Account</h1></header>\n";
+//			. "<header class='entry-title'><h1 class='entry-title'>Account</h1></header>\n"
+			. "";
 		
 		if( isset($content_details['page-account-content']) ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
@@ -257,9 +304,11 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			$content .= $rc['content'];
+			$content .= "<aside>" . $rc['content'];
+			$content .= "</aside>";
 		}
 
+		$content .= "<div class='entry-content'>\n";
 		$content .= "<form action='' method='POST'>";
 		$content .= "<input type='hidden' name='action' value='accountupdate'/>";
 
@@ -295,6 +344,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 					$content .= "/>";
 					$content .= " <label class='checkbox' for='subscription-$sid'>" . $subscription['subscription']['name'] . "</label><br/>";
 				}
+				$content .= "<div class='submit'><input type='submit' class='submit' value='Save Changes'></div>\n";
 				$content .= "<br/><br/>";
 			}
 		}
@@ -313,17 +363,17 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 		$content .= "<label for='oldpassword'>Old Password:</label><input class='text' id='oldpassword' type='password' name='oldpassword' />";
 		$content .= "<label for='newpassword'>New Password:</label><input class='text' id='newpassword' type='password' name='newpassword' />";
 
-
 		$content .= "<div class='submit'><input type='submit' class='submit' value='Save Changes'></div>\n";
 		$content .= "</form>";
 
 		$content .= "<form action='' method='POST'>\n"
 			. "<input type='hidden' name='action' value='logout'>\n"
-			. "<div class='submit'><input type='submit' class='submit' value='Logout'></div>\n"
+			. "<div class='bigsubmit'><input type='submit' class='bigsubmit' value='Logout'></div>\n"
 			. "</form>"
 			. "";
 
-		$content .= "</article>\n"
+		$content .= "</div>\n"
+			. "</article>\n"
 			. "</div>\n";
 
 		$display_form = 'no';
