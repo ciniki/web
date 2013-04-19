@@ -354,10 +354,6 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 				$msg .= "Your website: http://" . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $_SESSION['sitename'] . "\n";
 			}
 			$msg .= "\n\n";
-//			$headers = 'From: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
-//				'Reply-To: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
-//				'X-Mailer: PHP/' . phpversion();
-//			mail($_SESSION['email_address'], $subject, $msg, $headers, '-f' . $ciniki['config']['ciniki.core']['system.email']);
 			$ciniki['emailqueue'][] = array('to'=>$_SESSION['email_address'],
 				'subject'=>$subject,
 				'textmsg'=>$msg,
@@ -367,7 +363,6 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 			// Email a notification to the owners of the master business
 			//
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQueryList');
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'emailUser');
 	
 			$strsql = "SELECT user_id FROM ciniki_business_users "
 				. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_business_id']) . "' "
@@ -380,12 +375,13 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 					// Don't email the submitter, they will get a separate email
 					//
 					if( $uid != $ciniki['session']['user']['id'] ) {
-						$rc = ciniki_users_emailUser($ciniki, $uid, 'Sign Up: ' . $_SESSION['business_name'],
-							"New business added: " . $_SESSION['business_name'] . "\n"
-							. "User: " . $_SESSION['firstname'] . " " . $_SESSION['lastname'] . "\n"
-							. "Email: " . $_SESSION['email_address'] . "\n"
-							. "\n\n"
-						);
+						$ciniki['emailqueue'][] = array('user_id'=>$uid,
+							'subject'=>'Sign Up: ' . $_SESSION['business_name'],
+							'textmsg'=>"New business added: " . $_SESSION['business_name'] . "\n"
+								. "User: " . $_SESSION['firstname'] . " " . $_SESSION['lastname'] . "\n"
+								. "Email: " . $_SESSION['email_address'] . "\n"
+								. "\n\n"
+								);
 					}
 				}
 			}
@@ -572,10 +568,6 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 //				. "<a href='$verify_url'>$verify_url</a>";
 				. "$verify_url"
 				. "\n\n";
-//			$headers = 'From: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
-//				'Reply-To: "' . $ciniki['config']['ciniki.core']['system.email.name'] . '" <' . $ciniki['config']['ciniki.core']['system.email'] . ">\r\n" .
-//				'X-Mailer: PHP/' . phpversion();
-//			mail($_SESSION['email_address'], $subject, $msg, $headers, '-f' . $ciniki['config']['ciniki.core']['system.email']);
 			$ciniki['emailqueue'][] = array('to'=>$_SESSION['email_address'],
 				'subject'=>$subject,
 				'textmsg'=>$msg,
