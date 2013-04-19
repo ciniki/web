@@ -170,6 +170,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 	elseif( $ciniki['request']['business_id'] != $ciniki['config']['ciniki.core']['master_business_id']
 		&& isset($settings['page-account-active']) && $settings['page-account-active'] == 'yes'
 		&& ((isset($settings['page-downloads-customers']) && $settings['page-downloads-customers'] == 'yes')
+			|| (isset($settings['page-subscriptions-public']) && $settings['page-subscriptions-public'] == 'yes')
 		// || () // Used if there are other pages that allow customer only content
 		)) {
 		if( isset($ciniki['session']['customer']['id']) > 0 ) {

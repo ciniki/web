@@ -73,36 +73,140 @@ function ciniki_web_settingsUpdateDownloads($ciniki, $modules, $business_id) {
 	//
 
 	//
-	// Update the public settings
+	// Get the current settings
 	//
-	$strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) "
-		. "VALUES ('" . ciniki_core_dbQuote($ciniki, $business_id) . "'"
-		. ", '" . ciniki_core_dbQuote($ciniki, 'page-downloads-public') . "' "
-		. ", '" . ciniki_core_dbQuote($ciniki, $public) . "'"
-		. ", UTC_TIMESTAMP(), UTC_TIMESTAMP()) "
-		. "ON DUPLICATE KEY UPDATE detail_value = '" . ciniki_core_dbQuote($ciniki, $public) . "' "
-		. ", last_updated = UTC_TIMESTAMP() "
+	$strsql = "SELECT detail_value "
+		. "FROM ciniki_web_settings "
+		. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+		. "AND detail_key = 'page-downloads-public' "
 		. "";
-	$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
-	if( $rc['stat'] != 'ok' ) {
+	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'detail');
+	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
 	}
+	if( isset($rc['detail']) ) {
+		//
+		// Update the public settings, if there has been a change
+		//
+		if( $rc['detail']['detail_value'] != $public ) {
+			$strsql = "UPDATE ciniki_web_settings SET "
+				. "detail_value = '" . ciniki_core_dbQuote($ciniki, $public) . "' "
+				. ", last_updated = UTC_TIMESTAMP() "
+				. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+				. "AND detail_key = 'page-downloads-public' "
+				. "";
+			$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.web');
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $business_id, 
+				2, 'ciniki_web_settings', 'page-downloads-public', 'detail_value', $public);
+			$ciniki['syncqueue'][] = array('push'=>'ciniki.web.setting',
+				'args'=>array('id'=>$field));
+		}
+	} else {
+		//
+		// Add the public settings
+		//
+		$strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) "
+			. "VALUES ('" . ciniki_core_dbQuote($ciniki, $business_id) . "'"
+			. ", '" . ciniki_core_dbQuote($ciniki, 'page-downloads-public') . "' "
+			. ", '" . ciniki_core_dbQuote($ciniki, $public) . "'"
+			. ", UTC_TIMESTAMP(), UTC_TIMESTAMP()) "
+			. "";
+		$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $business_id, 
+			1, 'ciniki_web_settings', 'page-downloads-public', 'detail_value', $public);
+		$ciniki['syncqueue'][] = array('push'=>'ciniki.web.setting',
+			'args'=>array('id'=>$field));
+	}
+
+	//
+	// Get the current settings
+	//
+	$strsql = "SELECT detail_value "
+		. "FROM ciniki_web_settings "
+		. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+		. "AND detail_key = 'page-downloads-customers' "
+		. "";
+	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'detail');
+	if( $rc['stat'] != 'ok' ) {	
+		return $rc;
+	}
+	if( isset($rc['detail']) ) {
+		//
+		// Update the customers settings, if there has been a change
+		//
+		if( $rc['detail']['detail_value'] != $customers ) {
+			$strsql = "UPDATE ciniki_web_settings SET "
+				. "detail_value = '" . ciniki_core_dbQuote($ciniki, $customers) . "' "
+				. ", last_updated = UTC_TIMESTAMP() "
+				. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+				. "AND detail_key = 'page-downloads-customers' "
+				. "";
+			$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.web');
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $business_id, 
+				2, 'ciniki_web_settings', 'page-downloads-customers', 'detail_value', $customers);
+			$ciniki['syncqueue'][] = array('push'=>'ciniki.web.setting',
+				'args'=>array('id'=>$field));
+		}
+	} else {
+		//
+		// Add the customers settings
+		//
+		$strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) "
+			. "VALUES ('" . ciniki_core_dbQuote($ciniki, $business_id) . "'"
+			. ", '" . ciniki_core_dbQuote($ciniki, 'page-downloads-customers') . "' "
+			. ", '" . ciniki_core_dbQuote($ciniki, $customers) . "'"
+			. ", UTC_TIMESTAMP(), UTC_TIMESTAMP()) "
+			. "";
+		$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $business_id, 
+			1, 'ciniki_web_settings', 'page-downloads-customers', 'detail_value', $customers);
+		$ciniki['syncqueue'][] = array('push'=>'ciniki.web.setting',
+			'args'=>array('id'=>$field));
+	}
+
+	//
+	// Update the public settings
+	//
+//	$strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) "
+//		. "VALUES ('" . ciniki_core_dbQuote($ciniki, $business_id) . "'"
+//		. ", '" . ciniki_core_dbQuote($ciniki, 'page-downloads-public') . "' "
+//		. ", '" . ciniki_core_dbQuote($ciniki, $public) . "'"
+//		. ", UTC_TIMESTAMP(), UTC_TIMESTAMP()) "
+//		. "ON DUPLICATE KEY UPDATE detail_value = '" . ciniki_core_dbQuote($ciniki, $public) . "' "
+//		. ", last_updated = UTC_TIMESTAMP() "
+//		. "";
+//	$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
+//	if( $rc['stat'] != 'ok' ) {
+//		return $rc;
+//	}
 
 	//
 	// Update the customers settings
 	//
-	$strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) "
-		. "VALUES ('" . ciniki_core_dbQuote($ciniki, $business_id) . "'"
-		. ", '" . ciniki_core_dbQuote($ciniki, 'page-downloads-customers') . "' "
-		. ", '" . ciniki_core_dbQuote($ciniki, $customers) . "'"
-		. ", UTC_TIMESTAMP(), UTC_TIMESTAMP()) "
-		. "ON DUPLICATE KEY UPDATE detail_value = '" . ciniki_core_dbQuote($ciniki, $customers) . "' "
-		. ", last_updated = UTC_TIMESTAMP() "
-		. "";
-	$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
-	if( $rc['stat'] != 'ok' ) {
-		return $rc;
-	}
+//	$strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) "
+//		. "VALUES ('" . ciniki_core_dbQuote($ciniki, $business_id) . "'"
+//		. ", '" . ciniki_core_dbQuote($ciniki, 'page-downloads-customers') . "' "
+//		. ", '" . ciniki_core_dbQuote($ciniki, $customers) . "'"
+//		. ", UTC_TIMESTAMP(), UTC_TIMESTAMP()) "
+//		. "ON DUPLICATE KEY UPDATE detail_value = '" . ciniki_core_dbQuote($ciniki, $customers) . "' "
+//		. ", last_updated = UTC_TIMESTAMP() "
+//		. "";
+//	$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
+//	if( $rc['stat'] != 'ok' ) {
+//		return $rc;
+//	}
 
 	//
 	// Update the last_change date in the business modules
