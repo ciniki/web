@@ -15,6 +15,38 @@
 function ciniki_web_generatePageMembers($ciniki, $settings) {
 
 	//
+	// Check if a file was specified to be downloaded
+	//
+	$download_err = '';
+	if( isset($ciniki['business']['modules']['ciniki.artclub'])
+		&& isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'download'
+		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' ) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'artclub', 'web', 'fileDownload');
+		$rc = ciniki_artclub_web_fileDownload($ciniki, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][1]);
+		if( $rc['stat'] == 'ok' ) {
+			header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+			header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+			header('Cache-Control: no-cache, must-revalidate');
+			header('Pragma: no-cache');
+			$file = $rc['file'];
+			if( $file['extension'] == 'pdf' ) {
+				header('Content-Type: application/pdf');
+			}
+			header('Content-Disposition: attachment;filename="' . $file['filename'] . '"');
+			header('Content-Length: ' . strlen($file['binary_content']));
+			header('Cache-Control: max-age=0');
+
+			print $file['binary_content'];
+			exit;
+		}
+		
+		//
+		// If there was an error locating the files, display generic error
+		//
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1007', 'msg'=>'Unable to locate file'));
+	}
+
+	//
 	// Store the content created by the page
 	// Make sure everything gets generated ok before returning the content
 	//
@@ -277,6 +309,39 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 		$page_content .= "</div>\n"
 			. "</article>\n"
 			. "";
+		
+		//
+		// Check if membership info should be displayed here
+		//
+		if( isset($settings['page-members-membership-details']) && $settings['page-members-membership-details'] == 'yes' ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'artclub', 'web', 'membershipDetails');
+			$rc = ciniki_artclub_web_membershipDetails($ciniki, $settings, $ciniki['request']['business_id']);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$membership = $rc['membership'];
+			if( $membership['details'] != '' ) {
+				$page_content .= "<article class='page'>\n"
+					. "<header class='entry-title'><h1 class='entry-title'>Membership</h1></header>\n"
+					. "<div class='entry-content'>\n"
+					. "";
+				$rc = ciniki_web_processContent($ciniki, $membership['details']);	
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				$page_content .= $rc['content'];
+
+				foreach($membership['files'] as $fid => $file) {
+					$file = $file['file'];
+					$url = $ciniki['request']['base_url'] . '/members/download/' . $file['permalink'] . '.' . $file['extension'];
+					$page_content .= "<p><a target='_blank' href='" . $url . "' title='" . $file['name'] . "'>" . $file['name'] . "</a></p>";
+				}
+
+				$page_content .= "</div>\n"
+					. "</article>";
+			}
+		}
 	}
 
 	//
