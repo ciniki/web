@@ -195,12 +195,17 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 		&& isset($_GET['k']) && $_GET['k'] != ''
 		) {
 
+		//
+		// Get the information about the customer, from the link provided in the email.  The
+		// email must be less than 30 days since it was sent for the link to still be active
+		//
 		$strsql = "SELECT ciniki_subscription_customers.subscription_id AS id, ciniki_subscription_customers.customer_id, "
 			. "ciniki_subscriptions.name "
 			. "FROM ciniki_mail, ciniki_subscription_customers, ciniki_subscriptions, ciniki_customer_emails "
 			. "WHERE ciniki_mail.unsubscribe_key = '" . ciniki_core_dbQuote($ciniki, $_GET['k']) . "' "
 			. "AND ciniki_mail.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
 			. "AND ciniki_mail.customer_id = ciniki_subscription_customers.customer_id "
+			. "AND (UNIX_TIMESTAMP(UTC_TIMESTAMP())-UNIX_TIMESTAMP(ciniki_mail.date_sent)) < 2592000 " // Mail was sent within 30 days
 			. "AND ciniki_subscription_customers.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
 			. "AND ciniki_subscription_customers.subscription_id = ciniki_subscriptions.id "
 			. "AND ciniki_subscriptions.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
@@ -211,6 +216,10 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 			. "";
 		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.mail', 'subscription');
 		if( isset($rc['subscription']) && isset($rc['subscription']['id']) ) {
+			if( !isset($ciniki['session']['change_log_id']) ) {
+				$ciniki['session']['change_log_id'] = 'mail.' . date('ymd.His');
+				$ciniki['session']['user'] = array('id'=>'-3');
+			}
 			$subscription_name = $rc['subscription']['name'];
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'subscriptions', 'web', 'unsubscribe');
 			ciniki_subscriptions_web_unsubscribe($ciniki, $settings, $ciniki['request']['business_id'], 
@@ -222,7 +231,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 			. "<header class='entry-title'><h1 class='entry-title'>Unsubscribe</h1></header>\n"
 			. "<div class='entry-content'>\n";
 
-		$content .= "You have been unsubscribed from the Mailing List: " . $subscription_name;
+		$content .= "You have been unsubscribed from the Mailing List.";
 		
 		$content .= "</div>\n"
 			. "</article>\n"
