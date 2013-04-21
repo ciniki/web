@@ -27,4 +27,3 @@ function ciniki_web_processContent($ciniki, $unprocessed_content) {
 	return array('stat'=>'ok', 'content'=>$processed_content);
 }
 ?>
-
