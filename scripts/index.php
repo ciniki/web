@@ -57,10 +57,10 @@ $ciniki['request'] = array('business_id'=>0, 'page'=>'', 'args'=>array(),
 	);
 session_start();
 $ciniki['session'] = array();
+$ciniki['session']['change_log_id'] = 'web.' . date('Ymd.HMS');
+$ciniki['session']['user'] = array('id'=>'-2');
 if( isset($_SESSION['customer']) ) {
 	$ciniki['session']['customer'] = $_SESSION['customer'];
-	$ciniki['session']['change_log_id'] = $_SESSION['change_log_id'];
-	$ciniki['session']['user'] = array('id'=>'-2');
 }
 $ciniki['business'] = array('modules'=>array());
 $ciniki['syncqueue'] = array();
@@ -305,6 +305,11 @@ elseif( $ciniki['request']['page'] == 'newsletters' && $settings['page-newslette
 elseif( $ciniki['request']['page'] == 'downloads' && $settings['page-downloads-active'] == 'yes' ) {
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageDownloads.php');
 	$rc = ciniki_web_generatePageDownloads($ciniki, $settings);
+} 
+// Surveys
+elseif( $ciniki['request']['page'] == 'surveys' && $settings['page-surveys-active'] == 'yes' ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageSurveys.php');
+	$rc = ciniki_web_generatePageSurveys($ciniki, $settings);
 } 
 // Account
 elseif( $ciniki['request']['page'] == 'account' && $settings['page-account-active'] == 'yes' ) {

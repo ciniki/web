@@ -127,6 +127,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-members-membership-details',
 		'page-sponsors-active',
 		'page-newsletters-active',
+		'page-surveys-active',
 		'page-events-active',
 		'page-events-past',
 		'page-links-active',
