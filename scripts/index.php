@@ -133,6 +133,7 @@ if( $ciniki['request']['business_id'] == 0 ) {
 		|| $ciniki['request']['uri_split'][0] == 'signup'
 		|| $ciniki['request']['uri_split'][0] == 'documentation'
 		|| $ciniki['request']['uri_split'][0] == 'support'
+		|| $ciniki['request']['uri_split'][0] == 'downloads'
 		) {
 		$ciniki['request']['page'] = $ciniki['request']['uri_split'][0];
 		$ciniki['request']['business_id'] = $ciniki['config']['ciniki.core']['master_business_id'];

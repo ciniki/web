@@ -50,7 +50,9 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 
 	$invalid_business_names = array('home', 'about', 'events', 'links', 'contact',
 		'admin', 'manage', 'signup', 'api', 'documentation', 'logout', 'login', 'signin',
-		'plans', 'plan', 'sysadmin', 'ciniki'
+		'plans', 'plan', 'sysadmin', 'ciniki', 'ciniki-ca', 'ciniki ca',
+		'downloads', 'exhibitions', 'exhibits', 'members', 'sponsors', 'studiotour', 'newsletters', 
+		'mail', 'mailing', 'mailings', 'mailinglist', 'mailing-list', 'mailing list',
 		);
 
 	//
