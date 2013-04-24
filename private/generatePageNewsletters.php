@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This file will generate a page to display the list of newsletters for an artclub.
+// This file will generate a page to display the list of newsletters for a business.
 //
 // Arguments
 // ---------
@@ -19,8 +19,8 @@ function ciniki_web_generatePageNewsletters($ciniki, $settings) {
 	//
 	$download_err = '';
 	if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'artclub', 'web', 'fileDownload');
-		$rc = ciniki_artclub_web_fileDownload($ciniki, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][0]);
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'newsletters', 'web', 'fileDownload');
+		$rc = ciniki_newsletters_web_fileDownload($ciniki, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][0]);
 		if( $rc['stat'] == 'ok' ) {
 			header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 			header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
@@ -98,8 +98,8 @@ function ciniki_web_generatePageNewsletters($ciniki, $settings) {
 	//
 	// Get the list of downloads to be displayed
 	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'artclub', 'web', 'newsletterList');
-	$rc = ciniki_artclub_web_newsletterList($ciniki, $ciniki['request']['business_id']);
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'newsletters', 'web', 'list');
+	$rc = ciniki_newsletters_web_list($ciniki, $ciniki['request']['business_id']);
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
