@@ -291,6 +291,12 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 		&& isset($settings['page-exhibitions-sponsors-active']) && $settings['page-exhibitions-sponsors-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/sponsors'>Sponsors</a></li>";
 	}
+	if( isset($settings['page-artgalleryexhibitions-active']) && $settings['page-artgalleryexhibitions-active'] == 'yes' ) {
+		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/exhibitions'>Exhibitions</a></li>";
+	}
+	if( isset($settings['page-classes-active']) && $settings['page-classes-active'] == 'yes' ) {
+		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/classes'>Classes</a></li>";
+	}
 	if( isset($settings['page-members-active']) && $settings['page-members-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/members'>Members</a></li>";
 	}

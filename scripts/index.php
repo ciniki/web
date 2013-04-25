@@ -263,6 +263,11 @@ elseif( $ciniki['request']['page'] == 'about' && $settings['page-about-active'] 
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageAbout.php');
 	$rc = ciniki_web_generatePageAbout($ciniki, $settings);
 } 
+// Exhibitions
+elseif( $ciniki['request']['page'] == 'exhibitions' && $settings['page-artgalleryexhibitions-active'] == 'yes' ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageExhibitions.php');
+	$rc = ciniki_web_generatePageExhibitions($ciniki, $settings);
+}
 // Exhibitors
 elseif( $ciniki['request']['page'] == 'exhibitors' && $settings['page-exhibitions-exhibitors-active'] == 'yes' ) {
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageExhibitors.php');

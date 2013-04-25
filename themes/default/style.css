@@ -280,6 +280,12 @@ div.gallery-image-details span.image-awards {
 #content span.downloads-category,
 #content span.links-category {
 	font-size: 1.1em;
+	color: #555;
+}
+
+#content span.exhibitors-subcategory {
+	font-size: 1.0em;
+	color: #999;
 }
 
 #content div.button-list div.button-list-wrap {

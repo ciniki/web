@@ -272,6 +272,15 @@ article {
 	width: 100%;
 }
 
+#content span.exhibitors-category {
+	display: inline-block;
+	padding-right: 1em;
+}
+#content span.exhibitors-subcategory {
+	display: block;
+	text-align: left;
+}
+
 #content table.members-category-list > tbody > tr > td,
 #content table.sponsors-category-list > tbody > tr > td,
 #content table.exhibitors-category-list > tbody > tr > td {
@@ -282,6 +291,7 @@ article {
 #content table.sponsors-list table.sponsors-category-list td.sponsors-image,
 #content table.exhibitors-list table.exhibitors-category-list td.exhibitors-image {
 	padding-right: 0.1em;
+	padding-left: 0;
 	min-width: 9.0em;
 }
 
@@ -291,6 +301,12 @@ article {
 	text-align: right;
 	vertical-align: bottom;
 	width: 100%;
+}
+
+#content p.exhibitors-application {
+	width: 100%;
+	max-width: 100%;
+	text-align: right;
 }
 
 #content div.events-more {

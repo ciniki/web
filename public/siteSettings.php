@@ -80,6 +80,9 @@ function ciniki_web_siteSettings($ciniki) {
 		$pages['sponsors'] = array('display_name'=>'Sponsors', 'active'=>'no');
 		$pages['newsletters'] = array('display_name'=>'Newsletters', 'active'=>'no');
 	}
+	if( isset($modules['ciniki.artgallery']) ) {
+		$pages['artgalleryexhibitions'] = array('display_name'=>'Exhibitions', 'active'=>'no');
+	}
 	if( isset($modules['ciniki.links']) ) {
 		$pages['links'] = array('display_name'=>'Links', 'active'=>'no');
 	}
@@ -148,6 +151,9 @@ function ciniki_web_siteSettings($ciniki) {
 	if( (isset($settings['page-exhibitions-exhibitors-active']) && $settings['page-exhibitions-exhibitors-active'] == 'yes')
 		|| (isset($settings['page-exhibitions-sponsors-active']) && $settings['page-exhibitions-sponsors-active'] == 'yes') ) {
 		$pages['exhibitions']['active'] = 'yes';
+	}
+	if( isset($settings['page-artgalleryexhibitions-active']) && $settings['page-artgalleryexhibitions-active'] == 'yes' ) {
+		$pages['artgalleryexhibitions']['active'] = 'yes';
 	}
 	if( isset($settings['page-signup-active']) && $settings['page-signup-active'] == 'yes' ) {
 		$pages['signup']['active'] = 'yes';

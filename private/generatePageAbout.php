@@ -18,11 +18,17 @@ function ciniki_web_generatePageAbout($ciniki, $settings) {
 	// Check if a file was specified to be downloaded
 	//
 	$download_err = '';
-	if( isset($ciniki['business']['modules']['ciniki.artclub'])
+	if( (isset($ciniki['business']['modules']['ciniki.artclub'])
+			|| isset($ciniki['business']['modules']['ciniki.artgallery']))
 		&& isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'download'
 		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' ) {
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'artclub', 'web', 'fileDownload');
-		$rc = ciniki_artclub_web_fileDownload($ciniki, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][1]);
+		if( isset($ciniki['business']['modules']['ciniki.artgallery']) ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'artgallery', 'web', 'fileDownload');
+			$rc = ciniki_artgallery_web_fileDownload($ciniki, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][1]);
+		} else {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'artclub', 'web', 'fileDownload');
+			$rc = ciniki_artclub_web_fileDownload($ciniki, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][1]);
+		}
 		if( $rc['stat'] == 'ok' ) {
 			header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 			header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
@@ -120,11 +126,17 @@ function ciniki_web_generatePageAbout($ciniki, $settings) {
 	//
 	// Check if membership info should be displayed here
 	//
-	if( isset($ciniki['business']['modules']['ciniki.artclub'])
+	if( (isset($ciniki['business']['modules']['ciniki.artclub']) 
+			|| isset($ciniki['business']['modules']['ciniki.artgallery']))
 		&& isset($settings['page-about-membership-details']) && $settings['page-about-membership-details'] == 'yes' ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'artclub', 'web', 'membershipDetails');
-		$rc = ciniki_artclub_web_membershipDetails($ciniki, $settings, $ciniki['request']['business_id']);
+		if( isset($ciniki['business']['modules']['ciniki.artgallery']) ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'artgallery', 'web', 'membershipDetails');
+			$rc = ciniki_artgallery_web_membershipDetails($ciniki, $settings, $ciniki['request']['business_id']);
+		} else {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'artclub', 'web', 'membershipDetails');
+			$rc = ciniki_artclub_web_membershipDetails($ciniki, $settings, $ciniki['request']['business_id']);
+		}
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
