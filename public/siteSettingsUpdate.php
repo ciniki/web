@@ -112,6 +112,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-home-gallery-random',
 		'page-home-gallery-random-title',
 		'page-home-upcoming-events',
+		'page-home-upcoming-artgalleryexhibitions',
 		'page-home-image',
 		'page-home-image-caption',
 		'page-about-active',

@@ -148,6 +148,40 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 	}
 
 	//
+	// List any upcoming exhibitions
+	//
+	if( isset($ciniki['business']['modules']['ciniki.artgallery']) 
+		&& isset($settings['page-artgalleryexhibitions-active']) && $settings['page-artgalleryexhibitions-active'] == 'yes' 
+		&& (!isset($settings['page-home-upcoming-artgalleryexhibitions']) || $settings['page-home-upcoming-artgalleryexhibitions'] == 'yes') 
+		) {
+		//
+		// Load and parse the events
+		//
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'artgallery', 'web', 'exhibitionList');
+		$rc = ciniki_artgallery_web_exhibitionList($ciniki, $settings, $ciniki['request']['business_id'], 'upcoming', 3);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$number_of_exhibitions = count($rc['exhibitions']);
+		if( isset($rc['exhibitions']) && $number_of_exhibitions > 0 ) {
+			$exhibitions = $rc['exhibitions'];
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processExhibitions');
+			$rc = ciniki_web_processExhibitions($ciniki, $settings, $exhibitions, 2);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$content .= "<article class='page'>\n"
+				. "<header class='entry-title'><h1 class='entry-title'>Upcoming Exhibitions</h1></header>\n"
+				. $rc['content']
+				. "";
+			if( $number_of_exhibitions > 2 ) {
+				$content .= "<div class='events-more'><a href='" . $ciniki['request']['base_url'] . "/exhibitions'>... more exhibitions</a></div>";
+			}
+			$content .= "</article>\n"
+				. "";
+		}
+	}
+	//
 	// List any upcoming events
 	//
 	if( isset($ciniki['business']['modules']['ciniki.events']) 
@@ -181,6 +215,7 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 				. "";
 		}
 	}
+
 
 	$content .= "</div>"
 		. "";
