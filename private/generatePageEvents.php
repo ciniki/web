@@ -29,7 +29,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 	// Add the header
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Upcoming Events');
+	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Upcoming Events', array());
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
 	}

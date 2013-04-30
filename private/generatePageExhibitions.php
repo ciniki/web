@@ -382,7 +382,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 	// Add the header
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, $page_title);
+	$rc = ciniki_web_generatePageHeader($ciniki, $settings, $page_title, array());
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
 	}

@@ -174,7 +174,7 @@ function ciniki_web_generatePageContact($ciniki, $settings) {
 	// Add the header
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Contact');
+	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Contact', array());
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
 	}

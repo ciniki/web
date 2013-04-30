@@ -66,7 +66,7 @@ function ciniki_web_generatePageDownloads($ciniki, $settings) {
 	if( isset($settings['page-downloads-name']) && $settings['page-downloads-name'] != '' ) {
 		$page_title = $settings['page-downloads-name'];
 	}
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, $page_title);
+	$rc = ciniki_web_generatePageHeader($ciniki, $settings, $page_title, array());
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
 	}

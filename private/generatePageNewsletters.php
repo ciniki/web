@@ -61,7 +61,7 @@ function ciniki_web_generatePageNewsletters($ciniki, $settings) {
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
 	$page_title = 'Newsletters';
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, $page_title);
+	$rc = ciniki_web_generatePageHeader($ciniki, $settings, $page_title, array());
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
 	}

@@ -76,7 +76,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 	// Add the header
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Signup');
+	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Signup', array());
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
 	}

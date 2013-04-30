@@ -461,7 +461,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 	// Add the header
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Account');
+	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Account', array());
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
 	}

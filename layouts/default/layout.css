@@ -21,6 +21,7 @@ header span.title {
 	margin-top: 0.5em;
 }
 
+#sub-menu-container ul.menu li.menu-item,
 #main-menu-container ul.menu li.menu-item {
 	display: inline-block;
 	padding: 0.4em;
@@ -28,8 +29,14 @@ header span.title {
 	border: 0px;
 }
 
+#sub-menu-container ul.menu li.compact-hidden, 
 #main-menu-container ul.menu li.compact-hidden {
 	display: inline-block;
+}
+
+#sub-menu-container {
+	display: inline-block;
+	margin-right: auto;
 }
 
 #content div.image-gallery {
@@ -78,6 +85,8 @@ header span.title {
 	margin-left: 1.5em;
 }
 
+#content table.clist,
+#content table.cilist,
 #content table.members-list,
 #content table.sponsors-list,
 #content table.exhibitors-list,
@@ -87,6 +96,12 @@ header span.title {
 	border-collapse: collapse;
 }
 
+#content table.clist > tbody > tr > th {
+	display: table-cell;
+	padding-bottom: 1em;
+	min-width: 15em;
+}
+#content table.cilist > tbody > tr > th,
 #content table.members-list > tbody > tr > th,
 #content table.sponsors-list > tbody > tr > th,
 #content table.exhibitors-list > tbody > tr > th,
@@ -97,12 +112,14 @@ header span.title {
 	padding-bottom: 1em;
 }
 
+#content table.cilist > tbody > tr,
 #content table.members-list > tbody > tr,
 #content table.sponsors-list > tbody > tr,
 #content table.exhibitors-list > tbody > tr {
 	padding-bottom: 1em;
 }
 
+#content table.cilist > tbody > tr > td,
 #content table.members-list > tbody > tr > td,
 #content table.sponsors-list > tbody > tr > td,
 #content table.exhibitors-list > tbody > tr > td {
@@ -111,6 +128,7 @@ header span.title {
 	padding-bottom: 1em;
 }
 
+#content table.cilist table.cilist-categories td.cilist-image,
 #content table.members-list table.members-category-list td.members-image,
 #content table.sponsors-list table.sponsors-category-list td.sponsors-image,
 #content table.exhibitors-list table.exhibitors-category-list td.exhibitors-image {
@@ -119,6 +137,7 @@ header span.title {
 	min-width: 9.5em;
 }
 
+#content table.clist td,
 #content table.downloads-list td,
 #content table.links-list td,
 #content table.event-list td {
@@ -127,6 +146,10 @@ header span.title {
 	padding-bottom: 1em;
 }
 
+#content table.clist > tbody > tr > th,
+#content table.clist > tbody > tr > td,
+#content table.cilist > tbody > tr > th,
+#content table.cilist > tbody > tr > td,
 #content table.members-list > tbody > tr > th,
 #content table.members-list > tbody > tr > td,
 #content table.sponsors-list > tbody > tr > th,
@@ -142,6 +165,12 @@ header span.title {
 	border-top: 1px solid;
 }
 
+#content table.cilist-categories > tbody > tr > td.cilist-details {
+	width: 100%;
+}
+
+#content span.clist-category,
+#content span.cilist-category,
 #content span.members-category,
 #content span.sponsors-category,
 #content span.exhibitors-category,
@@ -210,13 +239,22 @@ aside {
 
 div.hide-babybear { display: block; }
 
+#content table.cilist td.cilist-image {
+	display: table-cell;
+}
+span.exhibitors-description {
+	display: inline;
+}
+
 /* 9. CUSTOM LAYOUT & TYPOGRAPHY (Mummy bear)
 ----------------------------------------------------------------------------------------*/
 @media screen and (min-width: 30em) and (max-width: 63.236em) {
 
 body { width: 100%; }
 
-#page-container { width: 30em; }
+#page-container { width: auto; max-width: 45em; }
+
+#sub-menu-container { text-align: left; }
 
 #content dl dd {
 	margin-left: 3em;
@@ -252,6 +290,7 @@ body { width: 100%; }
 	width: 100%;
 }
 
+#content table.cilist table.cilist-categories td.cilist-image,
 #content table.members-list table.members-category-list td.members-image,
 #content table.sponsors-list table.sponsors-category-list td.sponsors-image,
 #content table.exhibitors-list table.exhibitors-category-list td.exhibitors-image {
@@ -260,6 +299,8 @@ body { width: 100%; }
 	min-width: 9.0em;
 }
 
+#content table.clist > tbody > tr > th,
+#content table.cilist > tbody > tr > th,
 #content table.members-list > tbody > tr > th,
 #content table.sponsors-list > tbody > tr > th,
 #content table.exhibitors-list > tbody > tr > th,
@@ -271,6 +312,8 @@ body { width: 100%; }
 	border-top-width: 0px;
 }
 
+#content table.clist > tbody > tr > td,
+#content table.cilist > tbody > tr > td,
 #content table.members-list > tbody > tr > td,
 #content table.sponsors-list > tbody > tr > td,
 #content table.exhibitors-list > tbody > tr > td,
@@ -280,6 +323,7 @@ body { width: 100%; }
 	display: block;
 }
 
+#content table.cilist >tbody > tr > td,
 #content table.members-list >tbody > tr > td,
 #content table.sponsors-list >tbody > tr > td,
 #content table.exhibitors-list >tbody > tr > td {
@@ -287,6 +331,7 @@ body { width: 100%; }
 	margin-left: 0px;
 }
 
+#content table.clist td,
 #content table.downloads-list td,
 #content table.links-list td,
 #content table.event-list td {
@@ -320,33 +365,32 @@ body { width: 100%; }
 	max-width: 100%;
 }
 
+#content p {
+	max-width: 45em;
+}
 
 aside {
 	float: none;
 	width: auto;
+	max-width: 30em;
 	height: auto;
-	margin: 0 0 2.2em;
+	margin: 0 auto 2.2em;
 }
 
 div.hide-babybear { display: block; }
-
-}
 
 span.exhibitors-description {
 	display: inline;
 }
 
+}
+
 /* 10. CUSTOM LAYOUT & TYPOGRAPHY (Older Sister bear)
 ----------------------------------------------------------------------------------------*/
 @media screen and (min-width: 40em) and (max-width: 63.236em) {
-
-body { width: 100%; }
-
-#page-container.page-container-wide { width: 40em; }
-
-aside { width: 30em; }
-
-div.hide-babybear { display: block; }
-
+	body { width: 100%; }
+	#page-container.page-container-wide { width: 40em; }
+	aside { width: 30em; }
+	div.hide-babybear { display: block; }
 }
 

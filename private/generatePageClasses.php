@@ -29,7 +29,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 	// Add the header
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Classes');
+	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Classes', array());
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
 	}

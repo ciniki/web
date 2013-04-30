@@ -282,6 +282,11 @@ elseif( $ciniki['request']['page'] == 'sponsors'
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageSponsors.php');
 	$rc = ciniki_web_generatePageSponsors($ciniki, $settings);
 }
+// Courses
+elseif( $ciniki['request']['page'] == 'courses' && $settings['page-courses-active'] == 'yes' ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageCourses.php');
+	$rc = ciniki_web_generatePageCourses($ciniki, $settings);
+}
 // Members
 elseif( $ciniki['request']['page'] == 'members' && $settings['page-members-active'] == 'yes' ) {
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageMembers.php');

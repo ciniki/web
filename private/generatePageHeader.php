@@ -14,7 +14,7 @@
 // Returns
 // -------
 //
-function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
+function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 
 	//
 	// Store the header content
@@ -309,6 +309,15 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 		}
 		$content .= "</a></li>";
 	}
+	if( isset($settings['page-courses-active']) && $settings['page-courses-active'] == 'yes' ) {
+		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/courses'>";
+		if( isset($settings['page-courses-name']) && $settings['page-courses-name'] != '' ) {
+			$content .= $settings['page-courses-name'];
+		} else {
+			$content .= "Courses";
+		}
+		$content .= "</a></li>";
+	}
 	if( isset($settings['page-events-active']) && $settings['page-events-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/events'>Events</a></li>";
 	}
@@ -343,9 +352,25 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title) {
 	}
 	$content .= "</ul>\n"
 		. "</div>\n";
-		
-	$content .= "</nav>\n"
-		. "</header>\n"
+
+	//
+	// Check if there is a submenu to display
+	//
+	if( is_array($submenu) && count($submenu) > 0 ) {
+		$content .= "<h3 class='assistive-text'>Sub menu</h3>\n"
+			. "";
+		$content .= "<div id='sub-menu-container'>"
+			. "<ul id='sub-menu' class='menu'>\n"
+			. "";
+		foreach($submenu as $sid => $item) {
+			$content .= "<li class='menu-item'><a href='" . $item['url'] . "'>" . $item['name'] . "</a></li>";
+		}
+		$content .= "</ul>\n"
+			. "</div>\n";
+	}
+
+	$content .= "</nav>\n";
+	$content .= "</header>\n"
 		. "";
 	$content .= "<hr class='section-divider header-section-divider' />\n";
 

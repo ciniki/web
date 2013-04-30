@@ -76,7 +76,8 @@ function ciniki_web_lookupClientDomain($ciniki, $domain, $type) {
 	// Get the list of active modules for the business
 	//
 	$strsql = "SELECT ruleset "
-		. ", CONCAT_WS('.', ciniki_business_modules.package, ciniki_business_modules.module) AS module_id "
+		. ", CONCAT_WS('.', ciniki_business_modules.package, ciniki_business_modules.module) AS module_id, "
+		. "ciniki_business_modules.flags "
 		. "FROM ciniki_businesses, ciniki_business_modules "
 		. "WHERE ciniki_businesses.id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
 		. "AND ciniki_businesses.status = 1 "														// Business is active

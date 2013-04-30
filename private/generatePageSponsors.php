@@ -128,7 +128,7 @@ function ciniki_web_generatePageSponsors($ciniki, $settings) {
 	// Add the header
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Sponsors');
+	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Sponsors', array());
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
 	}
