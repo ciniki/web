@@ -151,7 +151,7 @@ function ciniki_web_generatePageAbout($ciniki, $settings) {
 	elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'membership'
 		&& (isset($ciniki['business']['modules']['ciniki.artclub']) 
 			|| isset($ciniki['business']['modules']['ciniki.artgallery']))
-		&& isset($settings['page-about-membership-active']) && $settings['page-about-membership-active'] == 'yes' 
+		&& isset($settings['page-aboutmembership-active']) && $settings['page-aboutmembership-active'] == 'yes' 
 		) {
 		$page = 'membership';
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
