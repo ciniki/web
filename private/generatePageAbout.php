@@ -139,7 +139,22 @@ function ciniki_web_generatePageAbout($ciniki, $settings) {
 			$page_content .= "</div></aside>";
 		}
 
-		$page_content .= "<p>Board of directors list goes here</p>";
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
+		$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', "page-about$page");
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+
+		if( isset($rc['content']["page-about$page-content"]) ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+			$rc = ciniki_web_processContent($ciniki, $rc['content']["page-about$page-content"]);	
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= "<div class='entry-content'>"
+				. $rc['content']
+				. "</div>";
+		}
 
 		$page_content .= "</div>\n"
 			. "</article>";

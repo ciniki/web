@@ -305,6 +305,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-about-content',
 		'page-abouthistory-content',
 		'page-aboutdonations-content',
+		'page-aboutboardofdirectors-content',
 		'page-contact-content',
 		'page-signup-content',
 		'page-signup-agreement',
