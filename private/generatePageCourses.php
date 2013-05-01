@@ -626,7 +626,6 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 				. "</article>\n"
 				. "";
 		}
-		
 	}
 
 	//
