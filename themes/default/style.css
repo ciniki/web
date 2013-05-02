@@ -499,10 +499,19 @@ aside div.image-wrap div.image-caption {
 	line-height: 1.5em;
 }
 
+div.googlemap, 
 aside div.googlemap {
 	border: 2px solid #222;
 	padding: 5px;
 	margin-bottom: 1em;
+}
+
+div.googlemap p {
+	margin-bottom: 0.5em;
+}
+
+div.googlemap p:last-child {
+	margin-bottom: 0;
 }
 
 hr.section-divider {

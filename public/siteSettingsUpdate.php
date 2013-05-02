@@ -136,6 +136,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-exhibitions-exhibition',
 		'page-exhibitions-exhibitors-active',
 		'page-exhibitions-sponsors-active',
+		'page-exhibitions-tourexhibitors-active',
+		'page-exhibitions-tourexhibitors-name',
 		'page-gallery-active',
 		'page-gallery-name',
 		'page-courses-active',

@@ -291,6 +291,16 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		&& isset($settings['page-exhibitions-sponsors-active']) && $settings['page-exhibitions-sponsors-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/sponsors'>Sponsors</a></li>";
 	}
+	if( isset($settings['page-exhibitions-exhibition']) && $settings['page-exhibitions-exhibition'] > 0
+		&& isset($settings['page-exhibitions-tourexhibitors-active']) && $settings['page-exhibitions-tourexhibitors-active'] == 'yes' ) {
+		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/tour'>";
+		if( isset($settings['page-exhibitions-tourexhibitors-name']) && $settings['page-exhibitions-tourexhibitors-name'] != '' ) {
+			$content .= $settings['page-exhibitions-tourexhibitors-name'];
+		} else {
+			$content .= "Tour";
+		}
+		$content .= "</a></li>";
+	}
 	if( isset($settings['page-artgalleryexhibitions-active']) && $settings['page-artgalleryexhibitions-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/exhibitions'>Exhibitions</a></li>";
 	}

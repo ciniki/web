@@ -91,7 +91,7 @@ function ciniki_web_generatePageSponsors($ciniki, $settings) {
 					}
 					$page_content .= "<div class='image-sponsors-thumbnail'>"
 						. "<a target='_blank' href='$url' title='" . $sponsor['name'] . "'><img title='' alt='" . $sponsor['name'] . "' src='" . $rc['url'] . "' /></a>"
-						. "</div></aside>";
+						. "</div>";
 				}
 				$page_content .= "</td>";
 

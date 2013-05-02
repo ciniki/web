@@ -335,6 +335,7 @@ article {
 	min-width: 9.0em;
 }
 
+div.googlemap p.exhibitors-more,
 #content table.clist p.clist-more,
 #content table.cilist td.cilist-more,
 #content table.members-list td.members-more,
@@ -532,6 +533,14 @@ article {
 }
 
 aside { width: 100%; }
+
+#content div.entry-content div.googlemap {
+	height: 22em;
+}
+
+#content div.googlemap img {
+	max-width: inherit;
+}
 
 aside div.googlemap {
 	height: 22em;
