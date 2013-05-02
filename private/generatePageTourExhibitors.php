@@ -322,6 +322,7 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 						. "<td>";
 				}
 				$page_content .= "<table class='exhibitors-category-list'><tbody>\n";
+				$count = 1;
 				foreach($c['category']['participants'] as $pnum => $participant) {
 					$participant = $participant['participant'];
 					$participant_url = $ciniki['request']['base_url'] . "/tour/" . $participant['permalink'];
@@ -347,7 +348,7 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 
 					if( isset($participant['latitude']) && $participant['latitude'] != ''
 						&& isset($participant['longitude']) && $participant['longitude'] != '' ) {
-						$map_participant_javascript .= "gmap_showParticipant(" . $participant['latitude'] . ',' . $participant['longitude'] . ",'" . $marker_content . "');";
+						$map_participant_javascript .= "gmap_showParticipant(" . $participant['latitude'] . ',' . $participant['longitude'] . ",'" . $count . "','" . $marker_content . "');";
 					}
 
 					// Setup the exhibitor image
@@ -367,7 +368,7 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 					// Setup the details
 					$page_content .= "<td class='exhibitors-details'>";
 					$page_content .= "<span class='exhibitors-title'>";
-					$page_content .= "<a href='$participant_url' title='" . $participant['name'] . "'>" . $participant['name'] . "</a>";
+					$page_content .= "<a href='$participant_url' title='" . $participant['name'] . "'>" . $count . ".  " . $participant['name'] . "</a>";
 					$page_content .= "</span>";
 					$page_content .= "</td></tr>";
 					$page_content .= "<tr><td class='exhibitors-description'>";
@@ -376,6 +377,8 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 					}
 					$page_content .= "</td></tr>";
 					$page_content .= "<tr><td class='exhibitors-more'><a href='$participant_url'>... more</a></td></tr>";
+
+					$count++;
 				}
 				$page_content .= "</tbody></table>";
 			}
@@ -436,7 +439,7 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 					. 'mapTypeId: google.maps.MapTypeId.ROADMAP'
 				. '};'
 				. 'map = new google.maps.Map(document.getElementById("googlemap"), mapOptions);'
-				. 'gmap_showParticipant(' . $settings['page-contact-map-latitude'] . ',' . $settings['page-contact-map-longitude'] . ',"<p><b>' . $ciniki['business']['details']['name'] . '</b></p><p>' . $business_address . '</p>");'
+				. 'gmap_showParticipant(' . $settings['page-contact-map-latitude'] . ',' . $settings['page-contact-map-longitude'] . ',"","<p><b>' . $ciniki['business']['details']['name'] . '</b></p><p>' . $business_address . '</p>");'
 //				. 'var marker = new google.maps.Marker({'
 //					. 'position: myLatlng,'
 //					. 'map: map,'
@@ -444,13 +447,16 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 //					. '});'
 				. $map_participant_javascript
 			. '};'
-			. 'function gmap_showParticipant(lat,lng,content) {'
+			. 'function gmap_showParticipant(lat,lng,num,content) {'
 				. 'var myLatlng = new google.maps.LatLng(lat,lng);'
 //				. 'var symbol = new google.maps.Symbol({fillColor:"#ff0000",path:CIRCLE});'
+				. 'var icon="";'
+				. 'if(num!="") {icon=\'https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=\'+num+\'|FF776B|000000\'};'
 				. 'var marker = new google.maps.Marker({'
 					. 'position: myLatlng,'
 					. 'map: map,'
 					. 'title:name,'
+					. 'icon:icon,'
 //					. 'icon:{path:google.maps.SymbolPath.CIRCLE,fillColor:"#ff0000"},'
 					. '});'
 				. 'var infowindow = new google.maps.InfoWindow({'
