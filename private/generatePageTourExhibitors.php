@@ -308,6 +308,7 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 			$page_content .= "<table class='exhibitors-list'><tbody>\n"
 				. "";
 			$prev_category = NULL;
+			$count = 1;
 			foreach($participants as $cnum => $c) {
 				if( $prev_category != NULL ) {
 					$page_content .= "</td></tr>\n";
@@ -322,7 +323,6 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 						. "<td>";
 				}
 				$page_content .= "<table class='exhibitors-category-list'><tbody>\n";
-				$count = 1;
 				foreach($c['category']['participants'] as $pnum => $participant) {
 					$participant = $participant['participant'];
 					$participant_url = $ciniki['request']['base_url'] . "/tour/" . $participant['permalink'];
