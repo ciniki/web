@@ -43,7 +43,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 		//
 		// If there was an error locating the files, display generic error
 		//
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1055', 'msg'=>'Unable to locate file'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1103', 'msg'=>'Unable to locate file'));
 	}
 
 	//
@@ -112,7 +112,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 		$instructor = $rc['instructor'];
 
 		if( !isset($instructor['images']) || count($instructor['images']) < 1 ) {
-			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'967', 'msg'=>'Unable to find image'));
+			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1104', 'msg'=>'Unable to find image'));
 		}
 
 		$first = NULL;

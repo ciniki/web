@@ -54,7 +54,7 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 		$participant = $rc['participant'];
 
 		if( !isset($participant['images']) || count($participant['images']) < 1 ) {
-			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'490', 'msg'=>'Unable to find image'));
+			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1102', 'msg'=>'Unable to find image'));
 		}
 
 		$first = NULL;
