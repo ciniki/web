@@ -139,8 +139,8 @@ function ciniki_web_generateMasterIndex(&$ciniki, $settings) {
 		//
 		// Load and parse the events
 		//
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'list');
-		$rc = ciniki_events_web_list($ciniki, $ciniki['request']['business_id'], 'upcoming', 3);
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'eventList');
+		$rc = ciniki_events_web_eventList($ciniki, $ciniki['request']['business_id'], 'upcoming', 3);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}

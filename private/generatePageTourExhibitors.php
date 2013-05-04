@@ -149,8 +149,7 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 		//
 		$exhibitor_permalink = $ciniki['request']['uri_split'][0];
 		$rc = ciniki_exhibitions_web_participantDetails($ciniki, $settings, 
-			$ciniki['request']['business_id'], 
-			$settings['page-exhibitions-exhibition'], $exhibitor_permalink);
+			$ciniki['request']['business_id'], $settings['page-exhibitions-exhibition'], $exhibitor_permalink);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
