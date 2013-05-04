@@ -62,16 +62,26 @@ function ciniki_web_processEvents($ciniki, $settings, $events, $limit) {
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			$content .= "<div class='image-cilist-thumbnail'>"
-				. "<a href='$event_url' title='" . $event['name'] . "'><img title='' alt='" . $event['name'] . "' src='" . $rc['url'] . "' /></a>"
-				. "</div></aside>";
+			if( $event_url != '' ) {
+				$content .= "<div class='image-cilist-thumbnail'>"
+					. "<a href='$event_url' title='" . $event['name'] . "'><img title='' alt='" . $event['name'] . "' src='" . $rc['url'] . "' /></a>"
+					. "</div></aside>";
+			} else {
+				$content .= "<div class='image-cilist-thumbnail'>"
+					. "<img title='' alt='" . $event['name'] . "' src='" . $rc['url'] . "' />"
+					. "</div></aside>";
+			}
 		}
 		$content .= "</td>";
 
 		// Setup the details
 		$content .= "<td class='cilist-title'>";
 		$content .= "<p class='cilist-title'>";
-		$content .= "<a href='$event_url' title='" . $event['name'] . "'>" . $event['name'] . "</a>";
+		if( $event_url != '' ) {
+			$content .= "<a href='$event_url' title='" . $event['name'] . "'>" . $event['name'] . "</a>";
+		} else {
+			$content .= $event['name'];
+		}
 		$content .= "</p>";
 		$content .= "</td></tr>";
 		$content .= "<tr><td class='cilist-details'>";
