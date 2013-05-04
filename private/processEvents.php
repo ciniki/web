@@ -16,6 +16,8 @@
 //
 function ciniki_web_processEvents($ciniki, $settings, $events, $limit) {
 
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 
 	$content = "<table class='cilist'><tbody>";
 	$count = 0;
@@ -56,7 +58,6 @@ function ciniki_web_processEvents($ciniki, $settings, $events, $limit) {
 		// Setup the event image
 		$content .= "<tr><td class='cilist-image' rowspan='3'>";
 		if( isset($event['image_id']) && $event['image_id'] > 0 ) {
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 			$rc = ciniki_web_getScaledImageURL($ciniki, $event['image_id'], 'thumbnail', '150', 0);
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;

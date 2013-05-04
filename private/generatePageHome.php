@@ -181,6 +181,41 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 				. "";
 		}
 	}
+
+	//
+	// List any upcoming events
+	//
+	if( isset($ciniki['business']['modules']['ciniki.courses']) 
+		&& isset($settings['page-courses-active']) && $settings['page-courses-active'] == 'yes' 
+		&& (!isset($settings['page-home-upcoming-courses']) || $settings['page-home-upcoming-courses'] == 'yes') 
+		) {
+		//
+		// Load and parse the events
+		//
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'courses', 'web', 'courseList');
+		$rc = ciniki_courses_web_courseList($ciniki, $settings, $ciniki['request']['business_id'], 'upcoming', 3);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$number_of_courses = count($rc['courses']);
+		if( isset($rc['courses']) && $number_of_courses > 0 ) {
+			$courses = $rc['courses'];
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processEvents');
+			$rc = ciniki_web_processEvents($ciniki, $settings, $courses, 2);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$content .= "<article class='page'>\n"
+				. "<header class='entry-title'><h1 class='entry-title'>Upcoming Courses</h1></header>\n"
+				. $rc['content']
+				. "";
+			if( $number_of_events > 2 ) {
+				$content .= "<div class='events-more'><a href='" . $ciniki['request']['base_url'] . "/events'>... more events</a></div>";
+			}
+			$content .= "</article>\n"
+				. "";
+		}
+	}
 	//
 	// List any upcoming events
 	//
