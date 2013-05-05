@@ -14,6 +14,7 @@
 //
 function ciniki_web_generatePageCourses($ciniki, $settings) {
 
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 	//
 	// Check if a file was specified to be downloaded
 	//
@@ -66,7 +67,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 	if( isset($ciniki['business']['modules']['ciniki.courses']) ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'courses', 'web', 'courseTypes');
 		$rc = ciniki_courses_web_courseTypes($ciniki, $settings, $ciniki['request']['business_id']);
-		if( $rc['stat'] == 'ok' ) {
+		if( $rc['stat'] == 'ok' && count($rc['types']) > 1 ) {
 			foreach($rc['types'] as $cid => $type) {
 				if( $first_course_type == '' ) {
 					$first_course_type = $type['name'];
@@ -236,7 +237,6 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 		// Add description
 		//
 		if( isset($instructor['full_bio']) ) {
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 			$rc = ciniki_web_processContent($ciniki, $instructor['full_bio']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
@@ -384,7 +384,6 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 		// Add description
 		//
 		if( isset($offering['long_description']) ) {
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 			$rc = ciniki_web_processContent($ciniki, $offering['long_description']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
@@ -475,7 +474,6 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 		//
 		// Check if membership info should be displayed here
 		//
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'courses', 'web', 'registrationDetails');
 		$rc = ciniki_courses_web_registrationDetails($ciniki, $settings, $ciniki['request']['business_id']);
 		if( $rc['stat'] != 'ok' ) {
@@ -626,6 +624,68 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 				. "</article>\n"
 				. "";
 		}
+		//
+		// Check if no submenu going to be displayed, then need to display registration information here
+		//
+		if( count($submenu) == 1 
+			&& isset($settings['page-courses-registration-active']) && $settings['page-courses-registration-active'] == 'yes' ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'courses', 'web', 'registrationDetails');
+			$rc = ciniki_courses_web_registrationDetails($ciniki, $settings, $ciniki['request']['business_id']);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$registration = $rc['registration'];
+			if( $registration['details'] != '' ) {
+				$page_content .= "<article class='page'>\n"
+					. "<header class='entry-title'><h1 class='entry-title'>Registration</h1></header>\n"
+					. "<div class='entry-content'>\n"
+					. "";
+				if( isset($settings["page-courses-registration-image"]) && $settings["page-courses-registration-image"] != '' && $settings["page-courses-registration-image"] > 0 ) {
+					ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+					$rc = ciniki_web_getScaledImageURL($ciniki, $settings["page-courses-registration-image"], 'original', '500', 0);
+					if( $rc['stat'] != 'ok' ) {
+						return $rc;
+					}
+					$page_content .= "<aside><div class='image-wrap'>"
+						. "<div class='image'><img title='' alt='" . $ciniki['business']['details']['name'] . "' src='" . $rc['url'] . "' /></div>";
+					if( isset($settings["page-courses-registration-image-caption"]) && $settings["page-courses-registration-image-caption"] != '' ) {
+						$page_content .= "<div class='image-caption'>" . $settings["page-courses-registration-image-caption"] . "</div>";
+					}
+					$page_content .= "</div></aside>";
+				}
+				$rc = ciniki_web_processContent($ciniki, $registration['details']);	
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				$page_content .= $rc['content'];
+
+				foreach($registration['files'] as $fid => $file) {
+					$file = $file['file'];
+					$url = $ciniki['request']['base_url'] . '/courses/download/' . $file['permalink'] . '.' . $file['extension'];
+					$page_content .= "<p><a target='_blank' href='" . $url . "' title='" . $file['name'] . "'>" . $file['name'] . "</a></p>";
+				}
+				
+				if( isset($registration['more-details']) && $registration['more-details'] != '' ) {
+					$rc = ciniki_web_processContent($ciniki, $registration['more-details']);	
+					if( $rc['stat'] != 'ok' ) {
+						return $rc;
+					}
+					$page_content .= $rc['content'];
+				}
+				$page_content .= "</div>\n"
+					. "</article>";
+			}
+
+			$page_content .= "</td></tr>\n</table>\n";
+			$page_content .= "</div>\n"
+				. "</article>\n"
+				. "";
+		}
+	}
+
+	if( count($submenu) == 1 
+		&& isset($settings['page-courses-registration-active']) && $settings['page-courses-registration-active'] == 'yes' ) {
+		$submenu = array();
 	}
 
 	//
