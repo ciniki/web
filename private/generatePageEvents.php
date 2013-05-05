@@ -254,11 +254,12 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 			// Generate the content of the page
 			//
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'eventList');
-			$rc = ciniki_events_web_eventList($ciniki, $ciniki['request']['business_id'], 'past', 10);
+			$rc = ciniki_events_web_eventList($ciniki, $settings, $ciniki['request']['business_id'], 'past', 10);
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
 			$events = $rc['events'];
+			error_log(serialize($events));
 
 			$page_content .= "<article class='page'>\n"
 				. "<header class='entry-title'><h1 class='entry-title'>Past Events</h1></header>\n"

@@ -614,7 +614,12 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 						if( $hide_dates != 'yes' ) {
 							$page_content .= "<p class='clist-subtitle'>" . $offering['condensed_date'] . "</p>";
 						}
-						$page_content .= "<p class='clist-description'>" . $offering['short_description'] . "</p>";
+						$rc = ciniki_web_processContent($ciniki, $offering['short_description'], 'clist-description');	
+						if( $rc['stat'] != 'ok' ) {
+							return $rc;
+						}
+						$page_content .= $rc['content'];
+						// $page_content .= "<p class='clist-description'>" . $rc['content'] . "</p>";
 						if( $offering['isdetails'] == 'yes' ) {
 							$offering_url = $ciniki['request']['base_url'] . '/courses/course/' . $offering['course_permalink'] . '/' . $offering['permalink'];
 							$page_content .= "<p class='clist-url clist-more'><a href='" . $offering_url . "'>... more</a></p>";

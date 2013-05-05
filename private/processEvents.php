@@ -17,6 +17,7 @@
 function ciniki_web_processEvents($ciniki, $settings, $events, $limit) {
 
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 
 	$content = "<table class='cilist'><tbody>";
@@ -77,16 +78,20 @@ function ciniki_web_processEvents($ciniki, $settings, $events, $limit) {
 		// Setup the details
 		$content .= "<td class='cilist-title'>";
 		$content .= "<p class='cilist-title'>";
-		if( $event_url != '' ) {
-			$content .= "<a href='$event_url' title='" . $event['name'] . "'>" . $event['name'] . "</a>";
-		} else {
+//		if( $event_url != '' ) {
+//			$content .= "<a href='$event_url' title='" . $event['name'] . "'>" . $event['name'] . "</a>";
+//		} else {
 			$content .= $event['name'];
-		}
+//		}
 		$content .= "</p>";
 		$content .= "</td></tr>";
 		$content .= "<tr><td class='cilist-details'>";
 		if( isset($event['description']) && $event['description'] != '' ) {
-			$content .= "<p class='cilist-description'>" . $event['description'] . "</p>";
+			$rc = ciniki_web_processContent($ciniki, $event['description'], 'cilist-description');
+			if( $rc['stat'] == 'ok' ) {
+				$content .= $rc['content'];
+			}
+			// $content .= "<p class='cilist-description'>" . $event['description'] . "</p>";
 		}
 		if( $event['isdetails'] == 'yes' ) {
 			$content .= "<tr><td class='cilist-more'><a href='$event_url'>... more</a></td></tr>";
