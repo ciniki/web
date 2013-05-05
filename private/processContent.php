@@ -31,9 +31,8 @@ function ciniki_web_processContent($ciniki, $unprocessed_content, $pclass='') {
 	$callback = create_function('$matches', '
 		error_log(serialize($matches));
 
-		$prefix = $matches[1];
-		$prefix = "";
-		$url = $matches[1];
+		$display_url = $matches[1];
+		$url = preg_replace("/www/", "http://www", $display_url);
 //		$url_parts = parse_url($url);
 //		$text = parse_url($url, PHP_URL_HOST) . parse_url($url, PHP_URL_PATH);
 //		$text = preg_replace("/^www./", "", $text);
@@ -42,7 +41,7 @@ function ciniki_web_processContent($ciniki, $unprocessed_content, $pclass='') {
 //		if ($last < 0) {
 //			$text = substr($text, 0, $last) . "&hellip;";
 //		}
-		return sprintf(\'%s<a href="%s">%s</a>\', $prefix, $url, $url);
+		return sprintf(\'<a href="%s">%s</a>\', $url, $display_url);
 	');
 	$processed_content = preg_replace_callback($pattern, $callback, $processed_content);
 
