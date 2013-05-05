@@ -67,14 +67,19 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 	if( isset($ciniki['business']['modules']['ciniki.courses']) ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'courses', 'web', 'courseTypes');
 		$rc = ciniki_courses_web_courseTypes($ciniki, $settings, $ciniki['request']['business_id']);
-		if( $rc['stat'] == 'ok' && count($rc['types']) > 1 ) {
-			foreach($rc['types'] as $cid => $type) {
-				if( $first_course_type == '' ) {
-					$first_course_type = $type['name'];
+		if( $rc['stat'] == 'ok' ) {
+			if( count($rc['types']) > 1 ) {
+				foreach($rc['types'] as $cid => $type) {
+					if( $first_course_type == '' ) {
+						$first_course_type = $type['name'];
+					}
+					if( $type != '' ) {
+						$submenu[$cid] = array('name'=>$type['name'], 'url'=>$ciniki['request']['base_url'] . "/courses/" . urlencode($type['name']));
+					}
 				}
-				if( $type != '' ) {
-					$submenu[$cid] = array('name'=>$type['name'], 'url'=>$ciniki['request']['base_url'] . "/courses/" . urlencode($type['name']));
-				}
+			} elseif( count($rc['types']) == 1 ) {
+				$first_type = array_pop($rc['types']);
+				$first_course_type = $first_type['name'];
 			}
 		}
 		if( ($ciniki['business']['modules']['ciniki.courses']['flags']&0x02) == 0x02 ) {

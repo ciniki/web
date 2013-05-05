@@ -27,9 +27,13 @@ function ciniki_web_processContent($ciniki, $unprocessed_content) {
 
 	// Create active links for urls specified with a href= infront
 	$pattern = '#\b([^\"\'])((https?://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';
+	$pattern = '#\b(((?<!href=\")https?://?|(?<!://)www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';
 	$callback = create_function('$matches', '
+		error_log(serialize($matches));
+
 		$prefix = $matches[1];
-		$url = $matches[2];
+		$prefix = "";
+		$url = $matches[1];
 //		$url_parts = parse_url($url);
 //		$text = parse_url($url, PHP_URL_HOST) . parse_url($url, PHP_URL_PATH);
 //		$text = preg_replace("/^www./", "", $text);
@@ -42,8 +46,7 @@ function ciniki_web_processContent($ciniki, $unprocessed_content) {
 	');
 	$processed_content = preg_replace_callback($pattern, $callback, $processed_content);
 
-//	$processed_content = preg_replace('/[^m][^a][^i][^l][^t][^o][^:]([^ ]+\@[^ ]+\.[a-zA-Z0-9\-_]+)/', '$1<a href="mailto:$2">$2</a>', $processed_content);
-	$processed_content = preg_replace('/([^:])([^ ]+\@[^ ]+\.[a-zA-Z0-9\-_]+)/', '$1<a href="mailto:$2">$2</a>', $processed_content);
+	$processed_content = preg_replace('/((?<!mailto:|=|[a-zA-Z0-9._%+-])([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,64})(?![a-zA-Z]|<\/[aA]>))/', '<a href="mailto:$1">$1</a>', $processed_content);
 
 	//
 	// Check for email addresses that should be linked
