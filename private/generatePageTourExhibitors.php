@@ -164,7 +164,6 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 		//
 		if( isset($participant['latitude']) && $participant['latitude'] != '' 
 			&& isset($participant['longitude']) && $participant['longitude'] != '' ) {
-				error_log('test');
 			if( !isset($ciniki['request']['inline_javascript']) ) {
 				$ciniki['request']['inline_javascript'] = '';
 			}
