@@ -69,7 +69,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'artgallery', 'web', 'exhibitionApplicationDetails');
 		$rc = ciniki_artgallery_web_exhibitionApplicationDetails($ciniki, $settings, $ciniki['request']['business_id']);
 		if( $rc['stat'] != 'ok' ) {
-			return $rc;
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1302', 'msg'=>"I'm sorry, but we can't find any information about the requestion application.", 'err'=>$rc['err']));;
 		}
 		$application = $rc['application'];
 		if( $application['details'] != '' ) {
@@ -112,12 +112,12 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 		$rc = ciniki_artgallery_web_exhibitionDetails($ciniki, $settings, 
 			$ciniki['request']['business_id'], $exhibition_permalink);
 		if( $rc['stat'] != 'ok' ) {
-			return $rc;
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1304', 'msg'=>"I'm sorry, but we can't seem to find the image your requested.", $rc['err']));
 		}
 		$exhibition = $rc['exhibition'];
 
 		if( !isset($exhibition['images']) || count($exhibition['images']) < 1 ) {
-			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1132', 'msg'=>'Unable to find image'));
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1132', 'msg'=>"I'm sorry, but we can't seem to find the image your requested."));
 		}
 
 		$first = NULL;
@@ -151,6 +151,10 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 		}
 		
 		$page_title = $exhibition['name'] . ' - ' . $img['title'];
+	
+		if( $img == NULL ) {
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1305', 'msg'=>"I'm sorry, but we can't seem to find the image your requested."));
+		}
 	
 		//
 		// Load the image
@@ -214,7 +218,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 		$rc = ciniki_artgallery_web_exhibitionDetails($ciniki, $settings, 
 			$ciniki['request']['business_id'], $exhibitor_permalink);
 		if( $rc['stat'] != 'ok' ) {
-			return $rc;
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1306', 'msg'=>"I'm sorry, but we can't seem to find the exhibitor you requested."));
 		}
 		$exhibition = $rc['exhibition'];
 		$page_title = $exhibition['name'];

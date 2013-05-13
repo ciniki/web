@@ -341,9 +341,17 @@ elseif( $ciniki['request']['page'] == 'contact' && $settings['page-contact-activ
 } 
 // Unknown page
 else {
-	print_error($rc, 'Unknown page ' . $ciniki['request']['page']);
-	exit;
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePage404.php');
+	$rc = ciniki_web_generatePage404($ciniki, $settings, null); 
+
+//	print_error($rc, 'Unknown page ' . $ciniki['request']['page']);
+//	exit;
 }
+
+if( $rc['stat'] == '404' ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePage404.php');
+	$rc = ciniki_web_generatePage404($ciniki, $settings, $rc);
+} 
 
 if( $rc['stat'] != 'ok' ) {
 	print_error($rc, 'Unable to generate page.');

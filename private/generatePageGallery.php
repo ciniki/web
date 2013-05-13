@@ -72,7 +72,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		$imageDetails = $pkg . '_' . $mod . '_web_imageDetails';
 		$rc = $imageDetails($ciniki, $settings, $ciniki['request']['business_id'], $image_permalink);
 		if( $rc['stat'] != 'ok' ) {
-			return $rc;
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1309', 'msg'=>"I'm sorry, but we can't seem to find the image your requested.", $rc['err']));
 		}
 		$img = $rc['image'];
 		$page_title = $img['title'];

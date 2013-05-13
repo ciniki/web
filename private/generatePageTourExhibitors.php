@@ -49,12 +49,12 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 			$ciniki['request']['business_id'], 
 			$settings['page-exhibitions-exhibition'], $exhibitor_permalink);
 		if( $rc['stat'] != 'ok' ) {
-			return $rc;
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1307', 'msg'=>"I'm sorry, but we can't seem to find the image your requested.", $rc['err']));
 		}
 		$participant = $rc['participant'];
 
 		if( !isset($participant['images']) || count($participant['images']) < 1 ) {
-			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1102', 'msg'=>'Unable to find image'));
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1102', 'msg'=>"I'm sorry, but we can't seem to find the image your requested."));
 		}
 
 		$first = NULL;
@@ -88,6 +88,10 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 		}
 		
 		$page_title = $participant['name'] . ' - ' . $img['title'];
+	
+		if( $img == NULL ) {
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1301', 'msg'=>"I'm sorry, but we can't seem to find the image your requested."));
+		}
 	
 		//
 		// Load the image
@@ -151,7 +155,7 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 		$rc = ciniki_exhibitions_web_participantDetails($ciniki, $settings, 
 			$ciniki['request']['business_id'], $settings['page-exhibitions-exhibition'], $exhibitor_permalink);
 		if( $rc['stat'] != 'ok' ) {
-			return $rc;
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1308', 'msg'=>"I'm sorry, but we can't find the exhibitor your requested.", $rc['err']));
 		}
 		$participant = $rc['participant'];
 		$page_title = $participant['name'];

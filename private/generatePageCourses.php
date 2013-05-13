@@ -113,12 +113,12 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 		$rc = ciniki_courses_web_instructorDetails($ciniki, $settings, 
 			$ciniki['request']['business_id'], $instructor_permalink);
 		if( $rc['stat'] != 'ok' ) {
-			return $rc;
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1310', 'msg'=>"I'm sorry, but we can't seem to find the image you requested.", $rc['err']));
 		}
 		$instructor = $rc['instructor'];
 
 		if( !isset($instructor['images']) || count($instructor['images']) < 1 ) {
-			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1104', 'msg'=>'Unable to find image'));
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1104', 'msg'=>"I'm sorry, but we can't seem to find the image you requested."));
 		}
 
 		$first = NULL;
@@ -152,7 +152,10 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 		}
 		
 		$page_title = $instructor['name'] . ' - ' . $img['title'];
-	
+
+		if( $img == NULL ) {
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1311', 'msg'=>"I'm sorry, but we can't seem to find the image you requested."));
+		}
 		//
 		// Load the image
 		//
@@ -216,7 +219,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 		$rc = ciniki_courses_web_instructorDetails($ciniki, $settings, 
 			$ciniki['request']['business_id'], $instructor_permalink);
 		if( $rc['stat'] != 'ok' ) {
-			return $rc;
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1312', 'msg'=>"I'm sorry, but we can't find the instructor you requested.", $rc['err']));
 		}
 		$instructor = $rc['instructor'];
 		$page_title = $instructor['name'];
