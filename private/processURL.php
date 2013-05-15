@@ -26,4 +26,3 @@ function ciniki_web_processURL($ciniki, $url) {
 	return array('stat'=>'ok', 'url'=>$url, 'display'=>$display_url);
 }
 ?>
-
