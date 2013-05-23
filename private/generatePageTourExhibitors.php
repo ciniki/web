@@ -350,7 +350,7 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 
 					if( isset($participant['latitude']) && $participant['latitude'] != ''
 						&& isset($participant['longitude']) && $participant['longitude'] != '' ) {
-						$map_participant_javascript .= "gmap_showParticipant(" . $participant['latitude'] . ',' . $participant['longitude'] . ",'" . $count . "','" . $marker_content . "');";
+						$map_participant_javascript .= "gmap_showParticipant(" . $participant['latitude'] . ',' . $participant['longitude'] . ",'" . $count . "','" . preg_replace("/'/", "\\'", $marker_content) . "');";
 					}
 
 					// Setup the exhibitor image
