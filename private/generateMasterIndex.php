@@ -41,14 +41,14 @@ function ciniki_web_generateMasterIndex(&$ciniki, $settings) {
 	// Generate the content of the page
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
-	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-about');
+	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-home');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
 
-	if( isset($rc['content']['page-about-content']) ) {
+	if( isset($rc['content']['page-home-content']) ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-		$rc = ciniki_web_processContent($ciniki, $rc['content']['page-about-content']);	
+		$rc = ciniki_web_processContent($ciniki, $rc['content']['page-home-content']);	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
@@ -78,9 +78,9 @@ function ciniki_web_generateMasterIndex(&$ciniki, $settings) {
 			. "</form>"
 			. "</div>";
 //		} else {
-	} elseif( isset($settings['page-about-image']) && $settings['page-about-image'] != '' && $settings['page-about-image'] > 0 ) {
+	} elseif( isset($settings['page-home-image']) && $settings['page-home-image'] != '' && $settings['page-home-image'] > 0 ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-		$rc = ciniki_web_getScaledImageURL($ciniki, $settings['page-about-image'], 'original', '500', 0);
+		$rc = ciniki_web_getScaledImageURL($ciniki, $settings['page-home-image'], 'original', '500', 0);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
