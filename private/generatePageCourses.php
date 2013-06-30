@@ -537,8 +537,8 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 		$coursetype = '';
 		if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
 			$coursetype = urldecode($ciniki['request']['uri_split'][0]);
-		} elseif( $first_course_type != '' ) {
-			$coursetype = $first_course_type;
+//		} elseif( $first_course_type != '' ) {
+//			$coursetype = $first_course_type;
 		}
 		// Setup default settings
 		if( !isset($settings['page-courses-upcoming-active']) ) {
