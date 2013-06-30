@@ -413,6 +413,21 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 			$page_content .= "<h2>Date</h2><p>";
 			$page_content .= "<p>" . $offering['condensed_date'] . "</p>";
 		}
+
+		//
+		// The files for a course offering
+		//
+		if( ($ciniki['business']['modules']['ciniki.courses']['flags']&0x08) == 0x08 ) {
+			if( isset($offering['files']) ) {
+				$page_content .= "<h2>Files</h2>";
+				foreach($offering['files'] as $fid => $file) {
+//					$page_content .= $file['name'];
+//				$file = $file['file'];
+					$url = $ciniki['request']['base_url'] . '/courses/download/' . $file['permalink'] . '.' . $file['extension'];
+					$page_content .= "<p><a target='_blank' href='" . $url . "' title='" . $file['name'] . "'>" . $file['name'] . "</a></p>";
+				}
+			}
+		}
 		$page_content .= "</div>";
 
 		//
@@ -474,7 +489,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 	}
 
 	//
-	// Check if we are to display a course detail page
+	// Check if we are to display a registration detail page
 	//
 	elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'registration' 
 		&& isset($settings['page-courses-registration-active']) && $settings['page-courses-registration-active'] == 'yes'
