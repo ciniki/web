@@ -25,7 +25,7 @@ function ciniki_web_processExhibitions($ciniki, $settings, $exhibitions, $limit)
 		// Display the date
 		$exhibition_date = $exhibition['start_month'];
 		$exhibition_date .= " " . $exhibition['start_day'];
-		if( $exhibition['end_day'] != '' && $exhibition['start_day'] != $exhibition['end_day'] ) {
+		if( $exhibition['end_day'] != '' && ($exhibition['start_day'] != $exhibition['end_day'] || $exhibition['start_month'] != $exhibition['end_month']) ) {
 			if( $exhibition['end_month'] != '' && $exhibition['end_month'] == $exhibition['start_month'] ) {
 				$exhibition_date .= " - " . $exhibition['end_day'];
 			} else {
