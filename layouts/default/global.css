@@ -326,9 +326,14 @@ article {
 	vertical-align: top;
 }
 
+#content table.sponsors-list table.sponsors-category-list td.sponsors-image {
+	padding-right: 0.1em;
+	padding-left: 0;
+/*	min-width: 9.0em; */
+}
+
 #content table.cilist td.cilist-image,
 #content table.members-list table.members-category-list td.members-image,
-#content table.sponsors-list table.sponsors-category-list td.sponsors-image,
 #content table.exhibitors-list table.exhibitors-category-list td.exhibitors-image {
 	padding-right: 0.1em;
 	padding-left: 0;
@@ -388,9 +393,13 @@ div.googlemap p.exhibitors-more,
 	height: 115px;
 }
 
+#content div.image-sponsors-thumbnail img {
+/* 	height: 115px; */
+	max-width: none;
+}
+
 #content div.image-cilist-thumbnail img,
 #content div.image-members-thumbnail img,
-#content div.image-sponsors-thumbnail img,
 #content div.image-exhibitors-thumbnail img {
 	height: 115px;
 	max-width: none;

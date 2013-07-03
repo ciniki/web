@@ -144,9 +144,15 @@ span.image-categories-name {
 	color: inherit;
 }
 
+div.image-sponsors-thumbnail {
+	border: 0px solid #aaa;
+	display: inline-block;
+	margin: 4px;
+	padding: 7px;
+}
+
 div.image-cilist-thumbnail,
 div.image-members-thumbnail,
-div.image-sponsors-thumbnail,
 div.image-exhibitors-thumbnail,
 div.image-gallery-thumbnail {
 	border: 1px solid #aaa;

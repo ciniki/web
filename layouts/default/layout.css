@@ -101,9 +101,10 @@ header span.title {
 	padding-bottom: 1em;
 	min-width: 15em;
 }
+
+/* #content table.sponsors-list > tbody > tr > th, */
 #content table.cilist > tbody > tr > th,
 #content table.members-list > tbody > tr > th,
-#content table.sponsors-list > tbody > tr > th,
 #content table.exhibitors-list > tbody > tr > th,
 #content table.downloads-list th,
 #content table.links-list th,
@@ -119,18 +120,24 @@ header span.title {
 	padding-bottom: 1em;
 }
 
+/* #content table.sponsors-list > tbody > tr > td, */
 #content table.cilist > tbody > tr > td,
 #content table.members-list > tbody > tr > td,
-#content table.sponsors-list > tbody > tr > td,
 #content table.exhibitors-list > tbody > tr > td {
 	display: table-cell;
 	padding-left: 0em;
 	padding-bottom: 1em;
 }
 
+#content table.sponsors-list table.sponsors-category-list td.sponsors-image {
+	padding-left: 0.0em;
+	padding-right: 0.5em;
+/*	min-width: 9.5em; */
+	border: 0px;
+}
+
 #content table.cilist table.cilist-categories td.cilist-image,
 #content table.members-list table.members-category-list td.members-image,
-#content table.sponsors-list table.sponsors-category-list td.sponsors-image,
 #content table.exhibitors-list table.exhibitors-category-list td.exhibitors-image {
 	padding-left: 0.5em;
 	padding-right: 0.5em;
@@ -146,13 +153,13 @@ header span.title {
 	padding-bottom: 1em;
 }
 
+/* #content table.sponsors-list > tbody > tr > th, */
 #content table.clist > tbody > tr > th,
 #content table.clist > tbody > tr > td,
 #content table.cilist > tbody > tr > th,
 #content table.cilist > tbody > tr > td,
 #content table.members-list > tbody > tr > th,
 #content table.members-list > tbody > tr > td,
-#content table.sponsors-list > tbody > tr > th,
 #content table.sponsors-list > tbody > tr > td,
 #content table.exhibitors-list > tbody > tr > th,
 #content table.exhibitors-list > tbody > tr > td,
@@ -292,19 +299,24 @@ body { width: 100%; }
 	width: 100%;
 }
 
+#content table.sponsors-list table.sponsors-category-list td.sponsors-image {
+	padding-right: 0.1em;
+	padding-left: 0;
+/* 	min-width: 9.0em; */
+}
+
 #content table.cilist table.cilist-categories td.cilist-image,
 #content table.members-list table.members-category-list td.members-image,
-#content table.sponsors-list table.sponsors-category-list td.sponsors-image,
 #content table.exhibitors-list table.exhibitors-category-list td.exhibitors-image {
 	padding-right: 0.1em;
 	padding-left: 0;
 	min-width: 9.0em;
 }
 
+/* #content table.sponsors-list > tbody > tr > th, */
 #content table.clist > tbody > tr > th,
 #content table.cilist > tbody > tr > th,
 #content table.members-list > tbody > tr > th,
-#content table.sponsors-list > tbody > tr > th,
 #content table.exhibitors-list > tbody > tr > th,
 #content table.downloads-list th,
 #content table.links-list th,

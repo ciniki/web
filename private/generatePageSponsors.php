@@ -38,6 +38,7 @@ function ciniki_web_generatePageSponsors($ciniki, $settings) {
 
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processSponsors');
 
 	ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'sponsorList');
 	$sponsorList = $pkg . '_' . $mod . '_web_sponsorList';
@@ -45,80 +46,35 @@ function ciniki_web_generatePageSponsors($ciniki, $settings) {
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
-	$sponsors = $rc['categories'];
-
-	$page_content .= "<article class='page'>\n"
-		. "<header class='entry-title'><h1 class='entry-title'>Sponsors</h1></header>\n"
-		. "<div class='entry-content'>\n"
-		. "";
-
-	if( count($sponsors) > 0 ) {
-		$page_content .= "<table class='sponsors-list'><tbody>\n";
-		$prev_category = NULL;
-		foreach($sponsors as $cnum => $c) {
-			if( $prev_category != NULL ) {
-				$page_content .= "</td></tr>\n";
+	if( isset($rc['levels']) ) {
+		$sponsors = $rc['levels'];
+		foreach($sponsors as $lnum => $level) {
+			$page_content .= "<article class='page'>\n"
+				. "<header class='entry-title'><h1 class='entry-title'>Sponsors</h1></header>\n"
+				. "<div class='entry-content'>\n"
+				. "";
+			$rc = ciniki_web_processSponsors($ciniki, $settings, $level['level']['name'], $level['level']['categories']);
+			if( $rc['stat'] == 'ok' ) {
+				$page_content .= $rc['content'];
 			}
-			if( isset($c['category']['name']) && $c['category']['name'] != '' ) {
-				$page_content .= "<tr><th>"
-					. "<span class='exhibitors-category'>" . $c['category']['name'] . "</span></th>"
-					. "<td>";
-			} else {
-				$page_content .= "<tr><th>"
-					. "<span class='exhibitors-category'></span></th>"
-					. "<td>";
-			}
-			$page_content .= "<table class='sponsors-category-list'><tbody>\n";
-			foreach($c['category']['sponsors'] as $pnum => $sponsor) {
-				$sponsor = $sponsor['sponsor'];
-				if( isset($sponsor['url']) ) {
-					$rc = ciniki_web_processURL($ciniki, $sponsor['url']);
-					if( $rc['stat'] != 'ok' ) {
-						return $rc;
-					}
-					$url = $rc['url'];
-					$display_url = $rc['display'];
-				} else {
-					$url = '';
-				}
-
-				// Setup the exhibitor image
-				$page_content .= "<tr><td class='sponsors-image' rowspan='3'>";
-				if( isset($sponsor['image_id']) && $sponsor['image_id'] > 0 ) {
-					$rc = ciniki_web_getScaledImageURL($ciniki, $sponsor['image_id'], 'original', 0, 150);
-					if( $rc['stat'] != 'ok' ) {
-						return $rc;
-					}
-					$page_content .= "<div class='image-sponsors-thumbnail'>"
-						. "<a target='_blank' href='$url' title='" . $sponsor['name'] . "'><img title='' alt='" . $sponsor['name'] . "' src='" . $rc['url'] . "' /></a>"
-						. "</div>";
-				}
-				$page_content .= "</td>";
-
-				// Setup the details
-				$page_content .= "<td class='sponsors-details'>";
-				$page_content .= "<span class='sponsors-title'>";
-				$page_content .= "<a target='_blank' href='$url' title='" . $sponsor['name'] . "'>" . $sponsor['name'] . "</a>";
-				$page_content .= "</span>";
-				$page_content .= "</td></tr>";
-				$page_content .= "<tr><td class='sponsors-description'>";
-				if( isset($sponsor['description']) && $sponsor['description'] != '' ) {
-					$page_content .= "<span class='sponsors-description'>" . $sponsor['description'] . "</span>";
-				}
-				$page_content .= "</td></tr>";
-				$page_content .= "<tr><td class='sponsors-more'><a target='_blank' class='external-link' href='$url'>$display_url</a></td></tr>";
-			}
-			$page_content .= "</tbody></table>";
+			$page_content .= "</div>\n"
+				. "</article>\n"
+				. "";
 		}
-
-		$page_content .= "</td></tr>\n</tbody></table>\n";
 	} else {
-		$page_content .= "<p>Currently no sponsors for this event.</p>";
+		$sponsors = $rc['categories'];
+		$page_content .= "<article class='page'>\n"
+			. "<header class='entry-title'><h1 class='entry-title'>Sponsors</h1></header>\n"
+			. "<div class='entry-content'>\n"
+			. "";
+		$rc = ciniki_web_processSponsors($ciniki, $settings, 30, $sponsors);
+		if( $rc['stat'] == 'ok' ) {
+			$page_content .= $rc['content'];
+		}
+		$page_content .= "</div>\n"
+			. "</article>\n"
+			. "";
 	}
-
-	$page_content .= "</div>\n"
-		. "</article>\n"
-		. "";
 
 	//
 	// Generate the complete page
