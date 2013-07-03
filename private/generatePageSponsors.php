@@ -50,10 +50,14 @@ function ciniki_web_generatePageSponsors($ciniki, $settings) {
 		$sponsors = $rc['levels'];
 		foreach($sponsors as $lnum => $level) {
 			$page_content .= "<article class='page'>\n"
-				. "<header class='entry-title'><h1 class='entry-title'>Sponsors</h1></header>\n"
+				. "<header class='entry-title'><h1 class='entry-title'>";
+			if( isset($level['level']['name']) ) {
+				$page_content .= $level['level']['name'] . ' ';
+			}
+			$page_content .= "Sponsors</h1></header>\n"
 				. "<div class='entry-content'>\n"
 				. "";
-			$rc = ciniki_web_processSponsors($ciniki, $settings, $level['level']['name'], $level['level']['categories']);
+			$rc = ciniki_web_processSponsors($ciniki, $settings, $level['level']['number'], $level['level']['categories']);
 			if( $rc['stat'] == 'ok' ) {
 				$page_content .= $rc['content'];
 			}
