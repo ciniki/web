@@ -566,7 +566,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 			$settings['page-courses-past-active'] = 'no';
 		}
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'courses', 'web', 'courseList');
-		foreach(array('upcoming', 'current', 'past') as $type) {
+		foreach(array('current', 'upcoming', 'past') as $type) {
 			if( $settings["page-courses-$type-active"] != 'yes' ) {
 				continue;
 			}
