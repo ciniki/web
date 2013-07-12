@@ -63,9 +63,9 @@ function ciniki_web_processExhibitions($ciniki, $settings, $exhibitions, $limit)
 
 		// Setup the details
 		$content .= "<td class='cilist-details'>";
-		$content .= "<span class='cilist-title'>";
+		$content .= "<p class='cilist-title'>";
 		$content .= "<a href='$exhibition_url' title='" . $exhibition['name'] . "'>" . $exhibition['name'] . "</a>";
-		$content .= "</span>";
+		$content .= "</p>";
 		$content .= "</td></tr>";
 		$content .= "<tr><td class='cilist-description'>";
 		if( isset($exhibition['description']) && $exhibition['description'] != '' ) {
