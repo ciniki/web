@@ -314,6 +314,8 @@ article {
 	display: inline-block;
 	padding-right: 1em;
 }
+
+#content span.cilist-subcategory,
 #content span.exhibitors-subcategory {
 	display: block;
 	text-align: left;

@@ -295,6 +295,48 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 	// Display the list of exhibitors if a specific one isn't selected
 	//
 	else {
+		//
+		// Check to see if there is an introduction message to display
+		//
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
+		$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-artgalleryexhibitions');
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+
+		if( isset($rc['content']['page-artgalleryexhibitions-content']) && $rc['content']['page-artgalleryexhibitions-content'] != '' ) {
+			$page_content .= "<article class='page'>\n"
+				. "<header class='entry-title'><h1 class='entry-title'>Exhibitions</h1></header>\n"
+				. "";
+			$desc_content = $rc['content']['page-artgalleryexhibitions-content'];
+			if( isset($settings['page-artgalleryexhibitions-image']) && $settings['page-artgalleryexhibitions-image'] != '' && $settings['page-artgalleryexhibitions-image'] > 0 ) {
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+				$rc = ciniki_web_getScaledImageURL($ciniki, $settings['page-artgalleryexhibitions-image'], 'original', '500', 0);
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				$page_content .= "<aside><div class='image-wrap'>"
+					. "<div class='image'><img title='' alt='" . $ciniki['business']['details']['name'] . "' src='" . $rc['url'] . "' /></div>";
+				if( isset($settings['page-artgalleryexhibitions-image-caption']) && $settings['page-artgalleryexhibitions-image-caption'] != '' ) {
+					$page_content .= "<div class='image-caption'>" . $settings['page-artgalleryexhibitions-image-caption'] . "</div>";
+				}
+				$page_content .= "</div></aside>";
+			}
+
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+			$rc = ciniki_web_processContent($ciniki, $desc_content);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= "<div class='entry-content'>"
+				. $rc['content']
+				. "</div>";
+			$page_content .= "</article>\n";
+		}
+
+		//
+		// Display list of upcoming exhibitions
+		//
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'artgallery', 'web', 'exhibitionList');
 		$rc = ciniki_artgallery_web_exhibitionList($ciniki, $settings, $ciniki['request']['business_id'], 'upcoming', 0);
 		if( $rc['stat'] != 'ok' ) {

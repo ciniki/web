@@ -130,6 +130,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-aboutmembership-image-caption',
 		'page-about-image',
 		'page-about-image-caption',
+		'page-artgalleryexhibitions-image',
+		'page-artgalleryexhibitions-image-caption',
 		'page-artgalleryexhibitions-active',
 		'page-artgalleryexhibitions-past',
 		'page-artgalleryexhibitions-application-details',
@@ -315,6 +317,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-signup-success',
 		'page-account-content',
 		'page-account-content-subscriptions',
+		'page-artgalleryexhibitions-content',
 		);
 
 	//

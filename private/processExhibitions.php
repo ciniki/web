@@ -16,7 +16,8 @@
 //
 function ciniki_web_processExhibitions($ciniki, $settings, $exhibitions, $limit) {
 
-	$content = "<table class='exhibitors-list'>\n"
+//	$content = "<table class='exhibitors-list'>\n"
+	$content = "<table class='cilist'>\n"
 		. "";
 	$count = 0;
 	foreach($exhibitions as $eid => $e) {
@@ -36,42 +37,42 @@ function ciniki_web_processExhibitions($ciniki, $settings, $exhibitions, $limit)
 		if( $exhibition['end_year'] != '' && $exhibition['start_year'] != $exhibition['end_year'] ) {
 			$exhibition_date .= "/" . $exhibition['end_year'];
 		}
-		$content .= "<tr><th><span class='exhibitors-category'>$exhibition_date</span>";
+		$content .= "<tr><th><span class='cilist-category'>$exhibition_date</span>";
 		if( $exhibition['location'] != '' ) {
-			$content .= " <span class='exhibitors-subcategory'>" . $exhibition['location'] . "</span>";
+			$content .= " <span class='cilist-subcategory'>" . $exhibition['location'] . "</span>";
 		}
 		$content .= "</th>"
 			. "<td>";
 		// Display the brief details
-		$content .= "<table class='exhibitors-category-list'><tbody>\n";
+		$content .= "<table class='cilist-categories'><tbody>\n";
 		$exhibition_url = $ciniki['request']['base_url'] . "/exhibitions/" . $exhibition['permalink'];
 
 		// Setup the exhibitor image
-		$content .= "<tr><td class='exhibitors-image' rowspan='3'>";
+		$content .= "<tr><td class='cilist-image' rowspan='3'>";
 		if( isset($exhibition['image_id']) && $exhibition['image_id'] > 0 ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 			$rc = ciniki_web_getScaledImageURL($ciniki, $exhibition['image_id'], 'thumbnail', '150', 0);
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			$content .= "<div class='image-exhibitors-thumbnail'>"
+			$content .= "<div class='image-cilist-thumbnail'>"
 				. "<a href='$exhibition_url' title='" . $exhibition['name'] . "'><img title='' alt='" . $exhibition['name'] . "' src='" . $rc['url'] . "' /></a>"
 				. "</div></aside>";
 		}
 		$content .= "</td>";
 
 		// Setup the details
-		$content .= "<td class='exhibitors-details'>";
-		$content .= "<span class='exhibitors-title'>";
+		$content .= "<td class='cilist-details'>";
+		$content .= "<span class='cilist-title'>";
 		$content .= "<a href='$exhibition_url' title='" . $exhibition['name'] . "'>" . $exhibition['name'] . "</a>";
 		$content .= "</span>";
 		$content .= "</td></tr>";
-		$content .= "<tr><td class='exhibitors-description'>";
+		$content .= "<tr><td class='cilist-description'>";
 		if( isset($exhibition['description']) && $exhibition['description'] != '' ) {
-			$content .= "<span class='exhibitors-description'>" . $exhibition['description'] . "</span>";
+			$content .= "<span class='cilist-description'>" . $exhibition['description'] . "</span>";
 		}
 		$content .= "</td></tr>";
-		$content .= "<tr><td class='exhibitors-more'><a href='$exhibition_url'>... more</a></td></tr>";
+		$content .= "<tr><td class='cilist-more'><a href='$exhibition_url'>... more</a></td></tr>";
 		$content .= "</tbody></table>";
 		$content .= "</td></tr>";
 		$count++;
@@ -82,4 +83,3 @@ function ciniki_web_processExhibitions($ciniki, $settings, $exhibitions, $limit)
 	return array('stat'=>'ok', 'content'=>$content);
 }
 ?>
-

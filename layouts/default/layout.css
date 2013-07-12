@@ -190,6 +190,7 @@ header span.title {
 	padding-right: 0px;
 }
 
+#content span.cilist-subcategory,
 #content span.exhibitors-subcategory {
 	display: block;
 	text-align: left;
@@ -273,6 +274,8 @@ body { width: 100%; }
 	display: inline-block;
 	width: 49%;
 }
+
+#content span.cilist-subcategory,
 #content span.exhibitors-subcategory {
 	display: inline-block;
 	text-align: right;
@@ -314,10 +317,10 @@ body { width: 100%; }
 }
 
 /* #content table.sponsors-list > tbody > tr > th, */
+#content table.exhibitors-list > tbody > tr > th,
 #content table.clist > tbody > tr > th,
 #content table.cilist > tbody > tr > th,
 #content table.members-list > tbody > tr > th,
-#content table.exhibitors-list > tbody > tr > th,
 #content table.downloads-list th,
 #content table.links-list th,
 #content table.event-list th {
