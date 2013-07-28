@@ -565,6 +565,54 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 		if( !isset($settings['page-courses-past-active']) ) {
 			$settings['page-courses-past-active'] = 'no';
 		}
+		//
+		//
+		// Check for content in settings
+		//
+		if( $coursetype != '' ) {
+			$type_name = '-' . preg_replace('/[^a-z0-9]/', '', strtolower($coursetype));
+		} else {
+			$type_name = '';
+		}
+		// Load any content for this page
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
+		$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', "page-courses$type_name");
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$cnt = $rc['content'];
+		
+		if( isset($settings['page-courses' . $type_name . '-image']) 
+			|| isset($cnt['page-courses' . $type_name . '-content']) 
+			) {
+			$page_content .= "<article class='page'>\n"
+//				. "<header class='entry-title'><h1 class='entry-title'>Registration</h1></header>\n"
+				. "<div class='entry-content'>\n"
+				. "";
+			if( isset($settings["page-courses" . $type_name . "-image"]) && $settings["page-courses" . $type_name . "-image"] != '' && $settings["page-courses" . $type_name . "-image"] > 0 ) {
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+				$rc = ciniki_web_getScaledImageURL($ciniki, $settings["page-courses" . $type_name . "-image"], 'original', '500', 0);
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				$page_content .= "<aside><div class='image-wrap'>"
+					. "<div class='image'><img title='' alt='" . $ciniki['business']['details']['name'] . "' src='" . $rc['url'] . "' /></div>";
+				if( isset($settings["page-courses" . $type_name . "-image-caption"]) && $settings["page-courses" . $type_name . "-image-caption"] != '' ) {
+					$page_content .= "<div class='image-caption'>" . $settings["page-courses" . $type_name . "-image-caption"] . "</div>";
+				}
+				$page_content .= "</div></aside>";
+			}
+			if( isset($cnt['page-courses' . $type_name . '-content']) ) {
+				$rc = ciniki_web_processContent($ciniki, $cnt['page-courses' . $type_name . '-content']);	
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				$page_content .= $rc['content'];
+			}
+			$page_content .= "</div>\n"
+				. "</article>";
+		}
+
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'courses', 'web', 'courseList');
 		foreach(array('current', 'upcoming', 'past') as $type) {
 			if( $settings["page-courses-$type-active"] != 'yes' ) {

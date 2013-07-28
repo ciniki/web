@@ -67,42 +67,6 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 	$args = $rc['args'];
 
 	//
-	// Check access to business_id as owner, and load module list
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
-	$ac = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.siteSettingsUpdate');
-	if( $ac['stat'] != 'ok' ) {
-		return $ac;
-	}
-
-	//
-	// Grab the existing settings
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
-	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_settings', 'business_id',
-		$args['business_id'], 'ciniki.web', 'settings', '');
-	if( $rc['stat'] != 'ok' ) {
-		return $rc;
-	}
-	if( !isset($rc['settings']) ) {
-		$settings = array();
-	} else {
-		$settings = $rc['settings'];
-	}
-
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionStart');
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionRollback');
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionCommit');
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbInsert');
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbAddModuleHistory');
-	$rc = ciniki_core_dbTransactionStart($ciniki, 'ciniki.web');
-	if( $rc['stat'] != 'ok' ) {
-		return $rc;
-	}
-
-	//
 	// The list of valid settings for web pages
 	//
 	$settings_fields = array(
@@ -144,6 +108,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-gallery-name',
 		'page-courses-active',
 		'page-courses-name',
+		'page-courses-image',
+		'page-courses-image-caption',
 		'page-courses-upcoming-active',
 		'page-courses-upcoming-name',
 		'page-courses-current-active',
@@ -185,6 +151,83 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'site-custom-css',
 		);
 
+	//
+	// The list of valid content for web pages
+	//
+	$content_fields = array(
+		'page-home-content',
+		'page-about-content',
+		'page-abouthistory-content',
+		'page-aboutdonations-content',
+		'page-aboutboardofdirectors-content',
+		'page-contact-content',
+		'page-courses-content',
+		'page-signup-content',
+		'page-signup-agreement',
+		'page-signup-submit',
+		'page-signup-success',
+		'page-account-content',
+		'page-account-content-subscriptions',
+		'page-artgalleryexhibitions-content',
+		);
+
+	//
+	// Check access to business_id as owner, and load module list
+	//
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
+	$ac = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.siteSettingsUpdate');
+	if( $ac['stat'] != 'ok' ) {
+		return $ac;
+	}
+	$modules = $ac['modules'];
+
+	//
+	// Grab the existing settings
+	//
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
+	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_settings', 'business_id',
+		$args['business_id'], 'ciniki.web', 'settings', '');
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+	if( !isset($rc['settings']) ) {
+		$settings = array();
+	} else {
+		$settings = $rc['settings'];
+	}
+
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionStart');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionRollback');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionCommit');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbInsert');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbAddModuleHistory');
+	$rc = ciniki_core_dbTransactionStart($ciniki, 'ciniki.web');
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+
+	//
+	// Add any dynamic setting/content field names. The must be lowercase, and reduced to only letters/numbers
+	//
+	if( isset($modules['ciniki.courses']) ) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'courses', 'web', 'courseTypes');
+		$rc = ciniki_courses_web_courseTypes($ciniki, $settings, $args['business_id']);
+		if( isset($rc['types']) ) {
+			foreach($rc['types'] as $type_name => $type ) {
+				$name = preg_replace('/[^a-z0-9]/', '', strtolower($type_name));
+				array_push($settings_fields, 'page-courses-' . $name . '-image');
+				array_push($settings_fields, 'page-courses-' . $name . '-image-caption');
+				array_push($content_fields, 'page-courses-' . $name . '-content');
+			}
+		}
+	}
+
+	//
+	// **** Settings ****
+	//
+	
 	//
 	// Check if the field was passed, and then try an insert, but if that fails, do an update
 	//
@@ -302,23 +345,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 	}
 
 	//
-	// The list of valid content for web pages
+	// **** Content ****
 	//
-	$content_fields = array(
-		'page-home-content',
-		'page-about-content',
-		'page-abouthistory-content',
-		'page-aboutdonations-content',
-		'page-aboutboardofdirectors-content',
-		'page-contact-content',
-		'page-signup-content',
-		'page-signup-agreement',
-		'page-signup-submit',
-		'page-signup-success',
-		'page-account-content',
-		'page-account-content-subscriptions',
-		'page-artgalleryexhibitions-content',
-		);
 
 	//
 	// Check if the field was passed, and then try an insert, but if that fails, do an update
