@@ -218,11 +218,11 @@ function ciniki_web_generatePageContact($ciniki, $settings) {
 		$content .= $map_content;
 	}
 	$content .= "<div class='entry-content'>\n";
-	if( $contact_content != '' ) {
-		$content .= "<p>" . $contact_content . "</p>";
-	}
 	if( isset($page_content) && $page_content != '' ) {
 		$content .= $page_content;
+	}
+	if( $contact_content != '' ) {
+		$content .= "<p>" . $contact_content . "</p>";
 	}
 
 	$content .= "</div>"
