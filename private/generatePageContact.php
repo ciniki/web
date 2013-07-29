@@ -95,7 +95,7 @@ function ciniki_web_generatePageContact($ciniki, $settings) {
 				$contact_content .= '<p>';
 				// Check if employee bio image is to be displayed
 				if( ($settings[$setting]&0x20) == 0x20 ) {
-					if( isset($u['user']['employee-bio-image']) && $u['user']['employee-bio-image'] != '' ) {
+					if( isset($u['user']['employee-bio-image']) && $u['user']['employee-bio-image'] != '' && $u['user']['employee-bio-image'] > 0 ) {
 						ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 						$rc = ciniki_web_getScaledImageURL($ciniki, $u['user']['employee-bio-image'], 'original', '500', 0);
 						if( $rc['stat'] != 'ok' ) {
