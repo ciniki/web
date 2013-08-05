@@ -69,7 +69,7 @@ function ciniki_web_processEmployeeBios($ciniki, $settings, $page, $employees) {
 					if( $rc['stat'] != 'ok' ) {
 						return $rc;
 					}
-					$content .= '<p>' . $rc['content'] . '</p>';
+					$content .= $rc['content'];
 				}
 			}
 			$content .= '<p>';
