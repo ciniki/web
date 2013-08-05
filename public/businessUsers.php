@@ -57,7 +57,7 @@ function ciniki_web_businessUsers($ciniki) {
 		. "LEFT OUTER JOIN ciniki_business_user_details ON (ciniki_business_users.business_id = ciniki_business_user_details.business_id "
 			. "AND ciniki_business_users.user_id = ciniki_business_user_details.user_id ) "
 		. "WHERE ciniki_business_users.business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
-		. "AND ciniki_business_users.status = 1 "
+		. "AND ciniki_business_users.status = 10 "
 		. "";
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryTree');
 	$rc = ciniki_core_dbHashQueryTree($ciniki, $strsql, 'ciniki.businesses', array(
