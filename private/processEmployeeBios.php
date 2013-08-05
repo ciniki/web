@@ -40,7 +40,7 @@ function ciniki_web_processEmployeeBios($ciniki, $settings, $page, $employees) {
 				}
 				$content .= "<tr><th>$contact_name</th><td>\n";
 			} else {
-				$content .= "<tr>";
+				$content .= "<tr><td>";
 			}
 			$content .= "<table class='cilist-categories'><tbody>\n";
 
