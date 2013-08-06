@@ -138,6 +138,7 @@ function ciniki_web_generatePageContact($ciniki, $settings) {
 				if( ($settings[$setting]&0x20) == 0x20 && isset($u['user']['contact.email.address']) && $u['user']['contact.email.address'] != '' ) {
 					$contact_content .= 'E: <a class="contact-email" href="mailto:' . $u['user']['contact.email.address'] . '">' . $u['user']['contact.email.address'] . '</a><br/>';
 				}
+				$contact_content .= '</p>';
 			}
 		}
 	}
