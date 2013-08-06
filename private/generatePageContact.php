@@ -89,57 +89,13 @@ function ciniki_web_generatePageContact($ciniki, $settings) {
 	// Generate the list of employee's who are to be shown on the website
 	//
 	if( $settings['page-contact-user-display'] == 'yes' ) {
-		foreach($contact_users as $unum => $u) {
-			$setting = 'page-contact-user-display-flags-' . $u['user']['id'];
-			if( isset($settings[$setting]) && $settings[$setting] > 0 ) {
-				$contact_content .= '<p>';
-				// Check if employee bio image is to be displayed
-				if( ($settings[$setting]&0x40) == 0x40 ) {
-					if( isset($u['user']['employee-bio-image']) && $u['user']['employee-bio-image'] != '' && $u['user']['employee-bio-image'] > 0 ) {
-						ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-						$rc = ciniki_web_getScaledImageURL($ciniki, $u['user']['employee-bio-image'], 'original', '500', 0);
-						if( $rc['stat'] != 'ok' ) {
-							return $rc;
-						}
-						$contact_content .= "<aside><div class='image-wrap'>"
-							. "<div class='image'><img title='' alt='" . $u['user']['firstname'] . ' ' . $u['user']['lastname'] . "' src='" . $rc['url'] . "' /></div>";
-						if( isset($u['user']["employee-bio-image-caption"]) && $u['user']["employee-bio-image-caption"] != '' ) {
-							$contact_content .= "<div class='image-caption'>" . $u['user']["employee-bio-image-caption"] . "</div>";
-						}
-						$contact_content .= "</div></aside>";
-					}
-				}
-				if( ($settings[$setting]&0x01) == 0x01 && isset($u['user']['employee.title']) && $u['user']['employee.title'] != '' ) {
-					$contact_content .= '<span class="contact-title">' . $u['user']['firstname'] . ' ' . $u['user']['lastname'] . '</span><br/>';
-				}
-				if( ($settings[$setting]&0x02) == 0x02 && isset($u['user']['employee.title']) && $u['user']['employee.title'] != '' ) {
-					$contact_content .= $u['user']['employee.title'] . '<br/>';
-				}
-				// Check if employee bio content is to be displayed.
-				if( ($settings[$setting]&0x40) == 0x40 ) {
-					if( isset($u['user']['employee-bio-content']) && $u['user']['employee-bio-content'] != '' ) {
-						ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-						$rc = ciniki_web_processContent($ciniki, $u['user']['employee-bio-content']);	
-						if( $rc['stat'] != 'ok' ) {
-							return $rc;
-						}
-						$contact_content .= "</p><p>" . $rc['content'] . "</p><p>";
-					}
-				}
-				if( ($settings[$setting]&0x04) == 0x04 && isset($u['user']['contact.phone.number']) && $u['user']['contact.phone.number'] != '' ) {
-					$contact_content .= 'T: ' . $u['user']['contact.phone.number'] . '<br/>';
-				}
-				if( ($settings[$setting]&0x08) == 0x08 && isset($u['user']['contact.cell.number']) && $u['user']['contact.cell.number'] != '' ) {
-					$contact_content .= 'C: ' . $u['user']['contact.cell.number'] . '<br/>';
-				}
-				if( ($settings[$setting]&0x10) == 0x10 && isset($u['user']['contact.fax.number']) && $u['user']['contact.fax.number'] != '' ) {
-					$contact_content .= 'F: ' . $u['user']['contact.fax.number'] . '<br/>';
-				}
-				if( ($settings[$setting]&0x20) == 0x20 && isset($u['user']['contact.email.address']) && $u['user']['contact.email.address'] != '' ) {
-					$contact_content .= 'E: <a class="contact-email" href="mailto:' . $u['user']['contact.email.address'] . '">' . $u['user']['contact.email.address'] . '</a><br/>';
-				}
-				$contact_content .= '</p>';
-			}
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processEmployeeBios');
+		$rc = ciniki_web_processEmployeeBios($ciniki, $settings, 'contact', $contact_users);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		if( isset($rc['content']) && $rc['content'] != '' ) {
+			$contact_content .= $rc['content'];
 		}
 	}
 

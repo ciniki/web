@@ -137,6 +137,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-contact-phone-display',
 		'page-contact-fax-display',
 		'page-contact-email-display',
+		'page-contact-bios-display',							// How the bios should be display on the contact page.
 		'page-downloads-active',
 		'page-downloads-name',
 		'page-account-active',
