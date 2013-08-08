@@ -94,6 +94,12 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-aboutmembership-image-caption',
 		'page-about-image',
 		'page-about-image-caption',
+//		'page-custom-001-active',
+//		'page-custom-001-name',
+//		'page-custom-001-parent',
+//		'page-custom-001-permalink',
+//		'page-custom-001-image',
+//		'page-custom-001-image-caption',
 		'page-artgalleryexhibitions-image',
 		'page-artgalleryexhibitions-image-caption',
 		'page-artgalleryexhibitions-active',
@@ -161,6 +167,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-abouthistory-content',
 		'page-aboutdonations-content',
 		'page-aboutboardofdirectors-content',
+//		'page-custom-001-content',
 		'page-contact-content',
 		'page-courses-content',
 		'page-signup-content',
@@ -261,6 +268,95 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 				&& (!isset($settings[$field]) 
 					|| $settings[$field] != $ciniki['request']['args'][$field] )
 				) {
+				if( isset($settings[$field]) && $settings[$field] != '0' ) {
+					//
+					// Remove the old reference
+					//
+					ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'refClear');
+					$rc = ciniki_images_refClear($ciniki, $args['business_id'], array(
+						'object'=>'ciniki.web.setting', 
+						'object_id'=>$field));
+					if( $rc['stat'] == 'fail' ) {
+						ciniki_core_dbTransactionRollback($ciniki, 'ciniki.gallery');
+						return $rc;
+					}
+				} 
+				if( $ciniki['request']['args'][$field] != '0' && $ciniki['request']['args'][$field] != '' ) {
+					//
+					// Add the new reference
+					//
+					ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'refAdd');
+					$rc = ciniki_images_refAdd($ciniki, $args['business_id'], array(
+						'image_id'=>$ciniki['request']['args'][$field], 
+						'object'=>'ciniki.web.setting', 
+						'object_id'=>$field,
+						'object_field'=>'detail_value'));
+					if( $rc['stat'] != 'ok' ) {
+						ciniki_core_dbTransactionRollback($ciniki, 'ciniki.gallery');
+						return $rc;
+					}
+				}
+			}
+		}
+	}
+
+	//
+	// Check for page-custom fields
+	//
+	foreach($ciniki['request']['args'] as $field => $field_value ) {
+		// page-custom-001-active
+		// page-custom-001-name
+		// page-custom-001-parent
+		// page-custom-001-permalink
+		// page-custom-001-image
+		// page-custom-001-image-caption
+		if( preg_match('/^page-custom-([0-9][0-9][0-9])-(active|name|parent|permalink|image|image-caption|content)$/', $field, $matches) == 1 ) {
+			error_log('test');
+			$page_number = $matches[1];
+			$page_name = $matches[2];
+			if( $page_name == 'content' ) {
+				$strsql = "INSERT INTO ciniki_web_content (business_id, detail_key, detail_value, date_added, last_updated) "
+					. "VALUES ('" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['business_id']) . "'"
+					. ", '" . ciniki_core_dbQuote($ciniki, $field) . "' "
+					. ", '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args'][$field]) . "'"
+					. ", UTC_TIMESTAMP(), UTC_TIMESTAMP()) "
+					. "ON DUPLICATE KEY UPDATE detail_value = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args'][$field]) . "' "
+					. ", last_updated = UTC_TIMESTAMP() "
+					. "";
+				$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
+				if( $rc['stat'] != 'ok' ) {
+					ciniki_core_dbTransactionRollback($ciniki, 'ciniki.web');
+					return $rc;
+				}
+				ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $args['business_id'], 
+					2, 'ciniki_web_content', $field, 'detail_value', $ciniki['request']['args'][$field]);
+				$ciniki['syncqueue'][] = array('push'=>'ciniki.web.content',
+					'args'=>array('id'=>$field));
+			} else {
+				$strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) "
+					. "VALUES ('" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['business_id']) . "'"
+					. ", '" . ciniki_core_dbQuote($ciniki, $field) . "' "
+					. ", '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args'][$field]) . "'"
+					. ", UTC_TIMESTAMP(), UTC_TIMESTAMP()) "
+					. "ON DUPLICATE KEY UPDATE detail_value = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args'][$field]) . "' "
+					. ", last_updated = UTC_TIMESTAMP() "
+					. "";
+				$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
+				if( $rc['stat'] != 'ok' ) {
+					ciniki_core_dbTransactionRollback($ciniki, 'ciniki.web');
+					return $rc;
+				}
+				ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $args['business_id'], 
+					2, 'ciniki_web_settings', $field, 'detail_value', $ciniki['request']['args'][$field]);
+				$ciniki['syncqueue'][] = array('push'=>'ciniki.web.setting',
+					'args'=>array('id'=>$field));
+			}
+
+
+			//
+			// Check for image updates
+			//
+			if( $page_name == 'image' && (!isset($settings[$field]) || $settings[$field] != $ciniki['request']['args'][$field]) ) {
 				if( isset($settings[$field]) && $settings[$field] != '0' ) {
 					//
 					// Remove the old reference

@@ -350,6 +350,12 @@ elseif( $ciniki['request']['page'] == 'contact' && $settings['page-contact-activ
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageContact.php');
 	$rc = ciniki_web_generatePageContact($ciniki, $settings);
 } 
+// FIXME: Need to make accessible for all custom pages, not just 001.
+// Custom pages
+elseif( isset($settings['page-custom-001-permalink']) && $settings['page-custom-001-permalink'] == $ciniki['request']['page'] ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageCustom.php');
+	$rc = ciniki_web_generatePageCustom($ciniki, $settings);
+}
 // Unknown page
 else {
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePage404.php');
