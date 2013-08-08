@@ -17,18 +17,31 @@ function ciniki_web_processEmployeeBios($ciniki, $settings, $page, $employees) {
 
 	$content = '';
 
+	// Check if any employees have name display turned on
+	foreach($employees as $unum => $u) {
+		$setting = 'page-contact-user-display-flags-' . $u['user']['id'];
+		if( ($settings[$setting]&0x01) == 0x01 && ((isset($u['user']['firstname']) && $u['user']['firstname'] != '' )
+			|| (isset($u['user']['lastname']) && $u['user']['lastname'] != '')) ) {
+			$display_names = 'yes';
+		}
+		if( isset($settings['page-contact-user-sort-order-' . $u['user']['id']]) ) {
+			$employees[$unum]['user']['sort-order'] = $settings['page-contact-user-sort-order-' . $u['user']['id']];
+		} else {
+			$employees[$unum]['user']['sort-order'] = 999;
+		}
+	}
+
+	// Sort the employees
+	uasort($employees, function($a, $b) {
+		if( $a['user']['sort-order'] == $b['user']['sort-order'] ) {
+			return 0;
+		}
+		return $a['user']['sort-order'] < $b['user']['sort-order'] ? -1 : 1;
+	});
+
 	if( isset($settings["page-$page-bios-display"]) && $settings["page-$page-bios-display"] == 'cilist' ) {
 		$content = "<table class='cilist'><tbody>";
 		$display_names = 'no';
-		// Check if any employees have name display turned on
-		foreach($employees as $unum => $u) {
-			$setting = 'page-contact-user-display-flags-' . $u['user']['id'];
-			if( ($settings[$setting]&0x01) == 0x01 && ((isset($u['user']['firstname']) && $u['user']['firstname'] != '' )
-				|| (isset($u['user']['lastname']) && $u['user']['lastname'] != '')) ) {
-				$display_names = 'yes';
-			}
-		}
-
 		foreach($employees as $unum => $u) {
 			if( $display_names == 'yes' ) {
 				$contact_name = '';
