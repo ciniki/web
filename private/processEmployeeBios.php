@@ -18,6 +18,7 @@ function ciniki_web_processEmployeeBios($ciniki, $settings, $page, $employees) {
 	$content = '';
 
 	// Check if any employees have name display turned on
+	$display_names = 'no';
 	foreach($employees as $unum => $u) {
 		$setting = 'page-contact-user-display-flags-' . $u['user']['id'];
 		if( ($settings[$setting]&0x01) == 0x01 && ((isset($u['user']['firstname']) && $u['user']['firstname'] != '' )
@@ -41,7 +42,6 @@ function ciniki_web_processEmployeeBios($ciniki, $settings, $page, $employees) {
 
 	if( isset($settings["page-$page-bios-display"]) && $settings["page-$page-bios-display"] == 'cilist' ) {
 		$content = "<table class='cilist'><tbody>";
-		$display_names = 'no';
 		foreach($employees as $unum => $u) {
 			if( $display_names == 'yes' ) {
 				$contact_name = '';
