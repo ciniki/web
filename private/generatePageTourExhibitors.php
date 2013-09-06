@@ -90,7 +90,7 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 		$page_title = $participant['name'] . ' - ' . $img['title'];
 	
 		if( $img == NULL ) {
-			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1301', 'msg'=>"I'm sorry, but we can't seem to find the image your requested."));
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1332', 'msg'=>"I'm sorry, but we can't seem to find the image your requested."));
 		}
 	
 		//
