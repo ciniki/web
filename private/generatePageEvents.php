@@ -15,6 +15,39 @@
 function ciniki_web_generatePageEvents($ciniki, $settings) {
 
 	//
+	// Check if a file was specified to be downloaded
+	//
+	$download_err = '';
+	if( isset($ciniki['business']['modules']['ciniki.events'])
+		&& isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != ''
+		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] == 'download'
+		&& isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' ) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'fileDownload');
+		$rc = ciniki_events_web_fileDownload($ciniki, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][0], $ciniki['request']['uri_split'][2]);
+		if( $rc['stat'] == 'ok' ) {
+			header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+			header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+			header('Cache-Control: no-cache, must-revalidate');
+			header('Pragma: no-cache');
+			$file = $rc['file'];
+			if( $file['extension'] == 'pdf' ) {
+				header('Content-Type: application/pdf');
+			}
+			header('Content-Disposition: attachment;filename="' . $file['filename'] . '"');
+			header('Content-Length: ' . strlen($file['binary_content']));
+			header('Cache-Control: max-age=0');
+
+			print $file['binary_content'];
+			exit;
+		}
+		
+		//
+		// If there was an error locating the files, display generic error
+		//
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1103', 'msg'=>'Unable to locate file'));
+	}
+
+	//
 	// Store the content created by the page
 	// Make sure everything gets generated ok before returning the content
 	//
@@ -198,8 +231,32 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 		if( $url != '' ) {
 			$page_content .= "<br/>Website: <a class='cilist-url' target='_blank' href='" . $url . "' title='" . $event['name'] . "'>" . $display_url . "</a>";
 		}
+
+		//
+		// Display the files for the events
+		//
+		if( isset($event['files']) && count($event['files']) > 0 ) {
+			foreach($event['files'] as $file) {
+				$url = $ciniki['request']['base_url'] . '/events/' . $ciniki['request']['uri_split'][0] . '/download/' . $file['permalink'] . '.' . $file['extension'];
+//				$page_content .= "<span class='downloads-title'>";
+				if( $url != '' ) {
+					$page_content .= "<a target='_blank' href='" . $url . "' title='" . $file['name'] . "'>" . $file['name'] . "</a>";
+				} else {
+					$page_content .= $file['name'];
+				}
+//				$page_content .= "</span>";
+				if( isset($file['description']) && $file['description'] != '' ) {
+					$page_content .= "<br/><span class='downloads-description'>" . $file['description'] . "</span>";
+				}
+				$page_content .= "<br/>";
+			}
+		}
+
 		$page_content .= "</article>";
 
+		//
+		// Display the additional images for the event
+		//
 		if( isset($event['images']) && count($event['images']) > 0 ) {
 			$page_content .= "<article class='page'>"	
 				. "<header class='entry-title'><h1 class='entry-title'>Gallery</h1></header>\n"
