@@ -229,13 +229,14 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 		}
 
 		if( $url != '' ) {
-			$page_content .= "<br/>Website: <a class='cilist-url' target='_blank' href='" . $url . "' title='" . $event['name'] . "'>" . $display_url . "</a>";
+			$page_content .= "<p>Website: <a class='cilist-url' target='_blank' href='" . $url . "' title='" . $event['name'] . "'>" . $display_url . "</a></p>";
 		}
 
 		//
 		// Display the files for the events
 		//
 		if( isset($event['files']) && count($event['files']) > 0 ) {
+			$page_content .= "<p>";
 			foreach($event['files'] as $file) {
 				$url = $ciniki['request']['base_url'] . '/events/' . $ciniki['request']['uri_split'][0] . '/download/' . $file['permalink'] . '.' . $file['extension'];
 //				$page_content .= "<span class='downloads-title'>";
@@ -250,6 +251,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 				}
 				$page_content .= "<br/>";
 			}
+			$page_content .= "</p>";
 		}
 
 		$page_content .= "</article>";
