@@ -152,6 +152,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-account-active',
 		'page-signup-active',
 		'page-api-active',
+		'page-faq-active',
 		'site-theme',
 		'site-header-image',
 		'site-header-title',

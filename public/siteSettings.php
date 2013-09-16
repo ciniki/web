@@ -68,7 +68,6 @@ function ciniki_web_siteSettings($ciniki) {
 	if( isset($modules['ciniki.web']) && ($modules['ciniki.web']['flags']&0x01) == 1) {
 		$pages['custom'] = array('display_name'=>'Custom', 'active'=>'no');
 	}
-	$pages['contact'] = array('display_name'=>'Contact', 'active'=>'no');
 	if( isset($modules['ciniki.events']) ) {
 		$pages['events'] = array('display_name'=>'Events', 'active'=>'no');
 	}
@@ -107,6 +106,8 @@ function ciniki_web_siteSettings($ciniki) {
 		$pages['signup'] = array('display_name'=>'Signup', 'active'=>'no');
 		$pages['api'] = array('display_name'=>'API', 'active'=>'no');
 	}
+	$pages['faq'] = array('display_name'=>'FAQ', 'active'=>'no');
+	$pages['contact'] = array('display_name'=>'Contact', 'active'=>'no');
 
 	//
 	// Load current settings
@@ -139,6 +140,9 @@ function ciniki_web_siteSettings($ciniki) {
 	}
 	if( isset($settings['page-contact-active']) && $settings['page-contact-active'] == 'yes' ) {
 		$pages['contact']['active'] = 'yes';
+	}
+	if( isset($settings['page-faq-active']) && $settings['page-faq-active'] == 'yes' ) {
+		$pages['faq']['active'] = 'yes';
 	}
 	if( isset($settings['page-events-active']) && $settings['page-events-active'] == 'yes' ) {
 		$pages['events']['active'] = 'yes';

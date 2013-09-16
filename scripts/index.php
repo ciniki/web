@@ -135,6 +135,7 @@ if( $ciniki['request']['business_id'] == 0 ) {
 		|| $ciniki['request']['uri_split'][0] == 'support'
 		|| $ciniki['request']['uri_split'][0] == 'gallery'
 		|| $ciniki['request']['uri_split'][0] == 'downloads'
+		|| $ciniki['request']['uri_split'][0] == 'faq'
 		) {
 		$ciniki['request']['page'] = $ciniki['request']['uri_split'][0];
 		$ciniki['request']['business_id'] = $ciniki['config']['ciniki.core']['master_business_id'];
@@ -319,6 +320,11 @@ elseif( $ciniki['request']['page'] == 'gallery' && $settings['page-gallery-activ
 elseif( $ciniki['request']['page'] == 'events' && $settings['page-events-active'] == 'yes' ) {
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageEvents.php');
 	$rc = ciniki_web_generatePageEvents($ciniki, $settings);
+} 
+// FAQ
+elseif( $ciniki['request']['page'] == 'faq' && $settings['page-faq-active'] == 'yes' ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageFAQ.php');
+	$rc = ciniki_web_generatePageFAQ($ciniki, $settings);
 } 
 // Links
 elseif( $ciniki['request']['page'] == 'links' && $settings['page-links-active'] == 'yes' ) {

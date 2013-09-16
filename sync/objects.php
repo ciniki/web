@@ -30,6 +30,17 @@ function ciniki_web_sync_objects($ciniki, &$sync, $business_id, $args) {
 			),
 		'history_table'=>'ciniki_web_history',
 		);
+	$objects['faq'] = array(
+		'name'=>'Web FAQ',
+		'table'=>'ciniki_web_faqs',
+		'fields'=>array(
+			'flags'=>array(),
+			'category'=>array(),
+			'question'=>array(),
+			'answer'=>array(),
+			),
+		'history_table'=>'ciniki_web_history',
+		);
 	
 	return array('stat'=>'ok', 'objects'=>$objects);
 }
