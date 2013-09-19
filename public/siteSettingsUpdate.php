@@ -103,6 +103,14 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-aboutawards-image-caption',
 		'page-about-image',
 		'page-about-image-caption',
+		'page-about-business-name-display',
+		'page-about-person-name-display',
+		'page-about-address-display',
+		'page-about-phone-display',
+		'page-about-fax-display',
+		'page-about-email-display',
+		'page-about-bios-title',					// What is the title to display in the page
+		'page-about-bios-display',					// How the bios should be display on the about page.
 		'page-artgalleryexhibitions-image',
 		'page-artgalleryexhibitions-image-caption',
 		'page-artgalleryexhibitions-active',
@@ -146,7 +154,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-contact-phone-display',
 		'page-contact-fax-display',
 		'page-contact-email-display',
-		'page-contact-bios-display',							// How the bios should be display on the contact page.
+		'page-contact-bios-display',					// How the bios should be display on the contact page.
 		'page-downloads-active',
 		'page-downloads-name',
 		'page-account-active',
@@ -398,6 +406,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 
 	$user_prefix_fields = array(
 		'page-contact-user-display-flags',
+		'page-about-user-display-flags',
 		);
 	//
 	// Check the list of business users to see if their information should be displayed on the website

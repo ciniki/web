@@ -303,8 +303,40 @@ function ciniki_web_generatePageAbout($ciniki, $settings) {
 				. "</div>";
 		}
 
-		$page_content .= "</div>\n"
+		$page_content .= "\n"
 			. "</article>\n";
+
+		//
+		// Generate the list of employee's who are to be shown on the website
+		//
+		if( isset($settings['page-about-user-display']) && $settings['page-about-user-display'] == 'yes' ) {
+			//
+			// Check which parts of the business contact information to display automatically
+			//
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'web', 'bios');
+			$rc = ciniki_businesses_web_bios($ciniki, $settings, $ciniki['request']['business_id'], 'about');
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$users = $rc['users'];
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processEmployeeBios');
+			$rc = ciniki_web_processEmployeeBios($ciniki, $settings, 'about', $users);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			if( isset($rc['content']) && $rc['content'] != '' ) {
+				$page_content .= "<article class='page'>\n";
+				if( isset($settings['page-about-bios-title']) && $settings['page-about-bios-title'] != '' ) {
+					$page_content .= "<header class='entry-title'><h1 class='entry-title'>"
+						. $settings['page-about-bios-title'] . "</h1></header>\n";
+				}
+				$page_content .= "<div class='entry-content'>"
+					. $rc['content']
+					. "</div>";
+//				$page_content .= $rc['content'];
+				$page_content .= "</article>\n";
+			}
+		}
 	}	
 
 	//

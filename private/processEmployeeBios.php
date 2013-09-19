@@ -20,13 +20,13 @@ function ciniki_web_processEmployeeBios($ciniki, $settings, $page, $employees) {
 	// Check if any employees have name display turned on
 	$display_names = 'no';
 	foreach($employees as $unum => $u) {
-		$setting = 'page-contact-user-display-flags-' . $u['user']['id'];
+		$setting = "page-{$page}-user-display-flags-" . $u['user']['id'];
 		if( ($settings[$setting]&0x01) == 0x01 && ((isset($u['user']['firstname']) && $u['user']['firstname'] != '' )
 			|| (isset($u['user']['lastname']) && $u['user']['lastname'] != '')) ) {
 			$display_names = 'yes';
 		}
-		if( isset($settings['page-contact-user-sort-order-' . $u['user']['id']]) ) {
-			$employees[$unum]['user']['sort-order'] = $settings['page-contact-user-sort-order-' . $u['user']['id']];
+		if( isset($settings["page-{$page}-user-sort-order-" . $u['user']['id']]) ) {
+			$employees[$unum]['user']['sort-order'] = $settings["page-{$page}-user-sort-order-" . $u['user']['id']];
 		} else {
 			$employees[$unum]['user']['sort-order'] = 999;
 		}
@@ -40,7 +40,7 @@ function ciniki_web_processEmployeeBios($ciniki, $settings, $page, $employees) {
 		return $a['user']['sort-order'] < $b['user']['sort-order'] ? -1 : 1;
 	});
 
-	if( isset($settings["page-$page-bios-display"]) && $settings["page-$page-bios-display"] == 'cilist' ) {
+	if( isset($settings["page-{$page}-bios-display"]) && $settings["page-{$page}-bios-display"] == 'cilist' ) {
 		$content = "<table class='cilist'><tbody>";
 		foreach($employees as $unum => $u) {
 			if( $display_names == 'yes' ) {
@@ -106,7 +106,7 @@ function ciniki_web_processEmployeeBios($ciniki, $settings, $page, $employees) {
 		$content .= "</tbody></table>\n";
 	} else {
 		foreach($employees as $unum => $u) {
-			$setting = 'page-contact-user-display-flags-' . $u['user']['id'];
+			$setting = "page-{$page}-user-display-flags-" . $u['user']['id'];
 			if( isset($settings[$setting]) && $settings[$setting] > 0 ) {
 				$content .= '<p>';
 				// Check if employee bio image is to be displayed
