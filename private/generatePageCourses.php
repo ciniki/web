@@ -581,7 +581,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 			return $rc;
 		}
 		$cnt = $rc['content'];
-		
+
 		if( isset($settings['page-courses' . $type_name . '-image']) 
 			|| isset($cnt['page-courses' . $type_name . '-content']) 
 			) {
@@ -609,6 +609,29 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 				}
 				$page_content .= $rc['content'];
 			}
+
+			// Check if there are files to be displayed on the main page
+			if( $type_name == '' && (isset($settings['page-courses-catalog-download-active']) 
+					&& $settings['page-courses-catalog-download-active'] == 'yes' )
+	//			|| ()	-- future files
+				) {
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'courses', 'web', 'files');
+				$rc = ciniki_courses_web_files($ciniki, $settings, $ciniki['request']['business_id']);
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				if( isset($rc['files']) ) {
+					foreach($rc['files'] as $f => $file) {
+						$file = $file['file'];
+						$url = $ciniki['request']['base_url'] . '/courses/download/' 
+							. $file['permalink'] . '.' . $file['extension'];
+						$page_content .= "<p>"
+							. "<a target='_blank' href='" . $url . "' title='" . $file['name'] . "'>" 
+							. $file['name'] . "</a></p>";
+					}
+				}
+			}
+		
 			$page_content .= "</div>\n"
 				. "</article>";
 		}

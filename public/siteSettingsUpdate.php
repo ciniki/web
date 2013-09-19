@@ -133,6 +133,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-courses-current-name',
 		'page-courses-past-active',
 		'page-courses-past-name',
+		'page-courses-catalog-download-active',
 		'page-courses-registration-active',
 		'page-courses-registration-image',
 		'page-courses-registration-image-caption',
