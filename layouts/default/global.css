@@ -87,7 +87,7 @@ p, ul, ol, dl, blockquote {
   }
 
 .evensplit p, ul, ol, dl, blockquote {
-	max-width: 27em;
+	max-width: 100%;
 }
     
 ul { list-style-type: disc; margin-left: 1.618em; }
@@ -99,6 +99,45 @@ i, em { font-style: italic; }
 small { font-size: 80%; }
 
 .assistive-text { display: none; }
+
+@font-face {
+    font-family: 'Mono Social Icons Font';
+    src: url('fonts/MonoSocial/MonoSocialIconsFont-1.10.eot');
+    src: url('fonts/MonoSocial/MonoSocialIconsFont-1.10.eot?#iefix') format('embedded-opentype'),
+         url('fonts/MonoSocial/MonoSocialIconsFont-1.10.woff') format('woff'),
+         url('fonts/MonoSocial/MonoSocialIconsFont-1.10.ttf') format('truetype'),
+         url('fonts/MonoSocial/MonoSocialIconsFont-1.10.svg#MonoSocialIconsFont') format('svg');
+    src: url('fonts/MonoSocial/MonoSocialIconsFont-1.10.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.socialsymbol, a.socialsymbol:before {
+    font-family: 'Mono Social Icons Font';
+    -webkit-text-rendering: optimizeLegibility;
+    -moz-text-rendering: optimizeLegibility;
+    -ms-text-rendering: optimizeLegibility;
+    -o-text-rendering: optimizeLegibility;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+    -ms-font-smoothing: antialiased;
+    -o-font-smoothing: antialiased;
+    font-smoothing: antialiased;
+}
+
+a.socialsymbol:before {
+    content: attr(title);
+    margin-right: 0.0em;
+    margin-left: 0.0em;
+    font-size: 130%;
+}
+a.socialsymbol {
+	margin-right: 0.1em;
+	margin-left: 0.1em;
+	line-height: 1.0em;
+}
+					
 
 /* 4. LINKS
 ----------------------------------------------------------------------------------------*/
@@ -149,6 +188,11 @@ header div.title-block {
 
 header span.title {
 	display: block;
+}
+
+header span.social-icons {
+	display: none;
+	float: right;
 }
 
 #page-container.logo header div.signin {
@@ -542,6 +586,11 @@ div.googlemap p.exhibitors-more,
 #content article {
 	clear: both;
 }
+
+/* #content.evensplit article.page {
+	width: 30em;
+	margin: 0 auto;
+} */
 
 aside { width: 100%; }
 

@@ -477,6 +477,26 @@ footer {
 	color: #777;
 }
 
+footer a,
+footer a:visited,
+footer a:hover,
+footer a:active {
+	text-decoration: none;
+}
+
+footer div.social-icons {
+	font-size: 3.0em;
+	padding-bottom: 0.25em;
+}
+
+footer div.social-icons a,
+footer div.social-icons a:visited,
+footer div.social-icons a:hover,
+footer div.social-icons a:active {
+	color: #ccc;
+}
+
+
 /* Styles for larger screens */
 @media screen and (min-width: 33em) {
 

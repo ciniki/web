@@ -19,7 +19,9 @@ function ciniki_web_processContent($ciniki, $unprocessed_content, $pclass='') {
 	}
 
 	
-	$processed_content = "<p class='$pclass'>" . preg_replace('/\n\s*\n/m', '</p><p class="$pclass">', $unprocessed_content) . '</p>';
+	$processed_content = "<p class='$pclass'>" . preg_replace('/\n\s*\n/m', "</p><p class='$pclass'>", $unprocessed_content) . '</p>';
+	// Remove empty paragraphs
+	$processed_content = preg_replace('/<p class=\'[A-Za-z\- ]*\'>(<h[1-6][^\>]*>[^<]+<\/h[1-6]>)<\/p>/', '$1', $processed_content);
 //	$processed_content = preg_replace('/\r/m', '', $processed_content);
 	$processed_content = preg_replace('/\n/m', '<br/>', $processed_content);
 //	$processed_content = preg_replace('/h2><br\/>/m', 'h2>', $processed_content);
