@@ -197,6 +197,10 @@ if( $rc['stat'] != 'ok' ) {
 	exit;
 }
 $ciniki['business']['details'] = $rc['details'];
+if( isset($rc['details']) ) {
+	$ciniki['business']['social'] = $rc['social'];
+}
+
 //
 // Get the web settings for the business
 //

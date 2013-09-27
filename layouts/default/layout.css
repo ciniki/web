@@ -13,6 +13,13 @@
 header div.signin {
 }
 
+header span.social-icons {
+	display: inline-block;
+	vertical-align: baseline;
+	text-align: right;
+	float: right;
+}
+
 header span.title {
 	display: inline;
 }
@@ -242,7 +249,7 @@ aside {
 }
 
 #content.evensplit aside {
-	width: 27em;
+	width: 30em;
 }
 
 div.hide-babybear { display: block; }
@@ -390,8 +397,24 @@ aside {
 	float: none;
 	width: auto;
 	max-width: 30em;
+	width: 30em;
 	height: auto;
 	margin: 0 auto 2.2em;
+}
+
+aside div.image-wrap { max-width: 30em; margin: 0 auto; }
+
+#content article.page {
+	width: 30em;
+	margin: 0 auto;
+}
+
+#content.evensplit aside {
+	width: 30em;
+}
+#content.evensplit form div.bigsubmit2  {
+	width: 30em;
+	max-width: 100%;
 }
 
 div.hide-babybear { display: block; }
@@ -406,8 +429,18 @@ span.exhibitors-description {
 ----------------------------------------------------------------------------------------*/
 @media screen and (min-width: 40em) and (max-width: 63.236em) {
 	body { width: 100%; }
-	#page-container.page-container-wide { width: 40em; }
-	aside { width: 30em; }
+	#page-container.page-container-wide { width: 36em; width: 100% }
+	#content article.page { width: 36em; width: 100%; }
+	#content.evensplit aside,
+	aside { max-width: 100%; width: 36em; width: 100%; } 
+	#content div.button-list { text-align: center; }
+	#content div.button-list div.button-list-wrap {
+		display: inline-block;
+		width: 48%;
+	}
+	#content.evensplit form div.bigsubmit2 { width: 100%; max-width: 100%;
+	}
+
 	div.hide-babybear { display: block; }
 }
 

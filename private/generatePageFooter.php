@@ -22,8 +22,19 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
 
 	// Generate the footer content
 	$content .= "<hr class='section-divider footer-section-divider' />\n";
-	$content .= "<footer>"
-		. "<span class='copyright'>All content &copy; Copyright " . date('Y') . " by " . $ciniki['business']['details']['name'] . ".</span>"
+	$content .= "<footer>";
+
+	// Check for social media icons
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'socialIcons');
+	$rc = ciniki_web_socialIcons($ciniki, $settings, 'footer');
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+	if( isset($rc['social']) && $rc['social'] != '' ) {
+		$content .= "<div class='social-icons'>" . $rc['social'] . "</div>";
+	}
+	
+	$content .= "<span class='copyright'>All content &copy; Copyright " . date('Y') . " by " . $ciniki['business']['details']['name'] . ".</span>"
 		. "<br/>";
 	if( $ciniki['config']['ciniki.web']['poweredby.url'] != '' && $ciniki['config']['ciniki.core']['master_business_id'] != $ciniki['request']['business_id'] ) {
 		$content .= "<span class='poweredby'>Powered by <a href='" . $ciniki['config']['ciniki.web']['poweredby.url'] . "'>" . $ciniki['config']['ciniki.web']['poweredby.name'] . "</a></span>"
