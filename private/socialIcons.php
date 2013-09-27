@@ -57,13 +57,13 @@ function ciniki_web_socialIcons($ciniki, $settings, $location) {
 	if( (!isset($settings["site-social-youtube-$location-active"]) || $settings["site-social-youtube-$location-active"] == 'yes' )
 		&& isset($ciniki['business']['social']['social-youtube-username']) && $ciniki['business']['social']['social-youtube-username'] != ''
 		) {
-		$social .= "<a href='http://youtube.com/user/" . $ciniki['business']['social']['social-youtube-username'] . "' target='_blank' class='socialsymbol'><span title='YouTube' class='socialsymbol'>circleyoutube</span></a>";
+		$social .= "<a href='http://youtube.com/user/" . $ciniki['business']['social']['social-youtube-username'] . "' target='_blank' class='socialsymbol'><span title='YouTube' class='socialsymbol'>&#xe299;</span></a>";
 	}
 	// Vimeo
 	if( (!isset($settings["site-social-vimeo-$location-active"]) || $settings["site-social-vimeo-$location-active"] == 'yes' )
 		&& isset($ciniki['business']['social']['social-vimeo-url']) && $ciniki['business']['social']['social-vimeo-url'] != ''
 		) {
-		$social .= "<a href='" . $ciniki['business']['social']['social-vimeo-url'] . "' target='_blank' class='socialsymbol'><span title='Vimeo' class='socialsymbol'>circlevimeo</span></a>";
+		$social .= "<a href='" . $ciniki['business']['social']['social-vimeo-url'] . "' target='_blank' class='socialsymbol'><span title='Vimeo' class='socialsymbol'>&#xe289;</span></a>";
 	}
 	// Instagram
 	if( (!isset($settings["site-social-instagram-$location-active"]) || $settings["site-social-instagram-$location-active"] == 'yes' )

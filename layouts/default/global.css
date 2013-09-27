@@ -101,9 +101,9 @@ small { font-size: 80%; }
 .assistive-text { display: none; }
 
 @font-face {
-    font-family: 'Mono Social Icons Font';
-    src: url('fonts/MonoSocial/MonoSocialIconsFont-1.10.eot');
-    src: url('fonts/MonoSocial/MonoSocialIconsFont-1.10.eot?#iefix') format('embedded-opentype'),
+    font-family: 'MonoSocialIconsFont';
+    src: url('fonts/MonoSocial/MonoSocialIconsFont.eot');
+    src: url('fonts/MonoSocial/MonoSocialIconsFont.eot?#iefix') format('embedded-opentype'),
          url('fonts/MonoSocial/MonoSocialIconsFont-1.10.woff') format('woff'),
          url('fonts/MonoSocial/MonoSocialIconsFont-1.10.ttf') format('truetype'),
          url('fonts/MonoSocial/MonoSocialIconsFont-1.10.svg#MonoSocialIconsFont') format('svg');
@@ -112,8 +112,12 @@ small { font-size: 80%; }
     font-style: normal;
 }
 
+.socialsymbol {
+	font-family: 'MonoSocialIconsFont';
+}
+
 .socialsymbol, a.socialsymbol:before {
-    font-family: 'Mono Social Icons Font';
+    font-family: 'MonoSocialIconsFont';
     -webkit-text-rendering: optimizeLegibility;
     -moz-text-rendering: optimizeLegibility;
     -ms-text-rendering: optimizeLegibility;
