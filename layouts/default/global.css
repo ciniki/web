@@ -102,17 +102,17 @@ small { font-size: 80%; }
 
 @font-face {
     font-family: 'MonoSocialIconsFont';
-    src: url('fonts/MonoSocial/MonoSocialIconsFont.eot');
-    src: url('fonts/MonoSocial/MonoSocialIconsFont.eot?#iefix') format('embedded-opentype'),
+    src: url('fonts/MonoSocial/MonoSocialIconsFont-1.10.eot');
+    src: url('fonts/MonoSocial/MonoSocialIconsFont-1.10.eot?#iefix') format('embedded-opentype'),
          url('fonts/MonoSocial/MonoSocialIconsFont-1.10.woff') format('woff'),
          url('fonts/MonoSocial/MonoSocialIconsFont-1.10.ttf') format('truetype'),
          url('fonts/MonoSocial/MonoSocialIconsFont-1.10.svg#MonoSocialIconsFont') format('svg');
-    src: url('fonts/MonoSocial/MonoSocialIconsFont-1.10.ttf') format('truetype');
+    src: url('fonts/MonoSocial/MonoSocialIconsFont-1.10.ttf') format('truetype'); 
     font-weight: normal;
     font-style: normal;
 }
 
-.socialsymbol {
+span.socialsymbol {
 	font-family: 'MonoSocialIconsFont';
 }
 
@@ -136,12 +136,13 @@ a.socialsymbol:before {
     margin-left: 0.0em;
     font-size: 130%;
 }
+
 a.socialsymbol {
+	font-family: 'MonoSocialIconsFont';
 	margin-right: 0.1em;
 	margin-left: 0.1em;
 	line-height: 1.0em;
 }
-					
 
 /* 4. LINKS
 ----------------------------------------------------------------------------------------*/

@@ -27,7 +27,8 @@ function ciniki_web_socialIcons($ciniki, $settings, $location) {
 	if( (!isset($settings["site-social-twitter-$location-active"]) || $settings["site-social-twitter-$location-active"] == 'yes' )
 		&& isset($ciniki['business']['social']['social-twitter-username']) && $ciniki['business']['social']['social-twitter-username'] != ''
 		) {
-		$social .= "<a href='http://twitter.com/" . $ciniki['business']['social']['social-twitter-username'] . "' target='_blank' class='socialsymbol'><span title='Twitter' class='socialsymbol'>circletwitterbird</span></a>";
+		$social .= "<a href='http://twitter.com/" . $ciniki['business']['social']['social-twitter-username'] . "' target='_blank' class='socialsymbol'>l</a>";
+		//$social .= "<a href='http://twitter.com/" . $ciniki['business']['social']['social-twitter-username'] . "' target='_blank' class='socialsymbol'><span title='Twitter' class='socialsymbol'>circletwitterbird</span></a>";
 	}
 	// Etsy
 	if( (!isset($settings["site-social-etsy-$location-active"]) || $settings["site-social-etsy-$location-active"] == 'yes' )
