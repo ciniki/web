@@ -216,8 +216,12 @@ header span.title {
 	width: 32%;
 }
 
+#content form {
+	max-width: 28em;
+}
+
 #content form input.text {
-	max-width: 30em;
+	max-width: 28em;
 }
 
 #content form div.submit {
@@ -370,8 +374,17 @@ body { width: 100%; }
 	width: 100%;
 }
 
+#content form {
+	width: 100%;
+	max-width: 100%;
+}
+
+#content dl {
+	width: 100%;
+	max-width: 100%;
+}
+
 #content form input.text {
-	width: 95%;
 	width: 100%;
 	max-width: 100%;
 }
@@ -411,8 +424,9 @@ aside div.image-wrap { max-width: 30em; margin: 0 auto; }
 #content.evensplit aside {
 	width: 30em;
 }
-#content.evensplit form div.bigsubmit2  {
-	width: 30em;
+#content.evensplit form div.bigsubmit,
+#content.evensplit form div.bigsubmit2 {
+	width: 100%;
 	max-width: 100%;
 }
 

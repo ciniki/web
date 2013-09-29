@@ -725,6 +725,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 		if( $useragrees_err != '' ) {
 			$page_content .= "<p class='formerror'>$useragrees_err</p>";
 		}
+		$page_content .= "</div>";
 
 		// Submit button
 		$page_content .= "<div class='bigsubmit'><input type='submit' class='bigsubmit' name='signup' value='Sign up'></div>";
