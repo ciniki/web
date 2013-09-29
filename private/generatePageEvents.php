@@ -208,9 +208,16 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 		//
 		// Add description
 		//
-		if( isset($event['description']) ) {
+		if( isset($event['description']) && $event['description'] != '' ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 			$rc = ciniki_web_processContent($ciniki, $event['description']);	
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= $rc['content'];
+		} elseif( isset($event['short_description']) ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+			$rc = ciniki_web_processContent($ciniki, $event['short_description']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
