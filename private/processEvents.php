@@ -38,7 +38,8 @@ function ciniki_web_processEvents($ciniki, $settings, $events, $limit) {
 			$event_date .= "/" . $event['end_year'];
 		}
 
-		if( $event['isdetails'] == 'yes' ) {
+		if( $event['isdetails'] == 'yes' || (isset($event['num_images']) && $event['num_images'] > 0)
+			|| (isset($event['num_files']) & $event['num_files'] > 0) ) {
 			$event_url = $ciniki['request']['base_url'] . "/events/" . $event['permalink'];
 		} else {
 			if( $event['url'] != '' ) {
@@ -92,8 +93,14 @@ function ciniki_web_processEvents($ciniki, $settings, $events, $limit) {
 				$content .= $rc['content'];
 			}
 			// $content .= "<p class='cilist-description'>" . $event['description'] . "</p>";
+		} elseif( isset($event['short_description']) && $event['short_description'] != '' ) {
+			$rc = ciniki_web_processContent($ciniki, $event['short_description'], 'cilist-description');
+			if( $rc['stat'] == 'ok' ) {
+				$content .= $rc['content'];
+			}
 		}
-		if( $event['isdetails'] == 'yes' ) {
+		if( $event['isdetails'] == 'yes' || (isset($event['num_images']) && $event['num_images'] > 0)
+			|| (isset($event['num_files']) & $event['num_files'] > 0) ) {
 			$content .= "<tr><td class='cilist-more'><a href='$event_url'>... more</a></td></tr>";
 		} elseif( $event_url != '' ) {
 			$content .= "<tr><td class='cilist-more'><a href='$event_url'>$event_display_url</a></td></tr>";
