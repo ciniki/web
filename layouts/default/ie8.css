@@ -17,3 +17,9 @@
 	margin-top: 10px;
 }
 
+@font-face {
+	font-family: 'MonoSocialIconsFont';
+	src: url('fonts/MonoSocial/MonoSocialIconsFont.eot');
+	font-weight: normal;
+	font-style: normal;
+}

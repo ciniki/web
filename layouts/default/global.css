@@ -102,12 +102,12 @@ small { font-size: 80%; }
 
 @font-face {
     font-family: 'MonoSocialIconsFont';
-    src: url('fonts/MonoSocial/MonoSocialIconsFont-1.10.eot');
-    src: url('fonts/MonoSocial/MonoSocialIconsFont-1.10.eot?#iefix') format('embedded-opentype'),
-         url('fonts/MonoSocial/MonoSocialIconsFont-1.10.woff') format('woff'),
-         url('fonts/MonoSocial/MonoSocialIconsFont-1.10.ttf') format('truetype'),
-         url('fonts/MonoSocial/MonoSocialIconsFont-1.10.svg#MonoSocialIconsFont') format('svg');
-    src: url('fonts/MonoSocial/MonoSocialIconsFont-1.10.ttf') format('truetype'); 
+    src: url('fonts/MonoSocial/MonoSocialIconsFont.eot');
+    src: url('fonts/MonoSocial/MonoSocialIconsFont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/MonoSocial/MonoSocialIconsFont.woff') format('woff'),
+         url('fonts/MonoSocial/MonoSocialIconsFont.ttf') format('truetype'),
+         url('fonts/MonoSocial/MonoSocialIconsFont.svg#MonoSocialIconsFont') format('svg');
+    src: url('fonts/MonoSocial/MonoSocialIconsFont.ttf') format('truetype'); 
     font-weight: normal;
     font-style: normal;
 }

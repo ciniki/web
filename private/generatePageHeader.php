@@ -203,7 +203,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	}
 	$social_icons = '';
 	if( isset($rc['social']) && $rc['social'] != '' ) {
-		$social_icons = $rc['social'];
+//		$social_icons = $rc['social'];
 	}
 
 	//
