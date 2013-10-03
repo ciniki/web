@@ -174,12 +174,24 @@ header div.signin {
 	display: inline-block;
 	float: right;
 	margin-bottom: 1.0em;
-	width: 8em;
+/*  	max-width: 20em;  */
 	top: 0px;
 	right: 20px;
 	padding-right: 20px;
 	text-align: right;
 	width: 100%;
+	white-space: nowrap;
+}
+
+header div.signin-wrapper {
+	display: inline-block;
+	white-space: nowrap;
+	text-align: center;
+	vertical-align: center;
+}
+
+header span.social-icons {
+	display: inline-block;
 }
 
 header div.title-logo {
@@ -195,10 +207,10 @@ header span.title {
 	display: block;
 }
 
-header span.social-icons {
+/* header span.social-icons {
 	display: none;
 	float: right;
-}
+} */
 
 #page-container.logo header div.signin {
 	margin-bottom: 0em;
@@ -625,6 +637,7 @@ footer {
 	text-align: center;
 }
 
+header div.signin .hide-babybear, 
 div.hide-babybear {
 	display: none;
 }

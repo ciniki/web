@@ -29,7 +29,7 @@ header h1 a:active {
 	color: #439BBD;
 }
 
-header div.signin a {
+header div.signin div.signin-wrapper {
 	border-left: 1px solid #bbb;
 	border-bottom: 1px solid #bbb;
 	border-right: 1px solid #bbb;
@@ -37,6 +37,9 @@ header div.signin a {
 	border-bottom-left-radius: 0.5em;
 	border-bottom-right-radius: 0.5em;
 	background: #eef;
+}
+
+header div.signin a {
 	text-decoration: none;
 }
 
@@ -44,15 +47,23 @@ header span.logo img {
 	padding-right: 0.5em;
 }
 
-header span.social-icons {
-	font-size: 2.5em;
-	margin-bottom: 0.25em;
+header div.signin span.social-icons {
+	font-size: 1.75em;
+	margin-bottom: 0.15em;
+	margin-top: -0.2em;
 }
 
-header span.social-icons a,
-header span.social-icons a:visited,
-header span.social-icons a:hover,
-header span.social-icons a:active {
+header div.signin span.social-divider {
+	margin-left: 0.1em;
+	margin-right: 0.1em;
+	font-size: 1.5em;
+	color: #bbb;
+}
+
+header div.signin span.social-icons a,
+header div.signin span.social-icons a:visited,
+header div.signin span.social-icons a:hover,
+header div.signin span.social-icons a:active {
 	color: #bbb;
 }
 

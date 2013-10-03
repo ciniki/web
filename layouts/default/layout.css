@@ -13,12 +13,12 @@
 header div.signin {
 }
 
-header span.social-icons {
+/* header span.social-icons {
 	display: inline-block;
 	vertical-align: baseline;
 	text-align: right;
 	float: right;
-}
+} */
 
 header span.title {
 	display: inline;
@@ -255,6 +255,8 @@ aside {
 	width: 30em;
 }
 
+header span.social-icons { display: inline-block; }
+header div.signin .hide-babybear { display: inline-block; }
 div.hide-babybear { display: block; }
 
 #content table.cilist td.cilist-image {

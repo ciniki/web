@@ -173,28 +173,6 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	}
 	$content .= ">\n";
 
-	//
-	// Check if we are to display a sign in button
-	//
-	$signin_content = '';
-	if( $ciniki['request']['business_id'] == $ciniki['config']['ciniki.core']['master_business_id'] 
-		&& isset($ciniki['config']['ciniki.core']['manage.url']) && $ciniki['config']['ciniki.core']['manage.url'] != '' ) {
-		$signin_content .= "<div class='signin'><a href='" . $ciniki['config']['ciniki.core']['manage.url'] . "'><span>Sign in</span></a></div>\n";
-	} 
-	// Display a customer signin for regular businesses
-	elseif( $ciniki['request']['business_id'] != $ciniki['config']['ciniki.core']['master_business_id']
-		&& isset($settings['page-account-active']) && $settings['page-account-active'] == 'yes'
-		&& ((isset($settings['page-downloads-customers']) && $settings['page-downloads-customers'] == 'yes')
-			|| (isset($settings['page-subscriptions-public']) && $settings['page-subscriptions-public'] == 'yes')
-		// || () // Used if there are other pages that allow customer only content
-		)) {
-		if( isset($ciniki['session']['customer']['id']) > 0 ) {
-			$signin_content .= "<div class='signin'><a href='" . $ciniki['request']['base_url'] . "/account'><span>My Account</span></a></div>\n";
-		} else {
-			$signin_content .= "<div class='signin'><a href='" . $ciniki['request']['base_url'] . "/account'><span>Sign In</span></a></div>\n";
-		}
-	}
-
 	// Check for social media icons
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'socialIcons');
 	$rc = ciniki_web_socialIcons($ciniki, $settings, 'header');
@@ -203,7 +181,42 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	}
 	$social_icons = '';
 	if( isset($rc['social']) && $rc['social'] != '' ) {
-//		$social_icons = $rc['social'];
+		$social_icons = $rc['social'];
+	}
+
+	//
+	// Check if we are to display a sign in button
+	//
+	$signin_content = '';
+	if( $ciniki['request']['business_id'] == $ciniki['config']['ciniki.core']['master_business_id'] 
+		&& isset($ciniki['config']['ciniki.core']['manage.url']) && $ciniki['config']['ciniki.core']['manage.url'] != '' ) {
+		$signin_content .= "<div class='signin'><div class='signin-wrapper'>";
+		if( $social_icons != '' ) {
+			$signin_content .= "<span class='social-icons hide-babybear'>$social_icons</span><span class='social-divider hide-babybear'>|</span>";
+		}
+		$signin_content .= "<span><a href='" . $ciniki['config']['ciniki.core']['manage.url'] . "'>"
+			. "Sign in</a></span>";
+		$signin_content .= "</div></div>\n";
+	} 
+	// Display a customer signin for regular businesses
+	elseif( $ciniki['request']['business_id'] != $ciniki['config']['ciniki.core']['master_business_id']
+		&& isset($settings['page-account-active']) && $settings['page-account-active'] == 'yes'
+		&& ((isset($settings['page-downloads-customers']) && $settings['page-downloads-customers'] == 'yes')
+			|| (isset($settings['page-subscriptions-public']) && $settings['page-subscriptions-public'] == 'yes')
+		// || () // Used if there are other pages that allow customer only content
+		)) {
+		$signin_content .= "<div class='signin'><div class='signin-wrapper'>";
+		if( $social_icons != '' ) {
+			$signin_content .= "<span class='social-icons hide-babybear'>$social_icons</span><span class='social-divider hide-babybear'>|</span>";
+		}
+		if( isset($ciniki['session']['customer']['id']) > 0 ) {
+			$signin_content .= "<span><a href='" . $ciniki['request']['base_url'] . "/account'>My Account</a></span>";
+		} else {
+			$signin_content .= "<span><a href='" . $ciniki['request']['base_url'] . "/account'>Sign In</a></span>";
+		}
+		$signin_content .= "</div></div>\n";
+	} elseif( $social_icons != '' ) {
+		$signin_content .= "<div class='signin'><div class='signin-wrapper hide-babybear'><span class='social-icons'>$social_icons</span></div></div>";
 	}
 
 	//
@@ -257,9 +270,9 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 			$content .= "<h2 id='site-description'>" . $ciniki['business']['details']['tagline'] . "</h2>\n";
 		}
 		$content .= "</div>";
-		if( $social_icons != '' ) {
-			$content .= "<span class='social-icons'>" . $social_icons . "</span>";
-		}
+//		if( $social_icons != '' ) {
+//			$content .= "<span class='social-icons'>" . $social_icons . "</span>";
+//		}
 		$content .= "</hgroup>\n";
 	} else {
 		$content .= "<hgroup class='header-image'>\n";
@@ -274,9 +287,9 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		$content .= "<span><a href='" . $ciniki['request']['base_url'] . "/' title='" . $ciniki['business']['details']['name'] . "' rel='home'>"
 			. "<img alt='Home' src='" . $rc['url'] . "' />"
 			. "</a></span>\n";
-		if( $social_icons != '' ) {
-			$content .= "<span class='social-icons'>" . $social_icons . "</span>";
-		}
+//		if( $social_icons != '' ) {
+//			$content .= "<span class='social-icons'>" . $social_icons . "</span>";
+//		}
 		$content .= "</hgroup>";
 	}
 //	if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
