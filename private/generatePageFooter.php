@@ -40,6 +40,13 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
 		$content .= "<span class='poweredby'>Powered by <a href='" . $ciniki['config']['ciniki.web']['poweredby.url'] . "'>" . $ciniki['config']['ciniki.web']['poweredby.name'] . "</a></span>"
 			. "";
 	}
+
+	// If there was an error page generated, see if we should put the error code in the footer for debug purposes.
+	// This keeps it out of the way, but easy to tell people what to look for.
+	if( isset($ciniki['request']['error_codes_msg']) && $ciniki['request']['error_codes_msg'] != '' ) {
+		$content .= "<span class='poweredby'>" . $ciniki['request']['error_codes_msg'] . "</span>";
+	}
+
 	$content .= "</footer>"
 		. "";
 
