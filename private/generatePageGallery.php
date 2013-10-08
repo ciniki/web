@@ -191,7 +191,6 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 			return $rc;
 		}
 		$page_content .= "<div class='image-gallery'>" . $rc['content'] . "</div>";
-
 	} 
 
 	//

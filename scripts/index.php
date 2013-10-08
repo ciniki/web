@@ -437,8 +437,10 @@ if( $rc['stat'] == '404' ) {
 } 
 
 if( $rc['stat'] != 'ok' ) {
-	print_error($rc, 'Unable to generate page.');
-	exit;
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePage500.php');
+	$rc = ciniki_web_generatePage500($ciniki, $settings, $rc);
+//	print_error($rc, 'Unable to generate page.');
+//	exit;
 }
 
 
@@ -461,7 +463,9 @@ if( isset($ciniki['emailqueue']) && count($ciniki['emailqueue']) > 0 ) {
 
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/emailQueueProcess.php');
 	ciniki_core_emailQueueProcess($ciniki);
-} elseif( $rc['content'] != '' ) {
+} 
+
+if( $rc['content'] != '' ) {
 	//
 	// Output the page contents
 	// FIXME: Add caching in here

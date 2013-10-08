@@ -52,7 +52,7 @@ function ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $base_url,
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'loadImage');
 			$rc = ciniki_images_loadImage($ciniki, $img['image_id'], 'thumbnail');
 			if( $rc['stat'] != 'ok' ) {
-				return $rc;
+				return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1337', 'msg'=>'Unable to generate image: ' . $img['image_id'], 'err'=>$rc['err']));
 			}
 			$image = $rc['image'];
 			
