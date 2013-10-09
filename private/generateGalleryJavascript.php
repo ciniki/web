@@ -92,8 +92,15 @@ function ciniki_web_generateGalleryJavascript($ciniki, $next, $prev) {
 			. "}";
 	}
 	$javascript .=  ""
-		. "}\n"
-		. "</script>\n";
+		. "}\n";
+	$javascript .= ""
+		. "function gallery_swap_image(u) {"
+			. "var i = document.getElementById('gallery-image-img');"
+			. "i.src = u;"
+			. "gallery_resize_arrows();"
+			. "return false;"
+		. "}\n";
+	$javascript.= "</script>\n";
 
 	return array('stat'=>'ok', 'javascript'=>$javascript);
 }

@@ -426,6 +426,7 @@ div.googlemap p.exhibitors-more,
 }
 
 #content div.image-categories,
+#content div.additional-image-gallery,
 #content div.image-gallery {
 	margin: 0 auto;
 	text-align: center;
@@ -456,6 +457,11 @@ div.googlemap p.exhibitors-more,
 	height: 115px;
 }
 
+#content div.additional-image-gallery div.image-gallery-thumbnail {
+	width: 70px; 
+	height: 70px;
+}
+
 #content div.image-sponsors-thumbnail img {
 /* 	height: 115px; */
 	max-width: none;
@@ -471,6 +477,11 @@ div.googlemap p.exhibitors-more,
 #content div.image-gallery-thumbnail img {
 	width: 115px; 
 	height: 115px;
+}
+
+#content div.additional-image-gallery div.image-gallery-thumbnail img {
+	width: 70px; 
+	height: 70px;
 }
 
 #content div.gallery-image {

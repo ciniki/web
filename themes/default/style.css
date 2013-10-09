@@ -184,6 +184,11 @@ div.image-gallery-thumbnail {
 	padding: 7px;
 }
 
+div.additional-image-gallery div.image-gallery-thumbnail {
+	padding: 5px;
+	margin: 6px;
+}
+
 div.image-cilist-thumbnail img,
 div.image-members-thumbnail img,
 div.image-sponsors-thumbnail img,
@@ -226,6 +231,7 @@ div.gallery-image-details span.image-details {
 	padding-top: 0.4em;
 }
 
+div.gallery-image-details span.sub-title,
 div.gallery-image-details span.image-awards-title {
 	font-size: 1.2em;
 	display: block;

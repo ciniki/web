@@ -159,8 +159,26 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 				. "<span class='image-awards'>" . $rc['content'] . "</span>"
 				. "";
 		}
+		//
+		// Check for additional images for the artwork to be displayed
+		//
+		if( isset($img['additionalimages']) && count($img['additionalimages']) > 0 ) {
+			$page_content .= "<span class='sub-title'>Additional Images</span>";
+			array_unshift($img['additionalimages'], array(
+				'id'=>0, 
+				'image_id'=>$img['image_id'],
+				'title'=>$img['title'],
+				'last_updated'=>$img['last_updated'],
+				));
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryAdditionalThumbnails');
+			$img_base_url = $ciniki['request']['base_url'] . "/gallery/$category_uri_component/" . $ciniki['request']['uri_split'][1];
+			$rc = ciniki_web_generatePageGalleryAdditionalThumbnails($ciniki, $settings, $img_base_url, $img['additionalimages'], 75);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= "<div class='additional-image-gallery'>" . $rc['content'] . "</div>";
+		}
 		$page_content .= "</div></div>";
-	
 	} 
 
 	//

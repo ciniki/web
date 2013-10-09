@@ -202,6 +202,11 @@ div.image-gallery-thumbnail {
 	background: #fff;
 }
 
+div.additional-image-gallery div.image-gallery-thumbnail {
+	border: 5px solid #ffffff;
+	margin: 8px;
+}
+
 div.image-gallery-thumbnail img {
 	border: 0px none;
 	padding: 0px;
@@ -238,6 +243,7 @@ div.gallery-image-details span.image-details {
 	padding-top: 0.4em;
 }
 
+div.gallery-image-details span.sub-title,
 div.gallery-image-details span.image-awards-title {
 	font-size: 1.2em;
 	display: block;
