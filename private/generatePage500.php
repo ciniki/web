@@ -48,7 +48,7 @@ function ciniki_web_generatePage500($ciniki, $settings, $errors) {
 	$content .= "</article>";
 	$content .= "</div>";
 
-	$err_msg = "Web ERR [500]: " . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . ' ';
+	$err_msg = "Web ERR [500]: " . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . ' [' . $_SERVER['HTTP_USER_AGENT'] . '] ';
 
 	$ciniki['request']['error_codes_msg'] = 'err:' . $errors['err']['code'];
 	$err_msg .= '[' . $errors['err']['code'] . ':' . $errors['err']['msg'] . ']';
