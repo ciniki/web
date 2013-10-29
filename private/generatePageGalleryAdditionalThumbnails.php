@@ -45,8 +45,8 @@ function ciniki_web_generatePageGalleryAdditionalThumbnails($ciniki, $settings, 
 		// If the image file doesn't exist on disk, create it, or if it's been updated in the database since creation
 		//
 		$utc_offset = date_offset_get(new DateTime);
-		if( $img['id'] > 0 && !file_exists($img_filename) 
-			|| (filemtime($img_filename) - $utc_offset) < $img['last_updated'] ) {
+		if( $img['image_id'] > 0 && (!file_exists($img_filename) 
+			|| (filemtime($img_filename) - $utc_offset) < $img['last_updated']) ) {
 			//
 			// Load the image from the database
 			//
