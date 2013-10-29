@@ -30,10 +30,10 @@ function ciniki_web_getImage($ciniki) {
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'), 
-		'image_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No image specified'), 
-		'version'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No version specified'),
-		'maxlength'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No size specified'),
+		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+		'image_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Image'), 
+		'version'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Version'),
+		'maxlength'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Maximum Length'),
 		));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;

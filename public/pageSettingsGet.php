@@ -35,9 +35,9 @@ function ciniki_web_pageSettingsGet($ciniki) {
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'),
-		'page'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No page specified'),
-		'content'=>array('required'=>'no', 'blank'=>'yes', 'errmsg'=>'No content specified'),
+		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'),
+		'page'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Page'),
+		'content'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Content'),
 		));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
