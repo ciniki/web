@@ -86,8 +86,12 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
 			// The requested image was the last in the list, set previous to last
 			$next = $first;
 		}
-		
-		$page_title = $participant['name'] . ' - ' . $img['title'];
+
+		if( $img['title'] != '' ) {
+			$page_title = $participant['name'] . ' - ' . $img['title'];
+		} else {
+			$page_title = $participant['name'];
+		}
 
 		if( $img == NULL ) {
 			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1301', 'msg'=>"I'm sorry, but we can't seem to find the image your requested."));
