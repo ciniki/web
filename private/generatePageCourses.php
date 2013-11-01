@@ -150,8 +150,12 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 			// The requested image was the last in the list, set previous to last
 			$next = $first;
 		}
-		
-		$page_title = $instructor['name'] . ' - ' . $img['title'];
+	
+		if( $img['title'] != '' ) {
+			$page_title = $instructor['name'] . ' - ' . $img['title'];
+		} else {
+			$page_title = $instructor['name'];
+		}
 
 		if( $img == NULL ) {
 			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1311', 'msg'=>"I'm sorry, but we can't seem to find the image you requested."));
@@ -447,8 +451,9 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 			} else {
 				$page_content .= "<h2>Instructor</h2>";
 			}
+			$page_content .= "<table class='cilist'><tbody>";
 			foreach($instructors as $iid => $instructor) {
-				$page_content .= "<table class='cilist'><tbody><tr><th><span class='cilist-category'>" . $instructor['name'] . "</span></th><td>\n";
+				$page_content .= "<tr><th><span class='cilist-category'>" . $instructor['name'] . "</span></th><td>\n";
 				$page_content .= "<table class='cilist-categories'><tbody>\n";
 				$instructor_url = $ciniki['request']['base_url'] . "/courses/instructor/" . $instructor['permalink'];
 
@@ -480,9 +485,10 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 					$page_content .= "<tr><td class='cilist-more'><a href='$instructor_url'>... more</a></td></tr>";
 				}
 				$page_content .= "</tbody></table>";
-				$page_content .= "</td></tr>\n</tbody></table>\n";
-				$page_content .= "</div>";
+				$page_content .= "</td></tr>\n";
 			}
+			$page_content .= "</tbody></table>\n";
+			$page_content .= "</div>\n";
 		}
 
 		$page_content .= "</article>";
