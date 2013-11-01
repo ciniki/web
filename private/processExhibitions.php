@@ -45,7 +45,11 @@ function ciniki_web_processExhibitions($ciniki, $settings, $exhibitions, $limit)
 			. "<td>";
 		// Display the brief details
 		$content .= "<table class='cilist-categories'><tbody>\n";
-		$exhibition_url = $ciniki['request']['base_url'] . "/exhibitions/" . $exhibition['permalink'];
+		if( $exhibition['num_images'] > 0 || $exhibition['long_description'] != '' ) {
+			$exhibition_url = $ciniki['request']['base_url'] . "/exhibitions/" . $exhibition['permalink'];
+		} else {
+			$exhibition_url = '';
+		}
 
 		// Setup the exhibitor image
 		$content .= "<tr><td class='cilist-image' rowspan='3'>";
@@ -55,16 +59,24 @@ function ciniki_web_processExhibitions($ciniki, $settings, $exhibitions, $limit)
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			$content .= "<div class='image-cilist-thumbnail'>"
-				. "<a href='$exhibition_url' title='" . $exhibition['name'] . "'><img title='' alt='" . $exhibition['name'] . "' src='" . $rc['url'] . "' /></a>"
-				. "</div></aside>";
+			$content .= "<div class='image-cilist-thumbnail'>";
+			if( $exhibition_url != '' ) {
+				$content .= "<a href='$exhibition_url' title='" . $exhibition['name'] . "'><img title='' alt='" . $exhibition['name'] . "' src='" . $rc['url'] . "' /></a>";
+			} else {
+				$content .= "<img title='' alt='" . $exhibition['name'] . "' src='" . $rc['url'] . "' />";
+			}
+			$content .= "</div></aside>";
 		}
 		$content .= "</td>";
 
 		// Setup the details
 		$content .= "<td class='cilist-details'>";
 		$content .= "<p class='cilist-title'>";
-		$content .= "<a href='$exhibition_url' title='" . $exhibition['name'] . "'>" . $exhibition['name'] . "</a>";
+		if( $exhibition_url != '' ) {
+			$content .= "<a href='$exhibition_url' title='" . $exhibition['name'] . "'>" . $exhibition['name'] . "</a>";
+		} else {
+			$content .= $exhibition['name'];
+		}
 		$content .= "</p>";
 		$content .= "</td></tr>";
 		$content .= "<tr><td class='cilist-description'>";
@@ -72,7 +84,9 @@ function ciniki_web_processExhibitions($ciniki, $settings, $exhibitions, $limit)
 			$content .= "<span class='cilist-description'>" . $exhibition['description'] . "</span>";
 		}
 		$content .= "</td></tr>";
-		$content .= "<tr><td class='cilist-more'><a href='$exhibition_url'>... more</a></td></tr>";
+		if( $exhibition_url != '' ) {
+			$content .= "<tr><td class='cilist-more'><a href='$exhibition_url'>... more</a></td></tr>";
+		}
 		$content .= "</tbody></table>";
 		$content .= "</td></tr>";
 		$count++;

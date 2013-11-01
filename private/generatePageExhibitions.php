@@ -2,7 +2,6 @@
 //
 // Description
 // -----------
-// This function will generate the exhibitors page for the business.
 //
 // Arguments
 // ---------
@@ -246,6 +245,13 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 		if( isset($exhibition['description']) ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 			$rc = ciniki_web_processContent($ciniki, $exhibition['description']);	
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= $rc['content'];
+		} elseif( isset($exhibition['short_description']) ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+			$rc = ciniki_web_processContent($ciniki, $exhibition['short_description']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}

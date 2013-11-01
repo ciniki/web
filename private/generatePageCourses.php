@@ -701,10 +701,20 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 							. "<td>";
 					}
 					foreach($c['offerings'] as $onum => $offering) {
-						if( ($ciniki['business']['modules']['ciniki.courses']['flags']&0x01) == 0x01 && $offering['code'] != '' ) {
-							$page_content .= "<p class='clist-title'>" . $offering['code'] . ' - ' . $offering['name'] . "</p>";
+						if( $offering['isdetails'] == 'yes' ) {
+							$offering_url = $ciniki['request']['base_url'] . '/courses/course/' . $offering['course_permalink'] . '/' . $offering['permalink'];
 						} else {
-							$page_content .= "<p class='clist-title'>" . $offering['name'] . "</p>";
+							$offering_url = '';
+						}
+						if( ($ciniki['business']['modules']['ciniki.courses']['flags']&0x01) == 0x01 && $offering['code'] != '' ) {
+							$offering_name = $offering['code'] . ' - ' . $offering['name'];
+						} else {
+							$offering_name = $offering['name'];
+						}
+						if( $offering_url != '' ) {
+							$page_content .= "<a href='$offering_url'><p class='clist-title'>" . $offering_name . "</p></a>";
+						} else {
+							$page_content .= "<p class='clist-title'>" . $offering_name . "</p>";
 						}
 						if( $hide_dates != 'yes' ) {
 							$page_content .= "<p class='clist-subtitle'>" . $offering['condensed_date'] . "</p>";
@@ -715,8 +725,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 						}
 						$page_content .= $rc['content'];
 						// $page_content .= "<p class='clist-description'>" . $rc['content'] . "</p>";
-						if( $offering['isdetails'] == 'yes' ) {
-							$offering_url = $ciniki['request']['base_url'] . '/courses/course/' . $offering['course_permalink'] . '/' . $offering['permalink'];
+						if( $offering_url != '' ) {
 							$page_content .= "<p class='clist-url clist-more'><a href='" . $offering_url . "'>... more</a></p>";
 						}
 					}
