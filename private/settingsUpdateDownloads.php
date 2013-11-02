@@ -102,7 +102,7 @@ function ciniki_web_settingsUpdateDownloads($ciniki, $modules, $business_id) {
 			ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $business_id, 
 				2, 'ciniki_web_settings', 'page-downloads-public', 'detail_value', $public);
 			$ciniki['syncqueue'][] = array('push'=>'ciniki.web.setting',
-				'args'=>array('id'=>$field));
+				'args'=>array('id'=>'page-downloads-public'));
 		}
 	} else {
 		//
@@ -121,7 +121,7 @@ function ciniki_web_settingsUpdateDownloads($ciniki, $modules, $business_id) {
 		ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $business_id, 
 			1, 'ciniki_web_settings', 'page-downloads-public', 'detail_value', $public);
 		$ciniki['syncqueue'][] = array('push'=>'ciniki.web.setting',
-			'args'=>array('id'=>$field));
+			'args'=>array('id'=>'page-downloads-public'));
 	}
 
 	//
@@ -154,7 +154,7 @@ function ciniki_web_settingsUpdateDownloads($ciniki, $modules, $business_id) {
 			ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $business_id, 
 				2, 'ciniki_web_settings', 'page-downloads-customers', 'detail_value', $customers);
 			$ciniki['syncqueue'][] = array('push'=>'ciniki.web.setting',
-				'args'=>array('id'=>$field));
+				'args'=>array('id'=>'page-downloads-customers'));
 		}
 	} else {
 		//
@@ -173,7 +173,7 @@ function ciniki_web_settingsUpdateDownloads($ciniki, $modules, $business_id) {
 		ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $business_id, 
 			1, 'ciniki_web_settings', 'page-downloads-customers', 'detail_value', $customers);
 		$ciniki['syncqueue'][] = array('push'=>'ciniki.web.setting',
-			'args'=>array('id'=>$field));
+			'args'=>array('id'=>'page-downloads-customers'));
 	}
 
 	//
