@@ -69,44 +69,9 @@ function ciniki_web_faqDelete(&$ciniki) {
 	$uuid = $rc['faq']['uuid'];
 
 	//
-	// Start building the delete SQL
+	// Delete the faq
 	//
-	$strsql = "DELETE FROM ciniki_web_faqs "
-		. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
-		. "AND id = '" . ciniki_core_dbQuote($ciniki, $args['faq_id']) . "' "
-		. "";
-
-	$rc = ciniki_core_dbDelete($ciniki, $strsql, 'ciniki.web');
-	if( $rc['stat'] != 'ok' ) {
-		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.web');
-		return $rc;
-	}
-	if( !isset($rc['num_affected_rows']) || $rc['num_affected_rows'] != 1 ) {
-		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.web');
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1271', 'msg'=>'Unable to delete question'));
-	}
-
-	$rc = ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', 
-		$args['business_id'], 3, 'ciniki_web_faqs', $args['faq_id'], '*', '');
-
-	//
-	// Commit the database changes
-	//
-    $rc = ciniki_core_dbTransactionCommit($ciniki, 'ciniki.web');
-	if( $rc['stat'] != 'ok' ) {
-		return $rc;
-	}
-
-	//
-	// Update the last_change date in the business modules
-	// Ignore the result, as we don't want to stop user updates if this fails.
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
-	ciniki_businesses_updateModuleChangeDate($ciniki, $args['business_id'], 'ciniki', 'web');
-
-	$ciniki['syncqueue'][] = array('push'=>'ciniki.web.faq', 
-		'args'=>array('delete_uuid'=>$uuid, 'delete_id'=>$args['faq_id']));
-
-	return array('stat'=>'ok');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectDelete');
+	return ciniki_core_objectDelete($ciniki, $args['business_id'], 'ciniki.web.faq', $args['faq_id'], $uuid, 0x07);
 }
 ?>
