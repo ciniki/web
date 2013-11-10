@@ -101,7 +101,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 		// FIXME: Grab signup information from database
 		//
 		$strsql = "SELECT signup_data, date_added "
-			. "FROM ciniki_web_signups "
+			. "FROM ciniki_core_business_signups "
 			. "WHERE signup_key = '" . ciniki_core_dbQuote($ciniki, $_GET['t']) . "' "
 			. "";
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
@@ -424,7 +424,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 			//
 			// Remove the entry from the signup table
 			//
-			$strsql = "DELETE FROM ciniki_web_signups "
+			$strsql = "DELETE FROM ciniki_core_business_signups "
 				. "WHERE signup_key = '" . ciniki_core_dbQuote($ciniki, $_GET['t']) . "' "
 				. "";
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDelete');
@@ -606,7 +606,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 //			$_SESSION['user_id'] = $user_id;
 //			$_SESSION['time'] = time();
 //			$_SESSION['key'] = md5(date('Y-m-d-H-i-s') . rand());	
-			$strsql = "INSERT INTO ciniki_web_signups ("
+			$strsql = "INSERT INTO ciniki_core_business_signups ("
 				. "uuid, business_id, signup_key, signup_data, "
 				. "date_added, last_updated) VALUES ("
 				. "UUID(), " 
