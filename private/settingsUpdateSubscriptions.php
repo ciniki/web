@@ -80,7 +80,7 @@ function ciniki_web_settingsUpdateSubscriptions(&$ciniki, $modules, $business_id
 			ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $business_id, 
 				2, 'ciniki_web_settings', 'page-subscriptions-public', 'detail_value', $public);
 			$ciniki['syncqueue'][] = array('push'=>'ciniki.web.setting',
-				'args'=>array('id'=>$field));
+				'args'=>array('id'=>'page-subscriptions-public'));
 		}
 	} else {
 		//
@@ -99,7 +99,7 @@ function ciniki_web_settingsUpdateSubscriptions(&$ciniki, $modules, $business_id
 		ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $business_id, 
 			1, 'ciniki_web_settings', 'page-subscriptions-public', 'detail_value', $public);
 		$ciniki['syncqueue'][] = array('push'=>'ciniki.web.setting',
-			'args'=>array('id'=>$field));
+			'args'=>array('id'=>'page-subscriptions-public'));
 	}
 
 	//
