@@ -449,12 +449,18 @@ if( $rc['stat'] != 'ok' ) {
 //
 if( isset($ciniki['emailqueue']) && count($ciniki['emailqueue']) > 0 ) {
 	ob_start();
-	print $rc['content'];
+	if(strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false ) {
+		ob_start("ob_gzhandler");
+		print $rc['content'];
+		ob_end_flush();
+	} else {
+		print $rc['content'];
+	}
 	header("Connection: close");
 	$contentlength = ob_get_length();
 	header("Content-Length: $contentlength");
 	ob_end_flush();
-	ob_flush();
+	ob_end_flush();
 	flush();
 	session_write_close();
 	while(ob_get_level() > 0) {
