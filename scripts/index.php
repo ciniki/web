@@ -465,7 +465,7 @@ if( isset($ciniki['emailqueue']) && count($ciniki['emailqueue']) > 0 ) {
 	ciniki_core_emailQueueProcess($ciniki);
 } 
 
-if( $rc['content'] != '' ) {
+elseif( $rc['content'] != '' ) {
 	//
 	// Output the page contents
 	// FIXME: Add caching in here

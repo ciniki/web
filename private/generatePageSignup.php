@@ -622,6 +622,8 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 				$page_err = "Oops, we seem to have hit an internal snag here.  We apologize, but you'll need to try this again.";
 				$err = 42;
 			}
+		}
+		if( $err == 0 ) {
 //			session_write_close();
 			$verify_url = $verify_base_url . "?t=" . $signup['key'];
 			
@@ -832,7 +834,6 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 
 		// Submit button
 		$page_content .= "<div class='bigsubmit'><input type='submit' class='bigsubmit' name='signup' value='Sign up'></div>";
-
 	}
 
 	$content .= "<div id='content' class='evensplit'>\n"
