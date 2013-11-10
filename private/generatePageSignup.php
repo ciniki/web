@@ -97,34 +97,56 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 	// User clicked verification link, create the business, and display the success message
 	//
 	if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'verify' ) {
-		session_start();
-		if( !isset($_SESSION['firstname']) 
-			|| !isset($_SESSION['lastname']) 
-			|| !isset($_SESSION['business_name']) 
-			|| !isset($_SESSION['sitename']) 
-			|| !isset($_SESSION['email_address']) 
-			|| !isset($_SESSION['username']) 
-			|| !isset($_SESSION['password']) 
-			|| !isset($_SESSION['user_id']) 
-			|| !isset($_SESSION['key']) 
-			|| !isset($_SESSION['time']) 
-			|| !isset($_SESSION['plan_monthly']) 
-			|| !isset($_SESSION['plan_trial_days']) 
-			|| !isset($_SESSION['plan_modules']) 
-			) {
-			$page_err = "Make sure you have cookies enabled, and try again.";
-			$err = 1;
+		//
+		// FIXME: Grab signup information from database
+		//
+		$strsql = "SELECT signup_data, date_added "
+			. "FROM ciniki_web_signups "
+			. "WHERE signup_key = '" . ciniki_core_dbQuote($ciniki, $_GET['t']) . "' "
+			. "";
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
+		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'signup');
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
 		}
-		// Check the session is not older than 5 minutes
-		if( $_SESSION['time'] < (time()-300) ) {
+		if( !isset($rc['signup']) ) {
+			$page_err = "We're sorry, but we can't verify your email.  You'll need to try again.";
+			$err = 41;
+			$signup = array();
+		} else {
+			$signup = unserialize($rc['signup']['signup_data']);	
+		}
+		
+		if( $err == 0 ) {
+	//		session_start();
+			if( !isset($signup['firstname']) 
+				|| !isset($signup['lastname']) 
+				|| !isset($signup['business_name']) 
+				|| !isset($signup['sitename']) 
+				|| !isset($signup['email_address']) 
+				|| !isset($signup['username']) 
+				|| !isset($signup['password']) 
+				|| !isset($signup['user_id']) 
+				|| !isset($signup['key']) 
+				|| !isset($signup['time']) 
+				|| !isset($signup['plan_monthly']) 
+				|| !isset($signup['plan_trial_days']) 
+				|| !isset($signup['plan_modules']) 
+				) {
+				$page_err = "Make sure you have cookies enabled, and try again.";
+				$err = 1;
+			}
+		}
+		// Check the session is not older than 1 day
+		if( $err == 0 && $signup['time'] < (time()-86400) ) {
 			error_log('WEB-ERR: Session timed out');
 			$page_err = "I'm sorry, but for security reasons you did not complete this action in time.  Please start again.";
 			$err = 2;
 		}
 
-		if( $_SESSION['key'] != $_GET['t'] ) {
-			error_log('WEB-ERR: Session key miss-match ' . $_SESSION['key'] . '-' . $_GET['t']);
-			$page_err = "I'm sorry, but we were unable to verify your email.  For security purposes, the link must be followed within 5 minutes of signing up.  <br/><br/>If you are still having difficulty, please email support at <a href=\"mailto:andrew@ciniki.ca\">andrew@ciniki.ca</a> and include your signup details.";
+		if( $err == 0 && $signup['key'] != $_GET['t'] ) {
+			error_log('WEB-ERR: Session key miss-match ' . $signup['key'] . '-' . $_GET['t']);
+			$page_err = "I'm sorry, but we were unable to verify your email.  For security purposes, the link must be followed within 1 day of signing up.  <br/><br/>If you are still having difficulty, please email support at <a href=\"mailto:andrew@ciniki.ca\">andrew@ciniki.ca</a> and include your signup details.";
 			$err = 3;
 		}
 
@@ -149,18 +171,18 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 		//
 		// Create user
 		//
-		if( $err == 0 && $_SESSION['user_id'] == 0 ) {
+		if( $err == 0 && $signup['user_id'] == 0 ) {
 			$strsql = "INSERT INTO ciniki_users (uuid, date_added, email, username, firstname, lastname, display_name, "
 				. "perms, status, timeout, password, temp_password, temp_password_date, last_updated) VALUES ("
 				. "UUID(), "
 				. "UTC_TIMESTAMP()" 
-				. ", '" . ciniki_core_dbQuote($ciniki, $_SESSION['email_address']) . "'" 
-				. ", '" . ciniki_core_dbQuote($ciniki, $_SESSION['username']) . "'" 
-				. ", '" . ciniki_core_dbQuote($ciniki, $_SESSION['firstname']) . "'" 
-				. ", '" . ciniki_core_dbQuote($ciniki, $_SESSION['lastname']) . "'" 
-				. ", '" . ciniki_core_dbQuote($ciniki, $_SESSION['firstname'] . " " . $_SESSION['lastname'][0]) . "'" 
+				. ", '" . ciniki_core_dbQuote($ciniki, $signup['email_address']) . "'" 
+				. ", '" . ciniki_core_dbQuote($ciniki, $signup['username']) . "'" 
+				. ", '" . ciniki_core_dbQuote($ciniki, $signup['firstname']) . "'" 
+				. ", '" . ciniki_core_dbQuote($ciniki, $signup['lastname']) . "'" 
+				. ", '" . ciniki_core_dbQuote($ciniki, $signup['firstname'] . " " . $signup['lastname'][0]) . "'" 
 				. ", 0, 1, 0, "
-				. "SHA1('" . ciniki_core_dbQuote($ciniki, $_SESSION['password']) . "'), "
+				. "SHA1('" . ciniki_core_dbQuote($ciniki, $signup['password']) . "'), "
 				. "SHA1('" . ciniki_core_dbQuote($ciniki, '') . "'), "
 				. "UTC_TIMESTAMP(), "
 				. "UTC_TIMESTAMP())";
@@ -174,8 +196,8 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 				$user_id = $rc['insert_id'];
 				$ciniki['session'] = array('user'=>array('id'=>$user_id), 'change_log_id'=>'SIGNUP');
 			}
-		} elseif( $err == 0 && $_SESSION['user_id'] > 0 ) {
-			$user_id = $_SESSION['user_id'];
+		} elseif( $err == 0 && $signup['user_id'] > 0 ) {
+			$user_id = $signup['user_id'];
 			$ciniki['session'] = array('user'=>array('id'=>$user_id), 'change_log_id'=>'SIGNUP');
 		}
 
@@ -186,8 +208,8 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 		if( $err == 0 ) {
 			$strsql = "INSERT INTO ciniki_businesses (uuid, name, sitename, status, date_added, last_updated) VALUES ("
 				. "UUID(), "
-				. "'" . ciniki_core_dbQuote($ciniki, $_SESSION['business_name']) . "' "
-				. ", '" . ciniki_core_dbQuote($ciniki, $_SESSION['sitename']) . "' "
+				. "'" . ciniki_core_dbQuote($ciniki, $signup['business_name']) . "' "
+				. ", '" . ciniki_core_dbQuote($ciniki, $signup['sitename']) . "' "
 				. ", 1, UTC_TIMESTAMP(), UTC_TIMESTAMP())";
 			$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.businesses');
 			if( $rc['stat'] != 'ok' ) { 
@@ -204,9 +226,9 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 			} else {
 				$business_id = $rc['insert_id'];
 				ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.businesses', 'ciniki_business_history', $business_id, 
-					1, 'ciniki_businesses', '', 'name', $_SESSION['business_name']);
+					1, 'ciniki_businesses', '', 'name', $signup['business_name']);
 				ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.businesses', 'ciniki_business_history', $business_id, 
-					1, 'ciniki_businesses', '', 'sitename', $_SESSION['sitename']);
+					1, 'ciniki_businesses', '', 'sitename', $signup['sitename']);
 			}
 		}
 
@@ -217,7 +239,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 			$strsql = "INSERT INTO ciniki_business_details (business_id, detail_key, detail_value, date_added, last_updated) "
 				. "VALUES ('" . ciniki_core_dbQuote($ciniki, $business_id) . "', "
 				. "'contact.person.name', "
-				. "'" . ciniki_core_dbQuote($ciniki, $_SESSION['firstname'] . " " . $_SESSION['lastname']) . "', "
+				. "'" . ciniki_core_dbQuote($ciniki, $signup['firstname'] . " " . $signup['lastname']) . "', "
 				. "UTC_TIMESTAMP(), UTC_TIMESTAMP()) ";
 			$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.businesses');
 			if( $rc['stat'] != 'ok' ) {
@@ -227,14 +249,14 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 				$err = 5;
 			} else {
 				ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.businesses', 'ciniki_business_history', $business_id, 
-					1, 'ciniki_business_details', 'contact.person.name', 'detail_value', $_SESSION['firstname'] . " " . $_SESSION['lastname']);
+					1, 'ciniki_business_details', 'contact.person.name', 'detail_value', $signup['firstname'] . " " . $signup['lastname']);
 			}
 		}
 		if( $err == 0 ) {
 			$strsql = "INSERT INTO ciniki_business_details (business_id, detail_key, detail_value, date_added, last_updated) "
 				. "VALUES ('" . ciniki_core_dbQuote($ciniki, $business_id) . "', "
 				. "'contact.email.address', "
-				. "'" . ciniki_core_dbQuote($ciniki, $_SESSION['email_address']) . "', "
+				. "'" . ciniki_core_dbQuote($ciniki, $signup['email_address']) . "', "
 				. "UTC_TIMESTAMP(), UTC_TIMESTAMP()) ";
 			$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.businesses');
 			if( $rc['stat'] != 'ok' ) {
@@ -244,7 +266,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 				$err = 6;
 			} else {
 				ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.businesses', 'ciniki_business_history', $business_id, 
-					1, 'ciniki_business_details', 'contact.email.address', 'detail_value', $_SESSION['email_address']);
+					1, 'ciniki_business_details', 'contact.email.address', 'detail_value', $signup['email_address']);
 			}
 		}
 
@@ -270,7 +292,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 		// Enable modules
 		//
 		if( $err == 0 ) {
-			$modules = preg_split('/,/', $_SESSION['plan_modules']);
+			$modules = preg_split('/,/', $signup['plan_modules']);
 			foreach($modules as $module) {
 				$mod = preg_split('/\./', $module);
 				$strsql = "INSERT INTO ciniki_business_modules (business_id, "
@@ -311,7 +333,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 				. "date_added, last_updated) VALUES ("
 				. "'" . ciniki_core_dbQuote($ciniki, $business_id) . "', "
 				. "2, UTC_TIMESTAMP(), UTC_TIMESTAMP(), '60', 'USD', "
-				. "'" . ciniki_core_dbQuote($ciniki, $_SESSION['plan_monthly']) . "', "
+				. "'" . ciniki_core_dbQuote($ciniki, $signup['plan_monthly']) . "', "
 				. "0, 0, 'paypal', 10, "
 				. "UTC_TIMESTAMP(), UTC_TIMESTAMP())";
 			$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.businesses');
@@ -349,14 +371,14 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 				. "\n\n"
 				. "Please save this e-mail for future reference.  We've included some important information and links below."
 				. "\n\n"
-				. "Email: " . $_SESSION['email_address'] . "\n"
-				. "Username: " . $_SESSION['username'] . "\n"
+				. "Email: " . $signup['email_address'] . "\n"
+				. "Username: " . $signup['username'] . "\n"
 				. "Manage: " . $ciniki['config']['ciniki.core']['manage.url'] . "\n";
-			if( preg_match('/ciniki\.web/', $_SESSION['plan_modules']) ) {
-				$msg .= "Your website: http://" . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $_SESSION['sitename'] . "\n";
+			if( preg_match('/ciniki\.web/', $signup['plan_modules']) ) {
+				$msg .= "Your website: http://" . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $signup['sitename'] . "\n";
 			}
 			$msg .= "\n\n";
-			$ciniki['emailqueue'][] = array('to'=>$_SESSION['email_address'],
+			$ciniki['emailqueue'][] = array('to'=>$signup['email_address'],
 				'subject'=>$subject,
 				'textmsg'=>$msg,
 				);
@@ -378,10 +400,10 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 					//
 					if( $uid != $ciniki['session']['user']['id'] ) {
 						$ciniki['emailqueue'][] = array('user_id'=>$uid,
-							'subject'=>'Sign Up: ' . $_SESSION['business_name'],
-							'textmsg'=>"New business added: " . $_SESSION['business_name'] . "\n"
-								. "User: " . $_SESSION['firstname'] . " " . $_SESSION['lastname'] . "\n"
-								. "Email: " . $_SESSION['email_address'] . "\n"
+							'subject'=>'Sign Up: ' . $signup['business_name'],
+							'textmsg'=>"New business added: " . $signup['business_name'] . "\n"
+								. "User: " . $signup['firstname'] . " " . $signup['lastname'] . "\n"
+								. "Email: " . $signup['email_address'] . "\n"
 								. "\n\n"
 								);
 					}
@@ -398,6 +420,18 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 				$page_content .= $rc['content'];
 			}
 			$display_page = '';
+
+			//
+			// Remove the entry from the signup table
+			//
+			$strsql = "DELETE FROM ciniki_web_signups "
+				. "WHERE signup_key = '" . ciniki_core_dbQuote($ciniki, $_GET['t']) . "' "
+				. "";
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDelete');
+			$rc = ciniki_core_dbDelete($ciniki, $strsql, 'ciniki.web');
+			if( $rc['stat'] != 'ok' ) {
+				error_log('WEB-ERR: Unable to remove signup entry: ' . $_GET['t']);
+			}
 		}
 	}
 
@@ -521,8 +555,9 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 		//
 		// Validate and load plan details
 		//
+		$signup = array();
 		if( $err == 0 ) {
-			session_start();
+//			session_start();
 			$strsql = "SELECT id, name, monthly, trial_days, modules "
 				. "FROM ciniki_business_plans "
 				. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $_POST['plan']) . "' "
@@ -537,9 +572,12 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 				$plan_err = "Something went wrong with selecting a plan, please try again.";
 				$err = 20;
 			} else {
-				$_SESSION['plan_monthly'] = $rc['plan']['monthly'];
-				$_SESSION['plan_trial_days'] = $rc['plan']['trial_days'];
-				$_SESSION['plan_modules'] = $rc['plan']['modules'];
+				$signup['plan_monthly'] = $rc['plan']['monthly'];
+				$signup['plan_trial_days'] = $rc['plan']['trial_days'];
+				$signup['plan_modules'] = $rc['plan']['modules'];
+//				$_SESSION['plan_monthly'] = $rc['plan']['monthly'];
+//				$_SESSION['plan_trial_days'] = $rc['plan']['trial_days'];
+//				$_SESSION['plan_modules'] = $rc['plan']['modules'];
 			}
 		}
 		
@@ -548,18 +586,44 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 		// Setup the session, and send the email.
 		// 
 		if( $err == 0 ) {
-			$_SESSION['firstname'] = $_POST['firstname'];
-			$_SESSION['lastname'] = $_POST['lastname'];
-			$_SESSION['business_name'] = $_POST['business_name'];
-			$_SESSION['sitename'] = $sitename;
-			$_SESSION['email_address'] = $_POST['email_address'];
-			$_SESSION['username'] = $_POST['username'];
-			$_SESSION['password'] = $_POST['password'];
-			$_SESSION['user_id'] = $user_id;
-			$_SESSION['time'] = time();
-			$_SESSION['key'] = md5(date('Y-m-d-H-i-s') . rand());	
-			session_write_close();
-			$verify_url = $verify_base_url . "?t=" . $_SESSION['key'];
+			$signup['firstname'] = $_POST['firstname'];
+			$signup['lastname'] = $_POST['lastname'];
+			$signup['business_name'] = $_POST['business_name'];
+			$signup['sitename'] = $sitename;
+			$signup['email_address'] = $_POST['email_address'];
+			$signup['username'] = $_POST['username'];
+			$signup['password'] = $_POST['password'];
+			$signup['user_id'] = $user_id;
+			$signup['time'] = time();
+			$signup['key'] = md5(date('Y-m-d-H-i-s') . rand());	
+//			$_SESSION['firstname'] = $_POST['firstname'];
+//			$_SESSION['lastname'] = $_POST['lastname'];
+//			$_SESSION['business_name'] = $_POST['business_name'];
+//			$_SESSION['sitename'] = $sitename;
+//			$_SESSION['email_address'] = $_POST['email_address'];
+//			$_SESSION['username'] = $_POST['username'];
+//			$_SESSION['password'] = $_POST['password'];
+//			$_SESSION['user_id'] = $user_id;
+//			$_SESSION['time'] = time();
+//			$_SESSION['key'] = md5(date('Y-m-d-H-i-s') . rand());	
+			$strsql = "INSERT INTO ciniki_web_signups ("
+				. "uuid, business_id, signup_key, signup_data, "
+				. "date_added, last_updated) VALUES ("
+				. "UUID(), " 
+				. "'" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_business_id']) . "', "
+				. "'" . ciniki_core_dbQuote($ciniki, $signup['key']) . "', "
+				. "'" . ciniki_core_dbQuote($ciniki, serialize($signup)) . "', "
+				. "UTC_TIMESTAMP(), UTC_TIMESTAMP() "
+				. ")"
+				. "";
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbInsert');
+			$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
+			if( $rc['stat'] != 'ok' ) {
+				$page_err = "Oops, we seem to have hit an internal snag here.  We apologize, but you'll need to try this again.";
+				$err = 42;
+			}
+//			session_write_close();
+			$verify_url = $verify_base_url . "?t=" . $signup['key'];
 			
 			//
 			// Send email to user
@@ -570,11 +634,50 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 //				. "<a href='$verify_url'>$verify_url</a>";
 				. "$verify_url"
 				. "\n\n";
-			$ciniki['emailqueue'][] = array('to'=>$_SESSION['email_address'],
+			$ciniki['emailqueue'][] = array('to'=>$signup['email_address'],
 				'subject'=>$subject,
 				'textmsg'=>$msg,
 				);
+			error_log('WEB-SIGNUP: ' 
+				. $signup['firstname'] . ', '
+				. $signup['lastname'] . ', '
+				. $signup['business_name'] . ', '
+				. $signup['sitename'] . ', '
+				. $signup['email_address'] . ', '
+				. $signup['username'] . ', '
+				. $signup['user_id'] . ' '
+				);
 
+			//
+			// Email a notification to the owners of the master business
+			//
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQueryList');
+
+			$strsql = "SELECT user_id FROM ciniki_business_users "
+				. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_business_id']) . "' "
+				. "AND permission_group = 'owners' "
+				. "";
+			$rc = ciniki_core_dbQueryList($ciniki, $strsql, 'ciniki.businesses', 'user_ids', 'user_id');
+			if( $rc['stat'] == 'ok' ) {
+				foreach($rc['user_ids'] as $uid) {
+					// 
+					// Don't email the submitter, they will get a separate email
+					//
+					if( $uid != $ciniki['session']['user']['id'] ) {
+						$ciniki['emailqueue'][] = array('user_id'=>$uid,
+							'subject'=>'Sign Up: ' . $signup['business_name'],
+							'textmsg'=>"New business signup: \n" 
+								. "Business Name: " . $signup['business_name'] . "\n"
+								. "User: " . $signup['firstname'] . " " . $signup['lastname'] . "\n"
+								. "Sitename: " . $signup['sitename'] . "\n"
+								. "Email: " . $signup['email_address'] . "\n"
+								. "Username: " . $signup['username'] . "\n"
+								. "user_id: " . $signup['user_id'] . "\n"
+								. "\n\n"
+								);
+					}
+				}
+			}
 		}
 
 		//
