@@ -45,6 +45,7 @@ function ciniki_web_checkAccess($ciniki, $business_id, $method) {
 		|| $method == 'ciniki.web.pageSettingsGet'
 		|| $method == 'ciniki.web.pageSettingsHistory'
 		|| $method == 'ciniki.web.businessUsers'
+		|| $method == 'ciniki.web.siteSettingsGet'
 		|| $method == 'ciniki.web.siteSettingsUpdate'
 		|| $method == 'ciniki.web.faqAdd'
 		|| $method == 'ciniki.web.faqDelete'
