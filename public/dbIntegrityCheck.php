@@ -39,7 +39,8 @@ function ciniki_web_dbIntegrityCheck(&$ciniki) {
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDelete');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashIDQuery');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbFixTableHistory');
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'refAdd');
+//	ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'refAdd');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectRefFix');
 
 	if( $args['fix'] == 'yes' ) {
 		//
@@ -68,9 +69,30 @@ function ciniki_web_dbIntegrityCheck(&$ciniki) {
 		}
 
 		//
+		// Load objects file
+		//
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'objects');
+		$rc = ciniki_web_objects($ciniki);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$objects = $rc['objects'];
+
+		//
+		// Check any references for the objects
+		//
+		foreach($objects as $o => $obj) {
+			$rc = ciniki_core_objectRefFix($ciniki, $args['business_id'], 'ciniki.web.'.$o, 0x04);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+		}
+
+/*
+		//
 		// Load existing image refs
 		//
-		$strsql = "SELECT CONCAT_WS('-', object_id, image_id) AS refid "
+		$strsql = "SELECT CONCAT_WS('-', object_id, ref_id) AS refid "
 			. "FROM ciniki_image_refs "
 			. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
 			. "AND object = 'ciniki.web.setting' "
@@ -112,8 +134,8 @@ function ciniki_web_dbIntegrityCheck(&$ciniki) {
 				}
 			}
 		}
+*/
 	}
-
 	return array('stat'=>'ok');
 }
 ?>

@@ -307,8 +307,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 					//
 					// Remove the old reference
 					//
-					ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'refClear');
-					$rc = ciniki_images_refClear($ciniki, $args['business_id'], array(
+					ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectRefClear');
+					$rc = ciniki_core_objectRefClear($ciniki, $args['business_id'], 'ciniki.images.image', array(
 						'object'=>'ciniki.web.setting', 
 						'object_id'=>$field));
 					if( $rc['stat'] == 'fail' ) {
@@ -320,9 +320,9 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 					//
 					// Add the new reference
 					//
-					ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'refAdd');
-					$rc = ciniki_images_refAdd($ciniki, $args['business_id'], array(
-						'image_id'=>$ciniki['request']['args'][$field], 
+					ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectRefAdd');
+					$rc = ciniki_core_objectRefAdd($ciniki, $args['business_id'], 'ciniki.images.image', array(
+						'ref_id'=>$ciniki['request']['args'][$field], 
 						'object'=>'ciniki.web.setting', 
 						'object_id'=>$field,
 						'object_field'=>'detail_value'));
@@ -346,7 +346,6 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		// page-custom-001-image
 		// page-custom-001-image-caption
 		if( preg_match('/^page-custom-([0-9][0-9][0-9])-(active|name|parent|permalink|image|image-caption|content)$/', $field, $matches) == 1 ) {
-			error_log('test');
 			$page_number = $matches[1];
 			$page_name = $matches[2];
 			if( $page_name == 'content' ) {
@@ -396,8 +395,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 					//
 					// Remove the old reference
 					//
-					ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'refClear');
-					$rc = ciniki_images_refClear($ciniki, $args['business_id'], array(
+					ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectRefClear');
+					$rc = ciniki_core_objectRefClear($ciniki, $args['business_id'], 'ciniki.images.image', array(
 						'object'=>'ciniki.web.setting', 
 						'object_id'=>$field));
 					if( $rc['stat'] == 'fail' ) {
@@ -409,9 +408,9 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 					//
 					// Add the new reference
 					//
-					ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'refAdd');
-					$rc = ciniki_images_refAdd($ciniki, $args['business_id'], array(
-						'image_id'=>$ciniki['request']['args'][$field], 
+					ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectRefAdd');
+					$rc = ciniki_core_objectRefAdd($ciniki, $args['business_id'], 'ciniki.images.image', array(
+						'ref_id'=>$ciniki['request']['args'][$field], 
 						'object'=>'ciniki.web.setting', 
 						'object_id'=>$field,
 						'object_field'=>'detail_value'));
