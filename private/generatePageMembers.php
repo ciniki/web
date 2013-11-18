@@ -43,7 +43,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 		//
 		// If there was an error locating the files, display generic error
 		//
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1055', 'msg'=>'Unable to locate file'));
+		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1055', 'msg'=>'The file you requested does not exist.'));
 	}
 
 	//
