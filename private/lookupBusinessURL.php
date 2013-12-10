@@ -24,7 +24,7 @@ function ciniki_web_lookupBusinessURL($ciniki, $business_id) {
 		. "FROM ciniki_business_domains "
 		. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
 		. "AND status < 50 "
-		. "ORDER BY isprimary "
+		. "ORDER BY isprimary DESC "
 		. "LIMIT 1"
 		. "";
 	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'business');
