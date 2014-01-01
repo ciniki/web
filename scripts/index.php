@@ -18,22 +18,22 @@ $ciniki_root = dirname(__FILE__);
 if( !file_exists($ciniki_root . '/ciniki-api.ini') ) {
 	$ciniki_root = dirname(dirname(dirname(dirname(__FILE__))));
 }
-$themes_root = "/ciniki-api/web/themes";
+$themes_root = "/ciniki-mods/web/themes";
 $themes_root_url = "/ciniki-web-themes";
 
 //
 // Initialize Ciniki
 //
 $ciniki = array();
-require_once($ciniki_root . '/ciniki-api/core/private/loadCinikiConfig.php');
+require_once($ciniki_root . '/ciniki-mods/core/private/loadCinikiConfig.php');
 if( ciniki_core_loadCinikiConfig($ciniki, $ciniki_root) == false ) {
 	print_error(NULL, 'There is currently a configuration problem, please try again later.');
 	exit;
 }
 
 // standard functions
-require_once($ciniki_root . '/ciniki-api/core/private/dbQuote.php');
-require_once($ciniki_root . '/ciniki-api/core/private/loadMethod.php');
+require_once($ciniki_root . '/ciniki-mods/core/private/dbQuote.php');
+require_once($ciniki_root . '/ciniki-mods/core/private/loadMethod.php');
 
 //
 // Initialize Database
