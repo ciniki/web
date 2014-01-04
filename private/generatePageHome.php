@@ -210,7 +210,7 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 				. $rc['content']
 				. "";
 			if( $number_of_workshops > 2 ) {
-				$content .= "<div class='workshops-more'><a href='" . $ciniki['request']['base_url'] . "/workshops'>... more workshops</a></div>";
+				$content .= "<div class='events-more'><a href='" . $ciniki['request']['base_url'] . "/workshops'>... more workshops</a></div>";
 			}
 			$content .= "</article>\n"
 				. "";

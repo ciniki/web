@@ -38,9 +38,11 @@ function ciniki_web_processWorkshops($ciniki, $settings, $workshops, $limit) {
 			$workshop_date .= "/" . $workshop['end_year'];
 		}
 
+		$javascript_onclick = '';
 		if( $workshop['isdetails'] == 'yes' || (isset($workshop['num_images']) && $workshop['num_images'] > 0)
 			|| (isset($workshop['num_files']) & $workshop['num_files'] > 0) ) {
 			$workshop_url = $ciniki['request']['base_url'] . "/workshops/" . $workshop['permalink'];
+			$javascript_onclick = " onclick='javascript:location.href=\"$workshop_url\";' ";
 		} else {
 			if( $workshop['url'] != '' ) {
 				$rc = ciniki_web_processURL($ciniki, $workshop['url']);
@@ -79,14 +81,14 @@ function ciniki_web_processWorkshops($ciniki, $settings, $workshops, $limit) {
 		// Setup the details
 		$content .= "<td class='cilist-title'>";
 		$content .= "<p class='cilist-title'>";
-//		if( $workshop_url != '' ) {
-//			$content .= "<a href='$workshop_url' title='" . $workshop['name'] . "'>" . $workshop['name'] . "</a>";
-//		} else {
+		if( $workshop_url != '' ) {
+			$content .= "<a href='$workshop_url' title='" . $workshop['name'] . "'>" . $workshop['name'] . "</a>";
+		} else {
 			$content .= $workshop['name'];
-//		}
+		}
 		$content .= "</p>";
 		$content .= "</td></tr>";
-		$content .= "<tr><td class='cilist-details'>";
+		$content .= "<tr><td $javascript_onclick class='cilist-details'>";
 		if( isset($workshop['description']) && $workshop['description'] != '' ) {
 			$rc = ciniki_web_processContent($ciniki, $workshop['description'], 'cilist-description');
 			if( $rc['stat'] == 'ok' ) {
