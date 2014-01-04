@@ -183,6 +183,41 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 	}
 
 	//
+	// List any upcoming workshops
+	//
+	if( isset($ciniki['business']['modules']['ciniki.workshops']) 
+		&& isset($settings['page-workshops-active']) && $settings['page-workshops-active'] == 'yes' 
+		&& (!isset($settings['page-home-upcoming-workshops']) || $settings['page-home-upcoming-workshops'] == 'yes') 
+		) {
+		//
+		// Load and parse the workshops
+		//
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'workshops', 'web', 'workshopList');
+		$rc = ciniki_workshops_web_workshopList($ciniki, $settings, $ciniki['request']['business_id'], 'upcoming', 3);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$number_of_workshops = count($rc['workshops']);
+		if( isset($rc['workshops']) && $number_of_workshops > 0 ) {
+			$workshops = $rc['workshops'];
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processWorkshops');
+			$rc = ciniki_web_processWorkshops($ciniki, $settings, $workshops, 2);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$content .= "<article class='page'>\n"
+				. "<header class='entry-title'><h1 class='entry-title'>Upcoming Workshops</h1></header>\n"
+				. $rc['content']
+				. "";
+			if( $number_of_workshops > 2 ) {
+				$content .= "<div class='workshops-more'><a href='" . $ciniki['request']['base_url'] . "/workshops'>... more workshops</a></div>";
+			}
+			$content .= "</article>\n"
+				. "";
+		}
+	}
+
+	//
 	// List any upcoming events
 	//
 	if( isset($ciniki['business']['modules']['ciniki.events']) 

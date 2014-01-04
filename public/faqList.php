@@ -8,7 +8,7 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:		The ID of the business to get events for.
+// business_id:		The ID of the business to get faq list for.
 //
 // Returns
 // -------

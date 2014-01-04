@@ -248,6 +248,7 @@ function ciniki_web_main() {
 				'page-home-gallery-random':{'label':'Display Random Example Work', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-home-gallery-random-title':{'label':'Random Example Work Title', 'active':'no', 'type':'text', 'size':'small', 'hint':'Example Work'},
 				'page-home-upcoming-events':{'label':'Display Upcoming Events', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+				'page-home-upcoming-workshops':{'label':'Display Upcoming Workshops', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-home-upcoming-artgalleryexhibitions':{'label':'Display Upcoming Exhibtions', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				}},
 			'_image':{'label':'Image', 'fields':{
@@ -370,6 +371,27 @@ function ciniki_web_main() {
 		this.events.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.events.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'events\');');
 		this.events.addClose('Cancel');
+
+		//
+		// The options and information for the Workshops page
+		//
+		this.workshops = new M.panel('Workshops',
+			'ciniki_web_main', 'workshops',
+			'mc', 'narrow', 'sectioned', 'ciniki.web.main.workshops');
+		this.workshops.data = {};
+		this.workshops.sections = {
+			'options':{'label':'Options', 'fields':{
+				'page-workshops-active':{'label':'Show workshops', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-workshops-past':{'label':'Include past workshops', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'workshops\');'},
+				}},
+		};
+		this.workshops.fieldValue = this.fieldValue;
+		this.workshops.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.workshops.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'workshops\');');
+		this.workshops.addClose('Cancel');
 
 		//
 		// The options and information for the friends page
@@ -904,6 +926,7 @@ function ciniki_web_main() {
 			} else {
 				this.home.sections.options.fields['page-home-upcoming-events'].active = 'no';
 			}
+			this.home.sections.options.fields['page-home-upcoming-workshops'].active = (M.curBusiness.modules['ciniki.workshops']!=null)?'yes':'no';
 			if( M.curBusiness.modules['ciniki.artgallery'] != null ) {
 				this.home.sections.options.fields['page-home-upcoming-artgalleryexhibitions'].active = 'yes';
 			} else {

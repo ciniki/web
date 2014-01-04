@@ -381,6 +381,9 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		}
 		$content .= "</a></li>";
 	}
+	if( isset($settings['page-workshops-active']) && $settings['page-workshops-active'] == 'yes' ) {
+		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/workshops'>Workshops</a></li>";
+	}
 	if( isset($settings['page-events-active']) && $settings['page-events-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/events'>Events</a></li>";
 	}
