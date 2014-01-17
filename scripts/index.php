@@ -133,6 +133,7 @@ if( $ciniki['request']['business_id'] == 0 ) {
 		|| $ciniki['request']['uri_split'][0] == 'signup'
 		|| $ciniki['request']['uri_split'][0] == 'documentation'
 		|| $ciniki['request']['uri_split'][0] == 'support'
+		|| $ciniki['request']['uri_split'][0] == 'products'
 		|| $ciniki['request']['uri_split'][0] == 'gallery'
 		|| $ciniki['request']['uri_split'][0] == 'downloads'
 		|| $ciniki['request']['uri_split'][0] == 'faq'
@@ -363,6 +364,12 @@ elseif( $ciniki['request']['page'] == 'members'
 	&& isset($settings['page-members-active']) && $settings['page-members-active'] == 'yes' ) {
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageMembers.php');
 	$rc = ciniki_web_generatePageMembers($ciniki, $settings);
+}
+// Gallery
+elseif( $ciniki['request']['page'] == 'products' 
+	&& isset($settings['page-products-active']) && $settings['page-products-active'] == 'yes' ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageProducts.php');
+	$rc = ciniki_web_generatePageProducts($ciniki, $settings);
 }
 // Gallery
 elseif( $ciniki['request']['page'] == 'gallery' 

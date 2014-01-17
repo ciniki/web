@@ -455,6 +455,27 @@ function ciniki_web_main() {
 		this.gallery.addClose('Cancel');
 
 		//
+		// The options and information for the products page
+		//
+		this.products = new M.panel('Products',
+			'ciniki_web_main', 'products',
+			'mc', 'narrow', 'sectioned', 'ciniki.web.main.products');
+		this.products.data = {};
+		this.products.sections = {
+			'options':{'label':'', 'fields':{
+				'page-products-active':{'label':'Display Products', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-products-name':{'label':'Name', 'type':'text', 'hint':'default is Products'},
+				}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'products\');'},
+				}},
+		};
+		this.products.fieldValue = this.fieldValue;
+		this.products.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.products.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'products\');');
+		this.products.addClose('Cancel');
+
+		//
 		// The options and information for the members page
 		//
 		this.members = new M.panel('Members',

@@ -68,6 +68,9 @@ function ciniki_web_siteSettings($ciniki) {
 	if( isset($modules['ciniki.web']) && ($modules['ciniki.web']['flags']&0x01) == 1) {
 		$pages['custom'] = array('display_name'=>'Custom', 'active'=>'no');
 	}
+	if( isset($modules['ciniki.products']) ) {
+		$pages['products'] = array('display_name'=>'Products', 'active'=>'no');
+	}
 	if( isset($modules['ciniki.workshops']) ) {
 		$pages['workshops'] = array('display_name'=>'Workshops', 'active'=>'no');
 	}
@@ -137,6 +140,9 @@ function ciniki_web_siteSettings($ciniki) {
 	}
 	if( isset($settings['page-about-active']) && $settings['page-about-active'] == 'yes' ) {
 		$pages['about']['active'] = 'yes';
+	}
+	if( isset($settings['page-products-active']) && $settings['page-products-active'] == 'yes' ) {
+		$pages['products']['active'] = 'yes';
 	}
 	if( isset($settings['page-custom-001-active']) && $settings['page-custom-001-active'] == 'yes' && ($modules['ciniki.web']['flags']&0x01) == 1 ) {
 		$pages['custom']['active'] = 'yes';
