@@ -251,6 +251,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 	// Display the list of members if a specific one isn't selected
 	//
 	else {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'artclub', 'web', 'memberList');
 		$rc = ciniki_artclub_web_memberList($ciniki, $settings, $ciniki['request']['business_id']);
 		if( $rc['stat'] != 'ok' ) {
@@ -294,7 +295,11 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 				$page_content .= "</td></tr>";
 				$page_content .= "<tr><td class='members-description'>";
 				if( isset($member['description']) && $member['description'] != '' ) {
-					$page_content .= "<span class='members-description'>" . $member['description'] . "</span>";
+					$rc = ciniki_web_processContent($ciniki, $member['description'], 'members-description');
+					if( $rc['stat'] == 'ok' ) {
+						$page_content .= $rc['content'];
+					}
+					// $page_content .= "<span class='members-description'>" . $member['description'] . "</span>";
 				}
 				$page_content .= "</td></tr>";
 				$page_content .= "<tr><td class='members-more'><a href='$member_url'>... more</a></td></tr>";
@@ -314,7 +319,6 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 		// Check if membership info should be displayed here
 		//
 		if( isset($settings['page-members-membership-details']) && $settings['page-members-membership-details'] == 'yes' ) {
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'artclub', 'web', 'membershipDetails');
 			$rc = ciniki_artclub_web_membershipDetails($ciniki, $settings, $ciniki['request']['business_id']);
 			if( $rc['stat'] != 'ok' ) {
