@@ -46,7 +46,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 		//
 		// If there was an error locating the files, display generic error
 		//
-		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1499', 'msg'=>'The file you requested does not exist.'));
+		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1504', 'msg'=>'The file you requested does not exist.'));
 	}
 
 	//
@@ -93,7 +93,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 		$product = $rc['product'];
 
 		if( !isset($product['images']) || count($product['images']) < 1 ) {
-			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1287', 'msg'=>'Unable to find image'));
+			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1505', 'msg'=>'Unable to find image'));
 		}
 
 		$first = NULL;
