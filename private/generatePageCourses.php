@@ -595,6 +595,29 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 //				. "<header class='entry-title'><h1 class='entry-title'>Registration</h1></header>\n"
 				. "<div class='entry-content'>\n"
 				. "";
+			
+			// Check if there are files to be displayed on the main page
+			$program_url = '';
+			if( $type_name == '' && (isset($settings['page-courses-catalog-download-active']) 
+					&& $settings['page-courses-catalog-download-active'] == 'yes' )
+	//			|| ()	-- future files
+				) {
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'courses', 'web', 'files');
+				$rc = ciniki_courses_web_files($ciniki, $settings, $ciniki['request']['business_id']);
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				if( isset($rc['files']) ) {
+					$reg_files = $rc['files'];
+					// Check if program brochure download and link to image
+					if( count($reg_files) == 1 && isset($reg_files[0]['file']['permalink']) && $reg_files[0]['file']['permalink'] != '' ) {
+						$program_url = $ciniki['request']['base_url'] . '/courses/download/' . $reg_files[0]['file']['permalink'] . '.' . $reg_files[0]['file']['extension'];
+						$program_url_title = $reg_files[0]['file']['name'];
+					}
+				} else {
+					$reg_files = array();
+				}
+			}
 			if( isset($settings["page-courses" . $type_name . "-image"]) && $settings["page-courses" . $type_name . "-image"] != '' && $settings["page-courses" . $type_name . "-image"] > 0 ) {
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 				$rc = ciniki_web_getScaledImageURL($ciniki, $settings["page-courses" . $type_name . "-image"], 'original', '500', 0);
@@ -602,7 +625,15 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 					return $rc;
 				}
 				$page_content .= "<aside><div class='image-wrap'>"
-					. "<div class='image'><img title='' alt='" . $ciniki['business']['details']['name'] . "' src='" . $rc['url'] . "' /></div>";
+					. "<div class='image'>";
+				if( $program_url != '' ) {
+					$page_content .= "<a target='_blank' href='$program_url' title='$program_url_title'>";
+				}
+				$page_content .= "<img title='' alt='" . $ciniki['business']['details']['name'] . "' src='" . $rc['url'] . "' />";
+				if( $program_url != '' ) {
+					$page_content .= "</a>";
+				}
+				$page_content .= "</div>";
 				if( isset($settings["page-courses" . $type_name . "-image-caption"]) && $settings["page-courses" . $type_name . "-image-caption"] != '' ) {
 					$page_content .= "<div class='image-caption'>" . $settings["page-courses" . $type_name . "-image-caption"] . "</div>";
 				}
@@ -750,6 +781,14 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 			}
 			$registration = $rc['registration'];
 			if( $registration['details'] != '' ) {
+				// Check for a programs pdf, and link to image if it exists
+				$program_url = '';
+				if( isset($registration['files']) && count($registration['files']) == 1 ) {
+					if( isset($registration['files'][0]['file']['permalink']) && $registration['files'][0]['file']['permalink'] != '' ) {
+						$program_url = $ciniki['request']['base_url'] . '/courses/download/' . $registration['files'][0]['file']['permalink'] . '.' . $registration['files'][0]['file']['extension'];
+						$program_url_title = $registration['files'][0]['file']['name'];
+					}
+				}
 				$page_content .= "<article class='page'>\n"
 					. "<header class='entry-title'><h1 class='entry-title'>Registration</h1></header>\n"
 					. "<div class='entry-content'>\n"
@@ -761,7 +800,16 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 						return $rc;
 					}
 					$page_content .= "<aside><div class='image-wrap'>"
-						. "<div class='image'><img title='' alt='" . $ciniki['business']['details']['name'] . "' src='" . $rc['url'] . "' /></div>";
+						. "<div class='image'>";
+					if( $program_url != '' ) {
+						$page_content .= "<a target='_blank' href='$program_url' title='$program_url_title'>";
+					}
+					$page_content .= "<img title='' alt='" . $ciniki['business']['details']['name'] . "' src='" . $rc['url'] . "' />";
+					if( $program_url != '' ) {
+						$page_content .= "</a>";
+					}
+
+					$page_content .= "</div>";
 					if( isset($settings["page-courses-registration-image-caption"]) && $settings["page-courses-registration-image-caption"] != '' ) {
 						$page_content .= "<div class='image-caption'>" . $settings["page-courses-registration-image-caption"] . "</div>";
 					}
