@@ -240,6 +240,21 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 		}
 
 		//
+		// List the prices for the course
+		//
+		if( isset($event['prices']) && count($event['prices']) > 0 ) {
+			$page_content .= "<h2>Price</h2><p>";
+			foreach($event['prices'] as $pid => $price) {
+				if( $price['name'] != '' ) {
+					$page_content .= $price['name'] . " - " . $price['unit_amount_display'] . "<br/>";
+				} else {
+					$page_content .= $price['unit_amount_display'] . "<br/>";
+				}
+			}
+			$page_content .= "</p>";
+		}
+
+		//
 		// Display the files for the events
 		//
 		if( isset($event['files']) && count($event['files']) > 0 ) {

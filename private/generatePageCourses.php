@@ -405,6 +405,21 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 		}
 
 		//
+		// List the prices for the course
+		//
+		if( isset($offering['prices']) && count($offering['prices']) > 0 ) {
+			$page_content .= "<h2>Price</h2><p>";
+			foreach($offering['prices'] as $pid => $price) {
+				if( $price['name'] != '' ) {
+					$page_content .= $price['name'] . " - " . $price['unit_amount_display'] . "<br/>";
+				} else {
+					$page_content .= $price['unit_amount_display'] . "<br/>";
+				}
+			}
+			$page_content .= "</p>";
+		}
+
+		//
 		// The classes for a course offering
 		//
 		if( isset($offering['classes']) && count($offering['classes']) > 1 ) {
