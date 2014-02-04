@@ -188,7 +188,6 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 		&& $ciniki['request']['uri_split'][1] != '' ) {
 
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'products', 'web', 'productDetails');
-//		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
 		//
 		// Get the product information
 		//
@@ -237,21 +236,6 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 			$page_content .= $rc['content'];
 		}
 
-//		if( isset($product['url']) ) {
-//			$rc = ciniki_web_processURL($ciniki, $product['url']);
-//			if( $rc['stat'] != 'ok' ) {
-//				return $rc;
-//			}
-//			$url = $rc['url'];
-//			$display_url = $rc['display'];
-//		} else {
-//			$url = '';
-//		}
-//
-//		if( $url != '' ) {
-//			$page_content .= "<p>Website: <a class='cilist-url' target='_blank' href='" . $url . "' title='" . $product['name'] . "'>" . $display_url . "</a></p>";
-//		}
-
 		//
 		// Display the files for the products
 		//
@@ -280,7 +264,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 		//
 		if( isset($product['images']) && count($product['images']) > 0 ) {
 			$page_content .= "<article class='page'>"	
-				. "<header class='entry-title'><h1 class='entry-title'>Gallery</h1></header>\n"
+				. "<header class='entry-title'><h2 class='entry-title'>Gallery</h2></header>\n"
 				. "";
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
 			$img_base_url = $ciniki['request']['base_url'] . "/products/p/" . $product['permalink'] . "/gallery";
@@ -289,6 +273,25 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 				return $rc;
 			}
 			$page_content .= "<div class='image-gallery'>" . $rc['content'] . "</div>";
+			$page_content .= "</article>";
+		}
+
+		//
+		// Display the similar products
+		//
+		if( isset($product['similar']) && count($product['similar']) > 0 ) {
+			$page_content .= "<article class='page'>"
+				. "<header class='entry-title'><h2 class='entry-title'>Similar Products</h2></header>\n"
+				. "";
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
+			$base_url = $ciniki['request']['base_url'] . "/products/p";
+			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, array('0'=>array(
+				'name'=>'', 'noimage'=>'/ciniki-web-layouts/default/img/noimage_240.png',
+				'list'=>$product['similar'])), 0);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= "<div class='entry-content'>" . $rc['content'] . "</div>";
 			$page_content .= "</article>";
 		}
 	}

@@ -30,61 +30,69 @@ function ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $base_url,
 	$content = '';
 
 	foreach($images as $inum => $img) {
+		// 
+		// Check if image is not specified
 		//
-		// Check for cached file, if not generate
-		//
-		$img_filename = $ciniki['request']['cache_dir'] . '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/' 
-			. sprintf('%07d', $ciniki['request']['business_id'])
-			. '/t' . $maxlength . '/' . sprintf('%010d', $img['image_id']) . '.jpg';
-		$img_url = $ciniki['request']['cache_url'] . '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/' 
-			. sprintf('%07d', $ciniki['request']['business_id']) 
-			. '/t' . $maxlength . '/' . sprintf('%010d', $img['image_id']) . '.jpg';
-
-		//
-		// If the image file doesn't exist on disk, create it, or if it's been updated in the database since creation
-		//
-		$utc_offset = date_offset_get(new DateTime);
-		if( !file_exists($img_filename) 
-			|| (filemtime($img_filename) - $utc_offset) < $img['last_updated'] ) {
+		if( $img['image_id'] == 0 ) {
+			$img_url = "/ciniki-web-layouts/default/img/noimage_240.png";
+		}
+		else {
 			//
-			// Load the image from the database
+			// Check for cached file, if not generate
 			//
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'loadImage');
-			$rc = ciniki_images_loadImage($ciniki, $ciniki['request']['business_id'], $img['image_id'], 'thumbnail');
-			if( $rc['stat'] != 'ok' ) {
-				return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1337', 'msg'=>'Unable to generate image: ' . $img['image_id'], 'err'=>$rc['err']));
-			}
-			$image = $rc['image'];
-			
-			$image->thumbnailImage($maxlength, 0);
+			$img_filename = $ciniki['request']['cache_dir'] . '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/' 
+				. sprintf('%07d', $ciniki['request']['business_id'])
+				. '/t' . $maxlength . '/' . sprintf('%010d', $img['image_id']) . '.jpg';
+			$img_url = $ciniki['request']['cache_url'] . '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/' 
+				. sprintf('%07d', $ciniki['request']['business_id']) 
+				. '/t' . $maxlength . '/' . sprintf('%010d', $img['image_id']) . '.jpg';
 
 			//
-			// Check if they image is marked as sold, and add red dot
+			// If the image file doesn't exist on disk, create it, or if it's been updated in the database since creation
 			//
-			if( isset($img['sold']) && $img['sold'] == 'yes' ) {
-				$draw = new ImagickDraw();
-				$draw->setFillColor('red');
-				$draw->setStrokeColor(new ImagickPixel('white') );
-				$size = $maxlength/20;
-				$draw->circle($maxlength-($size*2), $maxlength-($size*2), $maxlength-$size, $maxlength-$size);
-				$image->drawImage($draw);
-			}
+			$utc_offset = date_offset_get(new DateTime);
+			if( !file_exists($img_filename) 
+				|| (filemtime($img_filename) - $utc_offset) < $img['last_updated'] ) {
+				//
+				// Load the image from the database
+				//
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'loadImage');
+				$rc = ciniki_images_loadImage($ciniki, $ciniki['request']['business_id'], $img['image_id'], 'thumbnail');
+				if( $rc['stat'] != 'ok' ) {
+					return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1337', 'msg'=>'Unable to generate image: ' . $img['image_id'], 'err'=>$rc['err']));
+				}
+				$image = $rc['image'];
+				
+				$image->thumbnailImage($maxlength, 0);
 
-			//
-			// Check directory exists
-			//
-			if( !file_exists(dirname($img_filename)) ) {
-				mkdir(dirname($img_filename), 0755, true);
-			}
+				//
+				// Check if they image is marked as sold, and add red dot
+				//
+				if( isset($img['sold']) && $img['sold'] == 'yes' ) {
+					$draw = new ImagickDraw();
+					$draw->setFillColor('red');
+					$draw->setStrokeColor(new ImagickPixel('white') );
+					$size = $maxlength/20;
+					$draw->circle($maxlength-($size*2), $maxlength-($size*2), $maxlength-$size, $maxlength-$size);
+					$image->drawImage($draw);
+				}
 
-			//
-			// Write the image to the cache file
-			//
-			$h = fopen($img_filename, 'w');
-			if( $h ) {
-				$image->setImageCompressionQuality(60);
-				fwrite($h, $image->getImageBlob());
-				fclose($h);
+				//
+				// Check directory exists
+				//
+				if( !file_exists(dirname($img_filename)) ) {
+					mkdir(dirname($img_filename), 0755, true);
+				}
+
+				//
+				// Write the image to the cache file
+				//
+				$h = fopen($img_filename, 'w');
+				if( $h ) {
+					$image->setImageCompressionQuality(60);
+					fwrite($h, $image->getImageBlob());
+					fclose($h);
+				}
 			}
 		}
 
