@@ -327,45 +327,16 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 		//
 		// Generate list of products
 		//
+		$base_url = $ciniki['request']['base_url'] . "/products/p";
 		if( count($products) > 0 ) {
-			$page_content .= "<table class='cilist'><tbody><tr><th></th><td>\n";
-			$prev_category = NULL;
-			$page_content .= "<table class='cilist-categories'><tbody>\n";
-			foreach($products as $mnum => $product) {
-				$product_url = $ciniki['request']['base_url'] . "/products/p/" . $product['permalink'];
-
-				// Setup the product image
-				$page_content .= "<tr><td class='cilist-image' rowspan='3'>";
-				if( isset($product['image_id']) && $product['image_id'] > 0 ) {
-					$rc = ciniki_web_getScaledImageURL($ciniki, $product['image_id'], 'thumbnail', '150', 0);
-					if( $rc['stat'] != 'ok' ) {
-						return $rc;
-					}
-					$page_content .= "<div class='image-cilist-thumbnail'>"
-						. "<a href='$product_url' title='" . $product['name'] . "'>"
-							. "<img title='' alt='" . $product['name'] . "' src='" . $rc['url'] . "' /></a>"
-						. "</div></aside>";
-				}
-				$page_content .= "</td>";
-
-				// Setup the details
-				$page_content .= "<td class='cilist-title'>";
-				$page_content .= "<p class='cilist-title'>";
-				$page_content .= "<a href='$product_url' title='" . $product['name'] . "'>" . $product['name'] . "</a>";
-				$page_content .= "</p>";
-				$page_content .= "</td></tr>";
-				$page_content .= "<tr><td class='cilist-details'>";
-				if( isset($product['description']) && $product['description'] != '' ) {
-					$rc = ciniki_web_processContent($ciniki, $product['description'], 'cilist-description');
-					if( $rc['stat'] == 'ok' ) {
-						$page_content .= $rc['content'];
-					}
-				}
-				$page_content .= "</td></tr>";
-				$page_content .= "<tr><td class='cilist-more'><a href='$product_url'>... more</a></td></tr>";
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
+			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, array('0'=>array(
+				'name'=>'', 'noimage'=>'/ciniki-web-layouts/default/img/noimage_240.png',
+				'list'=>$products)), 0);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
 			}
-			$page_content .= "</tbody></table>";
-			$page_content .= "</td></tr>\n</tbody></table>\n";
+			$page_content .= $rc['content'];
 		} else {
 			$page_content .= "<p>Currently no products.</p>";
 		}
