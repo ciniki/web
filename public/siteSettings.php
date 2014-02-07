@@ -89,13 +89,15 @@ function ciniki_web_siteSettings($ciniki) {
 	if( isset($modules['ciniki.artclub']) ) {
 		$pages['members'] = array('display_name'=>'Members', 'active'=>'no');
 		$pages['sponsors'] = array('display_name'=>'Sponsors', 'active'=>'no');
-		$pages['newsletters'] = array('display_name'=>'Newsletters', 'active'=>'no');
 	}
 	if( isset($modules['ciniki.artgallery']) ) {
 		$pages['artgalleryexhibitions'] = array('display_name'=>'Exhibitions', 'active'=>'no');
 	}
 	if( isset($modules['ciniki.links']) ) {
 		$pages['links'] = array('display_name'=>'Links', 'active'=>'no');
+	}
+	if( isset($modules['ciniki.newsletters']) ) {
+		$pages['newsletters'] = array('display_name'=>'Newsletters', 'active'=>'no');
 	}
 	if( isset($modules['ciniki.filedepot']) ) {
 		$pages['downloads'] = array('display_name'=>'Downloads', 'active'=>'no');
