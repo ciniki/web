@@ -234,13 +234,16 @@ function ciniki_web_generatePageRecipes($ciniki, $settings) {
 		//
 		$additional_info = '';
 		if( isset($recipe['num_servings']) && $recipe['num_servings'] != '' ) {
-			$additional_info .= "Servings: " . $recipe['num_servings'] . "<br/>";
+			$additional_info .= "<b>Servings</b>: " . $recipe['num_servings'] . "<br/>";
 		}
 		if( isset($recipe['prep_time']) && $recipe['prep_time'] != '' ) {
-			$additional_info .= "Prep Time: " . $recipe['prep_time'] . " minutes<br/>";
+			$additional_info .= "<b>Prep Time</b>: " . $recipe['prep_time'] . " minutes<br/>";
 		}
 		if( isset($recipe['cook_time']) && $recipe['cook_time'] != '' ) {
-			$additional_info .= "Cook Time: " . $recipe['cook_time'] . " minutes<br/>";
+			$additional_info .= "<b>Cook Time</b>: " . $recipe['cook_time'] . " minutes<br/>";
+		}
+		if( $additional_info != '' ) {
+			$page_content .= "<p>$additional_info</p>";
 		}
 
 		//
