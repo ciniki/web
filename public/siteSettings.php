@@ -101,6 +101,9 @@ function ciniki_web_siteSettings($ciniki) {
 		$pages['downloads'] = array('display_name'=>'Downloads', 'active'=>'no');
 		$pages['account'] = array('display_name'=>'Account', 'active'=>'no');
 	}
+	if( isset($modules['ciniki.recipes']) ) {
+		$pages['recipes'] = array('display_name'=>'Recipes', 'active'=>'no');
+	}
 	if( isset($modules['ciniki.surveys']) ) {
 		$pages['surveys'] = array('display_name'=>'Surveys', 'active'=>'no');
 	}
@@ -143,6 +146,9 @@ function ciniki_web_siteSettings($ciniki) {
 	}
 	if( isset($settings['page-products-active']) && $settings['page-products-active'] == 'yes' ) {
 		$pages['products']['active'] = 'yes';
+	}
+	if( isset($settings['page-recipes-active']) && $settings['page-recipes-active'] == 'yes' ) {
+		$pages['recipes']['active'] = 'yes';
 	}
 	if( isset($settings['page-custom-001-active']) && $settings['page-custom-001-active'] == 'yes' && ($modules['ciniki.web']['flags']&0x01) == 1 ) {
 		$pages['custom']['active'] = 'yes';

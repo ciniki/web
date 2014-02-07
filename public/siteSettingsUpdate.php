@@ -124,6 +124,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-exhibitions-tourexhibitors-name',
 		'page-products-active',
 		'page-products-name',
+		'page-recipes-active',
+		'page-recipes-name',
 		'page-gallery-active',
 		'page-gallery-name',
 		'page-courses-active',

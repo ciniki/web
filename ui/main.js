@@ -476,6 +476,27 @@ function ciniki_web_main() {
 		this.products.addClose('Cancel');
 
 		//
+		// The options and information for the recipes page
+		//
+		this.recipes = new M.panel('Recipes',
+			'ciniki_web_main', 'recipes',
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.recipes');
+		this.recipes.data = {};
+		this.recipes.sections = {
+			'options':{'label':'', 'fields':{
+				'page-recipes-active':{'label':'Display Recipes', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-recipes-name':{'label':'Name', 'type':'text', 'hint':'default is Recipes'},
+				}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'recipes\');'},
+				}},
+		};
+		this.recipes.fieldValue = this.fieldValue;
+		this.recipes.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.recipes.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'recipes\');');
+		this.recipes.addClose('Cancel');
+
+		//
 		// The options and information for the members page
 		//
 		this.members = new M.panel('Members',
