@@ -75,6 +75,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-home-gallery-latest-title',
 		'page-home-gallery-random',
 		'page-home-gallery-random-title',
+		'page-home-latest-recipes',
 		'page-home-upcoming-events',
 		'page-home-upcoming-workshops',
 		'page-home-upcoming-artgalleryexhibitions',

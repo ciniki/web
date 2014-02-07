@@ -30,6 +30,7 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 	// Add the header
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
 	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Home', array());
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
@@ -181,6 +182,44 @@ function ciniki_web_generatePageHome($ciniki, $settings) {
 				. "";
 		}
 	}
+
+	//
+	// List the latest recipes
+	//
+	if( isset($ciniki['business']['modules']['ciniki.recipes']) 
+		&& isset($settings['page-recipes-active']) && $settings['page-recipes-active'] == 'yes' 
+		&& (!isset($settings['page-home-latest-recipes']) || $settings['page-home-latest-recipes'] == 'yes') 
+		) {
+		//
+		// Load and parse the recipes
+		//
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'recipes', 'web', 'latest');
+		$rc = ciniki_recipes_web_latest($ciniki, $settings, $ciniki['request']['business_id'], 3);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$number_of_recipes = count($rc['recipes']);
+		if( isset($rc['recipes']) && $number_of_recipes > 0 ) {
+			$recipes = $rc['recipes'];
+			$base_url = $ciniki['request']['base_url'] . "/recipes/r";
+			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, array('0'=>array(
+				'name'=>'', 'noimage'=>'/ciniki-web-layouts/default/img/noimage_240.png',
+				'list'=>$recipes)), 2);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$content .= "<article class='page'>\n"
+				. "<header class='entry-title'><h1 class='entry-title'>Latest Recipes</h1></header>\n"
+				. $rc['content']
+				. "";
+			if( $number_of_recipes > 2 ) {
+				$content .= "<div class='events-more'><a href='" . $ciniki['request']['base_url'] . "/recipes'>... more recipes</a></div>";
+			}
+			$content .= "</article>\n"
+				. "";
+		}
+	}
+
 
 	//
 	// List any upcoming workshops

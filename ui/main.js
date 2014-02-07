@@ -247,6 +247,7 @@ function ciniki_web_main() {
 				'page-home-gallery-latest-title':{'label':'Latest Work Title', 'active':'no', 'type':'text', 'size':'small', 'hint':'Latest Work'},
 				'page-home-gallery-random':{'label':'Display Random Example Work', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-home-gallery-random-title':{'label':'Random Example Work Title', 'active':'no', 'type':'text', 'size':'small', 'hint':'Example Work'},
+				'page-home-latest-recipes':{'label':'Display Latest Recipes', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-home-upcoming-events':{'label':'Display Upcoming Events', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-home-upcoming-workshops':{'label':'Display Upcoming Workshops', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-home-upcoming-artgalleryexhibitions':{'label':'Display Upcoming Exhibtions', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
@@ -963,17 +964,10 @@ function ciniki_web_main() {
 				this.home.sections.options.fields['page-home-gallery-random'].active = 'no';
 				this.home.sections.options.fields['page-home-gallery-random-title'].active = 'no';
 			}
-			if( M.curBusiness.modules['ciniki.events'] != null ) {
-				this.home.sections.options.fields['page-home-upcoming-events'].active = 'yes';
-			} else {
-				this.home.sections.options.fields['page-home-upcoming-events'].active = 'no';
-			}
+			this.home.sections.options.fields['page-home-upcoming-events'].active = (M.curBusiness.modules['ciniki.events']!=null)?'yes':'no';
+			this.home.sections.options.fields['page-home-latest-recipes'].active=(M.curBusiness.modules['ciniki.recipes']!=null)?'yes':'no';
 			this.home.sections.options.fields['page-home-upcoming-workshops'].active = (M.curBusiness.modules['ciniki.workshops']!=null)?'yes':'no';
-			if( M.curBusiness.modules['ciniki.artgallery'] != null ) {
-				this.home.sections.options.fields['page-home-upcoming-artgalleryexhibitions'].active = 'yes';
-			} else {
-				this.home.sections.options.fields['page-home-upcoming-artgalleryexhibitions'].active = 'no';
-			}
+			this.home.sections.options.fields['page-home-upcoming-artgalleryexhibitions'].active = (M.curBusiness.modules['ciniki.artgallery']!=null)?'yes':'no';
 			this[page].refresh();
 			this[page].show(cb);
 		} else if( page == 'account' ) {

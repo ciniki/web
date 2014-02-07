@@ -23,12 +23,12 @@ function ciniki_web_processCIList($ciniki, $settings, $base_url, $categories, $l
 	$content = "<table class='cilist'><tbody>";
 	$count = 0;
 	foreach($categories as $cid => $category) {
-		if( $limit > 0 && $count >= $limit ) { break; }
 
 		$content .= "<tr><th>" . $category['name'] . "</th><td>\n";
 		$content .= "<table class='cilist-categories'><tbody>\n";
 
 		foreach($category['list'] as $iid => $item) {
+			if( $limit > 0 && $count >= $limit ) { break; }
 			$url = '';
 			$url_display = '... more';
 			$javascript_onclick = '';
