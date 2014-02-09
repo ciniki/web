@@ -416,8 +416,9 @@ elseif( $ciniki['request']['page'] == 'newsletters'
 	$rc = ciniki_web_generatePageNewsletters($ciniki, $settings);
 } 
 // Downloads
-elseif( $ciniki['request']['page'] == 'downloads' 
-	&& isset($settings['page-downloads-active']) && $settings['page-downloads-active'] == 'yes' ) {
+elseif( $ciniki['request']['page'] == 'downloads'
+//	&& isset($settings['page-downloads-active']) && $settings['page-downloads-active'] == 'yes' 
+	) {
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageDownloads.php');
 	$rc = ciniki_web_generatePageDownloads($ciniki, $settings);
 } 
