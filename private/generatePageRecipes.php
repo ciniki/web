@@ -46,7 +46,7 @@ function ciniki_web_generatePageRecipes($ciniki, $settings) {
 		//
 		// If there was an error locating the files, display generic error
 		//
-		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1504', 'msg'=>'The file you requested does not exist.'));
+		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1551', 'msg'=>'The file you requested does not exist.'));
 	}
 
 	//
@@ -65,7 +65,7 @@ function ciniki_web_generatePageRecipes($ciniki, $settings) {
 		$mod = 'recipes';
 		$category_uri_component = 'recipes';
 	} else {
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1495', 'msg'=>'No recipe module enabled'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1552', 'msg'=>'No recipe module enabled'));
 	}
 
 	//
@@ -93,7 +93,7 @@ function ciniki_web_generatePageRecipes($ciniki, $settings) {
 		$recipe = $rc['recipe'];
 
 		if( !isset($recipe['images']) || count($recipe['images']) < 1 ) {
-			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1505', 'msg'=>'Unable to find image'));
+			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1553', 'msg'=>'Unable to find image'));
 		}
 
 		$first = NULL;
@@ -399,7 +399,7 @@ function ciniki_web_generatePageRecipes($ciniki, $settings) {
 			$page_title = 'Recipes';
 		}
 		if( !isset($rc['categories']) ) {
-			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1496', 'msg'=>'Internal error'));
+			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1554', 'msg'=>'Internal error'));
 		} else {
 			$page_content .= "<div class='image-categories'>";
 			foreach($rc['categories'] AS $cnum => $category) {
