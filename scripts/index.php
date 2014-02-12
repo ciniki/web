@@ -269,6 +269,8 @@ if( isset($ciniki['request']['page']) && $ciniki['request']['page'] == 'home'
 	&& (!isset($settings['page-home-active']) || $settings['page-home-active'] != 'yes') ) {
 	if( isset($settings['page-about-active']) && $settings['page-about-active'] == 'yes' ) {
 		$ciniki['request']['page'] = 'about';
+	} elseif( isset($settings['page-blog-active']) && $settings['page-blog-active'] == 'yes' ) {
+		$ciniki['request']['page'] = 'blog';
 	} elseif( isset($settings['page-gallery-active']) && $settings['page-gallery-active'] == 'yes' ) {
 		$ciniki['request']['page'] = 'gallery';
 	} elseif( isset($settings['page-contact-active']) && $settings['page-contact-active'] == 'yes' ) {
@@ -396,6 +398,12 @@ elseif( $ciniki['request']['page'] == 'workshops'
 	&& isset($settings['page-workshops-active']) && $settings['page-workshops-active'] == 'yes' ) {
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageWorkshops.php');
 	$rc = ciniki_web_generatePageWorkshops($ciniki, $settings);
+} 
+// Blog
+elseif( $ciniki['request']['page'] == 'blog' 
+	&& isset($settings['page-blog-active']) && $settings['page-blog-active'] == 'yes' ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageBlog.php');
+	$rc = ciniki_web_generatePageBlog($ciniki, $settings);
 } 
 // FAQ
 elseif( $ciniki['request']['page'] == 'faq' 

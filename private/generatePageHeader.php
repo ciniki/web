@@ -419,6 +419,15 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		$content .= "</a></li>";
 	}
 
+	if( isset($settings['page-blog-active']) && $settings['page-blog-active'] == 'yes' ) {
+		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/blog'>";
+		if( isset($settings['page-blog-name']) && $settings['page-blog-name'] != '' ) {
+			$content .= $settings['page-blog-name'];
+		} else {
+			$content .= "Blog";
+		}
+		$content .= "</a></li>";
+	}
 	if( isset($settings['page-faq-active']) && $settings['page-faq-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/faq'>FAQ</a></li>";
 	}

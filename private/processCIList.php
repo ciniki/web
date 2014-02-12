@@ -62,7 +62,7 @@ function ciniki_web_processCIList($ciniki, $settings, $base_url, $categories, $l
 						. "<img title='' alt='" . $item['title'] . "' src='" . $rc['url'] . "' />"
 						. "</div></aside>";
 				}
-			} elseif( $category['noimage'] != '' ) {
+			} elseif( isset($category['noimage']) && $category['noimage'] != '' ) {
 				if( $url != '' ) {
 					$content .= "<div class='image-cilist-thumbnail'>"
 						. "<a href='$url' title='" . $item['title'] . "'>"

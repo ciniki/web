@@ -118,6 +118,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-artgalleryexhibitions-active',
 		'page-artgalleryexhibitions-past',
 		'page-artgalleryexhibitions-application-details',
+		'page-blog-active',
+		'page-blog-name',
 		'page-exhibitions-exhibition',
 		'page-exhibitions-exhibitors-active',
 		'page-exhibitions-sponsors-active',

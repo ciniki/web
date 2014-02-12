@@ -281,6 +281,19 @@ article {
 	font-size: 1.5em;
 }
 
+#content header h1 {
+	margin-bottom: 0.2em;
+}
+
+#content p.entry-meta,
+#content header div.entry-meta {
+	font-size: 0.9em;
+}
+
+#content header {
+	margin-bottom: 1em;
+}
+
 #content h2 {
 	font-size: 1.3em;
 }

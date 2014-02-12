@@ -252,6 +252,12 @@ div.gallery-image-details span.image-awards {
 	color: #439BBD;
 }
 
+#content p.entry-meta,
+#content div.entry-meta {
+	color: #aaa;
+	letter-spacing: 0.05em;
+}
+
 #content h2 {
 	margin-top: 0.0em;
 	margin-bottom: 0.5em;
