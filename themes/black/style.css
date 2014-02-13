@@ -484,6 +484,87 @@ aside div.googlemap {
 	margin-bottom: 1em;
 }
 
+div.word-cloud span.size-0 { font-size: 1em; }
+div.word-cloud span.size-1 { font-size: 1.2em; }
+div.word-cloud span.size-2 { font-size: 1.4em; }
+div.word-cloud span.size-3 { font-size: 1.6em; }
+div.word-cloud span.size-4 { font-size: 1.8em; }
+div.word-cloud span.size-5 { font-size: 2.0em; }
+div.word-cloud span.size-6 { font-size: 2.2em; }
+div.word-cloud span.size-7 { font-size: 2.4em; }
+div.word-cloud span.size-8 { font-size: 2.6em; }
+div.word-cloud span.size-9 { font-size: 2.8em; }
+
+#content div.word-cloud span.size-9 a,
+#content div.word-cloud span.size-9 a:visited,
+#content div.word-cloud span.size-9 a:hover, 
+#content div.word-cloud span.size-9 a:active { 
+	text-decoration: bold; color: #6AC2E4; 
+}
+
+#content div.word-cloud span.size-8 a,
+#content div.word-cloud span.size-8 a:visited,
+#content div.word-cloud span.size-8 a:hover, 
+#content div.word-cloud span.size-8 a:active { 
+	text-decoration: bold; color: #63BBDD; 
+}
+
+#content div.word-cloud span.size-7 a,
+#content div.word-cloud span.size-7 a:visited,
+#content div.word-cloud span.size-7 a:hover, 
+#content div.word-cloud span.size-7 a:active { 
+	text-decoration: bold; color: #5AB2D4; 
+}
+
+#content div.word-cloud span.size-6 a,
+#content div.word-cloud span.size-6 a:visited,
+#content div.word-cloud span.size-6 a:hover, 
+#content div.word-cloud span.size-6 a:active { 
+	text-decoration: bold; color: #53ABCD; 
+}
+
+#content div.word-cloud span.size-5 a,
+#content div.word-cloud span.size-5 a:visited,
+#content div.word-cloud span.size-5 a:hover, 
+#content div.word-cloud span.size-5 a:active { 
+	text-decoration: bold; color: #4AA2C4; 
+}
+
+#content div.word-cloud span.size-4 a,
+#content div.word-cloud span.size-4 a:visited,
+#content div.word-cloud span.size-4 a:hover, 
+#content div.word-cloud span.size-4 a:active { 
+	text-decoration: bold; color: #439BBD; 
+}
+
+#content div.word-cloud span.size-3 a,
+#content div.word-cloud span.size-3 a:visited,
+#content div.word-cloud span.size-3 a:hover, 
+#content div.word-cloud span.size-3 a:active { 
+	text-decoration: bold; color: #3A92B4; 
+}
+
+#content div.word-cloud span.size-2 a,
+#content div.word-cloud span.size-2 a:visited,
+#content div.word-cloud span.size-2 a:hover, 
+#content div.word-cloud span.size-2 a:active { 
+	text-decoration: bold; color: #338BAD; 
+}
+
+#content div.word-cloud span.size-1 a,
+#content div.word-cloud span.size-1 a:visited,
+#content div.word-cloud span.size-1 a:hover, 
+#content div.word-cloud span.size-1 a:active { 
+	text-decoration: bold; color: #2A84A6; 
+}
+
+#content div.word-cloud span.size-0 a,
+#content div.word-cloud span.size-0 a:visited,
+#content div.word-cloud span.size-0 a:hover, 
+#content div.word-cloud span.size-0 a:active { 
+	text-decoration: bold; color: #237B9D; 
+}
+
 div.googlemap p {
 	margin-bottom: 0.5em;
 }
