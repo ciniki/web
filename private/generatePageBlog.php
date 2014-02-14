@@ -395,12 +395,12 @@ function ciniki_web_generatePageBlog($ciniki, $settings) {
 			$month_txt = $months[$m['month']-1];
 			$month = sprintf("%02d", $m['month']);
 			if( $year != $prev_year ) {
-				if( $prev_year != '' ) { $years .= "</br>"; }
-				$years .= "<b>$year</b>: ";
+				if( $prev_year != '' ) { $years .= "</dd>"; }
+				$years .= "<dt>$year</dt><dd>";
 				$cm = '';
 			}
 			$years .= $cm . "<a href='" . $ciniki['request']['base_url'] . "/blog/archive/$year/$month'>"
-				. "$month_txt</a> (" . $m['num_posts'] . ") ";
+				. "$month_txt</a>&nbsp;(" . $m['num_posts'] . ")";
 			$cm = ', ';
 			$prev_year = $year;
 		}
@@ -413,7 +413,7 @@ function ciniki_web_generatePageBlog($ciniki, $settings) {
 			. "";
 
 		if( $years != '' ) {
-			$page_content .= "<p>$years</p>";
+			$page_content .= "<dl class='wide'>$years</dl>";
 		} else {
 			$page_content .= "<p>Currently no posts.</p>";
 		}
@@ -493,6 +493,33 @@ function ciniki_web_generatePageBlog($ciniki, $settings) {
 //				$page_content .= "</span>";
 				if( isset($file['description']) && $file['description'] != '' ) {
 					$page_content .= "<br/><span class='downloads-description'>" . $file['description'] . "</span>";
+				}
+				$page_content .= "<br/>";
+			}
+			$page_content .= "</p>";
+		}
+	
+		//
+		// Display the links for the posts
+		//
+		if( isset($post['links']) && count($post['links']) > 0 ) {
+			$page_content .= "<p>";
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
+			foreach($post['links'] as $link) {
+				$rc = ciniki_web_processURL($ciniki, $link['url']);
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				if( $rc['url'] != '' ) {
+					$page_content .= "<a target='_blank' href='" . $rc['url'] . "' title='" 
+						. ($link['name']!=''?$link['name']:$rc['display_url']) . "'>" 
+						. ($link['name']!=''?$link['name']:$rc['display_url'])
+						. "</a>";
+				} else {
+					$page_content .= $link['name'];
+				}
+				if( isset($link['description']) && $link['description'] != '' ) {
+					$page_content .= "<br/><span class='downloads-description'>" . $link['description'] . "</span>";
 				}
 				$page_content .= "<br/>";
 			}

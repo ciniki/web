@@ -81,14 +81,19 @@ header span.title {
 	width: 30em;
 }
 
+#content dl.wide {
+	width: 100%;
+}
+
 #content dl dt {
+	margin-left: 0;
 	display: block;
 	vertical-align: top;
 }
 
 #content dl dd {
 	display: inline-block;
-	margin-left: 1.5em;
+	margin-left: 1.8em;
 }
 
 #content table.clist,
