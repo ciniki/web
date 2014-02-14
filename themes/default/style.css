@@ -634,6 +634,18 @@ div.word-cloud {
 	text-decoration: bold; color: #237B9D; 
 }
 
+#content nav.content-nav {
+	border-top: 1px dotted #bbb;
+	border-bottom: 1px dotted #bbb;
+}
+
+#content nav.content-nav a {
+	color: #237B9D;
+	color: #5AC2E4; 
+	color: #439BBD;
+	font-size: 1.0em;
+}
+
 div.googlemap, 
 aside div.googlemap {
 	border: 2px solid #222;

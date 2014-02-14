@@ -666,6 +666,35 @@ aside div.googlemap img {
 
 #content div.word-cloud span { padding: 0.2em; white-space:nowrap;}
 
+#content nav.content-nav {
+	padding-top: 0em;
+	padding-bottom: 0em;
+}
+
+#content nav.content-nav span.prev,
+#content nav.content-nav span.next {
+	display: inline-block;
+	padding-left: 0em;
+	padding-right: 0em;
+	margin: 0;
+	width: 50%;
+}
+
+#content nav.content-nav span.prev {
+	text-align: left;
+}
+
+#content nav.content-nav span.next {
+	text-align: right;
+}
+
+#content nav.content-nav span a {
+	padding-top: 1em;
+	padding-bottom: 1em;
+	display: inline-block;
+	width: 100%;
+}
+
 hr.footer-section-divider {
 	margin-top: 5em;
 	clear: both;

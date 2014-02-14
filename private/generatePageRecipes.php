@@ -300,7 +300,7 @@ function ciniki_web_generatePageRecipes($ciniki, $settings) {
 			$base_url = $ciniki['request']['base_url'] . "/recipes/r";
 			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, array('0'=>array(
 				'name'=>'', 'noimage'=>'/ciniki-web-layouts/default/img/noimage_240.png',
-				'list'=>$recipe['similar'])), 0);
+				'list'=>$recipe['similar'])), array());
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -346,7 +346,7 @@ function ciniki_web_generatePageRecipes($ciniki, $settings) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
 			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, array('0'=>array(
 				'name'=>'', 'noimage'=>'/ciniki-web-layouts/default/img/noimage_240.png',
-				'list'=>$recipes)), 0);
+				'list'=>$recipes)), array());
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}

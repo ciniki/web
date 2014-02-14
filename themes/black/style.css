@@ -565,6 +565,11 @@ div.word-cloud span.size-9 { font-size: 2.8em; }
 	text-decoration: bold; color: #237B9D; 
 }
 
+#content nav.content-nav {
+	border-top: 1px solid #333;
+	border-bottom: 1px solid #333;
+}
+
 div.googlemap p {
 	margin-bottom: 0.5em;
 }

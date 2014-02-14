@@ -55,6 +55,9 @@ $ciniki['request'] = array('business_id'=>0, 'page'=>'', 'args'=>array(),
 	'theme_dir'=>$ciniki['config']['ciniki.core']['modules_dir'] . '/web/themes',
 	'theme_url'=>'/ciniki-web-themes',
 	);
+$ciniki['response'] = array('head'=>array(
+	'links'=>array()
+	));
 session_start();
 $ciniki['session'] = array();
 $ciniki['session']['change_log_id'] = 'web.' . date('Ymd.HMS');
@@ -79,6 +82,15 @@ if( isset($u[1]) ) {
 }
 if( !is_array($ciniki['request']['uri_split']) ) {
 	$ciniki['request']['uri_split'] = array($ciniki['request']['uri_split']);
+}
+
+//
+// Parse the query_string args
+//
+if( isset($_GET) && is_array($_GET) ) {
+	foreach($_GET as $arg_key => $arg_value) {
+		$ciniki['request']['args'][$arg_key] = $arg_value;
+	}
 }
 
 //
