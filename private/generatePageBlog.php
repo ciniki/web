@@ -231,7 +231,7 @@ function ciniki_web_generatePageBlog($ciniki, $settings) {
 		//
 		// Get the tag name
 		//
-		$tag_name = $ciniki['request']['uri_split'][0];
+		$tag_name = $ciniki['request']['uri_split'][1];
 		foreach($posts as $post) {
 			$tag_name = $post['tag_name'];
 			break;

@@ -487,6 +487,7 @@ function ciniki_web_main() {
 			'options':{'label':'', 'fields':{
 				'page-recipes-active':{'label':'Display Recipes', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-recipes-name':{'label':'Name', 'type':'text', 'hint':'default is Recipes'},
+				'page-recipes-tags':{'label':'Tags', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'recipes\');'},

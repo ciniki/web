@@ -129,6 +129,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-products-name',
 		'page-recipes-active',
 		'page-recipes-name',
+		'page-recipes-tags',
 		'page-gallery-active',
 		'page-gallery-name',
 		'page-courses-active',
