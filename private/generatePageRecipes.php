@@ -236,11 +236,6 @@ function ciniki_web_generatePageRecipes($ciniki, $settings) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 
-		$page_content .= "<article class='page'>\n"
-			. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$page_title</h1></header>\n"
-			. "<div class='entry-content'>\n"
-			. "";
-
 		//
 		// Get the items for the specified category
 		//
@@ -257,6 +252,11 @@ function ciniki_web_generatePageRecipes($ciniki, $settings) {
 			break;
 		}
 		$page_title .= ' - ' . $tag_name;
+
+		$page_content .= "<article class='page'>\n"
+			. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$page_title</h1></header>\n"
+			. "<div class='entry-content'>\n"
+			. "";
 
 		//
 		// Generate list of recipes
