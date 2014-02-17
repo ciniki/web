@@ -291,7 +291,7 @@ function ciniki_web_about() {
 		// The options and information for the about donations page
 		//
 		this.aboutmembership = new M.panel('Membership',
-			'ciniki_web_about', 'membership',
+			'ciniki_web_about', 'aboutmembership',
 			'mc', 'medium', 'sectioned', 'ciniki.web.about.aboutmembership');
 		this.aboutmembership.data = {};
 		this.aboutmembership.sections = {

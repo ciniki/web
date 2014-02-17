@@ -251,7 +251,9 @@ function ciniki_web_siteSettings($ciniki) {
 
 	$rc_pages = array();
 	foreach($pages as $page => $pagedetails) {
-		array_push($rc_pages, array('page'=>array('name'=>$page, 'display_name'=>$pagedetails['display_name'], 'active'=>$pagedetails['active'])));
+		if( isset($pagedetails['display_name']) ) {
+			array_push($rc_pages, array('page'=>array('name'=>$page, 'display_name'=>$pagedetails['display_name'], 'active'=>$pagedetails['active'])));
+		}
 	}
 
 	return array('stat'=>'ok', 'featured'=>$featured, 'pages'=>$rc_pages, 'settings'=>$rc_settings, 'header'=>$rc_header, 'advanced'=>$rc_advanced);
