@@ -20,7 +20,6 @@ function ciniki_web_processTagCloud($ciniki, $settings, $base_url, $tags) {
 	$max = 1;
 	// Find the minimum and maximum
 	foreach($tags as $tag) {
-		error_log($tag['name'] . ':' . $tag['num_tags']);
 		if( $min == 0 ) { $min = $tag['num_tags']; }
 		elseif( $tag['num_tags'] < $min ) { $min = $tag['num_tags']; }
 		if( $tag['num_tags'] > $max ) { $max = $tag['num_tags']; }
