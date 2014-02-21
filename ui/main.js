@@ -976,13 +976,13 @@ function ciniki_web_main() {
 			this.showContact(cb);
 		} else if( page == 'home' ) {
 			if( M.curBusiness.modules['ciniki.artcatalog'] != null ) {
-				this.home.sections.options.fields['page-home-gallery-latest'].visible = 'yes';
-				this.home.sections.options.fields['page-home-gallery-latest-title'].visible = 'yes';
+				this.home.sections.options.fields['page-home-gallery-latest'].active = 'yes';
+				this.home.sections.options.fields['page-home-gallery-latest-title'].active = 'yes';
 				this.home.sections.options.fields['page-home-gallery-random'].active = 'yes';
 				this.home.sections.options.fields['page-home-gallery-random-title'].active = 'yes';
 			} else {
-				this.home.sections.options.fields['page-home-gallery-latest'].visible = 'no';
-				this.home.sections.options.fields['page-home-gallery-latest-title'].visible = 'no';
+				this.home.sections.options.fields['page-home-gallery-latest'].active = 'no';
+				this.home.sections.options.fields['page-home-gallery-latest-title'].active = 'no';
 				this.home.sections.options.fields['page-home-gallery-random'].active = 'no';
 				this.home.sections.options.fields['page-home-gallery-random-title'].active = 'no';
 			}
