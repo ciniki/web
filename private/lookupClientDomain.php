@@ -31,11 +31,12 @@ function ciniki_web_lookupClientDomain(&$ciniki, $domain, $type) {
 			. "AND status = 1 "
 			. "";
 	} else {
-		$strsql = "SELECT business_id, '' AS uuid, "
-			. "IF((flags&0x01)=0x01, 'yes', 'no') AS isprimary "
-			. "FROM ciniki_business_domains "
-			. "WHERE domain = '" . ciniki_core_dbQuote($ciniki, $domain) . "' "
-			. "AND status < 50 "
+		$strsql = "SELECT ciniki_business_domains.business_id, ciniki_businesses.uuid, "
+			. "IF((ciniki_business_domains.flags&0x01)=0x01, 'yes', 'no') AS isprimary "
+			. "FROM ciniki_business_domains, ciniki_businesses "
+			. "WHERE ciniki_business_domains.domain = '" . ciniki_core_dbQuote($ciniki, $domain) . "' "
+			. "AND ciniki_business_domains.status < 50 "
+			. "AND ciniki_business_domains.business_id = ciniki_businesses.id "
 			. "";
 	}
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
