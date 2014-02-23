@@ -445,6 +445,7 @@ function ciniki_web_main() {
 			'options':{'label':'', 'fields':{
 				'page-gallery-active':{'label':'Display Gallery', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-gallery-name':{'label':'Name', 'type':'text', 'hint':'default is Gallery'},
+				'page-gallery-artcatalog-split':{'label':'Split Menu', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'gallery\');'},
@@ -990,6 +991,14 @@ function ciniki_web_main() {
 			this.home.sections.options.fields['page-home-latest-recipes'].active=(M.curBusiness.modules['ciniki.recipes']!=null)?'yes':'no';
 			this.home.sections.options.fields['page-home-upcoming-workshops'].active = (M.curBusiness.modules['ciniki.workshops']!=null)?'yes':'no';
 			this.home.sections.options.fields['page-home-upcoming-artgalleryexhibitions'].active = (M.curBusiness.modules['ciniki.artgallery']!=null)?'yes':'no';
+			this[page].refresh();
+			this[page].show(cb);
+		} else if( page == 'gallery' ) {
+			if( M.curBusiness.modules['ciniki.artcatalog'] != null ) {
+				this.gallery.sections.options.fields['page-gallery-artcatalog-split'].active = 'yes';
+			} else {
+				this.gallery.sections.options.fields['page-gallery-artcatalog-split'].active = 'no';
+			}
 			this[page].refresh();
 			this[page].show(cb);
 		} else if( page == 'account' ) {

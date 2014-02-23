@@ -25,7 +25,24 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		
 
 	$page_title = "Galleries";
+	$artcatalog_type = '';
+	$base_url = $ciniki['request']['base_url'] . "/gallery";
 	if( isset($ciniki['business']['modules']['ciniki.artcatalog']) ) {
+		if( isset($settings['page-gallery-artcatalog-split']) 
+			&& $settings['page-gallery-artcatalog-split'] == 'yes' ) {
+			if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
+				$atype = array_shift($ciniki['request']['uri_split']);
+				switch($atype) {
+					case 'paintings': $artcatalog_type = 1; break;
+					case 'photographs': $artcatalog_type = 2; break;
+					case 'jewelry': $artcatalog_type = 3; break;
+					case 'sculptures': $artcatalog_type = 4; break;
+					case 'crafts': $artcatalog_type = 5; break;
+					case 'clothing': $artcatalog_type = 6; break;
+				}
+				$base_url .= '/' . $atype;
+			}
+		} 
 		$pkg = 'ciniki';
 		$mod = 'artcatalog';
 		$category_uri_component = 'category';
@@ -86,7 +103,11 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		if( $ciniki['request']['uri_split'][0] == 'latest' ) {
 			ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'galleryNextPrev');
 			$galleryNextPrev = $pkg . '_' . $mod . '_web_galleryNextPrev';
-			$rc = $galleryNextPrev($ciniki, $settings, $ciniki['request']['business_id'], $image_permalink, $img, 'latest');
+			$rc = $galleryNextPrev($ciniki, $settings, $ciniki['request']['business_id'], array(
+				'permalink'=>$image_permalink,
+				'img'=>$img,
+				'type'=>'latest',
+				'artcatalog_type'=>$artcatalog_type));
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -101,7 +122,11 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		} else {
 			ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'galleryNextPrev');
 			$galleryNextPrev = $pkg . '_' . $mod . '_web_galleryNextPrev';
-			$rc = $galleryNextPrev($ciniki, $settings, $ciniki['request']['business_id'], $image_permalink, $img, $category_uri_component);
+			$rc = $galleryNextPrev($ciniki, $settings, $ciniki['request']['business_id'], array(
+				'permalink'=>$image_permalink,
+				'img'=>$img,
+				'type'=>$category_uri_component,
+				'artcatalog_type'=>$artcatalog_type));
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -171,7 +196,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 				'last_updated'=>$img['last_updated'],
 				));
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryAdditionalThumbnails');
-			$img_base_url = $ciniki['request']['base_url'] . "/gallery/$category_uri_component/" . $ciniki['request']['uri_split'][1];
+			$img_base_url = $base_url . "/$category_uri_component/" . $ciniki['request']['uri_split'][1];
 			$rc = ciniki_web_generatePageGalleryAdditionalThumbnails($ciniki, $settings, $img_base_url, $img['additionalimages'], 75);
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
@@ -195,15 +220,17 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		//
 		ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'categoryImages');
 		$categoryImages = $pkg . '_' . $mod . '_web_categoryImages';
-		$rc = $categoryImages($ciniki, $settings, $ciniki['request']['business_id'], 
-			$ciniki['request']['uri_split'][0], urldecode($ciniki['request']['uri_split'][1]));
+		$rc = $categoryImages($ciniki, $settings, $ciniki['request']['business_id'], array(
+			'type'=>$ciniki['request']['uri_split'][0], 
+			'type_name'=>urldecode($ciniki['request']['uri_split'][1]),
+			'artcatalog_type'=>$artcatalog_type));
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
 		$images = $rc['images'];
 
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
-		$img_base_url = $ciniki['request']['base_url'] . "/gallery/$category_uri_component/" . $ciniki['request']['uri_split'][1];
+		$img_base_url = $base_url . "/$category_uri_component/" . $ciniki['request']['uri_split'][1];
 		$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $rc['images'], 125);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
@@ -216,7 +243,8 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 	//
 	else {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
-		$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-gallery');
+		$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', 
+			$ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-gallery');
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
@@ -236,7 +264,8 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 		//
 		ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'categories');
 		$categories = $pkg . '_' . $mod . '_web_categories';
-		$rc = $categories($ciniki, $settings, $ciniki['request']['business_id']); 
+		$rc = $categories($ciniki, $settings, $ciniki['request']['business_id'], 
+			array('artcatalog_type'=>$artcatalog_type)); 
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
@@ -258,7 +287,7 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 			$images = $rc['images'];
 
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
-			$img_base_url = $ciniki['request']['base_url'] . "/gallery/image";
+			$img_base_url = $base_url . "/image";
 			$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $rc['images'], 150, 0);
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
@@ -274,15 +303,20 @@ function ciniki_web_generatePageGallery($ciniki, $settings) {
 			foreach($rc['categories'] AS $cnum => $category) {
 				$name = $category['category']['name'];
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-				$rc = ciniki_web_getScaledImageURL($ciniki, $category['category']['image_id'], 'thumbnail', '240', 0);
-				if( $rc['stat'] != 'ok' ) {
-					return $rc;
+				if( isset($category['category']['image_id']) ) {
+					$rc = ciniki_web_getScaledImageURL($ciniki, $category['category']['image_id'], 'thumbnail', '240', 0);
+					if( $rc['stat'] != 'ok' ) {
+						return $rc;
+					}
+					$img_url = $rc['url'];
+				} else {
+					$img_url = '/ciniki-web-layouts/default/img/noimage_240.png';
 				}
 				$page_content .= "<div class='image-categories-thumbnail-wrap'>"
-					. "<a href='" . $ciniki['request']['base_url'] . "/gallery/$category_uri_component/" . urlencode($name) . "' "
+					. "<a href='" . $base_url . "/$category_uri_component/" . urlencode($name) . "' "
 						. "title='" . $name . "'>"
 					. "<div class='image-categories-thumbnail'>"
-					. "<img title='$name' alt='$name' src='" . $rc['url'] . "' />"
+					. "<img title='$name' alt='$name' src='" . $img_url . "' />"
 					. "</div>"
 					. "<span class='image-categories-name'>$name</span>"
 					. "</a></div>";

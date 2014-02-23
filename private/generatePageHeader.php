@@ -376,13 +376,36 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/members'>Members</a></li>";
 	}
 	if( isset($settings['page-gallery-active']) && $settings['page-gallery-active'] == 'yes' ) {
-		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/gallery'>";
-		if( isset($settings['page-gallery-name']) && $settings['page-gallery-name'] != '' ) {
-			$content .= $settings['page-gallery-name'];
+		if( isset($settings['page-gallery-artcatalog-split']) && $settings['page-gallery-artcatalog-split'] == 'yes' ) {
+			if( isset($settings['page-gallery-artcatalog-paintings']) 
+				&& $settings['page-gallery-artcatalog-paintings'] == 'yes' ) {
+				$content .= "<li class='menu-item$hide_menu_class'>"
+					. "<a href='" . $ciniki['request']['base_url'] . "/gallery/paintings'>Paintings</a></li>";
+			} 
+			if( isset($settings['page-gallery-artcatalog-photographs']) 
+				&& $settings['page-gallery-artcatalog-photographs'] == 'yes' ) {
+				$content .= "<li class='menu-item$hide_menu_class'>"
+					. "<a href='" . $ciniki['request']['base_url'] . "/gallery/photographs'>Photographs</a></li>";
+			} 
+			if( isset($settings['page-gallery-artcatalog-jewelry']) 
+				&& $settings['page-gallery-artcatalog-jewelry'] == 'yes' ) {
+				$content .= "<li class='menu-item$hide_menu_class'>"
+					. "<a href='" . $ciniki['request']['base_url'] . "/gallery/jewelry'>Jewelry</a></li>";
+			} 
+			if( isset($settings['page-gallery-artcatalog-sculptures']) 
+				&& $settings['page-gallery-artcatalog-sculptures'] == 'yes' ) {
+				$content .= "<li class='menu-item$hide_menu_class'>"
+					. "<a href='" . $ciniki['request']['base_url'] . "/gallery/sculptures'>Sculptures</a></li>";
+			} 
 		} else {
-			$content .= "Gallery";
+			$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/gallery'>";
+			if( isset($settings['page-gallery-name']) && $settings['page-gallery-name'] != '' ) {
+				$content .= $settings['page-gallery-name'];
+			} else {
+				$content .= "Gallery";
+			}
+			$content .= "</a></li>";
 		}
-		$content .= "</a></li>";
 	}
 	if( isset($settings['page-courses-active']) && $settings['page-courses-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/courses'>";

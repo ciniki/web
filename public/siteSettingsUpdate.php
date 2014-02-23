@@ -132,6 +132,11 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-recipes-tags',
 		'page-gallery-active',
 		'page-gallery-name',
+		'page-gallery-artcatalog-split',			// Split the menu into types
+		'page-gallery-artcatalog-paintings',			// Split the menu into types
+		'page-gallery-artcatalog-photographs',			// Split the menu into types
+		'page-gallery-artcatalog-jewelry',			// Split the menu into types
+		'page-gallery-artcatalog-sculptures',			// Split the menu into types
 		'page-courses-active',
 		'page-courses-name',
 		'page-courses-image',
