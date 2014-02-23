@@ -46,9 +46,6 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 		$mod = 'artcatalog';
 		$category_uri_component = 'category';
 		$last_change = $ciniki['business']['modules']['ciniki.artcatalog']['last_change'];
-		if( $ciniki['business']['modules']['ciniki.web']['last_change'] > $last_change ) {
-			$last_change = $ciniki['business']['modules']['ciniki.web']['last_change'];
-		}
 	} elseif( isset($ciniki['business']['modules']['ciniki.gallery']) ) {
 		$pkg = 'ciniki';
 		$mod = 'gallery';
@@ -59,11 +56,11 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 	}
 
 	//
-	// FIXME: Check if anything has changed, and if not load from cache
+	// Check if anything has changed, and if not load from cache
 	//
-
-
-		
+	if( $ciniki['business']['modules']['ciniki.web']['last_change'] > $last_change ) {
+		$last_change = $ciniki['business']['modules']['ciniki.web']['last_change'];
+	}
 
 	//
 	// Check if we are to display an image, from the gallery, or latest images
