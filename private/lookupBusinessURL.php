@@ -14,7 +14,7 @@
 // Returns
 // -------
 //
-function ciniki_web_lookupBusinessURL($ciniki, $business_id) {
+function ciniki_web_lookupBusinessURL(&$ciniki, $business_id) {
 
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');

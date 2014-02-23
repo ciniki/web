@@ -12,7 +12,7 @@
 // Returns
 // -------
 //
-function ciniki_web_generatePageHome($ciniki, $settings) {
+function ciniki_web_generatePageHome(&$ciniki, $settings) {
 
 	//
 	// Store the content created by the page

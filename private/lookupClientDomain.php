@@ -14,7 +14,7 @@
 // Returns
 // -------
 //
-function ciniki_web_lookupClientDomain($ciniki, $domain, $type) {
+function ciniki_web_lookupClientDomain(&$ciniki, $domain, $type) {
 
 	//
 	// Strip the www from the domain before looking up
