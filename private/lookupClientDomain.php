@@ -31,7 +31,7 @@ function ciniki_web_lookupClientDomain(&$ciniki, $domain, $type) {
 			. "AND status = 1 "
 			. "";
 	} else {
-		$strsql = "SELECT business_id, uuid, "
+		$strsql = "SELECT business_id, '' AS uuid, "
 			. "IF((flags&0x01)=0x01, 'yes', 'no') AS isprimary "
 			. "FROM ciniki_business_domains "
 			. "WHERE domain = '" . ciniki_core_dbQuote($ciniki, $domain) . "' "
