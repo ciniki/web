@@ -25,14 +25,13 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 		
 
 	$page_title = "Galleries";
-	$artcatalog_type = '';
+	$artcatalog_type = 0;
 	$base_url = $ciniki['request']['base_url'] . "/gallery";
 	if( isset($ciniki['business']['modules']['ciniki.artcatalog']) ) {
 		if( isset($settings['page-gallery-artcatalog-split']) 
 			&& $settings['page-gallery-artcatalog-split'] == 'yes' ) {
 			if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
-				$atype = array_shift($ciniki['request']['uri_split']);
-				switch($atype) {
+				switch($ciniki['request']['uri_split'][0]) {
 					case 'paintings': $artcatalog_type = 1; break;
 					case 'photographs': $artcatalog_type = 2; break;
 					case 'jewelry': $artcatalog_type = 3; break;
@@ -40,7 +39,10 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 					case 'crafts': $artcatalog_type = 5; break;
 					case 'clothing': $artcatalog_type = 6; break;
 				}
-				$base_url .= '/' . $atype;
+				if( $artcatalog_type > 0 ) {
+					$atype = array_shift($ciniki['request']['uri_split']);
+					$base_url .= '/' . $atype;
+				}
 			}
 		} 
 		$pkg = 'ciniki';
