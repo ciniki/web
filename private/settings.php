@@ -17,7 +17,8 @@ function ciniki_web_settings($ciniki, $business_id) {
 	// Load settings from the database
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQuery');
-	$rc = ciniki_core_dbDetailsQuery($ciniki, 'ciniki_web_settings', 'business_id', $business_id, 'ciniki.web', 'settings', '');
+	$rc = ciniki_core_dbDetailsQuery($ciniki, 'ciniki_web_settings', 
+		'business_id', $business_id, 'ciniki.web', 'settings', '');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}

@@ -19,13 +19,10 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 	//
 	$page_content = '';
 
-	//
-	// FIXME: Check if anything has changed, and if not load from cache
-	//
-		
-
 	$page_title = "Galleries";
 	$artcatalog_type = 0;
+	$last_change = 0;
+	$cache_file = '';
 	$base_url = $ciniki['request']['base_url'] . "/gallery";
 	if( isset($ciniki['business']['modules']['ciniki.artcatalog']) ) {
 		if( isset($settings['page-gallery-artcatalog-split']) 
@@ -48,13 +45,25 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 		$pkg = 'ciniki';
 		$mod = 'artcatalog';
 		$category_uri_component = 'category';
+		$last_change = $ciniki['business']['modules']['ciniki.artcatalog']['last_change'];
+		if( $ciniki['business']['modules']['ciniki.web']['last_change'] > $last_change ) {
+			$last_change = $ciniki['business']['modules']['ciniki.web']['last_change'];
+		}
 	} elseif( isset($ciniki['business']['modules']['ciniki.gallery']) ) {
 		$pkg = 'ciniki';
 		$mod = 'gallery';
 		$category_uri_component = 'album';
+		$last_change = $ciniki['business']['modules']['ciniki.gallery']['last_change'];
 	} else {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'267', 'msg'=>'No gallery module enabled'));
 	}
+
+	//
+	// FIXME: Check if anything has changed, and if not load from cache
+	//
+
+
+		
 
 	//
 	// Check if we are to display an image, from the gallery, or latest images
@@ -244,6 +253,22 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 	// Generate the main gallery page, showing the galleries/albums
 	//
 	else {
+		//
+		// Check for cached content
+		//
+		if( isset($ciniki['business']['cache_dir']) && $ciniki['business']['cache_dir'] != '' ) {
+			$cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/gallery';
+			$utc_offset = date_offset_get(new DateTime);
+			// Check if no changes have been made since last cache file write
+			if( file_exists($cache_file) && (filemtime($cache_file) - $utc_offset) > $last_change ) {
+				$content = file_get_contents($cache_file);
+				if( $content != '' ) {
+					error_log('WEB-CACHE: using cached $cache_file');
+					return array('stat'=>'ok', 'content'=>$content);
+				}
+			}
+		}
+
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
 		$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', 
 			$ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-gallery');
@@ -365,6 +390,18 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 		return $rc;
 	}
 	$content .= $rc['content'];
+
+	//
+	// Save the cache file
+	//
+	if( $cache_file != '' ) {
+		if( !file_exists(dirname($cache_file)) && mkdir(dirname($cache_file), 0755, true) === FALSE ) {
+			error_log('WEB-CACHE: Failed to create dir for $cache_file');
+		} 
+		elseif( file_put_contents($cache_file, $content) === FALSE ) {
+			error_log('WEB-CACHE: Failed to write $cache_file');
+		}
+	}
 
 	return array('stat'=>'ok', 'content'=>$content);
 }

@@ -101,7 +101,8 @@ if( $ciniki['config']['ciniki.web']['master.domain'] != $_SERVER['HTTP_HOST'] ) 
 	//
 	// Lookup client domain in database
 	//
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/lookupClientDomain.php');
+//	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/lookupClientDomain.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'lookupClientDomain');
 	$rc = ciniki_web_lookupClientDomain($ciniki, $_SERVER['HTTP_HOST'], 'domain');
 	if( $rc['stat'] != 'ok' ) {	
 		// Assume master business
@@ -113,6 +114,7 @@ if( $ciniki['config']['ciniki.web']['master.domain'] != $_SERVER['HTTP_HOST'] ) 
 	//
 	if( $rc['stat'] == 'ok' ) {
 		$ciniki['request']['business_id'] = $rc['business_id'];
+		$ciniki['business']['uuid'] = $rc['business_uuid'];
 		$ciniki['business']['modules'] = $rc['modules'];
 		if( isset($rc['redirect']) && $rc['redirect'] != '' ) {
 			Header('HTTP/1.1 301 Moved Permanently'); 
@@ -161,7 +163,8 @@ if( $ciniki['request']['business_id'] == 0 ) {
 		//
 		// Lookup business modules in database
 		//
-		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/businesses/private/getActiveModules.php');
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'getActiveModules');
+//		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/businesses/private/getActiveModules.php');
 		$rc = ciniki_businesses_getActiveModules($ciniki, $ciniki['request']['business_id']);
 		if( $rc['stat'] != 'ok' ) {
 			// Generate the master business 404 page
@@ -174,12 +177,14 @@ if( $ciniki['request']['business_id'] == 0 ) {
 			}
 			exit;
 		}
+		$ciniki['business']['uuid'] = '';
 		$ciniki['business']['modules'] = $rc['modules'];
 	} else {
 		//
 		// Lookup client name in database
 		//
-		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/lookupClientDomain.php');
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'lookupClientDomain');
+//		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/lookupClientDomain.php');
 		$rc = ciniki_web_lookupClientDomain($ciniki, $ciniki['request']['uri_split'][0], 'sitename');
 		if( $rc['stat'] != 'ok' ) {
 			// Generate the master business 404 page
@@ -193,6 +198,7 @@ if( $ciniki['request']['business_id'] == 0 ) {
 			exit;
 		}
 		$ciniki['request']['business_id'] = $rc['business_id'];
+		$ciniki['business']['uuid'] = $rc['business_uuid'];
 		$ciniki['business']['modules'] = $rc['modules'];
 		$ciniki['request']['base_url'] = '/' . $ciniki['request']['uri_split'][0];
 		if( isset($rc['redirect']) && $rc['redirect'] != '' ) {
@@ -216,10 +222,16 @@ if( $ciniki['request']['business_id'] == 0 ) {
 	}
 }
 
+if( isset($ciniki['business']['uuid']) && $ciniki['business']['uuid'] != '' ) {
+	$ciniki['business']['cache_dir'] = $ciniki['config']['ciniki.core']['cache_dir'] . '/'
+		. $ciniki['business']['uuid'][0] . '/' . $ciniki['business']['uuid'];
+}
+
 //
 // Get the details for the business
 //
-require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/businesses/web/details.php');
+//require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/businesses/web/details.php');
+ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'web', 'details');
 $rc = ciniki_businesses_web_details($ciniki, $ciniki['request']['business_id']);
 if( $rc['stat'] != 'ok' ) {
 	// Generate the master business 404 page
@@ -240,7 +252,8 @@ if( isset($rc['details']) ) {
 //
 // Get the web settings for the business
 //
-require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/settings.php');
+//require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/settings.php');
+ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'settings');
 $rc = ciniki_web_settings($ciniki, $ciniki['request']['business_id']);
 if( $rc['stat'] != 'ok' ) {
 	// Generate the master business 404 page
