@@ -86,6 +86,9 @@ function ciniki_web_siteSettings($ciniki) {
 	if( isset($modules['ciniki.artcatalog']) || isset($modules['ciniki.gallery']) ) {
 		$pages['gallery'] = array('display_name'=>'Gallery', 'active'=>'no');
 	}
+	if( isset($modules['ciniki.customers']) && ($modules['ciniki.customers']['flags']&0x02) == 0x02 ) {
+		$pages['members'] = array('display_name'=>'Members', 'active'=>'no');
+	}
 	if( isset($modules['ciniki.artclub']) ) {
 		$pages['members'] = array('display_name'=>'Members', 'active'=>'no');
 		$pages['sponsors'] = array('display_name'=>'Sponsors', 'active'=>'no');

@@ -1001,6 +1001,10 @@ function ciniki_web_main() {
 			}
 			this[page].refresh();
 			this[page].show(cb);
+		} else if( page == 'members' ) {
+			this.members.sections.options.fields['page-members-membership-details'].active=(M.curBusiness.modules['ciniki.artclub']!=null)?'yes':'no';
+			this[page].refresh();
+			this[page].show(cb);
 		} else if( page == 'account' ) {
 			if( M.curBusiness.modules['ciniki.subscriptions'] != null ) {
 				this.account.sections.subscriptions.visible = 'yes';
