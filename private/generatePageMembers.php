@@ -52,7 +52,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 	//
 	$content = '';
 	$page_content = '';
-	$page_title = 'Exhibitors';
+	$page_title = 'Members';
 
 	//
 	// FIXME: Check if anything has changed, and if not load from cache
@@ -76,8 +76,8 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 		// It's one query, and we can find the requested image, and figure out next
 		// and prev from the list of images returned
 		//
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'artclub', 'web', 'memberDetails');
-		$rc = ciniki_artclub_web_memberDetails($ciniki, $settings, 
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'memberDetails');
+		$rc = ciniki_customers_web_memberDetails($ciniki, $settings, 
 			$ciniki['request']['business_id'], $member_permalink);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
@@ -117,8 +117,12 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 			// The requested image was the last in the list, set previous to last
 			$next = $first;
 		}
-		
-		$page_title = $member['name'] . ' - ' . $img['title'];
+	
+		if( $img['title'] != '' ) {
+			$page_title = $member['name'] . ' - ' . $img['title'];
+		} else {
+			$page_title = $member['name'];
+		}
 	
 		//
 		// Load the image
@@ -172,14 +176,14 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 	// Check if we are to display an member
 	//
 	elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'artclub', 'web', 'memberDetails');
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'memberDetails');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
 
 		//
 		// Get the member information
 		//
 		$member_permalink = $ciniki['request']['uri_split'][0];
-		$rc = ciniki_artclub_web_memberDetails($ciniki, $settings, 
+		$rc = ciniki_customers_web_memberDetails($ciniki, $settings, 
 			$ciniki['request']['business_id'], $member_permalink);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
@@ -216,20 +220,30 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 			$page_content .= $rc['content'];
 		}
 
-		if( isset($member['url']) ) {
-			$rc = ciniki_web_processURL($ciniki, $member['url']);
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
+		//
+		// Add links
+		//
+		if( isset($member['links']) ) {
+			$links = '';
+			foreach($member['links'] as $link) {
+				$rc = ciniki_web_processURL($ciniki, $link['url']);
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				$url = $rc['url'];
+				$display_url = $rc['display'];
+				if( $link['name'] != '' ) {
+					$display_url = $link['name'];
+				}
+				$links .= ($links!=''?'<br/>':'') 
+					. "<a class='members-url' target='_blank' href='" . $url . "' "
+					. "title='" . $display_url . "'>" . $display_url . "</a>";
 			}
-			$url = $rc['url'];
-			$display_url = $rc['display'];
-		} else {
-			$url = '';
+			if( $links != '' ) {
+				$page_content .= "<p>$links</p>";
+			}
 		}
 
-		if( $url != '' ) {
-			$page_content .= "<br/>Website: <a class='members-url' target='_blank' href='" . $url . "' title='" . $member['name'] . "'>" . $display_url . "</a>";
-		}
 		$page_content .= "</article>";
 
 		if( isset($member['images']) && count($member['images']) > 0 ) {
@@ -252,8 +266,8 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 	//
 	else {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'artclub', 'web', 'memberList');
-		$rc = ciniki_artclub_web_memberList($ciniki, $settings, $ciniki['request']['business_id']);
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'memberList');
+		$rc = ciniki_customers_web_memberList($ciniki, $settings, $ciniki['request']['business_id']);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
