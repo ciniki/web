@@ -263,7 +263,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 			if( file_exists($cache_file) && (filemtime($cache_file) - $utc_offset) > $last_change ) {
 				$content = file_get_contents($cache_file);
 				if( $content != '' ) {
-					error_log("WEB-CACHE: using cached $cache_file");
+//					error_log("WEB-CACHE: using cached $cache_file");
 					return array('stat'=>'ok', 'content'=>$content);
 				}
 			}
