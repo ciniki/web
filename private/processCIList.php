@@ -30,7 +30,7 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 	foreach($categories as $cid => $category) {
 		if( $page_limit > 0 && $count >= $page_limit ) { $count++; break; }
 
-		$content .= "<tr><th>" . $category['name'] . "</th><td>\n";
+		$content .= "<tr><th>" . (isset($category['name'])?$category['name']:'') . "</th><td>\n";
 		$content .= "<table class='cilist-categories'><tbody>\n";
 
 		foreach($category['list'] as $iid => $item) {

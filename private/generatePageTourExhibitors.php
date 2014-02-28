@@ -315,9 +315,9 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 				if( $prev_category != NULL ) {
 					$page_content .= "</td></tr>\n";
 				}
-				if( isset($c['category']['name']) && $c['category']['name'] != '' ) {
+				if( isset($c['name']) && $c['name'] != '' ) {
 					$page_content .= "<tr><th>"
-						. "<span class='exhibitors-category'>" . $c['category']['name'] . "</span></th>"
+						. "<span class='exhibitors-category'>" . $c['name'] . "</span></th>"
 						. "<td>";
 				} else {
 					$page_content .= "<tr><th>"
@@ -325,11 +325,11 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 						. "<td>";
 				}
 				$page_content .= "<table class='exhibitors-category-list'><tbody>\n";
-				foreach($c['category']['participants'] as $pnum => $participant) {
-					$participant = $participant['participant'];
+				foreach($c['list'] as $pnum => $participant) {
+//					$participant = $participant['participant'];
 					$participant_url = $ciniki['request']['base_url'] . "/tour/" . $participant['permalink'];
 					
-					$marker_content = "<p><b>" . $participant['name'] . "</b></p>";
+					$marker_content = "<p><b>" . $participant['title'] . "</b></p>";
 					$marker_content .= "<p>" . $participant['address1'] . "<br/>";
 					if( isset($participant['address2']) && $participant['address2'] != '' ) {
 						$marker_content .= $participant['address2'] . "<br/>";
@@ -362,7 +362,7 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 							return $rc;
 						}
 						$page_content .= "<div class='image-exhibitors-thumbnail'>"
-							. "<a href='$participant_url' title='" . $participant['name'] . "'><img title='' alt='" . $participant['name'] . "' src='" . $rc['url'] . "' /></a>"
+							. "<a href='$participant_url' title='" . $participant['title'] . "'><img title='' alt='" . $participant['title'] . "' src='" . $rc['url'] . "' /></a>"
 							. "</div>";
 					}
 					$page_content .= "</td>";
@@ -370,7 +370,7 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 					// Setup the details
 					$page_content .= "<td class='exhibitors-details'>";
 					$page_content .= "<span class='exhibitors-title'>";
-					$page_content .= "<a href='$participant_url' title='" . $participant['name'] . "'>" . $count . ".  " . $participant['name'] . "</a>";
+					$page_content .= "<a href='$participant_url' title='" . $participant['title'] . "'>" . $count . ".  " . $participant['title'] . "</a>";
 					$page_content .= "</span>";
 					$page_content .= "</td></tr>";
 					$page_content .= "<tr><td class='exhibitors-description'>";

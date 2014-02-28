@@ -242,58 +242,13 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
 			. "";
 
 		if( count($participants) > 0 ) {
-			$page_content .= "<table class='exhibitors-list'><tbody>\n"
-				. "";
-			$prev_category = NULL;
-			foreach($participants as $cnum => $c) {
-				if( $prev_category != NULL ) {
-					$page_content .= "</td></tr>\n";
-				}
-				if( isset($c['category']['name']) && $c['category']['name'] != '' ) {
-					$page_content .= "<tr><th>"
-						. "<span class='exhibitors-category'>" . $c['category']['name'] . "</span></th>"
-						. "<td>";
-				} else {
-					$page_content .= "<tr><th>"
-						. "<span class='exhibitors-category'></span></th>"
-						. "<td>";
-				}
-				$page_content .= "<table class='exhibitors-category-list'><tbody>\n";
-				foreach($c['category']['participants'] as $pnum => $participant) {
-					$participant = $participant['participant'];
-					$participant_url = $ciniki['request']['base_url'] . "/exhibitors/" . $participant['permalink'];
-
-					// Setup the exhibitor image
-					$page_content .= "<tr><td class='exhibitors-image' rowspan='3'>";
-					if( isset($participant['image_id']) && $participant['image_id'] > 0 ) {
-						ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-						$rc = ciniki_web_getScaledImageURL($ciniki, $participant['image_id'], 'thumbnail', '150', 0);
-						if( $rc['stat'] != 'ok' ) {
-							return $rc;
-						}
-						$page_content .= "<div class='image-exhibitors-thumbnail'>"
-							. "<a href='$participant_url' title='" . $participant['name'] . "'><img title='' alt='" . $participant['name'] . "' src='" . $rc['url'] . "' /></a>"
-							. "</div>";
-					}
-					$page_content .= "</td>";
-
-					// Setup the details
-					$page_content .= "<td class='exhibitors-details'>";
-					$page_content .= "<span class='exhibitors-title'>";
-					$page_content .= "<a href='$participant_url' title='" . $participant['name'] . "'>" . $participant['name'] . "</a>";
-					$page_content .= "</span>";
-					$page_content .= "</td></tr>";
-					$page_content .= "<tr><td class='exhibitors-description'>";
-					if( isset($participant['description']) && $participant['description'] != '' ) {
-						$page_content .= "<span class='exhibitors-description'>" . $participant['description'] . "</span>";
-					}
-					$page_content .= "</td></tr>";
-					$page_content .= "<tr><td class='exhibitors-more'><a href='$participant_url'>... more</a></td></tr>";
-				}
-				$page_content .= "</tbody></table>";
+			$base_url = $ciniki['request']['base_url'] . '/exhibitors';
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
+			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $participants, array());
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
 			}
-
-			$page_content .= "</td></tr>\n</tbody></table>\n";
+			$page_content .= $rc['content'];
 		} else {
 			$page_content .= "<p>Currently no exhibitors for this event.</p>";
 		}
