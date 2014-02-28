@@ -886,7 +886,8 @@ function ciniki_web_main() {
 		if( M.userPerms&0x01 == 0x01 ) {
 			this.menu.sections.admin = {'label':'Admin Options', 'buttons':{
 				'googleanalytics':{'label':'Analytics', 'fn':'M.ciniki_web_main.showAnalytics(\'M.ciniki_web_main.showMenu();\',\'analytics\');' },
-				'clearcache':{'label':'Clear Cache', 'fn':'M.ciniki_web_main.clearCache();'},
+				'clearimagecache':{'label':'Clear Image Cache', 'fn':'M.ciniki_web_main.clearImageCache();'},
+				'clearcontentcache':{'label':'Clear Content Cache', 'fn':'M.ciniki_web_main.clearContentCache();'},
 				'css':{'label':'Custom CSS', 'fn':'M.ciniki_web_main.showCSS(\'M.ciniki_web_main.showMenu();\',\'css\');'},
 				}};
 		}
@@ -1187,9 +1188,21 @@ function ciniki_web_main() {
 		}
 	};
 
-	this.clearCache = function(page) {
+	this.clearImageCache = function(page) {
 		if( confirm('Are you sure you wish to clear the web cache?') ) {
-			var rsp = M.api.getJSONCb('ciniki.web.clearCache', {'business_id':M.curBusinessID}, function(rsp) {
+			var rsp = M.api.getJSONCb('ciniki.web.clearImageCache', {'business_id':M.curBusinessID}, function(rsp) {
+				if( rsp.stat != 'ok' ) {
+					M.api.err(rsp);
+					return false;
+				}
+				alert("The cache has been cleared");
+			});
+		}
+	};
+
+	this.clearContentCache = function(page) {
+		if( confirm('Are you sure you wish to clear the web cache?') ) {
+			var rsp = M.api.getJSONCb('ciniki.web.clearContentCache', {'business_id':M.curBusinessID}, function(rsp) {
 				if( rsp.stat != 'ok' ) {
 					M.api.err(rsp);
 					return false;
