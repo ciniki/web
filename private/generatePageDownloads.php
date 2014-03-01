@@ -43,7 +43,7 @@ function ciniki_web_generatePageDownloads($ciniki, $settings) {
 		//
 		// If there was an error locating the files, display generic error
 		//
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'717', 'msg'=>'Unable to locate file'));
+		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'717', 'msg'=>'We are sorry but the file you requested doesn\'t exist.'));
 	}
 
 
