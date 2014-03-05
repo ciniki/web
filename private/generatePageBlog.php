@@ -689,10 +689,10 @@ function ciniki_web_generatePageBlog($ciniki, $settings) {
 	$submenu = array();
 	$submenu['latest'] = array('name'=>'Latest', 'url'=>$ciniki['request']['base_url'] . '/blog');
 	$submenu['archive'] = array('name'=>'Archive', 'url'=>$ciniki['request']['base_url'] . '/blog/archive');
-	if( ($ciniki['business']['modules']['ciniki.blog']['flags']&0x01) > 0 ) {
+	if( ($ciniki['business']['modules']['ciniki.blog']['flags']&0x02) > 0 ) {
 		$submenu['category'] = array('name'=>'Categories', 'url'=>$ciniki['request']['base_url'] . '/blog/categories');
 	}
-	if( ($ciniki['business']['modules']['ciniki.blog']['flags']&0x02) > 0 ) {
+	if( ($ciniki['business']['modules']['ciniki.blog']['flags']&0x04) > 0 ) {
 		$submenu['tag'] = array('name'=>'Tags', 'url'=>$ciniki['request']['base_url'] . '/blog/tags');
 	}
 
