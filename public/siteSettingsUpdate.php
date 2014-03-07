@@ -153,6 +153,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-courses-registration-image-caption',
 		'page-members-active',
 		'page-members-membership-details',
+		'page-members-list-format',
 		'page-sponsors-active',
 		'page-newsletters-active',
 		'page-surveys-active',
@@ -437,8 +438,20 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 				}
 			}
 		}
-	}
 
+		//
+		// Check for triggers by changing settings
+		//
+		if( $field == 'page-members-list-format' ) {
+			$rc = ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'settingChange');
+			if( $rc['stat'] == 'ok' ) {
+				$rc = ciniki_customers_web_settingChange($ciniki, $args['business_id'], $field, $field_value);
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+			}
+		}
+	}
 
 	$user_prefix_fields = array(
 		'page-contact-user-display-flags',

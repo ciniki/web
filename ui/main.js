@@ -531,6 +531,16 @@ function ciniki_web_main() {
 			'options':{'label':'', 'fields':{
 				'page-members-active':{'label':'Display Members', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-members-membership-details':{'label':'Display Membership Information', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-members-list-format':{'label':'Listing Content', 'type':'select', 'options':{
+					'shortbio':'Short Bio',
+					'shortbio-links':'Short Bio, Links',
+					'shortbio-townsprovinces-links':'Short Bio, Town, Links',
+					'shortbio-emails-links':'Short Bio, Emails, Links',
+					'shortbio-townsprovinces-emails-links':'Short Bio, Town, Emails, Links',
+					'shortbio-phones-emails-links':'Short Bio, Phones, Emails, Links',
+					'shortbio-townsprovinces-phones-emails-links':'Short Bio, Town, Phones, Emails, Links',
+					'shortbio-addresses-phones-emails-links':'Short Bio, Addresses, Phones, Emails, Links',
+					}},
 				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'members\');'},
