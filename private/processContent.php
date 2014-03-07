@@ -27,8 +27,8 @@ function ciniki_web_processContent($ciniki, $unprocessed_content, $pclass='') {
 //	$processed_content = preg_replace('/h2><br\/>/m', 'h2>', $processed_content);
 
 	// Create active links for urls specified with a href= infront
-	$pattern = '#\b([^\"\'])((https?://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';
-	$pattern = '#\b(((?<!href=\")https?://?|(?<!://)www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';
+//	$pattern = '#\b([^\"\'])((https?://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';
+	$pattern = '#\b(((?<!href=(\"|\'))https?://?|(?<!://)www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';
 	$callback = create_function('$matches', '
 		$display_url = $matches[1];
 		$url = preg_replace("/www/", "http://www", $display_url);

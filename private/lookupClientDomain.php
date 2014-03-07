@@ -84,7 +84,7 @@ function ciniki_web_lookupClientDomain(&$ciniki, $domain, $type) {
 		. "WHERE ciniki_businesses.id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
 		. "AND ciniki_businesses.status = 1 "														// Business is active
 		. "AND ciniki_businesses.id = ciniki_business_modules.business_id "
-		. "AND ciniki_business_modules.status = 1 "														// Business is active
+		. "AND (ciniki_business_modules.status = 1 OR ciniki_business_modules.status = 2) "
 		. "";
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashIDQuery');
 	$rc = ciniki_core_dbHashIDQuery($ciniki, $strsql, 'ciniki.businesses', 'modules', 'module_id');

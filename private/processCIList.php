@@ -52,7 +52,7 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 			}
 
 			// Setup the item image
-			$content .= "<tr><td class='cilist-image' rowspan='3'>";
+			$content .= "\n<tr><td class='cilist-image' rowspan='3'>";
 			if( isset($item['image_id']) && $item['image_id'] > 0 ) {
 				$rc = ciniki_web_getScaledImageURL($ciniki, $item['image_id'], 'thumbnail', '150', 0);
 				if( $rc['stat'] != 'ok' ) {
@@ -62,11 +62,11 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 					$content .= "<div class='image-cilist-thumbnail'>"
 						. "<a href='$url' title='" . $item['title'] . "'>"
 						. "<img title='' alt='" . $item['title'] . "' src='" . $rc['url'] . "' /></a>"
-						. "</div></aside>";
+						. "</div>";
 				} else {
 					$content .= "<div class='image-cilist-thumbnail'>"
 						. "<img title='' alt='" . $item['title'] . "' src='" . $rc['url'] . "' />"
-						. "</div></aside>";
+						. "</div>";
 				}
 			} elseif( isset($category['noimage']) && $category['noimage'] != '' ) {
 				if( $url != '' ) {
@@ -104,10 +104,35 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 				if( $rc['stat'] == 'ok' ) {
 					$content .= $rc['content'];
 				}
+			} else {
+				$content .= "<br/>";
 			}
 		
 			if( $url != '' ) {
 				$content .= "<tr><td class='cilist-more'><a href='$url'>$url_display</a></td></tr>";
+			} elseif( isset($item['urls']) && count($item['urls']) > 0 ) {
+				$content .= "<tr><td class='cilist-more'>";
+				$urls = '';
+				foreach($item['urls'] as $url) {
+					$rc = ciniki_web_processURL($ciniki, $url);
+					if( $rc['stat'] != 'ok' ) {
+						return $rc;
+					}
+					if( $rc['url'] != '' ) {
+						$urls .= ($urls!='')?'<br/>':'';
+						if( isset($url['title']) && $url['title'] != '' ) {
+							$urls .= "<a href='" . $rc['url'] . "' target='_blank'>" . $url['title'] . "</a>";
+						} else {
+							$urls .= "<a href='" . $rc['url'] . "' target='_blank'>" . $rc['display'] . "</a>";
+						}
+					}
+					$url = $rc['url'];
+					$url_display = $rc['display'];
+				}
+				$content .= $urls . "</td></tr>";
+			} else {
+				$content .= "<tr><td class='cilist-more'></td></tr>";
+				
 			}
 			$count++;
 		}

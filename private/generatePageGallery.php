@@ -56,9 +56,16 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 	}
 
 	//
-	// Check if anything has changed, and if not load from cache
+	// Check if anything has changed in other modules that may change the menu
+	// or images used.  Not the most accurate way to determine if the cache needs to be refreshed,
+	// but better than missing something.
 	//
-	if( $ciniki['business']['modules']['ciniki.web']['last_change'] > $last_change ) {
+	if( isset($ciniki['business']['modules']['ciniki.images']['last_change']) 
+		&& $ciniki['business']['modules']['ciniki.images']['last_change'] > $last_change ) {
+		$last_change = $ciniki['business']['modules']['ciniki.images']['last_change'];
+	}
+	if( isset($ciniki['business']['modules']['ciniki.web']['last_change']) 
+		&& $ciniki['business']['modules']['ciniki.web']['last_change'] > $last_change ) {
 		$last_change = $ciniki['business']['modules']['ciniki.web']['last_change'];
 	}
 
