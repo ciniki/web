@@ -74,22 +74,31 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 		}
 		$members = $rc['members'];
 
+		if( $rc['tag_name'] != '' ) {
+			$page_title .= ' - ' . $rc['tag_name'];
+		}
+
 		$page_content .= "<article class='page'>\n"
-			. "<header class='entry-title'><h1 class='entry-title'>Members</h1></header>\n"
+			. "<header class='entry-title'><h1 class='entry-title'>$page_title</h1></header>\n"
 			. "<div class='entry-content'>\n"
 			. "";
 
 		if( count($members) > 0 ) {
-			
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
+			$base_url = $ciniki['request']['base_url'] . "/members";
+			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, 
+				array('0'=>array('name'=>'', 'list'=>$members)), array());
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= $rc['content'];
 		} else {
-			
+			$page_content .= "<p>We're sorry, but there doesn't appear to be any members in this category.</p>";
 		}
 
 		$page_content .= "</div>"
 			. "</article>"
 			. "";
-
-		
 	}
 
 	//
@@ -342,34 +351,75 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 	//
 	else {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'memberList');
-		$rc = ciniki_customers_web_memberList($ciniki, $settings, $ciniki['request']['business_id'], array());
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
-		}
-		$members = $rc['members'];
 
-		$page_content .= "<article class='page'>\n"
-			. "<header class='entry-title'><h1 class='entry-title'>Members</h1></header>\n"
-			. "<div class='entry-content'>\n"
-			. "";
-
-		if( count($members) > 0 ) {
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
-			$base_url = $ciniki['request']['base_url'] . "/members";
-			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, 
-				array('0'=>array('name'=>'', 'list'=>$members)), array());
+		if( isset($settings['page-members-categories-display']) 
+			&& $settings['page-members-categories-display'] == 'yes'
+			&& isset($ciniki['business']['modules']['ciniki.customers']['flags']) 
+			&& ($ciniki['business']['modules']['ciniki.customers']['flags']&0x04) > 0 ) {
+			//
+			// Display the list of categories
+			//
+//			ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'memberCategories');
+//			$rc = ciniki_customers_web_memberCategories($ciniki, $settings, $ciniki['request']['business_id']);
+//			if( $rc['stat'] != 'ok' ) {
+//				return $rc;
+//			}
+//			$categories = $rc['categories'];
+			
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'tagCloud');
+			$base_url = $ciniki['request']['base_url'] . '/members/category';
+			$rc = ciniki_customers_web_tagCloud($ciniki, $settings, $ciniki['request']['business_id'], 40);
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			$page_content .= $rc['content'];
-		} else {
-			$page_content .= "<p>Currently no members.</p>";
-		}
 
-		$page_content .= "</div>\n"
-			. "</article>\n"
-			. "";
+			//
+			// Process the tags
+			//
+			if( isset($rc['tags']) && count($rc['tags']) > 0 ) {
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processTagCloud');
+				$rc = ciniki_web_processTagCloud($ciniki, $settings, $base_url, $rc['tags']);
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				$page_content .= $rc['content'];
+			} else {
+				$page_content = "<p>I'm sorry, there are no categories for this blog";
+			}
+
+		} else {
+			//
+			// Display the list of members
+			//
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'memberList');
+			$rc = ciniki_customers_web_memberList($ciniki, $settings, $ciniki['request']['business_id'], array());
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$members = $rc['members'];
+
+			$page_content .= "<article class='page'>\n"
+				. "<header class='entry-title'><h1 class='entry-title'>Members</h1></header>\n"
+				. "<div class='entry-content'>\n"
+				. "";
+
+			if( count($members) > 0 ) {
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
+				$base_url = $ciniki['request']['base_url'] . "/members";
+				$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, 
+					array('0'=>array('name'=>'', 'list'=>$members)), array());
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				$page_content .= $rc['content'];
+			} else {
+				$page_content .= "<p>Currently no members.</p>";
+			}
+
+			$page_content .= "</div>\n"
+				. "</article>\n"
+				. "";
+		}
 		
 		//
 		// Check if membership info should be displayed here

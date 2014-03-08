@@ -531,6 +531,7 @@ function ciniki_web_main() {
 			'options':{'label':'', 'fields':{
 				'page-members-active':{'label':'Display Members', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-members-membership-details':{'label':'Display Membership Information', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-members-categories-display':{'label':'Display Member Categories', 'active':'no', 'type':'toggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-members-list-format':{'label':'Listing Content', 'type':'select', 'options':{
 					'shortbio':'Short Bio',
 					'shortbio-links':'Short Bio, Links',
@@ -1014,6 +1015,7 @@ function ciniki_web_main() {
 			this[page].show(cb);
 		} else if( page == 'members' ) {
 			this.members.sections.options.fields['page-members-membership-details'].active=(M.curBusiness.modules['ciniki.artclub']!=null)?'yes':'no';
+			this.members.sections.options.fields['page-members-categories-display'].active=(M.curBusiness.modules['ciniki.customers']!=null&&(M.curBusiness.modules['ciniki.customers'].flags&0x04)>0)?'yes':'no';
 			this[page].refresh();
 			this[page].show(cb);
 		} else if( page == 'account' ) {
