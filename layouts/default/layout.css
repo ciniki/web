@@ -201,6 +201,10 @@ header span.title {
 	padding-right: 0px;
 }
 
+#content table.cilist th {
+	padding-top: 0.25em;
+}
+
 #content span.cilist-subcategory,
 #content span.exhibitors-subcategory {
 	display: block;
@@ -270,6 +274,18 @@ div.hide-babybear { display: block; }
 span.exhibitors-description {
 	display: inline;
 }
+
+/* Set the full size for the word-cloud */
+#content div.word-cloud span.size-0 { font-size: 1em; line-height: 1.5em;}
+#content div.word-cloud span.size-1 { font-size: 1.2em; line-height: 1.5em;}
+#content div.word-cloud span.size-2 { font-size: 1.4em; line-height: 1.5em;}
+#content div.word-cloud span.size-3 { font-size: 1.6em; line-height: 1.5em;}
+#content div.word-cloud span.size-4 { font-size: 1.8em; line-height: 1.5em;}
+#content div.word-cloud span.size-5 { font-size: 2.0em; line-height: 1.5em;}
+#content div.word-cloud span.size-6 { font-size: 2.2em; line-height: 1.5em;}
+#content div.word-cloud span.size-7 { font-size: 2.4em; line-height: 1.5em;}
+#content div.word-cloud span.size-8 { font-size: 2.6em; line-height: 1.5em;}
+#content div.word-cloud span.size-9 { font-size: 2.8em; line-height: 1.5em;}
 
 #content div.entry-content div.googlemap { height: 30em; }
 

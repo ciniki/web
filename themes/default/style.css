@@ -284,6 +284,8 @@ div.gallery-image-details span.image-awards {
 
 #content p.clist-title,
 #content p.cilist-title,
+#content span.clist-title,
+#content span.cilist-title,
 #content span.contact-title,
 #content span.members-title,
 #content span.sponsors-title,
@@ -551,18 +553,6 @@ div.word-cloud {
 	max-width: 40em;
 	text-align: center;
 }
-
-#content div.word-cloud span { padding: 0.2em; white-space:nowrap;}
-#content div.word-cloud span.size-0 { font-size: 1em; }
-#content div.word-cloud span.size-1 { font-size: 1.2em; }
-#content div.word-cloud span.size-2 { font-size: 1.4em; }
-#content div.word-cloud span.size-3 { font-size: 1.6em; }
-#content div.word-cloud span.size-4 { font-size: 1.8em; }
-#content div.word-cloud span.size-5 { font-size: 2.0em; }
-#content div.word-cloud span.size-6 { font-size: 2.2em; }
-#content div.word-cloud span.size-7 { font-size: 2.4em; }
-#content div.word-cloud span.size-8 { font-size: 2.6em; }
-#content div.word-cloud span.size-9 { font-size: 2.8em; }
 
 #content div.word-cloud span.size-0 a,
 #content div.word-cloud span.size-0 a:visited,

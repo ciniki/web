@@ -664,7 +664,23 @@ aside div.googlemap img {
 	text-align: center;
 }
 
-#content div.word-cloud span { padding: 0.2em; white-space:nowrap;}
+#content div.word-cloud span { 
+	padding: 0.2em; 
+	padding-left: 0.6em; 
+	padding-right: 0.6em; 
+	white-space:nowrap;
+	vertical-align: middle;
+	}
+#content div.word-cloud span.size-0 { font-size: 1em; line-height: 1.5em;}
+#content div.word-cloud span.size-1 { font-size: 1.1em; line-height: 1.5em;}
+#content div.word-cloud span.size-2 { font-size: 1.2em; line-height: 1.5em;}
+#content div.word-cloud span.size-3 { font-size: 1.3em; line-height: 1.5em;}
+#content div.word-cloud span.size-4 { font-size: 1.4em; line-height: 1.5em;}
+#content div.word-cloud span.size-5 { font-size: 1.5em; line-height: 1.5em;}
+#content div.word-cloud span.size-6 { font-size: 1.6em; line-height: 1.5em;}
+#content div.word-cloud span.size-7 { font-size: 1.7em; line-height: 1.5em;}
+#content div.word-cloud span.size-8 { font-size: 1.8em; line-height: 1.5em;}
+#content div.word-cloud span.size-9 { font-size: 1.9em; line-height: 1.5em;}
 
 #content nav.content-nav {
 	padding-top: 0em;
