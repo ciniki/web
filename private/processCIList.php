@@ -31,9 +31,9 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 		if( $page_limit > 0 && $count >= $page_limit ) { $count++; break; }
 		// If no titles, then highlight the title in the category
 		if( isset($args['notitle']) && $args['notitle'] == 'yes' ) {
-			$content .= "<tr><th><span class='cilist-title'>" . (isset($category['name'])?$category['name']:'') . "</span></th><td>\n";
+			$content .= "\n<tr><th><span class='cilist-title'>" . (isset($category['name'])?$category['name']:'') . "</span></th><td>\n";
 		} else {
-			$content .= "<tr><th><span class='cilist-category'>" . (isset($category['name'])?$category['name']:'') . "</span></th><td>\n";
+			$content .= "\n<tr><th><span class='cilist-category'>" . (isset($category['name'])?$category['name']:'') . "</span></th><td>\n";
 		}
 		$content .= "<table class='cilist-categories'><tbody>\n";
 
@@ -57,9 +57,9 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 
 			// Setup the item image
 			if( isset($args['notitle']) && $args['notitle'] == 'yes' ) {
-				$content .= "\n<tr><td class='cilist-image' rowspan='2'>";
+				$content .= "<tr><td class='cilist-image' rowspan='2'>";
 			} else {
-				$content .= "\n<tr><td class='cilist-image' rowspan='3'>";
+				$content .= "<tr><td class='cilist-image' rowspan='3'>";
 			}
 			if( isset($item['image_id']) && $item['image_id'] > 0 ) {
 				$rc = ciniki_web_getScaledImageURL($ciniki, $item['image_id'], 'thumbnail', '150', 0);

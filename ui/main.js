@@ -539,8 +539,9 @@ function ciniki_web_main() {
 					'shortbio-emails-links':'Short Bio, Emails, Links',
 					'shortbio-townsprovinces-emails-links':'Short Bio, Town, Emails, Links',
 					'shortbio-phones-emails-links':'Short Bio, Phones, Emails, Links',
-					'shortbio-townsprovinces-phones-emails-links':'Short Bio, Town, Phones, Emails, Links',
-					'shortbio-addresses-phones-emails-links':'Short Bio, Addresses, Phones, Emails, Links',
+					'shortbio-blank-townsprovinces-phones-emails-links':'Short Bio, Town, Phones, Emails, Links',
+					'shortbio-blank-addresses-phones-emails-links':'Short Bio, Addresses, Phones, Emails, Links',
+					'addresses-blank-shortbio-phones-emails-links':'Addresses, Short Bio, Phones, Emails, Links',
 					}},
 				}},
 			'_save':{'label':'', 'buttons':{
