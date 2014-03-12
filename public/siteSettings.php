@@ -107,7 +107,13 @@ function ciniki_web_siteSettings($ciniki) {
 		$pages['account'] = array('display_name'=>'Account', 'active'=>'no');
 	}
 	if( isset($modules['ciniki.blog']) ) {
-		$pages['blog'] = array('display_name'=>'Blog', 'active'=>'no');
+		if( ($modules['ciniki.blog']['flags']&0x01) > 0 ) {
+			$pages['blog'] = array('display_name'=>'Blog', 'active'=>'no');
+		}
+		if( ($modules['ciniki.blog']['flags']&0x0100) > 0 ) {
+			$pages['account'] = array('display_name'=>'Account', 'active'=>'no');
+			$pages['memberblog'] = array('display_name'=>'Member News', 'active'=>'no');
+		}
 	}
 	if( isset($modules['ciniki.recipes']) ) {
 		$pages['recipes'] = array('display_name'=>'Recipes', 'active'=>'no');
@@ -215,6 +221,9 @@ function ciniki_web_siteSettings($ciniki) {
 	}
 	if( isset($settings['page-account-active']) && $settings['page-account-active'] == 'yes' ) {
 		$pages['account']['active'] = 'yes';
+	}
+	if( isset($settings['page-memberblog-active']) && $settings['page-memberblog-active'] == 'yes' ) {
+		$pages['memberblog']['active'] = 'yes';
 	}
 
 	//

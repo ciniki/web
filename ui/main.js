@@ -508,7 +508,7 @@ function ciniki_web_main() {
 		this.blog.data = {};
 		this.blog.sections = {
 			'options':{'label':'', 'fields':{
-				'page-blog-active':{'label':'Display Recipes', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-blog-active':{'label':'Display Blog', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-blog-name':{'label':'Name', 'type':'text', 'hint':'default is Blog'},
 				}},
 			'_save':{'label':'', 'buttons':{
@@ -552,6 +552,27 @@ function ciniki_web_main() {
 		this.members.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.members.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'members\');');
 		this.members.addClose('Cancel');
+
+		//
+		// The options and information for the members news page
+		//
+		this.memberblog = new M.panel('Members',
+			'ciniki_web_main', 'memberblog',
+			'mc', 'narrow', 'sectioned', 'ciniki.web.main.memberblog');
+		this.memberblog.data = {};
+		this.memberblog.sections = {
+			'options':{'label':'', 'fields':{
+				'page-memberblog-active':{'label':'Display Member News', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-memberblog-name':{'label':'Name', 'type':'text', 'hint':'Member News'},
+				}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'memberblog\');'},
+				}},
+		};
+		this.memberblog.fieldValue = this.fieldValue;
+		this.memberblog.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.memberblog.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'memberblog\');');
+		this.memberblog.addClose('Cancel');
 
 		//
 		// The options and information for the sponsors page

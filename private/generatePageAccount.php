@@ -362,7 +362,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 		// Allow user to change password
 		//
 		$content .= "<h1 class='entry-title'>Change Password</h1>"
-			. "<p>If you would like to change your password, enter your old password followed by a new one</p>"
+			. "<p>If you would like to change your password, enter your old password followed by a new one.</p>"
 			. "";
 
 		if( $chgpwd_err_msg != '' ) {

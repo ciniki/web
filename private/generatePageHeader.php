@@ -212,8 +212,9 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	elseif( $ciniki['request']['business_id'] != $ciniki['config']['ciniki.core']['master_business_id']
 		&& isset($settings['page-account-active']) && $settings['page-account-active'] == 'yes'
 		&& ((isset($settings['page-downloads-customers']) && $settings['page-downloads-customers'] == 'yes')
+			// Add check for members blog
 			|| (isset($settings['page-subscriptions-public']) && $settings['page-subscriptions-public'] == 'yes')
-		// || () // Used if there are other pages that allow customer only content
+			|| (isset($ciniki['business']['modules']['ciniki.blog']) && ($ciniki['business']['modules']['ciniki.blog']['flags']&0x0100) > 0) // Used if there are other pages that allow customer only content
 		)) {
 		$signin_content .= "<div class='signin'><div class='signin-wrapper'>";
 		if( $social_icons != '' ) {
@@ -450,6 +451,41 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 			$content .= "Downloads";
 		}
 		$content .= "</a></li>";
+	}
+
+	if( isset($settings['page-downloads-active']) && $settings['page-downloads-active'] == 'yes' 
+		&& ( 
+			(isset($settings['page-downloads-public']) && $settings['page-downloads-public'] == 'yes')
+			|| 
+			(isset($settings['page-downloads-customers']) && $settings['page-downloads-customers'] == 'yes' 
+				&& isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 )
+			)
+		) {
+		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/downloads'>";
+		if( isset($settings['page-downloads-name']) && $settings['page-downloads-name'] != '' ) {
+			$content .= $settings['page-downloads-name'];
+		} else {
+			$content .= "Member News";
+		}
+		$content .= "</a></li>";
+	}
+
+	//
+	// Check if member news is enabled, and the member has logged in
+	//
+	if( isset($settings['page-memberblog-active']) && $settings['page-memberblog-active'] == 'yes' 
+		&& isset($ciniki['business']['modules']['ciniki.blog'])
+		&& ($ciniki['business']['modules']['ciniki.blog']['flags']&0x0100) > 0 
+		&& isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0
+		) {
+		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/memberblog'>";
+		if( isset($settings['page-memberblog-name']) && $settings['page-memberblog-name'] != '' ) {
+			$content .= $settings['page-memberblog-name'];
+		} else {
+			$content .= "Member News";
+		}
+		$content .= "</a></li>";
+
 	}
 
 	if( isset($settings['page-blog-active']) && $settings['page-blog-active'] == 'yes' ) {
