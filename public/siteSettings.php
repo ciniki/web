@@ -91,6 +91,8 @@ function ciniki_web_siteSettings($ciniki) {
 	}
 	if( isset($modules['ciniki.artclub']) ) {
 		$pages['members'] = array('display_name'=>'Members', 'active'=>'no');
+	}
+	if( isset($modules['ciniki.sponsors']) ) {
 		$pages['sponsors'] = array('display_name'=>'Sponsors', 'active'=>'no');
 	}
 	if( isset($modules['ciniki.artgallery']) ) {
