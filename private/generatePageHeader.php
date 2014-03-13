@@ -453,23 +453,6 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		$content .= "</a></li>";
 	}
 
-	if( isset($settings['page-downloads-active']) && $settings['page-downloads-active'] == 'yes' 
-		&& ( 
-			(isset($settings['page-downloads-public']) && $settings['page-downloads-public'] == 'yes')
-			|| 
-			(isset($settings['page-downloads-customers']) && $settings['page-downloads-customers'] == 'yes' 
-				&& isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 )
-			)
-		) {
-		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/downloads'>";
-		if( isset($settings['page-downloads-name']) && $settings['page-downloads-name'] != '' ) {
-			$content .= $settings['page-downloads-name'];
-		} else {
-			$content .= "Member News";
-		}
-		$content .= "</a></li>";
-	}
-
 	//
 	// Check if member news is enabled, and the member has logged in
 	//
