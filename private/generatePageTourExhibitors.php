@@ -375,7 +375,12 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 					$page_content .= "</td></tr>";
 					$page_content .= "<tr><td class='exhibitors-description'>";
 					if( isset($participant['description']) && $participant['description'] != '' ) {
-						$page_content .= "<span class='exhibitors-description'>" . $participant['description'] . "</span>";
+						ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+						$rc = ciniki_web_processContent($ciniki, $participant['description']);	
+						if( $rc['stat'] != 'ok' ) {
+							return $rc;
+						}
+						$page_content .= "<span class='exhibitors-description'>" . $rc['content'] . "</span>";
 					}
 					$page_content .= "</td></tr>";
 					$page_content .= "<tr><td class='exhibitors-more'><a href='$participant_url'>... more</a></td></tr>";
