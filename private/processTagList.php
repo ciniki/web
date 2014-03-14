@@ -2,27 +2,30 @@
 //
 // Description
 // -----------
-// This function takes a list of tags or categories and returns a delimited list
+// This function will process a list of tags along with sizes to return a word size cloud
 //
 // Arguments
 // ---------
 // ciniki:
-// url:				The url to be processed.
+// settings:		The web settings structure, similar to ciniki variable but only web specific information.
 //
 // Returns
 // -------
 //
-function ciniki_web_processTagList($ciniki, $settings, $base_url, $delimiter, $list) {
+function ciniki_web_processTagList($ciniki, $settings, $base_url, $tags, $args) {
 
-	$content = '';
+	$content = "<div class='largebutton-list'>";
 
-	if( is_array($list) && count($list) > 0 ) {
-		foreach($list as $tag) {
-			$content .= ($content!=''?$delimiter:'') 
-				. "<a href='$base_url/" . rawurlencode((isset($tag['permalink'])&&$tag['permalink']!='')?$tag['permalink']:$tag['name']) . "'>" . $tag['name'] . "</a>";
-		}
+	foreach($tags as $tag) {
+		$content .= "<div class='button-list-wrap'>";
+		$content .= "<div class='button-list-button'><a href='$base_url/" . $tag['permalink'] . "'>" 	
+			. $tag['name'] . "</a></div>";
+		$content .= "</div> ";
 	}
+
+	$content .= "</div>";
 
 	return array('stat'=>'ok', 'content'=>$content);
 }
 ?>
+

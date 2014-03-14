@@ -214,9 +214,13 @@ header span.title {
 	width: auto;
 }
 
+#content div.largebutton-list div.button-list-wrap {
+	width: 49%;
+}
+
 #content div.button-list div.button-list-wrap {
 	width: 32%;
-}
+49}
 
 #content form {
 	max-width: 28em;
@@ -382,6 +386,7 @@ body { width: 100%; }
 	margin-left: 0px;
 }
 
+#content div.largebutton-list div.button-list-wrap, 
 #content div.button-list div.button-list-wrap {
 	width: 100%;
 }
@@ -462,6 +467,7 @@ span.exhibitors-description {
 	#content article.page { width: 36em; width: 100%; }
 	#content.evensplit aside,
 	aside { max-width: 100%; width: 36em; width: 100%; } 
+	#content div.largebutton-list { text-align: center; }
 	#content div.button-list { text-align: center; }
 	#content div.button-list div.button-list-wrap {
 		display: inline-block;

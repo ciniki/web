@@ -356,7 +356,8 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 
 		if( isset($settings['page-members-categories-display']) 
-			&& $settings['page-members-categories-display'] == 'yes'
+			&& ($settings['page-members-categories-display'] == 'wordlist'
+				|| $settings['page-members-categories-display'] == 'wordcloud' )
 			&& isset($ciniki['business']['modules']['ciniki.customers']['flags']) 
 			&& ($ciniki['business']['modules']['ciniki.customers']['flags']&0x04) > 0 ) {
 			//
@@ -384,15 +385,28 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 			//
 			// Process the tags
 			//
-			if( isset($rc['tags']) && count($rc['tags']) > 0 ) {
-				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processTagCloud');
-				$rc = ciniki_web_processTagCloud($ciniki, $settings, $base_url, $rc['tags']);
-				if( $rc['stat'] != 'ok' ) {
-					return $rc;
+			if( $settings['page-members-categories-display'] == 'wordlist' ) {
+				if( isset($rc['tags']) && count($rc['tags']) > 0 ) {
+					ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processTagList');
+					$rc = ciniki_web_processTagList($ciniki, $settings, $base_url, $rc['tags'], array());
+					if( $rc['stat'] != 'ok' ) {
+						return $rc;
+					}
+					$page_content .= $rc['content'];
+				} else {
+					$page_content = "<p>I'm sorry, there are no categories for this blog";
 				}
-				$page_content .= $rc['content'];
-			} else {
-				$page_content = "<p>I'm sorry, there are no categories for this blog";
+			} elseif( $settings['page-members-categories-display'] == 'wordcloud' ) {
+				if( isset($rc['tags']) && count($rc['tags']) > 0 ) {
+					ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processTagCloud');
+					$rc = ciniki_web_processTagCloud($ciniki, $settings, $base_url, $rc['tags']);
+					if( $rc['stat'] != 'ok' ) {
+						return $rc;
+					}
+					$page_content .= $rc['content'];
+				} else {
+					$page_content = "<p>I'm sorry, there are no categories for this blog";
+				}
 			}
 			$page_content .= "</div>\n"
 				. "</article>\n"

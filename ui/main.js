@@ -531,7 +531,11 @@ function ciniki_web_main() {
 			'options':{'label':'', 'fields':{
 				'page-members-active':{'label':'Display Members', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-members-membership-details':{'label':'Display Membership Information', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
-				'page-members-categories-display':{'label':'Display Member Categories', 'active':'no', 'type':'toggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-members-categories-display':{'label':'Display Member Categories', 'active':'no', 'type':'toggle', 'default':'no', 'toggles':{
+					'no':'No',
+					'wordlist':'List',
+					'wordcloud':'Cloud',
+					}},
 				'page-members-list-format':{'label':'Listing Content', 'type':'select', 'options':{
 					'shortbio':'Short Bio',
 					'shortbio-links':'Short Bio, Links',

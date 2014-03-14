@@ -391,11 +391,13 @@ div.gallery-image-details span.image-awards {
 	color: #999;
 }
 
+#content div.largebutton-list div.button-list-wrap, 
 #content div.button-list div.button-list-wrap {
 	padding-right: 0.3em;
 	padding-bottom: 0.5em;
 }
 
+#content div.largebutton-list div.button-list-button a, 
 #content div.button-list div.button-list-button a {
 	font-size: 1.2em;
 	border: 2px solid #da7c0c;
@@ -407,6 +409,10 @@ div.gallery-image-details span.image-awards {
 	background: -webkit-gradient(linear, left top, left bottom, from(#faa51a), to(#f47a20));
 	background: -moz-linear-gradient(top,  #faa51a,  #f47a20);
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#faa51a', endColorstr='#f47a20');
+}
+
+#content div.largebutton-list div.button-list-button a {
+	padding: 0.5em 0 0.5em 0;
 }
 
 #content dl dt {
