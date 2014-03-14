@@ -483,11 +483,12 @@ span.exhibitors-description {
 		border: 0px;
 		display: table-cell;
 	}
-
+	#content table.sponsors-list table.sponsors-category-list td.sponsors-image img {
+		max-width: none;
+	}
 	#content table.sponsors-list table.sponsors-category-list td.sponsors-details {
 		display: table-cell;
 	}
-
 	#content table.sponsors-list table.sponsors-category-list td.sponsors-description p {
 		max-width: 100%;
 		width: 100%;

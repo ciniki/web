@@ -481,7 +481,7 @@ div.googlemap p.exhibitors-more,
 
 #content div.image-sponsors-thumbnail img {
 /* 	height: 115px; */
-	max-width: none;
+	max-width: 100%;
 }
 
 #content div.image-cilist-thumbnail img,
