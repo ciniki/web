@@ -487,5 +487,9 @@ span.exhibitors-description {
 	#content table.sponsors-list table.sponsors-category-list td.sponsors-details {
 		display: table-cell;
 	}
-}
 
+	#content table.sponsors-list table.sponsors-category-list td.sponsors-description p {
+		max-width: 100%;
+		width: 100%;
+	}
+}

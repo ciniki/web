@@ -84,7 +84,7 @@ function ciniki_web_processSponsors($ciniki, $settings, $level, $categories) {
 					if( $rc['stat'] != 'ok' ) {
 						return $rc;
 					}
-					$content .= "<span class='sponsors-description'>" . $rc['content'] . "</span>";
+					$content .= $rc['content'];
 				}
 				$content .= "</td></tr>";
 				$content .= "<tr><td class='sponsors-more'><a target='_blank' class='external-link' href='$url'>$display_url</a></td></tr>";
