@@ -54,7 +54,7 @@ function ciniki_web_generatePageSponsors($ciniki, $settings) {
 			if( isset($level['level']['name']) ) {
 				$page_content .= $level['level']['name'] . ' ';
 			}
-			$page_content .= "Sponsors</h1></header>\n"
+			$page_content .= "</h1></header>\n"
 				. "<div class='entry-content'>\n"
 				. "";
 			$rc = ciniki_web_processSponsors($ciniki, $settings, $level['level']['number'], $level['level']['categories']);

@@ -405,7 +405,12 @@ article {
 #content table.sponsors-list table.sponsors-category-list td.sponsors-image {
 	padding-right: 0.1em;
 	padding-left: 0;
+	display: block;
 /*	min-width: 9.0em; */
+}
+
+#content table.sponsors-list table.sponsors-category-list td.sponsors-details {
+	display: none;
 }
 
 #content table.cilist td.cilist-image,
@@ -460,7 +465,6 @@ div.googlemap p.exhibitors-more,
 
 #content div.image-cilist-thumbnail,
 #content div.image-members-thumbnail,
-#content div.image-sponsors-thumbnail,
 #content div.image-exhibitors-thumbnail {
 	height: 115px;
 }

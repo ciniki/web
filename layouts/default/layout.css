@@ -140,13 +140,6 @@ header span.title {
 	padding-bottom: 1em;
 }
 
-#content table.sponsors-list table.sponsors-category-list td.sponsors-image {
-	padding-left: 0.0em;
-	padding-right: 0.5em;
-/*	min-width: 9.5em; */
-	border: 0px;
-}
-
 #content table.cilist table.cilist-categories td.cilist-image,
 #content table.members-list table.members-category-list td.members-image,
 #content table.exhibitors-list table.exhibitors-category-list td.exhibitors-image {
@@ -478,5 +471,21 @@ span.exhibitors-description {
 	}
 
 	div.hide-babybear { display: block; }
+}
+
+/* 11. Anything over 40 em
+------------------------------------------------------------------------------*/
+@media screen and (min-width: 40em) {
+	#content table.sponsors-list table.sponsors-category-list td.sponsors-image {
+		padding-left: 0.0em;
+		padding-right: 0.5em;
+	/*	min-width: 9.5em; */
+		border: 0px;
+		display: table-cell;
+	}
+
+	#content table.sponsors-list table.sponsors-category-list td.sponsors-details {
+		display: table-cell;
+	}
 }
 

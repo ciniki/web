@@ -48,7 +48,7 @@ function ciniki_web_processSponsors($ciniki, $settings, $level, $categories) {
 					$url = '';
 				}
 
-				// Setup the exhibitor image
+				// Setup the sponsor image
 				$content .= "<tr><td class='sponsors-image' rowspan='3'>";
 				if( isset($sponsor['image_id']) && $sponsor['image_id'] > 0 ) {
 					if( $level == 50 ) {
@@ -79,7 +79,12 @@ function ciniki_web_processSponsors($ciniki, $settings, $level, $categories) {
 				$content .= "</td></tr>";
 				$content .= "<tr><td class='sponsors-description'>";
 				if( isset($sponsor['description']) && $sponsor['description'] != '' ) {
-					$content .= "<span class='sponsors-description'>" . $sponsor['description'] . "</span>";
+					ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+					$rc = ciniki_web_processContent($ciniki, $sponsor['description']);	
+					if( $rc['stat'] != 'ok' ) {
+						return $rc;
+					}
+					$content .= "<span class='sponsors-description'>" . $rc['content'] . "</span>";
 				}
 				$content .= "</td></tr>";
 				$content .= "<tr><td class='sponsors-more'><a target='_blank' class='external-link' href='$url'>$display_url</a></td></tr>";
