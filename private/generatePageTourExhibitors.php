@@ -498,13 +498,17 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 					. 'mapTypeId: google.maps.MapTypeId.ROADMAP'
 				. '};'
 				. 'map = new google.maps.Map(document.getElementById("googlemap"), mapOptions);'
-				. 'gmap_showParticipant(' . $settings['page-contact-map-latitude'] . ',' . $settings['page-contact-map-longitude'] . ',"","<p><b>' . $ciniki['business']['details']['name'] . '</b></p><p>' . $business_address . '</p>");'
+				. '';
+		if( isset($settings['ciniki-exhibitions-exhibitors-active']) 
+			&& $settings['ciniki-exhibitions-exhibitors-active'] == 'yes' ) {
+			$ciniki['request']['inline_javascript'] .= 'gmap_showParticipant(' . $settings['page-contact-map-latitude'] . ',' . $settings['page-contact-map-longitude'] . ',"","<p><b>' . $ciniki['business']['details']['name'] . '</b></p><p>' . $business_address . '</p>");';
+		}
 //				. 'var marker = new google.maps.Marker({'
 //					. 'position: myLatlng,'
 //					. 'map: map,'
 //					. 'title:"",'
 //					. '});'
-				. $map_participant_javascript
+		$ciniki['request']['inline_javascript']	.= $map_participant_javascript
 			. '};'
 			. 'function gmap_showParticipant(lat,lng,num,content) {'
 				. 'var myLatlng = new google.maps.LatLng(lat,lng);'
