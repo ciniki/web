@@ -311,6 +311,7 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 				. "";
 			$prev_category = NULL;
 			$count = 1;
+			$markers = array();
 			foreach($participants as $cnum => $c) {
 				if( $prev_category != NULL ) {
 					$page_content .= "</td></tr>\n";
@@ -329,28 +330,49 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 //					$participant = $participant['participant'];
 					$participant_url = $ciniki['request']['base_url'] . "/tour/" . $participant['permalink'];
 					
-					$marker_content = "<p><b>" . $participant['title'] . "</b></p>";
-					$marker_content .= "<p>" . $participant['address1'] . "<br/>";
+					$marker_person = $participant['title'];
+					$marker_studio = $participant['studio_name'];
+					$marker_address = "<p>" . $participant['address1'] . "<br/>";
 					if( isset($participant['address2']) && $participant['address2'] != '' ) {
-						$marker_content .= $participant['address2'] . "<br/>";
+						$marker_address .= $participant['address2'] . "<br/>";
 					}
 					if( isset($participant['city']) && $participant['city'] != ''
 						&& isset($participant['province']) && $participant['province'] != '' ) {
-						$marker_content .= $participant['city'] . ", " . $participant['province'];
+						$marker_address .= $participant['city'] . ", " . $participant['province'];
 					} elseif( isset($participant['city']) && $participant['city'] != '' ) {
-						$marker_content .= $participant['city'];
+						$marker_address .= $participant['city'];
 					} elseif( isset($participant['province']) && $participant['province'] != '' ) {
-						$marker_content .= $participant['province'];
+						$marker_address .= $participant['province'];
 					}
 					if( isset($participant['postal']) && $participant['postal'] != '' ) {
-						$marker_content .= '  ' . $participant['postal'];
+						$marker_address .= '  ' . $participant['postal'];
 					}
-					$marker_content .= "</p>";
-					$marker_content .= "<p class=\"exhibitors-more\"><a href=\"$participant_url\">... more</a></p>";
+					$marker_address .= "</p>";
+//					$marker_url = "<p class=\"exhibitors-more\"><a href=\"$participant_url\">... more</a></p>";
 
+					$marker_label = $count;
 					if( isset($participant['latitude']) && $participant['latitude'] != ''
 						&& isset($participant['longitude']) && $participant['longitude'] != '' ) {
-						$map_participant_javascript .= "gmap_showParticipant(" . $participant['latitude'] . ',' . $participant['longitude'] . ",'" . $count . "','" . preg_replace("/'/", "\\'", $marker_content) . "');";
+						$marker_id = $participant['latitude'] . '-' . $participant['longitude'];
+						if( isset($markers[$marker_id]) ) {
+							$marker_label = $markers[$marker_id]['label'];
+							if( $markers[$marker_id]['studio_name'] == '' && $marker_studio != '' ) {
+								$markers[$marker_id]['studio_name'] = $marker_studio;
+							}
+							$markers[$marker_id]['people'][] = array('name'=>$marker_person, 
+								'url'=>$participant_url);
+						} else {
+							$markers[$marker_id] = array(
+								'label'=>$count,
+								'latitude'=>$participant['latitude'],
+								'longitude'=>$participant['longitude'],
+								'studio_name'=>$marker_studio,
+								'address'=>$marker_address,
+								'people'=>array(
+									array('name'=>$marker_person, 'url'=>$participant_url)
+									),
+								);
+						}
 					}
 
 					// Setup the exhibitor image
@@ -370,7 +392,7 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 					// Setup the details
 					$page_content .= "<td class='exhibitors-details'>";
 					$page_content .= "<span class='exhibitors-title'>";
-					$page_content .= "<a href='$participant_url' title='" . $participant['title'] . "'>" . $count . ".  " . $participant['title'] . "</a>";
+					$page_content .= "<a href='$participant_url' title='" . $participant['title'] . "'>" . $marker_label . ".  " . $participant['title'] . "</a>";
 					$page_content .= "</span>";
 					$page_content .= "</td></tr>";
 					$page_content .= "<tr><td class='exhibitors-description'>";
@@ -388,6 +410,30 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 					$count++;
 				}
 				$page_content .= "</tbody></table>";
+
+				foreach($markers as $mid => $marker) {
+					if( count($marker['people']) > 1 ) {
+						// Multiple entries at same location
+						$map_participant_javascript .= "gmap_showParticipant("
+							. "" . $marker['latitude'] . ',' . $marker['longitude'] . ","
+							. "'" . $marker['label'] . "',"
+							. "'<p><b>" . $marker['studio_name'] . "</b></p>"
+							. preg_replace("/'/", "\\'", $marker['address'])
+							. "<p><b>Artists:</b></p>";
+						foreach($marker['people'] as $person) {
+							$map_participant_javascript .= "<a href=\"" . $person['url'] . "\">" . $person['name'] . "</a><br/>";
+						}
+						$map_participant_javascript .= "');";
+					} else {
+						// Single entry at location
+						$map_participant_javascript .= "gmap_showParticipant(" . $marker['latitude'] . ',' . $marker['longitude'] . ","
+							. "'" . $marker['label'] . "',"
+							. "'<p><b>" . $marker['people'][0]['name'] . "</b></p>"
+							. preg_replace("/'/", "\\'", $marker['address']) 
+							. "<p class=\"exhibitors-more\"><a href=\"" . $marker['people'][0]['url'] . "\">... more</a></p>"
+							. "');";
+					}
+				}
 			}
 
 			$page_content .= "</td></tr>\n</tbody></table>\n";
