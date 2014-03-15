@@ -357,7 +357,6 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 						&& $participant['latitude'] != '' && $participant['latitude'] != 0 
 						&& isset($participant['longitude']) 
 						&& $participant['longitude'] != '' && $participant['longitude'] != 0 ) {
-						$marker_label = $count;
 						$marker_id = $participant['latitude'] . '-' . $participant['longitude'];
 						if( isset($markers[$marker_id]) ) {
 							$marker_label = $markers[$marker_id]['label'];
@@ -367,8 +366,9 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 							$markers[$marker_id]['people'][] = array('name'=>$marker_person, 
 								'url'=>$participant_url);
 						} else {
+							$marker_label = $count++;
 							$markers[$marker_id] = array(
-								'label'=>$count,
+								'label'=>$marker_label,
 								'latitude'=>$participant['latitude'],
 								'longitude'=>$participant['longitude'],
 								'studio_name'=>$marker_studio,
@@ -413,7 +413,6 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 					$page_content .= "</td></tr>";
 					$page_content .= "<tr><td class='exhibitors-more'><a href='$participant_url'>... more</a></td></tr>";
 
-					$count++;
 				}
 				$page_content .= "</tbody></table>";
 
