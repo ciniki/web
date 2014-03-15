@@ -166,8 +166,10 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 		//
 		// Check if map is to be displayed
 		//
-		if( isset($participant['latitude']) && $participant['latitude'] != '' 
-			&& isset($participant['longitude']) && $participant['longitude'] != '' ) {
+		if( isset($participant['latitude']) 
+			&& $participant['latitude'] != '' && $participant['latitude'] != 0
+			&& isset($participant['longitude']) 
+			&& $participant['longitude'] != '' && $participant['longitude'] != 0 ) {
 			if( !isset($ciniki['request']['inline_javascript']) ) {
 				$ciniki['request']['inline_javascript'] = '';
 			}
@@ -350,9 +352,12 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 					$marker_address .= "</p>";
 //					$marker_url = "<p class=\"exhibitors-more\"><a href=\"$participant_url\">... more</a></p>";
 
-					$marker_label = $count;
-					if( isset($participant['latitude']) && $participant['latitude'] != ''
-						&& isset($participant['longitude']) && $participant['longitude'] != '' ) {
+					$marker_label = '';
+					if( isset($participant['latitude']) 
+						&& $participant['latitude'] != '' && $participant['latitude'] != 0 
+						&& isset($participant['longitude']) 
+						&& $participant['longitude'] != '' && $participant['longitude'] != 0 ) {
+						$marker_label = $count;
 						$marker_id = $participant['latitude'] . '-' . $participant['longitude'];
 						if( isset($markers[$marker_id]) ) {
 							$marker_label = $markers[$marker_id]['label'];
@@ -392,7 +397,8 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 					// Setup the details
 					$page_content .= "<td class='exhibitors-details'>";
 					$page_content .= "<span class='exhibitors-title'>";
-					$page_content .= "<a href='$participant_url' title='" . $participant['title'] . "'>" . $marker_label . ".  " . $participant['title'] . "</a>";
+					$page_content .= "<a href='$participant_url' title='" . $participant['title'] . "'>" 
+						. ($marker_label!=''?$marker_label . ".  ":'') . $participant['title'] . "</a>";
 					$page_content .= "</span>";
 					$page_content .= "</td></tr>";
 					$page_content .= "<tr><td class='exhibitors-description'>";
