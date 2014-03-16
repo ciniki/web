@@ -204,7 +204,8 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		if( $social_icons != '' ) {
 			$signin_content .= "<span class='social-icons hide-babybear'>$social_icons</span><span class='social-divider hide-babybear'>|</span>";
 		}
-		$signin_content .= "<span><a href='" . $ciniki['config']['ciniki.core']['manage.url'] . "'>"
+		$signin_content .= "<span><a rel='nofollow' "
+			. "href='" . $ciniki['config']['ciniki.core']['manage.url'] . "'>"
 			. "Sign in</a></span>";
 		$signin_content .= "</div></div>\n";
 	} 
@@ -221,9 +222,9 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 			$signin_content .= "<span class='social-icons hide-babybear'>$social_icons</span><span class='social-divider hide-babybear'>|</span>";
 		}
 		if( isset($ciniki['session']['customer']['id']) > 0 ) {
-			$signin_content .= "<span><a href='" . $ciniki['request']['base_url'] . "/account'>My Account</a></span>";
+			$signin_content .= "<span><a rel='nofollow' href='" . $ciniki['request']['base_url'] . "/account'>My Account</a></span>";
 		} else {
-			$signin_content .= "<span><a href='" . $ciniki['request']['base_url'] . "/account'>Sign In</a></span>";
+			$signin_content .= "<span><a rel='nofollow' href='" . $ciniki['request']['base_url'] . "/account'>Sign In</a></span>";
 		}
 		$signin_content .= "</div></div>\n";
 	} elseif( $social_icons != '' ) {
@@ -348,7 +349,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/" . $settings['page-custom-001-permalink'] . "'>" . $settings['page-custom-001-name'] . "</a></li>";
 	}
 	if( isset($settings['page-signup-active']) && $settings['page-signup-active'] == 'yes' ) {
-		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/signup'>Sign Up</a></li>";
+		$content .= "<li class='menu-item$hide_menu_class'><a rel='nofollow' href='" . $ciniki['request']['base_url'] . "/signup'>Sign Up</a></li>";
 	}
 	if( isset($settings['page-exhibitions-exhibition']) && $settings['page-exhibitions-exhibition'] > 0
 		&& isset($settings['page-exhibitions-exhibitors-active']) && $settings['page-exhibitions-exhibitors-active'] == 'yes' ) {
