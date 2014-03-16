@@ -831,7 +831,7 @@ function ciniki_web_main() {
 				'page-account-content':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'medium', 
 					'hint':'This appears when the customer signs into your website'},
 				}},
-			'subscriptions':{'label':'Subscription Message', 'visible':'no', 'fields':{
+			'subscriptions':{'label':'Subscription Message', 'active':'no', 'fields':{
 				'page-account-content-subscriptions':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'medium', 'hint':''},
 				}},
 			'_save':{'label':'', 'buttons':{
@@ -1046,9 +1046,9 @@ function ciniki_web_main() {
 			this[page].show(cb);
 		} else if( page == 'account' ) {
 			if( M.curBusiness.modules['ciniki.subscriptions'] != null ) {
-				this.account.sections.subscriptions.visible = 'yes';
+				this.account.sections.subscriptions.active = 'yes';
 			} else {
-				this.account.sections.subscriptions.visible = 'no';
+				this.account.sections.subscriptions.active = 'no';
 			}
 			this[page].refresh();
 			this[page].show(cb);
