@@ -257,6 +257,7 @@ function ciniki_web_main() {
 				}},
 			'_image_caption':{'label':'', 'fields':{
 				'page-home-image-caption':{'label':'Caption', 'type':'text'},
+				'page-home-image-url':{'label':'Link', 'type':'text'},
 				}},
 			'_content':{'label':'Welcome Message (optional)', 'fields':{
 				'page-home-content':{'label':'', 'hidelabel':'yes', 'hint':'', 'type':'textarea', 'size':'large'},

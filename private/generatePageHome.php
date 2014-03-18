@@ -43,10 +43,16 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
+		$href = '';
+		$_href = '';
+		if( isset($settings['page-home-image-url']) && $settings['page-home-image-url'] != '' ) {
+			$href = "<a href='" . $settings['page-home-image-url'] . "'>";
+			$_href = "</a>";
+		}
 		$page_content .= "<aside><div class='image-wrap'>"
-			. "<div class='image'><img title='' alt='" . $ciniki['business']['details']['name'] . "' src='" . $rc['url'] . "' /></div>";
+			. "<div class='image'>$href<img title='' alt='" . $ciniki['business']['details']['name'] . "' src='" . $rc['url'] . "' />$_href</div>";
 		if( isset($settings['page-home-image-caption']) && $settings['page-home-image-caption'] != '' ) {
-			$page_content .= "<div class='image-caption'>" . $settings['page-home-image-caption'] . "</div>";
+			$page_content .= "<div class='image-caption'>$href" . $settings['page-home-image-caption'] . "$_href</div>";
 		}
 		$page_content .= "</div></aside>";
 	}
