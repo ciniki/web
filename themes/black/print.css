@@ -1,0 +1,8 @@
+/* Elements not to print */
+header div.signin { display: none; }
+header nav { display: none; }
+hr.header-section-divider { display: none; }
+body { color: #000; }
+#content p { max-width: 100%; }
+aside { width: 50%; }
+aside div.image-wrap { padding-left: 1em; }
