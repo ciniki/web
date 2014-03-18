@@ -90,6 +90,9 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 				. '/' . $settings['site-theme'] . "/ie.css' />\n"
 				. "<![endif]-->\n";
 		}
+		if( file_exists($ciniki['request']['theme_dir'] . '/' . $settings['site-theme'] . '/print.css') ) {
+			$content .= "<link rel='stylesheet' type='text/css' media='print' href='" . $ciniki['request']['theme_url'] . '/' . $settings['site-theme'] . "/print.css' />\n";
+		}
 	} else if( file_exists($ciniki['request']['theme_dir'] . '/default/style.css') ) {
 		$content .= "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['theme_url'] 
 			. "/default/style.css' />\n";
@@ -107,6 +110,9 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 			$content .= "<!--[if (lt IE 8)]>\n"
 				. "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['theme_url'] . "/default/ie.css' />\n"
 				. "<![endif]-->\n";
+		}
+		if( file_exists($ciniki['request']['theme_dir'] . '/default/print.css') ) {
+			$content .= "<link rel='stylesheet' type='text/css' media='print' href='" . $ciniki['request']['theme_url'] . "/default/print.css' />\n";
 		}
 	}
 
