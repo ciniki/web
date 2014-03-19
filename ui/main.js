@@ -828,6 +828,9 @@ function ciniki_web_main() {
 			'options':{'label':'', 'fields':{
 				'page-account-active':{'label':'Customer Logins', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				}},
+			'redirect':{'label':'On login', 'fields':{
+				'page-account-signin-redirect':{'label':'Redirect to', 'type':'select', 'options':{}},
+				}},
 			'welcome':{'label':'Sign in Greeting', 'fields':{
 				'page-account-content':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'medium', 
 					'hint':'This appears when the customer signs into your website'},
@@ -1051,6 +1054,13 @@ function ciniki_web_main() {
 			} else {
 				this.account.sections.subscriptions.active = 'no';
 			}
+			// Setup the redirects
+			var popts = {'':'Nowhere', '/':'Home'};
+//			if( M.curBusiness.modules['ciniki.artcatalog'] != null ) { popts['/gallery'] = 'Gallery'; }
+//			if( M.curBusiness.modules['ciniki.gallery'] != null ) { popts['/gallery'] = 'Gallery'; }
+			if( M.curBusiness.modules['ciniki.blog'] != null 
+				&& (M.curBusiness.modules['ciniki.blog'].flags&0x100) > 0) { popts['/memberblog'] = 'Member Blog'; }
+			this.account.sections.redirect.fields['page-account-signin-redirect'].options = popts;
 			this[page].refresh();
 			this[page].show(cb);
 		} else if( page == 'exhibitions' ) {

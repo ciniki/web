@@ -39,14 +39,17 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 	//
 	$err_msg = '';
 	$display_form = 'login';
-	if( isset($_POST['action']) ) {
-		if( $_POST['action'] == 'logout' ) {
-			$ciniki['session']['customer'] = array();
-			$ciniki['session']['user'] = array();
-			$ciniki['session']['change_log_id'] = '';
-			unset($_SESSION['customer']);
-		}
-		elseif( $_POST['action'] == 'signin' ) {
+	if( (isset($_POST['action']) && $_POST['action'] == 'logout') 
+		|| (isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'logout') ) {
+		$ciniki['session']['customer'] = array();
+		$ciniki['session']['user'] = array();
+		$ciniki['session']['change_log_id'] = '';
+		unset($_SESSION['customer']);
+		Header('Location: ' . $ciniki['request']['base_url']);
+		exit;
+	}
+	elseif( isset($_POST['action']) ) {
+		if( $_POST['action'] == 'signin' ) {
 			//
 			// Check the referrer and that cookies are enabled
 			//
@@ -69,6 +72,11 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 					$display_form = 'login';
 				} else {
 					$display_form = 'no';
+					if( isset($settings['page-account-signin-redirect']) 
+						&& $settings['page-account-signin-redirect'] != '' ) {
+						Header('Location: ' . $ciniki['request']['base_url'] . $settings['page-account-signin-redirect']);
+						exit;
+					}
 				}
 			}
 		}

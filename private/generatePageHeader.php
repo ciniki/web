@@ -228,7 +228,8 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 			$signin_content .= "<span class='social-icons hide-babybear'>$social_icons</span><span class='social-divider hide-babybear'>|</span>";
 		}
 		if( isset($ciniki['session']['customer']['id']) > 0 ) {
-			$signin_content .= "<span><a rel='nofollow' href='" . $ciniki['request']['base_url'] . "/account'>My Account</a></span>";
+			$signin_content .= "<span><a rel='nofollow' href='" . $ciniki['request']['base_url'] . "/account'>Account</a></span>";
+			$signin_content .= " | <span><a rel='nofollow' href='" . $ciniki['request']['base_url'] . "/account/logout'>Logout</a></span>";
 		} else {
 			$signin_content .= "<span><a rel='nofollow' href='" . $ciniki['request']['base_url'] . "/account'>Sign In</a></span>";
 		}
