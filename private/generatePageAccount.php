@@ -45,8 +45,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 		$ciniki['session']['user'] = array();
 		$ciniki['session']['change_log_id'] = '';
 		unset($_SESSION['customer']);
-		Header('Location: ' . $ciniki['request']['base_url']);
-		exit;
+		Header('Location: ' . ($ciniki['request']['base_url']!=''?$ciniki['request']['base_url']:'/'));
 	}
 	elseif( isset($_POST['action']) ) {
 		if( $_POST['action'] == 'signin' ) {
