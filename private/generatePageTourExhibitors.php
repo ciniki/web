@@ -86,8 +86,14 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 			// The requested image was the last in the list, set previous to last
 			$next = $first;
 		}
-		
-		$page_title = $participant['name'] . ' - ' . $img['title'];
+
+		$base_url = $ciniki['request']['base_url'] . "/tour/" . $participant['permalink'];
+		$article_title = "<a href='$base_url'>" . $participant['name'] . "</a>";
+		$page_title = $participant['name'];
+		if( $img['title'] != '' ) {
+			$page_title .= ' - ' . $img['title'];
+			$article_title .= ' - ' . $img['title'];
+		}
 	
 		if( $img == NULL ) {
 			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1332', 'msg'=>"I'm sorry, but we can't seem to find the image your requested."));
@@ -118,7 +124,7 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 		$ciniki['request']['onresize'] = "gallery_resize_arrows();";
 		$ciniki['request']['onload'] = "scrollto_header();";
 		$page_content .= "<article class='page'>\n"
-			. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$page_title</h1></header>\n"
+			. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$article_title</h1></header>\n"
 			. "<div class='entry-content'>\n"
 			. "";
 		$page_content .= "<div id='gallery-image' class='gallery-image'>";
@@ -229,7 +235,10 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 			$page_content .= $rc['content'];
 		}
 
-		$address = $participant['address1'] . "<br/>";
+		$address = '';
+		if( isset($participant['address1']) && $participant['address1'] != '' ) {
+			$address .= $participant['address1'] . "<br/>";
+		}
 		if( isset($participant['address2']) && $participant['address2'] != '' ) {
 			$address .= $participant['address2'] . "<br/>";
 		}
@@ -260,7 +269,7 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 		}
 
 		if( $url != '' ) {
-			$page_content .= "<br/>Website: <a class='exhibitors-url' target='_blank' href='" . $url . "' title='" . $participant['name'] . "'>" . $display_url . "</a>";
+			$page_content .= "<p>Website: <a class='exhibitors-url' target='_blank' href='" . $url . "' title='" . $participant['name'] . "'>" . $display_url . "</a></p>";
 		}
 		$page_content .= "</article>";
 
