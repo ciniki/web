@@ -65,7 +65,15 @@ function ciniki_web_generateMasterIndex(&$ciniki, $settings) {
 			. "<br/><br/>"
 			. "<div class='hide-babybear'>"
 			. "<br/><h1 class='entry-title'>Already a customer, Sign in</h1>"
-			. "<form action='/manage' method='POST'>"
+			. "";
+		$post_url = 'https://';
+		if( isset($ciniki['config']['ciniki.core']['ssl']) 
+			&& $ciniki['config']['ciniki.core']['ssl'] == 'off' ) {
+			$post_url = 'http://';
+		}
+		$post_url .= $_SERVER['HTTP_HOST'] . "/manage";
+		$aside_content .= ""
+			. "<form action='$post_url' method='POST'>"
 			. "<div class='input'>"
 				. "<label for='username'>Username</label>"
 				. "<input type='text' class='text' name='username' value='' />"
