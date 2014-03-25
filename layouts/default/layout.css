@@ -77,10 +77,15 @@ header span.title {
 	height: 130px;
 }
 
+/* #content ul {
+	width: 28em;
+} */
+
 #content dl {
 	width: 30em;
 }
 
+#content ul.wide,
 #content dl.wide {
 	width: 100%;
 }
@@ -420,6 +425,10 @@ body { width: 100%; }
 
 #content.evensplit form div.submit {
 	max-width: 100%;
+}
+
+#content ul {
+	max-width: 45em;
 }
 
 #content p {
