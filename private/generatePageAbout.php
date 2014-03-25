@@ -101,18 +101,23 @@ function ciniki_web_generatePageAbout($ciniki, $settings) {
 			$page_content .= "</div></aside>";
 		}
 
+		$page_content .= "<div class='entry-content'>";
 		if( isset($info['content']) ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 			$rc = ciniki_web_processContent($ciniki, $info['content']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			$page_content .= "<div class='entry-content'>"
-				. $rc['content']
-				. "</div>";
+			$page_content .= $rc['content'];
 		}
-		$page_content .= "\n"
-			. "</article>\n";
+		if( isset($info['files']) ) {
+			foreach($info['files'] as $fid => $file) {
+				$url = $ciniki['request']['base_url'] . '/about/download/' . $file['permalink'] . '.' . $file['extension'];
+				$page_content .= "<p><a target='_blank' href='" . $url . "' title='" . $file['name'] . "'>" . $file['name'] . "</a></p>";
+			}
+		}
+		$page_content .= "</div>";
+		$page_content .= "</article>\n";
 	}
 //
 //
