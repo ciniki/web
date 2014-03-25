@@ -1044,7 +1044,7 @@ function ciniki_web_main() {
 			this[page].refresh();
 			this[page].show(cb);
 		} else if( page == 'members' ) {
-			this.members.sections.options.fields['page-members-membership-details'].active=(M.curBusiness.modules['ciniki.artclub']!=null)?'yes':'no';
+			this.members.sections.options.fields['page-members-membership-details'].active=(M.curBusiness.modules['ciniki.info']!=null&&(M.curBusiness.modules['ciniki.info'].flags&0x40)>0)?'yes':'no';
 			this.members.sections.options.fields['page-members-categories-display'].active=(M.curBusiness.modules['ciniki.customers']!=null&&(M.curBusiness.modules['ciniki.customers'].flags&0x04)>0)?'yes':'no';
 			this[page].refresh();
 			this[page].show(cb);
