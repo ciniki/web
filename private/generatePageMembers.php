@@ -21,8 +21,8 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 	if( isset($ciniki['business']['modules']['ciniki.artclub'])
 		&& isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'download'
 		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' ) {
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'artclub', 'web', 'fileDownload');
-		$rc = ciniki_artclub_web_fileDownload($ciniki, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][1]);
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'fileDownload');
+		$rc = ciniki_info_web_fileDownload($ciniki, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][1]);
 		if( $rc['stat'] == 'ok' ) {
 			header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 			header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
@@ -453,34 +453,80 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 
 	if( isset($add_membership_info) && $add_membership_info == 'yes' ) {
 		//
-		// Check if membership info should be displayed here
+		// Pull the membership info from the ciniki.info module
 		//
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'artclub', 'web', 'membershipDetails');
-		$rc = ciniki_artclub_web_membershipDetails($ciniki, $settings, $ciniki['request']['business_id']);
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'pageDetails');
+		$rc = ciniki_info_web_pageDetails($ciniki, $settings, $ciniki['request']['business_id'], 
+			array('content_type'=>'7'));
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
-		$membership = $rc['membership'];
-		if( $membership['details'] != '' ) {
-			$page_content .= "<article class='page'>\n"
-				. "<header class='entry-title'><h1 class='entry-title'>Membership</h1></header>\n"
-				. "<div class='entry-content'>\n"
-				. "";
-			$rc = ciniki_web_processContent($ciniki, $membership['details']);	
+		$info = $rc['content'];
+
+		$page_content .= "<article class='page'>\n"
+			. "<header class='entry-title'><h1 class='entry-title'>" . $info['title'] . "</h1></header>\n"
+			. "";
+		if( isset($info['image_id']) && $info['image_id'] != '' && $info['image_id'] != 0 ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+			$rc = ciniki_web_getScaledImageURL($ciniki, $info['image_id'], 'original', '500', 0);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= "<aside><div class='image-wrap'>"
+				. "<div class='image'><img title='' src='" . $rc['url'] . "' /></div>";
+			if( isset($info['image_caption']) && $info['image_caption'] != '' ) {
+				$page_content .= "<div class='image-caption'>" . $info['image_caption'] . "</div>";
+			}
+			$page_content .= "</div></aside>";
+		}
+
+		$page_content .= "<div class='entry-content'>";
+		if( isset($info['content']) ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+			$rc = ciniki_web_processContent($ciniki, $info['content']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
 			$page_content .= $rc['content'];
-
-			foreach($membership['files'] as $fid => $file) {
-				$file = $file['file'];
+		}
+		if( isset($info['files']) ) {
+			foreach($info['files'] as $fid => $file) {
 				$url = $ciniki['request']['base_url'] . '/members/download/' . $file['permalink'] . '.' . $file['extension'];
 				$page_content .= "<p><a target='_blank' href='" . $url . "' title='" . $file['name'] . "'>" . $file['name'] . "</a></p>";
 			}
-
-			$page_content .= "</div>\n"
-				. "</article>";
 		}
+		$page_content .= "</div>";
+		$page_content .= "</article>\n";
+
+		//
+		// Check if membership info should be displayed here
+		//
+//		ciniki_core_loadMethod($ciniki, 'ciniki', 'artclub', 'web', 'membershipDetails');
+//		$rc = ciniki_artclub_web_membershipDetails($ciniki, $settings, $ciniki['request']['business_id']);
+//		if( $rc['stat'] != 'ok' ) {
+//			return $rc;
+//		}
+//		$membership = $rc['membership'];
+//		if( $membership['details'] != '' ) {
+//			$page_content .= "<article class='page'>\n"
+//				. "<header class='entry-title'><h1 class='entry-title'>Membership</h1></header>\n"
+//				. "<div class='entry-content'>\n"
+//				. "";
+//			$rc = ciniki_web_processContent($ciniki, $membership['details']);	
+//			if( $rc['stat'] != 'ok' ) {
+//				return $rc;
+//			}
+//			$page_content .= $rc['content'];
+//
+//			foreach($membership['files'] as $fid => $file) {
+//				$file = $file['file'];
+//				$url = $ciniki['request']['base_url'] . '/members/download/' . $file['permalink'] . '.' . $file['extension'];
+//				$page_content .= "<p><a target='_blank' href='" . $url . "' title='" . $file['name'] . "'>" . $file['name'] . "</a></p>";
+//			}
+//
+//			$page_content .= "</div>\n"
+//				. "</article>";
+//		}
 	}
 
 	//
