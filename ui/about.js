@@ -41,6 +41,13 @@ function ciniki_web_about() {
 		this.about.sections = {
 			'options':{'label':'', 'fields':{
 				'page-about-active':{'label':'Display About Page', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-aboutartiststatement-active':{'label':'Display Artist Statement Page', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-aboutcv-active':{'label':'Display CV Page', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-aboutawards-active':{'label':'Display Awards Page', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-abouthistory-active':{'label':'Display History Page', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-aboutdonations-active':{'label':'Display Donations Page', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-aboutboardofdirectors-active':{'label':'Display Board of Directors Page', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-aboutmembership-active':{'label':'Display Membership Page', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				}},
 			'subpages':{'label':'', 'list':{
 				'aboutartiststatement':{'label':'Artist Statement', 'visible':'no', 'fn':'M.ciniki_web_about.showPage(\'M.ciniki_web_about.about.show();\',\'aboutartiststatement\');'},
@@ -60,9 +67,9 @@ function ciniki_web_about() {
 			'_content':{'label':'Content', 'fields':{
 				'page-about-content':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'large'},
 				}},
-			'_users':{'label':'Business Employees', 'visible':'no', 'fields':{
+			'_users':{'label':'Business Employees', 'visible':'no', 'active':'no', 'fields':{
 				}},
-			'_users_display':{'label':'', 'fields':{
+			'_users_display':{'label':'', 'visible':'no', 'active':'no', 'fields':{
 				'page-about-bios-title':{'label':'Title', 'type':'text', 'hint':''},
 				'page-about-bios-display':{'label':'Employee List', 'type':'multitoggle', 'default':'list', 'toggles':{'list':'2 Column', 'cilist':'3 Column'}, 'hint':''},
 				}},
@@ -353,6 +360,30 @@ function ciniki_web_about() {
 
 	this.showPageFinish = function(cb, page, rsp) {
 		if( page == 'about' ) {
+			// Decide what is visible based on info module
+			if( M.curBusiness.modules['ciniki.info'] != null ) {
+				var flags = M.curBusiness.modules['ciniki.info'].flags;
+				this.about.sections.options.fields['page-about-active'].active = (flags&0x01)>0?'yes':'no';
+				this.about.sections.options.fields['page-aboutartiststatement-active'].active = (flags&0x02)>0?'yes':'no';
+				this.about.sections.options.fields['page-aboutcv-active'].active = (flags&0x04)>0?'yes':'no';
+				this.about.sections.options.fields['page-aboutawards-active'].active = (flags&0x08)>0?'yes':'no';
+				this.about.sections.options.fields['page-abouthistory-active'].active = (flags&0x10)>0?'yes':'no';
+				this.about.sections.options.fields['page-aboutdonations-active'].active = (flags&0x20)>0?'yes':'no';
+				this.about.sections.options.fields['page-aboutmembership-active'].active = (flags&0x40)>0?'yes':'no';
+				this.about.sections.options.fields['page-aboutboardofdirectors-active'].active = (flags&0x80)>0?'yes':'no';
+//				this.about.sections.options.fields['page-aboutfacilities-active'].active = (flags&0x100)>0?'yes':'no';
+			} else {
+				this.about.sections.options.fields['page-about-active'].active = 'yes';
+				this.about.sections.options.fields['page-aboutartiststatement-active'].active = 'no';
+				this.about.sections.options.fields['page-aboutcv-active'].active = 'no';
+				this.about.sections.options.fields['page-aboutawards-active'].active = 'no';
+				this.about.sections.options.fields['page-abouthistory-active'].active = 'no';
+				this.about.sections.options.fields['page-aboutdonations-active'].active = 'no';
+				this.about.sections.options.fields['page-aboutboardofdirectors-active'].active = 'no';
+				this.about.sections.options.fields['page-aboutmembership-active'].active = 'no';
+//				this.about.sections.options.fields['page-aboutfacilities-active'].active = 'no';
+			}
+
 			this.about.sections.subpages.list.aboutartiststatement.visible = 'no';
 			this.about.sections.subpages.list.aboutcv.visible = 'no';
 			this.about.sections.subpages.list.aboutawards.visible = 'no';
@@ -375,8 +406,10 @@ function ciniki_web_about() {
 				this.about.sections.subpages.list.abouthistory.visible = 'yes';
 				this.about.sections.subpages.list.aboutmembership.visible = 'yes';
 			}
+
 			// Get the user associated with this business
 			this.about.sections._users.visible = 'no';
+			this.about.sections._users_display.visible = 'no';
 			var rsp = M.api.getJSONCb('ciniki.web.businessUsers', {'business_id':M.curBusinessID}, function(rsp) {
 				if( rsp.stat != 'ok' ) {
 					M.api.err(rsp);
@@ -385,6 +418,7 @@ function ciniki_web_about() {
 				var p = M.ciniki_web_about.about;
 				if( rsp.users.length > 0 ) {
 					p.sections._users.visible = 'yes';
+					p.sections._users.active = 'yes';
 					p.sections._users.fields = {};
 					for(i in rsp.users) {
 						var u = rsp.users[i].user;
@@ -393,9 +427,12 @@ function ciniki_web_about() {
 							};
 					}
 					p.sections._users_display.visible = 'yes';
+					p.sections._users_display.active = 'yes';
 				} else {
 					p.sections._users.visible = 'no';
 					p.sections._users_display.visible = 'no';
+					p.sections._users.active = 'no';
+					p.sections._users_display.active = 'no';
 				}
 				p.refresh();
 				p.show(cb);
