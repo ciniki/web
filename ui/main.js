@@ -531,7 +531,6 @@ function ciniki_web_main() {
 		this.members.sections = {
 			'options':{'label':'', 'fields':{
 				'page-members-active':{'label':'Display Members', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
-				'page-members-membership-details':{'label':'Display Membership Information', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-members-categories-display':{'label':'Display Member Categories', 'active':'no', 'type':'toggle', 'default':'no', 'toggles':{
 					'no':'No',
 					'wordlist':'List',
@@ -548,6 +547,7 @@ function ciniki_web_main() {
 					'shortbio-blank-addresses-phones-emails-links':'Short Bio, Addresses, Phones, Emails, Links',
 					'addresses-blank-shortbio-phones-emails-links':'Addresses, Short Bio, Phones, Emails, Links',
 					}},
+				'page-members-membership-details':{'label':'Display Membership Information', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'members\');'},
