@@ -46,6 +46,7 @@ function ciniki_web_about() {
 				'page-about-awards-active':{'label':'Display Awards Page', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-about-history-active':{'label':'Display History Page', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-about-donations-active':{'label':'Display Donations Page', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-about-facilities-active':{'label':'Display Facilities Page', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-about-boardofdirectors-active':{'label':'Display Board of Directors Page', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-about-membership-active':{'label':'Display Membership Page', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				}},
@@ -369,9 +370,9 @@ function ciniki_web_about() {
 				this.about.sections.options.fields['page-about-awards-active'].active = (flags&0x08)>0?'yes':'no';
 				this.about.sections.options.fields['page-about-history-active'].active = (flags&0x10)>0?'yes':'no';
 				this.about.sections.options.fields['page-about-donations-active'].active = (flags&0x20)>0?'yes':'no';
-				this.about.sections.options.fields['page-about-membership-active'].active = (flags&0x40)>0?'yes':'no';
+				this.about.sections.options.fields['page-about-facilities-active'].active = (flags&0x100)>0?'yes':'no';
 				this.about.sections.options.fields['page-about-boardofdirectors-active'].active = (flags&0x80)>0?'yes':'no';
-//				this.about.sections.options.fields['page-about-facilities-active'].active = (flags&0x100)>0?'yes':'no';
+				this.about.sections.options.fields['page-about-membership-active'].active = (flags&0x40)>0?'yes':'no';
 			} else {
 				this.about.sections.options.fields['page-about-active'].active = 'yes';
 				this.about.sections.options.fields['page-about-artiststatement-active'].active = 'no';
@@ -379,9 +380,9 @@ function ciniki_web_about() {
 				this.about.sections.options.fields['page-about-awards-active'].active = 'no';
 				this.about.sections.options.fields['page-about-history-active'].active = 'no';
 				this.about.sections.options.fields['page-about-donations-active'].active = 'no';
+				this.about.sections.options.fields['page-about-facilities-active'].active = 'no';
 				this.about.sections.options.fields['page-about-boardofdirectors-active'].active = 'no';
 				this.about.sections.options.fields['page-about-membership-active'].active = 'no';
-//				this.about.sections.options.fields['page-about-facilities-active'].active = 'no';
 			}
 
 //			this.about.sections.subpages.list.aboutartiststatement.visible = 'no';

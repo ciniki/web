@@ -118,8 +118,12 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 			// The requested image was the last in the list, set previous to last
 			$next = $first;
 		}
-		
-		$page_title = $event['name'] . ' - ' . $img['title'];
+
+		if( $img['title'] != '' ) {
+			$page_title = $event['name'] . ' - ' . $img['title'];
+		} else {
+			$page_title = $event['name'];
+		}
 	
 		//
 		// Load the image
