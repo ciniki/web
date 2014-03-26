@@ -414,7 +414,7 @@ article {
 }
 
 #content table.sponsors-list table.sponsors-category-list td.sponsors-details {
-	display: none;
+	display: block;
 }
 
 #content table.sponsors-list table.sponsors-category-list td.sponsors-description {
