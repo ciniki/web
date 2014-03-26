@@ -417,6 +417,18 @@ article {
 	display: none;
 }
 
+#content table.sponsors-list table.sponsors-category-list td.sponsors-description {
+	height: 100%;
+}
+
+#content table.sponsors-list table.sponsors-category-list td.sponsors-description p {
+	margin-bottom: 1.0em;
+}
+
+#content table.sponsors-list table.sponsors-category-list td.sponsors-description p:last-child {
+	margin-bottom: 0.5em;
+}
+
 #content table.cilist td.cilist-image,
 #content table.members-list table.members-category-list td.members-image,
 #content table.exhibitors-list table.exhibitors-category-list td.exhibitors-image {
@@ -435,6 +447,7 @@ div.googlemap p.exhibitors-more,
 	vertical-align: bottom;
 	width: 100%;
 	max-width: 100%;
+	padding-bottom: 1.5em;
 }
 
 #content p.exhibitors-application {
