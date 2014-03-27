@@ -246,6 +246,33 @@ function ciniki_web_generatePageAbout($ciniki, $settings) {
 			$page_content .= "<div class='image-gallery'>" . $rc['content'] . "</div>";
 			$page_content .= "</article>";
 		}
+
+		//
+		// Display the list of children
+		//
+		if( isset($info['children']) && count($info['children']) > 0 ) {
+			$page_content .= "<article class='page'>\n"
+//				. "<header class='entry-title'><h1 class='entry-title'>$article_title</h1></header>\n"
+				. "<div class='entry-content'>\n"
+				. "";
+
+			if( count($info['children']) > 0 ) {
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
+				$base_url = $ciniki['request']['base_url'] . "/about/" . $permalink;
+				$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $info['children'], 
+					array('notitle'=>'yes'));
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				$page_content .= $rc['content'];
+			} else {
+				$page_content .= "";
+			}
+
+			$page_content .= "</div>"
+				. "</article>"
+				. "";
+		}
 	}
 //
 //
