@@ -87,7 +87,7 @@ header span.title {
 
 #content ul.wide,
 #content dl.wide {
-	width: 100%;
+/* 	width: 100%; */
 	max-width: 100%;
 }
 
@@ -432,7 +432,9 @@ body { width: 100%; }
 	max-width: 45em;
 }
 
-#content p {
+#content p,
+#content dl.wide,
+#content ul.wide {
 	max-width: 45em;
 }
 
