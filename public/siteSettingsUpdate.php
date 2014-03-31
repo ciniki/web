@@ -82,6 +82,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-home-image',
 		'page-home-image-caption',
 		'page-home-image-url',
+		'page-home-url',		// Used if different from home of Ciniki hosted website, 
+								// used to redirect back to main site for subdomains.
 		'page-about-active',
 		'page-about-history-active',
 		'page-about-artiststatement-active',

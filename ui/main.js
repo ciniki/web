@@ -262,6 +262,9 @@ function ciniki_web_main() {
 			'_content':{'label':'Welcome Message (optional)', 'fields':{
 				'page-home-content':{'label':'', 'hidelabel':'yes', 'hint':'', 'type':'textarea', 'size':'large'},
 				}},
+			'redirects':{'label':'Redirect Home', 'active':'no', 'fields':{
+				'page-home-url':{'label':'URL', 'type':'text'},
+				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'home\');'},
 				}},
@@ -931,6 +934,9 @@ function ciniki_web_main() {
 				'clearcontentcache':{'label':'Clear Content Cache', 'fn':'M.ciniki_web_main.clearContentCache();'},
 				'css':{'label':'Custom CSS', 'fn':'M.ciniki_web_main.showCSS(\'M.ciniki_web_main.showMenu();\',\'css\');'},
 				}};
+			this.home.sections.redirects.active = 'yes';
+		} else {
+			this.home.sections.redirects.active = 'no';
 		}
 		
 		//
@@ -946,6 +952,9 @@ function ciniki_web_main() {
 			M.ciniki_web_main.header.data = {};
 			for(i in rsp.header) {
 				M.ciniki_web_main.header.data[rsp.header[i].setting.name] = rsp.header[i].setting.value;
+			}
+			if( rsp.settings['page-home-url'] != null ) {
+				M.ciniki_web_main.header.data['page-home-url'] = rsp.settings['page-home-url'];
 			}
 			M.ciniki_web_main.menu.data.advanced = rsp.advanced;
 			

@@ -21,6 +21,12 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	//
 	$content = '';
 
+	// Used if there is a redirect to another site
+	$page_home_url = $ciniki['request']['base_url'] . '/';
+	if( isset($settings['page-home-url']) && $settings['page-home-url'] != '' ) {
+		$page_home_url = $settings['page-home-url'];
+	}
+
 	// Generate the head content
 	$content .= "<!DOCTYPE html>\n"
 		. "<html>\n"
@@ -280,11 +286,11 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 			$rc = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '100', '85');
-			$content .= "<div class='title-logo'><a href='" . $ciniki['request']['base_url'] . "/' title='" . $ciniki['business']['details']['name'] 
+			$content .= "<div class='title-logo'><a href='" . $page_home_url . "' title='" . $ciniki['business']['details']['name'] 
 				. "' rel='home'><img alt='Home' src='" . $rc['url'] . "' /></a></div>";
 		}
 		$content .= "<div class='title-block'><h1 id='site-title'>";
-		$content .= "<span class='title'><a href='" . $ciniki['request']['base_url'] . "/' title='" . $ciniki['business']['details']['name'] . "' rel='home'>" . $ciniki['business']['details']['name'] . "</a></span></h1>\n";
+		$content .= "<span class='title'><a href='" . $page_home_url . "' title='" . $ciniki['business']['details']['name'] . "' rel='home'>" . $ciniki['business']['details']['name'] . "</a></span></h1>\n";
 		if( isset($ciniki['business']['details']['tagline']) && $ciniki['business']['details']['tagline'] != '' ) {
 			$content .= "<h2 id='site-description'>" . $ciniki['business']['details']['tagline'] . "</h2>\n";
 		}
@@ -303,7 +309,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
-		$content .= "<span><a href='" . $ciniki['request']['base_url'] . "/' title='" . $ciniki['business']['details']['name'] . "' rel='home'>"
+		$content .= "<span><a href='" . $page_home_url . "' title='" . $ciniki['business']['details']['name'] . "' rel='home'>"
 			. "<img alt='Home' src='" . $rc['url'] . "' />"
 			. "</a></span>\n";
 //		if( $social_icons != '' ) {
@@ -317,7 +323,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 //		if( $rc['stat'] != 'ok' ) {
 //			return $rc;
 //		}
-//		$content .= "<span><a href='" . $ciniki['request']['base_url'] . "/' title='" . $ciniki['business']['details']['name'] . "' rel='home'>"
+//		$content .= "<span><a href='" . $page_home_url . "' title='" . $ciniki['business']['details']['name'] . "' rel='home'>"
 //			. "<img alt='Home' src='" . $rc['url'] . "' />"
 //			. "</a></span>\n";
 //	} else {
@@ -326,10 +332,10 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 //			&& isset($ciniki['business']['details']['logo_id']) && $ciniki['business']['details']['logo_id'] > 0 ) {
 //			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 //			$rc = ciniki_web_getScaledImageURL($ciniki, $ciniki['business']['details']['logo_id'], 'original', 0, '100', '85');
-//			$content .= "<span class='logo'><a href='" . $ciniki['request']['base_url'] . "/' title='" . $ciniki['business']['details']['name'] 
+//			$content .= "<span class='logo'><a href='" . $page_home_url . "' title='" . $ciniki['business']['details']['name'] 
 //				. "' rel='home'><img alt='Home' src='" . $rc['url'] . "' /></a></span>";
 //		}
-//		$content .= "<span class='title'><a href='" . $ciniki['request']['base_url'] . "/' title='" . $ciniki['business']['details']['name'] . "' rel='home'>" . $ciniki['business']['details']['name'] . "</a></span></h1>\n";
+//		$content .= "<span class='title'><a href='" . $page_home_url . "' title='" . $ciniki['business']['details']['name'] . "' rel='home'>" . $ciniki['business']['details']['name'] . "</a></span></h1>\n";
 //	}
 
 	//
@@ -340,7 +346,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		. "";
 	$content .= "<div id='main-menu-container'>"
 		. "<ul id='main-menu' class='menu'>\n"
-		. "<li class='menu-item'><a href='" . $ciniki['request']['base_url'] . "/'>Home</a></li>"
+		. "<li class='menu-item'><a href='" . $page_home_url . "/'>Home</a></li>"
 		. "";
 	$hide_menu_class = '';
 	if( $ciniki['request']['page'] != 'home' && $ciniki['request']['page'] != 'masterindex' ) {
