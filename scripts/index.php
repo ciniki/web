@@ -302,6 +302,8 @@ if( isset($ciniki['request']['page']) && $ciniki['request']['page'] == 'home'
 		$ciniki['request']['page'] = 'contact';
 	} elseif( isset($settings['page-events-active']) && $settings['page-events-active'] == 'yes' ) {
 		$ciniki['request']['page'] = 'events';
+	} elseif( isset($settings['page-members-active']) && $settings['page-members-active'] == 'yes' ) {
+		$ciniki['request']['page'] = 'members';
 	} elseif( isset($settings['page-workshops-active']) && $settings['page-workshops-active'] == 'yes' ) {
 		$ciniki['request']['page'] = 'workshops';
 	} elseif( isset($settings['page-links-active']) && $settings['page-links-active'] == 'yes' ) {
