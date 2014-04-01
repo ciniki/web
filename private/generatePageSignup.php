@@ -294,13 +294,16 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 		if( $err == 0 ) {
 			$modules = preg_split('/,/', $signup['plan_modules']);
 			foreach($modules as $module) {
-				$mod = preg_split('/\./', $module);
+				list($pmod,$flags) = explode(':', $module);
+				$mod = explode('.', $pmod);
 				$strsql = "INSERT INTO ciniki_business_modules (business_id, "
-					. "package, module, status, ruleset, date_added, last_updated, last_change) VALUES ("
+					. "package, module, status, flags, ruleset, date_added, last_updated, last_change) VALUES ("
 					. "'" . ciniki_core_dbQuote($ciniki, $business_id) . "', "
 					. "'" . ciniki_core_dbQuote($ciniki, $mod[0]) . "', "
 					. "'" . ciniki_core_dbQuote($ciniki, $mod[1]) . "', "
-					. "1, '', UTC_TIMESTAMP(), UTC_TIMESTAMP(), UTC_TIMESTAMP())";
+					. "1, "
+					. "'" . ciniki_core_dbQuote($ciniki, $flags) . "', "
+					. "'', UTC_TIMESTAMP(), UTC_TIMESTAMP(), UTC_TIMESTAMP())";
 				$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.businesses');
 				if( $rc['stat'] != 'ok' ) {
 					ciniki_core_dbTransactionRollback($ciniki, 'ciniki.businesses');
