@@ -20,8 +20,10 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 	if( isset($ciniki['business']['modules']['ciniki.artgallery'])
 		&& isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'download'
 		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' ) {
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'artgallery', 'web', 'fileDownload');
-		$rc = ciniki_artgallery_web_fileDownload($ciniki, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][1]);
+//		ciniki_core_loadMethod($ciniki, 'ciniki', 'artgallery', 'web', 'fileDownload');
+//		$rc = ciniki_artgallery_web_fileDownload($ciniki, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][1]);
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'fileDownload');
+		$rc = ciniki_info_web_fileDownload($ciniki, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][1]);
 		if( $rc['stat'] == 'ok' ) {
 			header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 			header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
@@ -65,32 +67,41 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 		&& isset($settings['page-artgalleryexhibitions-application-details']) && $settings['page-artgalleryexhibitions-application-details'] == 'yes'
 		) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'artgallery', 'web', 'exhibitionApplicationDetails');
-		$rc = ciniki_artgallery_web_exhibitionApplicationDetails($ciniki, $settings, $ciniki['request']['business_id']);
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'pageDetails');
+//		$rc = ciniki_artgallery_web_exhibitionApplicationDetails($ciniki, $settings, $ciniki['request']['business_id']);
+		$rc = ciniki_info_web_pageDetails($ciniki, $settings, $ciniki['request']['business_id'],
+			array('content_type'=>10));
 		if( $rc['stat'] != 'ok' ) {
 			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1302', 'msg'=>"I'm sorry, but we can't find any information about the requestion application.", 'err'=>$rc['err']));;
 		}
-		$application = $rc['application'];
-		if( $application['details'] != '' ) {
-			$page_content .= "<article class='page'>\n"
-				. "<header class='entry-title'><h1 class='entry-title'>Exhibitor Application</h1></header>\n"
-				. "<div class='entry-content'>\n"
-				. "";
-			$rc = ciniki_web_processContent($ciniki, $application['details']);	
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
-			}
-			$page_content .= $rc['content'];
-
-			foreach($application['files'] as $fid => $file) {
-				$file = $file['file'];
-				$url = $ciniki['request']['base_url'] . '/exhibitions/download/' . $file['permalink'] . '.' . $file['extension'];
-				$page_content .= "<p><a target='_blank' href='" . $url . "' title='" . $file['name'] . "'>" . $file['name'] . "</a></p>";
-			}
-
-			$page_content .= "</div>\n"
-				. "</article>";
+		$info = $rc['content'];
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processPage');
+		$rc = ciniki_web_processPage($ciniki, $settings, $ciniki['request']['base_url'] . '/exhibitions', 
+			$info, array());
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
 		}
+		$page_content .= $rc['content'];
+//		if( $application['details'] != '' ) {
+//			$page_content .= "<article class='page'>\n"
+//				. "<header class='entry-title'><h1 class='entry-title'>Exhibitor Application</h1></header>\n"
+//				. "<div class='entry-content'>\n"
+//				. "";
+//			$rc = ciniki_web_processContent($ciniki, $application['details']);	
+//			if( $rc['stat'] != 'ok' ) {
+//				return $rc;
+//			}
+//			$page_content .= $rc['content'];
+//
+//			foreach($application['files'] as $fid => $file) {
+//				$file = $file['file'];
+//				$url = $ciniki['request']['base_url'] . '/exhibitions/download/' . $file['permalink'] . '.' . $file['extension'];
+//				$page_content .= "<p><a target='_blank' href='" . $url . "' title='" . $file['name'] . "'>" . $file['name'] . "</a></p>";
+//			}
+//
+//			$page_content .= "</div>\n"
+//				. "</article>";
+//		}
 	}
 	//
 	// Check if we are to display an image, from the gallery, or latest images
@@ -406,15 +417,17 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 		//
 		// Check if the exhibition application should be displayed
 		//
-		if( isset($settings['page-artgalleryexhibitions-application-details']) && $settings['page-artgalleryexhibitions-application-details'] == 'yes' ) {
+		if( isset($settings['page-artgalleryexhibitions-application-details']) 
+			&& $settings['page-artgalleryexhibitions-application-details'] == 'yes' ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'artgallery', 'web', 'exhibitionApplicationDetails');
-			$rc = ciniki_artgallery_web_exhibitionApplicationDetails($ciniki, $settings, $ciniki['request']['business_id']);
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'pageDetails');
+			$rc = ciniki_info_web_pageDetails($ciniki, $settings, $ciniki['request']['business_id'],
+				array('content_type'=>10));
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			$application = $rc['application'];
-			if( $application['details'] != '' ) {
+			$application = $rc['content'];
+			if( $application['content'] != '' ) {
 				$page_content .= "<article class='page'>\n"
 //					. "<header class='entry-title'><h1 class='entry-title'>Exhibitor Application</h1></header>\n"
 					. "<div class='entry-content'>\n"
