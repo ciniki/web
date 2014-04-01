@@ -346,7 +346,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		. "";
 	$content .= "<div id='main-menu-container'>"
 		. "<ul id='main-menu' class='menu'>\n"
-		. "<li class='menu-item'><a href='" . $page_home_url . "/'>Home</a></li>"
+		. "<li class='menu-item'><a href='" . $page_home_url . "'>Home</a></li>"
 		. "";
 	$hide_menu_class = '';
 	if( $ciniki['request']['page'] != 'home' && $ciniki['request']['page'] != 'masterindex' ) {
