@@ -268,11 +268,11 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 			$utc_offset = date_offset_get(new DateTime);
 			// Check if no changes have been made since last cache file write
 			if( file_exists($cache_file) && (filemtime($cache_file) - $utc_offset) > $last_change ) {
-				$content = file_get_contents($cache_file);
-				if( $content != '' ) {
+////				$content = file_get_contents($cache_file);
+////				if( $content != '' ) {
 //					error_log("WEB-CACHE: using cached $cache_file");
-					return array('stat'=>'ok', 'content'=>$content);
-				}
+////					return array('stat'=>'ok', 'content'=>$content);
+////				}
 			}
 		}
 
