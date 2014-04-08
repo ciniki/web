@@ -31,7 +31,20 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 		if( $page_limit > 0 && $count >= $page_limit ) { $count++; break; }
 		// If no titles, then highlight the title in the category
 		if( isset($args['notitle']) && $args['notitle'] == 'yes' ) {
-			$content .= "\n<tr><th><span class='cilist-title'>" . (isset($category['name'])?$category['name']:'') . "</span></th><td>\n";
+			$title_url = '';
+			if( count($category['list']) == 1 ) {
+				// Check if category should be linked
+				$item = array_slice($category['list'], 0, 1);
+				$item = $item['0'];
+				if( isset($item['is_details']) && $item['is_details'] == 'yes' ) {
+					$title_url = $base_url . '/' . $item['permalink'];
+				}
+			}
+			$content .= "\n<tr><th><span class='cilist-title'>" 
+				. ($title_url!=''?"<a href='$title_url' title='" . $item['title'] . "'>":'')
+				. (isset($category['name'])?$category['name']:'') 
+				. ($title_url!=''?'</a>':'')
+				. "</span></th><td>\n";
 		} else {
 			$content .= "\n<tr><th><span class='cilist-category'>" . (isset($category['name'])?$category['name']:'') . "</span></th><td>\n";
 		}

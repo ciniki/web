@@ -29,9 +29,9 @@ function ciniki_web_generatePageSponsors($ciniki, $settings) {
 	if( isset($ciniki['business']['modules']['ciniki.exhibitions']) ) {
 		$pkg = 'ciniki';
 		$mod = 'exhibitions';
-	} elseif( isset($ciniki['business']['modules']['ciniki.artclub']) ) {
+	} elseif( isset($ciniki['business']['modules']['ciniki.sponsors']) ) {
 		$pkg = 'ciniki';
-		$mod = 'artclub';
+		$mod = 'sponsors';
 	} else {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'946', 'msg'=>'No sponsor module enabled'));
 	}

@@ -60,7 +60,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 	//
 
 	//
-	// Check if we are to display an member
+	// Check if we are to display a category
 	//
 	if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'category' 
 		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' 
@@ -161,8 +161,10 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 			$next = $first;
 		}
 	
+		$article_title = "<a href='" . $ciniki['request']['base_url'] . "/members/$member_permalink'>" . $member['name'] . "</a>";
 		if( $img['title'] != '' ) {
 			$page_title = $member['name'] . ' - ' . $img['title'];
+			$article_title .= ' - ' . $img['title'];
 		} else {
 			$page_title = $member['name'];
 		}
@@ -192,7 +194,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 		$ciniki['request']['onresize'] = "gallery_resize_arrows();";
 		$ciniki['request']['onload'] = "scrollto_header();";
 		$page_content .= "<article class='page'>\n"
-			. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$page_title</h1></header>\n"
+			. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$article_title</h1></header>\n"
 			. "<div class='entry-content'>\n"
 			. "";
 		$page_content .= "<div id='gallery-image' class='gallery-image'>";

@@ -30,9 +30,11 @@ function ciniki_web_processSponsors($ciniki, $settings, $level, $categories) {
 					. "<span class='sponsors-category'>" . $c['category']['name'] . "</span></th>"
 					. "<td>";
 			} else {
-				$content .= "<tr><th>"
-					. "<span class='sponsors-category'></span></th>"
+				$content .= "<tr>"
 					. "<td>";
+//				$content .= "<tr><th>"
+//					. "<span class='sponsors-category'></span></th>"
+//					. "<td>";
 			}
 			$content .= "<table class='sponsors-category-list'><tbody>\n";
 			foreach($c['category']['sponsors'] as $pnum => $sponsor) {
@@ -66,7 +68,9 @@ function ciniki_web_processSponsors($ciniki, $settings, $level, $categories) {
 						return $rc;
 					}
 					$content .= "<div class='image-sponsors-thumbnail'>"
-						. "<a target='_blank' href='$url' title='" . $sponsor['name'] . "'><img title='' alt='" . $sponsor['name'] . "' src='" . $rc['url'] . "' /></a>"
+						. ($url!=''?"<a target='_blank' href='$url' title='" . $sponsor['name'] . "'>":'')
+						. "<img title='' alt='" . $sponsor['name'] . "' src='" . $rc['url'] . "' />"
+						. ($url!=''?'</a>':'')
 						. "</div>";
 				}
 				$content .= "</td>";
@@ -74,7 +78,11 @@ function ciniki_web_processSponsors($ciniki, $settings, $level, $categories) {
 				// Setup the details
 				$content .= "<td class='sponsors-details'>";
 				$content .= "<span class='sponsors-title'>";
-				$content .= "<a target='_blank' href='$url' title='" . $sponsor['name'] . "'>" . $sponsor['name'] . "</a>";
+				if( $url != '' ) {
+					$content .= "<a target='_blank' href='$url' title='" . $sponsor['name'] . "'>" . $sponsor['name'] . "</a>";
+				} else {
+					$content .= $sponsor['name'];
+				}
 				$content .= "</span>";
 				$content .= "</td></tr>";
 				$content .= "<tr><td class='sponsors-description'>";
