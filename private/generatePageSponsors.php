@@ -26,12 +26,12 @@ function ciniki_web_generatePageSponsors($ciniki, $settings) {
 	//
 
 	$page_title = "Sponsors";
-	if( isset($ciniki['business']['modules']['ciniki.exhibitions']) ) {
-		$pkg = 'ciniki';
-		$mod = 'exhibitions';
-	} elseif( isset($ciniki['business']['modules']['ciniki.sponsors']) ) {
+	if( isset($ciniki['business']['modules']['ciniki.sponsors']) ) {
 		$pkg = 'ciniki';
 		$mod = 'sponsors';
+	} elseif( isset($ciniki['business']['modules']['ciniki.exhibitions']) ) {
+		$pkg = 'ciniki';
+		$mod = 'exhibitions';
 	} else {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'946', 'msg'=>'No sponsor module enabled'));
 	}
