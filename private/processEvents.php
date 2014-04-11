@@ -56,7 +56,11 @@ function ciniki_web_processEvents($ciniki, $settings, $events, $limit) {
 			}
 		}
 
-		$content .= "<tr><th>$event_date</th><td>\n";
+		$content .= "<tr><th><span class='cilist-category'>$event_date</span>";
+		if( isset($event['times']) && $event['times'] != '' ) {
+			$content .= "<span class='cilist-subcategory'>" . $event['times'] . "</span>";
+		}
+		$content .= "</th><td>\n";
 		$content .= "<table class='cilist-categories'><tbody>\n";
 
 		// Setup the event image
