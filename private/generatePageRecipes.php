@@ -484,7 +484,7 @@ function ciniki_web_generatePageRecipes($ciniki, $settings) {
 //		}
 		if( isset($recipe['tags']) && count($recipe['tags']) > 0 ) {
 			$rc = ciniki_web_processTagList($ciniki, $settings,
-				$ciniki['request']['base_url'] . '/recipes/tag', ', ', $recipe['tags']);
+				$ciniki['request']['base_url'] . '/recipes/tag', $recipe['tags'], array('delimiter'=>', '));
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}

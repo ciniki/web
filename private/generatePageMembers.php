@@ -396,7 +396,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 					}
 					$page_content .= $rc['content'];
 				} else {
-					$page_content = "<p>I'm sorry, there are no categories for this blog";
+					$page_content = "<p>I'm sorry, there are no categories for this blog</p>";
 				}
 			} elseif( $settings['page-members-categories-display'] == 'wordcloud' ) {
 				if( isset($rc['tags']) && count($rc['tags']) > 0 ) {
@@ -407,7 +407,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 					}
 					$page_content .= $rc['content'];
 				} else {
-					$page_content = "<p>I'm sorry, there are no categories for this blog";
+					$page_content = "<p>I'm sorry, there are no categories for this blog</p>";
 				}
 			}
 			$page_content .= "</div>\n"

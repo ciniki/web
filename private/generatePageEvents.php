@@ -179,6 +179,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 	elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'eventDetails');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'processDateRange');
 
 		//
 		// Get the event information
@@ -192,8 +193,19 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 		$event = $rc['event'];
 		$page_title = $event['name'];
 		$page_content .= "<article class='page'>\n"
-			. "<header class='entry-title'><h1 class='entry-title'>" . $event['name'] . "</h1></header>\n"
-			. "";
+			. "<header class='entry-title'><h1 class='entry-title'>" . $event['name'] . "</h1>";
+		$meta_content = '';
+		$rc = ciniki_core_processDateRange($ciniki, $event);
+		$meta_content .= $rc['dates'];
+			error_log($rc['dates']);
+		if( $meta_content != '' ) {
+			$page_content .= "<div class='entry-meta'>" . $meta_content;
+			if( isset($event['times']) && $event['times'] != '' ) {
+				$page_content .= "<br/>" . $event['times'];
+			}
+			$page_content .= "</div>";
+		}
+		$page_content .= "</header>\n";
 
 		//
 		// Add primary image

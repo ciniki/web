@@ -207,7 +207,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 		$number_of_recipes = count($rc['recipes']);
 		if( isset($rc['recipes']) && $number_of_recipes > 0 ) {
 			$recipes = $rc['recipes'];
-			$base_url = $ciniki['request']['base_url'] . "/recipes/r";
+			$base_url = $ciniki['request']['base_url'] . "/recipes";
 			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, array('0'=>array(
 				'name'=>'', 'noimage'=>'/ciniki-web-layouts/default/img/noimage_240.png',
 				'list'=>$recipes)), array('limit'=>2));

@@ -539,7 +539,7 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processTagList');
 		if( isset($post['categories']) && count($post['categories']) > 0 ) {
 			$rc = ciniki_web_processTagList($ciniki, $settings, 
-				$ciniki['request']['base_url'] . "/$blogtype/category", ', ', $post['categories']);
+				$ciniki['request']['base_url'] . "/$blogtype/category", $post['categories'], array('delimiter'=>', '));
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -549,7 +549,7 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 		}
 		if( isset($post['tags']) && count($post['tags']) > 0 ) {
 			$rc = ciniki_web_processTagList($ciniki, $settings,
-				$ciniki['request']['base_url'] . "/$blogtype/tag", ', ', $post['tags']);
+				$ciniki['request']['base_url'] . "/$blogtype/tag", $post['tags'], array('delimiter'=>', '));
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
