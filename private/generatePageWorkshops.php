@@ -175,6 +175,7 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
 	elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'workshops', 'web', 'workshopDetails');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'processDateRange');
 
 		//
 		// Get the workshop information
@@ -188,8 +189,18 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
 		$workshop = $rc['workshop'];
 		$page_title = $workshop['name'];
 		$page_content .= "<article class='page'>\n"
-			. "<header class='entry-title'><h1 class='entry-title'>" . $workshop['name'] . "</h1></header>\n"
-			. "";
+			. "<header class='entry-title'><h1 class='entry-title'>" . $workshop['name'] . "</h1>";
+		$meta_content = '';
+		$rc = ciniki_core_processDateRange($ciniki, $workshop);
+		$meta_content .= $rc['dates'];
+		if( $meta_content != '' ) {
+			$page_content .= "<div class='entry-meta'>" . $meta_content;
+			if( isset($workshop['times']) && $workshop['times'] != '' ) {
+				$page_content .= "<br/>" . $workshop['times'];
+			}
+			$page_content .= "</div>";
+		}
+		$page_content .= "</header>\n";
 
 		//
 		// Add primary image

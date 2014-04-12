@@ -56,7 +56,11 @@ function ciniki_web_processWorkshops($ciniki, $settings, $workshops, $limit) {
 			}
 		}
 
-		$content .= "<tr><th>$workshop_date</th><td>\n";
+		$content .= "<tr><th><span class='cilist-category'>$workshop_date</span>";
+		if( isset($workshop['times']) && $workshop['times'] != '' ) {
+			$content .= "<span class='cilist-subcategory'>" . $workshop['times'] . "</span>";
+		}
+		$content .= "</th><td>\n";
 		$content .= "<table class='cilist-categories'><tbody>\n";
 
 		// Setup the workshop image
