@@ -197,7 +197,6 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 		$meta_content = '';
 		$rc = ciniki_core_processDateRange($ciniki, $event);
 		$meta_content .= $rc['dates'];
-			error_log($rc['dates']);
 		if( $meta_content != '' ) {
 			$page_content .= "<div class='entry-meta'>" . $meta_content;
 			if( isset($event['times']) && $event['times'] != '' ) {
