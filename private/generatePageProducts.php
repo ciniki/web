@@ -237,6 +237,20 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 		}
 
 		//
+		// Display the price if the product is for sale
+		//
+		if( isset($product['prices']) && count($product['prices']) > 0 ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'cartSetupPrices');
+			$rc = ciniki_web_cartSetupPrices($ciniki, $settings, $ciniki['request']['business_id'], 
+				$product['prices']);
+			if( $rc['stat'] != 'ok' ) {
+				error_log("Error in formatting prices.");
+			} else {
+				$page_content .= $rc['content'];
+			}
+		}
+
+		//
 		// Display the files for the products
 		//
 		if( isset($product['files']) && count($product['files']) > 0 ) {

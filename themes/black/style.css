@@ -450,6 +450,38 @@ div.gallery-image-details span.image-awards {
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#faa51a', endColorstr='#f47a20');
 }
 
+#content div.cart-pricelist {
+	font-size: 1.2em;
+}
+
+#content div.cart-pricelist form {
+	display: inline;
+}
+
+#content div.cart-pricelist form input.quantity {
+	font-size: 1.0em;
+	font-weight: normal;
+	padding: 0.5em;
+	border-radius: 0.5em;
+	border: 1px solid #aaa;
+	color: #555;
+}
+
+#content div.cart-pricelist form input.cart-submit {
+	cursor: pointer;
+	font-size: 0.9em;
+	border-radius: 8px;
+	text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+	margin-left: 1em;
+	padding: 0.25em 1.0em 0.25em 1.0em;
+	color: #d9eef7;	
+	border: 2px solid #0076a3;	
+	background: #0095cd;	
+	background: -webkit-gradient(linear, left top, left bottom, from(#00adee), to(#0078a5));	
+	background: -moz-linear-gradient(top,  #00adee,  #0078a5);	
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0078a5');
+}
+
 aside div.image-wrap {
 	margin-bottom: 1em;
 }

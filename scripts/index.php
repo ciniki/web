@@ -475,6 +475,12 @@ elseif( $ciniki['request']['page'] == 'account'
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageAccount.php');
 	$rc = ciniki_web_generatePageAccount($ciniki, $settings);
 } 
+// Cart
+elseif( $ciniki['request']['page'] == 'cart' 
+	&& isset($settings['page-cart-active']) && $settings['page-cart-active'] == 'yes' ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageCart.php');
+	$rc = ciniki_web_generatePageCart($ciniki, $settings);
+} 
 // Contact
 elseif( $ciniki['request']['page'] == 'contact' 
 	&& isset($settings['page-contact-active']) && $settings['page-contact-active'] == 'yes' ) {

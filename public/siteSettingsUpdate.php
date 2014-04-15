@@ -193,6 +193,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-downloads-name',
 		'page-account-active',
 		'page-account-signin-redirect',
+		'page-cart-active',
 		'page-signup-active',
 		'page-api-active',
 		'page-faq-active',

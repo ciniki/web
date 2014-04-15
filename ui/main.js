@@ -851,6 +851,27 @@ function ciniki_web_main() {
 		this.account.addClose('Cancel');
 
 		//
+		// The options for the shopping cart
+		//
+		this.cart = new M.panel('Shopping Cart',
+			'ciniki_web_main', 'cart',
+			'mc', 'narrow', 'sectioned', 'ciniki.web.main.cart');
+		this.cart.data = {};
+		this.cart.sections = {
+			'options':{'label':'', 'fields':{
+				'page-cart-active':{'label':'Enable Cart', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'cart\');'},
+				}},
+		};
+		this.cart.fieldValue = this.fieldValue;
+		this.cart.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.cart.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'cart\');');
+		this.cart.addClose('Cancel');
+
+
+		//
 		// The options and information for the signup page
 		//
 		this.signup = new M.panel('Signup',
