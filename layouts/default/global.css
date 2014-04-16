@@ -759,7 +759,26 @@ span.exhibitors-description {
 	display: none;
 }
 
-#content div.clearboth{
+#content div.cart form {
+	width: 100%;
+	max-width: 100%;
+}
+
+#content table.cart-items {
+	width: 100%;
+}
+
+#content table.cart-items td.alignright {
+	text-align: right;
+}
+#content table.cart-items td.aligncenter {
+	text-align: center;
+}
+#content table.cart-items td.alignbottom {
+	vertical-align: bottom;
+}
+
+#content div.clearboth {
 	clear: both;
 }
 

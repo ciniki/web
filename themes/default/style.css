@@ -523,7 +523,7 @@ div.gallery-image-details span.image-awards {
 }
 
 #content div.cart-pricelist {
-	font-size: 1.2em;
+	font-size: 1.1em;
 }
 
 #content div.cart-pricelist form {
@@ -541,6 +541,40 @@ div.gallery-image-details span.image-awards {
 	color: #555;
 }
 
+#content div.cart table {
+	border-collapse: collapse;
+	overflow: hidden;
+}
+#content div.cart table thead {
+	border: 2px solid #ddd;
+	overflow: hidden;
+	border-radius: 10px;
+}
+#content div.cart table tbody {
+	border-radius: 10px;
+	border-left: 2px solid #ddd;
+	border-right: 2px solid #ddd;
+	border-bottom: 2px solid #ddd;
+}
+
+#content div.cart table tr th {
+}
+
+#content div.cart table tr th,
+#content div.cart table tr td {
+	padding: 0.3em;
+}
+
+#content div.cart table thead th {
+	font-size: 1.2em;
+	color: #333;
+}
+
+#content div.cart table thead th {
+	background: #eee;
+}
+
+#content div.cart form input.quantity, 
 #content div.cart-pricelist form input.quantity {
 	font-size: 1.0em;
 	font-weight: normal;
@@ -552,6 +586,7 @@ div.gallery-image-details span.image-awards {
 	color: #555;
 }
 
+#content div.cart form input.cart-submit, 
 #content div.cart-pricelist form input.cart-submit {
 	cursor: pointer;
 	font-size: 0.9em;

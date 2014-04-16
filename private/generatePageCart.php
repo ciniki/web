@@ -23,11 +23,25 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 	$display_cart = 'yes';
 	$cart_err_msg = '';
 	$cart = NULL;
+	$cart_edit = 'yes';
+	$page_title = "Shopping Cart";
 
 	//
 	// Required methods
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartLoad');
+
+	//
+	// Get business/user settings
+	//
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'intlSettings');
+	$rc = ciniki_businesses_intlSettings($ciniki, $ciniki['request']['business_id']);
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+	$intl_timezone = $rc['settings']['intl-default-timezone'];
+	$intl_currency_fmt = numfmt_create($rc['settings']['intl-default-locale'], NumberFormatter::CURRENCY);
+	$intl_currency = $rc['settings']['intl-default-currency'];
 
 	//
 	// Load the business modules
@@ -49,6 +63,10 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1693', 'msg'=>'Error processing shopping cart, please try again.'));
 	}
 	$cart = $rc['cart'];
+	$_SESSION['cart']['num_items'] = count($cart['items']);
+	$ciniki['session']['cart']['num_items'] = count($cart['items']);
+
+	$ct = print_r($rc, true);
 
 	//
 	// FIXME: Add check for cookies
@@ -58,6 +76,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 	// Check if a item is being added to the cart
 	//
 	if( isset($_POST['action']) && $_POST['action'] == 'add' ) {
+		$item_exists = 'no';
 		if( $cart == NULL ) {
 			// Create a shopping cart
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartCreate');
@@ -65,38 +84,131 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			$cart = $rc['cart'];
-			$_SESSION['cart']['sapos_id'] = $cart['id'];
-			$_SESSION['cart']['num_items'] = count($cart['items']);
+			$sapos_id = $rc['sapos_id'];
+			$_SESSION['cart']['sapos_id'] = $sapos_id;
+			$_SESSION['cart']['num_items'] = 0;
 			$ciniki['session']['cart'] = array();
-			$ciniki['session']['cart']['sapos_id'] = $cart['id'];
-			$ciniki['session']['cart']['num_items'] = count($cart['items']);
+			$ciniki['session']['cart']['sapos_id'] = $sapos_id;
+			$ciniki['session']['cart']['num_items'] = 0;
+		} else {
+			//
+			// Check if item already exists in the cart
+			//
+			if( isset($cart['items']) ) {
+				foreach($cart['items'] as $item) {
+					$item = $item['item'];
+					if( $item['object'] == $_POST['object']
+						&& $item['object_id'] == $_POST['object_id'] ) {
+						$item_exists = 'yes';
+						//
+						// Update the quantity
+						//
+//						if( $item['quantity'] != $_POST['quantity'] ) {
+						ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartItemUpdate');
+						$rc = ciniki_sapos_web_cartItemUpdate($ciniki, $settings, 
+							$ciniki['request']['business_id'],
+							array('item_id'=>$item['id'],
+								'quantity'=>$item['quantity'] + $_POST['quantity']));
+						if( $rc['stat'] != 'ok' ) {
+							return $rc;
+						}
+//						}
+						break;
+					}
+				}
+			}
 		}
+
 		//
-		// Add the item to the cart
+		// Add the item to the cart, if they don't already exist
 		//
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartItemAdd');
-		$rc = ciniki_sapos_web_cartItemAdd($ciniki, $settings, $ciniki['request']['business_id'],
-			array());
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
+		if( $item_exists == 'no' ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartItemAdd');
+			$rc = ciniki_sapos_web_cartItemAdd($ciniki, $settings, $ciniki['request']['business_id'],
+				array('object'=>$_POST['object'],
+					'object_id'=>$_POST['object_id'],
+					'quantity'=>$_POST['quantity']));
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
 		}
+
 		//
-		// Load the updated cart
+		// Redirect to avoid form duplicate submission
+		//
+		header("Location: " . $ciniki['request']['base_url'] . "/cart");
+		exit;
+
+		//
+		// Incase redirect fails, Load the updated cart
 		//
 		$rc = ciniki_sapos_web_cartLoad($ciniki, $settings, $ciniki['request']['business_id']);
 		if( $rc['stat'] != 'ok' ) {	
 			return $rc;
 		}
+		$cart = $rc['cart'];
+		$_SESSION['cart']['num_items'] = count($cart['items']);
+		$ciniki['session']['cart']['num_items'] = count($cart['items']);
 	}
 	
 	//
 	// Check if cart quantities were updated
 	//
+	elseif( isset($_POST['update']) && $_POST['update'] != '' 
+		&& isset($_POST['action']) && $_POST['action'] == 'update' ) {
+		if( isset($cart['items']) ) {
+			foreach($cart['items'] as $item) {
+				$item = $item['item'];
+				if( isset($_POST['quantity_' . $item['id']]) 
+					&& $_POST['quantity_' . $item['id']] != $item['quantity'] ) {
+					$new_quantity = intval($_POST['quantity_' . $item['id']]);
+					if( $new_quantity <= 0 ) {
+						ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartItemDelete');
+						$rc = ciniki_sapos_web_cartItemDelete($ciniki, $settings, 
+							$ciniki['request']['business_id'],
+							array('item_id'=>$item['id']));
+						if( $rc['stat'] != 'ok' ) {
+							return $rc;
+						}
+					} else {
+						ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartItemUpdate');
+						$rc = ciniki_sapos_web_cartItemUpdate($ciniki, $settings, 
+							$ciniki['request']['business_id'],
+							array('item_id'=>$item['id'],
+								'quantity'=>$new_quantity));
+						if( $rc['stat'] != 'ok' ) {
+							return $rc;
+						}
+					}
+				}
+			}
+		}
+
+		//
+		// Redirect to avoid form duplicate submission
+		//
+//		$content .= print_r($_POST, true);
+		header("Location: " . $ciniki['request']['base_url'] . "/cart");
+		exit;
+
+		//
+		// Incase redirect fails, Load the updated cart
+		//
+		$rc = ciniki_sapos_web_cartLoad($ciniki, $settings, $ciniki['request']['business_id']);
+		if( $rc['stat'] != 'ok' ) {	
+			return $rc;
+		}
+		$cart = $rc['cart'];
+		$_SESSION['cart']['num_items'] = count($cart['items']);
+		$ciniki['session']['cart']['num_items'] = count($cart['items']);
+	}
 
 	//
 	// Check if checkout
 	//
+	elseif( isset($_POST['checkout']) && $_POST['checkout'] != '' ) {
+		$content .= "Process checkout";
+	}
 
 	//
 	// Check if returned from Paypal
@@ -109,16 +221,119 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		//
 		// Display cart items
 		//
+		$content .= "<article class='page'>\n"
+			. "<header class='entry-title'>"
+			. "<h1 id='entry-title' class='entry-title'>$page_title</h1></header>\n"
+			. "<div class='cart'>\n"
+			. "";
 		if( isset($cart['items']) && count($cart['items']) > 0 ) {
+			$content .= "<form action='" .  $ciniki['request']['base_url'] . "/cart' method='POST'>";
+			$content .= "<input type='hidden' name='action' value='update'/>";
+			$content .= "<table class='cart-items'>";
+			$content .= "<thead><tr>"
+				. "<th>Item</th>"
+				. "<th>Quantity</th>"
+				. "<th>Price</th>"
+				. "<th>Total</th>"
+				. "<th>Actions</th>"
+				. "</tr></thead>";
+			$content .= "<tbody>";
 			foreach($cart['items'] as $item_id => $item) {
-				$page_content .= "Item: " . print_r($item, true);
-				$page_content .= "<br/>";
+				$item = $item['item'];
+				$content .= "<tr>"
+					. "<td>" . $item['description'] . "</td>"
+					. "<td class='alignright'>";
+				if( $cart_edit == 'yes' ) {
+					$content .= "<span class='cart-quantity'>"
+						. "<input class='quantity' id='quantity_" . $item['id'] . "' name='quantity_" . $item['id'] . "' type='text' value='" 
+							. $item['quantity'] . "' size='2'/>"
+						. "</span>";
+				} else {
+					$content .= $item['quantity'];
+				}
+				$content .= "</td>";
+				$discount_text = '';
+				if( $item['unit_discount_amount'] > 0 ) {
+					$discount_text .= '-' . numfmt_format_currency($intl_currency_fmt, 
+						$item['unit_discount_amount'], $intl_currency)
+						. (($item['quantity']>1)?'x'.$item['quantity']:'');
+				}
+				if( $item['unit_discount_percentage'] > 0 ) {
+					$discount_text .= ($discount_text!=''?', ':'') . '-' . $item['unit_discount_percentage'] . '%';
+				}
+				$content .= "<td class='alignright'>" 
+						. numfmt_format_currency($intl_currency_fmt, $item['unit_amount'], $intl_currency)
+						. ($discount_text!=''?('<br/>' . $discount_text . ' ('
+							. numfmt_format_currency($intl_currency_fmt, $item['discount_amount'], $intl_currency)) . ')':'')
+						. "</td>";
+				$content .= "<td class='alignright'>" 
+						. numfmt_format_currency($intl_currency_fmt, $item['total_amount'], $intl_currency)
+						. "</td>";
+				$content .= "<td class='aligncenter'>"
+					. "<span class='cart-submit'>"
+//					. "<input class='cart-submit' onclick='alert(document.getElementById(\"quantity_" . $item['id'] . "\").value);return true;' type='submit' name='update_delete_" . $item['id'] . "' value='Delete'/>"
+					. "<input class='cart-submit' onclick='document.getElementById(\"quantity_" . $item['id'] . "\").value=0;return true;' type='submit' name='update' value='Delete'/>"
+					. "</span>"
+					. "</td>";
+				$content .= "</tr>";
 			}
+//			$content .= "</tbody>";
+//			$content .= "<tfoot>";
+			// cart totals
+			if( $cart['shipping_amount'] > 0 || (isset($cart['taxes']) && count($cart['taxes']) > 0) ) {
+				$content .= "<tr><td colspan='3' class='alignright'>Sub-Total:</td>"
+					. "<td class='alignright'>"
+					. numfmt_format_currency($intl_currency_fmt, $cart['subtotal_amount'], $intl_currency)
+					. "</td><td></td></tr>";
+			}
+			if( isset($cart['shipping_amount']) && $cart['shipping_amount'] > 0 ) {
+				$content .= "<tr><td colspan='3' class='alignright'>Shipping:</td>"
+					. "<td class='alignright'>"
+					. numfmt_format_currency($intl_currency_fmt, $cart['shipping_amount'], $intl_currency)
+					. "</td><td></td></tr>";
+			}
+			if( isset($cart['taxes']) ) {
+				foreach($cart['taxes'] as $tax) {
+					$tax = $tax['tax'];
+					$content .= "<tr><td colspan='3' class='alignright'>" . $tax['description'] . "<td>"
+						. "<td class='alignright'>"
+						. numfmt_format_currency($intl_currency_fmt, $tax['amount'], $intl_currency)
+						. "</td><td></td></tr>";
+				}
+			}
+			$content .= "<tr><td colspan='3' class='alignright'><b>Total:</b></td>"
+				. "<td class='alignright'>"
+				. numfmt_format_currency($intl_currency_fmt, $cart['total_amount'], $intl_currency)
+				. "</td><td></td></tr>";
+			$content .= "</tbody>";
+			$content .= "</table>";
+				
+			// cart buttons
+			$content .= "<table class='cart-items'>"
+				. "<tfoot>";
+			$content .= "<tr><td class='aligncenter'>";
+			$content .= "<span class='cart-submit'>"
+				. "<input class='cart-submit' type='submit' name='continue' value='Continue Shopping'/>"
+				. "</span>";
+			$content .= "<span class='cart-submit'>"
+				. "<input class='cart-submit' type='submit' name='update' value='Update'/>"
+				. "</span>";
+			$content .= "<span class='cart-submit'>"
+				. "<input class='cart-submit' type='submit' name='checkout' value='Checkout'/>"
+				. "</span>";
+			$content .= "</td></tr>";
+			$content .= "</tfoot>";
+			$content .= "</table>";
+			$content .= "</form>";
+		} else {
+			$content .= "<p>Your shopping cart is empty.</p>";
 		}
 
 		//
 		// Display checkout button
 		//
+
+		$content .= "</div></article>\n";
 	}
 
 
@@ -126,15 +341,21 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 	// Add the header
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Shopping Cart', array());
+	$rc = ciniki_web_generatePageHeader($ciniki, $settings, $page_title, array());
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
 	}
 	$page_content = $rc['content'];
 	
 	if( $content != '' ) {
+		$page_content .= "<div id='content'>";
 		$page_content .= $content;
+		$page_content .= "</div>\n";
 	}
+
+//	$page_content .= print_r($_SESSION, true) . "<br/>";
+//	$page_content .= print_r($cart, true) . "<br/>";
+//	$page_content .= print_r($ct, true) . "<br/>";
 
 	//
 	// Add the footer

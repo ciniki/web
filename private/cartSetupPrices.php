@@ -76,11 +76,11 @@ function ciniki_web_cartSetupPrices($ciniki, $settings, $business_id, $prices) {
 		// If quantity is limited, and not sold out
 		//
 		elseif( $price['cart'] == 'yes' ) {
-			$content .= "<form action='" .  $ciniki['request']['base_url'] . "/cart/add' method='POST'>";
+			$content .= "<form action='" .  $ciniki['request']['base_url'] . "/cart' method='POST'>";
+			$content .= "<input type='hidden' name='action' value='add'/>";
 			$content .= "<input type='hidden' name='object' value='" . $price['object'] . "'/>";
 			$content .= "<input type='hidden' name='object_id' value='" . $price['object_id'] . "'/>";
 			$content .= "<input type='hidden' name='final_price' value='" . $final_price . "'/>";
-error_log(print_r($price, true));
 			// Check what time of field the quantity should be based on how many are available
 			if( isset($price['limited_units']) && $price['limited_units'] == 'yes' 
 				&& isset($price['units_available']) && $price['units_available'] > 1 

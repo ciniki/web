@@ -65,6 +65,9 @@ $ciniki['session']['user'] = array('id'=>'-2');
 if( isset($_SESSION['customer']) ) {
 	$ciniki['session']['customer'] = $_SESSION['customer'];
 }
+if( isset($_SESSION['cart']) ) {
+	$ciniki['session']['cart'] = $_SESSION['cart'];
+}
 $ciniki['business'] = array('modules'=>array());
 $ciniki['syncqueue'] = array();
 $ciniki['emailqueue'] = array();
