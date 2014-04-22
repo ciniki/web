@@ -229,18 +229,20 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		if( isset($cart['items']) && count($cart['items']) > 0 ) {
 			$content .= "<form action='" .  $ciniki['request']['base_url'] . "/cart' method='POST'>";
 			$content .= "<input type='hidden' name='action' value='update'/>";
+			$content .= "<div class='cart-items'>";
 			$content .= "<table class='cart-items'>";
 			$content .= "<thead><tr>"
-				. "<th>Item</th>"
-				. "<th>Quantity</th>"
-				. "<th>Price</th>"
-				. "<th>Total</th>"
+				. "<th class='alignleft'>Item</th>"
+				. "<th class='alignright'>Quantity</th>"
+				. "<th class='alignright'>Price</th>"
+				. "<th class='alignright'>Total</th>"
 				. "<th>Actions</th>"
 				. "</tr></thead>";
 			$content .= "<tbody>";
+			$count=0;
 			foreach($cart['items'] as $item_id => $item) {
 				$item = $item['item'];
-				$content .= "<tr>"
+				$content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>"
 					. "<td>" . $item['description'] . "</td>"
 					. "<td class='alignright'>";
 				if( $cart_edit == 'yes' ) {
@@ -276,42 +278,53 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 					. "</span>"
 					. "</td>";
 				$content .= "</tr>";
+				$count++;
 			}
-//			$content .= "</tbody>";
-//			$content .= "<tfoot>";
+			$content .= "</tbody>";
+			$content .= "<tfoot>";
 			// cart totals
 			if( $cart['shipping_amount'] > 0 || (isset($cart['taxes']) && count($cart['taxes']) > 0) ) {
-				$content .= "<tr><td colspan='3' class='alignright'>Sub-Total:</td>"
+				$content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
+				$content .= "<td colspan='3' class='alignright'>Sub-Total:</td>"
 					. "<td class='alignright'>"
 					. numfmt_format_currency($intl_currency_fmt, $cart['subtotal_amount'], $intl_currency)
 					. "</td><td></td></tr>";
+				$count++;
 			}
 			if( isset($cart['shipping_amount']) && $cart['shipping_amount'] > 0 ) {
-				$content .= "<tr><td colspan='3' class='alignright'>Shipping:</td>"
+				$content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
+				$content .= "<td colspan='3' class='alignright'>Shipping:</td>"
 					. "<td class='alignright'>"
 					. numfmt_format_currency($intl_currency_fmt, $cart['shipping_amount'], $intl_currency)
 					. "</td><td></td></tr>";
+				$count++;
 			}
 			if( isset($cart['taxes']) ) {
 				foreach($cart['taxes'] as $tax) {
 					$tax = $tax['tax'];
+					$content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
 					$content .= "<tr><td colspan='3' class='alignright'>" . $tax['description'] . "<td>"
 						. "<td class='alignright'>"
 						. numfmt_format_currency($intl_currency_fmt, $tax['amount'], $intl_currency)
 						. "</td><td></td></tr>";
+					$count++;
 				}
 			}
-			$content .= "<tr><td colspan='3' class='alignright'><b>Total:</b></td>"
+			$content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
+			$content .= "<td colspan='3' class='alignright'><b>Total:</b></td>"
 				. "<td class='alignright'>"
 				. numfmt_format_currency($intl_currency_fmt, $cart['total_amount'], $intl_currency)
 				. "</td><td></td></tr>";
-			$content .= "</tbody>";
+			$count++;
+			$content .= "</foot>";
 			$content .= "</table>";
+			$content .= "</div>";
 				
 			// cart buttons
-			$content .= "<table class='cart-items'>"
-				. "<tfoot>";
-			$content .= "<tr><td class='aligncenter'>";
+//			$content .= "<table class='cart-buttons'>"
+//				. "<tfoot>";
+//			$content .= "<tr><td class='aligncenter'>";
+			$content .= "<div class='cart-buttons'>";
 			$content .= "<span class='cart-submit'>"
 				. "<input class='cart-submit' type='submit' name='continue' value='Continue Shopping'/>"
 				. "</span>";
@@ -321,9 +334,10 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 			$content .= "<span class='cart-submit'>"
 				. "<input class='cart-submit' type='submit' name='checkout' value='Checkout'/>"
 				. "</span>";
-			$content .= "</td></tr>";
-			$content .= "</tfoot>";
-			$content .= "</table>";
+//			$content .= "</td></tr>";
+//			$content .= "</tfoot>";
+//			$content .= "</table>";
+			$content .= "</div>";
 			$content .= "</form>";
 		} else {
 			$content .= "<p>Your shopping cart is empty.</p>";

@@ -764,14 +764,16 @@ span.exhibitors-description {
 	max-width: 100%;
 }
 
+#content table.cart-buttons,
 #content table.cart-items {
 	width: 100%;
 }
 
+#content table.cart-items th.alignright,
 #content table.cart-items td.alignright {
 	text-align: right;
 }
-#content table.cart-items td.aligncenter {
+#content table td.aligncenter {
 	text-align: center;
 }
 #content table.cart-items td.alignbottom {
