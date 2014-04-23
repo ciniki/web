@@ -59,14 +59,20 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 	$rc = ciniki_sapos_web_cartLoad($ciniki, $settings, $ciniki['request']['business_id']);
 	if( $rc['stat'] == 'noexist' ) {
 		$cart = NULL;
+		$_SESSION['cart']['sapos_id'] = 0;
+		$_SESSION['cart']['num_items'] = 0;
+		$ciniki['session']['cart']['sapos_id'] = 0;
+		$ciniki['session']['cart']['num_items'] = 0;
+
 	} elseif( $rc['stat'] != 'ok' ) {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1693', 'msg'=>'Error processing shopping cart, please try again.'));
+	} else {
+		$cart = $rc['cart'];
+		$_SESSION['cart']['num_items'] = count($cart['items']);
+		$ciniki['session']['cart']['num_items'] = count($cart['items']);
 	}
-	$cart = $rc['cart'];
-	$_SESSION['cart']['num_items'] = count($cart['items']);
-	$ciniki['session']['cart']['num_items'] = count($cart['items']);
 
-	$ct = print_r($rc, true);
+	// $ct = print_r($rc, true);
 
 	//
 	// FIXME: Add check for cookies
@@ -217,7 +223,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 	//
 	// Display the contents of the shopping cart
 	//
-	if( $display_cart == 'yes' && $cart != NULL) {
+	if( $display_cart == 'yes' ) {
 		//
 		// Display cart items
 		//
@@ -226,7 +232,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 			. "<h1 id='entry-title' class='entry-title'>$page_title</h1></header>\n"
 			. "<div class='cart'>\n"
 			. "";
-		if( isset($cart['items']) && count($cart['items']) > 0 ) {
+		if( $cart != NULL && isset($cart['items']) && count($cart['items']) > 0 ) {
 			$content .= "<form action='" .  $ciniki['request']['base_url'] . "/cart' method='POST'>";
 			$content .= "<input type='hidden' name='action' value='update'/>";
 			$content .= "<div class='cart-items'>";
