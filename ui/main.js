@@ -334,9 +334,9 @@ function ciniki_web_main() {
 				'page-contact-fax-display':{'label':'Fax', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':''},
 				'page-contact-email-display':{'label':'Email', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':''},
 				}},
-			'_users':{'label':'Business Employees', 'visible':'no', 'fields':{
+			'_users':{'label':'Business Employees', 'active':'no', 'fields':{
 				}},
-			'_users_display':{'label':'', 'fields':{
+			'_users_display':{'label':'', 'active':'no', 'fields':{
 				'page-contact-bios-display':{'label':'Employee List', 'type':'multitoggle', 'default':'list', 'toggles':{'list':'2 Column', 'cilist':'3 Column'}, 'hint':''},
 				}},
 			'_map':{'label':'Location Map', 'visible':'yes', 'fields':{
@@ -1141,7 +1141,7 @@ function ciniki_web_main() {
 
 	this.showContact = function(cb) {
 		// Get the user associated with this business
-		this.contact.sections._users.visible = 'no';
+		this.contact.sections._users.active = 'no';
 		var rsp = M.api.getJSONCb('ciniki.web.businessUsers', {'business_id':M.curBusinessID}, function(rsp) {
 			if( rsp.stat != 'ok' ) {
 				M.api.err(rsp);
@@ -1149,7 +1149,7 @@ function ciniki_web_main() {
 			}
 			var p = M.ciniki_web_main.contact;
 			if( rsp.users.length > 0 ) {
-				p.sections._users.visible = 'yes';
+				p.sections._users.active = 'yes';
 				p.sections._users.fields = {};
 				for(i in rsp.users) {
 					var u = rsp.users[i].user;
@@ -1157,10 +1157,10 @@ function ciniki_web_main() {
 						'label':u.firstname + ' ' + u.lastname, 'type':'flags', 'join':'yes', 'flags':M.ciniki_web_main.userFlags,
 						};
 				}
-				p.sections._users_display.visible = 'yes';
+				p.sections._users_display.active = 'yes';
 			} else {
-				p.sections._users.visible = 'no';
-				p.sections._users_display.visible = 'no';
+				p.sections._users.active = 'no';
+				p.sections._users_display.active = 'no';
 			}
 			p.refresh();
 			p.show(cb);
