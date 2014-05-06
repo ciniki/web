@@ -136,11 +136,16 @@ a img {
 }
 
 #content h2,
+#content h1 a,
+#content h1 a:visited,
+#content h1 a:hover,
+#content h1 a:active,
 #content h2 a,
 #content h2 a:visited,
 #content h2 a:hover,
 #content h2 a:active {
 	color: #ccc;
+	color: #63BBDD;
 }
 
 div.image-cilist-thumbnail-wrap, 

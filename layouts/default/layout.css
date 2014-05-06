@@ -85,6 +85,7 @@ header span.title {
 	width: 30em;
 }
 
+#content p.wide,
 #content ul.wide,
 #content dl.wide {
 /* 	width: 100%; */
