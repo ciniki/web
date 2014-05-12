@@ -236,6 +236,9 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 		}
 
 		$address = '';
+		if( isset($participant['studio_name']) && $participant['studio_name'] != '' ) {
+			$address .= $participant['studio_name'] . "<br/>";
+		}
 		if( isset($participant['address1']) && $participant['address1'] != '' ) {
 			$address .= $participant['address1'] . "<br/>";
 		}
