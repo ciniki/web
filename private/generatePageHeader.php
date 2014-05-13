@@ -434,6 +434,11 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 				$content .= "<li class='menu-item$hide_menu_class'>"
 					. "<a href='" . $ciniki['request']['base_url'] . "/gallery/sculptures'>Sculptures</a></li>";
 			} 
+			if( isset($settings['page-gallery-artcatalog-fibrearts']) 
+				&& $settings['page-gallery-artcatalog-fibrearts'] == 'yes' ) {
+				$content .= "<li class='menu-item$hide_menu_class'>"
+					. "<a href='" . $ciniki['request']['base_url'] . "/gallery/fibrearts'>Fibre Arts</a></li>";
+			} 
 		} else {
 			$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/gallery'>";
 			if( isset($settings['page-gallery-name']) && $settings['page-gallery-name'] != '' ) {
