@@ -419,7 +419,27 @@ function ciniki_web_main() {
 		this.friends.addClose('Cancel');
 
 		//
-		// The options and information for the friends page
+		// The options and information for the directory page
+		//
+		this.directory = new M.panel('Directory',
+			'ciniki_web_main', 'directory',
+			'mc', 'narrow', 'sectioned', 'ciniki.web.main.directory');
+		this.directory.data = {};
+		this.directory.sections = {
+			'options':{'label':'', 'fields':{
+				'page-directory-active':{'label':'Display Directory Page', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'directory\');'},
+				}},
+		};
+		this.directory.fieldValue = this.fieldValue;
+		this.directory.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.directory.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'directory\');');
+		this.directory.addClose('Cancel');
+
+		//
+		// The options and information for the links page
 		//
 		this.links = new M.panel('Links',
 			'ciniki_web_main', 'links',

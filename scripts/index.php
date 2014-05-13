@@ -156,6 +156,8 @@ if( $ciniki['request']['business_id'] == 0 ) {
 		|| $ciniki['request']['uri_split'][0] == 'gallery'
 		|| $ciniki['request']['uri_split'][0] == 'downloads'
 		|| $ciniki['request']['uri_split'][0] == 'faq'
+		|| $ciniki['request']['uri_split'][0] == 'directory'
+//		|| $ciniki['request']['uri_split'][0] == 'plans'
 		) {
 		$ciniki['request']['page'] = $ciniki['request']['uri_split'][0];
 		$ciniki['request']['business_id'] = $ciniki['config']['ciniki.core']['master_business_id'];
@@ -309,6 +311,8 @@ if( isset($ciniki['request']['page']) && $ciniki['request']['page'] == 'home'
 		$ciniki['request']['page'] = 'members';
 	} elseif( isset($settings['page-workshops-active']) && $settings['page-workshops-active'] == 'yes' ) {
 		$ciniki['request']['page'] = 'workshops';
+	} elseif( isset($settings['page-directory-active']) && $settings['page-directory-active'] == 'yes' ) {
+		$ciniki['request']['page'] = 'directory';
 	} elseif( isset($settings['page-links-active']) && $settings['page-links-active'] == 'yes' ) {
 		$ciniki['request']['page'] = 'links';
 	} else {
@@ -483,6 +487,18 @@ elseif( $ciniki['request']['page'] == 'cart'
 	&& isset($settings['page-cart-active']) && $settings['page-cart-active'] == 'yes' ) {
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageCart.php');
 	$rc = ciniki_web_generatePageCart($ciniki, $settings);
+} 
+// Plans
+elseif( $ciniki['request']['page'] == 'plans' 
+	&& isset($settings['page-plans-active']) && $settings['page-plans-active'] == 'yes' ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePagePlans.php');
+	$rc = ciniki_web_generatePagePlans($ciniki, $settings);
+} 
+// Directory
+elseif( $ciniki['request']['page'] == 'directory' 
+	&& isset($settings['page-directory-active']) && $settings['page-directory-active'] == 'yes' ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageDirectory.php');
+	$rc = ciniki_web_generatePageDirectory($ciniki, $settings);
 } 
 // Contact
 elseif( $ciniki['request']['page'] == 'contact' 

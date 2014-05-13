@@ -177,6 +177,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-workshops-past',
 		'page-events-active',
 		'page-events-past',
+		'page-directory-active',
 		'page-links-active',
 		'page-contact-active',
 		'page-contact-google-map',
