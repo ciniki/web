@@ -19,6 +19,8 @@ function ciniki_web_generatePageDirectory($ciniki, $settings) {
 	// Make sure everything gets generated ok before returning the content
 	//
 	$content = '';
+	$page_content = '';
+	$page_title = 'Directory';
 
 	//
 	// FIXME: Check if anything has changed, and if not load from cache
@@ -26,109 +28,101 @@ function ciniki_web_generatePageDirectory($ciniki, $settings) {
 	
 
 	//
+	// Generate the content of the page
+	//
+	if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
+		$category = $ciniki['request']['uri_split'][0];
+
+		$page_content .= "<div id='content'>\n"
+			. "<article class='page'>\n"
+			. "<header class='entry-title'><h1 class='entry-title'><a href='" . $ciniki['request']['base_url'] . "/directory'>Directory</a></h1></header>\n"
+			. "<div class='entry-content'>\n"
+			. "";
+
+		//
+		// Get the list of links to be displayed
+		//
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'directory', 'web', 'list');
+		$rc = ciniki_directory_web_list($ciniki, $ciniki['request']['business_id'], $category);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		if( isset($rc['categories']) ) {
+			$base_url = $ciniki['request']['base_url'] . '/directory';
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
+			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $rc['categories'], array());
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= $rc['content'];
+		}
+
+		$page_content .= "</div>"
+			. "</article>"
+			. "</div>"
+			. "";
+	}
+
+	//
+	// Display the categories
+	//
+	else {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'directory', 'web', 'tagCloud');
+		$base_url = $ciniki['request']['base_url'] . '/directory';
+		$rc = ciniki_directory_web_tagCloud($ciniki, $settings, $ciniki['request']['business_id']);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+
+		$page_content .= "<article class='page'>\n"
+			. "<header class='entry-title'><h1 class='entry-title'>Directory</h1></header>\n"
+			. "<div class='entry-content'>\n"
+			. "";
+
+		//
+		// Process the tags
+		//
+		if( isset($settings['page-directory-categories-display']) 
+			&& $settings['page-members-categories-display'] == 'wordcloud' ) {
+			if( isset($rc['tags']) && count($rc['tags']) > 0 ) {
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processTagCloud');
+				$rc = ciniki_web_processTagCloud($ciniki, $settings, $base_url, $rc['tags']);
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				$page_content .= $rc['content'];
+			} else {
+				$page_content = "<p>I'm sorry, there are no categories for this blog</p>";
+			}
+		} else {
+			if( isset($rc['tags']) && count($rc['tags']) > 0 ) {
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processTagList');
+				$rc = ciniki_web_processTagList($ciniki, $settings, $base_url, $rc['tags'], array());
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				$page_content .= $rc['content'];
+			} else {
+				$page_content = "<p>I'm sorry, there are no categories for this blog</p>";
+			}
+		} 
+		$page_content .= "</div>\n"
+			. "</article>\n"
+			. "";
+	}
+
+	//
 	// Add the header
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Directory', array());
+	$rc = ciniki_web_generatePageHeader($ciniki, $settings, $page_title, array());
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
 	}
 	$content .= $rc['content'];
 
-	//
-	// Generate the content of the page
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
-	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-links');
-	if( $rc['stat'] != 'ok' ) {
-		return $rc;
-	}
-
-	$page_content = '';
-	if( isset($rc['content']) && isset($rc['content']['page-directory-content']) ) {
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-		$rc = ciniki_web_processContent($ciniki, $rc['content']['page-directory-content']);	
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
-		}
-		$page_content = $rc['content'];
-	}
-	
 	$content .= "<div id='content'>\n"
-		. "<article class='page'>\n"
-		. "<header class='entry-title'><h1 class='entry-title'>Directory</h1></header>\n"
-		. "<div class='entry-content'>\n"
-		. "";
-	if( $page_content != '' ) {
-		$content .= $page_content;
-	}
-
-	//
-	// Get the list of links to be displayed
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'directory', 'web', 'list');
-	$rc = ciniki_directory_web_list($ciniki, $ciniki['request']['business_id']);
-	if( $rc['stat'] != 'ok' ) {
-		return $rc;
-	}
-	if( isset($rc['categories']) ) {
-		$categories = $rc['categories'];
-	} else {
-		$categories = array();
-	}
-
-	$content .= "<table class='links-list'>\n"
-		. "";
-	$prev_category = NULL;
-	foreach($categories as $cnum => $c) {
-		if( $prev_category != NULL ) {
-			$content .= "</td></tr>\n";
-		}
-		if( isset($c['category']['cname']) && $c['category']['cname'] != '' ) {
-			$content .= "<tr><th>"
-				. "<span class='links-category'>" . $c['category']['cname'] . "</span></th>"
-				. "<td>";
-		} else {
-			$content .= "<tr><th>"
-				. "<span class='links-category'></span></th>"
-				. "<td>";
-		}
-		foreach($c['category']['links'] as $fnum => $link) {
-			//$content .= "<p>";
-			if( isset($link['link']['url']) ) {
-				$url = $link['link']['url'];
-			} else {
-				$url = '';
-			}
-			if( $url != '' && !preg_match('/^\s*http/i', $url) ) {
-				$display_url = $url;
-				$url = "http://" . $url;
-			} else {
-				$display_url = preg_replace('/^\s*http:\/\//i', '', $url);
-				$display_url = preg_replace('/\/$/i', '', $display_url);
-			}
-			$content .= "<span class='links-title'>";
-			if( $url != '' ) {
-				$content .= "<a target='_blank' href='" . $url . "' title='" . $link['link']['name'] . "'>" . $link['link']['name'] . "</a>";
-			} else {
-				$content .= $link['link']['name'];
-			}
-			$content .= "</span>";
-			if( isset($link['link']['description']) && $link['link']['description'] != '' ) {
-				$content .= "<br/><span class='links-description'>" . $link['link']['description'] . "</span>";
-			}
-			if( $url != '' ) {
-				$content .= "<br/><a class='links-url' target='_blank' href='" . $url . "' title='" . $link['link']['name'] . "'>" . $display_url . "</a>";
-			}
-			$content .= "<br/><br/>";
-			// $content .= "</p>";
-		}
-	}
-
-	$content .= "</td></tr>\n</table>\n";
-
-	$content .= "</div>"
-		. "</article>"
+		. $page_content
 		. "</div>"
 		. "";
 

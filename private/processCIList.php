@@ -54,6 +54,7 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 			if( $page_limit > 0 && $count >= $page_limit ) { $count++; break; }
 			$url = '';
 			$url_display = '... more';
+			$url_target = '';
 			$javascript_onclick = '';
 			if( isset($item['is_details']) && $item['is_details'] == 'yes' 
 				&& isset($item['permalink']) && $item['permalink'] != '' ) {
@@ -65,6 +66,7 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 					return $rc;
 				}
 				$url = $rc['url'];
+				$url_target = '_blank';
 				$url_display = $rc['display'];
 			}
 
@@ -81,7 +83,7 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 				}
 				if( $url != '' ) {
 					$content .= "<div class='image-cilist-thumbnail'>"
-						. "<a href='$url' title='" . $item['title'] . "'>"
+						. "<a href='$url' target='$url_target' title='" . $item['title'] . "'>"
 						. "<img title='' alt='" . $item['title'] . "' src='" . $rc['url'] . "' /></a>"
 						. "</div>";
 				} else {
@@ -92,7 +94,7 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 			} elseif( isset($category['noimage']) && $category['noimage'] != '' ) {
 				if( $url != '' ) {
 					$content .= "<div class='image-cilist-thumbnail'>"
-						. "<a href='$url' title='" . $item['title'] . "'>"
+						. "<a href='$url' target='$url_target' title='" . $item['title'] . "'>"
 						. "<img title='' alt='" . $item['title'] . "' src='" . $category['noimage'] . "' /></a>"
 						. "</div></aside>";
 				} else {
@@ -110,7 +112,7 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 				$content .= "<td class='cilist-title'>";
 				$content .= "<p class='cilist-title'>";
 				if( $url != '' ) {
-					$content .= "<a href='$url' title='" . $item['title'] . "'>" . $item['title'] . "</a>";
+					$content .= "<a href='$url' target='$url_target' title='" . $item['title'] . "'>" . $item['title'] . "</a>";
 				} else {
 					$content .= $item['title'];
 				}
@@ -136,7 +138,7 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 			$content .= "</tr>";
 		
 			if( $url != '' ) {
-				$content .= "<tr><td class='cilist-more'><a href='$url'>$url_display</a></td></tr>";
+				$content .= "<tr><td class='cilist-more'><a href='$url' target='$url_target'>$url_display</a></td></tr>";
 			} elseif( isset($item['urls']) && count($item['urls']) > 0 ) {
 				$content .= "<tr><td class='cilist-more'>";
 				$urls = '';
