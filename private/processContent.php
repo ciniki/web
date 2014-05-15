@@ -38,7 +38,7 @@ function ciniki_web_processContent($ciniki, $unprocessed_content, $pclass='') {
 			$display_url = preg_replace("/\\\\/$/", "", $display_url);
 		}
 		$url = preg_replace("/www/", "http://www", $display_url);
-		return sprintf(\'<a href="%s" target="_blank">%s</a>\', $url, $display_url);
+		return sprintf(\'<a onclick="event.stopPropagation();" href="%s" target="_blank">%s</a>\', $url, $display_url);
 	');
 //	$processed_content = preg_replace_callback($pattern1, $callback, $processed_content);
 	$processed_content = preg_replace_callback($pattern, $callback, $processed_content);
