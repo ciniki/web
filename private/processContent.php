@@ -36,7 +36,6 @@ function ciniki_web_processContent($ciniki, $unprocessed_content, $pclass='') {
 	$callback = create_function('$matches', '
 		$display_url = $matches[1];
 		$url = $display_url;
-		error_log(print_r($matches, true));
 		if( isset($matches[2]) && ($matches[2] == "http://" || $matches[2] == "https://") ) {
 			$display_url = substr($display_url, strlen($matches[2]));
 			$display_url = preg_replace("/\\\\/$/", "", $display_url);
