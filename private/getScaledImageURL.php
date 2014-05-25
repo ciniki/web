@@ -52,6 +52,7 @@ function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $
 	}
 	$img_filename = $ciniki['request']['cache_dir'] . $filename;
 	$img_url = $ciniki['request']['cache_url'] . $filename;
+	$img_domain_url = 'http://' . $ciniki['request']['domain'] . $ciniki['request']['cache_url'] . $filename;
 
 	//
 	// Check last_updated against the file timestamp, if the file exists
@@ -99,6 +100,6 @@ function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $
 		}
 	}
 
-	return array('stat'=>'ok', 'url'=>$img_url, );
+	return array('stat'=>'ok', 'url'=>$img_url, 'domain_url'=>$img_domain_url);
 }
 ?>

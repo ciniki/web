@@ -56,7 +56,15 @@ $ciniki['request'] = array('business_id'=>0, 'page'=>'', 'args'=>array(),
 	'theme_url'=>'/ciniki-web-themes',
 	);
 $ciniki['response'] = array('head'=>array(
-	'links'=>array()
+	'links'=>array(),
+	'facebook'=>array(
+		'og:url'=>'',
+		'og:title'=>'',
+		'og:site_name'=>'',
+		'og:image'=>'',
+		'og:description'=>'',
+		'og:type'=>'',
+		),
 	));
 session_start();
 $ciniki['session'] = array();
@@ -131,6 +139,8 @@ if( $ciniki['config']['ciniki.web']['master.domain'] != $_SERVER['HTTP_HOST'] ) 
 			$ciniki['request']['uri_split'] = $uris;
 		}
 		$ciniki['request']['base_url'] = '';
+		$ciniki['request']['domain'] = $_SERVER['HTTP_HOST'];
+		$ciniki['request']['domain_base_url'] = 'http://' . $_SERVER['HTTP_HOST'];
 	}
 }
 
@@ -141,6 +151,8 @@ if( $ciniki['request']['business_id'] == 0 ) {
 	//
 	// Check which page, or if they requested a clients website
 	//
+	$ciniki['request']['domain'] = $ciniki['config']['ciniki.web']['master.domain'];
+	$ciniki['request']['domain_base_url'] = 'http://' . $ciniki['config']['ciniki.web']['master.domain'];
 	if( $uri == '' ) {
 		$ciniki['request']['page'] = 'masterindex';
 		$ciniki['request']['business_id'] = $ciniki['config']['ciniki.core']['master_business_id'];
@@ -206,6 +218,8 @@ if( $ciniki['request']['business_id'] == 0 ) {
 		$ciniki['business']['uuid'] = $rc['business_uuid'];
 		$ciniki['business']['modules'] = $rc['modules'];
 		$ciniki['request']['base_url'] = '/' . $ciniki['request']['uri_split'][0];
+		$ciniki['request']['domain'] = $ciniki['config']['ciniki.web']['master.domain'];
+		$ciniki['request']['domain_base_url'] = 'http://' . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $ciniki['request']['uri_split'][0];
 		if( isset($rc['redirect']) && $rc['redirect'] != '' ) {
 			Header('HTTP/1.1 301 Moved Permanently'); 
 			Header('Location: http://' . $rc['redirect'] . preg_replace('/^\/[^\/]+/', '', $_SERVER['REQUEST_URI']));

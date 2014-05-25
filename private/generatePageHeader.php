@@ -138,6 +138,24 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	$content .= '<meta charset="UTF-8">' . "\n";
 
 	//
+	// Check for header facebook object information, for better linking into facebook
+	//
+	if( isset($ciniki['response']['head']['facebook']) ) {
+		$og_site_name = $ciniki['business']['details']['name'];
+		foreach($ciniki['response']['head']['facebook'] as $og_type => $og_value) {
+			if( $og_value != '' ) {
+				if( $og_type == 'og:site_name' ) {
+					$og_site_name = $og_value;
+				}
+				$content .= "<meta property='$og_type' content='$og_value'/>\n";
+			}
+		}
+		if( $og_site_name != '' ) {
+			$content .= "<meta property='og:site_name' content='$og_site_name'/>\n";
+		}
+	}
+
+	//
 	// Include any inline javascript
 	//
 	if( isset($ciniki['request']['inline_javascript']) && $ciniki['request']['inline_javascript'] != '' ) {

@@ -20,22 +20,18 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 	//
 	$content = '';
 	$page_content = '';
+	
+	//
+	// Setup facebook content defaults
+	//
+	$ciniki['response']['head']['facebook']['og:title'] = 'Home';
+	$ciniki['response']['head']['facebook']['og:url'] = $ciniki['request']['domain_base_url'];
+
+//	$content = "<pre>" . print_r($ciniki, true) . "</pre>";
 
 	//
 	// FIXME: Check if anything has changed, and if not load from cache
 	//
-	
-
-	//
-	// Add the header
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Home', array());
-	if( $rc['stat'] != 'ok' ) {	
-		return $rc;
-	}
-	$content .= $rc['content'];
 
 	if( isset($settings['page-home-image']) && $settings['page-home-image'] != '' && $settings['page-home-image'] > 0 ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
@@ -51,6 +47,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 		}
 		$page_content .= "<aside><div class='image-wrap'>"
 			. "<div class='image'>$href<img title='' alt='" . $ciniki['business']['details']['name'] . "' src='" . $rc['url'] . "' />$_href</div>";
+		$ciniki['response']['head']['facebook']['og:image'] = $rc['domain_url'];
 		if( isset($settings['page-home-image-caption']) && $settings['page-home-image-caption'] != '' ) {
 			$page_content .= "<div class='image-caption'>$href" . $settings['page-home-image-caption'] . "$_href</div>";
 		}
@@ -67,6 +64,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 	}
 
 	if( isset($rc['content']['page-home-content']) ) {
+		$ciniki['response']['head']['facebook']['og:description'] = $rc['content']['page-home-content'];
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 		$rc = ciniki_web_processContent($ciniki, $rc['content']['page-home-content']);	
 		if( $rc['stat'] != 'ok' ) {
@@ -75,10 +73,10 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 		$page_content .= $rc['content'];
 	}
 
-	$content .= "<div id='content'>\n"
+	$page_content .= "<div id='content'>\n"
 		. "";
 	if( $page_content != '' ) {
-		$content .= "<article class='page'>\n"
+		$page_content .= "<article class='page'>\n"
 			. "<div class='entry-content'>\n"
 			. $page_content
 			. "</div>"
@@ -107,14 +105,14 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
-		$content .= "<article class='page'>\n"
+		$page_content .= "<article class='page'>\n"
 			. "<header class='entry-title'><h1 class='entry-title'>";
 		if( isset($settings['page-home-gallery-latest-title']) && $settings['page-home-gallery-latest-title'] != '' ) {
-			$content .= $settings['page-home-gallery-latest-title'];
+			$page_content .= $settings['page-home-gallery-latest-title'];
 		} else {
-			$content .= "Latest Work";
+			$page_content .= "Latest Work";
 		}
-		$content .= "</h1></header>\n"
+		$page_content .= "</h1></header>\n"
 			. "<div class='image-gallery'>" . $rc['content'] . "</div>"
 			. "</article>\n"
 			. "";
@@ -141,14 +139,14 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
-		$content .= "<article class='page'>\n"
+		$page_content .= "<article class='page'>\n"
 			. "<header class='entry-title'><h1 class='entry-title'>";
 		if( isset($settings['page-home-gallery-random-title']) && $settings['page-home-gallery-random-title'] != '' ) {
-			$content .= $settings['page-home-gallery-random-title'];
+			$page_content .= $settings['page-home-gallery-random-title'];
 		} else {
-			$content .= 'Example Work';
+			$page_content .= 'Example Work';
 		}
-		$content .= "</h1></header>\n"
+		$page_content .= "</h1></header>\n"
 			. "<div class='image-gallery'>" . $rc['content'] . "</div>"
 			. "</article>\n"
 			. "";
@@ -177,14 +175,14 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			$content .= "<article class='page'>\n"
+			$page_content .= "<article class='page'>\n"
 				. "<header class='entry-title'><h1 class='entry-title'>Upcoming Exhibitions</h1></header>\n"
 				. $rc['content']
 				. "";
 			if( $number_of_exhibitions > 2 ) {
-				$content .= "<div class='events-more'><a href='" . $ciniki['request']['base_url'] . "/exhibitions'>... more exhibitions</a></div>";
+				$page_content .= "<div class='events-more'><a href='" . $ciniki['request']['base_url'] . "/exhibitions'>... more exhibitions</a></div>";
 			}
-			$content .= "</article>\n"
+			$page_content .= "</article>\n"
 				. "";
 		}
 	}
@@ -214,14 +212,14 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			$content .= "<article class='page'>\n"
+			$page_content .= "<article class='page'>\n"
 				. "<header class='entry-title'><h1 class='entry-title'>Latest Recipes</h1></header>\n"
 				. $rc['content']
 				. "";
 			if( $number_of_recipes > 2 ) {
-				$content .= "<div class='events-more'><a href='" . $ciniki['request']['base_url'] . "/recipes'>... more recipes</a></div>";
+				$page_content .= "<div class='events-more'><a href='" . $ciniki['request']['base_url'] . "/recipes'>... more recipes</a></div>";
 			}
-			$content .= "</article>\n"
+			$page_content .= "</article>\n"
 				. "";
 		}
 	}
@@ -250,14 +248,14 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			$content .= "<article class='page'>\n"
+			$page_content .= "<article class='page'>\n"
 				. "<header class='entry-title'><h1 class='entry-title'>Upcoming Workshops</h1></header>\n"
 				. $rc['content']
 				. "";
 			if( $number_of_workshops > 2 ) {
-				$content .= "<div class='events-more'><a href='" . $ciniki['request']['base_url'] . "/workshops'>... more workshops</a></div>";
+				$page_content .= "<div class='events-more'><a href='" . $ciniki['request']['base_url'] . "/workshops'>... more workshops</a></div>";
 			}
-			$content .= "</article>\n"
+			$page_content .= "</article>\n"
 				. "";
 		}
 	}
@@ -285,21 +283,34 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			$content .= "<article class='page'>\n"
+			$page_content .= "<article class='page'>\n"
 				. "<header class='entry-title'><h1 class='entry-title'>Upcoming Events</h1></header>\n"
 				. $rc['content']
 				. "";
 			if( $number_of_events > 2 ) {
-				$content .= "<div class='events-more'><a href='" . $ciniki['request']['base_url'] . "/events'>... more events</a></div>";
+				$page_content .= "<div class='events-more'><a href='" . $ciniki['request']['base_url'] . "/events'>... more events</a></div>";
 			}
-			$content .= "</article>\n"
+			$page_content .= "</article>\n"
 				. "";
 		}
 	}
 
 
-	$content .= "</div>"
+	$page_content .= "</div>"
 		. "";
+
+	//
+	// Add the header
+	//
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
+	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Home', array());
+	if( $rc['stat'] != 'ok' ) {	
+		return $rc;
+	}
+	$content .= $rc['content'];
+
+	$content .= $page_content;
 
 	//
 	// Add the footer
