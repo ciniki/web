@@ -152,7 +152,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 			}
 		}
 		if( $og_site_name != '' ) {
-			$content .= "<meta property='og:site_name' content='$og_site_name'/>\n";
+			$content .= "<meta property=\"og:site_name\" content=\"" . preg_replace('/"/', "\'", $og_site_name) . "\"/>\n";
 		}
 		if( $ciniki['response']['head']['facebook']['og:title'] == '' ) {
 			$content .= '<meta property="og:title" content="' . $ciniki['business']['details']['name'] . ' - ' . $title . '"/>' . "\n";
