@@ -143,7 +143,8 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	if( isset($ciniki['response']['head']['facebook']) ) {
 		$og_site_name = $ciniki['business']['details']['name'];
 		foreach($ciniki['response']['head']['facebook'] as $og_type => $og_value) {
-			if( $og_type != 'og:description' && $og_value != '' ) {
+//			if( $og_type != 'og:description' && $og_value != '' ) {
+			if( $og_value != '' ) {
 				if( $og_type == 'og:site_name' ) {
 					$og_site_name = $og_value;
 				}
