@@ -125,7 +125,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 		$img = $rc['image'];
 		$page_title = $img['title'];
 		$ciniki['response']['head']['og']['url'] .= '/' . $category_uri_component . '/' . $img['category_permalink'] . '/' . $img['permalink'];
-		$tags[] = $img['category_permalink'];
+		$tags[] = preg_replace('[^A-Za-z0-9]', '', $img['category']);
 		
 //		$page_content .= '<pre>' . print_r($img, true) . '</pre>';
 		if( isset($img['type']) ) {

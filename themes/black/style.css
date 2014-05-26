@@ -617,13 +617,12 @@ hr.header-section-divider {
 
 /* Social sharing buttons */
 div.share-buttons {
-/*	background-color: #fff; */
+	margin-top: 1.5em;
 }
 
 div.share-buttons span.share-buttons {
 	background-color: #ccc;
-	padding: 1em 0.75em 0.45em 0.75em;
-	padding-top: 1.05em;
+	padding: 1.05em 0.75em 0.45em 0.75em;
 	border-radius: 10px;
 }
 

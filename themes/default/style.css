@@ -833,6 +833,10 @@ hr.header-section-divider {
 }
 
 /* Social sharing buttons */
+div.share-buttons {
+	margin-top: 1.5em;
+}
+
 div.share-buttons span.socialsymbol {
 	font-size: 2.25em;
 	padding: 0.1em;
