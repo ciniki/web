@@ -291,7 +291,7 @@ if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 	$rc = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '100', '85');
 	if( $rc['stat'] == 'ok' ) {
-		$ciniki['response']['head']['facebook']['image'] = $rc['domain_url'];
+		$ciniki['response']['head']['facebook']['og:image'] = $rc['domain_url'];
 	}
 }
 
