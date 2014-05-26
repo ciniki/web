@@ -48,7 +48,9 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 		}
 		$content1 .= "<aside><div class='image-wrap'>"
 			. "<div class='image'>$href<img title='' alt='" . $ciniki['business']['details']['name'] . "' src='" . $rc['url'] . "' />$_href</div>";
-		$ciniki['response']['head']['facebook']['og:image'] = $rc['domain_url'];
+		if( $ciniki['response']['head']['facebook']['og:image'] == '' ) {
+			$ciniki['response']['head']['facebook']['og:image'] = $rc['domain_url'];
+		}
 		if( isset($settings['page-home-image-caption']) && $settings['page-home-image-caption'] != '' ) {
 			$content1 .= "<div class='image-caption'>$href" . $settings['page-home-image-caption'] . "$_href</div>";
 		}
