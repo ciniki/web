@@ -295,7 +295,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 				. "<span title='Share on Twitter' class='socialsymbol social-twitter'>&#xe286;</span>"
 				. "</a>";
 
-			$page_content .= "<a href='http://www.pinterest.com/pin/create/button?url=" . urlencode($ciniki['response']['head']['og']['url']) . "&image=" . urlencode($ciniki['response']['head']['og']['image']) . "&description=" . urlencode($ciniki['business']['details']['name'] . ' - ' . $page_title) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
+			$page_content .= "<a href='http://www.pinterest.com/pin/create/button?url=" . urlencode($ciniki['response']['head']['og']['url']) . "&media=" . urlencode($ciniki['response']['head']['og']['image']) . "&description=" . urlencode($ciniki['business']['details']['name'] . ' - ' . $page_title) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
 				. "<span title='Share on Pinterest' class='socialsymbol social-pinterest'>&#xe264;</span>"
 				. "</a>";
 
