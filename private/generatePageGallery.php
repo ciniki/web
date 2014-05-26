@@ -25,6 +25,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 	$cache_file = '';
 	$base_url = $ciniki['request']['base_url'] . "/gallery";
 	if( isset($ciniki['business']['modules']['ciniki.artcatalog']) ) {
+		$ciniki['response']['head']['facebook']['og:url'] = $ciniki['request']['domain_base_url'] . '/gallery';
 		if( isset($settings['page-gallery-artcatalog-split']) 
 			&& $settings['page-gallery-artcatalog-split'] == 'yes' ) {
 			if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
@@ -39,6 +40,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 				if( $artcatalog_type > 0 ) {
 					$atype = array_shift($ciniki['request']['uri_split']);
 					$base_url .= '/' . $atype;
+					$ciniki['response']['head']['facebook']['og:url'] .= '/' . $ciniki['request']['uri_split'][0];
 				}
 			}
 		} 
@@ -50,6 +52,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 		$pkg = 'ciniki';
 		$mod = 'gallery';
 		$category_uri_component = 'album';
+		$ciniki['response']['head']['facebook']['og:url'] = $ciniki['request']['domain_base_url'] . '/gallery';
 		$last_change = $ciniki['business']['modules']['ciniki.gallery']['last_change'];
 	} else {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'267', 'msg'=>'No gallery module enabled'));
@@ -85,7 +88,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 			)
 			)
 		) {
-		
+
 		//
 		// Get the permalink for the image requested
 		//
@@ -108,6 +111,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 		}
 		$img = $rc['image'];
 		$page_title = $img['title'];
+		$ciniki['response']['head']['facebook']['og:url'] .= '/' . $category_uri_component . '/' . $img['category_permalink'] . '/' . $img['permalink'];
 		
 		//
 		// Get the album details
@@ -180,6 +184,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 			return $rc;
 		}
 		$img_url = $rc['url'];
+		$ciniki['response']['head']['facebook']['og:image'] = $rc['domain_url'];
 
 		//
 		// Set the page to wide if possible
@@ -210,6 +215,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 			. "<span class='image-details'>" . $img['details'] . '</span>';
 		if( $img['description'] != '' ) {
 			$page_content .= "<span class='image-description'>" . preg_replace('/\n/', '<br/>', $img['description']) . "</span>";
+			$ciniki['response']['head']['facebook']['og:description'] = strip_tags($img['description']);
 		}
 		if( $img['awards'] != '' ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
@@ -227,7 +233,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 		if( isset($img['additionalimages']) && count($img['additionalimages']) > 0 ) {
 			$page_content .= "<span class='sub-title'>Additional Images</span>";
 			array_unshift($img['additionalimages'], array(
-				'id'=>0, 
+				'id'=>0,
 				'image_id'=>$img['image_id'],
 				'title'=>$img['title'],
 				'last_updated'=>$img['last_updated'],

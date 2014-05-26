@@ -25,7 +25,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 	//
 	// Setup facebook content defaults
 	//
-	$ciniki['response']['head']['facebook']['og:title'] = 'Home';
+	$ciniki['response']['head']['facebook']['og:title'] = $ciniki['business']['details']['name'] . '';
 	$ciniki['response']['head']['facebook']['og:url'] = $ciniki['request']['domain_base_url'];
 
 //	$content = "<pre>" . print_r($ciniki, true) . "</pre>";
