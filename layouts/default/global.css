@@ -759,6 +759,12 @@ span.exhibitors-description {
 	display: none;
 }
 
+/* Social share buttons */
+#content div.share-buttons {
+	text-align: right;
+	display: block;
+}
+
 #content div.cart form {
 	width: 100%;
 	max-width: 100%;

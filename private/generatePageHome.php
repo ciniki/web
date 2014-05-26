@@ -25,8 +25,8 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 	//
 	// Setup facebook content defaults
 	//
-	$ciniki['response']['head']['facebook']['og:title'] = $ciniki['business']['details']['name'] . '';
-	$ciniki['response']['head']['facebook']['og:url'] = $ciniki['request']['domain_base_url'];
+	$ciniki['response']['head']['og']['title'] = $ciniki['business']['details']['name'] . '';
+	$ciniki['response']['head']['og']['url'] = $ciniki['request']['domain_base_url'];
 
 //	$content = "<pre>" . print_r($ciniki, true) . "</pre>";
 
@@ -48,8 +48,8 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 		}
 		$content1 .= "<aside><div class='image-wrap'>"
 			. "<div class='image'>$href<img title='' alt='" . $ciniki['business']['details']['name'] . "' src='" . $rc['url'] . "' />$_href</div>";
-		if( $ciniki['response']['head']['facebook']['og:image'] == '' ) {
-			$ciniki['response']['head']['facebook']['og:image'] = $rc['domain_url'];
+		if( $ciniki['response']['head']['og']['image'] == '' ) {
+			$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
 		}
 		if( isset($settings['page-home-image-caption']) && $settings['page-home-image-caption'] != '' ) {
 			$content1 .= "<div class='image-caption'>$href" . $settings['page-home-image-caption'] . "$_href</div>";
@@ -66,10 +66,10 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 		return $rc;
 	}
 
-	if( isset($rc['content']['page-home-og:description']) && $rc['content']['page-home-og:description'] != '' ) {
-		$ciniki['response']['head']['facebook']['og:description'] = strip_tags($rc['content']['page-home-og:description']);
+	if( isset($rc['content']['page-home-og-description']) && $rc['content']['page-home-og-description'] != '' ) {
+		$ciniki['response']['head']['og']['description'] = strip_tags($rc['content']['page-home-og-description']);
 	} elseif( isset($rc['content']['page-home-content']) ) {
-		$ciniki['response']['head']['facebook']['og:description'] = strip_tags($rc['content']['page-home-content']);
+		$ciniki['response']['head']['og']['description'] = strip_tags($rc['content']['page-home-content']);
 	}
 
 

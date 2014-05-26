@@ -138,27 +138,34 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	$content .= '<meta charset="UTF-8">' . "\n";
 
 	//
-	// Check for header facebook object information, for better linking into facebook
+	// Check for header Open Graph (Facebook) object information, for better linking into facebook
 	//
-	if( isset($ciniki['response']['head']['facebook']) ) {
+	if( isset($ciniki['response']['head']['og']) ) {
 		$og_site_name = $ciniki['business']['details']['name'];
-		foreach($ciniki['response']['head']['facebook'] as $og_type => $og_value) {
+		foreach($ciniki['response']['head']['og'] as $og_type => $og_value) {
 //			if( $og_type != 'og:description' && $og_value != '' ) {
 			if( $og_value != '' ) {
-				if( $og_type == 'og:site_name' ) {
+				if( $og_type == 'site_name' ) {
 					$og_site_name = $og_value;
 				}
-				$content .= '<meta property="' . $og_type . '" content="' . preg_replace('/"/', "'", $og_value) . '"/>' . "\n";
+				$content .= '<meta property="og:' . $og_type . '" content="' . preg_replace('/"/', "'", $og_value) . '"/>' . "\n";
 			}
 		}
 		if( $og_site_name != '' ) {
 			$content .= "<meta property=\"og:site_name\" content=\"" . preg_replace('/"/', "\'", $og_site_name) . "\"/>\n";
 		}
-		if( $ciniki['response']['head']['facebook']['og:title'] == '' ) {
+		if( $ciniki['response']['head']['og']['title'] == '' ) {
 			$content .= '<meta property="og:title" content="' . $ciniki['business']['details']['name'] . ' - ' . $title . '"/>' . "\n";
 			
 		}
 	}
+
+//	if( isset($ciniki['response']['head']['sharethis']['enable']) && $ciniki['response']['head']['sharethis']['enable'] == 'yes' ) {
+//		$content .= '<script type="text/javascript">var switchTo5x=true;</script>' . "\n"
+//			. '<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>' . "\n"
+//			. '<script type="text/javascript">stLight.options({publisher: "289f0396-66fc-44a7-ad22-5fc0d836da3f", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>' . "\n"
+//			. '';
+//	}
 
 	//
 	// Include any inline javascript

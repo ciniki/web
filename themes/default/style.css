@@ -832,6 +832,19 @@ hr.header-section-divider {
 	color: #fff;
 }
 
+/* Social sharing buttons */
+div.share-buttons span.socialsymbol {
+	font-size: 2.25em;
+	padding: 0.1em;
+}
+
+div.share-buttons span.socialtext {
+	font-size: 1.0em;
+}
+
+div.share-buttons span.social-facebook { color: #3B5998; }
+div.share-buttons span.social-twitter { color: #55ACEE; }
+
 footer {
 	color: #888;
 }

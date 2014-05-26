@@ -615,6 +615,33 @@ hr.header-section-divider {
 	color: #000;
 }
 
+/* Social sharing buttons */
+div.share-buttons {
+/*	background-color: #fff; */
+}
+
+div.share-buttons span.share-buttons {
+	background-color: #ccc;
+	padding: 1em 0.75em 0.45em 0.75em;
+	padding-top: 1.05em;
+	border-radius: 10px;
+}
+
+div.share-buttons span.socialsymbol {
+	font-size: 2.25em;
+	padding: 0.1em;
+	vertical-align: baseline;
+}
+
+div.share-buttons span.socialtext {
+	font-size: 1.0em;
+	color: #333;
+}
+
+div.share-buttons span.social-facebook { color: #3B5998; }
+div.share-buttons span.social-twitter { color: #55ACEE; }
+div.share-buttons span.social-pinterest { color: #CC2127; }
+
 footer {
 	color: #777;
 }

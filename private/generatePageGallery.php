@@ -24,21 +24,34 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 	$last_change = 0;
 	$cache_file = '';
 	$base_url = $ciniki['request']['base_url'] . "/gallery";
+	$tags = array();
 	if( isset($ciniki['business']['modules']['ciniki.artcatalog']) ) {
-		$ciniki['response']['head']['facebook']['og:url'] = $ciniki['request']['domain_base_url'] . '/gallery';
+		$ciniki['response']['head']['og']['url'] = $ciniki['request']['domain_base_url'] . '/gallery';
 		if( isset($settings['page-gallery-artcatalog-split']) 
 			&& $settings['page-gallery-artcatalog-split'] == 'yes' ) {
 			if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
 				switch($ciniki['request']['uri_split'][0]) {
-					case 'paintings': $artcatalog_type = 1; break;
-					case 'photographs': $artcatalog_type = 2; break;
-					case 'jewelry': $artcatalog_type = 3; break;
-					case 'sculptures': $artcatalog_type = 4; break;
-					case 'crafts': $artcatalog_type = 5; break;
-					case 'clothing': $artcatalog_type = 6; break;
+					case 'paintings': 
+						$artcatalog_type = 1; 
+						break;
+					case 'photographs': 
+						$artcatalog_type = 2; 
+						break;
+					case 'jewelry': 
+						$artcatalog_type = 3; 
+						break;
+					case 'sculptures': 
+						$artcatalog_type = 4; 
+						break;
+					case 'crafts': 
+						$artcatalog_type = 5; 
+						break;
+					case 'clothing': 
+						$artcatalog_type = 6; 
+						break;
 				}
 				if( $artcatalog_type > 0 ) {
-					$ciniki['response']['head']['facebook']['og:url'] .= '/' . $ciniki['request']['uri_split'][0];
+					$ciniki['response']['head']['og']['url'] .= '/' . $ciniki['request']['uri_split'][0];
 					$atype = array_shift($ciniki['request']['uri_split']);
 					$base_url .= '/' . $atype;
 				}
@@ -52,7 +65,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 		$pkg = 'ciniki';
 		$mod = 'gallery';
 		$category_uri_component = 'album';
-		$ciniki['response']['head']['facebook']['og:url'] = $ciniki['request']['domain_base_url'] . '/gallery';
+		$ciniki['response']['head']['og']['url'] = $ciniki['request']['domain_base_url'] . '/gallery';
 		$last_change = $ciniki['business']['modules']['ciniki.gallery']['last_change'];
 	} else {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'267', 'msg'=>'No gallery module enabled'));
@@ -111,7 +124,38 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 		}
 		$img = $rc['image'];
 		$page_title = $img['title'];
-		$ciniki['response']['head']['facebook']['og:url'] .= '/' . $category_uri_component . '/' . $img['category_permalink'] . '/' . $img['permalink'];
+		$ciniki['response']['head']['og']['url'] .= '/' . $category_uri_component . '/' . $img['category_permalink'] . '/' . $img['permalink'];
+		$tags[] = $img['category_permalink'];
+		
+//		$page_content .= '<pre>' . print_r($img, true) . '</pre>';
+		if( isset($img['type']) ) {
+			switch($img['type']) {
+				case 1:
+					$tags[] = 'art';
+					$tags[] = 'painting';
+					break;
+				case 2:
+					$tags[] = 'art';
+					$tags[] = 'photograph';
+					break;
+				case 3:
+					$tags[] = 'jewelry';
+					break;
+				case 4:
+					$tags[] = 'sculpture';
+					break;
+				case 5:
+					$tags[] = 'craft';
+					break;
+				case 6:
+					$tags[] = 'fibreart';
+					break;
+			}
+		}
+
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'shortenURL');
+		$surl = ciniki_web_shortenURL($ciniki, $ciniki['request']['business_id'], 
+			$ciniki['response']['head']['og']['url']);
 		
 		//
 		// Get the album details
@@ -184,7 +228,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 			return $rc;
 		}
 		$img_url = $rc['url'];
-		$ciniki['response']['head']['facebook']['og:image'] = $rc['domain_url'];
+		$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
 
 		//
 		// Set the page to wide if possible
@@ -209,13 +253,14 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 			$page_content .= "<a id='gallery-image-next' class='gallery-image-next' href='" . $next['permalink'] . "'><div id='gallery-image-next-img'></div></a>";
 		}
 		$page_content .= "<img id='gallery-image-img' title='" . $img['title'] . "' alt='" . $img['title'] . "' src='" . $img_url . "' onload='javascript: gallery_resize_arrows();' />";
-		$page_content .= "</div><br/>"
-			. "<div id='gallery-image-details' class='gallery-image-details'>"
-			. "<span class='image-title'>" . $img['title'] . '</span>'
+		$page_content .= "</div><br/>";
+		$page_content .= "<div id='gallery-image-details' class='gallery-image-details'>";
+
+		$page_content .= "<span class='image-title'>" . $img['title'] . '</span>'
 			. "<span class='image-details'>" . $img['details'] . '</span>';
 		if( $img['description'] != '' ) {
 			$page_content .= "<span class='image-description'>" . preg_replace('/\n/', '<br/>', $img['description']) . "</span>";
-			$ciniki['response']['head']['facebook']['og:description'] = strip_tags($img['description']);
+			$ciniki['response']['head']['og']['description'] = strip_tags($img['description']);
 		}
 		if( $img['awards'] != '' ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
@@ -226,6 +271,47 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 			$page_content .= "<span class='image-awards-title'>Awards</span>"
 				. "<span class='image-awards'>" . $rc['content'] . "</span>"
 				. "";
+		}
+		if( isset($settings['page-gallery-share-buttons']) && $settings['page-gallery-share-buttons'] == 'yes' ) {
+			// https://www.facebook.com/sharer.php?u=http%3A%2F%2Fphotofrog.ca%2Fgallery%2Fcategory%2FLight%2BPainting%2Flp008
+			$page_content .= "<div class='share-buttons'><span class='share-buttons'><span class='socialtext'>Share on: </span>";
+			$page_content .= "<a href='https://www.facebook.com/sharer.php?u=" . urlencode($ciniki['response']['head']['og']['url']) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
+				. "<span title='Share on Facebook' class='socialsymbol social-facebook'>&#xe227;</span>"
+				. "</a>";
+		
+			$msg = $ciniki['business']['details']['name'] . ' - ' . $page_title;
+			if( isset($ciniki['business']['social']['social-twitter-username']) 
+				&& $ciniki['business']['social']['social-twitter-username'] != '' ) {
+				$msg .= ' @' . $ciniki['business']['social']['social-twitter-username'];
+			}
+			$tags = array_unique($tags);
+			foreach($tags as $tag) {
+				if( $tag == '' ) { continue; }
+				if( (strlen($surl) + 1 + strlen($msg) + 2 + strlen($tag)) < 140 ) {
+					$msg .= ' #' . $tag;
+				}
+			}
+			$page_content .= "<a href='https://twitter.com/share?url=" . urlencode($surl) . "&text=" . urlencode($msg) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
+				. "<span title='Share on Twitter' class='socialsymbol social-twitter'>&#xe286;</span>"
+				. "</a>";
+
+			$page_content .= "<a href='http://www.pinterest.com/pin/create/button?url=" . urlencode($ciniki['response']['head']['og']['url']) . "&image=" . urlencode($ciniki['response']['head']['og']['image']) . "&description=" . urlencode($ciniki['business']['details']['name'] . ' - ' . $page_title) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
+				. "<span title='Share on Pinterest' class='socialsymbol social-pinterest'>&#xe264;</span>"
+				. "</a>";
+
+//			$page_content .= "<a href='https://plus.google.com/share?url=" . urlencode($ciniki['response']['head']['og']['url']) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
+//				. "<span title='Share on Google+' class='socialsymbol social-googleplus'>&#xe227;</span>"
+//				. "</a>";
+
+			$page_content .= "</span></div>";
+//			$ciniki['response']['head']['sharethis'] = array('enable'=>'yes');
+//			$page_content .= "<div class='st_buttons'>"
+//				. "<span class='st_sharethis_large' displayText='ShareThis'></span>"
+//				. "<span class='st_facebook_large' displayText='Facebook'></span>"
+//				. "<span class='st_twitter_large' displayText='Tweet'></span>"
+//				. "<span class='st_pinterest_large' displayText='Pinterest'></span>"
+//				. "<span class='st_email_large' displayText='Email'></span>"
+//				. "</div>";
 		}
 		//
 		// Check for additional images for the artwork to be displayed

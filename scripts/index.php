@@ -57,13 +57,13 @@ $ciniki['request'] = array('business_id'=>0, 'page'=>'', 'args'=>array(),
 	);
 $ciniki['response'] = array('head'=>array(
 	'links'=>array(),
-	'facebook'=>array(
-		'og:url'=>'',
-		'og:title'=>'',
-		'og:site_name'=>'',
-		'og:image'=>'',
-		'og:description'=>'',
-		'og:type'=>'',
+	'og'=>array(
+		'url'=>'',
+		'title'=>'',
+		'site_name'=>'',
+		'image'=>'',
+		'description'=>'',
+		'type'=>'',
 		),
 	));
 session_start();
@@ -291,7 +291,7 @@ if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 	$rc = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', '0', '300', '85');
 	if( $rc['stat'] == 'ok' ) {
-		$ciniki['response']['head']['facebook']['og:image'] = $rc['domain_url'];
+		$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
 	}
 }
 

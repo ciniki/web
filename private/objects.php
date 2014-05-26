@@ -44,6 +44,16 @@ function ciniki_web_objects($ciniki) {
 			),
 		'history_table'=>'ciniki_web_history',
 		);
+	$objects['shorturl'] = array(
+		'name'=>'Shortened URL',
+		'sync'=>'yes',
+		'table'=>'ciniki_web_shorturls',
+		'fields'=>array(
+			'surl'=>array(),
+			'furl'=>array(),
+			),
+		'history_table'=>'ciniki_web_history',
+		);
 	
 	return array('stat'=>'ok', 'objects'=>$objects);
 }
