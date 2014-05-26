@@ -38,9 +38,9 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 					case 'clothing': $artcatalog_type = 6; break;
 				}
 				if( $artcatalog_type > 0 ) {
+					$ciniki['response']['head']['facebook']['og:url'] .= '/' . $ciniki['request']['uri_split'][0];
 					$atype = array_shift($ciniki['request']['uri_split']);
 					$base_url .= '/' . $atype;
-					$ciniki['response']['head']['facebook']['og:url'] .= '/' . $ciniki['request']['uri_split'][0];
 				}
 			}
 		} 
