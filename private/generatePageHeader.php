@@ -148,7 +148,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 				if( $og_type == 'og:site_name' ) {
 					$og_site_name = $og_value;
 				}
-				$content .= "<meta property='$og_type' content='$og_value'/>\n";
+				$content .= '<meta property="' . $og_type . '" content="' . preg_replace('/"/', "'", $og_value) . '"/>' . "\n";
 			}
 		}
 		if( $og_site_name != '' ) {
