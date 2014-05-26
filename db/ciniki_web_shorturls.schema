@@ -1,0 +1,32 @@
+#
+# Description
+# -----------
+# The ciniki_web_shorten table stores the shortened URL's for Ciniki.  This must
+# be accessed from another domain.
+#
+# the cika.ca domain has been registered for this purpose.
+#
+# Fields
+# ------
+# business_id:		The business the domain is part of.
+#
+# detail_key:		The decimal notated index key to the setting value.
+#
+# detail_value:		The value of the setting.
+#
+# date_added:		The date and time the domain was added to the table.
+# last_updated:		The date and time the domain was last updated.
+#
+create table ciniki_web_shorturls (
+	id bigint not null auto_increment,
+	uuid char(36) not null,
+	business_id int not null,
+	surl varchar(7) BINARY not null,
+	furl varchar(255) not null,
+	date_added datetime not null,
+	last_updated datetime not null,
+	primary key (id),
+	unique index (surl),
+	unique index (business_id, furl),
+	unique index sync (business_id, uuid, last_updated)
+) ENGINE=InnoDB, COMMENT='v1.01';
