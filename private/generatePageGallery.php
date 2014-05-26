@@ -299,9 +299,9 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 				. "<span title='Share on Pinterest' class='socialsymbol social-pinterest'>&#xe264;</span>"
 				. "</a>";
 
-//			$page_content .= "<a href='https://plus.google.com/share?url=" . urlencode($ciniki['response']['head']['og']['url']) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
-//				. "<span title='Share on Google+' class='socialsymbol social-googleplus'>&#xe227;</span>"
-//				. "</a>";
+			$page_content .= "<a href='https://plus.google.com/share?url=" . urlencode($ciniki['response']['head']['og']['url']) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
+				. "<span title='Share on Google+' class='socialsymbol social-googleplus'>&#xe239;</span>"
+				. "</a>";
 
 			$page_content .= "</span></div>";
 //			$ciniki['response']['head']['sharethis'] = array('enable'=>'yes');
