@@ -19,6 +19,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 	// Make sure everything gets generated ok before returning the content
 	//
 	$content = '';
+	$content1 = '';
 	$page_content = '';
 	
 	//
@@ -45,13 +46,13 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 			$href = "<a href='" . $settings['page-home-image-url'] . "'>";
 			$_href = "</a>";
 		}
-		$page_content .= "<aside><div class='image-wrap'>"
+		$content1 .= "<aside><div class='image-wrap'>"
 			. "<div class='image'>$href<img title='' alt='" . $ciniki['business']['details']['name'] . "' src='" . $rc['url'] . "' />$_href</div>";
 		$ciniki['response']['head']['facebook']['og:image'] = $rc['domain_url'];
 		if( isset($settings['page-home-image-caption']) && $settings['page-home-image-caption'] != '' ) {
-			$page_content .= "<div class='image-caption'>$href" . $settings['page-home-image-caption'] . "$_href</div>";
+			$content1 .= "<div class='image-caption'>$href" . $settings['page-home-image-caption'] . "$_href</div>";
 		}
-		$page_content .= "</div></aside>";
+		$content1 .= "</div></aside>";
 	}
 
 	//
@@ -70,7 +71,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
-		$page_content .= $rc['content'];
+		$content1 .= $rc['content'];
 	}
 
 	$page_content .= "<div id='content'>\n"
@@ -78,7 +79,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 	if( $page_content != '' ) {
 		$page_content .= "<article class='page'>\n"
 			. "<div class='entry-content'>\n"
-			. $page_content
+			. $content1
 			. "</div>"
 			. "</article>"
 			. "";
