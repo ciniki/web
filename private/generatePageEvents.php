@@ -53,7 +53,8 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 	//
 	$content = '';
 	$page_content = '';
-	$page_title = 'Exhibitors';
+	$page_title = 'Events';
+	$ciniki['response']['head']['og']['url'] = $ciniki['request']['domain_base_url'] . '/events';
 
 	//
 	// FIXME: Check if anything has changed, and if not load from cache
@@ -85,6 +86,24 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 		}
 		$event = $rc['event'];
 
+		//
+		// Setup sharing information
+		//
+		$ciniki['response']['head']['og']['url'] .= '/' . $event_permalink;
+		if( isset($event['image_id']) && $event['image_id'] > 0 ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+			$rc = ciniki_web_getScaledImageURL($ciniki, $event['image_id'], 'original', '500', 0);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
+		}
+		if( isset($event['short_description']) && $event['short_description'] != '' ) {
+			$ciniki['response']['head']['og']['description'] = strip_tags($event['short_description']);
+		} elseif( isset($event['description']) && $event['description'] != '' ) {
+			$ciniki['response']['head']['og']['description'] = strip_tags($event['description']);
+		}
+		
 		if( !isset($event['images']) || count($event['images']) < 1 ) {
 			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1287', 'msg'=>'Unable to find image'));
 		}
@@ -181,10 +200,15 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'processDateRange');
 
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'shortenURL');
+		$surl = ciniki_web_shortenURL($ciniki, $ciniki['request']['business_id'], 
+			$ciniki['response']['head']['og']['url']);
+
 		//
 		// Get the event information
 		//
 		$event_permalink = $ciniki['request']['uri_split'][0];
+		$ciniki['response']['head']['og']['url'] .= '/' . $event_permalink;
 		$rc = ciniki_events_web_eventDetails($ciniki, $settings, 
 			$ciniki['request']['business_id'], $event_permalink);
 		if( $rc['stat'] != 'ok' ) {
@@ -215,9 +239,16 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
+			$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
 			$page_content .= "<aside><div class='image-wrap'><div class='image'>"
 				. "<img title='' alt='" . $event['name'] . "' src='" . $rc['url'] . "' />"
 				. "</div></div></aside>";
+		}
+
+		if( isset($event['short_description']) && $event['short_description'] != '' ) {
+			$ciniki['response']['head']['og']['description'] = strip_tags($event['short_description']);
+		} elseif( isset($event['description']) && $event['description'] != '' ) {
+			$ciniki['response']['head']['og']['description'] = strip_tags($event['description']);
 		}
 		
 		//
@@ -318,6 +349,8 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'eventList');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processEvents');
+		$ciniki['response']['head']['og']['description'] = strip_tags('Upcoming Events');
+
 		$rc = ciniki_events_web_eventList($ciniki, $settings, $ciniki['request']['business_id'], 'upcoming', 0);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
@@ -330,6 +363,22 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 			. "";
 
 		if( count($events) > 0 ) {
+			//
+			// Check events to find an image if there isn't a logo
+			//
+			if( $ciniki['response']['head']['og']['image'] == '' ) {
+				foreach($events as $eid => $event) {
+					if( isset($event['image_id']) && $event['image_id'] != '' && $event['image_id'] ) {
+						ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+						$rc = ciniki_web_getScaledImageURL($ciniki, $event['image_id'], 'original', '500', 0);
+						if( $rc['stat'] != 'ok' ) {
+							return $rc;
+						}
+						$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
+					}
+				}
+			}
+
 			$rc = ciniki_web_processEvents($ciniki, $settings, $events, 0);
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
