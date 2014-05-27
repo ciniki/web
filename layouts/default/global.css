@@ -124,12 +124,13 @@ span.socialsymbol {
 .socialsymbol, a.socialsymbol:before {
     font-family: 'MonoSocialIconsFont';
     -webkit-text-rendering: optimizeLegibility;
-    -moz-text-rendering: optimizeLegibility;
+    -moz-text-rendering: optimizeLegibility; 
     -ms-text-rendering: optimizeLegibility;
     -o-text-rendering: optimizeLegibility;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
-    -moz-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased; 
+	-moz-osx-font-smoothing: grayscale;
     -ms-font-smoothing: antialiased;
     -o-font-smoothing: antialiased;
     font-smoothing: antialiased;
@@ -598,6 +599,11 @@ div.googlemap p.exhibitors-more,
 	margin: 0px;
 	padding: 0px;
 	z-index: 5;
+}
+
+#content div.gallery-image div.gallery-image-details {
+	min-width: 18em;
+	max-width: 95%;
 }
 
 #content div.largebutton-list, 

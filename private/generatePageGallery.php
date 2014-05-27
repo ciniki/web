@@ -272,6 +272,25 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 				. "<span class='image-awards'>" . $rc['content'] . "</span>"
 				. "";
 		}
+		//
+		// Check for additional images for the artwork to be displayed
+		//
+		if( isset($img['additionalimages']) && count($img['additionalimages']) > 0 ) {
+			$page_content .= "<span class='sub-title'>Additional Images</span>";
+			array_unshift($img['additionalimages'], array(
+				'id'=>0,
+				'image_id'=>$img['image_id'],
+				'title'=>$img['title'],
+				'last_updated'=>$img['last_updated'],
+				));
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryAdditionalThumbnails');
+			$img_base_url = $base_url . "/$category_uri_component/" . $ciniki['request']['uri_split'][1];
+			$rc = ciniki_web_generatePageGalleryAdditionalThumbnails($ciniki, $settings, $img_base_url, $img['additionalimages'], 75);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= "<div class='additional-image-gallery'>" . $rc['content'] . "</div>";
+		}
 		if( isset($settings['page-gallery-share-buttons']) && $settings['page-gallery-share-buttons'] == 'yes' ) {
 			// https://www.facebook.com/sharer.php?u=http%3A%2F%2Fphotofrog.ca%2Fgallery%2Fcategory%2FLight%2BPainting%2Flp008
 			$page_content .= "<div class='share-buttons'><span class='share-buttons'><span class='socialtext'>Share on: </span>";
@@ -312,25 +331,6 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 //				. "<span class='st_pinterest_large' displayText='Pinterest'></span>"
 //				. "<span class='st_email_large' displayText='Email'></span>"
 //				. "</div>";
-		}
-		//
-		// Check for additional images for the artwork to be displayed
-		//
-		if( isset($img['additionalimages']) && count($img['additionalimages']) > 0 ) {
-			$page_content .= "<span class='sub-title'>Additional Images</span>";
-			array_unshift($img['additionalimages'], array(
-				'id'=>0,
-				'image_id'=>$img['image_id'],
-				'title'=>$img['title'],
-				'last_updated'=>$img['last_updated'],
-				));
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryAdditionalThumbnails');
-			$img_base_url = $base_url . "/$category_uri_component/" . $ciniki['request']['uri_split'][1];
-			$rc = ciniki_web_generatePageGalleryAdditionalThumbnails($ciniki, $settings, $img_base_url, $img['additionalimages'], 75);
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
-			}
-			$page_content .= "<div class='additional-image-gallery'>" . $rc['content'] . "</div>";
 		}
 		$page_content .= "</div></div>";
 	} 

@@ -221,13 +221,17 @@ header span.title {
 	width: auto;
 }
 
+#content div.gallery-image div.gallery-image-details {
+	min-width: 25em;
+}
+
 #content div.largebutton-list div.button-list-wrap {
 	width: 49%;
 }
 
 #content div.button-list div.button-list-wrap {
 	width: 32%;
-49}
+}
 
 #content form {
 	max-width: 28em;

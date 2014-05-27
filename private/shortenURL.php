@@ -50,6 +50,7 @@ function ciniki_web_shortenURL($ciniki, $business_id, $url) {
 		$number = 1;
 	}
 
+	// Algorithm from: http://stackoverflow.com/questions/742013/how-to-code-a-url-shortener
 	$codes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 	$surl = '';
 	while( $number > 61 ) {
