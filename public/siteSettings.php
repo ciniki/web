@@ -252,6 +252,11 @@ function ciniki_web_siteSettings($ciniki) {
 	} else {
 		array_push($rc_settings, array('setting'=>array('name'=>'theme', 'display_name'=>'Theme', 'value'=>'default')));
 	}
+	if( isset($settings['site-layout']) && $settings['site-layout'] != '' ) {
+		array_push($rc_settings, array('setting'=>array('name'=>'layout', 'display_name'=>'Theme', 'value'=>$settings['site-layout'])));
+	} else {
+		array_push($rc_settings, array('setting'=>array('name'=>'layout', 'display_name'=>'Theme', 'value'=>'default')));
+	}
 	if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
 		array_push($rc_header, array('setting'=>array('name'=>'site-header-image', 'display_name'=>'Header Image', 'value'=>$settings['site-header-image'])));
 //		array_push($rc_advanced, array('setting'=>array('name'=>'site-header-image', 'display_name'=>'Header Image', 'value'=>$settings['site-header-image'])));

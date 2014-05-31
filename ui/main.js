@@ -17,6 +17,10 @@ function ciniki_web_main() {
 		'default':'Black text on white background',
 		'black':'Blue titles on black background',
 		};
+	this.layoutsAvailable = {
+		'default':'Default',
+		'aspen':'Aspen',
+		};
 	this.activeToggles = {'no':'No', 'yes':'Yes'};
 	this.userFlags = {
 		'1':{'name':'Name'},
@@ -143,6 +147,26 @@ function ciniki_web_main() {
 		this.theme.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.theme.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'theme\');');
 		this.theme.addClose('Cancel');
+
+		//
+		// The panel to allow the user to select a layout
+		//
+		this.layout = new M.panel('Color Scheme',
+			'ciniki_web_main', 'layout',
+			'mc', 'narrow', 'sectioned', 'ciniki.web.main.layout');
+		this.layout.data = {'site-layout':'default'};
+		this.layout.sections = {
+			'_layout':{'label':'', 'fields':{
+				'site-layout':{'label':'Layout', 'type':'select', 'options':this.layoutsAvailable},
+				}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'layout\');'},
+				}},
+		};
+		this.layout.fieldValue = this.fieldValue;
+		this.layout.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.layout.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'layout\');');
+		this.layout.addClose('Cancel');
 
 		//
 		// The panel to allow the user to select a theme
@@ -977,6 +1001,7 @@ function ciniki_web_main() {
 				'clearimagecache':{'label':'Clear Image Cache', 'fn':'M.ciniki_web_main.clearImageCache();'},
 				'clearcontentcache':{'label':'Clear Content Cache', 'fn':'M.ciniki_web_main.clearContentCache();'},
 				'css':{'label':'Custom CSS', 'fn':'M.ciniki_web_main.showCSS(\'M.ciniki_web_main.showMenu();\',\'css\');'},
+				'layout':{'label':'Layout', 'fn':'M.ciniki_web_main.showLayouts(\'M.ciniki_web_main.showMenu();\');'},
 				}};
 			this.home.sections.redirects.active = 'yes';
 		} else {
@@ -992,7 +1017,17 @@ function ciniki_web_main() {
 				return false;
 			}
 			M.ciniki_web_main.menu.data.pages = rsp.pages;
-			M.ciniki_web_main.menu.data.settings = rsp.settings;
+
+			M.ciniki_web_main.menu.data.settings = [];
+			for(i in rsp.settings) {
+				if( rsp.settings[i].setting.name == 'theme' ) {
+					M.ciniki_web_main.menu.data.settings[i] = rsp.settings[i];
+				}
+				if( rsp.settings[i].setting.name == 'layout' ) {
+					M.ciniki_web_main.layout.data['site-layout'] = rsp.settings[i].setting.value;
+				}
+			}
+//			M.ciniki_web_main.menu.data.settings = rsp.settings;
 			M.ciniki_web_main.header.data = {};
 			for(i in rsp.header) {
 				M.ciniki_web_main.header.data[rsp.header[i].setting.name] = rsp.header[i].setting.value;
@@ -1023,6 +1058,11 @@ function ciniki_web_main() {
 		this.theme.data = {'site-theme':themeName};
 		this.theme.refresh();
 		this.theme.show(cb);
+	};
+
+	this.showLayouts = function(cb) {
+		this.layout.refresh();
+		this.layout.show(cb);
 	};
 
 	this.showHeader = function(cb) {

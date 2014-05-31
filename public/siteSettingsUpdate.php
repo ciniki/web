@@ -200,6 +200,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-api-active',
 		'page-faq-active',
 		'site-theme',
+		'site-layout',
 		'site-header-image',
 		'site-header-title',
 //		'site-logo-display',
