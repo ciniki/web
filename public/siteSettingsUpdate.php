@@ -125,6 +125,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-about-email-display',
 		'page-about-bios-title',					// What is the title to display in the page
 		'page-about-bios-display',					// How the bios should be display on the about page.
+		'page-features-active',
 		'page-artgalleryexhibitions-image',
 		'page-artgalleryexhibitions-image-caption',
 		'page-artgalleryexhibitions-active',
@@ -197,6 +198,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-account-signin-redirect',
 		'page-cart-active',
 		'page-signup-active',
+		'page-signup-menu',
 		'page-api-active',
 		'page-faq-active',
 		'site-theme',

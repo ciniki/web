@@ -299,6 +299,10 @@ div.gallery-image-details span.image-awards {
 	color: #439bbd;
 }
 
+#content article.page-features span.cilist-title {
+	color: #555;
+}
+
 #content table.clist td p.clist-title,
 #content table.cilist td p.cilist-title {
 	margin-bottom: 0;

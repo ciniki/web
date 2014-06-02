@@ -381,6 +381,26 @@ function ciniki_web_main() {
 		this.contact.addClose('Cancel');
 
 		//
+		// The options and information for the Features page
+		//
+		this.features = new M.panel('Features',
+			'ciniki_web_main', 'features',
+			'mc', 'narrow', 'sectioned', 'ciniki.web.main.features');
+		this.features.data = {};
+		this.features.sections = {
+			'options':{'label':'Options', 'fields':{
+				'page-features-active':{'label':'Show features', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'features\');'},
+				}},
+		};
+		this.features.fieldValue = this.fieldValue;
+		this.features.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.features.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'features\');');
+		this.features.addClose('Cancel');
+
+		//
 		// The options and information for the Events page
 		//
 		this.events = new M.panel('Events',
@@ -928,6 +948,7 @@ function ciniki_web_main() {
 		this.signup.sections = {
 			'options':{'label':'', 'fields':{
 				'page-signup-active':{'label':'Display Sign Up Page', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-signup-menu':{'label':'Show in Menu', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				}},
 			'_content':{'label':'Content', 'fields':{
 				'page-signup-content':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'large'},

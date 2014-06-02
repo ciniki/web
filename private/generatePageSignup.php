@@ -738,6 +738,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 		//
 		$selected_plan = 0;
 		if( isset($_POST['plan']) ) { $selected_plan = $_POST['plan']; }
+		if( isset($_GET['plan']) ) { $selected_plan = $_GET['plan']; }
 		$firstname = '';
 		if( isset($_POST['firstname']) ) { $firstname = $_POST['firstname']; }
 		$lastname = '';

@@ -428,13 +428,18 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	if( isset($settings['page-about-active']) && $settings['page-about-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/about'>About</a></li>";
 	}
+	if( isset($settings['page-features-active']) && $settings['page-features-active'] == 'yes' ) {
+		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/features'>Features</a></li>";
+	}
 	if( isset($settings['page-products-active']) && $settings['page-products-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/products'>Products</a></li>";
 	}
 	if( isset($settings['page-custom-001-active']) && $settings['page-custom-001-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/" . $settings['page-custom-001-permalink'] . "'>" . $settings['page-custom-001-name'] . "</a></li>";
 	}
-	if( isset($settings['page-signup-active']) && $settings['page-signup-active'] == 'yes' ) {
+	if( isset($settings['page-signup-active']) && $settings['page-signup-active'] == 'yes' 
+		&& (!isset($settings['page-signup-menu']) || $settings['page-signup-menu'] == 'yes') 
+		) {
 		$content .= "<li class='menu-item$hide_menu_class'><a rel='nofollow' href='" . $ciniki['request']['base_url'] . "/signup'>Sign Up</a></li>";
 	}
 	if( isset($settings['page-exhibitions-exhibition']) && $settings['page-exhibitions-exhibition'] > 0

@@ -85,6 +85,8 @@ header span.title {
 	width: 30em;
 }
 
+#content form.wide, 
+#content form.wide div.bigsubmit, 
 #content p.wide,
 #content ul.wide,
 #content dl.wide {

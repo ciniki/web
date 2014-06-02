@@ -71,7 +71,9 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 			}
 
 			// Setup the item image
-			if( isset($args['notitle']) && $args['notitle'] == 'yes' ) {
+			if( isset($args['notitle']) 
+				&& ($args['notitle'] == 'yes' || $args['notitle'] == 'hide')
+				) {
 				$content .= "<tr><td class='cilist-image' rowspan='2'>";
 			} else {
 				$content .= "<tr><td class='cilist-image' rowspan='3'>";
