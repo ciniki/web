@@ -260,6 +260,11 @@ aside {
 	height: auto;
 }
 
+#content article.page {
+	width: 100%; 
+	margin: 0 auto;
+}
+
 #content.evensplit form input.text {
 	max-width: 26em;
 }
@@ -447,9 +452,9 @@ body { width: 100%; }
 
 aside {
 	float: none;
-	width: auto;
+	width: auto; 
 	max-width: 30em;
-	width: 30em;
+/* 	width: 30em; */
 	height: auto;
 	margin: 0 auto 2.2em;
 }
@@ -457,7 +462,7 @@ aside {
 aside div.image-wrap { max-width: 30em; margin: 0 auto; }
 
 #content article.page {
-	width: 30em;
+	width: 100%; 
 	margin: 0 auto;
 }
 

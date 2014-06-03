@@ -32,7 +32,6 @@ header h1 a:hover,
 header h1 a:active {
 	margin-top: 0.75em;
 	color: #a78349;
-	text-shadow: 0 1px 20px rgba(255,255,255,1.0);
 	text-shadow: 0 1px 3px rgba(0,0,0,1.0);
 	font-style: italic;
 }
@@ -258,9 +257,10 @@ div.gallery-image-details span.image-awards {
 	padding-left: 1em;
 }
 
-#content div.entry-content {
+#content {
 	background: rgba(255,255,255,0.8);
-	padding: 1em;
+	padding-left: 1em;
+	padding-right: 1em;
 	border: 2px solid #5d4022;
 	border-radius: 10px;
 	box-shadow: 0 2px 10px rgba(0,0,0,0.7);
@@ -270,7 +270,8 @@ div.gallery-image-details span.image-awards {
 #content h1.entry-title,
 #content b.entry-title,
 #content h2 {
-	color: #333;
+	color: #5d4022;
+	text-shadow: none;
 }
 
 #content p.entry-meta,
