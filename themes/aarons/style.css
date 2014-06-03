@@ -1,6 +1,7 @@
 html {
 	background-color: #000;
 	background: #000000 url('/ciniki-web-themes/aarons/man.jpg') no-repeat fixed center top;
+	background-size: cover;
 }
 
 body {
@@ -966,4 +967,9 @@ aside div.borderless {
 	padding-right: 0.7em;
 }
 
+}
+
+/* Styles for really large screens so background doesn't scale too large */
+@media screen and (min-width: 70em) {
+	html {background-size: auto; }
 }
