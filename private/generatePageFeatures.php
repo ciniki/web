@@ -361,8 +361,6 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 		}
 		$sections = $rc['sections'];
 
-		error_log(print_r($default_category, true));
-
 		$page_title = 'Features';
 		if( $selected_category != NULL && $selected_category['name'] != '' ) {
 			$page_title .= ' for ' . $selected_category['name'];
