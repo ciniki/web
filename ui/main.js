@@ -312,23 +312,23 @@ function ciniki_web_main() {
 		this.custom.data = {};
 		this.custom.number = 1;
 		this.custom.sections = {
-			'options':{'label':'', 'fields':{
-				'page-custom-001-active':{'label':'Display Page', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
-				'page-custom-001-name':{'label':'Name', 'type':'text', 'hint':''},
-				'page-custom-001-permalink':{'label':'URL', 'type':'text', 'hint':''},
-				}},
-			'_image':{'label':'Image', 'fields':{
-				'page-custom-001-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
-				}},
-			'_image_caption':{'label':'', 'fields':{
-				'page-custom-001-image-caption':{'label':'Caption', 'type':'text'},
-				}},
-			'_content':{'label':'Content', 'fields':{
-				'page-custom-001-content':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'large'},
-				}},
-			'_save':{'label':'', 'buttons':{
-				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'custom\');'},
-				}},
+//			'options':{'label':'', 'fields':{
+//				'page-custom-001-active':{'label':'Display Page', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+//				'page-custom-001-name':{'label':'Name', 'type':'text', 'hint':''},
+//				'page-custom-001-permalink':{'label':'URL', 'type':'text', 'hint':''},
+//				}},
+//			'_image':{'label':'Image', 'fields':{
+//				'page-custom-001-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
+//				}},
+//			'_image_caption':{'label':'', 'fields':{
+//				'page-custom-001-image-caption':{'label':'Caption', 'type':'text'},
+//				}},
+//			'_content':{'label':'Content', 'fields':{
+//				'page-custom-001-content':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'large'},
+//				}},
+//			'_save':{'label':'', 'buttons':{
+//				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'custom\');'},
+//				}},
 		};
 		this.custom.fieldValue = this.fieldValue;
 		this.custom.fieldHistoryArgs = this.fieldHistoryArgs;
@@ -1247,8 +1247,9 @@ function ciniki_web_main() {
 				}},
 			};
 		this.custom.sections.options.fields['page-' + page + '-active'] = {'label':'Display Page', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles};
-		this.custom.sections.options.fields['page-' + page + '-name'] = {'label':'Name', 'type':'text', 'hint':''};
+		this.custom.sections.options.fields['page-' + page + '-name'] = {'label':'Menu Name', 'type':'text', 'hint':''};
 		this.custom.sections.options.fields['page-' + page + '-permalink'] = {'label':'URL', 'type':'text', 'hint':''};
+		this.custom.sections.options.fields['page-' + page + '-title'] = {'label':'Title', 'type':'text', 'hint':''};
 		this.custom.sections._image.fields['page-' + page + '-image'] = {'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
 		this.custom.sections._image_caption.fields['page-' + page + '-image-caption'] = {'label':'Caption', 'type':'text'};
 

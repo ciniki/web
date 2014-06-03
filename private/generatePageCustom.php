@@ -26,10 +26,14 @@ function ciniki_web_generatePageCustom($ciniki, $settings, $pnum) {
 
 	$pname = 'page-custom-' . sprintf("%03d", $pnum);
 	$page_title = $settings[$pname . '-name'];
+	$article_title = '';
+	if( isset($settings[$pname . '-title']) ) {
+		$article_title = $settings[$pname . '-title'];
+	}
 	$page_content .= "<article class='page'>\n"
-		. "<header class='entry-title'><h1 class='entry-title'>" . $settings[$pname . '-name'] . "</h1></header>\n"
-		. "";
-	if( isset($settings['page-custom-001-image']) && $settings[$pname . '-image'] != '' 
+		. "<header class='entry-title'><h1 class='entry-title'>$article_title</h1></header>\n"
+		. "<div class='entry-content'>";
+	if( isset($settings[$pname . '-image']) && $settings[$pname . '-image'] != '' 
 		&& $settings[$pname . '-image'] > 0 ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 		$rc = ciniki_web_getScaledImageURL($ciniki, $settings[$pname . '-image'], 'original', '500', 0);
@@ -56,8 +60,7 @@ function ciniki_web_generatePageCustom($ciniki, $settings, $pnum) {
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
-		$page_content .= "<div class='entry-content'>"
-			. $rc['content']
+		$page_content .= $rc['content']
 			. "</div>";
 	}
 

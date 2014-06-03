@@ -385,7 +385,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		// page-custom-001-permalink
 		// page-custom-001-image
 		// page-custom-001-image-caption
-		if( preg_match('/^page-custom-([0-9][0-9][0-9])-(active|name|parent|permalink|image|image-caption|content)$/', $field, $matches) == 1 ) {
+		if( preg_match('/^page-custom-([0-9][0-9][0-9])-(active|name|title|parent|permalink|image|image-caption|content)$/', $field, $matches) == 1 ) {
 			$page_number = $matches[1];
 			$page_name = $matches[2];
 			if( $page_name == 'content' ) {

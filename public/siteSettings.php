@@ -160,9 +160,9 @@ function ciniki_web_siteSettings($ciniki) {
 	}
 	$settings = $rc['settings'];
 
-	if( isset($settings['page-custom-001-name']) && $settings['page-custom-001-name'] != '' ) {
-		$pages['custom']['display_name'] = $settings['page-custom-001-name'];
-	}
+//	if( isset($settings['page-custom-001-name']) && $settings['page-custom-001-name'] != '' ) {
+//		$pages['custom']['display_name'] = $settings['page-custom-001-name'];
+//	}
 
 	for($i=1;$i<6;$i++) {
 		$pname = 'page-custom-' . sprintf("%03d", $i);
@@ -197,9 +197,9 @@ function ciniki_web_siteSettings($ciniki) {
 	if( isset($settings['page-blog-active']) && $settings['page-blog-active'] == 'yes' ) {
 		$pages['blog']['active'] = 'yes';
 	}
-	if( isset($settings['page-custom-001-active']) && $settings['page-custom-001-active'] == 'yes' && ($modules['ciniki.web']['flags']&0x01) == 1 ) {
-		$pages['custom']['active'] = 'yes';
-	}
+//	if( isset($settings['page-custom-001-active']) && $settings['page-custom-001-active'] == 'yes' && ($modules['ciniki.web']['flags']&0x01) == 1 ) {
+//		$pages['custom']['active'] = 'yes';
+//	}
 	if( isset($settings['page-contact-active']) && $settings['page-contact-active'] == 'yes' ) {
 		$pages['contact']['active'] = 'yes';
 	}
