@@ -24,7 +24,7 @@ function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $
 	//
 	// Load last_updated date to check against the cache
 	//
-	$strsql = "SELECT id, UNIX_TIMESTAMP(ciniki_images.last_updated) AS last_updated "
+	$strsql = "SELECT id, type, UNIX_TIMESTAMP(ciniki_images.last_updated) AS last_updated "
 		. "FROM ciniki_images "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $image_id) . "' "
 		. "AND business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
@@ -41,14 +41,19 @@ function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $
 	//
 	// Build working path, and final url
 	//
+	if( $img['type'] == 2 ) {
+		$extension = 'png';
+	} else {
+		$extension = 'jpg';
+	}
 	if( $maxwidth == 0 ) {
 		$filename = '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/'
 			. sprintf('%07d', $ciniki['request']['business_id'])
-			. '/h' . $maxheight . '/' . sprintf('%010d', $img['id']) . '.jpg';
+			. '/h' . $maxheight . '/' . sprintf('%010d', $img['id']) . '.' . $extension;
 	} else {
 		$filename = '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/'
 			. sprintf('%07d', $ciniki['request']['business_id'])
-			. '/w' . $maxwidth . '/' . sprintf('%010d', $img['id']) . '.jpg';
+			. '/w' . $maxwidth . '/' . sprintf('%010d', $img['id']) . '.' . $extension;
 	}
 	$img_filename = $ciniki['request']['cache_dir'] . $filename;
 	$img_url = $ciniki['request']['cache_url'] . $filename;
@@ -92,7 +97,11 @@ function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $
 		//
 		$h = fopen($img_filename, 'w');
 		if( $h ) {
-			$image->setImageCompressionQuality($quality);
+			if( $img['type'] == 2 ) {
+				$image->setImageFormat('png');
+			} else {
+				$image->setImageCompressionQuality($quality);
+			}
 			fwrite($h, $image->getImageBlob());
 			fclose($h);
 		} else {
