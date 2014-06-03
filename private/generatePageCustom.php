@@ -60,8 +60,7 @@ function ciniki_web_generatePageCustom($ciniki, $settings, $pnum) {
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
-		$page_content .= $rc['content']
-			. "</div>";
+		$page_content .= $rc['content'];
 	}
 
 	$page_content .= "</div>\n"
