@@ -62,7 +62,8 @@ function ciniki_web_generatePageCustom($ciniki, $settings, $pnum) {
 		}
 		$page_content .= $rc['content'];
 	}
-
+	
+	$page_content .= "<br style='clear:both;'/>";
 	$page_content .= "</div>\n"
 		. "</article>\n";
 
