@@ -310,6 +310,7 @@ function ciniki_web_main() {
 			'ciniki_web_main', 'custom',
 			'mc', 'medium', 'sectioned', 'ciniki.web.main.custom');
 		this.custom.data = {};
+		this.custom.number = 1;
 		this.custom.sections = {
 			'options':{'label':'', 'fields':{
 				'page-custom-001-active':{'label':'Display Page', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
@@ -1092,6 +1093,9 @@ function ciniki_web_main() {
 	};
 
 	this.showPage = function(cb, page, subpage, subpagetitle) {
+		if( page.match(/^custom-/) ) {
+			return this.showCustom(cb, page, subpage, subpagetitle);
+		}
 		this[page].reset();
 		if( cb != null ) {
 			this[page].cb = cb;
@@ -1229,6 +1233,40 @@ function ciniki_web_main() {
 //		this.logo.refresh();
 //		this.logo.show(cb);
 //	};
+
+	this.showCustom = function(cb, page, subpage, subpagetitle) {
+		this.custom.reset();
+		this.custom.number = parseInt(page.match(/-([0-9][0-9][0-9])/));
+		this.custom.sections = {
+			'options':{'label':'', 'fields':{}},
+			'_image':{'label':'Image', 'fields':{}},
+			'_image_caption':{'label':'', 'fields':{}},
+			'_content':{'label':'Content', 'fields':{}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'custom\');'},
+				}},
+			};
+		this.custom.sections.options.fields['page-' + page + '-active'] = {'label':'Display Page', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles};
+		this.custom.sections.options.fields['page-' + page + '-name'] = {'label':'Name', 'type':'text', 'hint':''};
+		this.custom.sections.options.fields['page-' + page + '-permalink'] = {'label':'URL', 'type':'text', 'hint':''};
+		this.custom.sections._image.fields['page-' + page + '-image'] = {'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
+		this.custom.sections._image_caption.fields['page-' + page + '-image-caption'] = {'label':'Caption', 'type':'text'};
+
+		this.custom.sections._content.fields['page-' + page + '-content'] = {'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'large'};
+
+		M.api.getJSONCb('ciniki.web.pageSettingsGet', 
+			{'business_id':M.curBusinessID, 'page':page, 'content':'yes'}, function(rsp) {
+				if( rsp.stat != 'ok' ) {
+					M.api.err(rsp);
+					return false;
+				}
+				var p = M.ciniki_web_main.custom;
+				p.data = rsp.settings;
+				p.refresh();
+				p.show(cb);
+			});
+
+	};
 
 	this.showContact = function(cb) {
 		// Get the user associated with this business

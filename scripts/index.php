@@ -539,14 +539,32 @@ elseif( $ciniki['request']['page'] == 'contact'
 } 
 // FIXME: Need to make accessible for all custom pages, not just 001.
 // Custom pages
-elseif( isset($settings['page-custom-001-permalink']) && $settings['page-custom-001-permalink'] == $ciniki['request']['page'] ) {
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageCustom.php');
-	$rc = ciniki_web_generatePageCustom($ciniki, $settings);
-}
+//elseif( isset($settings['page-custom-001-permalink']) && $settings['page-custom-001-permalink'] == $ciniki['request']['page'] ) {
+//	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageCustom.php');
+//	$rc = ciniki_web_generatePageCustom($ciniki, $settings);
+//}
 // Unknown page
 else {
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePage404.php');
-	$rc = ciniki_web_generatePage404($ciniki, $settings, null); 
+	//
+	// Check the custom pages
+	//
+	$found = 'no';	
+	for($i=1;$i<6;$i++) {
+		$pname = 'page-custom-' . sprintf("%03d", $i);
+		if( isset($settings[$pname . '-permalink']) 
+			&& $settings[$pname . '-permalink'] == $ciniki['request']['page'] 
+			) {
+			require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageCustom.php');
+			$rc = ciniki_web_generatePageCustom($ciniki, $settings, $i);
+			$found = 'yes';
+			break;
+		}
+	}
+
+	if( $found == 'no' ) {
+		require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePage404.php');
+		$rc = ciniki_web_generatePage404($ciniki, $settings, null); 
+	}
 
 //	print_error($rc, 'Unknown page ' . $ciniki['request']['page']);
 //	exit;

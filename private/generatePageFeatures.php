@@ -260,89 +260,48 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 		//
 		// Get the member information
 		//
-		$rc = ciniki_customers_web_memberDetails($ciniki, $settings, 
-			$ciniki['request']['business_id'], $member_permalink);
+		$rc = ciniki_marketing_web_featureDetails($ciniki, $settings, 
+			$ciniki['request']['business_id'], $current_category['id'], $feature_permalink);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
-		$member = $rc['member'];
-		$page_title = $member['name'];
+		$feature = $rc['feature'];
+		$page_title = $feature['name'];
 		$page_content .= "<article class='page'>\n"
-			. "<header class='entry-title'><h1 class='entry-title'>" . $member['name'] . "</h1></header>\n"
+			. "<header class='entry-title'><h1 class='entry-title'>" . $feature['name'] . "</h1></header>\n"
 			. "";
 
 		//
 		// Add primary image
 		//
-		if( isset($member['image_id']) && $member['image_id'] > 0 ) {
+		if( isset($feature['image_id']) && $feature['image_id'] > 0 ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-			$rc = ciniki_web_getScaledImageURL($ciniki, $member['image_id'], 'original', '500', 0);
+			$rc = ciniki_web_getScaledImageURL($ciniki, $feature['image_id'], 'original', '500', 0);
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
 			$page_content .= "<aside><div class='image-wrap'><div class='image'>"
-				. "<img title='' alt='" . $member['name'] . "' src='" . $rc['url'] . "' />"
+				. "<img title='' alt='" . $feature['name'] . "' src='" . $rc['url'] . "' />"
 				. "</div></div></aside>";
 		}
 		
 		//
 		// Add description
 		//
-		if( isset($member['description']) ) {
+		if( isset($feature['full_description']) ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $member['description']);	
+			$rc = ciniki_web_processContent($ciniki, $feature['full_description']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
 			$page_content .= $rc['content'];
 		}
+	
 
-		//
-		// Add contact_info
-		//
 		$cinfo = '';
-		if( isset($member['addresses']) ) {
-			foreach($member['addresses'] as $address) {
-				$addr = '';
-				if( $address['address1'] != '' ) {
-					$addr .= ($addr!=''?'<br/>':'') . $address['address1'];
-				}
-				if( $address['address2'] != '' ) {
-					$addr .= ($addr!=''?'<br/>':'') . $address['address2'];
-				}
-				if( $address['city'] != '' ) {
-					$addr .= ($addr!=''?'<br/>':'') . $address['city'];
-				}
-				if( $address['province'] != '' ) {
-					$addr .= ($addr!=''?', ':'') . $address['province'];
-				}
-				if( $address['postal'] != '' ) {
-					$addr .= ($addr!=''?'  ':'') . $address['postal'];
-				}
-				if( $addr != '' ) {
-					$cinfo .= ($cinfo!=''?'<br/>':'') . "$addr";
-				}
-			}
-		}
-		if( isset($member['phones']) ) {
-			foreach($member['phones'] as $phone) {
-				if( $phone['phone_label'] != '' && $phone['phone_number'] != '' ) {
-					$cinfo .= ($cinfo!=''?'<br/>':'') . $phone['phone_label'] . ': ' . $phone['phone_number'];
-				} elseif( $phone['phone_number'] != '' ) {
-					$cinfo .= ($cinfo!=''?'<br/>':'') . $phone['phone_number'];
-				}
-			}
-		}
-		if( isset($member['emails']) ) {
-			foreach($member['emails'] as $email) {
-				if( $email['email'] != '' ) {
-					$cinfo .= ($cinfo!=''?'<br/>':'') . '<a href="mailto:' . $email['email'] . '">' . $email['email'] . '</a>';
-				}
-			}
-		}
-		if( isset($member['links']) ) {
+		if( isset($feature['links']) ) {
 			$links = '';
-			foreach($member['links'] as $link) {
+			foreach($feature['links'] as $link) {
 				$rc = ciniki_web_processURL($ciniki, $link['url']);
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
@@ -353,7 +312,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 					$display_url = $link['name'];
 				}
 				$links .= ($links!=''?'<br/>':'') 
-					. "<a class='members-url' target='_blank' href='" . $url . "' "
+					. "<a class='cilist-url' target='_blank' href='" . $url . "' "
 					. "title='" . $display_url . "'>" . $display_url . "</a>";
 			}
 			if( $links != '' ) {
@@ -362,7 +321,6 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 		}
 
 		if( $cinfo != '' ) {
-			$page_content .= "<h2>Contact Info</h2>\n";
 			$page_content .= "<p>$cinfo</p>";
 		}
 
@@ -370,11 +328,12 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 
 		if( isset($member['images']) && count($member['images']) > 0 ) {
 			$page_content .= "<article class='page'>"	
-				. "<header class='entry-title'><h1 class='entry-title'>Gallery</h1></header>\n"
+				. "<header class='entry-title'><h1 class='entry-title'>More Examples</h1></header>\n"
 				. "";
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
-			$img_base_url = $ciniki['request']['base_url'] . "/members/" . $member['permalink'] . "/gallery";
-			$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $member['images'], 125);
+			$img_base_url = $ciniki['request']['base_url'] . "/features/" . $category_permalink 
+				. "/" . $feature_permalink . "/gallery";
+			$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $feature['images'], 125);
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -453,7 +412,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 
 				
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
-				$base_url = $ciniki['request']['base_url'] . "/features";
+				$base_url = $ciniki['request']['base_url'] . "/features/" . $selected_category['permalink'];
 				$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $section['features'], 
 					array('notitle'=>'yes'));
 				if( $rc['stat'] != 'ok' ) {
