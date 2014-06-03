@@ -1,0 +1,5 @@
+#
+# Update size of detail_value
+#
+ALTER TABLE ciniki_web_settings MODIFY COLUMN detail_value varchar(20000) not null;
+ALTER TABLE ciniki_web_settings COMMENT='v1.02';

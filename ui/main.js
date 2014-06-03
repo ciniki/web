@@ -17,6 +17,14 @@ function ciniki_web_main() {
 		'default':'Black text on white background',
 		'black':'Blue titles on black background',
 		};
+	if( M.userPerms&0x01 == 0x01 ) {
+		this.themesAvailable = {
+			'default':'Black text on white background',
+			'black':'Blue titles on black background',
+			'aarons':'Beige on brown background',
+			};
+	}
+	
 	this.layoutsAvailable = {
 		'default':'Default',
 		'aspen':'Aspen',

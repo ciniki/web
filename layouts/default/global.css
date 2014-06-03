@@ -56,7 +56,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 ----------------------------------------------------------------------------------------*/
 html { 
   overflow-y: scroll;
-  background: #FFF;
+  background: #FFF; 
   }
 
 /* /ht Ethan Marcotte - http://front.ie/l8rJaA */
@@ -71,7 +71,6 @@ body {
   font-size: 1em;
   line-height: 1.618em;
   color: #333;
-  background: #FFF;
   }
 
 h1, h2, h3, h4, h5, h6 {

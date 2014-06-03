@@ -48,8 +48,8 @@
 create table ciniki_web_settings (
 	business_id int not null,
 	detail_key varchar(255) not null,
-	detail_value varchar(255) not null,
+	detail_value varchar(20000) not null,
 	date_added datetime not null,
 	last_updated datetime not null,
 	primary key (business_id, detail_key)
-) ENGINE=InnoDB, COMMENT='v1.01';
+) ENGINE=InnoDB, COMMENT='v1.02';
