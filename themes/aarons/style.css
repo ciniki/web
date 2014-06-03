@@ -270,7 +270,7 @@ div.gallery-image-details span.image-awards {
 #content h1.entry-title,
 #content b.entry-title,
 #content h2 {
-	color: #5d4022;
+	color: #4d3012;
 	text-shadow: none;
 }
 
@@ -284,7 +284,7 @@ div.gallery-image-details span.image-awards {
 	margin-top: 0.0em;
 	margin-bottom: 0.5em;
 	padding-bottom: 0px;
-	color: #333;
+	color: #4d3012;
 }
 /* #content h2 {
 	color: #333;
@@ -295,7 +295,7 @@ div.gallery-image-details span.image-awards {
 #content a:hover,
 #content a:active {
 	text-decoration: none;
-	color: #439BBD;
+	color: #9d8062;
 }
 
 #content table.clist td p,
