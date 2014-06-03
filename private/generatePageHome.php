@@ -85,10 +85,12 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 	$page_content .= "<div id='content'>\n"
 		. "";
 	if( $page_content != '' ) {
-		$page_content .= "<article class='page'>\n"
+		$page_content .= "<article class='page page-home'>\n"
+			. "<header><h1></h1></header>\n"
 			. "<div class='entry-content'>\n"
 			. $content1
 			. "</div>"
+			. "<br style='clear:both;'/>"
 			. "</article>"
 			. "";
 	}
@@ -292,7 +294,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			$page_content .= "<article class='page'>\n"
+			$page_content .= "<article class='page page-home'>\n"
 				. "<header class='entry-title'><h1 class='entry-title'>Upcoming Events</h1></header>\n"
 				. $rc['content']
 				. "";

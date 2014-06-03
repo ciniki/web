@@ -1,7 +1,8 @@
 html {
 	background-color: #000;
-	background: #000000 url('/ciniki-web-themes/aarons/man.jpg') no-repeat fixed center top;
+	background: #000000 url('/ciniki-web-themes/aarons/man.jpg') repeat-y fixed center top;
 	background-size: cover;
+	background-size: 100%;
 }
 
 body {
