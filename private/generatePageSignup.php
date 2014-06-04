@@ -769,7 +769,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 			. "FROM ciniki_business_plans "
 			. "WHERE (flags&0x01) = 1 "
 			. "AND business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_business_id']) . "' "
-			. "ORDER BY name "
+			. "ORDER BY sequence, name "
 			. "";
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashIDQuery');
 		$rc = ciniki_core_dbHashIDQuery($ciniki, $strsql, 'ciniki.businesses', 'plans', 'id');
