@@ -110,7 +110,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 			$article_title .= ' - ' . $rc['tag_name'];
 		}
 
-		$page_content .= "<article class='page'>\n"
+		$page_content .= "<article class='page page-features'>\n"
 			. "<header class='entry-title'><h1 class='entry-title'>$article_title</h1></header>\n"
 			. "<div class='entry-content'>\n"
 			. "";
@@ -224,7 +224,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 
 		$ciniki['request']['onresize'] = "gallery_resize_arrows();";
 		$ciniki['request']['onload'] = "scrollto_header();";
-		$page_content .= "<article class='page'>\n"
+		$page_content .= "<article class='page page-features'>\n"
 			. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$article_title</h1></header>\n"
 			. "<div class='entry-content'>\n"
 			. "";
@@ -269,7 +269,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 		}
 		$feature = $rc['feature'];
 		$page_title = $feature['title'];
-		$page_content .= "<article class='page'>\n"
+		$page_content .= "<article class='page page-features'>\n"
 			. "<header class='entry-title'><h1 class='entry-title'>" . $feature['title'] . "</h1></header>\n"
 			. "";
 
@@ -302,7 +302,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 		$page_content .= "</article>";
 
 		if( isset($feature['images']) && count($feature['images']) > 0 ) {
-			$page_content .= "<article class='page'>"	
+			$page_content .= "<article class='page page-features'>"	
 				. "<header class='entry-title'><h1 class='entry-title'>More Examples</h1></header>\n"
 				. "";
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
