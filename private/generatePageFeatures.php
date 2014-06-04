@@ -137,26 +137,28 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 	// Check if we are to display an image, from the gallery, or latest images
 	//
 	elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' 
-		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] == 'gallery' 
-		&& isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' 
+		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' 
+		&& isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] == 'gallery' 
+		&& isset($ciniki['request']['uri_split'][3]) && $ciniki['request']['uri_split'][3] != '' 
 		) {
-		$member_permalink = $ciniki['request']['uri_split'][0];
-		$image_permalink = $ciniki['request']['uri_split'][2];
+		$category_permalink = $ciniki['request']['uri_split'][0];
+		$feature_permalink = $ciniki['request']['uri_split'][1];
+		$image_permalink = $ciniki['request']['uri_split'][3];
 
 		//
 		// Load the member to get all the details, and the list of images.
 		// It's one query, and we can find the requested image, and figure out next
 		// and prev from the list of images returned
 		//
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'memberDetails');
-		$rc = ciniki_customers_web_memberDetails($ciniki, $settings, 
-			$ciniki['request']['business_id'], $member_permalink);
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'marketing', 'web', 'featureDetails');
+		$rc = ciniki_marketing_web_featureDetails($ciniki, $settings, 
+			$ciniki['request']['business_id'], $current_category['id'], $feature_permalink);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
-		$member = $rc['member'];
+		$feature = $rc['feature'];
 
-		if( !isset($member['images']) || count($member['images']) < 1 ) {
+		if( !isset($feature['images']) || count($feature['images']) < 1 ) {
 			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'967', 'msg'=>'Unable to find image'));
 		}
 
@@ -165,7 +167,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 		$img = NULL;
 		$next = NULL;
 		$prev = NULL;
-		foreach($member['images'] as $iid => $image) {
+		foreach($feature['images'] as $iid => $image) {
 			if( $first == NULL ) {
 				$first = $image;
 			}
@@ -179,7 +181,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 			$last = $image;
 		}
 
-		if( count($member['images']) == 1 ) {
+		if( count($feature['images']) == 1 ) {
 			$prev = NULL;
 			$next = NULL;
 		} elseif( $prev == NULL ) {
@@ -190,12 +192,12 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 			$next = $first;
 		}
 	
-		$article_title = "<a href='" . $ciniki['request']['base_url'] . "/members/$member_permalink'>" . $member['name'] . "</a>";
+		$article_title = "<a href='" . $ciniki['request']['base_url'] . "/features/$category_permalink/$feature_permalink'>" . $feature['title'] . "</a>";
 		if( $img['title'] != '' ) {
-			$page_title = $member['name'] . ' - ' . $img['title'];
+			$page_title = $feature['title'] . ' - ' . $img['title'];
 			$article_title .= ' - ' . $img['title'];
 		} else {
-			$page_title = $member['name'];
+			$page_title = $feature['title'];
 		}
 	
 		//
@@ -258,7 +260,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 		$category_permalink = $ciniki['request']['uri_split'][0];
 		$feature_permalink = $ciniki['request']['uri_split'][1];
 		//
-		// Get the member information
+		// Get the feature information
 		//
 		$rc = ciniki_marketing_web_featureDetails($ciniki, $settings, 
 			$ciniki['request']['business_id'], $current_category['id'], $feature_permalink);
@@ -266,9 +268,9 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 			return $rc;
 		}
 		$feature = $rc['feature'];
-		$page_title = $feature['name'];
+		$page_title = $feature['title'];
 		$page_content .= "<article class='page'>\n"
-			. "<header class='entry-title'><h1 class='entry-title'>" . $feature['name'] . "</h1></header>\n"
+			. "<header class='entry-title'><h1 class='entry-title'>" . $feature['title'] . "</h1></header>\n"
 			. "";
 
 		//
@@ -281,7 +283,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 				return $rc;
 			}
 			$page_content .= "<aside><div class='image-wrap'><div class='image'>"
-				. "<img title='' alt='" . $feature['name'] . "' src='" . $rc['url'] . "' />"
+				. "<img title='' alt='" . $feature['title'] . "' src='" . $rc['url'] . "' />"
 				. "</div></div></aside>";
 		}
 		
@@ -297,36 +299,9 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 			$page_content .= $rc['content'];
 		}
 	
-
-		$cinfo = '';
-		if( isset($feature['links']) ) {
-			$links = '';
-			foreach($feature['links'] as $link) {
-				$rc = ciniki_web_processURL($ciniki, $link['url']);
-				if( $rc['stat'] != 'ok' ) {
-					return $rc;
-				}
-				$url = $rc['url'];
-				$display_url = $rc['display'];
-				if( $link['name'] != '' ) {
-					$display_url = $link['name'];
-				}
-				$links .= ($links!=''?'<br/>':'') 
-					. "<a class='cilist-url' target='_blank' href='" . $url . "' "
-					. "title='" . $display_url . "'>" . $display_url . "</a>";
-			}
-			if( $links != '' ) {
-				$cinfo .= ($cinfo!=''?'<br/>':'') . "$links";
-			}
-		}
-
-		if( $cinfo != '' ) {
-			$page_content .= "<p>$cinfo</p>";
-		}
-
 		$page_content .= "</article>";
 
-		if( isset($member['images']) && count($member['images']) > 0 ) {
+		if( isset($feature['images']) && count($feature['images']) > 0 ) {
 			$page_content .= "<article class='page'>"	
 				. "<header class='entry-title'><h1 class='entry-title'>More Examples</h1></header>\n"
 				. "";
