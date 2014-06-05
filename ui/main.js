@@ -525,7 +525,7 @@ function ciniki_web_main() {
 				'page-gallery-artcatalog-split':{'label':'Split Menu', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				}},
 			'social':{'label':'Social Media', 'visible':'no', 'fields':{
-				'page-gallery-share-buttons':{'label':'Sharing', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-gallery-share-buttons':{'label':'Sharing', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'gallery\');'},
@@ -1164,15 +1164,12 @@ function ciniki_web_main() {
 		} else if( page == 'gallery' ) {
 			if( M.curBusiness.modules['ciniki.artcatalog'] != null ) {
 				this.gallery.sections.options.fields['page-gallery-artcatalog-split'].active = 'yes';
-				// FIXME: Remove this when working for everybody.
-				if( M.userPerms&0x01 == 0x01 ) {
-					this.gallery.sections.social.fields['page-gallery-share-buttons'].active = 'yes';
-					this.gallery.sections.social.visible = 'yes';
-				}
+				this.gallery.sections.social.fields['page-gallery-share-buttons'].active = 'yes';
+				this.gallery.sections.social.visible = 'yes';
 			} else {
 				this.gallery.sections.options.fields['page-gallery-artcatalog-split'].active = 'no';
-				this.gallery.sections.social.visible = 'no';
-				this.gallery.sections.social.fields['page-gallery-share-buttons'].active = 'no';
+				this.gallery.sections.social.visible = 'yes';
+				this.gallery.sections.social.fields['page-gallery-share-buttons'].active = 'yes';
 			}
 			this[page].refresh();
 			this[page].show(cb);
