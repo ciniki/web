@@ -115,6 +115,7 @@ a img {
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#53ABCD', endColorstr='#136B8D');
 }
 #main-menu-container {
+	text-align: center;
 	background-color: transparent;
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#b68f6c', endColorstr='#7d6042');
 }
