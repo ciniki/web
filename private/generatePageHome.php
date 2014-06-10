@@ -100,6 +100,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 			$content1 .= "</div></aside>";
 		}
 	}
+	$content1 .= $content2;
 
 	$page_content .= "<div id='content'>\n"
 		. "";
