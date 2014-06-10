@@ -55,6 +55,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 			. "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['layout_url'] 
 			. '/' . $settings['site-layout'] . "/layout.css' />\n"
 			. "<script>\n"
+				. "document.createElement('hgroup');\n"
 				. "document.createElement('header');\n"
 				. "document.createElement('nav');\n"
 				. "document.createElement('section');\n"

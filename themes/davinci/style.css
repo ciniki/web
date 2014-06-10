@@ -1,6 +1,6 @@
 html {
 	background-color: #000;
-	background: #8a6b3a url('/ciniki-web-themes/aarons/man.jpg') repeat-y fixed center top;
+	background: #8a6b3a url('/ciniki-web-themes/davinci/man.jpg') repeat-y fixed center top;
 	background-size: cover;
 	background-size: 100%;
 }
@@ -291,6 +291,7 @@ div.gallery-image-details span.image-awards {
 }
 
 #content {
+	background: #ede0c8;
 	background: rgba(255,255,255,0.65);
 	padding-left: 1em;
 	padding-right: 1em;
@@ -756,6 +757,10 @@ aside div.image-wrap {
 
 aside div.image {
 	max-width: 100%;
+}
+
+#content div.image {
+	display: inline-block;
 	border: 2px solid #ad9072;
 	height: auto;
 	padding: 9px;
@@ -950,6 +955,7 @@ hr.footer-section-divider {
 
 footer {
 	margin-top: 1.5em;
+	background: #93734a;
 	background: rgba(125,96,66,0.7);
 	padding: 0.5em;
 	border: 2px solid #5d4022;

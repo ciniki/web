@@ -795,6 +795,10 @@ span.exhibitors-description {
 	clear: both;
 }
 
+#content .aligncenter {
+	text-align: center;
+}
+
 
 
 /* 7. BROWSER AND NON-SEMANTIC STYLING

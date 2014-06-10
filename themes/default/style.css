@@ -697,6 +697,10 @@ aside div.image-wrap {
 
 aside div.image {
 	max-width: 100%;
+}
+
+#content div.image {
+	display: inline-block;
 	border: 2px solid #ccc;
 	height: auto;
 	padding: 9px;

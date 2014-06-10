@@ -14,16 +14,17 @@ function ciniki_web_main() {
 		'60':'Deleted',
 		};
 	this.themesAvailable = {
-		'default':'Black text on white background',
-		'black':'Blue titles on black background',
+		'default':'Simple - Black/White',
+		'black':'Midnight - Blue/Black',
+		'davinci':'Davinci - Brown/Beige',
 		};
-	if( M.userPerms&0x01 == 0x01 ) {
-		this.themesAvailable = {
-			'default':'Black text on white background',
-			'black':'Blue titles on black background',
-			'aarons':'Beige on brown background',
-			};
-	}
+//	if( M.userPerms&0x01 == 0x01 ) {
+//		this.themesAvailable = {
+//			'default':'Black text on white background',
+//			'black':'Blue titles on black background',
+//			'aarons':'Beige on brown background',
+//			};
+//	}
 	
 	this.layoutsAvailable = {
 		'default':'Default',
