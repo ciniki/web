@@ -35,7 +35,11 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 			if( count($category['list']) == 1 ) {
 				// Check if category should be linked
 				$item = array_slice($category['list'], 0, 1);
-				$item = $item['0'];
+//				$item = $item['0'];
+				$item = array_pop($item);
+//				print "<pre>";
+//				print_r($item);
+//				print "</pre>";
 				if( isset($item['is_details']) && $item['is_details'] == 'yes' ) {
 					$title_url = $base_url . '/' . $item['permalink'];
 				}
