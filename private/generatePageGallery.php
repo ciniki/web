@@ -43,10 +43,13 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 					case 'sculptures': 
 						$artcatalog_type = 4; 
 						break;
-					case 'crafts': 
+					case 'fibrearts': 
 						$artcatalog_type = 5; 
 						break;
-					case 'clothing': 
+					case 'crafts': 
+						$artcatalog_type = 6; 
+						break;
+					case 'crafts': 
 						$artcatalog_type = 6; 
 						break;
 				}
