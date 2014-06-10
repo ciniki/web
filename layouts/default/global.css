@@ -461,6 +461,10 @@ div.googlemap p.exhibitors-more,
 	text-align: right;
 }
 
+#content div.image-gallery {
+	padding-bottom: 1em;
+}
+
 #content div.image-categories,
 #content div.additional-image-gallery,
 #content div.image-gallery {

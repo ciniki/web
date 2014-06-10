@@ -363,7 +363,12 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 			$content .= "<div class='title-logo'><a href='" . $page_home_url . "' title='" . $ciniki['business']['details']['name'] 
 				. "' rel='home'><img alt='Home' src='" . $rc['url'] . "' /></a></div>";
 		}
-		$content .= "<div class='title-block'><h1 id='site-title'>";
+		if( isset($ciniki['business']['details']['tagline']) && $ciniki['business']['details']['tagline'] != '' ) {
+			$content .= "<div class='title-block'>";
+		} else {
+			$content .= "<div class='title-block no-tagline'>";
+		}
+		$content .= "<h1 id='site-title'>";
 		$content .= "<span class='title'><a href='" . $page_home_url . "' title='" . $ciniki['business']['details']['name'] . "' rel='home'>" . $ciniki['business']['details']['name'] . "</a></span></h1>\n";
 		if( isset($ciniki['business']['details']['tagline']) && $ciniki['business']['details']['tagline'] != '' ) {
 			$content .= "<h2 id='site-description'>" . $ciniki['business']['details']['tagline'] . "</h2>\n";
