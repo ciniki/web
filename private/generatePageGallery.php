@@ -440,7 +440,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 			$list = $rc['categories'];
 
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
-			$base_url = $ciniki['request']['base_url'] . "/gallery";
+			$base_url .= '/category';
 			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $list, array('notitle'=>'yes'));
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
