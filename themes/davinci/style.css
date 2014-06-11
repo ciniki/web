@@ -311,6 +311,7 @@ div.gallery-image-details span.image-awards {
 #content h2 {
 	color: #4d3012;
 	text-shadow: none;
+	font-style: italic;
 }
 
 #content p.entry-meta,
@@ -324,6 +325,7 @@ div.gallery-image-details span.image-awards {
 	margin-bottom: 0.5em;
 	padding-bottom: 0px;
 	color: #4d3012;
+	font-style: italic;
 }
 /* #content h2 {
 	color: #333;
