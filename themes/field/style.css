@@ -1,5 +1,5 @@
 html {
-	background: #eee;
+	background: #eeffee;
 }
 
 body {
@@ -37,7 +37,7 @@ header div.signin div.signin-wrapper {
 	padding: 0.2em 0.6em 0.2em 0.6em;
 	border-bottom-left-radius: 0.5em;
 	border-bottom-right-radius: 0.5em;
-	background: #2EB769;
+	background: #fff;
 }
 
 header div.signin div.signin-wrapper a,
@@ -137,13 +137,13 @@ div.image-categories-thumbnail-wrap {
 	padding: 0px;
 	border: 0px solid #fff;
 	line-height: 0.7em;
-	background: #fff;
 }
 
 div.image-categories-thumbnail {
 	margin: 0px;
 	padding: 8px;
 	border: 1px solid #004920;
+	background: #fff;
 }
 
 div.image-categories-thumbnail img {
@@ -154,7 +154,7 @@ div.image-categories-thumbnail img {
 
 span.image-categories-name {
 	display: inline-block;
-	background-color: #fff;
+	background-color: #eeffee;
 	color: #004920;
 	margin: 0px;
 	font-size: 1.1em;
@@ -190,6 +190,7 @@ div.image-gallery-thumbnail {
 	display: inline-block;
 	margin: 4px;
 	padding: 7px;
+	background: #fff;
 }
 
 div.additional-image-gallery div.image-gallery-thumbnail {
@@ -216,6 +217,7 @@ div.gallery-image-wrap {
 	display: inline-block;
 	margin: 4px;
 	padding: 9px;
+	background: #fff;
 }
 
 div.gallery-image-details {
@@ -902,6 +904,9 @@ footer div.social-icons a:active {
 aside div.borderless {
 	border: 0px solid;
 }
+
+.social-facebook {color: #3B5998; }
+.social-twitter { color: #55ACEE; }
 
 /* Styles for larger screens */
 @media screen and (min-width: 33em) {
