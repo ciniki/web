@@ -17,6 +17,7 @@ function ciniki_web_main() {
 		'default':'Simple - Black/White',
 		'black':'Midnight - Blue/Black',
 		'davinci':'Davinci - Brown/Beige',
+		'field':'Field - Green/White',
 		};
 //	if( M.userPerms&0x01 == 0x01 ) {
 //		this.themesAvailable = {
