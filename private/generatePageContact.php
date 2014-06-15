@@ -185,6 +185,7 @@ function ciniki_web_generatePageContact($ciniki, $settings) {
 		$content .= $contact_content;
 	}
 
+	$content .= "<br style='clear: both;'/>";
 	$content .= "</div>"
 		. "</article>"
 		. "</div>"
