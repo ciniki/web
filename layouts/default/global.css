@@ -277,7 +277,7 @@ nav {
 }
 
 article {
-	margin-bottom: 2em;
+	margin-bottom: 0em;
 }
 
 #content b.entry-title,
@@ -800,6 +800,48 @@ span.exhibitors-description {
 }
 
 #content .aligncenter {
+	text-align: center;
+}
+
+#content div.slider {
+	width: 100%;
+}
+
+#content div.slider-image {
+	width: 100%;
+	overflow: hidden;
+}
+
+#content div.slider-image {
+	max-width: 100%;
+}
+
+#content div.slider ul {
+	display: inline-block;
+	position: relative;
+	left: 0;
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+	-webkit-transition: 0.75s left;
+    -moz-transition: 0.75s left;
+    -ms-transition: 0.75s left;
+    -o-transition: 0.75s left;
+}
+
+#content div.slider ul li {
+	display: inline-block;
+	float: left; 
+	margin: 0px;
+	padding: 0px;
+}
+
+#content div.slider ul li img {
+	padding: 0px;
+	margin: 0px;
+}
+
+#content div.slider-pager-wrap {
 	text-align: center;
 }
 

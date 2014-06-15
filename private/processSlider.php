@@ -14,20 +14,10 @@
 // Returns
 // -------
 //
-function ciniki_web_processSlider(&$ciniki, $settings, $slider_id) {
+function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getCroppedImageURL');
-
-
-	//
-	// Lookup the slider details
-	//
-	$rc = ciniki_web_sliderLoad($ciniki, $settings, $slider_id);
-	if( $rc['stat'] != 'ok' ) {
-		return $rc;
-	}
-	$slider = $rc['slider'];
 
 	//
 	// Make sure the slider is setup with at least one image
@@ -57,14 +47,16 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider_id) {
 		}
 	} 
 
-	$slider_pause_time = 3000;
+	$slider_pause_time = 4000;
 	if( isset($slider['pause']) ) {
 		if( $slider['pause'] == 'xslow' ) {
-			$slider_pause_time = 4000;
+			$slider_pause_time = 7000;
 		} elseif( $slider['pause'] == 'slow' ) {
-			$slider_pause_time = 3000;
+			$slider_pause_time = 5500;
+		} elseif( $slider['pause'] == 'medium' ) {
+			$slider_pause_time = 4000;
 		} elseif( $slider['pause'] == 'fast' ) {
-			$slider_pause_time = 2000;
+			$slider_pause_time = 2500;
 		} elseif( $slider['pause'] == 'xfast' ) {
 			$slider_pause_time = 1000;
 		}
@@ -77,8 +69,6 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider_id) {
 
 	$image_list = '';
 	$pager_list = '';
-	$javascript = "function ciniki_web_runSlider('" . $slider['id'] . "') {"
-		. "};";
 	$count = 0;
 	foreach($slider['images'] as $image) {
 		//
@@ -112,46 +102,71 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider_id) {
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
+		$style = '';
 		if( $count > 0 ) {	
-			$style = "style='display: none;' ";
+//			$style = "style='display: none;' ";
 		}
 		if( $image['url'] != '' ) {
-			$image_list .= "<li>"
-				. "<a href='" . $image['url'] . "' target='$url_target' title='" . $item['title'] . "'>"
-				. "<img title='' alt='" . $item['title'] . "' src='" . $rc['url'] . "' /></a>"
+			$url_target = '';
+			$image_list .= "<li $style>"
+				. "<a href='" . $image['url'] . "' target='$url_target' title='" . $image['caption'] . "'>"
+				. "<img title='' alt='" . $image['caption'] . "' src='" . $rc['url'] . "' /></a>"
 				. "</li>";
 		} else {
-			$image_list .= "<li>"
-				. "<img title='' alt='" . $item['title'] . "' src='" . $rc['url'] . "' />"
+			$image_list .= "<li $style>"
+				. "<img title='' alt='" . $image['caption'] . "' src='" . $rc['url'] . "' />"
 				. "</li>";
 		}
-		$image_list .= "/>";
 
-		$pager_list .= "<a rel='$count' class=''>" . $count + 1 . "</a>";
+		$pager_list .= "<a rel='$count' class='" . ($count==0?'active':'') . "' onclick='javascript: sliders[0].goTo($count);'>" . ($count + 1) . "</a>";
 
 		$count++;
 	}
 
 	$javascript = "var Slider = function() { this.initialize.apply(this, arguments) }\n";
-	$javascript .= "	Slider.prototype = {\n";
+	$javascript .= "Slider.prototype = {\n";
 
-	$javascript .= "	initialize: function(slider) {\n";
-	$javascript .= "		this.ul = slider.children[0]\n";
-	$javascript .= "		this.li = this.ul.children\n";
+	$javascript .= "	initialize: function(slider, pager) {\n";
+	$javascript .= "		this.ul = slider.children[0];\n";
+	$javascript .= "		this.li = this.ul.children;\n";
+	$javascript .= "		this.pager = pager;\n";
+	$javascript .= "		this.resize();\n";
 
 	// make <ul> as large as all <li>’s
-	$javascript .= "		this.ul.style.width = (this.li[0].clientWidth * this.li.length) + 'px'\n";
+
 	$javascript .= "		this.currentIndex = 0\n";
 	$javascript .= "	},\n";
 
+	$javascript .= "	resize: function(index) {\n";
+	$javascript .= "		console.log('resize');\n";
+	$javascript .= "		for(i in this.li) {\n";
+	$javascript .= "			if( this.li[i].style != null ) { \n";
+	$javascript .= "				this.li[i].style.width = this.ul.parentElement.clientWidth + 'px';\n";
+//	$javascript .= "				this.li[i].style.height = ((this.li[i].children[0].clientHeight*this.ul.parentElement.clientWidth)/this.li[i].children[0].clientWidth) + 'px';\n";
+	$javascript .= "			}\n";
+	$javascript .= "		}\n";
+	$javascript .= "		this.ul.style.width = (this.ul.parentElement.clientWidth * this.li.length) + 'px'\n";
+	$javascript .= "		this.ul.style.maxWidth = (this.ul.parentElement.clientWidth * this.li.length) + 'px'\n";
+	$javascript .= "		this.ul.style.height = this.li[0].children[0].clientHeight + 'px'\n";
+	$javascript .= "		this.ul.parentElement.style.height = this.li[0].children[0].clientHeight + 'px'\n";
+//	$javascript .= "		this.ul.style.width = (this.li[0].clientWidth * this.li.length) + 'px'\n";
+//	$javascript .= "		this.ul.style.height = (this.li[0].clientHeight) + 'px'\n";
+//	$javascript .= "		this.ul.parentElement.style.height = (this.li[0].clientHeight) + 'px'\n";
+//	$javascript .= "		this.ul.style.maxHeight = this.li[0].clientHeight + 'px'\n";
+
+	$javascript .= "	},\n";
 	$javascript .= "	goTo: function(index) {\n";
 	// filter invalid indices
+	$javascript .= "		if( index >= this.li.length ) { index = 0; }\n";
 	$javascript .= "		if (index < 0 || index > this.li.length - 1)\n";
 	$javascript .= "		return\n";
 
 	// move <ul> left
 	$javascript .= "		this.ul.style.left = '-' + (100 * index) + '%'\n";
-
+	$javascript .= "		if( this.pager != null ) { \n";
+	$javascript .= "			this.pager.children[this.currentIndex].className = '';\n";
+	$javascript .= "			this.pager.children[index].className = 'active';\n";
+	$javascript .= "		}\n";
 	$javascript .= "		this.currentIndex = index\n";
 	$javascript .= "	},\n";
 
@@ -161,7 +176,13 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider_id) {
 
 	$javascript .= "	goToNext: function() {\n";
 	$javascript .= "		this.goTo(this.currentIndex + 1)\n";
-	$javascript .= "	}\n";
+	$javascript .= "	},\n";
+
+	$javascript .= "}\n";
+	$javascript .= "var sliders = [];\n";
+	$javascript .= "function slider_setup() {\n";
+	$javascript .= "	sliders.push(new Slider(document.getElementById('slider-ctl'), document.getElementById('slider-pager')));\n";
+	$javascript .= "	setInterval(function() {sliders[0].goToNext()}, $slider_pause_time);\n";
 	$javascript .= "}\n";
 
 
@@ -169,19 +190,29 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider_id) {
 		if( !isset($ciniki['request']['inline_javascript']) ) {
 			$ciniki['request']['inline_javascript'] = '';
 		}
-		$ciniki['request']['inline_javascript'] += $javascript;
+		$ciniki['request']['inline_javascript'] .= "<script type='text/javascript'>" . $javascript . "</script>";
+		if( !isset($ciniki['request']['onload']) ) {
+			$ciniki['request']['onload'] = '';
+		}
+		$ciniki['request']['onload'] .= 'slider_setup();';
+		// Setup the onresize to adjust the slider images when a window resize occurs
+		if( !isset($ciniki['request']['onresize']) ) {
+			$ciniki['request']['onresize'] = '';
+		}
+		$ciniki['request']['onresize'] .= 'sliders[0].resize();';
+
 		
 		$content = "<div class='slider'>";
 		$content .= "<div class='slider-image-wrap'>";
-		$content .= "<div class='slider-image'>";
+		$content .= "<div id='slider-ctl' class='slider-image'>";
 		$content .= "<ul>";
 		$content .= $image_list;
 		$content .= "</ul>\n";
 		$content .= "</div>\n";
 		$content .= "</div>\n";
-		$content .= "<div class='slider-pager-wrap'>"
-		$content .= "<div class='slider-pager'>"
-		$content .= "<ul>" . $pager_list . "</ul>";
+		$content .= "<div class='slider-pager-wrap'>";
+		$content .= "<div id='slider-pager' class='slider-pager'>";
+		$content .= $pager_list;
 		$content .= "</div>\n";
 		$content .= "</div>\n";
 		$content .= "</div>\n";

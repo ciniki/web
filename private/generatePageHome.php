@@ -42,9 +42,22 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 	if( isset($settings['page-home-slider']) 
 		&& $settings['page-home-slider'] != '' && $settings['page-home-slider'] > 0 
 		) {
-		$rc = ciniki_web_processSlider($ciniki, $settings, $settings['page-home-slider']);
+		//
+		// Load the slider
+		//
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'loadSlider');
+		$rc = ciniki_web_loadSlider($ciniki, $settings, 
+			$ciniki['request']['business_id'], $settings['page-home-slider']);
 		if( $rc['stat'] == 'ok' ) {
-			$slider_content = $rc['content'];
+			$slider = $rc['slider'];
+			//
+			// Process the slider content
+			//
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processSlider');
+			$rc = ciniki_web_processSlider($ciniki, $settings, $slider);
+			if( $rc['stat'] == 'ok' ) {
+				$slider_content = $rc['content'];
+			}
 		}
 	}
 
