@@ -17,15 +17,12 @@ function ciniki_web_main() {
 		'default':'Simple - Black/White',
 		'black':'Midnight - Blue/Black',
 		'davinci':'Davinci - Brown/Beige',
-		'field':'Field - Green/White',
+//		'field':'Field - Green/White',
 		};
-//	if( M.userPerms&0x01 == 0x01 ) {
-//		this.themesAvailable = {
-//			'default':'Black text on white background',
-//			'black':'Blue titles on black background',
-//			'aarons':'Beige on brown background',
-//			};
-//	}
+	if( M.userPerms&0x01 == 0x01 ) {
+		this.themesAvailable['field'] = 'Field - Green/White';
+		this.themesAvailable['redbrick'] = 'Red Brick';
+	}
 	
 	this.layoutsAvailable = {
 		'default':'Default',
@@ -286,6 +283,13 @@ function ciniki_web_main() {
 				'page-home-upcoming-workshops':{'label':'Display Upcoming Workshops', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-home-upcoming-artgalleryexhibitions':{'label':'Display Upcoming Exhibtions', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				}},
+			'_slider':{'label':'Image Slider', 'active':'no', 'fields':{
+				'page-home-slider':{'label':'Slider', 'active':'no', 'type':'select', 'options':{}},
+				}},
+			'_slider_buttons':{'label':'', 'visible':'no', 'type':'simplegrid', 'num_cols':1,
+				'addTxt':'Manage Sliders',
+				'addFn':'M.startApp(\'ciniki.web.sliders\',null,\'M.ciniki_web_main.showPage(null,"home");\');',
+				},
 			'_image':{'label':'Image', 'fields':{
 				'page-home-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
 				}},
@@ -1147,6 +1151,22 @@ function ciniki_web_main() {
 		if( page == 'contact' ) {
 			this.showContact(cb);
 		} else if( page == 'home' ) {
+			if( (M.curBusiness.modules['ciniki.web'].flags&0x02) > 0 ) {
+				this.home.sections._slider.active = 'yes';
+				this.home.sections._slider_buttons.visible = 'yes';
+				this.home.sections._slider.fields['page-home-slider'].active = 'yes';
+				this.home.sections._slider.fields['page-home-slider'].options = {};
+				this.home.sections._slider.fields['page-home-slider'].options[0] = 'None';
+				if( rsp.sliders != null ) {
+					for(i in rsp.sliders) {
+						this.home.sections._slider.fields['page-home-slider'].options[rsp.sliders[i].slider.id] = rsp.sliders[i].slider.name;
+					}
+				}
+			} else {
+				this.home.sections._slider.active = 'no';
+				this.home.sections._slider_buttons.visible = 'no';
+				this.home.sections._slider.fields['page-home-slider'].active = 'no';
+			}
 			if( M.curBusiness.modules['ciniki.artcatalog'] != null ) {
 				this.home.sections.options.fields['page-home-gallery-latest'].active = 'yes';
 				this.home.sections.options.fields['page-home-gallery-latest-title'].active = 'yes';

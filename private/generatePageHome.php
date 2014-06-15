@@ -36,6 +36,19 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 
 
 	//
+	// Check if there is a slider to display
+	//
+	$slider_content = '';
+	if( isset($settings['page-home-slider']) 
+		&& $settings['page-home-slider'] != '' && $settings['page-home-slider'] > 0 
+		) {
+		$rc = ciniki_web_processSlider($ciniki, $settings, $settings['page-home-slider']);
+		if( $rc['stat'] == 'ok' ) {
+			$slider_content = $rc['content'];
+		}
+	}
+
+	//
 	// Generate the content of the page
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
@@ -104,7 +117,15 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 
 	$page_content .= "<div id='content'>\n"
 		. "";
-	if( $page_content != '' ) {
+	if( $slider_content != '' ) {
+		$page_content .= "<article class='page page-home'>\n"
+			. "<div class='entry-content'>\n"
+			. $slider_content
+			. "</div>"
+			. "</article>"
+			. "";
+	}
+	if( $content1 != '' ) {
 		$page_content .= "<article class='page page-home'>\n"
 			. "<header><h1></h1></header>\n"
 			. "<div class='entry-content'>\n"

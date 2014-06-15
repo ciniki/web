@@ -80,6 +80,31 @@ function ciniki_web_pageSettingsGet($ciniki) {
 		}
 	}
 
-	return array('stat'=>'ok', 'settings'=>$settings);
+	$rsp = array('stat'=>'ok', 'settings'=>$settings);
+
+	//
+	// Check if sliders should be included
+	//
+	$slider_pages = array('home');
+	if( in_array($args['page'], $slider_pages) ) {
+		$strsql = "SELECT id, name "
+			. "FROM ciniki_web_sliders "
+			. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+			. "ORDER BY name "
+			. "";
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryTree');
+		$rc = ciniki_core_dbHashQueryTree($ciniki, $strsql, 'ciniki.web', array(
+			array('container'=>'sliders', 'fname'=>'id', 'name'=>'slider',
+				'fields'=>array('id', 'name')),
+				));
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		if( isset($rc['sliders']) ) {
+			$rsp['sliders'] = $rc['sliders'];
+		}
+	}
+
+	return $rsp;
 }
 ?>

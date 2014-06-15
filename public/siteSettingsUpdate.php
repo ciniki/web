@@ -71,6 +71,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 	//
 	$settings_fields = array(
 		'page-home-active',
+		'page-home-slider',
 		'page-home-gallery-latest',
 		'page-home-gallery-latest-title',
 		'page-home-gallery-random',

@@ -54,6 +54,42 @@ function ciniki_web_objects($ciniki) {
 			),
 		'history_table'=>'ciniki_web_history',
 		);
+	$objects['slider'] = array(
+		'name'=>'Web Slider',
+		'o_name'=>'slider',
+		'o_container'=>'sliders',
+		'sync'=>'yes',
+		'table'=>'ciniki_web_sliders',
+		'fields'=>array(
+			'name'=>array(),
+			'size'=>array(),
+			'effect'=>array(),
+			),
+		'history_table'=>'ciniki_web_history',
+		);
+	$objects['slider_image'] = array(
+		'name'=>'Web Slider Image',
+		'o_name'=>'image',
+		'o_container'=>'images',
+		'listsort'=>'sequence',
+		'sync'=>'yes',
+		'table'=>'ciniki_web_slider_images',
+		'fields'=>array(
+			'slider_id'=>array('ref'=>'ciniki.web.slider'),
+			'image_id'=>array('ref'=>'ciniki.images.image'),
+			'sequence'=>array(),
+			'object'=>array(),
+			'object_id'=>array(),
+			'caption'=>array(),
+			'url'=>array(),
+			'image_offset'=>array(),
+			'overlay'=>array(),
+			'overlay_position'=>array(),
+			'start_date'=>array(),
+			'end_date'=>array(),
+			),
+		'history_table'=>'ciniki_web_history',
+		);
 	
 	return array('stat'=>'ok', 'objects'=>$objects);
 }
