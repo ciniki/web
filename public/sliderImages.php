@@ -13,7 +13,7 @@
 // Returns
 // -------
 //
-function ciniki_web_sliderGet($ciniki) {
+function ciniki_web_sliderImages($ciniki) {
     //  
     // Find all the required and optional arguments
     //  
@@ -41,18 +41,17 @@ function ciniki_web_sliderGet($ciniki) {
 	// Get the images
 	//
 	$images = array();
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'loadCacheThumbnail');
 	foreach($args['images'] as $image_id) {
-		if( isset($img['image']['image_id']) && $img['image']['image_id'] > 0 ) {
-			$rc = ciniki_images_loadCacheThumbnail($ciniki, $args['business_id'], $image_id, 75);
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
-			}
-			//
-			// Attach the image data
-			//
-			$images[] = array('image'=>array('id'=>0, 'image_id'=>$image_id,
-				'image_data'=>'data:image/jpg;base64,' . base64_encode($rc['image'])));
+		$rc = ciniki_images_loadCacheThumbnail($ciniki, $args['business_id'], $image_id, 75);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
 		}
+		//
+		// Attach the image data
+		//
+		$images[] = array('image'=>array('id'=>0, 'image_id'=>$image_id,
+			'image_data'=>'data:image/jpg;base64,' . base64_encode($rc['image'])));
 	}
 
 	return array('stat'=>'ok', 'images'=>$images);

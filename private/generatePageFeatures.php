@@ -159,7 +159,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 		$feature = $rc['feature'];
 
 		if( !isset($feature['images']) || count($feature['images']) < 1 ) {
-			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'967', 'msg'=>'Unable to find image'));
+			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1694', 'msg'=>'Unable to find image'));
 		}
 
 		$first = NULL;

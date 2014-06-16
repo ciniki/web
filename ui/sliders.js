@@ -40,7 +40,7 @@ function ciniki_web_sliders() {
 		};
 		this.main.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.main.addButton('save', 'Save', 'M.ciniki_web_sliders.saveSlider();');
-		this.main.addClose('Cancel');
+		this.main.addClose('Back');
 
 		//
 		// the edit panel
@@ -57,7 +57,8 @@ function ciniki_web_sliders() {
 			'images':{'label':'Images', 'type':'simplethumbs'},
 			'_images':{'label':'', 'type':'simplegrid', 'num_cols':1,
 				'addTxt':'Add Image',
-				'addFn':'M.startApp(\'ciniki.web.sliderimages\',null,\'M.ciniki_web_sliders.edit.addDropImageRefresh();\',\'mc\',{\'slider_id\':M.ciniki_web_sliders.edit.slider_id,\'add\':\'yes\'});',
+				'addFn':'M.ciniki_web_sliders.editImage();',
+//				'addFn':'M.startApp(\'ciniki.web.sliderimages\',null,\'M.ciniki_web_sliders.edit.addDropImageRefresh();\',\'mc\',{\'slider_id\':M.ciniki_web_sliders.edit.slider_id,\'add\':\'yes\'});',
 				},
 			'_buttons':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_sliders.saveSlider();'},
@@ -84,6 +85,7 @@ function ciniki_web_sliders() {
 				return true;
 			} else {
 				M.ciniki_web_sliders.edit.additional_images.push(iid);
+				return true;
 			}
 		};
 		this.edit.addDropImageRefresh = function() {
@@ -101,7 +103,7 @@ function ciniki_web_sliders() {
 					});
 			} else if( M.ciniki_web_sliders.edit.additional_images.length > 0 ) {
 				M.api.getJSONCb('ciniki.web.sliderImages', {'business_id':M.curBusinessID, 
-					'images':this.edit.additional_images.join(',')}, function(rsp) {
+					'images':M.ciniki_web_sliders.edit.additional_images.join(',')}, function(rsp) {
 						if( rsp.stat != 'ok' ) {
 							M.api.err(rsp);
 							return false;
@@ -112,6 +114,10 @@ function ciniki_web_sliders() {
 						p.show();
 					});
 				
+			} else {
+				var p = M.ciniki_web_sliders.edit;
+				p.refresh();
+				p.show();
 			}
 			return true;
 		};
@@ -187,6 +193,7 @@ function ciniki_web_sliders() {
 					p.show(cb);
 				});
 		} else {
+			this.edit.slider_id = 0;
 			this.edit.sections._buttons.buttons.delete.visible = 'no';
 			this.edit.reset();
 			this.edit.data = {};
@@ -200,17 +207,23 @@ function ciniki_web_sliders() {
 		if( this.edit.slider_id > 0 ) {
 			M.startApp('ciniki.web.sliderimages',null,'M.ciniki_web_sliders.edit.addDropImageRefresh();','mc',{'slider_id':this.edit.slider_id,'slider_image_id':iid});
 		} else {
+			var name = this.edit.formValue('name');
+			if( name == '' ) {
+				alert('You must enter the name of the slider first');
+				return false;
+			}
 			// Save the slider
-			var c = this.main.serializeForm('yes');
+			var c = this.edit.serializeForm('yes');
 			if( this.edit.additional_images.length > 0 ) {
-				c += '&images=' . this.edit.addtional_images.join(',');
+				c += '&images=' + this.edit.additional_images.join(',');
 			}
 			M.api.postJSONCb('ciniki.web.sliderAdd', 
 				{'business_id':M.curBusinessID}, c, function(rsp) {
 					if( rsp.stat != 'ok' ) {
 						M.api.err(rsp);
 						return false;
-					} 
+					}
+					console.log(rsp);
 					M.ciniki_web_sliders.edit.slider_id = rsp.id;
 					if( rsp.images != null ) {
 						for(i in rsp.images) {
@@ -220,7 +233,7 @@ function ciniki_web_sliders() {
 						}
 					}
 
-					M.startApp('ciniki.web.sliderimages',null,'M.ciniki_web_sliders.edit.editSlider();','mc',{'slider_id':rsp.id,'slider_image_id':iid});
+					M.startApp('ciniki.web.sliderimages',null,'M.ciniki_web_sliders.editSlider();','mc',{'slider_id':rsp.id,'slider_image_id':iid});
 				});
 		}
 	};
@@ -241,9 +254,14 @@ function ciniki_web_sliders() {
 				this.edit.close();
 			}
 		} else {
+			var name = this.edit.formValue('name');
+			if( name == '' ) {
+				alert('You must enter the name of the slider first');
+				return false;
+			}
 			var c = this.edit.serializeForm('yes');
 			if( this.edit.additional_images.length > 0 ) {
-				c += '&images=' . this.edit.addtional_images.join(',');
+				c += '&images=' + this.edit.additional_images.join(',');
 			}
 			M.api.postJSONCb('ciniki.web.sliderAdd', 
 				{'business_id':M.curBusinessID}, c, function(rsp) {

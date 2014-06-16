@@ -103,11 +103,11 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 			return $rc;
 		}
 		$style = '';
-		if( $count > 0 ) {	
-//			$style = "style='display: none;' ";
-		}
 		if( $image['url'] != '' ) {
 			$url_target = '';
+			if( preg_match("/^http/", $image['url']) ) {
+				$url_target = '_blank';
+			}
 			$image_list .= "<li $style>"
 				. "<a href='" . $image['url'] . "' target='$url_target' title='" . $image['caption'] . "'>"
 				. "<img title='' alt='" . $image['caption'] . "' src='" . $rc['url'] . "' /></a>"
@@ -138,7 +138,6 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 	$javascript .= "	},\n";
 
 	$javascript .= "	resize: function(index) {\n";
-	$javascript .= "		console.log('resize');\n";
 	$javascript .= "		for(i in this.li) {\n";
 	$javascript .= "			if( this.li[i].style != null ) { \n";
 	$javascript .= "				this.li[i].style.width = this.ul.parentElement.clientWidth + 'px';\n";

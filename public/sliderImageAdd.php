@@ -46,7 +46,7 @@ function ciniki_web_sliderImageAdd(&$ciniki) {
     } 
 
 	if( $args['slider_id'] <= 0 ) {
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1755', 'msg'=>'No slider specified'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1756', 'msg'=>'No slider specified'));
 	}
 
 	if( $args['sequence'] == 0 ) {
@@ -60,7 +60,7 @@ function ciniki_web_sliderImageAdd(&$ciniki) {
 			return $rc;
 		}
 		if( isset($rc['max']['sequence']) && $rc['max']['sequence'] > 0 ) {
-			$args['sequence'] = $rc['max']['seqeunce'] + 1;
+			$args['sequence'] = $rc['max']['sequence'] + 1;
 		}
 	}
    

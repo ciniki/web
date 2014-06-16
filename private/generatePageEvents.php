@@ -442,6 +442,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 
 	$content .= "<div id='content'>\n"
 		. $page_content
+		. "<br style='clear:both;' />\n"
 		. "</div>"
 		. "";
 

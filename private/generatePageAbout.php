@@ -335,6 +335,7 @@ function ciniki_web_generatePageAbout($ciniki, $settings) {
 
 	$content .= "<div id='content'>\n";
 	$content .= $page_content;
+	$content .= "<br style='clear: both;' />\n";
 	$content .= "</div>\n";
 
 	//

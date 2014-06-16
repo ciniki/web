@@ -62,10 +62,15 @@ function ciniki_web_sliderimages() {
 			return false;
 		}
 
-		if( args.add != null && args.add == 'yes' ) {
-			this.showEdit(cb, 0, args.slider_id);
-		} else if( args.slider_image_id != null && args.slider_image_id > 0 ) {
+//		if( args.add != null && args.add == 'yes' ) {
+//			this.showEdit(cb, 0, args.slider_id);
+//		} else if( args.slider_image_id != null && args.slider_image_id > 0 ) {
+//			this.showEdit(cb, args.slider_image_id);
+//		}
+		if( args.slider_image_id != null && args.slider_image_id > 0 ) {
 			this.showEdit(cb, args.slider_image_id);
+		} else {
+			this.showEdit(cb, 0, args.slider_id);
 		}
 		return false;
 	}

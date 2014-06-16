@@ -31,10 +31,10 @@ function ciniki_web_getCroppedImageURL($ciniki, $image_id, $version, $args) {
 		. "";
 	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.images', 'image');
 	if( $rc['stat'] != 'ok' ) {	
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'644', 'msg'=>'Unable to load image', 'err'=>$rc['err']));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1272', 'msg'=>'Unable to load image', 'err'=>$rc['err']));
 	}
 	if( !isset($rc['image']) ) {
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'645', 'msg'=>'Unable to load image'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1350', 'msg'=>'Unable to load image'));
 	}
 	$img = $rc['image'];
 
@@ -126,7 +126,7 @@ function ciniki_web_getCroppedImageURL($ciniki, $image_id, $version, $args) {
 			fwrite($h, $image->getImageBlob());
 			fclose($h);
 		} else {
-			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'643', 'msg'=>'Unable to load image'));
+			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1692', 'msg'=>'Unable to load image'));
 		}
 	}
 

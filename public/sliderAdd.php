@@ -68,6 +68,7 @@ function ciniki_web_sliderAdd(&$ciniki) {
 				'slider_id'=>$slider_id,
 				'image_id'=>$image_id,
 				'sequence'=>$sequence++,
+				'caption'=>'',
 				'object'=>'',
 				'object_id'=>'',
 				'url'=>'',
