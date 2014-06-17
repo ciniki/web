@@ -38,6 +38,11 @@ function ciniki_web_getCroppedImageURL($ciniki, $image_id, $version, $args) {
 	}
 	$img = $rc['image'];
 
+	$quality = 60;
+	if( isset($args['quality']) && $args['quality'] != '' ) {
+		$quality = $args['quality'];
+	}
+
 	//
 	// Build working path, and final url
 	//

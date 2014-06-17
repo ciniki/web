@@ -2,7 +2,14 @@
 // The app to manage web options for a business
 //
 function ciniki_web_sliders() {
-	
+	this.sizeOptions = {
+		'tiny':'Tiny',
+		'small':'Small',
+		'medium':'Medium',
+		'large':'Large',
+		'xlarge':'X-Large',
+		'xxlarge':'XX-Large',
+		};
 	this.init = function() {
 		//
 		// Global functions for history and field value
@@ -53,6 +60,7 @@ function ciniki_web_sliders() {
 		this.edit.sections = {
 			'info':{'label':'', 'fields':{
 				'name':{'label':'Name', 'type':'text'},
+				'size':{'label':'Size', 'type':'select', 'options':this.sizeOptions},
 				}},
 			'images':{'label':'Images', 'type':'simplethumbs'},
 			'_images':{'label':'', 'type':'simplegrid', 'num_cols':1,
@@ -196,7 +204,7 @@ function ciniki_web_sliders() {
 			this.edit.slider_id = 0;
 			this.edit.sections._buttons.buttons.delete.visible = 'no';
 			this.edit.reset();
-			this.edit.data = {};
+			this.edit.data = {'size':'medium'};
 			this.edit.additional_images = [];
 			this.edit.refresh();
 			this.edit.show(cb);

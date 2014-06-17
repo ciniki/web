@@ -49,11 +49,72 @@ function ciniki_web_sliderImageUpdate(&$ciniki) {
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }
+	
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionStart');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionRollback');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionCommit');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbAddModuleHistory');
+	$rc = ciniki_core_dbTransactionStart($ciniki, 'ciniki.web');
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
 
 	//
-	// Update the slider image in the database
+	// Grab the old sequence
+	//
+	if( isset($args['sequence']) ) {
+		$strsql = "SELECT id, slider_id, sequence "
+			. "FROM ciniki_web_slider_images "
+			. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['slider_image_id']) . "' "
+			. "AND business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+			. "";
+		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'item');
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		if( !isset($rc['item']) ) {
+			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1770', 'msg'=>'Unable to find image'));
+		}
+		$old_sequence = $rc['item']['sequence'];
+		$slider_id = $rc['item']['slider_id'];
+	}
+
+	//
+	// Update the slider image
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectUpdate');
-	return ciniki_core_objectUpdate($ciniki, $args['business_id'], 'ciniki.web.slider_image', $args['slider_image_id'], $args);
+	$rc = ciniki_core_objectUpdate($ciniki, $args['business_id'], 'ciniki.web.slider_image', $args['slider_image_id'], $args, 0x04);
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+
+	//
+	// Update any sequences
+	//
+	if( isset($args['sequence']) ) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'sliderUpdateSequences');
+		$rc = ciniki_web_sliderUpdateSequences($ciniki, $args['business_id'], 
+			$slider_id, $args['sequence'], $old_sequence);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+	}
+
+	//
+	// Commit the changes to the database
+	//
+	$rc = ciniki_core_dbTransactionCommit($ciniki, 'ciniki.web');
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+
+	//
+	// Update the last_change date in the business modules
+	// Ignore the result, as we don't want to stop user updates if this fails.
+	//
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
+	ciniki_businesses_updateModuleChangeDate($ciniki, $args['business_id'], 'ciniki', 'web');
+
+	return array('stat'=>'ok');
 }
 ?>

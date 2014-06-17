@@ -27,8 +27,8 @@ function ciniki_web_sliderImageAdd(&$ciniki) {
         'image_offset'=>array('required'=>'no', 'blank'=>'yes', 'default'=>'', 'name'=>'Offset'), 
         'overlay'=>array('required'=>'no', 'default'=>'', 'blank'=>'yes', 'name'=>'Overlay'), 
         'overlay_position'=>array('required'=>'no', 'default'=>'', 'blank'=>'yes', 'name'=>'Overlay Position'), 
-		'start_date'=>array('required'=>'no', 'blank'=>'no', 'default'=>'', 'type'=>'datetimetoutc', 'name'=>'Start Date'),
-		'end_date'=>array('required'=>'no', 'blank'=>'no', 'default'=>'', 'type'=>'datetimetoutc', 'name'=>'End Date'),
+		'start_date'=>array('required'=>'no', 'blank'=>'yes', 'default'=>'', 'type'=>'datetimetoutc', 'name'=>'Start Date'),
+		'end_date'=>array('required'=>'no', 'blank'=>'yes', 'default'=>'', 'type'=>'datetimetoutc', 'name'=>'End Date'),
         )); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
@@ -63,7 +63,7 @@ function ciniki_web_sliderImageAdd(&$ciniki) {
 			$args['sequence'] = $rc['max']['sequence'] + 1;
 		}
 	}
-   
+
 	//
 	// Add the slider image to the database
 	//

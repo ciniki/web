@@ -23,6 +23,8 @@ function ciniki_web_sliderimages() {
 				'sequence':{'label':'Sequence', 'type':'text', 'size':'small'},
 //				'caption':{'label':'Sequence', 'type':'text', 'size':'small'},
 				'url':{'label':'URL', 'type':'text'},
+				'start_date':{'label':'Start', 'type':'text', 'size':'medium'},
+				'end_date':{'label':'End', 'type':'text', 'size':'medium'},
 			}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_sliderimages.saveImage();'},

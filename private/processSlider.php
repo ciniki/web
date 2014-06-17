@@ -220,4 +220,3 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 	return array('stat'=>'ok', 'content'=>$content);
 }
 ?>
-

@@ -85,8 +85,8 @@ function ciniki_web_objects($ciniki) {
 			'image_offset'=>array(),
 			'overlay'=>array(),
 			'overlay_position'=>array(),
-			'start_date'=>array(),
-			'end_date'=>array(),
+			'start_date'=>array('type'=>'utcdatetime'),
+			'end_date'=>array('type'=>'utcdatetime'),
 			),
 		'history_table'=>'ciniki_web_history',
 		);
