@@ -354,6 +354,35 @@ if( isset($ciniki['request']['page']) && $ciniki['request']['page'] == 'home'
 }
 
 //
+// Load other packages pages, these will be used by generatePageHeader
+//
+$ciniki['business']['pages'] = array();
+if( isset($ciniki['config']['ciniki.core']['packages']) 
+	&& $ciniki['config']['ciniki.core']['packages'] != 'ciniki' 
+	) {
+	$packages = explode(',', $ciniki['config']['ciniki.core']['packages']);
+	$page = '';
+	foreach($packages as $pkg) {
+		if( $pkg != 'ciniki' ) {
+			$rc = ciniki_core_loadMethod($ciniki, $pkg, 'web', 'private', 'pages');
+			if( $rc['stat'] == 'ok' ) {
+				$fn = $pkg . '_web_pages';
+				$rc = $fn($ciniki);
+				if( isset($rc['pages']) ) {
+					foreach($rc['pages'] as $permalink => $page) {
+						$ciniki['business']['pages'][$permalink] = array('pkg'=>$pkg, 
+							'fn'=>$page['fn'],
+							'active'=>$page['active'],
+							'title'=>$page['title']
+							);
+					}
+				}
+			}
+		}
+	}
+}
+
+//
 // Check if website has been configured
 //
 
@@ -558,6 +587,23 @@ else {
 			$rc = ciniki_web_generatePageCustom($ciniki, $settings, $i);
 			$found = 'yes';
 			break;
+		}
+	}
+
+	//
+	// Check for pages from other packages
+	//
+	if( count($ciniki['business']['pages']) > 0 ) {
+		foreach($ciniki['business']['pages'] as $permalink => $page) {
+			if( $ciniki['request']['page'] == $permalink && $page['active'] == 'yes' ) {
+				$rc = ciniki_core_loadMethod($ciniki, $page['pkg'], 'web', 'private', $page['fn']);
+				if( $rc['stat'] != 'noexist' ) {
+					$fn = $page['pkg'] . '_web_' . $page['fn'];
+					$found = 'yes';
+					$rc = $fn($ciniki, $settings);
+					break;
+				}
+			}
 		}
 	}
 

@@ -434,6 +434,20 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	if( isset($settings['page-about-active']) && $settings['page-about-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/about'>About</a></li>";
 	}
+
+	//
+	// Check for other package pages
+	//
+	if( isset($ciniki['business']['pages']) && count($ciniki['business']['pages']) > 0 ) {
+		foreach($ciniki['business']['pages'] as $permalink => $page) {
+			if( $page['active'] == 'yes' ) {
+				$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/$permalink'>" . $page['title'] . "</a></li>";
+				
+			}
+		}
+	}
+
+
 	if( isset($settings['page-features-active']) && $settings['page-features-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/features'>Features</a></li>";
 	}
