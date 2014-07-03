@@ -85,6 +85,8 @@ header span.title {
 	width: 30em;
 }
 
+#content cite.wide, 
+#content blockquote.wide, 
 #content form.wide, 
 #content form.wide div.bigsubmit, 
 #content div.wide,
@@ -524,4 +526,18 @@ span.exhibitors-description {
 		max-width: 100%;
 		width: 100%;
 	}
+	#content div.quote {
+		margin: 0em 2em 1.5em 2em;
+		padding-bottom: 0.5em;
+	}
 }
+
+/* 12. Anything over 50 em
+------------------------------------------------------------------------------*/
+@media screen and (min-width: 50em) {
+	#content div.quote {
+		margin: 0em 5em 1.5em 5em;
+		padding-bottom: 0.5em;
+	}
+}
+

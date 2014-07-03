@@ -442,17 +442,28 @@ div.gallery-image-details span.image-awards {
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0078a5');
 }
 
-#content form input.bigsubmit {
-	font-size: 1.3em;
-	border: 2px solid #da7c0c;
+#content div.largebutton-list div.button-list-wrap, 
+#content div.button-list div.button-list-wrap {
+	padding-right: 0.3em;
+	padding-bottom: 0.5em;
+}
+
+#content div.largebutton-list div.button-list-button a, 
+#content div.button-list div.button-list-button a {
+	font-size: 1.2em;
+	border: 2px solid #A3EBFD;	
 	border-radius: 10px;
-	color: #fef4e9;
+	color: #d9eef7;
 	text-shadow: 0 1px 1px rgba(0,0,0,0.5);
-	padding: 0.7em 2.0em 0.7em 2.0em;
-	background: #f78d1d;
-	background: -webkit-gradient(linear, left top, left bottom, from(#faa51a), to(#f47a20));
-	background: -moz-linear-gradient(top,  #faa51a,  #f47a20);
-	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#faa51a', endColorstr='#f47a20');
+	padding: 0.3em 0 0.3em 0;
+	background: #0095cd;	
+	background: -webkit-gradient(linear, left top, left bottom, from(#00adee), to(#0078a5));
+	background: -moz-linear-gradient(top,  #00adee,  #0078a5);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0078a5');
+}
+
+#content div.largebutton-list div.button-list-button a {
+	padding: 0.5em 0 0.5em 0;
 }
 
 #content div.cart-pricelist {
@@ -517,6 +528,26 @@ aside div.image-wrap div.image-caption {
 	padding: 9px;
 	color: #ddd;
 	line-height: 1.5em;
+}
+
+#content div.quote {
+	background-color: #003B5D;
+	padding: 1em 1em 1em 1em;
+	border-radius: 10px;
+	font-style: italic;
+	color: #ccc;
+	background: -webkit-gradient(linear, left top, left bottom, from(#003B5D), to(#001030));
+	background: -moz-linear-gradient(top,  #003B5D,  #001030);
+ 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#003B5D', endColorstr='#001030'); 
+}
+
+#content div.quote footer { font-size: 1em; }
+
+#content div.quote cite.quote-author {
+	padding: 0em;
+	font-style: normal;
+	color: #bbb;
+	font-size: 1.0em;
 }
 
 #content div.googlemap,

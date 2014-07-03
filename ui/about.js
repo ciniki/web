@@ -49,6 +49,8 @@ function ciniki_web_about() {
 				'page-about-facilities-active':{'label':'Display Facilities Page', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-about-boardofdirectors-active':{'label':'Display Board of Directors Page', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-about-membership-active':{'label':'Display Membership Page', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-about-warranty-active':{'label':'Display Warranty Page', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-about-testimonials-active':{'label':'Display Testimonials Page', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				}},
 //			'subpages':{'label':'', 'list':{
 //				'aboutartiststatement':{'label':'Artist Statement', 'visible':'no', 'fn':'M.ciniki_web_about.showPage(\'M.ciniki_web_about.about.show();\',\'aboutartiststatement\');'},
@@ -373,6 +375,8 @@ function ciniki_web_about() {
 				this.about.sections.options.fields['page-about-facilities-active'].active = (flags&0x100)>0?'yes':'no';
 				this.about.sections.options.fields['page-about-boardofdirectors-active'].active = (flags&0x80)>0?'yes':'no';
 				this.about.sections.options.fields['page-about-membership-active'].active = (flags&0x40)>0?'yes':'no';
+				this.about.sections.options.fields['page-about-warranty-active'].active = (flags&0x0400)>0?'yes':'no';
+				this.about.sections.options.fields['page-about-testimonials-active'].active = (flags&0x0800)>0?'yes':'no';
 			} else {
 				this.about.sections.options.fields['page-about-active'].active = 'yes';
 				this.about.sections.options.fields['page-about-artiststatement-active'].active = 'no';
@@ -383,6 +387,8 @@ function ciniki_web_about() {
 				this.about.sections.options.fields['page-about-facilities-active'].active = 'no';
 				this.about.sections.options.fields['page-about-boardofdirectors-active'].active = 'no';
 				this.about.sections.options.fields['page-about-membership-active'].active = 'no';
+				this.about.sections.options.fields['page-about-warranty-active'].active = 'no';
+				this.about.sections.options.fields['page-about-testimonials-active'].active = 'no';
 			}
 
 //			this.about.sections.subpages.list.aboutartiststatement.visible = 'no';

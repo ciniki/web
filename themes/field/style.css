@@ -853,6 +853,18 @@ div.word-cloud {
 	background-color: #77f;
 }
 
+#content div.quote {
+	padding: 1em 1em 1em 1em;
+	border-radius: 10px;
+	font-style: italic;
+	background-color: #FFF;
+}
+
+#content div.quote cite.quote-author {
+	padding: 0em;
+	font-style: normal;
+}
+
 div.googlemap, 
 aside div.googlemap {
 	border: 2px solid #222;

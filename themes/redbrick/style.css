@@ -881,6 +881,18 @@ div.word-cloud {
 	background-color: #77f;
 }
 
+#content div.quote {
+	background-color: #FFF;
+	padding: 1em 1em 1em 1em;
+	border-radius: 10px;
+	font-style: italic;
+}
+
+#content div.quote cite.quote-author {
+	padding: 0em;
+	font-style: normal;
+}
+
 div.googlemap, 
 aside div.googlemap {
 	border: 2px solid #222;
@@ -939,7 +951,7 @@ div.share-buttons span.social-twitter { color: #55ACEE; }
 div.share-buttons span.social-pinterest { color: #CC2127; }
 div.share-buttons span.social-googleplus { color: #DD4B39; }
 
-footer {
+div.page-container > footer {
 	color: #555;
 	margin-top: 1.5em;
 	border-radius: 10px;

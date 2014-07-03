@@ -842,6 +842,21 @@ div.word-cloud {
 	background-color: #77f;
 }
 
+#content div.quote {
+	background-color: #E0E8EF;
+	padding: 1em 1em 1em 1em;
+	border-radius: 10px;
+	font-style: italic;
+	background: -webkit-gradient(linear, left top, left bottom, from(#E0E8EF), to(#F0F8FF));
+	background: -moz-linear-gradient(top,  #E0E8EF,  #F0F8FF);
+ 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#E0E8EF', endColorstr='#F0F8FF'); 
+}
+
+#content div.quote cite.quote-author {
+	padding: 0em;
+	font-style: normal;
+}
+
 div.googlemap, 
 aside div.googlemap {
 	border: 2px solid #222;

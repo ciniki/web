@@ -178,6 +178,36 @@ function ciniki_web_generatePageAbout($ciniki, $settings) {
 		$page_content .= "</div></div>";
 		$page_content .= "</div></article>";
 	}
+	
+	//
+	// Generate the testimonials page
+	//
+	elseif(	isset($ciniki['request']['uri_split'][0])
+		&& $ciniki['request']['uri_split'][0] == 'testimonials'
+		&& isset($settings['page-about-testimonials-active'])
+		&& $settings['page-about-testimonials-active'] == 'yes' ) {
+
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'testimonials');
+		$rc = ciniki_info_web_testimonials($ciniki, $settings, $ciniki['request']['business_id']);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$testimonials = $rc['testimonials'];
+
+		$page_content .= "<article class='page'>\n"
+			. "<header class='entry-title'><h1 class='entry-title'>Testimonials</h1></header>\n"
+			. "<div class='entry-content'>";
+
+		foreach($testimonials as $tid => $testimonial) {
+			$page_content .= "<div class='quote wide'>";
+			$page_content .= "<blockquote class='quote-text wide'><p class='wide'>" . $testimonial['quote'] . "</p>\n";
+			if( isset($testimonial['who']) && $testimonial['who'] != '' ) {
+				$page_content .= "<footer><cite class='quote-author wide alignright'>-- " . $testimonial['who'] . "</cite></footer>";
+			}
+			$page_content .= "</blockquote></div>";
+		}
+		$page_content .= "</div></article>";
+	}
 
 	//
 	// Generate the content details
@@ -317,6 +347,20 @@ function ciniki_web_generatePageAbout($ciniki, $settings) {
 	if( isset($settings['page-about-boardofdirectors-active']) && $settings['page-about-boardofdirectors-active'] == 'yes' ) {
 		$submenu['boardofdirectors'] = array('name'=>'Board of Directors', 
 			'url'=>$ciniki['request']['base_url'] . '/about/boardofdirectors');
+	}
+	if( isset($settings['page-about-reviews-active']) 
+		&& $settings['page-about-reviews-active'] == 'yes' ) {
+		$submenu['reviews'] = array('name'=>'Reviews', 
+			'url'=>$ciniki['request']['base_url'] . '/about/reviews');
+	}
+	if( isset($settings['page-about-testimonials-active']) 
+		&& $settings['page-about-testimonials-active'] == 'yes' ) {
+		$submenu['testimonials'] = array('name'=>'Testimonials', 
+			'url'=>$ciniki['request']['base_url'] . '/about/testimonials');
+	}
+	if( isset($settings['page-about-warranty-active']) && $settings['page-about-warranty-active'] == 'yes' ) {
+		$submenu['warranty'] = array('name'=>'Warranty', 
+			'url'=>$ciniki['request']['base_url'] . '/about/warranty');
 	}
 	if( isset($settings['page-about-membership-active']) && $settings['page-about-membership-active'] == 'yes' ) {
 		$submenu['membership'] = array('name'=>'Membership', 

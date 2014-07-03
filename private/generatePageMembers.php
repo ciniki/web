@@ -54,6 +54,9 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 	$page_content = '';
 	$add_membership_info = 'no';
 	$page_title = 'Members';
+	if( isset($settings['page-members-name']) && $settings['page-members-name'] != '' ) {
+		$page_title = $settings['page-members-name'];
+	}
 
 	//
 	// FIXME: Check if anything has changed, and if not load from cache
@@ -75,7 +78,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 		}
 		$members = $rc['members'];
 
-		$article_title = "<a href='" . $ciniki['request']['base_url'] . "/members'>Members</a>";
+		$article_title = "<a href='" . $ciniki['request']['base_url'] . "/members'>$page_title</a>";
 		if( $rc['tag_name'] != '' ) {
 			$page_title .= ' - ' . $rc['tag_name'];
 			$article_title .= ' - ' . $rc['tag_name'];
@@ -380,7 +383,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 			}
 
 			$page_content .= "<article class='page'>\n"
-				. "<header class='entry-title'><h1 class='entry-title'>Members</h1></header>\n"
+				. "<header class='entry-title'><h1 class='entry-title'>$page_title</h1></header>\n"
 				. "<div class='entry-content'>\n"
 				. "";
 
@@ -426,7 +429,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 			$members = $rc['members'];
 
 			$page_content .= "<article class='page'>\n"
-				. "<header class='entry-title'><h1 class='entry-title'>Members</h1></header>\n"
+				. "<header class='entry-title'><h1 class='entry-title'>$page_title</h1></header>\n"
 				. "<div class='entry-content'>\n"
 				. "";
 

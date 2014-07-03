@@ -617,6 +617,7 @@ function ciniki_web_main() {
 		this.members.sections = {
 			'options':{'label':'', 'fields':{
 				'page-members-active':{'label':'Display Members', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-members-name':{'label':'Name', 'type':'text', 'hint':'Members'},
 				'page-members-categories-display':{'label':'Display Member Categories', 'active':'no', 'type':'toggle', 'default':'no', 'toggles':{
 					'no':'No',
 					'wordlist':'List',

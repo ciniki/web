@@ -486,7 +486,11 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/classes'>Classes</a></li>";
 	}
 	if( isset($settings['page-members-active']) && $settings['page-members-active'] == 'yes' ) {
-		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/members'>Members</a></li>";
+		if( isset($settings['page-members-name']) && $settings['page-members-name'] != '' ) {
+			$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/members'>" . $settings['page-members-name'] . "</a></li>";
+		} else {
+			$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/members'>Members</a></li>";
+		}
 	}
 	if( isset($settings['page-gallery-active']) && $settings['page-gallery-active'] == 'yes' ) {
 		if( isset($settings['page-gallery-artcatalog-split']) && $settings['page-gallery-artcatalog-split'] == 'yes' ) {

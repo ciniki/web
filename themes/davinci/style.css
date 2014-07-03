@@ -906,6 +906,19 @@ div.word-cloud {
 	background-color: #77f;
 }
 
+#content div.quote {
+	background: 
+	padding: 1em 1em 1em 1em;
+	border-radius: 10px;
+	font-style: italic;
+}
+
+#content div.quote footer { font-size: 1em; }
+#content div.quote cite.quote-author {
+	padding: 0em;
+	font-style: normal;
+}
+
 div.googlemap, 
 aside div.googlemap {
 	border: 2px solid #222;
@@ -959,10 +972,10 @@ div.share-buttons span.social-twitter { color: #55ACEE; }
 div.share-buttons span.social-pinterest { color: #CC2127; }
 div.share-buttons span.social-googleplus { color: #DD4B39; }
 
-footer a,
-footer a:visited,
-footer a:hover,
-footer a:active {
+div.page-container > footer a,
+div.page-container > footer a:visited,
+div.page-container > footer a:hover,
+div.page-container > footer a:active {
 	text-decoration: none;
 	color: #eee;
 }
@@ -984,7 +997,7 @@ hr.footer-section-divider {
 	display: none;
 }
 
-footer {
+div.page-container > footer {
 	margin-top: 1.5em;
 	background: #93734a;
 	background: rgba(125,96,66,0.7);

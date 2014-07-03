@@ -303,6 +303,23 @@ article {
 	font-size: 1.3em;
 }
 
+#content div.quote {
+	padding-bottom: 0.5em;
+	margin-bottom: 1.5em;
+}
+
+#content blockquote.quote-text,
+#content blockquote.quote-text p,
+#content cite.quote-author {
+	margin-bottom: 0;
+	padding: 0px;
+	width: 100%;
+}
+
+#content cite.quote-author {
+	display: block;
+}
+
 #content dl dd {
 	margin-bottom: 1em;
 }
@@ -793,6 +810,10 @@ span.exhibitors-description {
 }
 #content table.cart-items td.alignbottom {
 	vertical-align: bottom;
+}
+
+#content .alignright {
+	text-align: right;
 }
 
 #content div.clearboth {
