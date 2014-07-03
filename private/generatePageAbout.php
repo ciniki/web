@@ -66,6 +66,46 @@ function ciniki_web_generatePageAbout($ciniki, $settings) {
 	// FIXME: Check if anything has changed, and if not load from cache
 	//
 
+	//
+	// Get the pages with content
+	//
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'pages');
+	$rc = ciniki_info_web_pages($ciniki, $settings, $ciniki['request']['business_id']);
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+	$info_pages = $rc['pages'];
+
+	if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
+		$page_permalink = $ciniki['request']['uri_split'][0];
+		$page_settings_name = $ciniki['request']['uri_split'][0];
+		foreach($info_pages as $page) {
+			if( $page['permalink'] == $page_permalink ) {
+				$content_type = $page['content_type'];
+			}
+		}
+		// This allows for permalink and title renaming
+		if( isset($content_type) ) {
+			switch($content_type) {
+				case 2: $page_settings_name = 'artiststatement'; break;
+				case 3: $page_settings_name = 'cv'; break;
+				case 4: $page_settings_name = 'awards'; break;
+				case 5: $page_settings_name = 'history'; break;
+				case 6: $page_settings_name = 'donations'; break;
+				case 7: $page_settings_name = 'membership'; break;
+				case 8: $page_settings_name = 'boardofdirectors'; break;
+				case 9: $page_settings_name = 'facilities'; break;
+				case 10: $page_settings_name = 'exhibitionapplication'; break;
+				case 11: $page_settings_name = 'warranty'; break;
+				case 12: $page_settings_name = 'testimonials'; break;
+				case 13: $page_settings_name = 'reviews'; break;
+				case 14: $page_settings_name = 'greenpolicy'; break;
+				case 15: $page_settings_name = 'whyus'; break;
+				case 16: $page_settings_name = 'privacypolicy'; break;
+			}
+		}
+	}
+
 //	$subpages = array(
 //		'artiststatement'=>array('title'=>'Artist Statement'), 
 //		'cv'=>array('title'=>'CV'), 
@@ -213,8 +253,8 @@ function ciniki_web_generatePageAbout($ciniki, $settings) {
 	// Generate the content details
 	//
 	elseif(	isset($ciniki['request']['uri_split'][0])
-		&& isset($settings['page-about-' . $ciniki['request']['uri_split']['0'] . '-active'])
-		&& $settings['page-about-' . $ciniki['request']['uri_split']['0'] . '-active'] == 'yes' ) {
+		&& isset($settings['page-about-' . $page_settings_name . '-active'])
+		&& $settings['page-about-' . $page_settings_name . '-active'] == 'yes' ) {
 
 		$permalink = $ciniki['request']['uri_split'][0];
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'pageDetails');
@@ -332,6 +372,13 @@ function ciniki_web_generatePageAbout($ciniki, $settings) {
 //		$submenu['history'] = array('name'=>'History', 
 //			'url'=>$ciniki['request']['base_url'] . '/about/history');
 //	}
+	if( isset($settings['page-about-whyus-active']) 
+		&& $settings['page-about-whyus-active'] == 'yes' 
+		&& isset($info_pages['15'])
+		) {
+		$submenu['whyus'] = array('name'=>$info_pages['15']['title'], 
+			'url'=>$ciniki['request']['base_url'] . '/about/' . $info_pages['15']['permalink']);
+	}
 	if( isset($settings['page-about-history-active']) && $settings['page-about-history-active'] == 'yes' ) {
 		$submenu['history'] = array('name'=>'History', 
 			'url'=>$ciniki['request']['base_url'] . '/about/history');
@@ -344,9 +391,12 @@ function ciniki_web_generatePageAbout($ciniki, $settings) {
 		$submenu['facilities'] = array('name'=>'Facilities', 
 			'url'=>$ciniki['request']['base_url'] . '/about/facilities');
 	}
-	if( isset($settings['page-about-boardofdirectors-active']) && $settings['page-about-boardofdirectors-active'] == 'yes' ) {
-		$submenu['boardofdirectors'] = array('name'=>'Board of Directors', 
-			'url'=>$ciniki['request']['base_url'] . '/about/boardofdirectors');
+	if( isset($settings['page-about-boardofdirectors-active']) 
+		&& $settings['page-about-boardofdirectors-active'] == 'yes' 
+		&& isset($info_pages['8'])
+		) {
+		$submenu['boardofdirectors'] = array('name'=>$info_pages['8']['title'], 
+			'url'=>$ciniki['request']['base_url'] . '/about/' . $info_pages['8']['permalink']);
 	}
 	if( isset($settings['page-about-reviews-active']) 
 		&& $settings['page-about-reviews-active'] == 'yes' ) {
@@ -358,9 +408,19 @@ function ciniki_web_generatePageAbout($ciniki, $settings) {
 		$submenu['testimonials'] = array('name'=>'Testimonials', 
 			'url'=>$ciniki['request']['base_url'] . '/about/testimonials');
 	}
-	if( isset($settings['page-about-warranty-active']) && $settings['page-about-warranty-active'] == 'yes' ) {
-		$submenu['warranty'] = array('name'=>'Warranty', 
-			'url'=>$ciniki['request']['base_url'] . '/about/warranty');
+	if( isset($settings['page-about-greenpolicy-active']) 
+		&& $settings['page-about-greenpolicy-active'] == 'yes' 
+		&& isset($info_pages['14'])
+		) {
+		$submenu['greenpolicy'] = array('name'=>$info_pages['14']['title'], 
+			'url'=>$ciniki['request']['base_url'] . '/about/' . $info_pages['14']['permalink']);
+	}
+	if( isset($settings['page-about-warranty-active']) 
+		&& $settings['page-about-warranty-active'] == 'yes' 
+		&& isset($info_pages['11'])
+		) {
+		$submenu['warranty'] = array('name'=>$info_pages['11']['title'], 
+			'url'=>$ciniki['request']['base_url'] . '/about/' . $info_pages['11']['permalink']);
 	}
 	if( isset($settings['page-about-membership-active']) && $settings['page-about-membership-active'] == 'yes' ) {
 		$submenu['membership'] = array('name'=>'Membership', 
