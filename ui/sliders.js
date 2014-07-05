@@ -153,9 +153,7 @@ function ciniki_web_sliders() {
 
 	this.start = function(cb, ap, aG) {
 		args = {};
-		if( aG != null ) {
-			args = eval(aG);
-		}
+		if( aG != null ) { args = eval(aG); }
 
 		//
 		// Create the app container if it doesn't exist, and clear it out

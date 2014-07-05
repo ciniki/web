@@ -457,6 +457,12 @@ elseif( $ciniki['request']['page'] == 'courses'
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageCourses.php');
 	$rc = ciniki_web_generatePageCourses($ciniki, $settings);
 }
+// Classes
+elseif( $ciniki['request']['page'] == 'classes' 
+	&& isset($settings['page-classes-active']) && $settings['page-classes-active'] == 'yes' ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageClasses.php');
+	$rc = ciniki_web_generatePageClasses($ciniki, $settings);
+}
 // Members
 elseif( $ciniki['request']['page'] == 'members' 
 	&& isset($settings['page-members-active']) && $settings['page-members-active'] == 'yes' ) {

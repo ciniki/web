@@ -161,6 +161,9 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-gallery-artcatalog-jewelry',			// Split the menu into types
 		'page-gallery-artcatalog-sculptures',			// Split the menu into types
 		'page-gallery-share-buttons',			// Share buttons for facebook, twitter, etc
+		'page-classes-active',
+		'page-classes-name',
+		'page-classes-title',
 		'page-courses-active',
 		'page-courses-name',
 		'page-courses-image',

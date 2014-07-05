@@ -852,6 +852,29 @@ function ciniki_web_main() {
 		this.coursestype.addClose('Cancel');
 
 		//
+		// The options and information for the exhibitions pages
+		//
+		this.classes = new M.panel('Classes',
+			'ciniki_web_main', 'classes',
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.classes');
+		this.classes.data = {};
+		this.classes.sections = {
+			'options':{'label':'Courses', 'fields':{
+				'page-classes-active':{'label':'Display Classes', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-classes-name':{'label':'Menu Name', 'type':'text', 'hint':'Classes'},
+				'page-classes-title':{'label':'Page Title', 'type':'text', 'hint':'Available Classes'},
+				}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'classes\');'},
+				}},
+		};
+		this.classes.fieldValue = this.fieldValue;
+		this.classes.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.classes.deleteImage = this.deleteImage;
+		this.classes.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'classes\');');
+		this.classes.addClose('Cancel');
+
+		//
 		// The options and information for the courses registration pages
 		//
 		this.coursesregistration = new M.panel('Course Registration',
