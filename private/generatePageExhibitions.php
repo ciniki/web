@@ -231,9 +231,22 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1306', 'msg'=>"I'm sorry, but we can't seem to find the exhibitor you requested."));
 		}
 		$exhibition = $rc['exhibition'];
+		// Format the date
+		$exhibition_date = $exhibition['start_month'];
+		$exhibition_date .= " " . $exhibition['start_day'];
+		if( $exhibition['end_day'] != '' && ($exhibition['start_day'] != $exhibition['end_day'] || $exhibition['start_month'] != $exhibition['end_month']) ) {
+			if( $exhibition['end_month'] != '' && $exhibition['end_month'] == $exhibition['start_month'] ) {
+				$exhibition_date .= " - " . $exhibition['end_day'];
+			} else {
+				$exhibition_date .= " - " . $exhibition['end_month'] . " " . $exhibition['end_day'];
+			}
+		}
+		$exhibition_date .= ", " . $exhibition['start_year'];
 		$page_title = $exhibition['name'];
 		$page_content .= "<article class='page'>\n"
-			. "<header class='entry-title'><h1 class='entry-title'>" . $exhibition['name'] . "</h1></header>\n"
+			. "<header class='entry-title'><h1 class='entry-title'>" . $exhibition['name'] . "</h1>"
+			. "<div class='entry-meta'>" . $exhibition_date . "</div>"
+			. "</header>\n"
 			. "";
 
 		//
