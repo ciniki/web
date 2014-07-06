@@ -22,7 +22,9 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 	//
 	$content = '';
 	$page_content = '';
-	if( isset($settings['page-classes-name']) && $settings['page-classes-name'] != '' ) {
+	if( isset($settings['page-classes-title']) && $settings['page-classes-title'] != '' ) {
+		$page_title = $settings['page-classes-title'];
+	} elseif( isset($settings['page-classes-name']) && $settings['page-classes-name'] != '' ) {
 		$page_title = $settings['page-classes-name'];
 	} else {
 		$page_title = 'Classes';
@@ -51,7 +53,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 		// Load the class details.
 		//
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'classes', 'web', 'classDetails');
-		$rc = ciniki_classes_web_instructorDetails($ciniki, $settings, 
+		$rc = ciniki_classes_web_classDetails($ciniki, $settings, 
 			$ciniki['request']['business_id'], $class_permalink);
 		if( $rc['stat'] != 'ok' ) {
 			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1810', 'msg'=>"I'm sorry, but we can't seem to find the image you requested.", $rc['err']));
@@ -92,8 +94,11 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 			$next = $first;
 		}
 	
+		$img_base_url = 
+		$article_title = "<a href='" .  $ciniki['request']['base_url'] . "/classes/class/" . $class['permalink'] . "'>" . $class['name'] . "</a>";
 		if( $img['title'] != '' ) {
 			$page_title = $class['name'] . ' - ' . $img['title'];
+			$article_title .= ' - ' . $img['title'];
 		} else {
 			$page_title = $class['name'];
 		}
@@ -126,7 +131,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 		$ciniki['request']['onresize'] = "gallery_resize_arrows();";
 		$ciniki['request']['onload'] = "scrollto_header();";
 		$page_content .= "<article class='page'>\n"
-			. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$page_title</h1></header>\n"
+			. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$article_title</h1></header>\n"
 			. "<div class='entry-content'>\n"
 			. "";
 		$page_content .= "<div id='gallery-image' class='gallery-image'>";
@@ -167,7 +172,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 		// Get the class information
 		//
 		$rc = ciniki_classes_web_classDetails($ciniki, $settings, 
-			$ciniki['request']['business_id'], $class_permalink);
+			$ciniki['request']['business_id'], $permalink);
 		if( $rc['stat'] != 'ok' ) {
 			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1812', 'msg'=>"I'm sorry, but we can't find the class you requested.", $rc['err']));
 		}
@@ -210,7 +215,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 				. "<header class='entry-title'><h1 class='entry-title'>Gallery</h1></header>\n"
 				. "";
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
-			$img_base_url = $ciniki['request']['base_url'] . "/classes/" . $class['permalink'] . "/gallery";
+			$img_base_url = $ciniki['request']['base_url'] . "/classes/class/" . $class['permalink'] . "/gallery";
 			$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $class['images'], 125);
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
@@ -266,7 +271,9 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 			}
 			$page_content .= $rc['content'];
 		}
-		$page_content .= "<br style='clear:both;' />\n";
+		if( isset($info['image_id']) && $info['image_id'] != '' && $info['image_id'] != 0 ) {
+			$page_content .= "<br style='clear:both;' />\n";
+		}
 
 		$base_url = $ciniki['request']['base_url'] . "/classes";
 		//
@@ -276,7 +283,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 			//
 			// Get the list of classes
 			//
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'classes', 'web', 'classes');
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'classes', 'web', 'classList');
 			$rc = ciniki_classes_web_classList($ciniki, $settings, 
 				$ciniki['request']['business_id'], array('category'=>$category_permalink));
 			if( $rc['stat'] != 'ok' ) {
@@ -286,10 +293,11 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 
 			if( count($categories) > 0 ) {
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
-				$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $categories, array());
+				$rc = ciniki_web_processCIList($ciniki, $settings, $base_url . '/class', $categories, array());
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
+				$page_content .= $rc['content'];
 			} else {
 				$page_content .= "<p>I'm sorry, but we don't currently offer any classes.</p>";
 			}
@@ -302,7 +310,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 			//
 			// Get the list of classes
 			//
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'classes', 'web', 'classes');
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'classes', 'web', 'classList');
 			$rc = ciniki_classes_web_classList($ciniki, $settings, $ciniki['request']['business_id'], array());
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
@@ -311,7 +319,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 
 			if( count($classes) > 0 ) {
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
-				$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $classes, 
+				$rc = ciniki_web_processCIList($ciniki, $settings, $base_url . '/class', $classes, 
 					array('notitle'=>'yes'));
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
@@ -320,7 +328,6 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 				$page_content .= "<p>I'm sorry, but we don't currently offer any classes.</p>";
 			}
 		}
-
 	}
 		
 	//
@@ -342,7 +349,6 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 		$page_content .= "<article class='page'>\n"
 			. "<header class='entry-title'><h1 class='entry-title'>" . $page_title . "</h1></header>\n"
 			. "";
-
 		if( isset($info['image_id']) && $info['image_id'] != '' && $info['image_id'] != 0 ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 			$rc = ciniki_web_getScaledImageURL($ciniki, $info['image_id'], 'original', '500', 0);
@@ -358,7 +364,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 		}
 
 		$page_content .= "<div class='entry-content'>";
-		if( isset($info['content']) ) {
+		if( isset($info['content']) && $info['content'] != '' ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 			$rc = ciniki_web_processContent($ciniki, $info['content']);	
 			if( $rc['stat'] != 'ok' ) {
@@ -366,26 +372,30 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 			}
 			$page_content .= $rc['content'];
 		}
-		$page_content .= "<br style='clear:both;' />\n";
+		if( isset($info['image_id']) && $info['image_id'] != '' && $info['image_id'] != 0 ) {
+			$page_content .= "<br style='clear:both;' />\n";
+		}
 
 		$base_url = $ciniki['request']['base_url'] . "/classes";
 
 		//
 		// If categories and sub-categories are enabled, then list the categories
 		//
+		$page_content .= '';
 		if( ($ciniki['business']['modules']['ciniki.classes']['flags']&0x02) > 0 ) {
+			$page_content .= "<h2>Categories</h2>";
 			//
 			// Get the list of categories
 			//
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'classes', 'web', 'categories');
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'classes', 'web', 'categoryList');
 			$rc = ciniki_classes_web_categoryList($ciniki, $settings, $ciniki['request']['business_id']);
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			$categories = $rc['categories'];
-			if( count($categories) > 0 ) {
-				ciniki_core_loadMethod($ciniki, 'ciniki', 'classes', 'web', 'processTagList');
-				$rc = ciniki_web_processTagList($ciniki, $settings, $base_url, $categories, array());
+			if( isset($rc['categories']) && count($rc['categories']) > 0 ) {
+				$categories = $rc['categories'];
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processTagList');
+				$rc = ciniki_web_processTagList($ciniki, $settings, $base_url . '/category', $categories, array());
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
@@ -400,19 +410,20 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 			//
 			// Get the list of classes
 			//
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'classes', 'web', 'classes');
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'classes', 'web', 'classList');
 			$rc = ciniki_classes_web_classList($ciniki, $settings, $ciniki['request']['business_id'], array());
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			$categories = $rc['categories'];
 
-			if( count($categories) > 0 ) {
+			if( isset($rc['categories']) && count($rc['categories']) > 0 ) {
+				$categories = $rc['categories'];
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
-				$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $categories, array());
+				$rc = ciniki_web_processCIList($ciniki, $settings, $base_url . '/class', $categories, array());
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
+				$page_content .= $rc['content'];
 			} else {
 				$page_content .= "<p>I'm sorry, but we don't currently offer any classes.</p>";
 			}
@@ -425,22 +436,24 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 			//
 			// Get the list of classes
 			//
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'classes', 'web', 'classes');
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'classes', 'web', 'classList');
 			$rc = ciniki_classes_web_classList($ciniki, $settings, $ciniki['request']['business_id'], array());
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			$classes = $rc['classes'];
+			
+			$classes = $rc['list'];
 
 			if( count($classes) > 0 ) {
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
-				$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $classes, 
+				$rc = ciniki_web_processCIList($ciniki, $settings, $base_url . '/class', $classes,
 					array('notitle'=>'yes'));
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
+				$page_content .= $rc['content'];
 			} else {
-				$page_content .= "<p>I'm sorry, but we don't currently offer any classes.</p>";
+				$page_content .= "<p>I'm sorry, but are no classes currently.</p>";
 			}
 		}
 
@@ -448,6 +461,8 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 			. "</article>\n"
 			. "";
 	}
+
+
 
 	//
 	// Generate the complete page

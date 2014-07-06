@@ -165,6 +165,10 @@ div.image-gallery-thumbnail {
 
 /* 6. CUSTOM LAYOUT & TYPOGRAPHY (Baby bear)
 ----------------------------------------------------------------------------------------*/
+.clickable {
+	cursor: pointer;
+}
+
 #page-container {
     padding: 0.809em;
     max-width: 30em;
@@ -865,7 +869,6 @@ span.exhibitors-description {
 #content div.slider-pager-wrap {
 	text-align: center;
 }
-
 
 
 /* 7. BROWSER AND NON-SEMANTIC STYLING
