@@ -104,7 +104,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 		}
 
 		if( $img == NULL ) {
-			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1311', 'msg'=>"I'm sorry, but we can't seem to find the image you requested."));
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1008', 'msg'=>"I'm sorry, but we can't seem to find the image you requested."));
 		}
 		//
 		// Load the image
