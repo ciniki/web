@@ -21,6 +21,9 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
 	$content = '';
 	$page_content = '';
 	$page_title = 'Exhibitors';
+	if( isset($settings['page-exhibitions-exhibitors-name']) && $settings['page-exhibitions-exhibitors-name'] != '' ) {
+		$page_title = $settings['page-exhibitions-exhibitors-name'];
+	}
 
 	//
 	// FIXME: Check if anything has changed, and if not load from cache
@@ -237,7 +240,7 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
 		$participants = $rc['categories'];
 
 		$page_content .= "<article class='page'>\n"
-			. "<header class='entry-title'><h1 class='entry-title'>Exhibitors</h1></header>\n"
+			. "<header class='entry-title'><h1 class='entry-title'>$page_title</h1></header>\n"
 			. "<div class='entry-content'>\n"
 			. "";
 

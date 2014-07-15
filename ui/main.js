@@ -739,6 +739,7 @@ function ciniki_web_main() {
 				}},
 			'exhibitors':{'label':'Exhibitors', 'fields':{
 				'page-exhibitions-exhibitors-active':{'label':'Display Exhibitors', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-exhibitions-exhibitors-name':{'label':'Name', 'type':'text'},
 				}},
 			'sponsors':{'label':'Sponsors', 'fields':{
 				'page-exhibitions-sponsors-active':{'label':'Display Sponsors', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},

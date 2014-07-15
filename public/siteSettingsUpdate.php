@@ -144,6 +144,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-memberblog-name',
 		'page-exhibitions-exhibition',
 		'page-exhibitions-exhibitors-active',
+		'page-exhibitions-exhibitors-name',
 		'page-exhibitions-sponsors-active',
 		'page-exhibitions-tourexhibitors-active',
 		'page-exhibitions-tourexhibitors-name',
