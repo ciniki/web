@@ -36,21 +36,21 @@ function ciniki_web_cartSetupPrices($ciniki, $settings, $business_id, $prices) {
 	if( count($prices) > 1 ) {
 		$content .= "<h2>Price</h2>";
 	}
+	$content .= "<div class='cart-pricelist'>";
 	foreach($prices as $pid => $price) {
-		$content = "<div class='cart-pricelist'>"
-			. "<div class='price'>";
+		$content .= "<div class='price'>";
 		if( isset($price['name']) && $price['name'] != '' ) {
 			$content .= "<span class='cart-pricelabel'>" . $price['name'] . ": </span>";
 		}
 
 		$final_price = $price['unit_amount'];
 		$discount = '';
-		if( $price['unit_discount_amount'] > 0 ) {
+		if( isset($price['unit_discount_amount']) && $price['unit_discount_amount'] > 0 ) {
 			$discount .= " - " . numfmt_format_currency($intl_currency_fmt,
 				$price['unit_discount_amount'], $intl_currency);
 			$final_price = bcsub($price['unit_amount'], $price['unit_discount_amount'], 4);
 		}
-		if( $price['unit_discount_percentage'] > 0 ) {
+		if( isset($price['unit_discount_percentage']) && $price['unit_discount_percentage'] > 0 ) {
 			$percentage = bcdiv($price['unit_discount_percentage'], 100, 4);
 			$discount .= " - " .  $price['unit_discount_amount'] . "%";
 			$final_price = bcsub($final_price, bcmul($final_price, $percentage, 4), 4);
@@ -68,18 +68,24 @@ function ciniki_web_cartSetupPrices($ciniki, $settings, $business_id, $prices) {
 
 		// Check if sold out
 		$sold_out = '';
-		if( $price['limited_units'] == 'yes' && $price['units_available'] < 1 ) {
+		if( isset($price['limited_units']) && isset($price['units_available']) 
+			&& $price['limited_units'] == 'yes' && $price['units_available'] < 1 
+			) {
 			$content .= ' Sold Out';
 		}
 
 		//
 		// If quantity is limited, and not sold out
 		//
-		elseif( $price['cart'] == 'yes' ) {
+		elseif( isset($price['cart']) && $price['cart'] == 'yes' 
+			&& isset($settings['page-cart-active']) && $settings['page-cart-active'] == 'yes'
+			&& ($ciniki['business']['modules']['ciniki.sapos']['flags']&0x08) > 0 
+			) {
 			$content .= "<form action='" .  $ciniki['request']['base_url'] . "/cart' method='POST'>";
 			$content .= "<input type='hidden' name='action' value='add'/>";
 			$content .= "<input type='hidden' name='object' value='" . $price['object'] . "'/>";
 			$content .= "<input type='hidden' name='object_id' value='" . $price['object_id'] . "'/>";
+			$content .= "<input type='hidden' name='price_id' value='" . $price['id'] . "'/>";
 			$content .= "<input type='hidden' name='final_price' value='" . $final_price . "'/>";
 			// Check what time of field the quantity should be based on how many are available
 			if( isset($price['limited_units']) && $price['limited_units'] == 'yes' 
@@ -115,8 +121,9 @@ function ciniki_web_cartSetupPrices($ciniki, $settings, $business_id, $prices) {
 			$content .= "</form>";
 		}
 
-		$content .= "</div></div>";
+		$content .= "</div>";
 	}
+	$content .= "</div>";
 
 	return array('stat'=>'ok', 'content'=>$content);
 }
