@@ -870,6 +870,11 @@ span.exhibitors-description {
 	text-align: center;
 }
 
+#content h2.entry-subtitle {
+	clear: both;
+	padding-top: 1em;
+}
+
 
 /* 7. BROWSER AND NON-SEMANTIC STYLING
 ----------------------------------------------------------------------------------------*/
