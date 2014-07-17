@@ -1235,7 +1235,7 @@ function ciniki_web_main() {
 				this.account.sections.subscriptions.active = 'no';
 			}
 			// Setup the redirects
-			var popts = {'':'Nowhere', '/':'Home'};
+			var popts = {'':'Nowhere', '/':'Home', 'back':'Previous Page'};
 //			if( M.curBusiness.modules['ciniki.artcatalog'] != null ) { popts['/gallery'] = 'Gallery'; }
 //			if( M.curBusiness.modules['ciniki.gallery'] != null ) { popts['/gallery'] = 'Gallery'; }
 			if( M.curBusiness.modules['ciniki.blog'] != null 

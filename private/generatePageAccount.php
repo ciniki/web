@@ -71,10 +71,17 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 					$display_form = 'login';
 				} else {
 					$display_form = 'no';
-					if( isset($settings['page-account-signin-redirect']) 
-						&& $settings['page-account-signin-redirect'] != '' ) {
-						Header('Location: ' . $ciniki['request']['base_url'] . $settings['page-account-signin-redirect']);
-						exit;
+					if( isset($settings['page-account-signin-redirect']) ) {
+						if( $settings['page-account-signin-redirect'] == 'back' 
+							&& isset($_SESSION['login_referer']) && $_SESSION['login_referer'] != '' ) {
+							Header('Location: ' . $_SESSION['login_referer']);
+							$_SESSION['login_referer'] = '';
+							exit;
+						}
+						if( $settings['page-account-signin-redirect'] != '' ) {
+							Header('Location: ' . $ciniki['request']['base_url'] . $settings['page-account-signin-redirect']);
+							exit;
+						}
 					}
 				}
 			}
@@ -402,6 +409,15 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 		//
 		// Set a session variable, to test for cookies being turned on
 		//
+		if( isset($settings['page-account-signin-redirect']) 
+			&& $settings['page-account-signin-redirect'] == 'back' 
+			) {
+			if( (!isset($_SESSION['login_referer']) || $_SESSION['login_referer'] == '') 
+				&& isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != '' 
+				) {
+					$_SESSION['login_referer'] = $_SERVER['HTTP_REFERER'];
+			}
+		}
 		$_SESSION['loginform'] = 'yes';
 		$post_email = '';
 		if( isset($_POST['email']) ) {
