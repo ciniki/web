@@ -211,6 +211,22 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 	}
 
 	//
+	// Check if dealer is submitting an order
+	//
+	elseif( isset($_POST['submitorder']) && $_POST['submitorder'] != ''
+		&& isset($ciniki['session']['customer']['dealer_status']) 
+		&& $ciniki['session']['customer']['dealer_status'] == 10 
+		) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'submitOrder');
+		$rc = ciniki_sapos_web_submitOrder($ciniki, $settings, $ciniki['request']['business_id']);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		} else {
+			$content .= "<p>Your order has been submitted.</p>";
+		}
+	}
+
+	//
 	// Check if checkout
 	//
 	elseif( isset($_POST['checkout']) && $_POST['checkout'] != '' ) {
@@ -310,7 +326,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 				foreach($cart['taxes'] as $tax) {
 					$tax = $tax['tax'];
 					$content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
-					$content .= "<tr><td colspan='3' class='alignright'>" . $tax['description'] . "<td>"
+					$content .= "<tr><td colspan='3' class='alignright'>" . $tax['description'] . ":</td>"
 						. "<td class='alignright'>"
 						. numfmt_format_currency($intl_currency_fmt, $tax['amount'], $intl_currency)
 						. "</td><td></td></tr>";
@@ -338,9 +354,17 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 			$content .= "<span class='cart-submit'>"
 				. "<input class='cart-submit' type='submit' name='update' value='Update'/>"
 				. "</span>";
-			$content .= "<span class='cart-submit'>"
-				. "<input class='cart-submit' type='submit' name='checkout' value='Checkout'/>"
-				. "</span>";
+			if( isset($ciniki['session']['customer']['dealer_status']) 
+				&& $ciniki['session']['customer']['dealer_status'] == 10 ) {
+				$content .= "<span class='cart-submit'>"
+					. "<input class='cart-submit' type='submit' name='submitorder' value='Submit Order'/>"
+					. "</span>";
+
+			} else {
+				$content .= "<span class='cart-submit'>"
+					. "<input class='cart-submit' type='submit' name='checkout' value='Checkout'/>"
+					. "</span>";
+			}
 //			$content .= "</td></tr>";
 //			$content .= "</tfoot>";
 //			$content .= "</table>";

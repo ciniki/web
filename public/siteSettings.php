@@ -119,7 +119,6 @@ function ciniki_web_siteSettings($ciniki) {
 	}
 	if( isset($modules['ciniki.filedepot']) ) {
 		$pages['downloads'] = array('display_name'=>'Downloads', 'active'=>'no');
-		$pages['account'] = array('display_name'=>'Account', 'active'=>'no');
 	}
 	if( isset($modules['ciniki.blog']) ) {
 		if( ($modules['ciniki.blog']['flags']&0x01) > 0 ) {
@@ -138,6 +137,9 @@ function ciniki_web_siteSettings($ciniki) {
 	}
 	if( isset($modules['ciniki.surveys']) ) {
 		$pages['surveys'] = array('display_name'=>'Surveys', 'active'=>'no');
+	}
+	if( isset($modules['ciniki.filedepot']) || isset($modules['ciniki.products']) ) {
+		$pages['account'] = array('display_name'=>'Account', 'active'=>'no');
 	}
 
 	// 

@@ -289,6 +289,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		&& isset($settings['page-account-active']) && $settings['page-account-active'] == 'yes'
 		&& ((isset($settings['page-downloads-customers']) && $settings['page-downloads-customers'] == 'yes')
 			// Add check for members blog
+			|| (isset($settings['page-cart-active']) && $settings['page-cart-active'] == 'yes')
 			|| (isset($settings['page-subscriptions-public']) && $settings['page-subscriptions-public'] == 'yes')
 			|| (isset($ciniki['business']['modules']['ciniki.blog']) && ($ciniki['business']['modules']['ciniki.blog']['flags']&0x0100) > 0) // Used if there are other pages that allow customer only content
 		)) {
