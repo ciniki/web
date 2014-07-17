@@ -133,7 +133,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 			$rc = ciniki_sapos_web_cartItemAdd($ciniki, $settings, $ciniki['request']['business_id'],
 				array('object'=>$_POST['object'],
 					'object_id'=>$_POST['object_id'],
-					'price_id'=>(isset($_POST['price_id'])?$_POST['price_id']:0),
+	//				'price_id'=>(isset($_POST['price_id'])?$_POST['price_id']:0),
 					'quantity'=>$_POST['quantity']));
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
