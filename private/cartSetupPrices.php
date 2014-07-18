@@ -79,6 +79,7 @@ function ciniki_web_cartSetupPrices($ciniki, $settings, $business_id, $prices) {
 		//
 		elseif( isset($price['cart']) && $price['cart'] == 'yes' 
 			&& isset($settings['page-cart-active']) && $settings['page-cart-active'] == 'yes'
+			&& isset($ciniki['business']['modules']['ciniki.sapos']) 
 			&& ($ciniki['business']['modules']['ciniki.sapos']['flags']&0x08) > 0 
 			) {
 			$content .= "<form action='" .  $ciniki['request']['base_url'] . "/cart' method='POST'>";

@@ -59,6 +59,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 	//
 		
 	$page_title = "Products";
+	$ciniki['response']['head']['og']['url'] = $ciniki['request']['domain_base_url'] . '/products';
 
 	//
 	// Generate the product page
@@ -81,6 +82,12 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 		}
 		$product = $rc['product'];
 		$page_title = $product['name'];
+
+//		$ciniki['response']['head']['links'][] = array('rel'=>'canonical', 
+//			'href'=>$ciniki['request']['domain_base_url'] . '/products/product/' . $product_permalink
+//			);
+		$ciniki['response']['head']['og']['url'] .= '/product/' . $product_permalink;
+		$ciniki['response']['head']['og']['description'] = strip_tags($product['short_description']);
 
 		//
 		// Check if image requested
@@ -149,6 +156,12 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 		$product = $rc['product'];
 		$page_title = $product['name'];
 		$article_title = $product['name'];
+		
+		$ciniki['response']['head']['links'][] = array('rel'=>'canonical', 
+			'href'=>$ciniki['request']['domain_base_url'] . '/products/product/' . $product_permalink
+			);
+		$ciniki['response']['head']['og']['url'] .= '/product/' . $product_permalink;
+		$ciniki['response']['head']['og']['description'] = strip_tags($product['short_description']);
 
 		if( isset($product['category_title']) && $product['category_title'] != '' ) {
 			$article_title = "<a href='" . $ciniki['request']['base_url'] . "/products/category/" . $category_permalink
@@ -232,6 +245,12 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 		$product = $rc['product'];
 		$page_title = $product['name'];
 		$article_title = $product['name'];
+
+		$ciniki['response']['head']['links'][] = array('rel'=>'canonical', 
+			'href'=>$ciniki['request']['domain_base_url'] . '/products/product/' . $product_permalink
+			);
+		$ciniki['response']['head']['og']['url'] .= '/product/' . $product_permalink;
+		$ciniki['response']['head']['og']['description'] = strip_tags($product['short_description']);
 
 		if( isset($product['category_title']) && $product['category_title'] != '' ) {
 			$article_title = "<a href='" . $ciniki['request']['base_url'] . "/products/category/" . $category_permalink

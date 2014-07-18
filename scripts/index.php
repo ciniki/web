@@ -66,16 +66,7 @@ $ciniki['response'] = array('head'=>array(
 		'type'=>'',
 		),
 	));
-session_start();
-$ciniki['session'] = array();
-$ciniki['session']['change_log_id'] = 'web.' . date('Ymd.HMS');
-$ciniki['session']['user'] = array('id'=>'-2');
-if( isset($_SESSION['customer']) ) {
-	$ciniki['session']['customer'] = $_SESSION['customer'];
-}
-if( isset($_SESSION['cart']) ) {
-	$ciniki['session']['cart'] = $_SESSION['cart'];
-}
+
 $ciniki['business'] = array('modules'=>array());
 $ciniki['syncqueue'] = array();
 $ciniki['emailqueue'] = array();
@@ -242,6 +233,33 @@ if( $ciniki['request']['business_id'] == 0 ) {
 	}
 }
 
+//
+// Setup the session
+//
+session_start();
+$ciniki['session'] = array();
+$ciniki['session']['change_log_id'] = 'web.' . date('Ymd.HMS');
+$ciniki['session']['user'] = array('id'=>'-2');
+// If the session is for the current business
+if( isset($_SESSION['business_id']) && $_SESSION['business_id'] == $ciniki['request']['business_id'] ) {
+	if( isset($_SESSION['customer']) ) {
+		$ciniki['session']['customer'] = $_SESSION['customer'];
+	}
+	if( isset($_SESSION['cart']) ) {
+		$ciniki['session']['cart'] = $_SESSION['cart'];
+	}
+} else {
+	if( isset($_SESSION['customer']) ) { unset($_SESSION['customer']); };
+	if( isset($_SESSION['cart']) ) { unset($_SESSION['cart']); };
+	if( isset($ciniki['session']['customer']) ) { unset($ciniki['session']['customer']); };
+	if( isset($ciniki['session']['cart']) ) { unset($ciniki['session']['cart']); };
+}
+$_SESSION['business_id'] = $ciniki['request']['business_id'];
+$ciniki['session']['business_id'] = $ciniki['request']['business_id'];
+
+//
+// Setup the cache dir for the business
+//
 if( isset($ciniki['business']['uuid']) && $ciniki['business']['uuid'] != '' ) {
 	$ciniki['business']['cache_dir'] = $ciniki['config']['ciniki.core']['cache_dir'] . '/'
 		. $ciniki['business']['uuid'][0] . '/' . $ciniki['business']['uuid'];
