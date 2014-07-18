@@ -326,7 +326,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 				foreach($cart['taxes'] as $tax) {
 					$tax = $tax['tax'];
 					$content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
-					$content .= "<tr><td colspan='3' class='alignright'>" . $tax['description'] . ":</td>"
+					$content .= "<td colspan='3' class='alignright'>" . $tax['description'] . ":</td>"
 						. "<td class='alignright'>"
 						. numfmt_format_currency($intl_currency_fmt, $tax['amount'], $intl_currency)
 						. "</td><td></td></tr>";

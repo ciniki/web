@@ -760,14 +760,15 @@ footer div.social-icons a:active {
 	border-radius: 0.5em;
 	border: 1px solid #aaa;
 	text-align: center;
-	color: #555;
+	color: #333;
 }
 
 #content div.cart-items {
 	padding: 0px;
 	margin: 0px;
-	border: 2px solid #aaa;
+	border: 2px solid #fff;
 	border-radius: 10px; 
+	background: #aaa;
 }
 
 #content div.cart table.cart-items {
@@ -775,14 +776,15 @@ footer div.social-icons a:active {
 	border-radius: 10px; 
 	border: 0px solid #aaa;
 	overflow: hidden;  
+	color: #333;
 }
 
 #content div.cart table.cart-items thead tr:last-child th {
-	border-bottom: 2px solid #aaa;
+	border-bottom: 2px solid #fff;
 }
 
 #content div.cart table.cart-items tfoot tr:first-child td {
-	border-top: 2px solid #aaa;
+	border-top: 2px solid #fff;
 }
 
 #content div.cart table.cart-items thead,
@@ -797,21 +799,17 @@ footer div.social-icons a:active {
 }
 
 #content div.cart table.cart-items tr.item-even td {
-	background: #ffffff;
+	background: #ccc;
 }
 
 #content div.cart table.cart-items tr.item-odd td {
-	background: #f4f4f4;
+	background: #bbb;
 }
 
 #content div.cart table.cart-items thead th {
-	color: #222;
+	color: #111;
 	font-weight: bold;
-	background: #ddd;
-}
-
-#content div.cart table.cart-items {
-	background: #ddd;
+	background: #888;
 }
 
 #content div.cart form input.quantity, 
