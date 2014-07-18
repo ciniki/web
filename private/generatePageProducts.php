@@ -96,6 +96,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 			&& isset($ciniki['request']['uri_split'][3]) && $ciniki['request']['uri_split'][3] != '' 
 			) {
 			$image_permalink = $ciniki['request']['uri_split'][3];
+//			$ciniki['response']['head']['links']['canonical']['href'] .= '/gallery/' . $image_permalink;
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processGalleryImage');
 			$rc = ciniki_web_processGalleryImage($ciniki, $settings, $ciniki['request']['business_id'],
 				array('item'=>$product,
@@ -177,6 +178,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 			&& isset($ciniki['request']['uri_split'][5]) && $ciniki['request']['uri_split'][5] != '' 
 			) {
 			$image_permalink = $ciniki['request']['uri_split'][5];
+			$ciniki['response']['head']['links']['canonical']['href'] .= '/gallery/' . $image_permalink;
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processGalleryImage');
 			$rc = ciniki_web_processGalleryImage($ciniki, $settings, $ciniki['request']['business_id'],
 				array('item'=>$product,
@@ -246,7 +248,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 		$page_title = $product['name'];
 		$article_title = $product['name'];
 
-		$ciniki['response']['head']['links'][] = array('rel'=>'canonical', 
+		$ciniki['response']['head']['links']['canonical'] = array('rel'=>'canonical', 
 			'href'=>$ciniki['request']['domain_base_url'] . '/products/product/' . $product_permalink
 			);
 		$ciniki['response']['head']['og']['url'] .= '/product/' . $product_permalink;
@@ -271,6 +273,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 			&& isset($ciniki['request']['uri_split'][6]) && $ciniki['request']['uri_split'][6] != '' 
 			) {
 			$image_permalink = $ciniki['request']['uri_split'][6];
+			$ciniki['response']['head']['links']['canonical']['href'] .= '/gallery/' . $image_permalink;
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processGalleryImage');
 			$rc = ciniki_web_processGalleryImage($ciniki, $settings, $ciniki['request']['business_id'],
 				array('item'=>$product,

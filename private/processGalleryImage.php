@@ -68,6 +68,9 @@ function ciniki_web_processGalleryImage(&$ciniki, $settings, $business_id, $args
 	}
 	$img_url = $rc['url'];
 
+	// Setup the og image
+	$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
+
 	//
 	// Set the page to wide if possible
 	//

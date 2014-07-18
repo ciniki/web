@@ -29,6 +29,9 @@ function ciniki_web_processProduct(&$ciniki, $settings, $business_id, $base_url,
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
+		// Setup the og image
+		$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
+
 		$content .= "<aside><div class='image-wrap'><div class='image'>"
 			. "<img title='' alt='" . $product['name'] . "' src='" . $rc['url'] . "' />"
 			. "</div></div></aside>";
