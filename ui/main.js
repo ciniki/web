@@ -555,6 +555,9 @@ function ciniki_web_main() {
 				'page-products-active':{'label':'Display Products', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-products-name':{'label':'Name', 'type':'text', 'hint':'default is Products'},
 				}},
+			'social':{'label':'Social Media', 'visible':'yes', 'fields':{
+				'page-products-share-buttons':{'label':'Sharing', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'products\');'},
 				}},

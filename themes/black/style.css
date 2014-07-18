@@ -692,11 +692,11 @@ hr.header-section-divider {
 }
 
 /* Social sharing buttons */
-div.share-buttons {
+.share-buttons-wrap {
 	margin-top: 1.5em;
 }
 
-div.share-buttons span.share-buttons {
+.share-buttons-wrap span.share-buttons {
 	background-color: #333;
 	padding: 1.05em 0.75em 0.45em 0.75em;
 	border: 1px solid #777;
@@ -704,21 +704,21 @@ div.share-buttons span.share-buttons {
 	text-shadow: 0px 0px 15px #222;
 }
 
-div.share-buttons span.socialsymbol {
+.share-buttons-wrap span.socialsymbol {
 	font-size: 2.25em;
 	padding: 0.1em;
 	vertical-align: baseline;
 }
 
-div.share-buttons span.socialtext {
+.share-buttons-wrap span.socialtext {
 	font-size: 1.0em;
 	color: #777;
 }
 
-div.share-buttons span.social-facebook { color: #3B5998; }
-div.share-buttons span.social-twitter { color: #55ACEE; }
-div.share-buttons span.social-pinterest { color: #CC2127; }
-div.share-buttons span.social-googleplus { color: #DD4B39; }
+.share-buttons-wrap span.social-facebook { color: #3B5998; }
+.share-buttons-wrap span.social-twitter { color: #55ACEE; }
+.share-buttons-wrap span.social-pinterest { color: #CC2127; }
+.share-buttons-wrap span.social-googleplus { color: #DD4B39; }
 
 footer {
 	color: #777;

@@ -150,6 +150,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-exhibitions-tourexhibitors-name',
 		'page-products-active',
 		'page-products-name',
+		'page-products-share-buttons',
 		'page-recipes-active',
 		'page-recipes-name',
 		'page-recipes-tags',

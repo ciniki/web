@@ -790,8 +790,8 @@ span.exhibitors-description {
 }
 
 /* Social share buttons */
-#content div.share-buttons {
-	text-align: right;
+#content .share-buttons-wrap {
+	text-align: left;
 	display: block;
 }
 

@@ -59,6 +59,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 	//
 		
 	$page_title = "Products";
+	$tags = array();
 	$ciniki['response']['head']['og']['url'] = $ciniki['request']['domain_base_url'] . '/products';
 
 	//
@@ -120,8 +121,8 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 				. "<div class='entry-content'>";
 
 			$base_url = $ciniki['request']['base_url'] . "/products/product/" . $product_permalink;
-			$rc = ciniki_web_processProduct($ciniki, $settings, 
-				$ciniki['request']['business_id'], $base_url, $product);
+			$rc = ciniki_web_processProduct($ciniki, $settings, $ciniki['request']['business_id'], 
+				$base_url, $product, array('title'=>$page_title, 'tags'=>$product['social-tags']));
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -206,8 +207,8 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 			//
 			$base_url = $ciniki['request']['base_url'] . "/products/category/$category_permalink"
 				. "/product/" . $product_permalink;
-			$rc = ciniki_web_processProduct($ciniki, $settings, 
-				$ciniki['request']['business_id'], $base_url, $product);
+			$rc = ciniki_web_processProduct($ciniki, $settings, $ciniki['request']['business_id'], 
+				$base_url, $product, array('title'=>$page_title, 'tags'=>$product['social-tags']));
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -303,8 +304,8 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 			$base_url = $ciniki['request']['base_url'] 
 				. "/products/category/$category_permalink/$subcategory_permalink" 
 				. "/product/" . $product_permalink;
-			$rc = ciniki_web_processProduct($ciniki, $settings, 
-				$ciniki['request']['business_id'], $base_url, $product);
+			$rc = ciniki_web_processProduct($ciniki, $settings, $ciniki['request']['business_id'], 
+				$base_url, $product, array('title'=>$page_title, 'tags'=>$product['social-tags']));
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
