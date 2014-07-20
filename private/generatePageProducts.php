@@ -404,6 +404,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 		}
 		$details = isset($rc['details'])?$rc['details']:array();
 		$subcategories = isset($rc['subcategories'])?$rc['subcategories']:array();
+		$subcategorytypes = isset($rc['subcategorytypes'])?$rc['subcategorytypes']:array();
 		$products = isset($rc['products'])?$rc['products']:array();
 
 //		print "<pre>" . print_r($rc, true) . "</pre>";
@@ -478,6 +479,37 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 					. "</a></div>";
 			}
 			$page_content .= "</div>";
+		}
+
+		//
+		// If there is more than one type of subcategory
+		//
+		if( isset($subcategorytypes) && count($subcategorytypes) > 0 ) {
+			foreach($subcategorytypes as $tid => $type) {
+				$subcategories = $type['categories'];
+				$base_url = $ciniki['request']['base_url'] . "/products/category/" . $category_permalink . "/category";
+				$page_content .= "<div class='image-categories'>";
+				foreach($subcategories AS $cnum => $category) {
+					$name = $category['name'];
+					$permalink = $category['permalink'];
+					ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+					$rc = ciniki_web_getScaledImageURL($ciniki, $category['image_id'], 'thumbnail', '240', 0);
+					if( $rc['stat'] != 'ok' ) {
+						$img_url = '/ciniki-web-layouts/default/img/noimage_240.png';
+					} else {
+						$img_url = $rc['url'];
+					}
+					$page_content .= "<div class='image-categories-thumbnail-wrap'>"
+						. "<a href='" . $ciniki['request']['base_url'] . "/products/category/" 
+							. $category_permalink . "/" . $permalink . "' " . "title='" . $name . "'>"
+						. "<div class='image-categories-thumbnail'>"
+						. "<img title='$name' alt='$name' src='$img_url' />"
+						. "</div>"
+						. "<span class='image-categories-name'>$name</span>"
+						. "</a></div>";
+				}
+				$page_content .= "</div>";
+			}
 		}
 
 		//
