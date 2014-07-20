@@ -211,6 +211,10 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-account-active',
 		'page-account-signin-redirect',
 		'page-cart-active',
+		'page-cart-inventory-customers-display',	// Display current inventory to customers
+		'page-cart-inventory-members-display',		// Display current inventory to members
+		'page-cart-inventory-dealers-display',		// Display current inventory to dealers
+		'page-cart-inventory-distributors-display',		// Display current inventory to distributors
 		'page-signup-active',
 		'page-signup-menu',
 		'page-api-active',

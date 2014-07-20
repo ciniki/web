@@ -66,6 +66,44 @@ function ciniki_web_cartSetupPrices($ciniki, $settings, $business_id, $prices) {
 			$content .= ' ' . $intl_currency;
 		}
 
+		// Check if display stock level
+		if( isset($price['units_inventory']) ) {
+			$inv = 'no';
+			if( isset($settings['page-cart-inventory-customers-display']) 
+				&& $settings['page-cart-inventory-customers-display'] == 'yes' 
+				) {
+				$inv = 'yes';
+			}
+			if( isset($settings['page-cart-inventory-members-display']) 
+				&& $settings['page-cart-inventory-members-display'] == 'yes' 
+				&& isset($ciniki['session']['customer']['member_status'])
+				&& $ciniki['session']['customer']['member_status'] == 10
+				) {
+				$inv = 'yes';
+			}
+			if( isset($settings['page-cart-inventory-dealers-display']) 
+				&& $settings['page-cart-inventory-dealers-display'] == 'yes' 
+				&& isset($ciniki['session']['customer']['dealer_status'])
+				&& $ciniki['session']['customer']['dealer_status'] == 10
+				) {
+				$inv = 'yes';
+			}
+			if( isset($settings['page-cart-inventory-distributor-display']) 
+				&& $settings['page-cart-inventory-distributor-display'] == 'yes' 
+				&& isset($ciniki['session']['customer']['distributor_status'])
+				&& $ciniki['session']['customer']['distributor_status'] == 10
+				) {
+				$inv = 'yes';
+			}
+			if( $inv == 'yes' ) {
+				if( $price['units_available'] > 0 ) {
+					$content .= ' (' . $price['units_available'] . ' in stock)';
+				} else {
+					$content .= ' (backordered)';
+				}
+			}
+		}
+
 		// Check if sold out
 		$sold_out = '';
 		if( isset($price['limited_units']) && isset($price['units_available']) 
@@ -73,6 +111,7 @@ function ciniki_web_cartSetupPrices($ciniki, $settings, $business_id, $prices) {
 			) {
 			$content .= ' Sold Out';
 		}
+
 
 		//
 		// If quantity is limited, and not sold out
@@ -86,7 +125,7 @@ function ciniki_web_cartSetupPrices($ciniki, $settings, $business_id, $prices) {
 			$content .= "<input type='hidden' name='action' value='add'/>";
 			$content .= "<input type='hidden' name='object' value='" . $price['object'] . "'/>";
 			$content .= "<input type='hidden' name='object_id' value='" . $price['object_id'] . "'/>";
-			$content .= "<input type='hidden' name='price_id' value='" . $price['id'] . "'/>";
+			$content .= "<input type='hidden' name='price_id' value='" . $price['price_id'] . "'/>";
 			$content .= "<input type='hidden' name='final_price' value='" . $final_price . "'/>";
 			// Check what time of field the quantity should be based on how many are available
 			if( isset($price['limited_units']) && $price['limited_units'] == 'yes' 

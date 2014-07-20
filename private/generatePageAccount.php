@@ -42,9 +42,11 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 	if( (isset($_POST['action']) && $_POST['action'] == 'logout') 
 		|| (isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'logout') ) {
 		$ciniki['session']['customer'] = array();
+		$ciniki['session']['cart'] = array();
 		$ciniki['session']['user'] = array();
 		$ciniki['session']['change_log_id'] = '';
 		unset($_SESSION['customer']);
+		unset($_SESSION['cart']);
 		Header('Location: ' . ($ciniki['request']['base_url']!=''?$ciniki['request']['base_url']:'/'));
 	}
 	elseif( isset($_POST['action']) ) {
@@ -71,6 +73,16 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 					$display_form = 'login';
 				} else {
 					$display_form = 'no';
+					ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartLoad');
+					$rc = ciniki_sapos_web_cartLoad($ciniki, $settings, $ciniki['request']['business_id']);
+					if( $rc['stat'] == 'ok' ) {
+					//	print "Loaded cart";
+						$_SESSION['cart'] = $rc['cart'];
+						$_SESSION['cart']['sapos_id'] = $rc['cart']['id'];
+						$_SESSION['cart']['num_items'] = count($rc['cart']['items']);
+					//	print_r($_SESSION);
+					}
+					//exit;
 					if( isset($settings['page-account-signin-redirect']) ) {
 						if( $settings['page-account-signin-redirect'] == 'back' 
 							&& isset($_SESSION['login_referer']) && $_SESSION['login_referer'] != '' ) {

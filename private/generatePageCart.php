@@ -133,7 +133,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 			$rc = ciniki_sapos_web_cartItemAdd($ciniki, $settings, $ciniki['request']['business_id'],
 				array('object'=>$_POST['object'],
 					'object_id'=>$_POST['object_id'],
-	//				'price_id'=>(isset($_POST['price_id'])?$_POST['price_id']:0),
+					'price_id'=>(isset($_POST['price_id'])?$_POST['price_id']:0),
 					'quantity'=>$_POST['quantity']));
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
@@ -242,6 +242,68 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 	//
 	if( $display_cart == 'yes' ) {
 		//
+		// Check if we should display inventory
+		//
+		$inv = 'no';
+		if( isset($settings['page-cart-inventory-customersj-display']) 
+			&& $settings['page-cart-inventory-customersj-display'] == 'yes' 
+			) {
+			$inv = 'yes';
+		}
+		elseif( isset($settings['page-cart-inventory-dealers-display']) 
+			&& $settings['page-cart-inventory-dealers-display'] == 'yes' 
+			&& isset($ciniki['session']['customer']['dealer_status'])
+			&& $ciniki['session']['customer']['dealer_status'] == 10 
+			) {
+			$inv = 'yes';
+		}
+		if( $inv == 'yes' ) {
+			$item_objects = array();
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'private', 'getReservedQuantities');
+			foreach($cart['items'] as $item_id => $item) {
+				// Create the object
+				if( !isset($item_objects[$item['item']['object']]) ) {
+					$item_objects[$item['item']['object']] = array();
+				}
+				// Add the item
+				$item_objects[$item['item']['object']][$item['item']['object_id']] = $item_id;
+				$cart['items'][$item_id]['item']['quantity_inventory'] = 0;
+				$cart['items'][$item_id]['item']['quantity_reserved'] = 0;
+			}
+			foreach($item_objects as $o => $oids) {
+				//
+				// Get current inventory
+				//
+//				print_r($o);
+				list($pkg, $mod, $obj) = explode('.', $o);
+				$object_ids = array_keys($oids);
+				$rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'sapos', 'itemsInventory');
+				if( $rc['stat'] == 'ok') {
+					$fn = $pkg . '_' . $mod . '_sapos_itemsInventory';
+					$rc = $fn($ciniki, $ciniki['request']['business_id'], array(
+						'object'=>$o, 'object_ids'=>$object_ids));
+					if( isset($rc['quantities']) ) {
+						foreach($rc['quantities'] as $quantity) {
+							$item_id = $item_objects[$o][$quantity['object_id']];
+							$cart['items'][$item_id]['item']['quantity_inventory'] = $quantity['quantity_inventory'];
+						}
+					}
+				}
+
+				//
+				// Get the number reserved
+				//
+				$rc = ciniki_sapos_getReservedQuantities($ciniki, $ciniki['request']['business_id'], 
+					$o, $object_ids, $cart['id']);
+				if( isset($rc['quantities']) ) {
+					foreach($rc['quantities'] as $quantity) {
+						$item_id = $item_objects[$o][$quantity['object_id']];
+						$cart['items'][$item_id]['item']['quantity_reserved'] = $quantity['quantity_reserved'];
+					}
+				}
+			}
+		}
+		//
 		// Display cart items
 		//
 		$content .= "<article class='page'>\n"
@@ -257,6 +319,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 			$content .= "<thead><tr>"
 				. "<th class='alignleft'>Item</th>"
 				. "<th class='alignright'>Quantity</th>"
+				. ($inv=='yes'?"<th class='alignright'>Inventory</th>":"")
 				. "<th class='alignright'>Price</th>"
 				. "<th class='alignright'>Total</th>"
 				. "<th>Actions</th>"
@@ -277,6 +340,16 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 					$content .= $item['quantity'];
 				}
 				$content .= "</td>";
+				if( $inv == 'yes' ) {
+					$content .= "<td class='alignright'>";
+					$quantity_available = $item['quantity_inventory'] - $item['quantity_reserved'];
+					if( $quantity_available > 0 ) {
+						$content .= $quantity_available;
+					} else {
+						$content .= 'Backordered';
+					}
+					$content .= "</td>";
+				}
 				$discount_text = '';
 				if( $item['unit_discount_amount'] > 0 ) {
 					$discount_text .= '-' . numfmt_format_currency($intl_currency_fmt, 
@@ -306,9 +379,11 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 			$content .= "</tbody>";
 			$content .= "<tfoot>";
 			// cart totals
+			$num_cols = 3;
+			if( $inv == 'yes' ) { $num_cols++; }
 			if( $cart['shipping_amount'] > 0 || (isset($cart['taxes']) && count($cart['taxes']) > 0) ) {
 				$content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
-				$content .= "<td colspan='3' class='alignright'>Sub-Total:</td>"
+				$content .= "<td colspan='$num_cols' class='alignright'>Sub-Total:</td>"
 					. "<td class='alignright'>"
 					. numfmt_format_currency($intl_currency_fmt, $cart['subtotal_amount'], $intl_currency)
 					. "</td><td></td></tr>";
@@ -316,7 +391,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 			}
 			if( isset($cart['shipping_amount']) && $cart['shipping_amount'] > 0 ) {
 				$content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
-				$content .= "<td colspan='3' class='alignright'>Shipping:</td>"
+				$content .= "<td colspan='$num_cols' class='alignright'>Shipping:</td>"
 					. "<td class='alignright'>"
 					. numfmt_format_currency($intl_currency_fmt, $cart['shipping_amount'], $intl_currency)
 					. "</td><td></td></tr>";
@@ -326,7 +401,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 				foreach($cart['taxes'] as $tax) {
 					$tax = $tax['tax'];
 					$content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
-					$content .= "<td colspan='3' class='alignright'>" . $tax['description'] . ":</td>"
+					$content .= "<td colspan='$num_cols' class='alignright'>" . $tax['description'] . ":</td>"
 						. "<td class='alignright'>"
 						. numfmt_format_currency($intl_currency_fmt, $tax['amount'], $intl_currency)
 						. "</td><td></td></tr>";
@@ -334,7 +409,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 				}
 			}
 			$content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
-			$content .= "<td colspan='3' class='alignright'><b>Total:</b></td>"
+			$content .= "<td colspan='$num_cols' class='alignright'><b>Total:</b></td>"
 				. "<td class='alignright'>"
 				. numfmt_format_currency($intl_currency_fmt, $cart['total_amount'], $intl_currency)
 				. "</td><td></td></tr>";

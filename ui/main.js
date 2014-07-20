@@ -972,6 +972,12 @@ function ciniki_web_main() {
 			'options':{'label':'', 'fields':{
 				'page-cart-active':{'label':'Enable Cart', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				}},
+			'_inventory':{'label':'Current Inventory Visible To', 'fields':{
+				'page-cart-inventory-customers-display':{'label':'Customers', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-cart-inventory-members-display':{'label':'Members', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-cart-inventory-dealers-display':{'label':'Dealers', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-cart-inventory-distributors-display':{'label':'Distributors', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'cart\');'},
 				}},
