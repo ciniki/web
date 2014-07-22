@@ -506,6 +506,24 @@ div.googlemap p.exhibitors-more,
 	height: 260px;
 }
 
+#content div.image-categories-thumbnail-small span.image-categories-name {
+	width: 120px;
+}
+
+#content div.image-categories-thumbnail-small div.image-categories-thumbnail img {
+	width: 120px;
+	height: 120px;
+}
+
+#content div.image-categories-thumbnail-medium span.image-categories-name {
+	width: 120px;
+}
+
+#content div.image-categories-thumbnail-medium div.image-categories-thumbnail img {
+	width: 120px;
+	height: 120px;
+}
+
 #content div.image-cilist-thumbnail,
 #content div.image-members-thumbnail,
 #content div.image-exhibitors-thumbnail {

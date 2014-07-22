@@ -159,6 +159,19 @@ span.image-categories-name {
 	font-style: italic;
 }
 
+#content div.image-categories-thumbnail-small span.image-categories-name {
+	font-size: 1.0em;
+	line-height: 1.0em;
+	padding-top: 1.0em;
+	padding-bottom: 0.5em;
+}
+#content div.image-categories-thumbnail-medium span.image-categories-name {
+	font-size: 1.0em;
+	line-height: 1.0em;
+	padding-top: 1.0em;
+	padding-bottom: 0.5em;
+}
+
 #content span.image-categories-name a,
 #content span.image-categories-name a:visited,
 #content span.image-categories-name a:hover,

@@ -29,6 +29,7 @@ function ciniki_web_main() {
 		'aspen':'Aspen',
 		};
 	this.activeToggles = {'no':'No', 'yes':'Yes'};
+	this.productThumbnailToggles = {'auto':'Auto', 'small':'Small', 'medium':'Medium', 'large':'Large'};
 	this.userFlags = {
 		'1':{'name':'Name'},
 		'2':{'name':'Title'},
@@ -550,12 +551,14 @@ function ciniki_web_main() {
 		//
 		this.products = new M.panel('Products',
 			'ciniki_web_main', 'products',
-			'mc', 'narrow', 'sectioned', 'ciniki.web.main.products');
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.products');
 		this.products.data = {};
 		this.products.sections = {
 			'options':{'label':'', 'fields':{
 				'page-products-active':{'label':'Display Products', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-products-name':{'label':'Name', 'type':'text', 'hint':'default is Products'},
+				'page-products-categories-size':{'label':'Category Thumbnail Size', 'type':'toggle', 'default':'auto', 'toggles':this.productThumbnailToggles},
+				'page-products-subcategories-size':{'label':'Sub-Category Thumbnail Size', 'type':'toggle', 'default':'auto', 'toggles':this.productThumbnailToggles},
 				}},
 			'social':{'label':'Social Media', 'visible':'yes', 'fields':{
 				'page-products-share-buttons':{'label':'Sharing', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},

@@ -151,6 +151,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-products-active',
 		'page-products-name',
 		'page-products-share-buttons',
+		'page-products-categories-size',
+		'page-products-subcategories-size',
 		'page-recipes-active',
 		'page-recipes-name',
 		'page-recipes-tags',

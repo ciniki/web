@@ -457,6 +457,21 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 		// If there are sub categories, display them
 		//
 		if( isset($subcategories) && count($subcategories) > 0 ) {
+			if( isset($settings['page-products-subcategories-size']) 
+				&& $settings['page-products-subcategories-size'] != '' 
+				&& $settings['page-products-subcategories-size'] != 'auto' 
+				) {
+				$size = $settings['page-products-subcategories-size'];
+			} else {
+				$size = 'large';
+				foreach($subcategories as $tid => $type) {
+					if( count($subcategories) > 16 ) {
+						$size = 'small';
+					} elseif( count($subcategories) > 9 ) {
+						$size = 'medium';
+					}
+				}
+			}
 			$base_url = $ciniki['request']['base_url'] . "/products/category/" . $category_permalink . "/category";
 			$page_content .= "<div class='image-categories'>";
 			foreach($subcategories AS $cnum => $category) {
@@ -469,7 +484,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 				} else {
 					$img_url = $rc['url'];
 				}
-				$page_content .= "<div class='image-categories-thumbnail-wrap'>"
+				$page_content .= "<div class='image-categories-thumbnail-wrap image-categories-thumbnail-$size'>"
 					. "<a href='" . $ciniki['request']['base_url'] . "/products/category/" 
 						. $category_permalink . "/" . $permalink . "' " . "title='" . $name . "'>"
 					. "<div class='image-categories-thumbnail'>"
@@ -485,6 +500,21 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 		// If there is more than one type of subcategory
 		//
 		if( isset($subcategorytypes) && count($subcategorytypes) > 0 ) {
+			if( isset($settings['page-products-subcategories-size']) 
+				&& $settings['page-products-subcategories-size'] != '' 
+				&& $settings['page-products-subcategories-size'] != 'auto' 
+				) {
+				$size = $settings['page-products-subcategories-size'];
+			} else {
+				$size = 'large';
+				foreach($subcategorytypes as $tid => $type) {
+					if( count($type['categories']) > 16 ) {
+						$size = 'small';
+					} elseif( count($type['categories']) > 9 ) {
+						$size = 'medium';
+					}
+				}
+			}
 			foreach($subcategorytypes as $tid => $type) {
 				$subcategories = $type['categories'];
 				$base_url = $ciniki['request']['base_url'] . "/products/category/" . $category_permalink . "/category";
@@ -499,7 +529,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 					} else {
 						$img_url = $rc['url'];
 					}
-					$page_content .= "<div class='image-categories-thumbnail-wrap'>"
+					$page_content .= "<div class='image-categories-thumbnail-wrap image-categories-thumbnail-$size'>"
 						. "<a href='" . $ciniki['request']['base_url'] . "/products/category/" 
 							. $category_permalink . "/" . $permalink . "' " . "title='" . $name . "'>"
 						. "<div class='image-categories-thumbnail'>"
@@ -582,6 +612,17 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 			$page_content .= "<p>I'm sorry, but we currently don't have any products available.</p>";
 		} else {
 			$page_content .= "<div class='image-categories'>";
+			$size = 'large';
+			if( isset($settings['page-products-categories-size']) 
+				&& $settings['page-products-subcategories-size'] != '' 
+				&& $settings['page-products-subcategories-size'] != 'auto' 
+				) {
+				$size = $settings['page-products-categories-size'];
+			} elseif( count($rc['categories']) > 16 ) {
+				$size = 'small';
+			} elseif( count($rc['categories']) > 9 ) {
+				$size = 'medium';
+			}
 			foreach($rc['categories'] AS $cnum => $category) {
 				$name = $category['name'];
 				$permalink = $category['permalink'];
@@ -592,7 +633,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 				} else {
 					$img_url = $rc['url'];
 				}
-				$page_content .= "<div class='image-categories-thumbnail-wrap'>"
+				$page_content .= "<div class='image-categories-thumbnail-wrap image-categories-thumbnail-$size'>"
 					. "<a href='" . $ciniki['request']['base_url'] . "/products/category/" . $permalink . "' "
 						. "title='" . $name . "'>"
 					. "<div class='image-categories-thumbnail'>"

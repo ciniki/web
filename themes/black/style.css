@@ -165,6 +165,16 @@ div.image-categories-thumbnail {
 	border: 0px;
 }
 
+#content div.image-categories-thumbnail-small span.image-categories-thumbnail {
+	border-radius: 8px;
+	border: 6px solid #fff;
+}
+#content div.image-categories-thumbnail-medium span.image-categories-thumbnail {
+	border-radius: 8px;
+	border: 6px solid #fff;
+}
+
+
 div.image-cilist-thumbnail img,
 div.image-exhibitors-thumbnail img,
 div.image-sponsors-thumbnail img,
@@ -184,6 +194,19 @@ span.image-categories-name {
 	padding-bottom: 0.7em;
 	line-height: 1.2em;
 	vertical-align: top;
+}
+
+#content div.image-categories-thumbnail-small span.image-categories-name {
+	font-size: 1.0em;
+	line-height: 1.0em;
+	padding-top: 1.0em;
+	padding-bottom: 0.5em;
+}
+#content div.image-categories-thumbnail-medium span.image-categories-name {
+	font-size: 1.0em;
+	line-height: 1.0em;
+	padding-top: 1.0em;
+	padding-bottom: 0.5em;
 }
 
 #content span.image-categories-name a,
