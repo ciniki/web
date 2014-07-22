@@ -579,7 +579,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 			$page_title = 'Products';
 		}
 		if( !isset($rc['categories']) ) {
-			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1496', 'msg'=>'Internal error'));
+			$page_content .= "<p>I'm sorry, but we currently don't have any products available.</p>";
 		} else {
 			$page_content .= "<div class='image-categories'>";
 			foreach($rc['categories'] AS $cnum => $category) {

@@ -282,6 +282,8 @@ function ciniki_web_main() {
 				'page-home-upcoming-events':{'label':'Display Upcoming Events', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-home-upcoming-workshops':{'label':'Display Upcoming Workshops', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-home-upcoming-artgalleryexhibitions':{'label':'Display Upcoming Exhibtions', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+				'page-home-products-latest':{'label':'Display Latest Products', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+				'page-home-products-latest-title':{'label':'Latest Products Title', 'active':'no', 'type':'text', 'size':'small', 'hint':'New Products'},
 				}},
 			'_slider':{'label':'Image Slider', 'active':'no', 'fields':{
 				'page-home-slider':{'label':'Slider', 'active':'no', 'type':'select', 'options':{}},
@@ -1206,11 +1208,16 @@ function ciniki_web_main() {
 				this.home.sections.options.fields['page-home-gallery-latest-title'].active = 'yes';
 				this.home.sections.options.fields['page-home-gallery-random'].active = 'yes';
 				this.home.sections.options.fields['page-home-gallery-random-title'].active = 'yes';
+			} else if( M.curBusiness.modules['ciniki.products'] != null ) {
+				this.home.sections.options.fields['page-home-products-latest'].active = 'yes';
+				this.home.sections.options.fields['page-home-products-latest-title'].active = 'yes';
 			} else {
 				this.home.sections.options.fields['page-home-gallery-latest'].active = 'no';
 				this.home.sections.options.fields['page-home-gallery-latest-title'].active = 'no';
 				this.home.sections.options.fields['page-home-gallery-random'].active = 'no';
 				this.home.sections.options.fields['page-home-gallery-random-title'].active = 'no';
+				this.home.sections.options.fields['page-home-products-latest'].active = 'no';
+				this.home.sections.options.fields['page-home-products-latest-title'].active = 'no';
 			}
 			this.home.sections.options.fields['page-home-upcoming-events'].active = (M.curBusiness.modules['ciniki.events']!=null)?'yes':'no';
 			this.home.sections.options.fields['page-home-latest-recipes'].active=(M.curBusiness.modules['ciniki.recipes']!=null)?'yes':'no';

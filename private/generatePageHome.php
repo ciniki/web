@@ -218,6 +218,46 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 	}
 
 	//
+	// List the new products
+	//
+	if( isset($ciniki['business']['modules']['ciniki.products']) 
+		&& isset($settings['page-products-active']) && $settings['page-products-active'] == 'yes' 
+		&& (!isset($settings['page-home-products-latest']) || $settings['page-home-products-latest'] == 'yes') 
+		) {
+
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'products', 'web', 'newProducts');
+		$rc = ciniki_products_web_newProducts($ciniki, $settings, $ciniki['request']['business_id'], 2);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+
+		if( isset($rc['products']) && count($rc['products']) > 0 ) {
+			$products = $rc['products'];
+			$base_url = $ciniki['request']['base_url'] . "/products/product";
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
+			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, array('0'=>array(
+				'name'=>'', 'noimage'=>'/ciniki-web-layouts/default/img/noimage_240.png',
+				'list'=>$products)), array('limit'=>2));
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= "<article class='page'>\n"
+				. "<header class='entry-title'><h1 class='entry-title'>";
+			if( isset($settings['page-home-products-latest-title']) 
+				&& $settings['page-home-products-latest-title'] != '' 
+				) {
+				$page_content .= $settings['page-home-products-latest-title'];
+			} else {
+				$page_content .= "New Products";
+			}
+			$page_content .= "</h1></header>\n"
+				. "<div class='entry-content'>" . $rc['content'] . "</div>"
+				. "</article>\n"
+				. "";
+		}
+	}
+
+	//
 	// List any upcoming exhibitions
 	//
 	if( isset($ciniki['business']['modules']['ciniki.artgallery']) 
