@@ -614,8 +614,8 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 			$page_content .= "<div class='image-categories'>";
 			$size = 'large';
 			if( isset($settings['page-products-categories-size']) 
-				&& $settings['page-products-subcategories-size'] != '' 
-				&& $settings['page-products-subcategories-size'] != 'auto' 
+				&& $settings['page-products-categories-size'] != '' 
+				&& $settings['page-products-categories-size'] != 'auto' 
 				) {
 				$size = $settings['page-products-categories-size'];
 			} elseif( count($rc['categories']) > 16 ) {
