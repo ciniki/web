@@ -125,7 +125,7 @@ a img {
 
 div.image-categories-thumbnail-wrap {
 	display: inline-block;
-	margin: 10px;
+/*	margin: 10px; */
 	padding: 0px;
 	border: 0px solid #fff;
 	line-height: 0.7em;
@@ -136,6 +136,10 @@ div.image-categories-thumbnail {
 	margin: 0px;
 	padding: 8px;
 	border: 1px solid #aaa;
+}
+
+#content div.image-categories-thumbnail-small div.image-categories-thumbnail {
+	padding: 6px;
 }
 
 div.image-categories-thumbnail img {
@@ -952,37 +956,41 @@ aside div.borderless {
 }
 /* Styles for larger screens */
 @media screen and (min-width: 33em) {
+	#sub-menu-container {
+		background-color: #136B8D;
+		border: 2px solid #033B5D;
+		border-radius: 10px;
+		background: -webkit-gradient(linear, left top, left bottom, from(#53ABCD), to(#136B8D));
+		background: -moz-linear-gradient(top,  #53ABCD,  #136B8D);
+		filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#53ABCD', endColorstr='#136B8D');
+	}
+	#main-menu-container {
+		background-color: #444;
+		border: 2px solid #222;
+		border-radius: 10px;
+		background: -webkit-gradient(linear, left top, left bottom, from(#888), to(#555));
+		background: -moz-linear-gradient(top,  #888,  #555);
+		filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#888888', endColorstr='#555555');
+	}
 
-#sub-menu-container {
-	background-color: #136B8D;
-	border: 2px solid #033B5D;
-	border-radius: 10px;
-	background: -webkit-gradient(linear, left top, left bottom, from(#53ABCD), to(#136B8D));
-	background: -moz-linear-gradient(top,  #53ABCD,  #136B8D);
-	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#53ABCD', endColorstr='#136B8D');
-}
-#main-menu-container {
-	background-color: #444;
-	border: 2px solid #222;
-	border-radius: 10px;
-	background: -webkit-gradient(linear, left top, left bottom, from(#888), to(#555));
-	background: -moz-linear-gradient(top,  #888,  #555);
-	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#888888', endColorstr='#555555');
-}
-
-#sub-menu-container ul.menu li.menu-item,
-#main-menu-container ul.menu li.menu-item {
-	border: 0px solid #000;
-	background-color: transparent;
-	border-radius: 10px;
-	font-size: 1.1em;
-	text-align: center;
-	text-shadow: 0 1px 1px rgba(0,0,0,0.5);
-	box-shadow: none;
-	background: transparent;
-	filter: none;
-	padding-left: 0.7em;
-	padding-right: 0.7em;
+	#sub-menu-container ul.menu li.menu-item,
+	#main-menu-container ul.menu li.menu-item {
+		border: 0px solid #000;
+		background-color: transparent;
+		border-radius: 10px;
+		font-size: 1.1em;
+		text-align: center;
+		text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+		box-shadow: none;
+		background: transparent;
+		filter: none;
+		padding-left: 0.7em;
+		padding-right: 0.7em;
+	}
 }
 
+@media screen and (min-width: 40em) {
+	#content div.image-categories-thumbnail-small {
+		margin: 10px;
+	} 
 }

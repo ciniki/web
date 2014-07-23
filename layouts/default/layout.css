@@ -67,12 +67,12 @@ header span.title {
 } */
 
 #content div.image-categories-thumbnail-small span.image-categories-name {
-	width: 120px;
+	width: 100px;
 }
 
 #content div.image-categories-thumbnail-small div.image-categories-thumbnail img {
-	width: 120px;
-	height: 120px;
+	width: 100px;
+	height: 100px;
 }
 
 #content div.image-categories-thumbnail-medium span.image-categories-name {
