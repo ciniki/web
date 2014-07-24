@@ -465,9 +465,9 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 			} else {
 				$size = 'large';
 				foreach($subcategories as $tid => $type) {
-					if( count($subcategories) > 16 ) {
+					if( count($subcategories) > 12 ) {
 						$size = 'small';
-					} elseif( count($subcategories) > 9 ) {
+					} elseif( count($subcategories) > 6 ) {
 						$size = 'medium';
 					}
 				}
@@ -508,9 +508,9 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 			} else {
 				$size = 'large';
 				foreach($subcategorytypes as $tid => $type) {
-					if( count($type['categories']) > 16 ) {
+					if( count($type['categories']) > 12 ) {
 						$size = 'small';
-					} elseif( count($type['categories']) > 9 ) {
+					} elseif( count($type['categories']) > 6 ) {
 						$size = 'medium';
 					}
 				}
@@ -618,9 +618,9 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 				&& $settings['page-products-categories-size'] != 'auto' 
 				) {
 				$size = $settings['page-products-categories-size'];
-			} elseif( count($rc['categories']) > 16 ) {
+			} elseif( count($rc['categories']) > 12 ) {
 				$size = 'small';
-			} elseif( count($rc['categories']) > 9 ) {
+			} elseif( count($rc['categories']) > 6 ) {
 				$size = 'medium';
 			}
 			foreach($rc['categories'] AS $cnum => $category) {
