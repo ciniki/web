@@ -73,7 +73,7 @@ function ciniki_web_processExhibitions($ciniki, $settings, $exhibitions, $limit)
 		$content .= "<td class='cilist-details'>";
 		$content .= "<p class='cilist-title'>";
 		if( $exhibition_url != '' ) {
-			$content .= "<a href='$exhibition_url' title='" . $exhibition['name'] . "'>" . $exhibition['name'] . "</a>";
+			$content .= "<a href='$exhibition_url' title='" . htmlspecialchars($exhibition['name']) . "'>" . $exhibition['name'] . "</a>";
 		} else {
 			$content .= $exhibition['name'];
 		}
