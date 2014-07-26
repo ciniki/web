@@ -202,7 +202,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 		if( $next != null ) {
 			$page_content .= "<a id='gallery-image-next' class='gallery-image-next' href='" . $next['permalink'] . "'><div id='gallery-image-next-img'></div></a>";
 		}
-		$page_content .= "<img id='gallery-image-img' title='" . $img['title'] . "' alt='" . $img['title'] . "' src='" . $img_url . "' onload='javascript: gallery_resize_arrows();' />";
+		$page_content .= "<img id='gallery-image-img' title='" . $img['title'] . "' alt=\"" . htmlspecialchars(strip_tags($img['title'])) . "\" src='" . $img_url . "' onload='javascript: gallery_resize_arrows();' />";
 		$page_content .= "</div><br/>"
 			. "<div id='gallery-image-details' class='gallery-image-details'>"
 			. "<span class='image-title'>" . $img['title'] . '</span>'
@@ -259,7 +259,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 				return $rc;
 			}
 			$page_content .= "<aside><div class='image-wrap'><div class='image'>"
-				. "<img title='' alt='" . $exhibition['name'] . "' src='" . $rc['url'] . "' />"
+				. "<img title='' alt='" . htmlspecialchars(strip_tags($exhibition['name'])) . "' src='" . $rc['url'] . "' />"
 				. "</div></div></aside>";
 		}
 		
