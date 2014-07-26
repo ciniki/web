@@ -61,9 +61,9 @@ function ciniki_web_processExhibitions($ciniki, $settings, $exhibitions, $limit)
 			}
 			$content .= "<div class='image-cilist-thumbnail'>";
 			if( $exhibition_url != '' ) {
-				$content .= "<a href='$exhibition_url' title='" . $exhibition['name'] . "'><img title='' alt='" . $exhibition['name'] . "' src='" . $rc['url'] . "' /></a>";
+				$content .= "<a href='$exhibition_url' title=\"" . htmlspecialchars(strip_tags($exhibition['name'])) . "\"><img title='' alt=\"" . htmlspecialchars(strip_tags($exhibition['name'])) . "\" src='" . $rc['url'] . "' /></a>";
 			} else {
-				$content .= "<img title='' alt='" . $exhibition['name'] . "' src='" . $rc['url'] . "' />";
+				$content .= "<img title='' alt='" . htmlspecialchars(strip_tags($exhibition['name'])) . "' src='" . $rc['url'] . "' />";
 			}
 			$content .= "</div></aside>";
 		}
