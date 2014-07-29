@@ -328,6 +328,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 				$page_content .= "<p>I'm sorry, but we don't currently offer any classes.</p>";
 			}
 		}
+		$page_content .= "</div></article>";
 	}
 		
 	//
