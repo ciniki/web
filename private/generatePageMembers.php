@@ -311,6 +311,12 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 				}
 			}
 		}
+
+		if( $cinfo != '' ) {
+			$page_content .= "<h2>Contact Info</h2>\n";
+			$page_content .= "<p>$cinfo</p>";
+		}
+
 		if( isset($member['links']) ) {
 			$links = '';
 			foreach($member['links'] as $link) {
@@ -328,13 +334,9 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 					. "title='" . $display_url . "'>" . $display_url . "</a>";
 			}
 			if( $links != '' ) {
-				$cinfo .= ($cinfo!=''?'<br/>':'') . "$links";
+				$page_content .= "<h2>Links</h2>\n";
+				$page_content .= "<p>" . $links . "</p>";
 			}
-		}
-
-		if( $cinfo != '' ) {
-			$page_content .= "<h2>Contact Info</h2>\n";
-			$page_content .= "<p>$cinfo</p>";
 		}
 
 		$page_content .= "</article>";
