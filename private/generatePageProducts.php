@@ -363,10 +363,9 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 			. "";
 
 		//
-		// if there's any content or an image for the category, display it
+		// if there's any content for the category, display it
 		//
-		if( (isset($details['content']) && $details['content'] != '')
-			|| isset($details['image_id']) && $details['image_id'] != 0 ) {
+		if( (isset($details['content']) && $details['content'] != '') ) {
 			// Image
 			if( isset($details['image_id']) && $details['image_id'] > 0 ) {
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
@@ -458,8 +457,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 		//
 		// if there's any content or an image for the category, display it
 		//
-		if( (isset($details['content']) && $details['content'] != '')
-			|| isset($details['image_id']) && $details['image_id'] != 0 ) {
+		if( (isset($details['content']) && $details['content'] != '') ) {
 			// Image
 			if( isset($details['image_id']) && $details['image_id'] > 0 ) {
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
