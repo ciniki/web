@@ -253,7 +253,11 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 			}
 			$page_content .= "<aside><div class='image-wrap'><div class='image'>"
 				. "<img title='' alt='" . $member['name'] . "' src='" . $rc['url'] . "' />"
-				. "</div></div></aside>";
+				. "</div>";
+			if( isset($member['image_caption']) && $member['image_caption'] != '' ) {
+				$page_content .= "<div class='image-caption'>" . $member['image_caption'] . "</div>";
+			}
+			$page_content .= "</div></aside>";
 		}
 		
 		//
