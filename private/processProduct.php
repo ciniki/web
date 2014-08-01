@@ -57,15 +57,16 @@ function ciniki_web_processProduct(&$ciniki, $settings, $business_id, $base_url,
 	}
 
 	//
-	// Display the prices if the product is for sale
+	// Display any audio sample
 	//
-	if( isset($product['prices']) && count($product['prices']) > 0 ) {
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'cartSetupPrices');
-		$rc = ciniki_web_cartSetupPrices($ciniki, $settings, $business_id, $product['prices']);
+	if( isset($product['audio']) && count($product['audio']) > 0 ) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processAudio');
+		$rc = ciniki_web_processAudio($ciniki, $settings, $business_id, $product['audio'], array());
 		if( $rc['stat'] != 'ok' ) {
-			error_log("Error in formatting prices.");
-		} else {
-			$content .= $rc['content'];
+			return $rc;
+		}
+		if( $rc['content'] != '' ) {
+			$content .= '<p>' . $rc['content'] . '</p>';
 		}
 	}
 
@@ -89,6 +90,19 @@ function ciniki_web_processProduct(&$ciniki, $settings, $business_id, $base_url,
 			$content .= "<br/>";
 		}
 		$content .= "</p>";
+	}
+
+	//
+	// Display the prices if the product is for sale
+	//
+	if( isset($product['prices']) && count($product['prices']) > 0 ) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'cartSetupPrices');
+		$rc = ciniki_web_cartSetupPrices($ciniki, $settings, $business_id, $product['prices']);
+		if( $rc['stat'] != 'ok' ) {
+			error_log("Error in formatting prices.");
+		} else {
+			$content .= $rc['content'];
+		}
 	}
 
 	if( !isset($settings['page-products-share-buttons']) || $settings['page-products-share-buttons'] == 'yes' ) {

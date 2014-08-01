@@ -898,6 +898,10 @@ span.exhibitors-description {
 	padding-top: 1em;
 }
 
+#content audio {
+	vertical-align: bottom;
+}
+
 
 /* 7. BROWSER AND NON-SEMANTIC STYLING
 ----------------------------------------------------------------------------------------*/
