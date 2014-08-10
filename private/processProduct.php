@@ -76,7 +76,7 @@ function ciniki_web_processProduct(&$ciniki, $settings, $business_id, $base_url,
 	if( isset($product['files']) && count($product['files']) > 0 ) {
 		$content .= "<p>";
 		foreach($product['files'] as $file) {
-			$url = $ciniki['request']['base_url'] . '/products/p/' . $ciniki['request']['uri_split'][1] . '/download/' . $file['permalink'] . '.' . $file['extension'];
+			$url = $ciniki['request']['base_url'] . '/products/product/' . $product['permalink'] . '/download/' . $file['permalink'] . '.' . $file['extension'];
 //				$content .= "<span class='downloads-title'>";
 			if( $url != '' ) {
 				$content .= "<a target='_blank' href='" . $url . "' title='" . $file['name'] . "'>" . $file['name'] . "</a>";
@@ -146,7 +146,7 @@ function ciniki_web_processProduct(&$ciniki, $settings, $business_id, $base_url,
 	// Display the additional images for the product
 	//
 	if( isset($product['images']) && count($product['images']) > 0 ) {
-		$content .= "<h2 class='entry-subtitle'>Gallery</h2>\n";
+		$content .= "<h2 class='entry-subtitle'>Additional Images</h2>\n";
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
 		$img_base_url = $base_url . "/gallery";
 		$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, 

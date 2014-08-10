@@ -19,7 +19,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 	//
 	$download_err = '';
 	if( isset($ciniki['business']['modules']['ciniki.products'])
-		&& isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'p'
+		&& isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'product'
 		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != ''
 		&& isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] == 'download'
 		&& isset($ciniki['request']['uri_split'][3]) && $ciniki['request']['uri_split'][3] != '' ) {
