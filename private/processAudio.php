@@ -30,7 +30,7 @@ function ciniki_web_processAudio(&$ciniki, $settings, $business_id, $audio, $arg
 			foreach($track['formats'] as $fid => $format) {
 				$cache_filename = '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/'
 					. sprintf('%07d', $ciniki['request']['business_id'])
-					. '/audio/' . $format['uuid'] . '.' . $format['extension'];
+					. '/ciniki.audio/' . $format['uuid'] . '.' . $format['extension'];
 				$storage_filename = $ciniki['config']['ciniki.core']['storage_dir'] . '/'
 					. $ciniki['business']['uuid'][0] . '/' . $ciniki['business']['uuid']
 					. '/ciniki.audio/'
