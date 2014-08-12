@@ -62,9 +62,10 @@ function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $
 	//
 	// Check last_updated against the file timestamp, if the file exists
 	//
-	$utc_offset = date_offset_get(new DateTime);
+//	$utc_offset = date_offset_get(new DateTime);
 	if( !file_exists($img_filename) 
-		|| (filemtime($img_filename) - $utc_offset) < $img['last_updated'] ) {
+		|| filemtime($img_filename) < $img['last_updated'] ) {
+
 		//
 		// Load the image from the database
 		//
