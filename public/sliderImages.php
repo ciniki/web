@@ -32,7 +32,7 @@ function ciniki_web_sliderImages($ciniki) {
     // check permission to run this function for this business
     //  
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
-    $rc = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.sliderImageGet'); 
+    $rc = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.sliderImages'); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }   
