@@ -36,8 +36,8 @@ function ciniki_web_faqSearchCategory($ciniki) {
     // Make sure this module is activated, and
     // check permission to run this function for this business
     //  
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'artcatalog', 'private', 'checkAccess');
-    $rc = ciniki_artcatalog_checkAccess($ciniki, $args['business_id'], 'ciniki.web.faqSearchCategory'); 
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
+    $rc = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.faqSearchCategory'); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }   
