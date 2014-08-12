@@ -183,6 +183,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-courses-registration-active',
 		'page-courses-registration-image',
 		'page-courses-registration-image-caption',
+		'page-courses-level-display',
 		'page-members-active',
 		'page-members-membership-details',
 		'page-members-list-format',
