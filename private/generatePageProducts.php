@@ -77,14 +77,44 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 	}
 
 	//
+	// Check for cached content
+	//
+	if( isset($ciniki['business']['cache_dir']) && $ciniki['business']['cache_dir'] != '' ) {
+		$cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products/';
+		$depth = 2;
+		if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'product' ) {
+			$depth = 1;
+		}
+		foreach($ciniki['request']['uri_split'] as $uri_index => $uri_piece) {
+			if( $uri_index < $depth ) {
+				$cache_file .= $uri_piece . '/';
+			} elseif( $uri_index == $depth ) {
+				$cache_file .= $uri_piece;
+			} else {
+				$cache_file .= '_' . $uri_piece;
+			}
+		}
+		if( substr($cache_file, -1) == '/' ) {
+			$cache_file .= '_index';
+		}
+		// Check if no changes have been made since last cache file write
+		if( file_exists($cache_file) && filemtime($cache_file) > $last_change ) {
+			$page_content = file_get_contents($cache_file);
+			error_log("CACHE: " . $cache_file);
+		}
+	}
+
+
+	//
 	// Generate the product page
 	//
-	if( isset($ciniki['request']['uri_split'][0]) 
+	if( $page_content == '' 
+		&& isset($ciniki['request']['uri_split'][0]) 
 		&& $ciniki['request']['uri_split'][0] == 'product'
 		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' 
 		) {
 		$product_permalink = $ciniki['request']['uri_split'][1];
-
+/*
 		//
 		// Check for cached content
 		//
@@ -105,7 +135,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 				}
 			}
 		}
-
+*/
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'products', 'web', 'productDetails');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processProduct');
 
@@ -170,7 +200,8 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 	//
 	// Generate the product in a category
 	//
-	elseif( isset($ciniki['request']['uri_split'][0]) 
+	elseif( $page_content == '' 
+		&& isset($ciniki['request']['uri_split'][0]) 
 		&& $ciniki['request']['uri_split'][0] == 'category'
 		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' 
 		&& isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] == 'product'
@@ -178,7 +209,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 		) {
 		$category_permalink = $ciniki['request']['uri_split'][1];
 		$product_permalink = $ciniki['request']['uri_split'][3];
-
+/*
 		//
 		// Check for cached content
 		//
@@ -199,7 +230,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 				}
 			}
 		}
-
+*/
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'products', 'web', 'productDetails');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processProduct');
 		
@@ -279,7 +310,8 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 	//
 	// Generate the product in a sub category
 	//
-	elseif( isset($ciniki['request']['uri_split'][0]) 
+	elseif( $page_content == '' 
+		&& isset($ciniki['request']['uri_split'][0]) 
 		&& $ciniki['request']['uri_split'][0] == 'category'
 		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' 
 		&& isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' 
@@ -289,7 +321,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 		$category_permalink = $ciniki['request']['uri_split'][1];
 		$subcategory_permalink = $ciniki['request']['uri_split'][2];
 		$product_permalink = $ciniki['request']['uri_split'][4];
-
+/*
 		//
 		// Check for cached content
 		//
@@ -310,7 +342,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 				}
 			}
 		}
-
+*/
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'products', 'web', 'productDetails');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processProduct');
 		
@@ -397,14 +429,15 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 	//
 	// Generate the sub-category listing page
 	//
-	elseif( isset($ciniki['request']['uri_split'][0]) 
+	elseif( $page_content == '' 
+		&& isset($ciniki['request']['uri_split'][0]) 
 		&& $ciniki['request']['uri_split'][0] == 'category'
 		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' 
 		&& isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' 
 		) {
 		$category_permalink = urldecode($ciniki['request']['uri_split'][1]);
 		$subcategory_permalink = urldecode($ciniki['request']['uri_split'][2]);
-
+/*
 		//
 		// Check for cached content
 		//
@@ -419,7 +452,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 				}
 			}
 		}
-
+*/
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'products', 'web', 'subcategoryDetails');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
@@ -508,12 +541,13 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 	//
 	// Generate the category listing page
 	//
-	elseif( isset($ciniki['request']['uri_split'][0]) 
+	elseif( $page_content == '' 
+		&& isset($ciniki['request']['uri_split'][0]) 
 		&& $ciniki['request']['uri_split'][0] == 'category'
 		&& $ciniki['request']['uri_split'][1] != '' 
 		) {
 		$category_permalink = urldecode($ciniki['request']['uri_split'][1]);
-
+/*
 		//
 		// Check for cached content
 		//
@@ -528,7 +562,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 				}
 			}
 		}
-
+*/
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'products', 'web', 'categoryDetails');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
@@ -714,22 +748,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 	//
 	// Generate the main products page, showing the main categories
 	//
-	else {
-		//
-		// Check for cached content
-		//
-		if( isset($ciniki['business']['cache_dir']) && $ciniki['business']['cache_dir'] != '' ) {
-			$cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products';
-			// Check if no changes have been made since last cache file write
-			if( file_exists($cache_file) && filemtime($cache_file) > $last_change ) {
-				$content = file_get_contents($cache_file);
-				if( $content != '' ) {
-//					error_log("WEB-CACHE: using cached $cache_file");
-					return array('stat'=>'ok', 'content'=>$content);
-				}
-			}
-		}
-
+	elseif( $page_content == '' ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
 		$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 
 			'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-products');
@@ -842,7 +861,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 		if( !file_exists(dirname($cache_file)) && mkdir(dirname($cache_file), 0755, true) === FALSE ) {
 			error_log("WEB-CACHE: Failed to create dir for " . dirname($cache_file));
 		} 
-		elseif( file_put_contents($cache_file, $content) === FALSE ) {
+		elseif( file_put_contents($cache_file, $page_content) === FALSE ) {
 			error_log("WEB-CACHE: Failed to write $cache_file");
 		}
 	}

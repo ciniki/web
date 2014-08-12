@@ -58,10 +58,12 @@ function ciniki_web_clearContentCache($ciniki) {
 	//
 	$business_cache_dir = $ciniki['config']['ciniki.core']['cache_dir'] 
 		. '/' . $uuid[0] . '/' . $uuid . '/ciniki.web';
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'recursiveRmdir');
-	$rc = ciniki_core_recursiveRmdir($ciniki, $business_cache_dir);
-	if( $rc['stat'] != 'ok' ) {
-		return $rc;
+	if( file_exists($business_cache_dir) ) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'recursiveRmdir');
+		$rc = ciniki_core_recursiveRmdir($ciniki, $business_cache_dir);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
 	}
 
 	return array('stat'=>'ok');

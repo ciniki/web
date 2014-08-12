@@ -977,6 +977,8 @@ function ciniki_web_main() {
 		this.cart.sections = {
 			'options':{'label':'', 'fields':{
 				'page-cart-active':{'label':'Enable Cart', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-cart-product-search':{'label':'Product Search', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-cart-product-list':{'label':'Product List', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				}},
 			'_inventory':{'label':'Current Inventory Visible To', 'fields':{
 				'page-cart-inventory-customers-display':{'label':'Customers', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
@@ -992,7 +994,6 @@ function ciniki_web_main() {
 		this.cart.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.cart.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'cart\');');
 		this.cart.addClose('Cancel');
-
 
 		//
 		// The options and information for the signup page
