@@ -92,15 +92,15 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 			if( isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] == 'gallery'
 				&& isset($ciniki['request']['uri_split'][3]) && $ciniki['request']['uri_split'][3] != '' 
 				) {
-				$cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products-product-' . $product_permalink . '-gallery-' . $ciniki['request']['uri_split'][3];
+				$cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products_p_' . $product_permalink . '_g_' . $ciniki['request']['uri_split'][3];
 			} else {
-				$cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products-product-' . $product_permalink;
+				$cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products_p_' . $product_permalink;
 			}
 			// Check if no changes have been made since last cache file write
 			if( file_exists($cache_file) && filemtime($cache_file) > $last_change ) {
 				$content = file_get_contents($cache_file);
 				if( $content != '' ) {
-					error_log("WEB-CACHE: using cached $cache_file");
+//					error_log("WEB-CACHE: using cached $cache_file");
 					return array('stat'=>'ok', 'content'=>$content);
 				}
 			}
@@ -186,15 +186,15 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 			if( isset($ciniki['request']['uri_split'][4]) && $ciniki['request']['uri_split'][4] == 'gallery'
 				&& isset($ciniki['request']['uri_split'][5]) && $ciniki['request']['uri_split'][5] != '' 
 				) {
-				$cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products-category-' . $category_permalink . '-product-' . $product_permalink . '-gallery-' . $ciniki['request']['uri_split'][5];
+				$cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products_c_' . $category_permalink . '_p_' . $product_permalink . '_g_' . $ciniki['request']['uri_split'][5];
 			} else {
-				$cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products-category-' . $category_permalink . '-product-' . $product_permalink;
+				$cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products_c_' . $category_permalink . '_p_' . $product_permalink;
 			}
 			// Check if no changes have been made since last cache file write
 			if( file_exists($cache_file) && filemtime($cache_file) > $last_change ) {
 				$content = file_get_contents($cache_file);
 				if( $content != '' ) {
-					error_log("WEB-CACHE: using cached $cache_file");
+//					error_log("WEB-CACHE: using cached $cache_file");
 					return array('stat'=>'ok', 'content'=>$content);
 				}
 			}
@@ -297,15 +297,15 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 			if( isset($ciniki['request']['uri_split'][5]) && $ciniki['request']['uri_split'][5] == 'gallery'
 				&& isset($ciniki['request']['uri_split'][6]) && $ciniki['request']['uri_split'][6] != '' 
 				) {
-				$cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products-category-' . $category_permalink . '-subcategory-' . $subcategory_permalink . '-product-' . $product_permalink . '-gallery-' . $ciniki['request']['uri_split'][6];
+				$cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products_c_' . $category_permalink . '_s_' . $subcategory_permalink . '_p_' . $product_permalink . '_g_' . $ciniki['request']['uri_split'][6];
 			} else {
-				$cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products-category-' . $category_permalink . '-subcategory-' . $subcategory_permalink . '-product-' . $product_permalink;
+				$cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products_c_' . $category_permalink . '_s_' . $subcategory_permalink . '_p_' . $product_permalink;
 			}
 			// Check if no changes have been made since last cache file write
 			if( file_exists($cache_file) && filemtime($cache_file) > $last_change ) {
 				$content = file_get_contents($cache_file);
 				if( $content != '' ) {
-					error_log("WEB-CACHE: using cached $cache_file");
+//					error_log("WEB-CACHE: using cached $cache_file");
 					return array('stat'=>'ok', 'content'=>$content);
 				}
 			}
@@ -409,12 +409,12 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 		// Check for cached content
 		//
 		if( isset($ciniki['business']['cache_dir']) && $ciniki['business']['cache_dir'] != '' ) {
-			$cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products-category-' . $category_permalink . '-subcategory-' . $subcategory_permalink;
+			$cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products_c_' . $category_permalink . '_s_' . $subcategory_permalink;
 			// Check if no changes have been made since last cache file write
 			if( file_exists($cache_file) && filemtime($cache_file) > $last_change ) {
 				$content = file_get_contents($cache_file);
 				if( $content != '' ) {
-					error_log("WEB-CACHE: using cached $cache_file");
+//					error_log("WEB-CACHE: using cached $cache_file");
 					return array('stat'=>'ok', 'content'=>$content);
 				}
 			}
@@ -518,12 +518,12 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 		// Check for cached content
 		//
 		if( isset($ciniki['business']['cache_dir']) && $ciniki['business']['cache_dir'] != '' ) {
-			$cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products-category-' . $category_permalink;
+			$cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products_c_' . $category_permalink;
 			// Check if no changes have been made since last cache file write
 			if( file_exists($cache_file) && filemtime($cache_file) > $last_change ) {
 				$content = file_get_contents($cache_file);
 				if( $content != '' ) {
-					error_log("WEB-CACHE: using cached $cache_file");
+//					error_log("WEB-CACHE: using cached $cache_file");
 					return array('stat'=>'ok', 'content'=>$content);
 				}
 			}
@@ -724,7 +724,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 			if( file_exists($cache_file) && filemtime($cache_file) > $last_change ) {
 				$content = file_get_contents($cache_file);
 				if( $content != '' ) {
-					error_log("WEB-CACHE: using cached $cache_file");
+//					error_log("WEB-CACHE: using cached $cache_file");
 					return array('stat'=>'ok', 'content'=>$content);
 				}
 			}
