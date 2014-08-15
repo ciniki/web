@@ -267,8 +267,8 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	// Shopping Cart link
 	//
 	$shopping_cart = '';
-	if( isset($settings['page-cart-active']) && $settings['page-cart-active'] == 'yes' 	
-		&& isset($ciniki['session']['cart']['sapos_id']) && $ciniki['session']['cart']['sapos_id'] > 0 ) {
+	if( isset($settings['page-cart-active']) && $settings['page-cart-active'] == 'yes' ) {
+//		&& isset($ciniki['session']['cart']['sapos_id']) && $ciniki['session']['cart']['sapos_id'] > 0 ) {
 		$shopping_cart .= "<span><a rel='nofollow' href='" . $ciniki['request']['base_url'] . "/cart'>"
 			. "Cart";
 		if( isset($ciniki['session']['cart']['num_items']) && $ciniki['session']['cart']['num_items'] > 0 ) {
