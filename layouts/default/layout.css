@@ -548,6 +548,21 @@ span.exhibitors-description {
 		margin: 0em 2em 1.5em 2em;
 		padding-bottom: 0.5em;
 	}
+	article.cart header h1.entry-title {
+		display: inline-block;
+		width: 50%;
+		padding-left: 0px;
+		padding-right: 0px;
+	}
+	article.cart header div.cart-search-input {
+		display: inline-block;
+		text-align: right;
+		width: 50%;
+		margin-top: 0em;
+	}
+	#content div.cart-search-input input {
+		width: 90%;
+	}
 }
 
 /* 12. Anything over 50 em

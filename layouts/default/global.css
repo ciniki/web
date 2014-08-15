@@ -818,9 +818,18 @@ span.exhibitors-description {
 	display: block;
 }
 
-#content div.cart form {
+#content article.page form {
 	width: 100%;
 	max-width: 100%;
+}
+
+#content div.cart-search-input {
+	text-align: right;
+}
+
+#content div.cart-search-input input {
+	margin-top: 0.5em;
+	width: 100%;
 }
 
 #content table.cart-buttons,

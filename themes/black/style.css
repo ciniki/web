@@ -405,6 +405,7 @@ div.gallery-image-details span.image-awards {
 	margin-top: 1.0em;
 }
 
+#content div.cart-search-input input, 
 #content form input.text {
 	font-size: 1.0em;
 	font-weight: normal;
@@ -503,15 +504,20 @@ div.gallery-image-details span.image-awards {
 	padding: 0.5em 0 0.5em 0;
 }
 
+#content div.cart-search-input input {
+			console.log(c);
+	
+}
+
 #content div.cart-pricelist {
 	font-size: 1.2em;
 }
 
-#content div.cart-pricelist form {
+#content div.cart-pricelist {
 	display: inline;
 }
 
-#content div.cart-pricelist form input.quantity {
+#content div.cart-pricelist input.quantity {
 	font-size: 1.0em;
 	font-weight: normal;
 	padding: 0.5em;
@@ -520,7 +526,7 @@ div.gallery-image-details span.image-awards {
 	color: #555;
 }
 
-#content div.cart-pricelist form input.cart-submit {
+#content div.cart-pricelist input.cart-submit {
 	cursor: pointer;
 	font-size: 0.9em;
 	border-radius: 8px;
@@ -771,11 +777,11 @@ footer div.social-icons a:active {
 	font-size: 1.1em;
 }
 
-#content div.cart-pricelist form {
+#content div.cart-pricelist {
 	display: inline;
 }
 
-#content div.cart-pricelist form select {
+#content div.cart-pricelist select {
 	font-size: 0.9em;
 	font-weight: normal;
 	padding: 0.20em;
@@ -786,12 +792,17 @@ footer div.social-icons a:active {
 	color: #333;
 }
 
+#content div.cart-search-items,
 #content div.cart-items {
 	padding: 0px;
 	margin: 0px;
 	border: 2px solid #fff;
 	border-radius: 10px; 
 	background: #aaa;
+}
+
+#content div.cart-search-items {
+	margin-bottom: 1.5em;
 }
 
 #content div.cart table.cart-items {
@@ -835,8 +846,8 @@ footer div.social-icons a:active {
 	background: #888;
 }
 
-#content div.cart form input.quantity, 
-#content div.cart-pricelist form input.quantity {
+#content div.cart input.quantity, 
+#content div.cart-pricelist input.quantity {
 	font-size: 1.0em;
 	font-weight: normal;
 	padding: 0.20em;
@@ -852,9 +863,9 @@ footer div.social-icons a:active {
 	text-align: center;
 }
 
-#content div.cart form input.cart-submit, 
-#content div.cart-buttons form input.cart-submit, 
-#content div.cart-pricelist form input.cart-submit {
+#content div.cart input.cart-submit, 
+#content div.cart-buttons input.cart-submit, 
+#content div.cart-pricelist input.cart-submit {
 	cursor: pointer;
 	font-size: 0.9em;
 	border-radius: 8px;

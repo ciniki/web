@@ -189,6 +189,14 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	//
 	// Include any inline javascript
 	//
+	if( isset($ciniki['request']['ciniki_api']) && $ciniki['request']['ciniki_api'] == 'yes' ) {
+		// FIXME: This might be moved to static file if no need to be loaded with page
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateCinikiJavascript');
+		$rc = ciniki_web_generateCinikiJavascript($ciniki);
+		if( $rc['stat'] == 'ok' ) {
+			$content .= $rc['javascript'];
+		}
+	}
 	if( isset($ciniki['request']['inline_javascript']) && $ciniki['request']['inline_javascript'] != '' ) {
 		$content .= $ciniki['request']['inline_javascript'];
 	}

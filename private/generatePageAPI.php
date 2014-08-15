@@ -22,59 +22,41 @@ function ciniki_web_generatePageAPI($ciniki, $settings) {
 	$content = '';
 	$page_content = '';
 
-	//
-	// FIXME: Check if anything has changed, and if not load from cache
-	//
+	$rsp = array('stat'=>'ok');
 	
 
 	//
-	// Add the header
+	// Search for products that can be added to the cart
 	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'API', array());
-	if( $rc['stat'] != 'ok' ) {	
-		return $rc;
-	}
-	$content .= $rc['content'];
-
-	//
-	// Generate the content of the page
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
-	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-api');
-	if( $rc['stat'] != 'ok' ) {
-		return $rc;
-	}
-
-	if( isset($rc['content']['page-api-content']) ) {
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-		$rc = ciniki_web_processContent($ciniki, $rc['content']['page-api-content']);	
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
+	if( $ciniki['request']['uri_split'][0] == 'cart'
+		&& $ciniki['request']['uri_split'][1] == 'search'
+		&& $ciniki['request']['uri_split'][2] != '' 
+		&& isset($settings['page-cart-active']) && $settings['page-cart-active'] == 'yes'
+		) {
+		$search_str = urldecode($ciniki['request']['uri_split'][2]);
+	
+		$rc = ciniki_core_loadMethod($ciniki, 'ciniki', 'products', 'web', 'searchProducts');
+		if( $rc['stat'] == 'ok' ) {
+			$fn = $rc['function_call'];
+			$rc = $fn($ciniki, $settings, $ciniki['request']['business_id'], array(
+				'search_str'=>$search_str,
+				'limit'=>((isset($_GET['limit'])&&$_GET['limit']!=''&&$_GET['limit']>0)?$_GET['limit']:16)));
+			if( $rc['stat'] == 'ok' ) {
+				$rsp = $rc;
+			}
 		}
-		$page_content = $rc['content'];
 	}
 
-	$content .= "<div id='content'>\n"
-		. "<article class='page'>\n"
-		. "<header class='entry-title'><h1 class='entry-title'>API</h1></header>\n"
-		. "<div class='entry-content'>\n"
-		. $page_content
-		. "</div>"
-		. "</article>"
-		. "</div>"
-		. "";
+	//
+	// Search the site
+	//
+	elseif( $ciniki['request']['uri_split'][0] == 'search'
+		&& $ciniki['request']['uri_split'][1] == 'site'
+		&& $ciniki['request']['uri_split'][2] != '' 
+		) {
 
-	//
-	// Add the footer
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageFooter');
-	$rc = ciniki_web_generatePageFooter($ciniki, $settings);
-	if( $rc['stat'] != 'ok' ) {	
-		return $rc;
 	}
-	$content .= $rc['content'];
 
-	return array('stat'=>'ok', 'content'=>$content);
+	return $rsp;
 }
 ?>

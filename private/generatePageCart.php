@@ -81,6 +81,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 	//
 	// Check if a item is being added to the cart
 	//
+//	print "<pre>" . print_r($_POST, true) . "</pre>";
 	if( isset($_POST['action']) && $_POST['action'] == 'add' ) {
 		$item_exists = 'no';
 		if( $cart == NULL ) {
@@ -241,6 +242,27 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 	// Display the contents of the shopping cart
 	//
 	if( $display_cart == 'yes' ) {
+		$content .= "<article class='page cart'>\n"
+//			. "<form action='" .  $ciniki['request']['base_url'] . "/cart' method='POST'>"
+			. "<header class='entry-title'>"
+			. "<h1 id='entry-title' class='entry-title'>$page_title</h1>";
+		if( isset($settings['page-cart-product-search']) 
+			&& $settings['page-cart-product-search'] == 'yes' 
+			) {
+			$content .= "<div class='cart-search-input'>"
+				. "<form id='cart-search-form' action='" .  $ciniki['request']['base_url'] . "/cart' method='POST'>"
+				. "<input type='hidden' name='action' value='add'/>"
+				. "<input id='cart-search-form-object' type='hidden' name='object' value='' />"
+				. "<input id='cart-search-form-object_id' type='hidden' name='object_id' value='' />"
+				. "<input id='cart-search-form-price_id' type='hidden' name='price_id' value='' />"
+				. "<input id='cart-search-form-final_price' type='hidden' name='final_price' value='' />"
+				. "<input id='cart-search-form-quantity' type='hidden' name='quantity' value='1' />"
+				. "<label for='search_str'></label><input id='cart-search-str' class='input' type='text' autofocus placeholder='Search' name='search_str' value='" . (isset($_POST['search_str'])?$_POST['search_str']:'') . "' onkeyup='return update_cart_search();' onsearch='return update_cart_search();' onsubmit='return false;' autocomplete='off' />"
+				. "</form></div>";
+		}
+		$content .= "</header>\n"
+			. "<div class='cart'>\n"
+			. "";
 		//
 		// Check if we should display inventory
 		//
@@ -257,6 +279,108 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 			) {
 			$inv = 'yes';
 		}
+
+		//
+		// Check if we should display the search box
+		//
+		if( isset($settings['page-cart-product-search']) 
+			&& $settings['page-cart-product-search'] == 'yes' 
+			) {
+			$limit = 11;
+			$ciniki['request']['ciniki_api'] = 'yes';
+			$ciniki['request']['inline_javascript'] .= "<script type='text/javascript'>\n"
+				. "var prev_cart_search_str = '';\n"
+				. "function update_cart_search() {\n"
+					. "var str = document.getElementById('cart-search-str').value;\n"
+					. "if( prev_cart_search_str != str ) {\n"
+						. "var t = document.getElementById('cart-search-result');\n"
+						. "if( str == '' ) { t.style.display = 'none'; }\n"
+						. "else if( str != prev_cart_search_str ) {\n"
+							. "C.getBg('cart/search/'+encodeURIComponent(str),{'limit':$limit},update_search_results);\n"
+							. "t.style.display = 'block';\n"
+						. "}\n"
+						. "prev_cart_search_str = str;\n"
+					. "}\n"
+					. "return false;"
+				. "};"
+				. "function cart_add_search_result(o,i,p,f,q) {"
+					. "C.gE('cart-search-form-object').value=o;"
+					. "C.gE('cart-search-form-object_id').value=i;"
+					. "C.gE('cart-search-form-price_id').value=(p!=null&&p!=''?p:0);"
+					. "C.gE('cart-search-form-final_price').value=f;"
+					. "C.gE('cart-search-form-quantity').value=q;"
+					. "C.gE('cart-search-form').submit();"
+				. "};"
+				. "function update_search_results(rsp) {"
+					. "var d = document.getElementById('cart-search-results');"
+					. "C.clr(d);"
+					. "if(rsp.products!=null&&rsp.products.length>0) {"
+						. "var ct=0;"
+						. "for(i in rsp.products) {"
+							. "var p=rsp.products[i].product;"
+							. "ct++;"
+							. "var tr=C.aE('tr',null,(i%2==0?'item-even':'item-odd'));"
+							. "if(ct>=$limit){"
+								. "var c=C.aE('td',null,'aligncenter','. . .');"
+								. "c.colSpan=" . ($inv=='yes'?5:4) . ";"
+								. "tr.appendChild(c);"
+							. "}else{"
+								. "tr.appendChild(C.aE('td',null,null,p.name));"
+								. "tr.appendChild(C.aE('td',null,'alignright','<span class=\"cart-quantity\"><input "
+								. "class=\"quantity\" id=\"quantity_'+i+'\" name=\"quantity_'+i+'\" "
+								. "value=\"1\" size=\"2\"/></span>'));"
+								// Check if inventory is being tracked,
+								// and if the item is backordered, decide if sold out or backorder should display
+								. ($inv=='yes'?"tr.appendChild(C.aE('td',null,'alignright',("
+								. "(p.inventory_flags&0x01)==1?("
+									. "(p.inventory_available>0?p.inventory_available:"
+										. "((p.inventory_flags&0x02)==2?'Backordered':'Sold out'))"
+									. "):''))"
+								. ");":"")
+								. "tr.appendChild(C.aE('td',null,'alignright',p.price));"
+								. "if(p.cart!=null&&p.cart=='yes'"
+								// Check if inventory available or backorder available
+								. "&&(p.inventory_available>0||(p.inventory_flags&0x02)>0)){"
+									. "var e = C.aE('td',null,'aligncenter');"
+									. "var b = C.aE('input',null,'cart-submit');"
+									. "b.type='submit';"
+									. "b.value='Add';"
+									. "b.setAttribute('onclick', 'cart_add_search_result(\"ciniki.products.product\","
+										. "\"'+p.id+'\","
+										. "\"'+(p.price_id!=null?p.price_id:0)+'\","
+										. "\"'+p.unit_amount+'\","
+										. "C.gE(\"quantity_'+i+'\").value);return false;');"
+									. "e.appendChild(b);"
+									. "tr.appendChild(e);"
+								. "}else{"
+									. "tr.appendChild(C.aE('td',null,null,''));"
+								. "}"
+							. "}"
+							. "d.appendChild(tr);"
+						. "}"
+					. "}else{"
+						. "d.innerHTML='<tr class=\"item-even\"><td class=\"aligncenter\" colspan=\"" . ($inv=='yes'?5:4) . "\">No products found</td></tr>';"
+					. "}"
+				. "};"
+				. "</script>\n";
+			$content .= "<div class='cart-search-items' id='cart-search-result' style='display:none;'>"
+//				. "<form action='" .  $ciniki['request']['base_url'] . "/cart' method='POST'>"
+				. "<table class='cart-items'>\n"
+				. "<thead><tr>"
+				. "<th class='alignleft'>Item</th>"
+				. "<th class='alignright'>Quantity</th>"
+				. ($inv=='yes'?"<th class='alignright'>Inventory</th>":"")
+				. "<th class='alignright'>Price</th>"
+				. "<th>Actions</th>"
+				. "</tr></thead>"
+				. "<tbody id='cart-search-results'>"
+				. "</tbody>\n"
+				. "</table>"
+//				. "</form>"
+				. "</div>\n";
+		}
+
+
 		if( $inv == 'yes' ) {
 			$item_objects = array();
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'private', 'getReservedQuantities');
@@ -274,12 +398,11 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 				//
 				// Get current inventory
 				//
-//				print_r($o);
 				list($pkg, $mod, $obj) = explode('.', $o);
 				$object_ids = array_keys($oids);
-				$rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'sapos', 'itemsInventory');
+				$rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'sapos', 'cartItemsInventory');
 				if( $rc['stat'] == 'ok') {
-					$fn = $pkg . '_' . $mod . '_sapos_itemsInventory';
+					$fn = $pkg . '_' . $mod . '_sapos_cartItemsInventory';
 					$rc = $fn($ciniki, $ciniki['request']['business_id'], array(
 						'object'=>$o, 'object_ids'=>$object_ids));
 					if( isset($rc['quantities']) ) {
@@ -306,11 +429,6 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		//
 		// Display cart items
 		//
-		$content .= "<article class='page'>\n"
-			. "<header class='entry-title'>"
-			. "<h1 id='entry-title' class='entry-title'>$page_title</h1></header>\n"
-			. "<div class='cart'>\n"
-			. "";
 		if( $cart != NULL && isset($cart['items']) && count($cart['items']) > 0 ) {
 			$content .= "<form action='" .  $ciniki['request']['base_url'] . "/cart' method='POST'>";
 			$content .= "<input type='hidden' name='action' value='update'/>";
@@ -346,7 +464,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 					if( $quantity_available > 0 ) {
 						$content .= $quantity_available;
 					} else {
-						$content .= 'Backordered';
+						$content .= (($item['flags']&0x04)>0?'Backordered':'Sold out');
 					}
 					$content .= "</td>";
 				}

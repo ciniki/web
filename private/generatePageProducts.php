@@ -100,10 +100,9 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 		// Check if no changes have been made since last cache file write
 		if( file_exists($cache_file) && filemtime($cache_file) > $last_change ) {
 			$page_content = file_get_contents($cache_file);
-			error_log("CACHE: " . $cache_file);
+			error_log("CACHE: $last_change - " . $cache_file);
 		}
 	}
-
 
 	//
 	// Generate the product page

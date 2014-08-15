@@ -54,6 +54,7 @@ $ciniki['request'] = array('business_id'=>0, 'page'=>'', 'args'=>array(),
 	'layout_url'=>'/ciniki-web-layouts',
 	'theme_dir'=>$ciniki['config']['ciniki.core']['modules_dir'] . '/web/themes',
 	'theme_url'=>'/ciniki-web-themes',
+	'inline_javascript'=>'',
 	);
 $ciniki['response'] = array('head'=>array(
 	'links'=>array(),
@@ -419,8 +420,9 @@ elseif( $ciniki['request']['page'] == 'signup' && $settings['page-signup-active'
 	$rc = ciniki_web_generatePageSignup($ciniki, $settings);
 } 
 // API Page
-elseif( $ciniki['request']['page'] == 'api' && $settings['page-api-active'] == 'yes' ) {
+elseif( $ciniki['request']['page'] == 'api' ) {
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageAPI.php');
+	$ciniki['response']['format'] = 'json';
 	$rc = ciniki_web_generatePageAPI($ciniki, $settings);
 } 
 // Home Page
@@ -645,6 +647,14 @@ if( $rc['stat'] == '404' ) {
 	$rc = ciniki_web_generatePage404($ciniki, $settings, $rc);
 } 
 
+if( isset($ciniki['response']['format']) && $ciniki['response']['format'] == 'json' ) {
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'printHashToJSON');
+	$rc['stat'] = 'ok';
+	header("Content-Type: text/plain; charset=utf-8");
+	header("Cache-Control: no-cache, must-revalidate");
+	ciniki_core_printHashToJSON($rc);
+}
+
 if( $rc['stat'] != 'ok' ) {
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePage500.php');
 	$rc = ciniki_web_generatePage500($ciniki, $settings, $rc);
@@ -680,7 +690,7 @@ if( isset($ciniki['emailqueue']) && count($ciniki['emailqueue']) > 0 ) {
 	ciniki_core_emailQueueProcess($ciniki);
 } 
 
-elseif( $rc['content'] != '' ) {
+elseif( isset($rc['content']) && $rc['content'] != '' ) {
 	//
 	// Output the page contents
 	// FIXME: Add caching in here
