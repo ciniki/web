@@ -326,9 +326,15 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 								. "tr.appendChild(c);"
 							. "}else{"
 								. "tr.appendChild(C.aE('td',null,null,p.name));"
-								. "tr.appendChild(C.aE('td',null,'alignright','<span class=\"cart-quantity\"><input "
-								. "class=\"quantity\" id=\"quantity_'+i+'\" name=\"quantity_'+i+'\" "
-								. "value=\"1\" size=\"2\"/></span>'));"
+								. "if(p.cart!=null&&p.cart=='yes'"
+									// Check if inventory available or backorder available
+									. "&&(p.inventory_available>0||(p.inventory_flags&0x02)>0)){"
+									. "tr.appendChild(C.aE('td',null,'alignright','<span class=\"cart-quantity\"><input "
+									. "class=\"quantity\" id=\"quantity_'+i+'\" name=\"quantity_'+i+'\" "
+									. "value=\"1\" size=\"2\"/></span>'));"
+								. "}else{"
+									. "tr.appendChild(C.aE('td'));"
+								. "}"
 								// Check if inventory is being tracked,
 								// and if the item is backordered, decide if sold out or backorder should display
 								. ($inv=='yes'?"tr.appendChild(C.aE('td',null,'alignright',("
@@ -339,8 +345,8 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 								. ");":"")
 								. "tr.appendChild(C.aE('td',null,'alignright',p.price));"
 								. "if(p.cart!=null&&p.cart=='yes'"
-								// Check if inventory available or backorder available
-								. "&&(p.inventory_available>0||(p.inventory_flags&0x02)>0)){"
+									// Check if inventory available or backorder available
+									. "&&(p.inventory_available>0||(p.inventory_flags&0x02)>0)){"
 									. "var e = C.aE('td',null,'aligncenter');"
 									. "var b = C.aE('input',null,'cart-submit');"
 									. "b.type='submit';"
