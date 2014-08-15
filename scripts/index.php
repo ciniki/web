@@ -7,7 +7,7 @@
 //
 // All web requests for business websites are funnelled through this script.
 //
-
+$start_time = microtime(true);
 
 //
 // Load ciniki

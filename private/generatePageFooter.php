@@ -14,6 +14,7 @@
 // -------
 //
 function ciniki_web_generatePageFooter($ciniki, $settings) {
+	global $start_time;
 
 	//
 	// Store the content
@@ -46,7 +47,7 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
 	if( isset($ciniki['request']['error_codes_msg']) && $ciniki['request']['error_codes_msg'] != '' ) {
 		$content .= "<br/><span class='poweredby'>" . $ciniki['request']['error_codes_msg'] . "</span>";
 	}
-
+	$content .= "<span class='x-stats' style='display:none;'>Execution: " . sprintf("%.4f", ((microtime(true)-$start_time)/60)) . "seconds</span>";
 	$content .= "</footer>"
 		. "";
 
