@@ -229,7 +229,6 @@ function ciniki_web_sliders() {
 						M.api.err(rsp);
 						return false;
 					}
-					console.log(rsp);
 					M.ciniki_web_sliders.edit.slider_id = rsp.id;
 					if( rsp.images != null ) {
 						for(i in rsp.images) {
