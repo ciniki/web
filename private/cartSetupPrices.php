@@ -121,7 +121,7 @@ function ciniki_web_cartSetupPrices($ciniki, $settings, $business_id, $prices) {
 			&& isset($ciniki['business']['modules']['ciniki.sapos']) 
 			&& ($ciniki['business']['modules']['ciniki.sapos']['flags']&0x08) > 0 
 			) {
-			$content .= "<form action='" .  $ciniki['request']['base_url'] . "/cart' method='POST'>";
+			$content .= "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' method='POST'>";
 			$content .= "<input type='hidden' name='action' value='add'/>";
 			$content .= "<input type='hidden' name='object' value='" . $price['object'] . "'/>";
 			$content .= "<input type='hidden' name='object_id' value='" . $price['object_id'] . "'/>";

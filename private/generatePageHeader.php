@@ -270,7 +270,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	if( isset($settings['page-cart-active']) && $settings['page-cart-active'] == 'yes' 
 		&& isset($ciniki['session']['customer']) && $ciniki['session']['customer']['id'] > 0 
 		) {
-		$shopping_cart .= "<span><a rel='nofollow' href='" . $ciniki['request']['base_url'] . "/cart'>"
+		$shopping_cart .= "<span><a rel='nofollow' href='" . $ciniki['request']['ssl_domain_base_url'] . "/cart'>"
 			. "Cart";
 		if( isset($ciniki['session']['cart']['num_items']) && $ciniki['session']['cart']['num_items'] > 0 ) {
 			$shopping_cart .= ' (' . $ciniki['session']['cart']['num_items'] . ')';
@@ -311,10 +311,10 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 			$signin_content .= $shopping_cart . " | ";
 		}
 		if( isset($ciniki['session']['customer']['id']) > 0 ) {
-			$signin_content .= "<span><a rel='nofollow' href='" . $ciniki['request']['base_url'] . "/account'>Account</a></span>";
-			$signin_content .= " | <span><a rel='nofollow' href='" . $ciniki['request']['base_url'] . "/account/logout'>Logout</a></span>";
+			$signin_content .= "<span><a rel='nofollow' href='" . $ciniki['request']['ssl_domain_base_url'] . "/account'>Account</a></span>";
+			$signin_content .= " | <span><a rel='nofollow' href='" . $ciniki['request']['ssl_domain_base_url'] . "/account/logout'>Logout</a></span>";
 		} else {
-			$signin_content .= "<span><a rel='nofollow' href='" . $ciniki['request']['base_url'] . "/account'>Sign In</a></span>";
+			$signin_content .= "<span><a rel='nofollow' href='" . $ciniki['request']['ssl_domain_base_url'] . "/account'>Sign In</a></span>";
 		}
 		$signin_content .= "</div></div>\n";
 	} elseif( $shopping_cart != '' ) {

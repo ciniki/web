@@ -16,6 +16,21 @@
 function ciniki_web_generatePageCart(&$ciniki, $settings) {
 
 	//
+	// Check if should be forced to SSL
+	//
+	if( isset($settings['site-ssl-force-cart']) 
+		&& $settings['site-ssl-force-cart'] == 'yes' 
+		) {
+		if( isset($settings['site-ssl-active'])
+			&& $settings['site-ssl-active'] == 'yes'
+			(!isset($_SERVER['HTTP_CLUSTER_HTTPS']) || $_SERVER['HTTP_CLUSTER_HTTPS'] != 'on')
+			&& (!isset($_SERVER['SERVER_PORT']) || $_SERVER['SERVER_PORT'] != '443' ) )  {
+			header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+			exit;
+		}
+	}
+
+	//
 	// Store the content created by the page
 	// Make sure everything gets generated ok before returning the content
 	//
@@ -144,7 +159,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		//
 		// Redirect to avoid form duplicate submission
 		//
-		header("Location: " . $ciniki['request']['base_url'] . "/cart");
+		header("Location: " . $ciniki['request']['ssl_domain_base_url'] . "/cart");
 		exit;
 
 		//
@@ -196,7 +211,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		// Redirect to avoid form duplicate submission
 		//
 //		$content .= print_r($_POST, true);
-		header("Location: " . $ciniki['request']['base_url'] . "/cart");
+		header("Location: " . $ciniki['request']['ssl_domain_base_url'] . "/cart");
 		exit;
 
 		//
@@ -243,14 +258,14 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 	//
 	if( $display_cart == 'yes' ) {
 		$content .= "<article class='page cart'>\n"
-//			. "<form action='" .  $ciniki['request']['base_url'] . "/cart' method='POST'>"
+//			. "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' method='POST'>"
 			. "<header class='entry-title'>"
 			. "<h1 id='entry-title' class='entry-title'>$page_title</h1>";
 		if( isset($settings['page-cart-product-search']) 
 			&& $settings['page-cart-product-search'] == 'yes' 
 			) {
 			$content .= "<div class='cart-search-input'>"
-				. "<form id='cart-search-form' action='" .  $ciniki['request']['base_url'] . "/cart' method='POST'>"
+				. "<form id='cart-search-form' action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' method='POST'>"
 				. "<input type='hidden' name='action' value='add'/>"
 				. "<input id='cart-search-form-object' type='hidden' name='object' value='' />"
 				. "<input id='cart-search-form-object_id' type='hidden' name='object_id' value='' />"
@@ -370,7 +385,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 				. "};"
 				. "</script>\n";
 			$content .= "<div class='cart-search-items' id='cart-search-result' style='display:none;'>"
-//				. "<form action='" .  $ciniki['request']['base_url'] . "/cart' method='POST'>"
+//				. "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' method='POST'>"
 				. "<table class='cart-items'>\n"
 				. "<thead><tr>"
 				. "<th class='alignleft'>Item</th>"
@@ -436,7 +451,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		// Display cart items
 		//
 		if( $cart != NULL && isset($cart['items']) && count($cart['items']) > 0 ) {
-			$content .= "<form action='" .  $ciniki['request']['base_url'] . "/cart' method='POST'>";
+			$content .= "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' method='POST'>";
 			$content .= "<input type='hidden' name='action' value='update'/>";
 			$content .= "<div class='cart-items'>";
 			$content .= "<table class='cart-items'>";

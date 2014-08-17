@@ -133,6 +133,7 @@ if( $ciniki['config']['ciniki.web']['master.domain'] != $_SERVER['HTTP_HOST'] ) 
 		$ciniki['request']['base_url'] = '';
 		$ciniki['request']['domain'] = $_SERVER['HTTP_HOST'];
 		$ciniki['request']['domain_base_url'] = 'http://' . $_SERVER['HTTP_HOST'];
+		$ciniki['request']['ssl_domain_base_url'] = 'http://' . $_SERVER['HTTP_HOST'];
 	}
 }
 
@@ -145,6 +146,7 @@ if( $ciniki['request']['business_id'] == 0 ) {
 	//
 	$ciniki['request']['domain'] = $ciniki['config']['ciniki.web']['master.domain'];
 	$ciniki['request']['domain_base_url'] = 'http://' . $ciniki['config']['ciniki.web']['master.domain'];
+	$ciniki['request']['ssl_domain_base_url'] = 'http://' . $ciniki['config']['ciniki.web']['master.domain'];
 	if( $uri == '' ) {
 		$ciniki['request']['page'] = 'masterindex';
 		$ciniki['request']['business_id'] = $ciniki['config']['ciniki.core']['master_business_id'];
@@ -213,6 +215,7 @@ if( $ciniki['request']['business_id'] == 0 ) {
 		$ciniki['request']['base_url'] = '/' . $ciniki['request']['uri_split'][0];
 		$ciniki['request']['domain'] = $ciniki['config']['ciniki.web']['master.domain'];
 		$ciniki['request']['domain_base_url'] = 'http://' . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $ciniki['request']['uri_split'][0];
+		$ciniki['request']['ssl_domain_base_url'] = 'http://' . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $ciniki['request']['uri_split'][0];
 		if( isset($rc['redirect']) && $rc['redirect'] != '' ) {
 			Header('HTTP/1.1 301 Moved Permanently'); 
 			Header('Location: http://' . $rc['redirect'] . preg_replace('/^\/[^\/]+/', '', $_SERVER['REQUEST_URI']));
@@ -313,6 +316,10 @@ if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 
 	if( $rc['stat'] == 'ok' ) {
 		$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
 	}
+}
+
+if( isset($settings['site-ssl-active']) && $settings['site-ssl-active'] == 'yes' ) {
+	$ciniki['request']['ssl_domain_base_url'] = preg_replace('/^http:/', 'https:', $ciniki['request']['ssl_domain_base_url']);
 }
 
 // print "<pre>"; print_r($ciniki); print "</pre>";

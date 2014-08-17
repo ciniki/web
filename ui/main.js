@@ -51,11 +51,11 @@ function ciniki_web_main() {
 			'mc', 'medium', 'sectioned', 'ciniki.web.main.menu');
 		this.menu.data = {};
 		this.menu.sections = {
-			'settings':{'label':'Settings', 'type':'simplegrid', 'num_cols':2, 'sortable':'no',
+			'settings':{'label':'Settings', 'aside':'no', 'type':'simplegrid', 'num_cols':2, 'sortable':'no',
 				'headerValues':null,
 				'cellClasses':['',''],
 				},
-			'pages':{'label':'Pages', 'type':'simplegrid', 'num_cols':1, 'sortable':'yes',
+			'pages':{'label':'Pages', 'aside':'no', 'type':'simplegrid', 'num_cols':1, 'sortable':'yes',
 				'headerValues':null,
 				},
 			'advanced':{'label':'Advanced', 'list':{
@@ -70,6 +70,7 @@ function ciniki_web_main() {
 		this.menu.noData = function(s) { return 'No options added'; }
 		this.menu.sectionData = function(s) { 
 			if( s == 'advanced' ) { return this.sections.advanced.list; }
+			if( s == 'adm' ) { return this.sections.adm.list; }
 			return this.data[s]; 
 		};
 		this.menu.listValue = function(s, i, d) { return d.label; };
@@ -264,6 +265,28 @@ function ciniki_web_main() {
 		this.css.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.css.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'css\');');
 		this.css.addClose('Cancel');
+
+		//
+		// The panel setup the SSL settings for the site
+		//
+		this.ssl = new M.panel('SSL',
+			'ciniki_web_main', 'ssl',
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.ssl');
+		this.ssl.data = {'site-customer-ssl':''};
+		this.ssl.sections = {
+			'_ssl':{'label':'Enable SSL', 'fields':{
+				'site-ssl-active':{'label':'SSL Enabled', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'site-ssl-force-cart':{'label':'SSL Cart Only', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'site-ssl-force-account':{'label':'SSL Account Only', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'ssl\');'},
+				}},
+		};
+		this.ssl.fieldValue = this.fieldValue;
+		this.ssl.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.ssl.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'ssl\');');
+		this.ssl.addClose('Cancel');
 
 		//
 		// The options and information for the home page
@@ -1074,15 +1097,24 @@ function ciniki_web_main() {
 		// This may become available to users, but might be too complicated
 		//
 		if( M.userPerms&0x01 == 0x01 ) {
+			this.menu.size = 'medium mediumaside';
+			this.menu.sections.settings.aside = 'yes';
+			this.menu.sections.pages.aside = 'yes';
+			this.menu.sections.adm = {'label':'Admin Options', 'list':{
+				'googleanalytics':{'label':'Analytics', 'fn':'M.ciniki_web_main.showSiteSettings(\'M.ciniki_web_main.showMenu();\',\'analytics\');' },
+				'ssl':{'label':'SSL', 'fn':'M.ciniki_web_main.showSiteSettings(\'M.ciniki_web_main.showMenu();\',\'ssl\');'},
+				'css':{'label':'Custom CSS', 'fn':'M.ciniki_web_main.showSiteSettings(\'M.ciniki_web_main.showMenu();\',\'css\');'},
+				'layout':{'label':'Layout', 'fn':'M.ciniki_web_main.showLayouts(\'M.ciniki_web_main.showMenu();\');'},
+				}};
 			this.menu.sections.admin = {'label':'Admin Options', 'buttons':{
-				'googleanalytics':{'label':'Analytics', 'fn':'M.ciniki_web_main.showAnalytics(\'M.ciniki_web_main.showMenu();\',\'analytics\');' },
 				'clearimagecache':{'label':'Clear Image Cache', 'fn':'M.ciniki_web_main.clearImageCache();'},
 				'clearcontentcache':{'label':'Clear Content Cache', 'fn':'M.ciniki_web_main.clearContentCache();'},
-				'css':{'label':'Custom CSS', 'fn':'M.ciniki_web_main.showCSS(\'M.ciniki_web_main.showMenu();\',\'css\');'},
-				'layout':{'label':'Layout', 'fn':'M.ciniki_web_main.showLayouts(\'M.ciniki_web_main.showMenu();\');'},
 				}};
 			this.home.sections.redirects.active = 'yes';
 		} else {
+			this.menu.size = 'medium';
+			this.menu.sections.settings.aside = 'no';
+			this.menu.sections.pages.aside = 'no';
 			this.home.sections.redirects.active = 'no';
 		}
 		
@@ -1423,31 +1455,17 @@ function ciniki_web_main() {
 			});
 	};
 
-	this.showCSS = function(cb, page) {
+	this.showSiteSettings = function(cb, page) {
 		var rsp = M.api.getJSONCb('ciniki.web.siteSettingsGet', 
 			{'business_id':M.curBusinessID, 'content':'yes'}, function(rsp) {
 				if( rsp.stat != 'ok' ) {
 					M.api.err(rsp);
 					return false;
 				}
-				M.ciniki_web_main[page].data = {'site-custom-css':rsp.settings['site-custom-css']};
-				M.ciniki_web_main[page].refresh();
-				M.ciniki_web_main[page].show(cb);
-			});
-	};
-
-	this.showAnalytics = function(cb, page) {
-		this[page].reset();
-		var rsp = M.api.getJSONCb('ciniki.web.siteSettingsGet', 
-			{'business_id':M.curBusinessID}, function(rsp) {
-				if( rsp['stat'] != 'ok' ) {
-					M.api.err(rsp);
-					return false;
-				}
 				M.ciniki_web_main[page].data = rsp.settings;
 				M.ciniki_web_main[page].refresh();
 				M.ciniki_web_main[page].show(cb);
-		});
+			});
 	};
 
 	this.savePage = function(page) {

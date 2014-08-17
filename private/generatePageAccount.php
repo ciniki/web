@@ -17,6 +17,21 @@
 function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 
 	//
+	// Check if should be forced to SSL
+	//
+	if( isset($settings['site-ssl-force-account']) 
+		&& $settings['site-ssl-force-account'] == 'yes' 
+		) {
+		if( isset($settings['site-ssl-active'])
+			&& $settings['site-ssl-active'] == 'yes'
+			(!isset($_SERVER['HTTP_CLUSTER_HTTPS']) || $_SERVER['HTTP_CLUSTER_HTTPS'] != 'on')
+			&& (!isset($_SERVER['SERVER_PORT']) || $_SERVER['SERVER_PORT'] != '443' ) )  {
+			header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+			exit;
+		}
+	}
+
+	//
 	// Store the content created by the page
 	// Make sure everything gets generated ok before returning the content
 	//
@@ -47,7 +62,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 		$ciniki['session']['change_log_id'] = '';
 		unset($_SESSION['customer']);
 		unset($_SESSION['cart']);
-		Header('Location: ' . ($ciniki['request']['base_url']!=''?$ciniki['request']['base_url']:'/'));
+		Header('Location: ' . ($ciniki['request']['ssl_domain_base_url']!=''?$ciniki['request']['ssl_domain_base_url']:'/'));
 	}
 	elseif( isset($_POST['action']) ) {
 		if( $_POST['action'] == 'signin' ) {
@@ -91,7 +106,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 							exit;
 						}
 						if( $settings['page-account-signin-redirect'] != '' ) {
-							Header('Location: ' . $ciniki['request']['base_url'] . $settings['page-account-signin-redirect']);
+							Header('Location: ' . $ciniki['request']['ssl_domain_base_url'] . $settings['page-account-signin-redirect']);
 							exit;
 						}
 					}
@@ -101,7 +116,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 		elseif( $_POST['action'] == 'forgot' ) {
 			// Set the forgot password notification
 			if( isset($_POST['email']) && $_POST['email'] != '' ) {
-				$url = 'http://' . $_SERVER['HTTP_HOST'] . $ciniki['request']['base_url'] . '/account/reset';
+				$url = $ciniki['request']['ssl_domain_base_url'] . '/account/reset';
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'passwordRequestReset');
 				$rc = ciniki_customers_web_passwordRequestReset($ciniki, $ciniki['request']['business_id'], $_POST['email'], $url);
 				if( $rc['stat'] != 'ok' ) {
@@ -282,7 +297,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 		$content .= "<div class='entry-content'>";
 		$content .= "<p>Please enter a new password.  It must be at least 8 characters long.</p>";
 		$content .= "<div id='reset-form'>\n"
-			. "<form method='POST' action='http://" . $_SERVER['HTTP_HOST'] . $ciniki['request']['base_url'] . "/account'>";
+			. "<form method='POST' action='" . $ciniki['request']['ssl_domain_base_url'] . "/account'>";
 		if( $err_msg != '' ) {
 			$content .= "<p class='formerror'>$err_msg</p>\n";
 		}
