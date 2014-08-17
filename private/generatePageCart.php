@@ -23,7 +23,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		) {
 		if( isset($settings['site-ssl-active'])
 			&& $settings['site-ssl-active'] == 'yes'
-			(!isset($_SERVER['HTTP_CLUSTER_HTTPS']) || $_SERVER['HTTP_CLUSTER_HTTPS'] != 'on')
+			&& (!isset($_SERVER['HTTP_CLUSTER_HTTPS']) || $_SERVER['HTTP_CLUSTER_HTTPS'] != 'on')
 			&& (!isset($_SERVER['SERVER_PORT']) || $_SERVER['SERVER_PORT'] != '443' ) )  {
 			header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 			exit;

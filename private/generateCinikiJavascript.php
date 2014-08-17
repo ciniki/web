@@ -17,11 +17,17 @@ function ciniki_web_generateCinikiJavascript($ciniki) {
 	// Javascript to resize the image, and arrow overlays once the image is loaded.
 	// This is done so the image can be properly fit to the size of the screen.
 	//
+	if( (isset($_SERVER['HTTP_CLUSTER_HTTPS']) && $_SERVER['HTTP_CLUSTER_HTTPS'] == 'on')
+		|| (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443') )  {
+		$url = $ciniki['request']['ssl_domain_base_url'];
+	} else {
+		$url = $ciniki['request']['domain_base_url'];
+	}
+
 	$javascript = "<script type='text/javascript'>\n"
 		. "window.C={"
-			. "'url':'" . $ciniki['request']['domain_base_url'] . "/api/'"
+			. "'url':'" . $url . "/api/'"
 			. "};"
-			. "\n"
 		// The command, parameters, callback function
 		. "C.getBg=function(c,p,f) {"
 			. "var u='';"
