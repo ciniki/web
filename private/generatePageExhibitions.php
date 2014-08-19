@@ -161,6 +161,11 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 		}
 		
 		$page_title = $exhibition['name'] . ' - ' . $img['title'];
+		$article_title = "<a href='" . $ciniki['request']['base_url'] . "/exhibitions/" . $exhibition['permalink'] . "'>" . $exhibition['name'] . "</a>";
+		if( $img['title'] != '' ) {
+			$page_title .= ' - ' . $img['title'];
+			$article_title .= ' - ' . $img['title'];
+		}
 	
 		if( $img == NULL ) {
 			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1305', 'msg'=>"I'm sorry, but we can't seem to find the image your requested."));
@@ -191,7 +196,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 		$ciniki['request']['onresize'] = "gallery_resize_arrows();";
 		$ciniki['request']['onload'] = "scrollto_header();";
 		$page_content .= "<article class='page'>\n"
-			. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$page_title</h1></header>\n"
+			. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$article_title</h1></header>\n"
 			. "<div class='entry-content'>\n"
 			. "";
 		$page_content .= "<div id='gallery-image' class='gallery-image'>";
@@ -202,7 +207,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 		if( $next != null ) {
 			$page_content .= "<a id='gallery-image-next' class='gallery-image-next' href='" . $next['permalink'] . "'><div id='gallery-image-next-img'></div></a>";
 		}
-		$page_content .= "<img id='gallery-image-img' title='" . $img['title'] . "' alt=\"" . htmlspecialchars(strip_tags($img['title'])) . "\" src='" . $img_url . "' onload='javascript: gallery_resize_arrows();' />";
+		$page_content .= "<img id='gallery-image-img' title='" . htmlspecialchars(strip_tags($img['title'])) . "' alt=\"" . htmlspecialchars(strip_tags($img['title'])) . "\" src='" . $img_url . "' onload='javascript: gallery_resize_arrows();' />";
 		$page_content .= "</div><br/>"
 			. "<div id='gallery-image-details' class='gallery-image-details'>"
 			. "<span class='image-title'>" . $img['title'] . '</span>'
