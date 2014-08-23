@@ -496,6 +496,12 @@ elseif( $ciniki['request']['page'] == 'members'
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageMembers.php');
 	$rc = ciniki_web_generatePageMembers($ciniki, $settings);
 }
+// Dealers
+elseif( $ciniki['request']['page'] == 'dealers' 
+	&& isset($settings['page-dealers-active']) && $settings['page-dealers-active'] == 'yes' ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageDealers.php');
+	$rc = ciniki_web_generatePageDealers($ciniki, $settings);
+}
 // Products
 elseif( $ciniki['request']['page'] == 'products' 
 	&& isset($settings['page-products-active']) && $settings['page-products-active'] == 'yes' ) {

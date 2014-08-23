@@ -742,6 +742,10 @@ aside div.googlemap img {
 	text-align: center;
 }
 
+#content div.word-cloud-large {
+	max-width: 100%;
+}
+
 #content div.word-cloud span { 
 	padding: 0.2em; 
 	padding-left: 0.6em; 

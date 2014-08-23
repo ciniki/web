@@ -189,6 +189,14 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-members-list-format',
 		'page-members-categories-display',
 		'page-members-name',
+		'page-dealers-active',
+		'page-dealers-name',
+		'page-dealers-categories-display',
+		'page-dealers-locations-display',
+		'page-dealers-locations-map-names',
+		'page-dealers-map-display',
+		'page-dealers-list-format',
+		'page-distributors-active',
 		'page-sponsors-active',
 		'page-newsletters-active',
 		'page-surveys-active',
@@ -491,7 +499,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		//
 		// Check for triggers by changing settings
 		//
-		if( $field == 'page-members-list-format' ) {
+		if( $field == 'page-members-list-format'
+			|| $field == 'page-dealers-list-format' ) {
 			$rc = ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'settingChange');
 			if( $rc['stat'] == 'ok' ) {
 				$rc = ciniki_customers_web_settingChange($ciniki, $args['business_id'], $field, $field_value);

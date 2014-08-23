@@ -409,6 +409,9 @@ function ciniki_web_main() {
 				'page-contact-map-latitude':{'label':'Latitude', 'type':'text', 'size':'small'},
 				'page-contact-map-longitude':{'label':'Longitude', 'type':'text', 'size':'small'},
 				}},
+			'_map_buttons':{'label':'', 'buttons':{
+				'_latlong':{'label':'Lookup Lat/Long', 'fn':'M.ciniki_web_main.contact.lookupLatLong();'},
+				}},
 			'_content':{'label':'Content', 'fields':{
 				'page-contact-content':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'large'},
 				}},
@@ -420,6 +423,33 @@ function ciniki_web_main() {
 		this.contact.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.contact.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'contact\');');
 		this.contact.addClose('Cancel');
+		this.contact.lookupLatLong = function() {
+			M.startLoad();
+			if( document.getElementById('googlemaps_js') == null) {
+				var script = document.createElement("script");
+				script.id = 'googlemaps_js';
+				script.type = "text/javascript";
+				script.src = "https://maps.googleapis.com/maps/api/js?key=" + M.curBusiness.settings['googlemapsapikey'] + "&sensor=false&callback=M.ciniki_web_main.contact.lookupGoogleLatLong";
+				document.body.appendChild(script);
+			} else {
+				this.lookupGoogleLatLong();
+			}
+		};
+
+		this.contact.lookupGoogleLatLong = function() {
+			var address = this.business_address;
+			var geocoder = new google.maps.Geocoder();
+			geocoder.geocode( { 'address': address}, function(results, status) {
+				if (status == google.maps.GeocoderStatus.OK) {
+					M.ciniki_web_main.contact.setFieldValue('page-contact-map-latitude', results[0].geometry.location.lat());
+					M.ciniki_web_main.contact.setFieldValue('page-contact-map-longitude', results[0].geometry.location.lng());
+					M.stopLoad();
+				} else {
+					alert('We were unable to lookup your latitude/longitude, please check your address in Settings: ' + status);
+					M.stopLoad();
+				}
+			});	
+		};
 
 		//
 		// The options and information for the Features page
@@ -675,6 +705,43 @@ function ciniki_web_main() {
 		this.members.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.members.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'members\');');
 		this.members.addClose('Cancel');
+
+		//
+		// The options and information for the dealers page
+		//
+		this.dealers = new M.panel('Dealers',
+			'ciniki_web_main', 'dealers',
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.dealers');
+		this.dealers.data = {};
+		this.dealers.sections = {
+			'options':{'label':'', 'fields':{
+				'page-dealers-active':{'label':'Display Dealers', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-dealers-name':{'label':'Name', 'type':'text', 'hint':'Dealers'},
+//				'page-dealers-categories-display':{'label':'Display Dealer Categories', 'type':'toggle', 'default':'no', 'toggles':{
+//					'no':'No',
+//					'wordlist':'List',
+//					'wordcloud':'Cloud',
+//					}},
+				'page-dealers-locations-map-names':{'label':'Expand Short Names', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-dealers-locations-display':{'label':'Display Dealer Locations', 'type':'toggle', 'default':'no', 'toggles':{
+					'no':'No',
+					'wordlist':'List',
+					'wordcloud':'Cloud',
+					}},
+				'page-dealers-list-format':{'label':'Listing Content', 'type':'select', 'options':{
+					'shortbio':'Short Bio',
+					'shortbio-blank-addresses-phones-emails-links':'Short Bio, Addresses, Phones, Emails, Links',
+					'addresses-blank-shortbio-phones-emails-links':'Addresses, Short Bio, Phones, Emails, Links',
+					}},
+			}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'dealers\');'},
+				}},
+		};
+		this.dealers.fieldValue = this.fieldValue;
+		this.dealers.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.dealers.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'dealers\');');
+		this.dealers.addClose('Cancel');
 
 		//
 		// The options and information for the members news page
@@ -1222,6 +1289,7 @@ function ciniki_web_main() {
 	this.showPageFinish = function(cb, page, subpage, subpagetitle, rsp) {
 		this[page].data = rsp.settings;
 		if( page == 'contact' ) {
+			this.contact.business_address = rsp.business_address;
 			this.showContact(cb);
 		} else if( page == 'home' ) {
 			if( (M.curBusiness.modules['ciniki.web'].flags&0x02) > 0 ) {

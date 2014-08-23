@@ -83,6 +83,30 @@ function ciniki_web_pageSettingsGet($ciniki) {
 	$rsp = array('stat'=>'ok', 'settings'=>$settings);
 
 	//
+	// Get the business address if page is contact
+	//
+	if( isset($args['page']) && $args['page'] == 'contact' ) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQuery');
+		$rc = ciniki_core_dbDetailsQuery($ciniki, 'ciniki_business_details', 'business_id', $args['business_id'], 'ciniki.businesses', 'settings', 'contact');
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		if( !isset($rc['settings']) ) {
+			$settings = array();
+		} else {
+			$settings = $rc['settings'];
+		}
+		$address = '';
+		$address .= ((isset($settings['contact.address.street1'])&&$settings['contact.address.street1']!='')?($address!=''?', ':'').$settings['contact.address.street1']:'');
+		$address .= ((isset($settings['contact.address.street2'])&&$settings['contact.address.street2']!='')?($address!=''?', ':'').$settings['contact.address.street2']:'');
+		$address .= ((isset($settings['contact.address.city'])&&$settings['contact.address.city']!='')?($address!=''?', ':'').$settings['contact.address.city']:'');
+		$address .= ((isset($settings['contact.address.province'])&&$settings['contact.address.province']!='')?($address!=''?', ':'').$settings['contact.address.province']:'');
+		$address .= ((isset($settings['contact.address.postal'])&&$settings['contact.address.postal']!='')?($address!=''?', ':'').$settings['contact.address.postal']:'');
+		$address .= ((isset($settings['contact.address.country'])&&$settings['contact.address.country']!='')?($address!=''?', ':'').$settings['contact.address.country']:'');
+		$rsp['business_address'] = $address;
+	}
+
+	//
 	// Check if sliders should be included
 	//
 	$slider_pages = array('home');

@@ -14,8 +14,6 @@
 //
 function ciniki_web_processTagCloud($ciniki, $settings, $base_url, $tags) {
 
-	$content = "<div class='word-cloud-wrap'>";
-	$content .= "<div class='word-cloud'>";
 	$min = 0;
 	$max = 1;
 	// Find the minimum and maximum
@@ -27,16 +25,29 @@ function ciniki_web_processTagCloud($ciniki, $settings, $base_url, $tags) {
 	
 	$fmax = 9;
 	$fmin = 0;
+	$tag_content = '';
+	$size = 0;
 	foreach($tags as $tag) {
 		if( $max > 10 ) {
 			$fontsize = round(($fmax * ($tag['num_tags']-$min))/($max-$min));
 		} else {
 			$fontsize = $tag['num_tags'];
 		}
-		$content .= "<span class='size-$fontsize'><a href='$base_url/" . $tag['permalink'] . "'>" 	
+		if( !isset($tag['permalink']) || $tag['permalink'] == '' ) {
+			$tag['permalink'] = rawurlencode($tag['name']);
+		}
+		$tag_content .= "<span class='size-$fontsize'><a href='$base_url/" . $tag['permalink'] . "'>" 	
 			. $tag['name'] . "</a></span> ";
+		$size += strlen($tag['name']);
 	}
 
+	$cloud_size = 'word-cloud-medium';
+	if( $size > 150 ) {
+		$cloud_size = 'word-cloud-large';
+	}
+	$content = "<div class='word-cloud-wrap'>";
+	$content .= "<div class='word-cloud $cloud_size'>";
+	$content .= $tag_content;
 	$content .= "</div>";
 	$content .= "</div>";
 
