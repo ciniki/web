@@ -149,7 +149,7 @@ function ciniki_web_generatePageContact($ciniki, $settings) {
 			. 'function loadMap() {'
 				. 'var script = document.createElement("script");'
 				. 'script.type = "text/javascript";'
-				. 'script.src = "http://maps.googleapis.com/maps/api/js?key=' . $ciniki['config']['ciniki.web']['google.maps.api.key'] . '&sensor=false&callback=gmap_initialize";'
+				. 'script.src = "' . ($ciniki['request']['ssl']=='yes'?'https':'http') . '://maps.googleapis.com/maps/api/js?key=' . $ciniki['config']['ciniki.web']['google.maps.api.key'] . '&sensor=false&callback=gmap_initialize";'
 				. 'document.body.appendChild(script);'
 			. '};'
 			. 'window.onload = loadMap;'

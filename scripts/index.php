@@ -55,6 +55,7 @@ $ciniki['request'] = array('business_id'=>0, 'page'=>'', 'args'=>array(),
 	'theme_dir'=>$ciniki['config']['ciniki.core']['modules_dir'] . '/web/themes',
 	'theme_url'=>'/ciniki-web-themes',
 	'inline_javascript'=>'',
+	'ssl'=>'no',
 	);
 $ciniki['response'] = array('head'=>array(
 	'links'=>array(),
@@ -71,6 +72,13 @@ $ciniki['response'] = array('head'=>array(
 $ciniki['business'] = array('modules'=>array());
 $ciniki['syncqueue'] = array();
 $ciniki['emailqueue'] = array();
+
+// Set the flag if we serving this request over ssl
+if( (isset($_SERVER['HTTP_CLUSTER_HTTPS']) && $_SERVER['HTTP_CLUSTER_HTTPS'] == 'on')
+	|| (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443' ) 
+	) {
+	$ciniki['request']['ssl'] = 'yes';
+}
 
 // 
 // Split the request URI into parts
