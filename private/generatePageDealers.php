@@ -86,6 +86,10 @@ function ciniki_web_generatePageDealers($ciniki, $settings) {
 	// Check if anything has been updated in ciniki.customers and update the map data file
 	//
 	$last_change = $ciniki['business']['modules']['ciniki.customers']['last_change'];
+	if( isset($ciniki['business']['modules']['ciniki.web']['last_change']) 
+		&& $ciniki['business']['modules']['ciniki.web']['last_change'] > $last_change ) {
+		$last_change = $ciniki['business']['modules']['ciniki.web']['last_change'];
+	}
 
 	//
 	// Check if anything has changed, and if not load from cache
