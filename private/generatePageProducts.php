@@ -864,6 +864,11 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 		} 
 		elseif( file_put_contents($cache_file, $page_content) === FALSE ) {
 			error_log("WEB-CACHE: Failed to write $cache_file");
+		} else {
+			//
+			// We must force the timestamp on the file, otherwise at rackspace cloudsites it's behind
+			//
+			touch($cache_file, time());
 		}
 	}
 
