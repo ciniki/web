@@ -59,6 +59,7 @@ $ciniki['request'] = array('business_id'=>0, 'page'=>'', 'args'=>array(),
 	);
 $ciniki['response'] = array('head'=>array(
 	'links'=>array(),
+	'scripts'=>array(),
 	'og'=>array(
 		'url'=>'',
 		'title'=>'',

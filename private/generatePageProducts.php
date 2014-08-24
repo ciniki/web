@@ -80,7 +80,9 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 	// Check for cached content
 	//
 	$cache_update = 'yes';
-	if( isset($ciniki['business']['cache_dir']) && $ciniki['business']['cache_dir'] != '' ) {
+	if( isset($ciniki['business']['cache_dir']) && $ciniki['business']['cache_dir'] != '' 
+		&& (!isset($ciniki['config']['ciniki.web']['cache']) 
+			|| $ciniki['config']['ciniki.web']['cache'] != 'off') ) {
 		$cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products/';
 		$depth = 2;
 		if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'product' ) {

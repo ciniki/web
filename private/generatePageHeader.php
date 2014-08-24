@@ -149,6 +149,15 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 			$content .= "<link rel='" . $link['rel'] . "' href='" . $link['href'] . "'/>\n";
 		}
 	}
+
+	//
+	// Check for head scripts
+	//
+	if( isset($ciniki['response']['head']['scripts']) ) {
+		foreach($ciniki['response']['head']['scripts'] as $script) {
+			$content .= "<script src='" . $script['src'] . "' type='" . $script['type'] . "'></script>\n";
+		}
+	}
 	
 	//
 	// Header to support mobile device resize

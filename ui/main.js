@@ -730,8 +730,8 @@ function ciniki_web_main() {
 					}},
 				'page-dealers-list-format':{'label':'Listing Content', 'type':'select', 'options':{
 					'shortbio':'Short Bio',
-					'shortbio-blank-addresses-phones-emails-links':'Short Bio, Addresses, Phones, Emails, Links',
-					'addresses-blank-shortbio-phones-emails-links':'Addresses, Short Bio, Phones, Emails, Links',
+					'shortbio-blank-addressesnl-phones-emails-links':'Short Bio, Addresses, Phones, Emails, Links',
+					'addressesnl-blank-shortbio-phones-emails-links':'Addresses, Short Bio, Phones, Emails, Links',
 					}},
 			}},
 			'_save':{'label':'', 'buttons':{

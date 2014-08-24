@@ -54,4 +54,3 @@ function ciniki_web_processTagCloud($ciniki, $settings, $base_url, $tags) {
 	return array('stat'=>'ok', 'content'=>$content);
 }
 ?>
-
