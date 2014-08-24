@@ -79,6 +79,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 	//
 	// Check for cached content
 	//
+	$cache_update = 'yes';
 	if( isset($ciniki['business']['cache_dir']) && $ciniki['business']['cache_dir'] != '' ) {
 		$cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products/';
 		$depth = 2;
@@ -100,7 +101,8 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 		// Check if no changes have been made since last cache file write
 		if( file_exists($cache_file) && filemtime($cache_file) > $last_change ) {
 			$page_content = file_get_contents($cache_file);
-			error_log("CACHE: $last_change - " . $cache_file);
+			$cache_update = 'no';
+//			error_log("CACHE: $last_change - " . $cache_file);
 		}
 	}
 
@@ -856,7 +858,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 	//
 	// Save the cache file
 	//
-	if( $cache_file != '' ) {
+	if( $cache_file != '' && $cache_update == 'yes' ) {
 		if( !file_exists(dirname($cache_file)) && mkdir(dirname($cache_file), 0755, true) === FALSE ) {
 			error_log("WEB-CACHE: Failed to create dir for " . dirname($cache_file));
 		} 

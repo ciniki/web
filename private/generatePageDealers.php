@@ -84,6 +84,12 @@ function ciniki_web_generatePageDealers($ciniki, $settings) {
 	}
 
 	//
+	// Check if anything has been updated in ciniki.customers and update the map data file
+	//
+	$last_change = $ciniki['business']['modules']['ciniki.customers']['last_change'];
+
+
+	//
 	// FIXME: Check if anything has changed, and if not load from cache
 	//
 
@@ -240,6 +246,7 @@ function ciniki_web_generatePageDealers($ciniki, $settings) {
 		$article_title = "<a href='$base_url'>Dealers</a>";
 		$base_url = $ciniki['request']['domain_base_url'] . '/dealers/location/' . $country_permalink;
 		$display_locations = 'yes';
+		$display_map = 'yes';
 		if( isset($ciniki['request']['uri_split'][2]) 
 			&& $ciniki['request']['uri_split'][2] != '' 
 			) {
