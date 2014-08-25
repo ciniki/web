@@ -459,6 +459,8 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 	
 		if( isset($settings['page-members-membership-details']) && $settings['page-members-membership-details'] == 'yes' ) {
 			$add_membership_info = 'yes';
+		} elseif( isset($settings['page-members-application-details']) && $settings['page-members-application-details'] == 'yes' ) {
+			$add_membership_info = 'yes';
 		}
 	}
 
@@ -467,14 +469,19 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 		// Pull the membership info from the ciniki.info module
 		//
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'pageDetails');
-		$rc = ciniki_info_web_pageDetails($ciniki, $settings, $ciniki['request']['business_id'], 
-			array('content_type'=>'7'));
+		if( isset($add_membership_info) && $add_membership_info == 'yes' ) {
+			$rc = ciniki_info_web_pageDetails($ciniki, $settings, $ciniki['request']['business_id'], 
+				array('content_type'=>'7'));
+		} elseif( isset($add_application_info) && $add_application_info == 'yes' ) {
+			$rc = ciniki_info_web_pageDetails($ciniki, $settings, $ciniki['request']['business_id'], 
+				array('content_type'=>'17'));
+		}
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
 		$info = $rc['content'];
 
-		$page_content .= "<article class='page'>\n"
+		$page_content .= "<br /><article class='page'>\n"
 			. "<header class='entry-title'><h1 class='entry-title'>" . $info['title'] . "</h1></header>\n"
 			. "";
 		if( isset($info['image_id']) && $info['image_id'] != '' && $info['image_id'] != 0 ) {

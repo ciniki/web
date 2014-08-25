@@ -186,6 +186,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-courses-level-display',
 		'page-members-active',
 		'page-members-membership-details',
+		'page-members-application-details',
 		'page-members-list-format',
 		'page-members-categories-display',
 		'page-members-name',
