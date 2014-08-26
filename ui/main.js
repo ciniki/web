@@ -229,22 +229,25 @@ function ciniki_web_main() {
 		//
 		// The panel to allow the user to setup google analytics
 		//
-		this.analytics = new M.panel('Analytics',
-			'ciniki_web_main', 'analytics',
-			'mc', 'narrow', 'sectioned', 'ciniki.web.main.analytics');
-		this.analytics.data = {'site-google-analytics-account':'0'};
-		this.analytics.sections = {
-			'_image':{'label':'Google Analytics User Account', 'fields':{
+		this.google = new M.panel('Google Settings',
+			'ciniki_web_main', 'google',
+			'mc', 'narrow', 'sectioned', 'ciniki.web.main.google');
+		this.google.data = {'site-google-analytics-account':'0'};
+		this.google.sections = {
+			'_analytics':{'label':'Google Analytics User Account', 'fields':{
 				'site-google-analytics-account':{'label':'', 'type':'text', 'hidelabel':'yes'},
 				}},
+			'_verification':{'label':'Google Meta Tag Verification', 'fields':{
+				'site-google-site-verification':{'label':'', 'type':'text', 'hidelabel':'yes'},
+				}},
 			'_save':{'label':'', 'buttons':{
-				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'analytics\');'},
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'google\');'},
 				}},
 		};
-		this.analytics.fieldValue = this.fieldValue;
-		this.analytics.fieldHistoryArgs = this.fieldHistoryArgs;
-		this.analytics.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'analytics\');');
-		this.analytics.addClose('Cancel');
+		this.google.fieldValue = this.fieldValue;
+		this.google.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.google.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'google\');');
+		this.google.addClose('Cancel');
 
 		//
 		// The panel to allow the user to setup custom css
@@ -1168,7 +1171,7 @@ function ciniki_web_main() {
 			this.menu.sections.settings.aside = 'yes';
 			this.menu.sections.pages.aside = 'yes';
 			this.menu.sections.adm = {'label':'Admin Options', 'list':{
-				'googleanalytics':{'label':'Analytics', 'fn':'M.ciniki_web_main.showSiteSettings(\'M.ciniki_web_main.showMenu();\',\'analytics\');' },
+				'google':{'label':'Google Settings', 'fn':'M.ciniki_web_main.showSiteSettings(\'M.ciniki_web_main.showMenu();\',\'google\');' },
 				'ssl':{'label':'SSL', 'fn':'M.ciniki_web_main.showSiteSettings(\'M.ciniki_web_main.showMenu();\',\'ssl\');'},
 				'css':{'label':'Custom CSS', 'fn':'M.ciniki_web_main.showSiteSettings(\'M.ciniki_web_main.showMenu();\',\'css\');'},
 				'layout':{'label':'Layout', 'fn':'M.ciniki_web_main.showLayouts(\'M.ciniki_web_main.showMenu();\');'},

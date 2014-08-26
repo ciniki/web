@@ -165,6 +165,12 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	$content .= '<meta name="viewport" content="width=device-width, initial-scale=1.0">' . "\n";
 	$content .= '<meta charset="UTF-8">' . "\n";
 
+	if( isset($settings['site-google-site-verification']) 
+		&& $settings['site-google-site-verification'] != '' 
+		) {
+		$content .= '<meta name="google-site-verification" content="' . $settings['site-google-site-verification'] . '"/>' . "\n";
+	}
+
 	//
 	// Check for header Open Graph (Facebook) object information, for better linking into facebook
 	//

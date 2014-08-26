@@ -239,6 +239,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'site-header-title',
 //		'site-logo-display',
 		'site-google-analytics-account',
+		'site-google-site-verification',
 		'site-featured',
 		'site-custom-css',
 		'site-social-facebook-header-active',
