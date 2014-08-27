@@ -211,6 +211,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-contact-google-map',
 		'page-contact-map-latitude',
 		'page-contact-map-longitude',
+		'page-contact-mailchimp-signup',
+		'page-contact-mailchimp-submit-url',
 		'page-contact-business-name-display',
 		'page-contact-person-name-display',
 		'page-contact-address-display',

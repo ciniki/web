@@ -418,6 +418,10 @@ function ciniki_web_main() {
 			'_content':{'label':'Content', 'fields':{
 				'page-contact-content':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'large'},
 				}},
+			'_mailchimp':{'label':'Mailchimp', 'fields':{
+				'page-contact-mailchimp-signup':{'label':'Enable Mailchimp', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':''},
+				'page-contact-mailchimp-submit-url':{'label':'Submit URL', 'type':'text'},
+				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'contact\');'},
 				}},

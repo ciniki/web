@@ -188,8 +188,51 @@ function ciniki_web_generatePageContact($ciniki, $settings) {
 	$content .= "<br style='clear: both;'/>";
 	$content .= "</div>"
 		. "</article>"
-		. "</div>"
 		. "";
+
+	//
+	// Check if mailchimp subscribe form should be displayed
+	//
+	if( isset($settings['page-contact-mailchimp-signup']) 
+		&& $settings['page-contact-mailchimp-signup'] == 'yes' 
+		&& isset($settings['page-contact-mailchimp-submit-url'])
+		&& $settings['page-contact-mailchimp-submit-url'] != ''
+		) {
+		$content .= "<article class='page'>\n"
+			. "<header class='entry-title'><h1 class='entry-title'>Subscribe to our e-newsletter</h1></header>\n";
+		$content .= '<div id="mc_embed_signup" class="entry-content">'
+			. '<form action="' . $settings['page-contact-mailchimp-submit-url'] . '" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>'
+			. '<div class="indicates-required">'
+			. '<span class="asterisk">*</span> indicates required</div>'
+			. '<div class="input mc-field-group">'
+				. '<label for="mce-EMAIL">Email Address  <span class="asterisk">*</span></label>'
+					. '<input type="email" value="" name="EMAIL" class="text required email" id="mce-EMAIL"></div>'
+			. '<div class="input mc-field-group">'
+				. '<label for="mce-FNAME">First Name </label>'
+				. '<input type="text" value="" name="FNAME" class="text" id="mce-FNAME">'
+			. '</div>'
+			. '<div class="input mc-field-group">'
+				. '<label for="mce-LNAME">Last Name </label>'
+				. '<input type="text" value="" name="LNAME" class="text" id="mce-LNAME">'
+			. '</div> '
+			. '<div id="mce-responses" class="clear"> '
+				. '<div class="response" id="mce-error-response" style="display:none"></div>'
+				. '<div class="response" id="mce-success-response" style="display:none"></div>'
+			. '</div>'
+			. '<div style="position: absolute; left: -5000px;">'
+				. '<input type="text" name="b_bc80f6925fec8d5f6c52e96f5_a3f3456bcd" tabindex="-1" value="">'
+			. '</div>'
+			. '<div class="submit">'
+				. '<input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="submit">'
+			. '</div>'
+			. '</form>'
+			. '</div>'
+			. '</article>';
+		$content .= "<script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>\n";
+		$content .= '<script type=\'text/javascript\'>(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]=\'EMAIL\';ftypes[0]=\'email\';fnames[1]=\'FNAME\';ftypes[1]=\'text\';fnames[2]=\'LNAME\';ftypes[2]=\'text\';}(jQuery));var $mcj = jQuery.noConflict(true);</script>' . "\n";
+
+	}
+
 
 	//
 	// Add the footer

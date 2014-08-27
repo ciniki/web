@@ -256,11 +256,13 @@ header span.title {
 	width: 32%;
 }
 
-#content form {
+#content form,
+#content article.page form {
 	max-width: 28em;
 }
 
-#content form input.text {
+#content form input.text,
+#content article.page form input.text {
 	max-width: 28em;
 }
 

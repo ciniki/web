@@ -827,6 +827,10 @@ span.exhibitors-description {
 	max-width: 100%;
 }
 
+#content article.page form input {
+/*	width: 100%; */
+}
+
 #content div.cart-search-input {
 	text-align: right;
 }
