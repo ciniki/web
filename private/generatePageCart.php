@@ -231,7 +231,8 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 	//
 	elseif( isset($_POST['submitorder']) && $_POST['submitorder'] != ''
 		&& isset($ciniki['session']['customer']['dealer_status']) 
-		&& $ciniki['session']['customer']['dealer_status'] == 10 
+		&& $ciniki['session']['customer']['dealer_status'] > 0 
+		&& $ciniki['session']['customer']['dealer_status'] < 60 
 		) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'submitOrder');
 		$rc = ciniki_sapos_web_submitOrder($ciniki, $settings, $ciniki['request']['business_id']);
@@ -239,6 +240,10 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 			return $rc;
 		} else {
 			$content .= "<p>Your order has been submitted.</p>";
+			$display_cart = 'no';
+			$cart = NULL;
+			unset($_SESSION['cart']);
+			unset($ciniki['session']['cart']);
 		}
 	}
 
@@ -290,7 +295,8 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		elseif( isset($settings['page-cart-inventory-dealers-display']) 
 			&& $settings['page-cart-inventory-dealers-display'] == 'yes' 
 			&& isset($ciniki['session']['customer']['dealer_status'])
-			&& $ciniki['session']['customer']['dealer_status'] == 10 
+			&& $ciniki['session']['customer']['dealer_status'] > 0 
+			&& $ciniki['session']['customer']['dealer_status'] < 60 
 			) {
 			$inv = 'yes';
 		}
@@ -405,15 +411,17 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		if( $inv == 'yes' ) {
 			$item_objects = array();
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'private', 'getReservedQuantities');
-			foreach($cart['items'] as $item_id => $item) {
-				// Create the object
-				if( !isset($item_objects[$item['item']['object']]) ) {
-					$item_objects[$item['item']['object']] = array();
+			if( isset($cart['items']) ) {
+				foreach($cart['items'] as $item_id => $item) {
+					// Create the object
+					if( !isset($item_objects[$item['item']['object']]) ) {
+						$item_objects[$item['item']['object']] = array();
+					}
+					// Add the item
+					$item_objects[$item['item']['object']][$item['item']['object_id']] = $item_id;
+					$cart['items'][$item_id]['item']['quantity_inventory'] = 0;
+					$cart['items'][$item_id]['item']['quantity_reserved'] = 0;
 				}
-				// Add the item
-				$item_objects[$item['item']['object']][$item['item']['object_id']] = $item_id;
-				$cart['items'][$item_id]['item']['quantity_inventory'] = 0;
-				$cart['items'][$item_id]['item']['quantity_reserved'] = 0;
 			}
 			foreach($item_objects as $o => $oids) {
 				//
@@ -451,7 +459,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		// Display cart items
 		//
 		if( $cart != NULL && isset($cart['items']) && count($cart['items']) > 0 ) {
-			$content .= "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' method='POST'>";
+			$content .= "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' class='wide' method='POST'>";
 			$content .= "<input type='hidden' name='action' value='update'/>";
 			$content .= "<div class='cart-items'>";
 			$content .= "<table class='cart-items'>";
@@ -569,7 +577,9 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 				. "<input class='cart-submit' type='submit' name='update' value='Update'/>"
 				. "</span>";
 			if( isset($ciniki['session']['customer']['dealer_status']) 
-				&& $ciniki['session']['customer']['dealer_status'] == 10 ) {
+				&& $ciniki['session']['customer']['dealer_status'] > 0 
+				&& $ciniki['session']['customer']['dealer_status'] < 60 
+				) {
 				$content .= "<span class='cart-submit'>"
 					. "<input class='cart-submit' type='submit' name='submitorder' value='Submit Order'/>"
 					. "</span>";

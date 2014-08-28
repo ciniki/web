@@ -283,7 +283,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	//
 	$shopping_cart = '';
 	if( isset($settings['page-cart-active']) && $settings['page-cart-active'] == 'yes' 
-		&& isset($ciniki['session']['customer']) && $ciniki['session']['customer']['id'] > 0 
+		&& isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 
 		) {
 		$shopping_cart .= "<span><a rel='nofollow' href='" . $ciniki['request']['ssl_domain_base_url'] . "/cart'>"
 			. "Cart";

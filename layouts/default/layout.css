@@ -261,6 +261,15 @@ header span.title {
 	max-width: 28em;
 }
 
+#content article.cart form {
+	max-width: 100%;
+}
+
+#content article.cart form {
+	width: 100%;
+	max-width: 100%;
+}
+
 #content form input.text,
 #content article.page form input.text {
 	max-width: 28em;
