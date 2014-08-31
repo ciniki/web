@@ -268,6 +268,7 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 		if( $tag_permalink != '' ) {
 			$skeys = array_keys($sections);
 			$section_name = $skeys[0];
+			$sections[$section_name]['name'] = '';
 			if( $section_name != '' ) {
 				$article_title .= ' - ' . $section_name;
 				$page_title .= ' - ' . $section_name;
