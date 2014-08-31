@@ -276,12 +276,12 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 			}
 			if( isset($c['name']) && $c['name'] != '' ) {
 				$page_content .= "<tr><th>"
-					. "<span class='links-sections'>" . $c['name'] . "</span></th>"
+					. "<span class='links-category'>" . $c['name'] . "</span></th>"
 					. "<td>";
 				// $page_content .= "<h2>" . $c['name'] . "</h2>";
 			} else {
 				$page_content .= "<tr><th>"
-					. "<span class='links-sections'></span></th>"
+					. "<span class='links-category'></span></th>"
 					. "<td>";
 			}
 			foreach($c['links'] as $fnum => $link) {
