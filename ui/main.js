@@ -30,7 +30,7 @@ function ciniki_web_main() {
 		};
 	this.activeToggles = {'no':'No', 'yes':'Yes'};
 	this.productThumbnailToggles = {'auto':'Auto', 'small':'Small', 'medium':'Medium', 'large':'Large'};
-	this.linksDisplayToggles = {'list':'List', 'cloud':'Cloud'};
+	this.linksDisplayToggles = {'wordlist':'List', 'wordcloud':'Cloud'};
 	this.userFlags = {
 		'1':{'name':'Name'},
 		'2':{'name':'Title'},

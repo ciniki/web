@@ -66,7 +66,7 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 	} 
 
 	//
-	// Get the list of tags
+	// Get the stats for the number links, categories and tags
 	//
 	$stats = array('links'=>0, 'categories'=>0, 'tags'=>0);
 	if( $tag_type == 0 ) {
@@ -77,6 +77,10 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 		}
 		$stats = $rc;
 	}
+
+	//
+	// Check if categories list was requested
+	//
 	if( $tag_type == 0 && isset($ciniki['request']['uri_split'][0])
 		&& $ciniki['request']['uri_split'][0] == 'categories' 
 		) {
@@ -98,6 +102,10 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 			$show_list = 'yes';
 		}
 	} 
+
+	//
+	// Check if tags list was requested
+	//
 	if( $tag_type == 0 && isset($ciniki['request']['uri_split'][0])
 		&& $ciniki['request']['uri_split'][0] == 'tags' 
 		) {
@@ -119,6 +127,9 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 			$show_list = 'yes';
 		}
 	}
+	//
+	// If nothing requested, decide what should be displayed
+	//
 	if( $tag_type == 0 ) {
 		if( isset($ciniki['business']['modules']['ciniki.links']['flags'])
 			&& ($ciniki['business']['modules']['ciniki.links']['flags']&0x01) > 0 
@@ -131,11 +142,10 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 			) {
 			$tag_type = 10;
 			$tag_permalink = '';
-			$base_url .= '/category';
 			$article_title = 'Links';
 			$page_title = 'Links';
-			$show_tags = 'no';
-			$show_list = 'yes';
+			$show_tags = 'yes';
+			$show_list = 'no';
 		}
 		elseif( isset($ciniki['business']['modules']['ciniki.links']['flags'])
 			&& ($ciniki['business']['modules']['ciniki.links']['flags']&0x02) > 0
@@ -150,8 +160,8 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 			$tag_permalink = '';
 			$article_title = 'Links';
 			$page_title = 'Links';
-			$show_tags = 'no';
-			$show_list = 'yes';
+			$show_tags = 'yes';
+			$show_list = 'no';
 		} 
 	}
 
@@ -218,22 +228,23 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 			$base_url .= '/category';
 		}
 		if( ($tag_type == 40 
-				&& (!isset($settings['page-links-tags-format'])
-					|| $settings['page-links-tags-format'] == 'cloud')
+				&& isset($settings['page-links-tags-format'])
+				&& $settings['page-links-tags-format'] == 'wordlist'
 			) || ($tag_type == 10 
-				&& (!isset($settings['page-links-categories-format'])
-					|| $settigns['page-links-categories-format'] == 'cloud')
+				&& isset($settings['page-links-categories-format'])
+				&& $settings['page-links-categories-format'] == 'wordlist'
 				)
 			) {
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processTagCloud');
-			$rc = ciniki_web_processTagCloud($ciniki, $settings, $base_url, $rc['tags']);	
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processTagList');
+			$rc = ciniki_web_processTagList($ciniki, $settings, $base_url, $rc['tags'], array());	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
 			$page_content .= $rc['content'];
 		} else {
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processTagList');
-			$rc = ciniki_web_processTagList($ciniki, $settings, $base_url, $rc['tags'], array());	
+			// Default to wordcloud
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processTagCloud');
+			$rc = ciniki_web_processTagCloud($ciniki, $settings, $base_url, $rc['tags']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -267,7 +278,7 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 			. "<div class='entry-content'>\n"
 			. "";
 
-		$page_content .= "<table class='links-list'>\n"
+		$page_content .= "<table class='clist'>\n"
 			. "";
 		$prev_sections = NULL;
 		foreach($sections as $cnum => $c) {
@@ -276,12 +287,12 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 			}
 			if( isset($c['name']) && $c['name'] != '' ) {
 				$page_content .= "<tr><th>"
-					. "<span class='links-category'>" . $c['name'] . "</span></th>"
+					. "<span class='clist-category'>" . $c['name'] . "</span></th>"
 					. "<td>";
 				// $page_content .= "<h2>" . $c['name'] . "</h2>";
 			} else {
 				$page_content .= "<tr><th>"
-					. "<span class='links-category'></span></th>"
+					. "<span class='clist-category'></span></th>"
 					. "<td>";
 			}
 			foreach($c['links'] as $fnum => $link) {
@@ -298,7 +309,7 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 					$display_url = preg_replace('/^\s*http:\/\//i', '', $url);
 					$display_url = preg_replace('/\/$/i', '', $display_url);
 				}
-				$page_content .= "<span class='links-title'>";
+				$page_content .= "<span class='clist-title'>";
 				if( $url != '' ) {
 					$page_content .= "<a target='_blank' href='" . $url . "' title='" . $link['name'] . "'>" . $link['name'] . "</a>";
 				} else {
@@ -306,10 +317,10 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 				}
 				$page_content .= "</span>";
 				if( isset($link['description']) && $link['description'] != '' ) {
-					$page_content .= "<br/><span class='links-description'>" . $link['description'] . "</span>";
+					$page_content .= "<br/><span class='clist-description'>" . $link['description'] . "</span>";
 				}
 				if( $url != '' ) {
-					$page_content .= "<br/><a class='links-url' target='_blank' href='" . $url . "' title='" . $link['name'] . "'>" . $display_url . "</a>";
+					$page_content .= "<br/><a class='clist-url' target='_blank' href='" . $url . "' title='" . $link['name'] . "'>" . $display_url . "</a>";
 				}
 				$page_content .= "<br/><br/>";
 				// $page_content .= "</p>";
