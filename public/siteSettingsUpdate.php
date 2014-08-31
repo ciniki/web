@@ -207,6 +207,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-events-past',
 		'page-directory-active',
 		'page-links-active',
+		'page-links-categories-format',
+		'page-links-tags-format',
 		'page-contact-active',
 		'page-contact-google-map',
 		'page-contact-map-latitude',

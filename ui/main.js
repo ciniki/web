@@ -30,6 +30,7 @@ function ciniki_web_main() {
 		};
 	this.activeToggles = {'no':'No', 'yes':'Yes'};
 	this.productThumbnailToggles = {'auto':'Auto', 'small':'Small', 'medium':'Medium', 'large':'Large'};
+	this.linksDisplayToggles = {'list':'List', 'cloud':'Cloud'};
 	this.userFlags = {
 		'1':{'name':'Name'},
 		'2':{'name':'Title'},
@@ -570,6 +571,8 @@ function ciniki_web_main() {
 		this.links.sections = {
 			'options':{'label':'', 'fields':{
 				'page-links-active':{'label':'Display Links Page', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-links-categories-format':{'label':'Categories Format', 'type':'multitoggle', 'default':'cloud', 'toggles':this.linksDisplayToggles},
+				'page-links-tags-format':{'label':'Tags Format', 'type':'multitoggle', 'default':'cloud', 'toggles':this.linksDisplayToggles},
 				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'links\');'},
