@@ -319,7 +319,7 @@ div.gallery-image-details span.image-awards {
 	margin-bottom: 0;
 }
 
-#content table.cilist td p.clist-subtitle,
+#content table.cilist td p.cilist-subtitle,
 #content table.clist td p.clist-subtitle {
 	margin-bottom: 0;
 	font-style: italic;
@@ -749,70 +749,70 @@ div.word-cloud {
 #content div.word-cloud span.size-0 a:visited,
 #content div.word-cloud span.size-0 a:hover, 
 #content div.word-cloud span.size-0 a:active { 
-	text-decoration: bold; color: #6AC2E4; 
+	text-decoration: bold; color: #77C299; 
 }
 
 #content div.word-cloud span.size-1 a,
 #content div.word-cloud span.size-1 a:visited,
 #content div.word-cloud span.size-1 a:hover, 
 #content div.word-cloud span.size-1 a:active { 
-	text-decoration: bold; color: #63BBDD; 
+	text-decoration: bold; color: #70B990; 
 }
 
 #content div.word-cloud span.size-2 a,
 #content div.word-cloud span.size-2 a:visited,
 #content div.word-cloud span.size-2 a:hover, 
 #content div.word-cloud span.size-2 a:active { 
-	text-decoration: bold; color: #5AB2D4; 
+	text-decoration: bold; color: #67B289; 
 }
 
 #content div.word-cloud span.size-3 a,
 #content div.word-cloud span.size-3 a:visited,
 #content div.word-cloud span.size-3 a:hover, 
 #content div.word-cloud span.size-3 a:active { 
-	text-decoration: bold; color: #53ABCD; 
+	text-decoration: bold; color: #60A980; 
 }
 
 #content div.word-cloud span.size-4 a,
 #content div.word-cloud span.size-4 a:visited,
 #content div.word-cloud span.size-4 a:hover, 
 #content div.word-cloud span.size-4 a:active { 
-	text-decoration: bold; color: #4AA2C4; 
+	text-decoration: bold; color: #57A279; 
 }
 
 #content div.word-cloud span.size-5 a,
 #content div.word-cloud span.size-5 a:visited,
 #content div.word-cloud span.size-5 a:hover, 
 #content div.word-cloud span.size-5 a:active { 
-	text-decoration: bold; color: #439BBD; 
+	text-decoration: bold; color: #509970; 
 }
 
 #content div.word-cloud span.size-6 a,
 #content div.word-cloud span.size-6 a:visited,
 #content div.word-cloud span.size-6 a:hover, 
 #content div.word-cloud span.size-6 a:active { 
-	text-decoration: bold; color: #3A92B4; 
+	text-decoration: bold; color: #479269; 
 }
 
 #content div.word-cloud span.size-7 a,
 #content div.word-cloud span.size-7 a:visited,
 #content div.word-cloud span.size-7 a:hover, 
 #content div.word-cloud span.size-7 a:active { 
-	text-decoration: bold; color: #338BAD; 
+	text-decoration: bold; color: #408960; 
 }
 
 #content div.word-cloud span.size-8 a,
 #content div.word-cloud span.size-8 a:visited,
 #content div.word-cloud span.size-8 a:hover, 
 #content div.word-cloud span.size-8 a:active { 
-	text-decoration: bold; color: #2A84A6; 
+	text-decoration: bold; color: #378259; 
 }
 
 #content div.word-cloud span.size-9 a,
 #content div.word-cloud span.size-9 a:visited,
 #content div.word-cloud span.size-9 a:hover, 
 #content div.word-cloud span.size-9 a:active { 
-	text-decoration: bold; color: #237B9D; 
+	text-decoration: bold; color: #307950; 
 }
 
 #content nav.content-nav {
