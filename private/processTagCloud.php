@@ -28,7 +28,7 @@ function ciniki_web_processTagCloud($ciniki, $settings, $base_url, $tags) {
 	$tag_content = '';
 	$size = 0;
 	foreach($tags as $tag) {
-		if( $max > 10 ) {
+		if( $max > $fmax ) {
 			$fontsize = round(($fmax * ($tag['num_tags']-$min))/($max-$min));
 		} else {
 			$fontsize = $tag['num_tags'];
