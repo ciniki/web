@@ -588,7 +588,7 @@ function ciniki_web_main() {
 		//
 		this.gallery = new M.panel('Gallery',
 			'ciniki_web_main', 'gallery',
-			'mc', 'narrow', 'sectioned', 'ciniki.web.main.gallery');
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.gallery');
 		this.gallery.data = {};
 		this.gallery.sections = {
 			'options':{'label':'', 'fields':{
@@ -596,6 +596,9 @@ function ciniki_web_main() {
 				'page-gallery-name':{'label':'Name', 'type':'text', 'hint':'default is Gallery'},
 				'page-gallery-artcatalog-split':{'label':'Split Menu', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-gallery-artcatalog-format':{'label':'Format', 'active':'no', 'type':'multitoggle', 'default':'icons', 'toggles':{'icons':'Icons', 'list':'List'}},
+				}},
+			'sort':{'label':'Sorting', 'active':'no', 'fields':{
+				'page-gallery-album-sort':{'label':'List albums by', 'type':'select', 'default':'name-asc', 'options':{}},
 				}},
 			'social':{'label':'Social Media', 'visible':'no', 'fields':{
 				'page-gallery-share-buttons':{'label':'Sharing', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
@@ -1173,6 +1176,28 @@ function ciniki_web_main() {
 				((M.curBusiness.modules['ciniki.links'].flags&0x01)>0?'yes':'no');
 			this.links.sections.options.fields['page-links-tags-format'].active = 
 				((M.curBusiness.modules['ciniki.links'].flags&0x02)>0?'yes':'no');
+		}
+
+		//
+		// Setup the gallery sort fields
+		//
+		if( M.curBusiness.modules['ciniki.gallery'] != null ) {
+			var options = {
+				'name-asc':'Name A-Z',
+				'name-desc':'Name Z-A',
+			};
+			if( (M.curBusiness.modules['ciniki.gallery'].flags&0x01) > 0 ) {
+				options['sequence-asc'] = 'Sequence, 1-999';
+				options['sequence-desc'] = 'Sequence, 999-1';
+			}
+			if( (M.curBusiness.modules['ciniki.gallery'].flags&0x02) > 0 ) {
+				options['startdate-desc'] = 'Date, newest first';
+				options['startdate-asc'] ='Date, oldest first';
+			}
+			this.gallery.sections.sort.fields['page-gallery-album-sort'].options = options;
+			this.gallery.sections.sort.active = 'yes';
+		} else {
+			this.gallery.sections.sort.active = 'no';
 		}
 
 		this.showMenu(cb);
