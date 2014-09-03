@@ -571,8 +571,8 @@ function ciniki_web_main() {
 		this.links.sections = {
 			'options':{'label':'', 'fields':{
 				'page-links-active':{'label':'Display Links Page', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
-				'page-links-categories-format':{'label':'Categories Format', 'type':'multitoggle', 'default':'cloud', 'toggles':this.linksDisplayToggles},
-				'page-links-tags-format':{'label':'Tags Format', 'type':'multitoggle', 'default':'cloud', 'toggles':this.linksDisplayToggles},
+				'page-links-categories-format':{'label':'Categories Format', 'type':'multitoggle', 'default':'wordcloud', 'toggles':this.linksDisplayToggles},
+				'page-links-tags-format':{'label':'Tags Format', 'type':'multitoggle', 'default':'wordcloud', 'toggles':this.linksDisplayToggles},
 				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'links\');'},
@@ -1164,6 +1164,14 @@ function ciniki_web_main() {
 			alert('App Error');
 			return false;
 		} 
+
+		//
+		// Setup active fields
+		//
+		this.links.sections.options.fields['page-links-categories-format'].active = 
+			((M.curBusiness.modules['ciniki.links'].flags&0x01)>0?'yes':'no');
+		this.links.sections.options.fields['page-links-tags-format'].active = 
+			((M.curBusiness.modules['ciniki.links'].flags&0x02)>0?'yes':'no');
 
 		this.showMenu(cb);
 	}
