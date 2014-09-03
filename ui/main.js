@@ -1168,10 +1168,12 @@ function ciniki_web_main() {
 		//
 		// Setup active fields
 		//
-		this.links.sections.options.fields['page-links-categories-format'].active = 
-			((M.curBusiness.modules['ciniki.links'].flags&0x01)>0?'yes':'no');
-		this.links.sections.options.fields['page-links-tags-format'].active = 
-			((M.curBusiness.modules['ciniki.links'].flags&0x02)>0?'yes':'no');
+		if( M.curBusiness.modules['ciniki.links'] != null ) {
+			this.links.sections.options.fields['page-links-categories-format'].active = 
+				((M.curBusiness.modules['ciniki.links'].flags&0x01)>0?'yes':'no');
+			this.links.sections.options.fields['page-links-tags-format'].active = 
+				((M.curBusiness.modules['ciniki.links'].flags&0x02)>0?'yes':'no');
+		}
 
 		this.showMenu(cb);
 	}
