@@ -488,6 +488,11 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 					}
 					$page_content .= "<div class='image-gallery'>" . $rc['content'] . "</div>";
 				}
+			} elseif( count($rc['categories']) == 1 ) {
+				// If only one album, then open album
+				$category = array_pop($rc['categories']);
+				header('Location: ' . $base_url . '/' . $category_uri_component . '/' . $category['category']['permalink']);
+				exit;
 			} else {
 				if( isset($settings['page-gallery-name']) && $settings['page-gallery-name'] != '' ) {
 					$page_title = $settings['page-gallery-name'];
