@@ -105,10 +105,11 @@ function ciniki_web_processEmployeeBios($ciniki, $settings, $page, $employees) {
 		}
 		$content .= "</tbody></table>\n";
 	} else {
+		$count = 0;
 		foreach($employees as $unum => $u) {
 			$setting = "page-{$page}-user-display-flags-" . $u['user']['id'];
 			if( isset($settings[$setting]) && $settings[$setting] > 0 ) {
-				$content .= '<p>';
+				$content .= '<p' . ($count>0?' style="clear: right;"':'') . '>';
 				// Check if employee bio image is to be displayed
 				if( ($settings[$setting]&0x40) == 0x40 ) {
 					if( isset($u['user']['employee-bio-image']) && $u['user']['employee-bio-image'] != '' && $u['user']['employee-bio-image'] > 0 ) {
@@ -125,7 +126,7 @@ function ciniki_web_processEmployeeBios($ciniki, $settings, $page, $employees) {
 						$content .= "</div></aside>";
 					}
 				}
-				if( ($settings[$setting]&0x01) == 0x01 && isset($u['user']['employee.title']) && $u['user']['employee.title'] != '' ) {
+				if( ($settings[$setting]&0x01) == 0x01 && isset($u['user']['firstname']) && $u['user']['firstname'] != '' ) {
 					$content .= '<span class="contact-title">' . $u['user']['firstname'] . ' ' . $u['user']['lastname'] . '</span><br/>';
 				}
 				if( ($settings[$setting]&0x02) == 0x02 && isset($u['user']['employee.title']) && $u['user']['employee.title'] != '' ) {
@@ -155,6 +156,7 @@ function ciniki_web_processEmployeeBios($ciniki, $settings, $page, $employees) {
 					$content .= 'E: <a class="contact-email" href="mailto:' . $u['user']['contact.email.address'] . '">' . $u['user']['contact.email.address'] . '</a><br/>';
 				}
 			}
+			$count++;
 		}
 
 	}
