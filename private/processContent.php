@@ -32,7 +32,8 @@ function ciniki_web_processContent($ciniki, $unprocessed_content, $pclass='') {
 //	$pattern = '#\b(((?<!(href=(\"|\')|.....>))https?://?|(?<!(://|..>))www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#m';
 //	$pattern1 = '#(www\.[a-zA-Z0-9\-\.]+)#m';
 //	$pattern1 = '#\n([^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#m';
-	$pattern = '#\b(((?<!(href=(\"|\')|.....>))https?://?|(?<!(://|..>))www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';
+//	$pattern = '#\b(((?<!(href=(\"|\')|.....>))https?://?|(?<!(://|..>))www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';
+	$pattern = '#\b(((?<!(=(\"|\')|.>))https?://?|(?<!(//|.>))www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';
 	$callback = create_function('$matches', '
 		$display_url = $matches[1];
 		$url = $display_url;
