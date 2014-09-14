@@ -757,6 +757,43 @@ function ciniki_web_main() {
 		this.dealers.addClose('Cancel');
 
 		//
+		// The options and information for the distributors page
+		//
+		this.distributors = new M.panel('Distributors',
+			'ciniki_web_main', 'distributors',
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.distributors');
+		this.distributors.data = {};
+		this.distributors.sections = {
+			'options':{'label':'', 'fields':{
+				'page-distributors-active':{'label':'Display Distributors', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-distributors-name':{'label':'Name', 'type':'text', 'hint':'Distributors'},
+//				'page-distributors-categories-display':{'label':'Display Distributor Categories', 'type':'toggle', 'default':'no', 'toggles':{
+//					'no':'No',
+//					'wordlist':'List',
+//					'wordcloud':'Cloud',
+//					}},
+				'page-distributors-locations-map-names':{'label':'Expand Short Names', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-distributors-locations-display':{'label':'Display Distributor Locations', 'type':'toggle', 'default':'no', 'toggles':{
+					'no':'No',
+					'wordlist':'List',
+					'wordcloud':'Cloud',
+					}},
+				'page-distributors-list-format':{'label':'Listing Content', 'type':'select', 'options':{
+					'shortbio':'Short Bio',
+					'shortbio-blank-addressesnl-phones-emails-links':'Short Bio, Addresses, Phones, Emails, Links',
+					'addressesnl-blank-shortbio-phones-emails-links':'Addresses, Short Bio, Phones, Emails, Links',
+					}},
+			}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'distributors\');'},
+				}},
+		};
+		this.distributors.fieldValue = this.fieldValue;
+		this.distributors.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.distributors.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'distributors\');');
+		this.distributors.addClose('Cancel');
+
+		//
 		// The options and information for the members news page
 		//
 		this.memberblog = new M.panel('Members',

@@ -511,6 +511,12 @@ elseif( $ciniki['request']['page'] == 'dealers'
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageDealers.php');
 	$rc = ciniki_web_generatePageDealers($ciniki, $settings);
 }
+// Distributors
+elseif( $ciniki['request']['page'] == 'distributors' 
+	&& isset($settings['page-distributors-active']) && $settings['page-distributors-active'] == 'yes' ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageDistributors.php');
+	$rc = ciniki_web_generatePageDistributors($ciniki, $settings);
+}
 // Products
 elseif( $ciniki['request']['page'] == 'products' 
 	&& isset($settings['page-products-active']) && $settings['page-products-active'] == 'yes' ) {

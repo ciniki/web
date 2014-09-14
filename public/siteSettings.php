@@ -102,6 +102,9 @@ function ciniki_web_siteSettings($ciniki) {
 	if( isset($modules['ciniki.customers']) && ($modules['ciniki.customers']['flags']&0x10) == 0x10 ) {
 		$pages['dealers'] = array('display_name'=>'Dealers', 'active'=>'no');
 	}
+	if( isset($modules['ciniki.customers']) && ($modules['ciniki.customers']['flags']&0x0100) == 0x0100 ) {
+		$pages['distributors'] = array('display_name'=>'Distributors', 'active'=>'no');
+	}
 	if( isset($modules['ciniki.artclub']) ) {
 		$pages['members'] = array('display_name'=>'Members', 'active'=>'no');
 	}
@@ -234,6 +237,9 @@ function ciniki_web_siteSettings($ciniki) {
 	}
 	if( isset($settings['page-dealers-active']) && $settings['page-dealers-active'] == 'yes' ) {
 		$pages['dealers']['active'] = 'yes';
+	}
+	if( isset($settings['page-distributors-active']) && $settings['page-distributors-active'] == 'yes' ) {
+		$pages['distributors']['active'] = 'yes';
 	}
 	if( isset($settings['page-sponsors-active']) && $settings['page-sponsors-active'] == 'yes' ) {
 		$pages['sponsors']['active'] = 'yes';

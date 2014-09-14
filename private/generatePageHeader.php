@@ -594,6 +594,13 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 			$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/dealers'>Dealers</a></li>";
 		}
 	}
+	if( isset($settings['page-distributors-active']) && $settings['page-distributors-active'] == 'yes' ) {
+		if( isset($settings['page-distributors-name']) && $settings['page-distributors-name'] != '' ) {
+			$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/distributors'>" . $settings['page-distributors-name'] . "</a></li>";
+		} else {
+			$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/distributors'>Distributors</a></li>";
+		}
+	}
 	if( isset($settings['page-links-active']) && $settings['page-links-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/links'>Links</a></li>";
 	}

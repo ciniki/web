@@ -422,7 +422,6 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 				. "</div>\n";
 		}
 
-
 		if( $inv == 'yes' ) {
 			$item_objects = array();
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'private', 'getReservedQuantities');
@@ -444,15 +443,16 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 				//
 				list($pkg, $mod, $obj) = explode('.', $o);
 				$object_ids = array_keys($oids);
-				$rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'sapos', 'cartItemsInventory');
+				$rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'sapos', 'cartItemsDetails');
 				if( $rc['stat'] == 'ok') {
-					$fn = $pkg . '_' . $mod . '_sapos_cartItemsInventory';
+					$fn = $pkg . '_' . $mod . '_sapos_cartItemsDetails';
 					$rc = $fn($ciniki, $ciniki['request']['business_id'], array(
 						'object'=>$o, 'object_ids'=>$object_ids));
-					if( isset($rc['quantities']) ) {
-						foreach($rc['quantities'] as $quantity) {
-							$item_id = $item_objects[$o][$quantity['object_id']];
-							$cart['items'][$item_id]['item']['quantity_inventory'] = $quantity['quantity_inventory'];
+					if( isset($rc['details']) ) {
+						foreach($rc['details'] as $detail) {
+							$item_id = $item_objects[$o][$detail['object_id']];
+							$cart['items'][$item_id]['item']['quantity_inventory'] = $detail['quantity_inventory'];
+							$cart['items'][$item_id]['item']['permalink'] = $detail['permalink'];
 						}
 					}
 				}
@@ -491,7 +491,20 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 			foreach($cart['items'] as $item_id => $item) {
 				$item = $item['item'];
 				$content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>"
-					. "<td>" . $item['description'] . "</td>"
+					. "<td>";
+				if( isset($item['object']) && isset($item['permalink']) ) {
+					switch($item['object']) {
+						case 'ciniki.products.product': 
+							$item['url'] = $ciniki['request']['base_url'] . '/products/product/' . $item['permalink'];
+							break;
+					}
+				}
+				if( isset($item['url']) && $item['url'] != '' ) {
+					$content .= "<a href='" . $item['url'] . "'>" . $item['description'] . "</a>";
+				} else {
+					$content .= $item['description'];
+				}
+				$content .= "</td>"
 					. "<td class='alignright'>";
 				if( $cart_edit == 'yes' ) {
 					$content .= "<span class='cart-quantity'>"
