@@ -234,6 +234,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-cart-inventory-distributors-display',		// Display current inventory to distributors
 		'page-cart-product-search',					// Allow users to search products
 		'page-cart-product-list',					// Show list of all products
+		'page-cart-po-number',
+		'page-cart-customer-notes',
 		'page-signup-active',
 		'page-signup-menu',
 		'page-api-active',

@@ -179,6 +179,21 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 	//
 	elseif( isset($_POST['update']) && $_POST['update'] != '' 
 		&& isset($_POST['action']) && $_POST['action'] == 'update' ) {
+		$update_args = array();
+		if( isset($_POST['po_number']) ) {
+			$update_args['po_number'] = $_POST['po_number'];
+		}
+		if( isset($_POST['customer_notes']) ) {
+			$update_args['customer_notes'] = $_POST['customer_notes'];
+		}
+		if( count($update_args) > 0 ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartUpdate');
+			$rc = ciniki_sapos_web_cartUpdate($ciniki, $settings, 
+				$ciniki['request']['business_id'], $update_args);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+		}
 		if( isset($cart['items']) ) {
 			foreach($cart['items'] as $item) {
 				$item = $item['item'];
@@ -564,7 +579,23 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 			$content .= "</foot>";
 			$content .= "</table>";
 			$content .= "</div>";
-				
+
+			//
+			// Get the extra information for the cart
+			//
+			if( isset($settings['page-cart-po-number']) && $settings['page-cart-po-number'] == 'yes' ) {
+				$content .= "<label for='po_number'>Purchase Order Number</label>"
+					. "<input id='po_number' class='text' type='text' placeholder='PO Number' "
+						. "name='po_number' value='" . $cart['po_number'] . "' />";
+			}
+			if( isset($settings['page-cart-customer-notes']) && $settings['page-cart-customer-notes'] == 'yes' ) {
+				$content .= "<label for='customer_notes'>Notes</label>"
+					. "<textarea class='' class='text' id='customer_notes' name='customer_notes'>" 
+					. $cart['customer_notes'] 
+					. "</textarea>"
+					. "";
+			}
+					
 			// cart buttons
 //			$content .= "<table class='cart-buttons'>"
 //				. "<tfoot>";

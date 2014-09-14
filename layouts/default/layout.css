@@ -270,6 +270,9 @@ header span.title {
 	max-width: 100%;
 }
 
+#content form textarea {	
+	max-width: 100%;
+}
 #content form input.text,
 #content article.page form input.text {
 	max-width: 28em;

@@ -407,6 +407,7 @@ div.gallery-image-details span.image-awards {
 }
 
 #content div.cart-search-input input, 
+#content form textarea,
 #content form input.text {
 	font-size: 1.0em;
 	font-weight: normal;
