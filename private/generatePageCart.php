@@ -177,8 +177,9 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 	//
 	// Check if cart quantities were updated
 	//
-	elseif( isset($_POST['update']) && $_POST['update'] != '' 
-		&& isset($_POST['action']) && $_POST['action'] == 'update' ) {
+	elseif( (isset($_POST['update']) && $_POST['update'] != '' 
+		&& isset($_POST['action']) && $_POST['action'] == 'update')
+		|| (isset($_POST['submitorder']) && $_POST['submitorder'] != '') ) {
 		$update_args = array();
 		if( isset($_POST['po_number']) ) {
 			$update_args['po_number'] = $_POST['po_number'];
@@ -226,11 +227,13 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		// Redirect to avoid form duplicate submission
 		//
 //		$content .= print_r($_POST, true);
-		header("Location: " . $ciniki['request']['ssl_domain_base_url'] . "/cart");
-		exit;
+		if( !isset($_POST['submitorder']) ) {
+			header("Location: " . $ciniki['request']['ssl_domain_base_url'] . "/cart");
+			exit;
+		}
 
 		//
-		// Incase redirect fails, Load the updated cart
+		// Incase redirect fails, or submiting an order, Load the updated cart
 		//
 		$rc = ciniki_sapos_web_cartLoad($ciniki, $settings, $ciniki['request']['business_id']);
 		if( $rc['stat'] != 'ok' ) {	
@@ -244,14 +247,17 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 	//
 	// Check if dealer is submitting an order
 	//
-	elseif( isset($_POST['submitorder']) && $_POST['submitorder'] != ''
+	if( isset($_POST['submitorder']) && $_POST['submitorder'] != ''
 		&& isset($ciniki['session']['customer']['dealer_status']) 
 		&& $ciniki['session']['customer']['dealer_status'] > 0 
 		&& $ciniki['session']['customer']['dealer_status'] < 60 
 		) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'submitOrder');
-		$rc = ciniki_sapos_web_submitOrder($ciniki, $settings, $ciniki['request']['business_id']);
-		if( $rc['stat'] != 'ok' ) {
+		$rc = ciniki_sapos_web_submitOrder($ciniki, $settings, $ciniki['request']['business_id'], $cart);
+		if( $rc['stat'] == 'warn' ) {
+			$cart_err_msg .= "<p class='wide cart-error'>" . $rc['err']['msg'] . "</p>";
+			$display_cart = 'yes';
+		} elseif( $rc['stat'] != 'ok' ) {
 			return $rc;
 		} else {
 			$content .= "<p>Your order has been submitted.</p>";
@@ -476,6 +482,9 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		if( $cart != NULL && isset($cart['items']) && count($cart['items']) > 0 ) {
 			$content .= "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' class='wide' method='POST'>";
 			$content .= "<input type='hidden' name='action' value='update'/>";
+			if( $cart_err_msg != '' ) {
+				$content .= $cart_err_msg;
+			}
 			$content .= "<div class='cart-items'>";
 			$content .= "<table class='cart-items'>";
 			$content .= "<thead><tr>"

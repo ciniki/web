@@ -789,6 +789,10 @@ footer div.social-icons a:active {
 	color: #333;
 }
 
+#content p.cart-error {
+	color: #F00;
+}
+
 #content div.cart-search-items,
 #content div.cart-items, 
 #content div.cart-details {
