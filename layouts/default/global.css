@@ -695,6 +695,11 @@ div.googlemap p.exhibitors-more,
 	width: 95%;
 }
 
+#content form table.cart-details input {
+	width: 100%;
+	max-width: 100%;
+}
+
 #content form input.submit,
 #content form input.bigsubmit,
 #content form input.bigsubmit2 {
@@ -841,18 +846,21 @@ span.exhibitors-description {
 }
 
 #content table.cart-buttons,
-#content table.cart-items {
+#content table.cart-items,
+#content table.cart-details {
 	width: 100%;
 }
 
-#content table.cart-items th.alignright,
-#content table.cart-items td.alignright {
+#content table .alignleft {
+	text-align: left;
+}
+#content table .alignright {
 	text-align: right;
 }
-#content table td.aligncenter {
+#content table .aligncenter {
 	text-align: center;
 }
-#content table.cart-items td.alignbottom {
+#content table td.alignbottom {
 	vertical-align: bottom;
 }
 

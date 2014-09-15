@@ -506,11 +506,6 @@ div.gallery-image-details span.image-awards {
 	padding: 0.5em 0 0.5em 0;
 }
 
-#content div.cart-search-input input {
-			console.log(c);
-	
-}
-
 #content div.cart-pricelist {
 	font-size: 1.2em;
 }
@@ -795,7 +790,8 @@ footer div.social-icons a:active {
 }
 
 #content div.cart-search-items,
-#content div.cart-items {
+#content div.cart-items, 
+#content div.cart-details {
 	padding: 0px;
 	margin: 0px;
 	border: 2px solid #fff;
@@ -807,7 +803,8 @@ footer div.social-icons a:active {
 	margin-bottom: 1.5em;
 }
 
-#content div.cart table.cart-items {
+#content div.cart table.cart-items,
+#content div.cart table.cart-details {
 	border-spacing: 0; 
 	border-radius: 10px; 
 	border: 0px solid #aaa;
@@ -818,6 +815,18 @@ footer div.social-icons a:active {
 #content div.cart table.cart-items thead tr:last-child th {
 	border-bottom: 2px solid #fff;
 }
+#content div.cart table.cart-details tbody tr td {
+	border-bottom: 2px solid #fff;
+}
+#content div.cart table.cart-details tbody tr th {
+	border-right: 2px solid #fff;
+	border-bottom: 2px solid #fff;
+	text-align: right;
+}
+#content div.cart table.cart-details tbody tr:last-child th,
+#content div.cart table.cart-details tbody tr:last-child td {
+	border-bottom: 0px solid #fff;
+}
 
 #content div.cart table.cart-items tfoot tr:first-child td {
 	border-top: 2px solid #fff;
@@ -825,13 +834,24 @@ footer div.social-icons a:active {
 
 #content div.cart table.cart-items thead,
 #content div.cart table.cart-items thead tr:first-child,
-#content div.cart table.cart-items thead tr:first-child th:first-child {
+#content div.cart table.cart-items thead tr:first-child th:first-child,
+#content div.cart table.cart-details tbody,
+#content div.cart table.cart-details tbody tr:first-child,
+#content div.cart table.cart-details tbody tr:first-child td:first-child {
 	border-left-top-radius: 10px;
 }
 
 #content div.cart table.cart-items tr th,
-#content div.cart table.cart-items tr td {
+#content div.cart table.cart-items tr td,
+#content div.cart table.cart-details tr th,
+#content div.cart table.cart-details tr td {
 	padding: 0.3em;
+}
+
+#content div.cart table.cart-items tr th:first-child,
+#content div.cart table.cart-items tr td:first-child,
+#content div.cart table.cart-details tr td {
+	padding-left: 0.5em;
 }
 
 #content div.cart table.cart-items tr.item-even td {
@@ -841,7 +861,12 @@ footer div.social-icons a:active {
 #content div.cart table.cart-items tr.item-odd td {
 	background: #bbb;
 }
+#content div.cart table.cart-details tr.item-even th { background: #999; }
+#content div.cart table.cart-details tr.item-even td { background: #ccc; }
+#content div.cart table.cart-details tr.item-odd th { background: #999; }
+#content div.cart table.cart-details tr.item-odd td { background: #bbb; }
 
+#content div.cart table.cart-details th,
 #content div.cart table.cart-items thead th {
 	color: #111;
 	font-weight: bold;

@@ -409,7 +409,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 //				. "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' method='POST'>"
 				. "<table class='cart-items'>\n"
 				. "<thead><tr>"
-				. "<th class='alignleft'>Item</th>"
+				. "<th class='aligncenter'>Item</th>"
 				. "<th class='alignright'>Quantity</th>"
 				. ($inv=='yes'?"<th class='alignright'>Inventory</th>":"")
 				. "<th class='alignright'>Price</th>"
@@ -479,7 +479,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 			$content .= "<div class='cart-items'>";
 			$content .= "<table class='cart-items'>";
 			$content .= "<thead><tr>"
-				. "<th class='alignleft'>Item</th>"
+				. "<th class='aligncenter'>Item</th>"
 				. "<th class='alignright'>Quantity</th>"
 				. ($inv=='yes'?"<th class='alignright'>Inventory</th>":"")
 				. "<th class='alignright'>Price</th>"
@@ -592,15 +592,98 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 			$content .= "</foot>";
 			$content .= "</table>";
 			$content .= "</div>";
+			$content .= "<br/>";
 
 			//
-			// Get the extra information for the cart
+			// Display the bill to and ship to information
 			//
-			if( isset($settings['page-cart-po-number']) && $settings['page-cart-po-number'] == 'yes' ) {
-				$content .= "<label for='po_number'>Purchase Order Number</label>"
-					. "<input id='po_number' class='text' type='text' placeholder='PO Number' "
-						. "name='po_number' value='" . $cart['po_number'] . "' />";
+			$content .= "<div class='cart-details'>";
+			$content .= "<table class='cart-details'>";
+//			$content .= "<thead><tr>"
+//				. "<th class='alignleft'>Bill To</th>"
+//				. "<th class='alignleft'>Ship To</th>"
+//				. "</tr></thead>";
+			$content .= "<tbody>";
+			$count = 1;
+			if( isset($settings['page-cart-po-number']) && $settings['page-cart-po-number'] != 'no' ) {
+				$content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
+				$content .= "<th>PO Number:</td>"
+					. "<td><input id='po_number' class='text' type='text' placeholder='PO Number' "
+						. "name='po_number' value='" . $cart['po_number'] . "' /></td></tr>";
+				$count++;
 			}
+			$content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
+			$content .= "<th>Bill To:</th><td>";
+			$baddr = '';
+			if( isset($cart['billing_name']) && $cart['billing_name'] != '' ) {
+				$baddr .= ($baddr!=''?'<br/>':'') . $cart['billing_name'];
+			}
+			if( isset($cart['billing_address1']) && $cart['billing_address1'] != '' ) {
+				$baddr .= ($baddr!=''?'<br/>':'') . $cart['billing_address1'];
+			}
+			if( isset($cart['billing_address2']) && $cart['billing_address2'] != '' ) {
+				$baddr .= ($baddr!=''?'<br/>':'') . $cart['billing_address2'];
+			}
+			$city = '';
+			if( isset($cart['billing_city']) && $cart['billing_city'] != '' ) {
+				$city .= ($city!=''?'':'') . $cart['billing_city'];
+			}
+			if( isset($cart['billing_province']) && $cart['billing_province'] != '' ) {
+				$city .= ($city!=''?', ':'') . $cart['billing_province'];
+			}
+			if( isset($cart['billing_postal']) && $cart['billing_postal'] != '' ) {
+				$baddr .= ($baddr!=''?'  ':'') . $cart['billing_postal'];
+			}
+			if( $city != '' ) { 
+				$baddr .= ($baddr!=''?'<br/>':'') . $city;
+			}
+			if( isset($cart['billing_country']) && $cart['billing_country'] != '' ) {
+				$baddr .= ($baddr!=''?'<br/>':'') . $cart['billing_country'];
+			}
+			if( $baddr != '' ) {
+				$content .= $baddr;
+			}
+			$content .= "</td></tr>";
+			$count++;
+			$content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
+			$content .= "<th>Ship To:</th><td>";
+			$saddr = '';
+			if( isset($cart['shipping_name']) && $cart['shipping_name'] != '' ) {
+				$saddr .= ($saddr!=''?'<br/>':'') . $cart['shipping_name'];
+			}
+			if( isset($cart['shipping_address1']) && $cart['shipping_address1'] != '' ) {
+				$saddr .= ($saddr!=''?'<br/>':'') . $cart['shipping_address1'];
+			}
+			if( isset($cart['shipping_address2']) && $cart['shipping_address2'] != '' ) {
+				$saddr .= ($saddr!=''?'<br/>':'') . $cart['shipping_address2'];
+			}
+			$city = '';
+			if( isset($cart['shipping_city']) && $cart['shipping_city'] != '' ) {
+				$city .= ($city!=''?'':'') . $cart['shipping_city'];
+			}
+			if( isset($cart['shipping_province']) && $cart['shipping_province'] != '' ) {
+				$city .= ($city!=''?', ':'') . $cart['shipping_province'];
+			}
+			if( isset($cart['shipping_postal']) && $cart['shipping_postal'] != '' ) {
+				$saddr .= ($saddr!=''?'  ':'') . $cart['shipping_postal'];
+			}
+			if( $city != '' ) { 
+				$saddr .= ($saddr!=''?'<br/>':'') . $city;
+			}
+			if( isset($cart['shipping_country']) && $cart['shipping_country'] != '' ) {
+				$saddr .= ($saddr!=''?'<br/>':'') . $cart['shipping_country'];
+			}
+			if( $saddr != '' ) {
+				$content .= $saddr;
+			}
+			$count++;
+
+			$content .= "</td></tr>";
+			$content .= "</tbody>";
+			$content .= "</table>";
+			$content .= "</div>";
+
+
 			if( isset($settings['page-cart-customer-notes']) && $settings['page-cart-customer-notes'] == 'yes' ) {
 				$content .= "<label for='customer_notes'>Notes</label>"
 					. "<textarea class='' class='text' id='customer_notes' name='customer_notes'>" 

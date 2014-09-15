@@ -29,6 +29,7 @@ function ciniki_web_main() {
 		'aspen':'Aspen',
 		};
 	this.activeToggles = {'no':'No', 'yes':'Yes'};
+	this.activeRequiredToggles = {'no':'No', 'yes':'Yes', 'required':'Required'};
 	this.productThumbnailToggles = {'auto':'Auto', 'small':'Small', 'medium':'Medium', 'large':'Large'};
 	this.linksDisplayToggles = {'wordlist':'List', 'wordcloud':'Cloud'};
 	this.userFlags = {
@@ -1112,14 +1113,14 @@ function ciniki_web_main() {
 		//
 		this.cart = new M.panel('Shopping Cart',
 			'ciniki_web_main', 'cart',
-			'mc', 'narrow', 'sectioned', 'ciniki.web.main.cart');
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.cart');
 		this.cart.data = {};
 		this.cart.sections = {
 			'options':{'label':'', 'fields':{
 				'page-cart-active':{'label':'Enable Cart', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-cart-product-search':{'label':'Product Search', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-cart-product-list':{'label':'Product List', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
-				'page-cart-po-number':{'label':'Purchase Order Number', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-cart-po-number':{'label':'Purchase Order Number', 'type':'multitoggle', 'default':'no', 'toggles':this.activeRequiredToggles},
 				'page-cart-customer-notes':{'label':'Customer Notes', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				}},
 			'_inventory':{'label':'Current Inventory Visible To', 'fields':{
