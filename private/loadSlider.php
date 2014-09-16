@@ -54,4 +54,3 @@ function ciniki_web_loadSlider(&$ciniki, $settings, $business_id, $slider_id) {
 	return array('stat'=>'ok', 'slider'=>$rc['sliders'][$slider_id]);
 }
 ?>
-

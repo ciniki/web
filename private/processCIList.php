@@ -219,4 +219,3 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 	return array('stat'=>'ok', 'content'=>$content, 'nav'=>$nav_content);
 }
 ?>
-
