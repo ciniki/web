@@ -50,7 +50,7 @@ function ciniki_web_generatePageDistributors($ciniki, $settings) {
 		//
 		// If there was an error locating the files, display generic error
 		//
-		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1927', 'msg'=>'We\'re sorry, but the file you requested does not exist.'));
+		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1401', 'msg'=>'We\'re sorry, but the file you requested does not exist.'));
 	}
 	//
 	// Store the content created by the page
@@ -680,7 +680,7 @@ function ciniki_web_generatePageDistributors($ciniki, $settings) {
 				$page_content .= $rc['content'];
 			}
 		} else {
-			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1924', 'msg'=>'No distributors found for this .'));
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1402', 'msg'=>'No distributors found for this .'));
 		}
 	} 
 
