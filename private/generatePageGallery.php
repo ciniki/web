@@ -262,7 +262,9 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 		$page_content .= "<span class='image-title'>" . $img['title'] . '</span>'
 			. "<span class='image-details'>" . $img['details'] . '</span>';
 		if( $img['description'] != '' ) {
-			$page_content .= "<span class='image-description'>" . preg_replace('/\n/', '<br/>', $img['description']) . "</span>";
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+			$rc = ciniki_web_processContent($ciniki, $img['description']);
+			$page_content .= "<span class='image-description'>" . $rc['content'] . "</span>";
 			$ciniki['response']['head']['og']['description'] = strip_tags($img['description']);
 		}
 		if( $img['awards'] != '' ) {
