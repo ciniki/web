@@ -71,7 +71,7 @@ function ciniki_web_generateMasterIndex(&$ciniki, $settings) {
 			&& $ciniki['config']['ciniki.core']['ssl'] == 'off' ) {
 			$post_url = 'http://';
 		}
-		$post_url .= $_SERVER['HTTP_HOST'] . "/manage";
+		$post_url .= $_SERVER['HTTP_HOST'] . "/manager";
 		$aside_content .= ""
 			. "<form action='$post_url' method='POST'>"
 			. "<div class='input'>"
