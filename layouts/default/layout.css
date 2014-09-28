@@ -84,6 +84,12 @@ header span.title {
 	height: 190px;
 }
 
+#content div.sponsor-gallery div.sponsor-gallery-thumbnail {
+	max-width: 130px;
+	max-height: 130px;
+	margin: 7px;
+}
+
 #content div.image-gallery div.image-gallery-thumbnail {
 	width: 130px;
 	height: 130px;

@@ -194,6 +194,7 @@ div.image-sponsors-thumbnail {
 div.image-cilist-thumbnail,
 div.image-members-thumbnail,
 div.image-exhibitors-thumbnail,
+div.sponsor-gallery-thumbnail,
 div.image-gallery-thumbnail {
 	border: 1px solid #aaa;
 	display: inline-block;
@@ -210,6 +211,7 @@ div.image-cilist-thumbnail img,
 div.image-members-thumbnail img,
 div.image-sponsors-thumbnail img,
 div.image-exhibitors-thumbnail img,
+div.sponsor-gallery-thumbnail img,
 div.image-gallery-thumbnail img {
 	border: 0px;
 	padding: 0px;

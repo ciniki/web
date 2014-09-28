@@ -332,15 +332,16 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 			$page_content .= "</p>";
 		}
 
-		$page_content .= "</article>";
 
 		//
 		// Display the additional images for the event
 		//
 		if( isset($event['images']) && count($event['images']) > 0 ) {
-			$page_content .= "<article class='page'>"	
-				. "<header class='entry-title'><h1 class='entry-title'>Gallery</h1></header>\n"
-				. "";
+//			$page_content .= "<article class='page'>"	
+//				. "<header class='entry-title'><h1 class='entry-title'>Gallery</h1></header>\n"
+//				. "";
+			$page_content .= "<br style='clear: right;'/>";
+			$page_content .= "<h2>Gallery</h2>";
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
 			$img_base_url = $ciniki['request']['base_url'] . "/events/" . $event['permalink'] . "/gallery";
 			$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $event['images'], 125);
@@ -348,8 +349,24 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 				return $rc;
 			}
 			$page_content .= "<div class='image-gallery'>" . $rc['content'] . "</div>";
-			$page_content .= "</article>";
+//			$page_content .= "</article>";
 		}
+
+		//
+		// Display any sponsors for the event
+		//
+		if( isset($event['sponsors']) && count($event['sponsors']) > 0 ) {
+			$page_content .= "<h2>Sponsors</h2>";
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processSponsorImages');
+			$img_base_url = $ciniki['request']['base_url'] . "/sponsors/";
+			$rc = ciniki_web_processSponsorImages($ciniki, $settings, $img_base_url, $event['sponsors'], 125);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= "<div class='sponsor-gallery'>" . $rc['content'] . "</div>";
+		}
+
+		$page_content .= "</article>";
 	}
 
 	//
