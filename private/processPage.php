@@ -62,9 +62,7 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
 	// Display the additional images for the content
 	//
 	if( isset($page['images']) && count($page['images']) > 0 ) {
-		$content .= "<article class='page'>"	
-			. "<header class='entry-title'><h1 class='entry-title'>Gallery</h1></header>\n"
-			. "";
+		$content .= "<h2 style='clear:right;'>Gallery</h2>\n";
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
 		$img_base_url = $base_url . '/' . $page['permalink'] . "/gallery";
 		$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $page['images'], 125);
@@ -72,18 +70,17 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
 			return $rc;
 		}
 		$content .= "<div class='image-gallery'>" . $rc['content'] . "</div>";
-		$content .= "</article>";
 	}
 
 	//
 	// Display the list of children
 	//
 	if( isset($page['children']) && count($page['children']) > 0 ) {
-		$content .= "<article class='page'>\n"
+//		$content .= "<article class='page'>\n"
 //				. "<header class='entry-title'><h1 class='entry-title'>$article_title</h1></header>\n"
-			. "<div class='entry-content'>\n"
-			. "";
-
+//			. "<div class='entry-content'>\n"
+//			. "";
+		$content .= "<br/>";
 		if( count($page['children']) > 0 ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
 			$child_base_url = $base_url . '/' . $page['permalink'];
@@ -97,12 +94,24 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
 			$content .= "";
 		}
 
-		$content .= "</div>"
-			. "</article>"
-			. "";
+//		$content .= "</div>"
+//			. "</article>"
+//			. "";
 	}
 
-
+	//
+	// Display any sponsors for the page
+	//
+	if( isset($page['sponsors']) && count($page['sponsors']) > 0 ) {
+		$content .= "<h2 style='clear:right;'>Sponsors</h2>";
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processSponsorImages');
+		$img_base_url = $ciniki['request']['base_url'] . "/sponsors/";
+		$rc = ciniki_web_processSponsorImages($ciniki, $settings, $img_base_url, $page['sponsors'], 125);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$content .= "<div class='sponsor-gallery'>" . $rc['content'] . "</div>";
+	}
 
 	return array('stat'=>'ok', 'content'=>$content);
 }

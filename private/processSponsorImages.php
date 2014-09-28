@@ -34,7 +34,7 @@ function ciniki_web_processSponsorImages($ciniki, $settings, $base_url, $sponsor
 		// Check if image is not specified
 		//
 		if( $sponsor['image_id'] == 0 ) {
-			$img_url = "/ciniki-web-layouts/default/img/noimage_240.png";
+			continue;
 		}
 		else {
 			//
@@ -85,12 +85,23 @@ function ciniki_web_processSponsorImages($ciniki, $settings, $base_url, $sponsor
 		}
 
 		$content .= "<div class='sponsor-gallery-thumbnail'>";
-		if( isset($sponsor['url']) && $sponsor['url'] != '' ) {
-			$content .= "<a target='_blank' href='" . $sponsor['url'] . "'>";
+		if( isset($sponsor['url']) ) {
+			$rc = ciniki_web_processURL($ciniki, $sponsor['url']);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$url = $rc['url'];
+			$display_url = $rc['display'];
+		} else {
+			$url = '';
+		}
+
+		if( isset($url) && $url != '' ) {
+			$content .= "<a target='_blank' href='" . $url . "'>";
 		}
 		$content .= "<img title='" . htmlspecialchars(strip_tags($sponsor['title'])) . "' "
 			. "alt='" . htmlspecialchars(strip_tags($sponsor['title'])) . "' src='$img_url' />";
-		if( isset($sponsor['url']) && $sponsor['url'] != '' ) {
+		if( isset($url) && $url != '' ) {
 			$content .= "</a>";
 		}
 		$content .= "</div>";
