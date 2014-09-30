@@ -355,15 +355,13 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 		//
 		// Display any sponsors for the event
 		//
-		if( isset($event['sponsors']) && count($event['sponsors']) > 0 ) {
-			$page_content .= "<h2>Sponsors</h2>";
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processSponsorImages');
-			$img_base_url = $ciniki['request']['base_url'] . "/sponsors/";
-			$rc = ciniki_web_processSponsorImages($ciniki, $settings, $img_base_url, $event['sponsors'], 125);
+		if( isset($event['sponsors']['sponsors']) && count($event['sponsors']['sponsors']) > 0 ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processSponsorsSection');
+			$rc = ciniki_web_processSponsorsSection($ciniki, $settings, $event['sponsors']);
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			$page_content .= "<div class='sponsor-gallery'>" . $rc['content'] . "</div>";
+			$page_content .= $rc['content'];
 		}
 
 		$page_content .= "</article>";

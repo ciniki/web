@@ -22,14 +22,26 @@
 // Returns
 // -------
 //
-function ciniki_web_processSponsorImages($ciniki, $settings, $base_url, $sponsors, $maxlength) {
+function ciniki_web_processSponsorImages($ciniki, $settings, $base_url, $sponsors, $size) {
 
 	//
 	// Store the content created by the page
 	//
 	$content = '';
 
+
+	$maxlength = 125;
+	$size_class = 'small';
+	switch($size) {
+		case '10': $maxlength = 100; $size_class = 'tiny'; break;
+		case '20': $maxlength = 125; $size_class = 'small'; break;
+		case '30': $maxlength = 150; $size_class = 'medium'; break;
+		case '40': $maxlength = 175; $size_class = 'large'; break;
+		case '50': $maxlength = 200; $size_class = 'xlarge'; break;
+	}
+
 	foreach($sponsors as $snum => $sponsor) {
+		if( isset($sponsor['sponsor']) ) { $sponsor = $sponsor['sponsor']; }
 		// 
 		// Check if image is not specified
 		//
@@ -84,7 +96,8 @@ function ciniki_web_processSponsorImages($ciniki, $settings, $base_url, $sponsor
 			}
 		}
 
-		$content .= "<div class='sponsor-gallery-thumbnail'>";
+		
+		$content .= "<div class='sponsor-gallery-thumbnail sponsor-gallery-thumbnail-$size_class'>";
 		if( isset($sponsor['url']) ) {
 			$rc = ciniki_web_processURL($ciniki, $sponsor['url']);
 			if( $rc['stat'] != 'ok' ) {

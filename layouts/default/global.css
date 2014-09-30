@@ -161,6 +161,7 @@ a:active, a:focus { outline: none; }
 div.sponsor-gallery-thumbnail,
 div.image-gallery-thumbnail {
 	line-height: 0.5em;
+	vertical-align: middle;
 }
 
 
