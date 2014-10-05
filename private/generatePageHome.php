@@ -401,6 +401,29 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 		}
 	}
 
+	//
+	// Check if there are any sponsors
+	//
+	if( isset($ciniki['business']['modules']['ciniki.sponsors']) 
+		&& ($ciniki['business']['modules']['ciniki.sponsors']['flags']&0x02) == 0x02
+		) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'sponsors', 'web', 'sponsorRefList');
+		$rc = ciniki_sponsors_web_sponsorRefList($ciniki, $settings, $ciniki['request']['business_id'], 
+			'ciniki.web.page', 'home');
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		if( isset($rc['sponsors']) ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processSponsorsSection');
+			$rc = ciniki_web_processSponsorsSection($ciniki, $settings, $rc['sponsors']);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= "<article class='page page-home'>\n";
+			$page_content .= $rc['content'];
+			$page_content .= "</article>";
+		}
+	}
 
 	$page_content .= "</div>"
 		. "";

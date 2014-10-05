@@ -334,15 +334,26 @@ function ciniki_web_main() {
 			'redirects':{'label':'Redirect Home', 'active':'no', 'fields':{
 				'page-home-url':{'label':'URL', 'type':'text'},
 				}},
+			'sponsors':{'label':'Sponsors', 'type':'simplegrid', 'num_cols':1,
+				'addTxt':'Manage Sponsors',
+				'addFn':'M.startApp(\'ciniki.sponsors.ref\',null,\'M.ciniki_web_main.updateSponsors("home");\',\'mc\',{\'object\':\'ciniki.web.page\',\'object_id\':\'home\'});',
+				},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'home\');'},
 				}},
 		};
 		this.home.fieldValue = this.fieldValue;
 		this.home.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.home.sectionData = function(s) { 
+			return this.data[s];
+		};
 		this.home.addDropImage = function(iid) {
 			this.setFieldValue('page-home-image', iid);
 			return true;
+		};
+		this.home.cellValue = function(s, i, j, d) { return d.sponsor.title; }
+		this.home.rowFn = function(s, i, d) {
+			return 'M.startApp(\'ciniki.sponsors.ref\',null,\'M.ciniki_web_main.updateSponsors("home");\',\'mc\',{\'ref_id\':\'' + d.sponsor.ref_id + '\'});';
 		};
 		this.home.deleteImage = this.deleteImage;
 		this.home.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'home\');');
@@ -1219,6 +1230,16 @@ function ciniki_web_main() {
 		}
 
 		//
+		// Setup for sponsors
+		//
+		if( M.curBusiness.modules['ciniki.sponsors'] != null
+			&& (M.curBusiness.modules['ciniki.sponsors'].flags&0x02) ) {
+			this.home.sections.sponsors.visible = 'yes';
+		} else {
+			this.home.sections.sponsors.visible = 'no';
+		}
+
+		//
 		// Setup the gallery sort fields
 		//
 		if( M.curBusiness.modules['ciniki.gallery'] != null ) {
@@ -1361,7 +1382,7 @@ function ciniki_web_main() {
 				});
 		} else {
 			var rsp = M.api.getJSONCb('ciniki.web.pageSettingsGet', 
-				{'business_id':M.curBusinessID, 'page':page, 'content':'yes'}, function(rsp) {
+				{'business_id':M.curBusinessID, 'page':page, 'content':'yes', 'sponsors':'yes'}, function(rsp) {
 					if( rsp.stat != 'ok' ) {
 						M.api.err(rsp);
 						return false;
@@ -1373,6 +1394,12 @@ function ciniki_web_main() {
 
 	this.showPageFinish = function(cb, page, subpage, subpagetitle, rsp) {
 		this[page].data = rsp.settings;
+		if( rsp.sponsors != null ) { 
+			this[page].data.sponsors = rsp.sponsors;
+		} else {
+			this[page].data.sponsors = null;
+		}
+
 		if( page == 'contact' ) {
 			this.contact.business_address = rsp.business_address;
 			this.showContact(cb);
@@ -1486,6 +1513,24 @@ function ciniki_web_main() {
 			this[page].refresh();
 			this[page].show(cb);
 		}
+	};
+
+	this.updateSponsors = function(page) {
+		M.api.getJSONCb('ciniki.web.pageSettingsGet', 
+			{'business_id':M.curBusinessID, 'page':page, 'sponsors':'yes'}, function(rsp) {
+				if( rsp.stat != 'ok' ) {
+					M.api.err(rsp);
+					return false;
+				}
+				var p = M.ciniki_web_main[page];
+				if( rsp.sponsors != null ) {
+					p.data.sponsors = rsp.sponsors;
+				} else {
+					p.data.sponsors = null;
+				}
+				p.refreshSection('sponsors');
+				p.show();
+			});
 	};
 
 //	this.showLogo = function(cb, logo) {
