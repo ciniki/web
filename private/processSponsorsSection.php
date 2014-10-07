@@ -43,11 +43,13 @@ function ciniki_web_processSponsorsSection($ciniki, $settings, $sponsors) {
 
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processSponsorImages');
 	$img_base_url = $ciniki['request']['base_url'] . '/sponsors';
-	$rc = ciniki_web_processSponsorImages($ciniki, $settings, $img_base_url, $sponsors['sponsors'], $sponsors['size']);
-	if( $rc['stat'] != 'ok' ) {
-		return $rc;
+	if( isset($sponsors['sponsors']) ) {
+		$rc = ciniki_web_processSponsorImages($ciniki, $settings, $img_base_url, $sponsors['sponsors'], $sponsors['size']);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$content .= "<div class='sponsor-gallery'>" . $rc['content'] . "</div>";
 	}
-	$content .= "<div class='sponsor-gallery'>" . $rc['content'] . "</div>";
 
 	return array('stat'=>'ok', 'content'=>$content);
 }
