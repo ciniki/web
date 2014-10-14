@@ -38,6 +38,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 	$content = '';
 	$subscription_err_msg = '';
 	$chgpwd_err_msg = '';
+	$submenu = array();
 
 	//
 	// Load the business modules
@@ -50,11 +51,80 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 	}
 
 	//
+	// Pull in subscription list
+	//
+	if( isset($modules['ciniki.subscriptions']) ) {
+		$subscriptions = array();
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'subscriptions', 'web', 'list');
+		$rc = ciniki_subscriptions_web_list($ciniki, $settings, $ciniki['request']['business_id']);
+		if( $rc['stat'] == 'ok' && isset($rc['subscriptions']) ) {
+			$subscriptions = $rc['subscriptions'];
+		}
+	}
+
+	//
+	// Pull in order stats
+	//
+	if( isset($modules['ciniki.sapos']) && isset($ciniki['session']['customer']['id']) ) {
+		$open_orders = -1;
+		$past_orders = -1;
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'customerStats');
+		$rc = ciniki_sapos_web_customerStats($ciniki, $settings, $ciniki['request']['business_id'], $ciniki['session']['customer']['id']);
+		if( $rc['stat'] == 'ok' && isset($rc['stats']) ) {
+			if( isset($rc['stats']['invoices']['typestatus']['40.15']) ) {
+				$open_orders += $rc['stats']['invoices']['typestatus']['40.15'];
+			}
+			if( isset($rc['stats']['invoices']['typestatus']['40.30']) ) {
+				$open_orders += $rc['stats']['invoices']['typestatus']['40.30'];
+			}
+			if( isset($rc['stats']['invoices']['typestatus']['40.50']) ) {
+				$open_orders += $rc['stats']['invoices']['typestatus']['40.50'];
+			}
+		}
+	}
+
+	//
 	// Check if a form was submitted
 	//
 	$err_msg = '';
 	$display_form = 'login';
-	if( (isset($_POST['action']) && $_POST['action'] == 'logout') 
+	if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'switch'
+		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' 
+		&& isset($ciniki['session']['customers'])
+		&& isset($ciniki['session']['customers'][$ciniki['request']['uri_split'][1]])
+		) {
+		$_SESSION['customer'] = $ciniki['session']['customers'][$ciniki['request']['uri_split'][1]];
+		$_SESSION['customer']['email'] = $ciniki['session']['login']['email'];
+		$ciniki['session']['customer'] = $_SESSION['customer'];
+		unset($ciniki['session']['cart']);
+		unset($_SESSION['cart']);
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartLoad');
+		$rc = ciniki_sapos_web_cartLoad($ciniki, $settings, $ciniki['request']['business_id']);
+		if( $rc['stat'] == 'ok' ) {
+			$_SESSION['cart'] = $rc['cart'];
+			$_SESSION['cart']['sapos_id'] = $rc['cart']['id'];
+			$_SESSION['cart']['num_items'] = count($rc['cart']['items']);
+		}
+		if( $_SESSION['account_chooser_redirect'] != '' ) {
+			$redirect = $_SESSION['account_chooser_redirect'];
+			$_SESSION['account_chooser_redirect'] = '';
+			if( $redirect == 'back' 
+				&& isset($_SESSION['login_referer']) && $_SESSION['login_referer'] != '' ) {
+				Header('Location: ' . $_SESSION['login_referer']);
+				$_SESSION['login_referer'] = '';
+				exit;
+			}
+			if( $redirect != '' ) {
+				Header('Location: ' . $ciniki['request']['ssl_domain_base_url'] . $redirect);
+				exit;
+			}
+		} 
+		error_log('redirect account');
+		error_log('Location: ' . ($ciniki['request']['ssl_domain_base_url']!=''?$ciniki['request']['ssl_domain_base_url']:'') . '/account');
+		Header('Location: ' . ($ciniki['request']['ssl_domain_base_url']!=''?$ciniki['request']['ssl_domain_base_url']:'') . '/account');
+		exit;
+	}
+	elseif( (isset($_POST['action']) && $_POST['action'] == 'logout') 
 		|| (isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'logout') ) {
 		$ciniki['session']['customer'] = array();
 		$ciniki['session']['cart'] = array();
@@ -95,10 +165,20 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 						$_SESSION['cart'] = $rc['cart'];
 						$_SESSION['cart']['sapos_id'] = $rc['cart']['id'];
 						$_SESSION['cart']['num_items'] = count($rc['cart']['items']);
-					//	print_r($_SESSION);
+					}
+					//
+					// If multiple accounts, then display account chooser
+					//
+					if( isset($ciniki['session']['customers']) && count($ciniki['session']['customers']) > 0 ) {
+						if( ($settings['page-account-signin-redirect']) 
+							) {
+							$_SESSION['account_chooser_redirect'] = $settings['page-account-signin-redirect'];
+						} else {
+							$_SESSION['account_chooser_redirect'] = '';
+						}
 					}
 					//exit;
-					if( isset($settings['page-account-signin-redirect']) ) {
+					elseif( isset($settings['page-account-signin-redirect']) ) {
 						if( $settings['page-account-signin-redirect'] == 'back' 
 							&& isset($_SESSION['login_referer']) && $_SESSION['login_referer'] != '' ) {
 							Header('Location: ' . $_SESSION['login_referer']);
@@ -171,31 +251,27 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 		elseif( $_POST['action'] == 'accountupdate' 
 			&& isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 ) {
 
-			if( isset($modules['ciniki.subscriptions']) ) {
+			if( isset($modules['ciniki.subscriptions']) && isset($subscriptions) && count($subscriptions) > 0 ) {
 				//
 				// Pull in subscription list for user
 				//
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'subscriptions', 'web', 'list');
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'subscriptions', 'web', 'subscribe');
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'subscriptions', 'web', 'unsubscribe');
-				$rc = ciniki_subscriptions_web_list($ciniki, $settings, $ciniki['request']['business_id']);
-				if( $rc['stat'] == 'ok' ) {
-					$subscriptions = $rc['subscriptions'];
-					foreach($subscriptions as $snum => $subscription) {
-						$sid = $subscription['subscription']['id'];
-						// Check if the subscribed to the subscription
-						if( isset($_POST["subscription-$sid"]) && $_POST["subscription-$sid"] == $sid ) {
-							if( $subscription['subscription']['subscribed'] == 'no' ) {
-								ciniki_subscriptions_web_subscribe($ciniki, $settings, $ciniki['request']['business_id'], 
-									$sid, $ciniki['session']['customer']['id']);
-								$subscription_err_msg = 'Your subscriptions have been updated.';
-							}
-						} else {
-							if( $subscription['subscription']['subscribed'] == 'yes' ) {
-								ciniki_subscriptions_web_unsubscribe($ciniki, $settings, $ciniki['request']['business_id'], 
-									$sid, $ciniki['session']['customer']['id']);
-								$subscription_err_msg = 'Your subscriptions have been updated.';
-							}
+				foreach($subscriptions as $snum => $subscription) {
+					$sid = $subscription['subscription']['id'];
+					// Check if the subscribed to the subscription
+					if( isset($_POST["subscription-$sid"]) && $_POST["subscription-$sid"] == $sid ) {
+						if( $subscription['subscription']['subscribed'] == 'no' ) {
+							ciniki_subscriptions_web_subscribe($ciniki, $settings, $ciniki['request']['business_id'], 
+								$sid, $ciniki['session']['customer']['id']);
+							$subscription_err_msg = 'Your subscriptions have been updated.';
+						}
+					} else {
+						if( $subscription['subscription']['subscribed'] == 'yes' ) {
+							ciniki_subscriptions_web_unsubscribe($ciniki, $settings, $ciniki['request']['business_id'], 
+								$sid, $ciniki['session']['customer']['id']);
+							$subscription_err_msg = 'Your subscriptions have been updated.';
 						}
 					}
 				}
@@ -215,6 +291,83 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 					$chgpwd_err_msg = "Your password has been updated.";
 				}
 			}
+		}
+	
+		//
+		// FIXME: Download the invoice PDF
+		//
+		elseif( $_POST['action'] == 'downloadorder' 
+			&& isset($_POST['invoice_id']) && $_POST['invoice_id'] != '' 
+			&& isset($ciniki['session']['customer']['id'])
+			) {
+			//
+			// Load business details
+			//
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'businessDetails');
+			$rc = ciniki_businesses_businessDetails($ciniki, $ciniki['request']['business_id']);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			if( isset($rc['details']) && is_array($rc['details']) ) {	
+				$business_details = $rc['details'];
+			} else {
+				$business_details = array();
+			}
+
+			//
+			// Load the invoice settings
+			//
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
+			$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_sapos_settings', 'business_id', 
+				$ciniki['request']['business_id'], 'ciniki.sapos', 'settings', 'invoice');
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			if( isset($rc['settings']) ) {
+				$sapos_settings = $rc['settings'];
+			} else {
+				$sapos_settings = array();
+			}
+			
+			//
+			// check for invoice-default-template
+			//
+			if( isset($args['type']) && $args['type'] == 'picklist' ) {
+				$invoice_template = 'picklist';
+			} else {
+				if( !isset($sapos_settings['invoice-default-template']) 
+					|| $sapos_settings['invoice-default-template'] == '' ) {
+					$invoice_template = 'default';
+				} else {
+					$invoice_template = $sapos_settings['invoice-default-template'];
+				}
+			}
+	
+			//
+			// Check the invoice belongs to the customer
+			//
+			$strsql = "SELECT id, customer_id "
+				. "FROM ciniki_sapos_invoices "
+				. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $_POST['invoice_id']) . "' "
+				. "AND business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+				. "";
+			$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.sapos', 'invoice');
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			if( !isset($rc['invoice']) ) {
+				return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2062', 'msg'=>'Invalid invoice'));
+			}
+
+			$rc = ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'templates', 'order');
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$fn = $rc['function_call'];
+
+			return $fn($ciniki, $ciniki['request']['business_id'], $_POST['invoice_id'], 
+				$business_details, $sapos_settings);
+			exit;
 		}
 	}
 
@@ -292,7 +445,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 		) {
 
 		$content .= "<div id='content'>\n"
-			. "<article class='page'>\n"
+			. "<article class='page account'>\n"
 			. "<header class='entry-title'><h1 class='entry-title'>Account</h1></header>\n";
 		$content .= "<div class='entry-content'>";
 		$content .= "<p>Please enter a new password.  It must be at least 8 characters long.</p>";
@@ -326,6 +479,54 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 	// Check if the customer is logged in or not
 	//
 	elseif( isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 ) {
+		$submenu = array();
+		$subpage = '';
+		if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' 
+			&& in_array($ciniki['request']['uri_split'][0], array('accounts', 'orders', 'subscriptions', 'changepassword')) 
+			) {
+
+			$subpage = $ciniki['request']['uri_split'][0];
+		}
+		if( isset($ciniki['session']['customers']) && count($ciniki['session']['customers']) > 1 ) {
+			$submenu['accounts'] = array('name'=>'Accounts',
+				'url'=>$ciniki['request']['base_url'] . '/account/accounts');
+			if( $subpage == '' ) { 
+				$subpage = 'accounts';
+			}
+		}
+//		if( isset($open_orders) && $open_orders > 0 ) {
+//			$submenu['openorders'] = array('name'=>'Orders',
+//				'url'=>$ciniki['request']['base_url'] . '/account/openorders');
+//			if( $subpage == '' ) { 
+//				$subpage = 'openorders';
+//			}
+//		}
+		if( (isset($open_orders) && $open_orders > 0)
+		 	|| (isset($past_orders) && $past_orders > 0) 
+			) {
+			$submenu['orders'] = array('name'=>'Orders',
+				'url'=>$ciniki['request']['base_url'] . '/account/orders');
+			if( $subpage == '' ) { 
+				$subpage = 'orders';
+			}
+		}
+		if( isset($modules['ciniki.subscriptions']) && isset($subscriptions) && count($subscriptions) > 0 ) {
+			$submenu['subscriptions'] = array('name'=>'Subscriptions',
+				'url'=>$ciniki['request']['base_url'] . '/account/subscriptions');
+			if( $subpage == '' ) { 
+				$subpage = 'subscriptions';
+			}
+		}
+		$submenu['changepassword'] = array('name'=>'Password',
+			'url'=>$ciniki['request']['base_url'] . '/account/changepassword');
+		if( $subpage == '' ) { 
+			$subpage = 'changepassword';
+		}
+
+		if( count($submenu) < 2 ) {
+			$submenu = array();
+		}
+
 		//
 		// Get any content for the account page
 		//
@@ -341,89 +542,184 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 		}
 
 		//
+		// Get the details about the customer
+		//
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'customerDetails');
+		$rc = ciniki_customers_web_customerDetails($ciniki, $settings, $ciniki['request']['business_id'], $ciniki['session']['customer']['id']);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		if( isset($rc['customer']) ) {
+			$customer = $rc['customer'];
+			$customer_details = $rc['details'];
+		} else {
+			$customer = array();
+			$customer_details = array();
+		}
+
+		//
 		// Start building the html output
 		//
 		$content .= "<div id='content'>\n"
-			. "<article class='page'>\n"
+			. "<article class='page account'>\n"
 //			. "<header class='entry-title'><h1 class='entry-title'>Account</h1></header>\n"
 			. "";
 		
-		if( isset($content_details['page-account-content']) ) {
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $content_details['page-account-content']);	
+		if( $subpage == 'accounts' 
+			&& isset($ciniki['session']['customers']) 
+			&& count($ciniki['session']['customers']) > 0
+			) {
+			$content .= "<aside>";
+//			$content .= "<p><b class='entry-title'>Current Account</b></p>";
+			$content .= "<h1>Account</h1>";
+			$content .= "<p>Name: " . $ciniki['session']['customer']['display_name'] . "</p>";
+			if( isset($customer['addresses']) ) {
+				foreach($customer['addresses'] as $addr) {
+					$addr = $addr['address'];
+					if( ($addr['flags']&0x02) ) {
+						$content .= "<p><b>Billing Address</b><br/>"
+							. preg_replace('/\n/', '<br/>', $addr['joined'])
+							. "</p>";
+					}
+					if( ($addr['flags']&0x01) ) {
+						$content .= "<p><b>Shipping Address</b><br/>"
+							. preg_replace('/\n/', '<br/>', $addr['joined'])
+							. "</p>";
+					}
+				}
+			}
+			$content .= "</aside>";
+			$content .= "<header class='entry-title'><h1 class='entry-title'>Other Accounts</h1></header>";
+			$content .= "<div class='entry-content'>\n";
+//			$content .= "<p>Select an account to manage</p>";
+			
+			$content .= "<div class='largebutton-list'>";
+//			$content .= "<form action='' method='POST'>";
+//			$content .= "<input type='hidden' name='action' value='switch'/>";
+			foreach($ciniki['session']['customers'] as $cust) {
+				$content .= "<div class='button-list-wrap'><div class='button-list-button'>";
+				$content .= "<a href='" . $ciniki['request']['base_url'] . '/account/switch/' . $cust['id'] . "'>" . $cust['display_name'] . "</a>";
+				$content .= "</div></div><br/>";
+			}
+			$content .= "</div>";
+//			$content .= "</form>";
+			$content .= "</div>";
+		}
+
+		elseif( $subpage == 'orders' ) {
+			$content .= "<div class='entry-content'>\n";
+			$content .= "<h1 class='entry-title'>Orders</h1>";
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'customerOrders');
+			$rc = ciniki_sapos_web_customerOrders($ciniki, $settings, $ciniki['request']['business_id'], $ciniki['session']['customer']['id'], array());
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			$content .= "<aside>" . $rc['content'];
-			$content .= "</aside>";
+			if( isset($rc['invoices']) ) {
+				$content .= "<div class='cart cart-items'>";
+				$content .= "<form target='_blank' method='POST' action='" . $ciniki['request']['ssl_domain_base_url'] . "/account/orders'>";
+				$content .= "<input type='hidden' name='action' value='downloadorder'/>";
+				$content .= "<input type='hidden' id='invoice_id' name='invoice_id' value=''/>";
+				$content .= "<table class='cart-items'>";
+				$content .= "<thead><tr>"
+					. "<th>Invoice #</th>"
+					. "<th>Date</th>"
+					. "<th>Status</th>"
+//					. "<th>Action</th>"
+					. "</tr></thead>";
+				$content .= "<tbody>";
+				$count = 0;
+				foreach($rc['invoices'] as $invoice) {
+					$content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>"
+						. "<td>" . $invoice['invoice_number'] . "</td>"
+						. "<td>" . $invoice['invoice_date'] . "</td>"
+						. "<td class='aligncenter'>" . $invoice['status'] . "</td>"
+//						. "<td class='aligncenter'>"
+//						. "<input class='cart-submit' onclick='document.getElementById(\"quantity_" . $item['id'] . "\").value=0;return true;' type='submit' name='update' value='Delete'/>"
+//						. "<input class='cart-submit' onclick='document.getElementById(\"invoice_id\").value=" . $invoice['id'] . ";return true;' type='submit' name='pdf' value='View'/>"
+//						. "</td>"
+						. "</tr>";
+					$count++;
+				}
+				$content .= "</tbody></table>";
+				$content .= "</form>";
+				$content .= "</div>";
+			}
+			$content .= "</div>";
 		}
 
-		$content .= "<div class='entry-content'>\n";
-		$content .= "<form action='' method='POST'>";
-		$content .= "<input type='hidden' name='action' value='accountupdate'/>";
-
-		if( isset($modules['ciniki.subscriptions']) ) {
-			//
-			// Pull in subscription list
-			//
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'subscriptions', 'web', 'list');
-			$rc = ciniki_subscriptions_web_list($ciniki, $settings, $ciniki['request']['business_id']);
-			if( $rc['stat'] == 'ok' && isset($rc['subscriptions']) ) {
-				$subscriptions = $rc['subscriptions'];
-				$content .= "<h1 class='entry-title'>Subscriptions</h1>";
-				// Check for any content the business provided
-				if( isset($content_details['page-account-content-subscriptions']) ) {
-					ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-					$rc = ciniki_web_processContent($ciniki, $content_details['page-account-content-subscriptions']);	
-					if( $rc['stat'] != 'ok' ) {
-						return $rc;
-					}
-					$content .= $rc['content'];
+		if( isset($modules['ciniki.subscriptions']) && $subpage == 'subscriptions' && isset($subscriptions) && count($subscriptions) > 0 ) {
+			$content .= "<div class='entry-content'>\n";
+			$content .= "<form action='' method='POST'>";
+			$content .= "<input type='hidden' name='action' value='accountupdate'/>";
+			$content .= "<h1 class='entry-title'>Subscriptions</h1>";
+			// Check for any content the business provided
+			if( isset($content_details['page-account-content-subscriptions']) ) {
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+				$rc = ciniki_web_processContent($ciniki, $content_details['page-account-content-subscriptions']);	
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
 				}
-
-				if( $subscription_err_msg != '' ) {
-					$content .= "<p class='formerror'>$subscription_err_msg</p>";
-				}
-
-				foreach($subscriptions as $snum => $subscription) {
-					$sid = $subscription['subscription']['id'];
-					$content .= "<input id='subscription-$sid' type='checkbox' class='checkbox' name='subscription-$sid' value='$sid' ";
-					if( $subscription['subscription']['subscribed'] == 'yes' ) {
-						$content .= " checked";
-					}
-					$content .= "/>";
-					$content .= " <label class='checkbox' for='subscription-$sid'>" . $subscription['subscription']['name'] . "</label><br/>";
-				}
-				$content .= "<div class='submit'><input type='submit' class='submit' value='Save Changes'></div>\n";
-				$content .= "<br/><br/>";
+				$content .= $rc['content'];
 			}
+
+			if( $subscription_err_msg != '' ) {
+				$content .= "<p class='formerror'>$subscription_err_msg</p>";
+			}
+
+			foreach($subscriptions as $snum => $subscription) {
+				$sid = $subscription['subscription']['id'];
+				$content .= "<input id='subscription-$sid' type='checkbox' class='checkbox' name='subscription-$sid' value='$sid' ";
+				if( $subscription['subscription']['subscribed'] == 'yes' ) {
+					$content .= " checked";
+				}
+				$content .= "/>";
+				$content .= " <label class='checkbox' for='subscription-$sid'>" . $subscription['subscription']['name'] . "</label><br/>";
+			}
+			$content .= "<div class='submit'><input type='submit' class='submit' value='Save Changes'></div>\n";
+			$content .= "<br/><br/>";
+			$content .= "</div>\n";
 		}
 
 		//
 		// Allow user to change password
 		//
-		$content .= "<h1 class='entry-title'>Change Password</h1>"
-			. "<p>If you would like to change your password, enter your old password followed by a new one.</p>"
-			. "";
+		if( $subpage == 'changepassword' ) {
+			if( isset($content_details['page-account-content']) ) {
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+				$rc = ciniki_web_processContent($ciniki, $content_details['page-account-content']);	
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				$content .= "<aside>" . $rc['content'];
+				$content .= "</aside>";
+			}
 
-		if( $chgpwd_err_msg != '' ) {
-			$content .= "<p class='formerror'>$chgpwd_err_msg</p>";
+			$content .= "<div class='entry-content'>\n";
+			$content .= "<form action='' method='POST'>";
+			$content .= "<input type='hidden' name='action' value='accountupdate'/>";
+			$content .= "<h1 class='entry-title'>Change Password</h1>"
+				. "<p>If you would like to change your password, enter your old password followed by a new one.</p>"
+				. "";
+
+			if( $chgpwd_err_msg != '' ) {
+				$content .= "<p class='formerror'>$chgpwd_err_msg</p>";
+			}
+
+			$content .= "<label for='oldpassword'>Old Password:</label><input class='text' id='oldpassword' type='password' name='oldpassword' />";
+			$content .= "<label for='newpassword'>New Password:</label><input class='text' id='newpassword' type='password' name='newpassword' />";
+
+			$content .= "<div class='submit'><input type='submit' class='submit' value='Save Changes'></div>\n";
+			$content .= "</form>";
+
+//			$content .= "<form action='' method='POST'>\n"
+//				. "<input type='hidden' name='action' value='logout'>\n"
+//				. "<div class='bigsubmit'><input type='submit' class='bigsubmit' value='Logout'></div>\n"
+//				. "</form>"
+//				. "";
+			$content .= "</div>\n";
 		}
 
-		$content .= "<label for='oldpassword'>Old Password:</label><input class='text' id='oldpassword' type='password' name='oldpassword' />";
-		$content .= "<label for='newpassword'>New Password:</label><input class='text' id='newpassword' type='password' name='newpassword' />";
-
-		$content .= "<div class='submit'><input type='submit' class='submit' value='Save Changes'></div>\n";
-		$content .= "</form>";
-
-		$content .= "<form action='' method='POST'>\n"
-			. "<input type='hidden' name='action' value='logout'>\n"
-			. "<div class='bigsubmit'><input type='submit' class='bigsubmit' value='Logout'></div>\n"
-			. "</form>"
-			. "";
-
-		$content .= "</div>\n"
-			. "</article>\n"
+		$content .= "</article>\n"
 			. "</div>\n";
 
 		$display_form = 'no';
@@ -504,14 +800,11 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 		// Include forgot password form, and use javascript to swap forms.
 	}
 
-
-
-
 	//
 	// Add the header
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Account', array());
+	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Account', $submenu);
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
 	}

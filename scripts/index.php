@@ -255,16 +255,26 @@ $ciniki['session']['change_log_id'] = 'web.' . date('Ymd.HMS');
 $ciniki['session']['user'] = array('id'=>'-2');
 // If the session is for the current business
 if( isset($_SESSION['business_id']) && $_SESSION['business_id'] == $ciniki['request']['business_id'] ) {
+	if( isset($_SESSION['login']) ) {
+		$ciniki['session']['login'] = $_SESSION['login'];
+	}
 	if( isset($_SESSION['customer']) ) {
 		$ciniki['session']['customer'] = $_SESSION['customer'];
+	}
+	if( isset($_SESSION['customers']) ) {
+		$ciniki['session']['customers'] = $_SESSION['customers'];
 	}
 	if( isset($_SESSION['cart']) ) {
 		$ciniki['session']['cart'] = $_SESSION['cart'];
 	}
 } else {
+	if( isset($_SESSION['login']) ) { unset($_SESSION['login']); };
 	if( isset($_SESSION['customer']) ) { unset($_SESSION['customer']); };
+	if( isset($_SESSION['customers']) ) { unset($_SESSION['customers']); };
 	if( isset($_SESSION['cart']) ) { unset($_SESSION['cart']); };
+	if( isset($ciniki['session']['login']) ) { unset($ciniki['session']['login']); };
 	if( isset($ciniki['session']['customer']) ) { unset($ciniki['session']['customer']); };
+	if( isset($ciniki['session']['customers']) ) { unset($ciniki['session']['customers']); };
 	if( isset($ciniki['session']['cart']) ) { unset($ciniki['session']['cart']); };
 }
 $_SESSION['business_id'] = $ciniki['request']['business_id'];

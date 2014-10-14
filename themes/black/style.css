@@ -858,6 +858,12 @@ footer div.social-icons a:active {
 	padding-left: 0.5em;
 }
 
+#content div.cart table.cart-items tr th:last-child,
+#content div.cart table.cart-items tr td:last-child,
+#content div.cart table.cart-details tr td {
+	padding-right: 0.5em;
+}
+
 #content div.cart table.cart-items tr.item-even td {
 	background: #ccc;
 }
