@@ -68,7 +68,7 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 	//
 		
 	
-	$page_post_limit = 3;
+	$page_post_limit = 10;
 	if( isset($ciniki['request']['args']['page']) && $ciniki['request']['args']['page'] != '' ) {
 		$page_post_cur = $ciniki['request']['args']['page'];
 	} else {
