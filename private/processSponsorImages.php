@@ -34,10 +34,10 @@ function ciniki_web_processSponsorImages($ciniki, $settings, $base_url, $sponsor
 	$size_class = 'small';
 	switch($size) {
 		case '10': $maxlength = 100; $size_class = 'tiny'; break;
-		case '20': $maxlength = 125; $size_class = 'small'; break;
-		case '30': $maxlength = 150; $size_class = 'medium'; break;
-		case '40': $maxlength = 175; $size_class = 'large'; break;
-		case '50': $maxlength = 200; $size_class = 'xlarge'; break;
+		case '20': $maxlength = 150; $size_class = 'small'; break;
+		case '30': $maxlength = 200; $size_class = 'medium'; break;
+		case '40': $maxlength = 250; $size_class = 'large'; break;
+		case '50': $maxlength = 300; $size_class = 'xlarge'; break;
 	}
 
 	foreach($sponsors as $snum => $sponsor) {
