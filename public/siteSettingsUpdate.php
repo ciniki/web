@@ -233,6 +233,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-downloads-name',
 		'page-account-active',
 		'page-account-signin-redirect',
+		'page-account-invoices-list',
+		'page-account-invoices-view-pdf',
 		'page-cart-active',
 		'page-cart-inventory-customers-display',	// Display current inventory to customers
 		'page-cart-inventory-members-display',		// Display current inventory to members

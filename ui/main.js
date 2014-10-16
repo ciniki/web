@@ -1093,12 +1093,14 @@ function ciniki_web_main() {
 		//
 		this.account = new M.panel('Customer Account',
 			'ciniki_web_main', 'account',
-			'mc', 'narrow', 'sectioned', 'ciniki.web.main.account');
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.account');
 		this.account.data = {};
 		this.account.sections = {
 //			'info':{'label':'', 'html':'If you want to allow customers the ability to login and manage their account
 			'options':{'label':'', 'fields':{
 				'page-account-active':{'label':'Customer Logins', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-account-invoices-list':{'label':'View Orders', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-account-invoices-view-pdf':{'label':'Download Invoice', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				}},
 			'redirect':{'label':'On login', 'fields':{
 				'page-account-signin-redirect':{'label':'Redirect to', 'type':'select', 'options':{}},

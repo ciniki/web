@@ -299,6 +299,8 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 		elseif( $_POST['action'] == 'downloadorder' 
 			&& isset($_POST['invoice_id']) && $_POST['invoice_id'] != '' 
 			&& isset($ciniki['session']['customer']['id'])
+			&& isset($settings['page-account-invoices-view-pdf']) 
+			&& $settings['page-account-invoices-view-pdf'] == 'yes'
 			) {
 			//
 			// Load business details
@@ -501,8 +503,9 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 //				$subpage = 'openorders';
 //			}
 //		}
-		if( (isset($open_orders) && $open_orders > 0)
-		 	|| (isset($past_orders) && $past_orders > 0) 
+		if( ((isset($open_orders) && $open_orders > 0) || (isset($past_orders) && $past_orders > 0))
+			&& isset($settings['page-account-invoices-list']) 
+			&& $settings['page-account-invoices-list'] == 'yes'
 			) {
 			$submenu['orders'] = array('name'=>'Orders',
 				'url'=>$ciniki['request']['base_url'] . '/account/orders');
@@ -623,21 +626,26 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 				$content .= "<thead><tr>"
 					. "<th>Invoice #</th>"
 					. "<th>Date</th>"
-					. "<th>Status</th>"
-//					. "<th>Action</th>"
-					. "</tr></thead>";
+					. "<th>Status</th>";
+				if( isset($settings['page-account-invoices-view-pdf']) 
+					&& $settings['page-account-invoices-view-pdf'] == 'yes' ) {
+					$content .= "<th>Action</th>";
+				}
+				$content .= "</tr></thead>";
 				$content .= "<tbody>";
 				$count = 0;
 				foreach($rc['invoices'] as $invoice) {
 					$content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>"
 						. "<td>" . $invoice['invoice_number'] . "</td>"
 						. "<td>" . $invoice['invoice_date'] . "</td>"
-						. "<td class='aligncenter'>" . $invoice['status'] . "</td>"
-//						. "<td class='aligncenter'>"
-//						. "<input class='cart-submit' onclick='document.getElementById(\"quantity_" . $item['id'] . "\").value=0;return true;' type='submit' name='update' value='Delete'/>"
-//						. "<input class='cart-submit' onclick='document.getElementById(\"invoice_id\").value=" . $invoice['id'] . ";return true;' type='submit' name='pdf' value='View'/>"
-//						. "</td>"
-						. "</tr>";
+						. "<td class='aligncenter'>" . $invoice['status'] . "</td>";
+					if( isset($settings['page-account-invoices-view-pdf']) 
+						&& $settings['page-account-invoices-view-pdf'] == 'yes' ) {
+						$content .= "<td class='aligncenter'>"
+							. "<input class='cart-submit' onclick='document.getElementById(\"invoice_id\").value=" . $invoice['id'] . ";return true;' type='submit' name='pdf' value='View'/>"
+							. "</td>";
+					}
+					$content .= "</tr>";
 					$count++;
 				}
 				$content .= "</tbody></table>";
