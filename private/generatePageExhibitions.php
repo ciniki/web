@@ -338,7 +338,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processShareButtons');
 			$rc = ciniki_web_processShareButtons($ciniki, $settings, array(
 				'title'=>$page_title,
-				'tags'=>array(),
+				'tags'=>array('Exhibitions'),
 				));
 			if( $rc['stat'] == 'ok' ) {
 				$page_content .= $rc['content'];

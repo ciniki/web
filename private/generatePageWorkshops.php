@@ -297,7 +297,7 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processShareButtons');
 			$rc = ciniki_web_processShareButtons($ciniki, $settings, array(
 				'title'=>$page_title,
-				'tags'=>array(),
+				'tags'=>array('Workshops'),
 				));
 			if( $rc['stat'] == 'ok' ) {
 				$page_content .= $rc['content'];
