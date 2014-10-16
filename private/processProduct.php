@@ -105,42 +105,19 @@ function ciniki_web_processProduct(&$ciniki, $settings, $business_id, $base_url,
 		}
 	}
 
+	//
+	// Check if social share buttons should be enabled
+	//
 	if( !isset($settings['page-products-share-buttons']) || $settings['page-products-share-buttons'] == 'yes' ) {
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'shortenURL');
-		$surl = ciniki_web_shortenURL($ciniki, $ciniki['request']['business_id'],
-			$ciniki['response']['head']['og']['url']);
-		$content .= "<p class='share-buttons-wrap'><span class='share-buttons'><span class='socialtext'>Share on: </span>";
-		$content .= "<a href='https://www.facebook.com/sharer.php?u=" . urlencode($ciniki['response']['head']['og']['url']) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
-			. "<span title='Share on Facebook' class='socialsymbol social-facebook'>&#xe227;</span>"
-			. "</a>";
-	
-		$msg = $ciniki['business']['details']['name'] . ' - ' . $args['title'];
-		if( isset($ciniki['business']['social']['social-twitter-username']) 
-			&& $ciniki['business']['social']['social-twitter-username'] != '' ) {
-			$msg .= ' @' . $ciniki['business']['social']['social-twitter-username'];
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processShareButtons');
+		$rc = ciniki_web_processShareButtons($ciniki, $settings, array(
+			'title'=>$args['title'],
+			'tags'=>$args['tags'],
+			));
+		if( $rc['stat'] == 'ok' ) {
+			$content .= $rc['content'];
 		}
-		$tags = array_unique($args['tags']);
-		foreach($tags as $tag) {
-			if( $tag == '' ) { continue; }
-			if( (strlen($surl) + 1 + strlen($msg) + 2 + strlen($tag)) < 140 ) {
-				$msg .= ' #' . $tag;
-			}
-		}
-		$content .= "<a href='https://twitter.com/share?url=" . urlencode($surl) . "&text=" . urlencode($msg) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
-			. "<span title='Share on Twitter' class='socialsymbol social-twitter'>&#xe286;</span>"
-			. "</a>";
-
-		$content .= "<a href='http://www.pinterest.com/pin/create/button?url=" . urlencode($ciniki['response']['head']['og']['url']) . "&media=" . urlencode($ciniki['response']['head']['og']['image']) . "&description=" . urlencode($ciniki['business']['details']['name'] . ' - ' . $args['title']) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
-			. "<span title='Share on Pinterest' class='socialsymbol social-pinterest'>&#xe264;</span>"
-			. "</a>";
-
-		$content .= "<a href='https://plus.google.com/share?url=" . urlencode($ciniki['response']['head']['og']['url']) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
-			. "<span title='Share on Google+' class='socialsymbol social-googleplus'>&#xe239;</span>"
-			. "</a>";
-
-		$content .= "</span></p>";
 	}
-
 
 	//
 	// Display the additional images for the product

@@ -54,6 +54,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 	$content = '';
 	$page_content = '';
 	$page_title = 'Exhibitors';
+	$ciniki['response']['head']['og']['url'] = $ciniki['request']['domain_base_url'] . '/exhibitions';
 
 	//
 	// FIXME: Check if anything has changed, and if not load from cache
@@ -126,6 +127,21 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 		}
 		$exhibition = $rc['exhibition'];
 
+		$ciniki['response']['head']['og']['url'] .= '/' . $exhibition_permalink;
+		if( isset($exhibition['image_id']) && $exhibition['image_id'] > 0 ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+			$rc = ciniki_web_getScaledImageURL($ciniki, $exhibition['image_id'], 'original', '500', 0);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
+		}
+		if( isset($exhibition['short_description']) && $exhibition['short_description'] != '' ) {
+			$ciniki['response']['head']['og']['description'] = strip_tags($exhibition['short_description']);
+		} elseif( isset($exhibition['description']) && $exhibition['description'] != '' ) {
+			$ciniki['response']['head']['og']['description'] = strip_tags($exhibition['description']);
+		}
+		
 		if( !isset($exhibition['images']) || count($exhibition['images']) < 1 ) {
 			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1132', 'msg'=>"I'm sorry, but we can't seem to find the image your requested."));
 		}
@@ -229,11 +245,12 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 		//
 		// Get the exhibitor information
 		//
-		$exhibitor_permalink = $ciniki['request']['uri_split'][0];
+		$exhibition_permalink = $ciniki['request']['uri_split'][0];
+		$ciniki['response']['head']['og']['url'] .= '/' . $exhibition_permalink;
 		$rc = ciniki_artgallery_web_exhibitionDetails($ciniki, $settings, 
-			$ciniki['request']['business_id'], $exhibitor_permalink);
+			$ciniki['request']['business_id'], $exhibition_permalink);
 		if( $rc['stat'] != 'ok' ) {
-			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1306', 'msg'=>"I'm sorry, but we can't seem to find the exhibitor you requested."));
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1306', 'msg'=>"I'm sorry, but we can't seem to find the exhibition you requested."));
 		}
 		$exhibition = $rc['exhibition'];
 		// Format the date
@@ -263,9 +280,16 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
+			$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
 			$page_content .= "<aside><div class='image-wrap'><div class='image'>"
 				. "<img title='' alt='" . htmlspecialchars(strip_tags($exhibition['name'])) . "' src='" . $rc['url'] . "' />"
 				. "</div></div></aside>";
+		}
+
+		if( isset($exhibition['short_description']) && $exhibition['short_description'] != '' ) {
+			$ciniki['response']['head']['og']['description'] = strip_tags($exhibition['short_description']);
+		} elseif( isset($exhibition['description']) && $exhibition['description'] != '' ) {
+			$ciniki['response']['head']['og']['description'] = strip_tags($exhibition['description']);
 		}
 		
 		//
@@ -306,6 +330,21 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 			$url = '';
 		}
 
+		//
+		// Check if share buttons should be shown
+		//
+		if( !isset($settings['page-exhibitions-share-buttons']) 
+			|| $settings['page-exhibitions-share-buttons'] == 'yes' ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processShareButtons');
+			$rc = ciniki_web_processShareButtons($ciniki, $settings, array(
+				'title'=>$page_title,
+				'tags'=>array(),
+				));
+			if( $rc['stat'] == 'ok' ) {
+				$page_content .= $rc['content'];
+			}
+		}
+
 		$page_content .= "</article>";
 		
 		//
@@ -338,6 +377,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
+		$ciniki['response']['head']['og']['description'] = strip_tags('Upcoming Exhibitions');
 
 		if( isset($rc['content']['page-artgalleryexhibitions-content']) && $rc['content']['page-artgalleryexhibitions-content'] != '' ) {
 			$page_content .= "<article class='page'>\n"

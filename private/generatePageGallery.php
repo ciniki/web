@@ -296,46 +296,17 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 			}
 			$page_content .= "<div class='additional-image-gallery'>" . $rc['content'] . "</div>";
 		}
-		if( !isset($settings['page-gallery-share-buttons']) || $settings['page-gallery-share-buttons'] == 'yes' ) {
-			// https://www.facebook.com/sharer.php?u=http%3A%2F%2Fphotofrog.ca%2Fgallery%2Fcategory%2FLight%2BPainting%2Flp008
-			$page_content .= "<div class='share-buttons-wrap alignright'><span class='share-buttons'><span class='socialtext'>Share on: </span>";
-			$page_content .= "<a href='https://www.facebook.com/sharer.php?u=" . urlencode($ciniki['response']['head']['og']['url']) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
-				. "<span title='Share on Facebook' class='socialsymbol social-facebook'>&#xe227;</span>"
-				. "</a>";
-		
-			$msg = $ciniki['business']['details']['name'] . ' - ' . $page_title;
-			if( isset($ciniki['business']['social']['social-twitter-username']) 
-				&& $ciniki['business']['social']['social-twitter-username'] != '' ) {
-				$msg .= ' @' . $ciniki['business']['social']['social-twitter-username'];
+
+		if( !isset($settings['page-gallery-share-buttons']) 
+			|| $settings['page-gallery-share-buttons'] == 'yes' ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processShareButtons');
+			$rc = ciniki_web_processShareButtons($ciniki, $settings, array(
+				'title'=>$page_title,
+				'tags'=>$tags,
+				));
+			if( $rc['stat'] == 'ok' ) {
+				$page_content .= $rc['content'];
 			}
-			$tags = array_unique($tags);
-			foreach($tags as $tag) {
-				if( $tag == '' ) { continue; }
-				if( (strlen($surl) + 1 + strlen($msg) + 2 + strlen($tag)) < 140 ) {
-					$msg .= ' #' . $tag;
-				}
-			}
-			$page_content .= "<a href='https://twitter.com/share?url=" . urlencode($surl) . "&text=" . urlencode($msg) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
-				. "<span title='Share on Twitter' class='socialsymbol social-twitter'>&#xe286;</span>"
-				. "</a>";
-
-			$page_content .= "<a href='http://www.pinterest.com/pin/create/button?url=" . urlencode($ciniki['response']['head']['og']['url']) . "&media=" . urlencode($ciniki['response']['head']['og']['image']) . "&description=" . urlencode($ciniki['business']['details']['name'] . ' - ' . $page_title) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
-				. "<span title='Share on Pinterest' class='socialsymbol social-pinterest'>&#xe264;</span>"
-				. "</a>";
-
-			$page_content .= "<a href='https://plus.google.com/share?url=" . urlencode($ciniki['response']['head']['og']['url']) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
-				. "<span title='Share on Google+' class='socialsymbol social-googleplus'>&#xe239;</span>"
-				. "</a>";
-
-			$page_content .= "</span></div>";
-//			$ciniki['response']['head']['sharethis'] = array('enable'=>'yes');
-//			$page_content .= "<div class='st_buttons'>"
-//				. "<span class='st_sharethis_large' displayText='ShareThis'></span>"
-//				. "<span class='st_facebook_large' displayText='Facebook'></span>"
-//				. "<span class='st_twitter_large' displayText='Tweet'></span>"
-//				. "<span class='st_pinterest_large' displayText='Pinterest'></span>"
-//				. "<span class='st_email_large' displayText='Email'></span>"
-//				. "</div>";
 		}
 		$page_content .= "</div></div>";
 	} 

@@ -54,6 +54,7 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
 	$content = '';
 	$page_content = '';
 	$page_title = 'Exhibitors';
+	$ciniki['response']['head']['og']['url'] = $ciniki['request']['domain_base_url'] . '/workshops';
 
 	//
 	// FIXME: Check if anything has changed, and if not load from cache
@@ -84,6 +85,8 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
 			return $rc;
 		}
 		$workshop = $rc['workshop'];
+
+		$ciniki['response']['head']['og']['url'] .= '/' . $workshop_permalink;
 
 		if( !isset($workshop['images']) || count($workshop['images']) < 1 ) {
 			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1470', 'msg'=>'Unable to find image'));
@@ -130,6 +133,12 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
 			return $rc;
 		}
 		$img_url = $rc['url'];
+		$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
+		if( isset($workshop['short_description']) && $workshop['short_description'] != '' ) {
+			$ciniki['response']['head']['og']['description'] = strip_tags($workshop['short_description']);
+		} elseif( isset($workshop['description']) && $workshop['description'] != '' ) {
+			$ciniki['response']['head']['og']['description'] = strip_tags($workshop['description']);
+		}
 
 		//
 		// Set the page to wide if possible
@@ -181,6 +190,7 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
 		// Get the workshop information
 		//
 		$workshop_permalink = $ciniki['request']['uri_split'][0];
+		$ciniki['response']['head']['og']['url'] .= '/' . $workshop_permalink;
 		$rc = ciniki_workshops_web_workshopDetails($ciniki, $settings, 
 			$ciniki['request']['business_id'], $workshop_permalink);
 		if( $rc['stat'] != 'ok' ) {
@@ -211,11 +221,18 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
+			$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
 			$page_content .= "<aside><div class='image-wrap'><div class='image'>"
 				. "<img title='' alt='" . $workshop['name'] . "' src='" . $rc['url'] . "' />"
 				. "</div></div></aside>";
 		}
 		
+		if( isset($workshop['short_description']) && $workshop['short_description'] != '' ) {
+			$ciniki['response']['head']['og']['description'] = strip_tags($workshop['short_description']);
+		} elseif( isset($workshop['description']) && $workshop['description'] != '' ) {
+			$ciniki['response']['head']['og']['description'] = strip_tags($workshop['description']);
+		}
+
 		//
 		// Add description
 		//
@@ -272,6 +289,22 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
 			$page_content .= "</p>";
 		}
 
+		//
+		// Check if share buttons should be shown
+		//
+		if( !isset($settings['page-workshops-share-buttons']) 
+			|| $settings['page-workshops-share-buttons'] == 'yes' ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processShareButtons');
+			$rc = ciniki_web_processShareButtons($ciniki, $settings, array(
+				'title'=>$page_title,
+				'tags'=>array(),
+				));
+			if( $rc['stat'] == 'ok' ) {
+				$page_content .= $rc['content'];
+			}
+		}
+
+
 		$page_content .= "</article>";
 
 		//
@@ -304,6 +337,8 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
 			return $rc;
 		}
 		$workshops = $rc['workshops'];
+
+		$ciniki['response']['head']['og']['description'] = strip_tags('Upcoming Workshops');
 
 		$page_content .= "<article class='page'>\n"
 			. "<header class='entry-title'><h1 class='entry-title'>Upcoming Workshops</h1></header>\n"

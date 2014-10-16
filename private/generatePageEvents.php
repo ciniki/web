@@ -200,9 +200,9 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'processDateRange');
 
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'shortenURL');
-		$surl = ciniki_web_shortenURL($ciniki, $ciniki['request']['business_id'], 
-			$ciniki['response']['head']['og']['url']);
+//		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'shortenURL');
+//		$surl = ciniki_web_shortenURL($ciniki, $ciniki['request']['business_id'], 
+//			$ciniki['response']['head']['og']['url']);
 
 		//
 		// Get the event information
@@ -332,6 +332,20 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 			$page_content .= "</p>";
 		}
 
+		//
+		// Check if share buttons should be shown
+		//
+		if( !isset($settings['page-events-share-buttons']) 
+			|| $settings['page-events-share-buttons'] == 'yes' ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processShareButtons');
+			$rc = ciniki_web_processShareButtons($ciniki, $settings, array(
+				'title'=>$page_title,
+				'tags'=>array(),
+				));
+			if( $rc['stat'] == 'ok' ) {
+				$page_content .= $rc['content'];
+			}
+		}
 
 		//
 		// Display the additional images for the event
