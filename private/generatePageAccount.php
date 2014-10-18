@@ -119,8 +119,6 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 				exit;
 			}
 		} 
-		error_log('redirect account');
-		error_log('Location: ' . ($ciniki['request']['ssl_domain_base_url']!=''?$ciniki['request']['ssl_domain_base_url']:'') . '/account');
 		Header('Location: ' . ($ciniki['request']['ssl_domain_base_url']!=''?$ciniki['request']['ssl_domain_base_url']:'') . '/account');
 		exit;
 	}
@@ -169,7 +167,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 					//
 					// If multiple accounts, then display account chooser
 					//
-					if( isset($ciniki['session']['customers']) && count($ciniki['session']['customers']) > 0 ) {
+					if( isset($ciniki['session']['customers']) && count($ciniki['session']['customers']) > 1 ) {
 						if( ($settings['page-account-signin-redirect']) 
 							) {
 							$_SESSION['account_chooser_redirect'] = $settings['page-account-signin-redirect'];
