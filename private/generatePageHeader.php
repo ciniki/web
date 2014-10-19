@@ -297,50 +297,56 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	// Check if we are to display a sign in button
 	//
 	$signin_content = '';
-	if( $ciniki['request']['business_id'] == $ciniki['config']['ciniki.core']['master_business_id'] 
-		&& isset($ciniki['config']['ciniki.core']['manage.url']) && $ciniki['config']['ciniki.core']['manage.url'] != '' ) {
-		$signin_content .= "<div class='signin'><div class='signin-wrapper'>";
-		if( $social_icons != '' ) {
-			$signin_content .= "<span class='social-icons hide-babybear'>$social_icons</span><span class='social-divider hide-babybear'>|</span>";
+	if( !isset($settings['page-account-header-buttons']) 
+		|| $settings['page-account-header-buttons'] == 'yes' 
+		) {
+		if( $ciniki['request']['business_id'] == $ciniki['config']['ciniki.core']['master_business_id'] 
+			&& isset($ciniki['config']['ciniki.core']['manage.url']) 
+			&& $ciniki['config']['ciniki.core']['manage.url'] != '' 
+			) {
+			$signin_content .= "<div class='signin'><div class='signin-wrapper'>";
+			if( $social_icons != '' ) {
+				$signin_content .= "<span class='social-icons hide-babybear'>$social_icons</span><span class='social-divider hide-babybear'>|</span>";
+			}
+			$signin_content .= "<span><a rel='nofollow' "
+				. "href='" . $ciniki['config']['ciniki.core']['manage.url'] . "'>"
+				. "Sign in</a></span>";
+			$signin_content .= "</div></div>\n";
+		} 
+		// Display a cart and/or customer signin for regular businesses
+		elseif( $ciniki['request']['business_id'] != $ciniki['config']['ciniki.core']['master_business_id']
+			&& isset($settings['page-account-active']) && $settings['page-account-active'] == 'yes'
+			&& ((isset($settings['page-downloads-customers']) && $settings['page-downloads-customers'] == 'yes')
+				// Add check for members blog
+				|| (isset($settings['page-cart-active']) && $settings['page-cart-active'] == 'yes')
+				|| (isset($settings['page-subscriptions-public']) && $settings['page-subscriptions-public'] == 'yes')
+				|| (isset($ciniki['business']['modules']['ciniki.blog']) && ($ciniki['business']['modules']['ciniki.blog']['flags']&0x0100) > 0) // Used if there are other pages that allow customer only content
+			)) {
+			$signin_content .= "<div class='signin'><div class='signin-wrapper'>";
+			if( $social_icons != '' ) {
+				$signin_content .= "<span class='social-icons hide-babybear'>$social_icons</span><span class='social-divider hide-babybear'>|</span>";
+			}
+			// Check for a cart
+			if( $shopping_cart != '' ) {
+				$signin_content .= $shopping_cart . " | ";
+			}
+			if( isset($ciniki['session']['customer']['id']) > 0 ) {
+				$signin_content .= "<span><a rel='nofollow' href='" . $ciniki['request']['ssl_domain_base_url'] . "/account'>Account</a></span>";
+				$signin_content .= " | <span><a rel='nofollow' href='" . $ciniki['request']['ssl_domain_base_url'] . "/account/logout'>Logout</a></span>";
+			} else {
+				$signin_content .= "<span><a rel='nofollow' href='" . $ciniki['request']['ssl_domain_base_url'] . "/account'>Sign In</a></span>";
+			}
+			$signin_content .= "</div></div>\n";
+		} elseif( $shopping_cart != '' ) {
+			$signin_content .= "<div class='signin'><div class='signin-wrapper'>";
+			if( $social_icons != '' ) {
+				$signin_content .= "<span class='social-icons hide-babybear'>$social_icons</span><span class='social-divider hide-babybear'>|</span>";
+			}
+			$signin_content .= $shopping_cart;
+			$signin_content .= "</div></div>\n";
+		} elseif( $social_icons != '' ) {
+			$signin_content .= "<div class='signin'><div class='signin-wrapper hide-babybear'><span class='social-icons'>$social_icons</span></div></div>";
 		}
-		$signin_content .= "<span><a rel='nofollow' "
-			. "href='" . $ciniki['config']['ciniki.core']['manage.url'] . "'>"
-			. "Sign in</a></span>";
-		$signin_content .= "</div></div>\n";
-	} 
-	// Display a cart and/or customer signin for regular businesses
-	elseif( $ciniki['request']['business_id'] != $ciniki['config']['ciniki.core']['master_business_id']
-		&& isset($settings['page-account-active']) && $settings['page-account-active'] == 'yes'
-		&& ((isset($settings['page-downloads-customers']) && $settings['page-downloads-customers'] == 'yes')
-			// Add check for members blog
-			|| (isset($settings['page-cart-active']) && $settings['page-cart-active'] == 'yes')
-			|| (isset($settings['page-subscriptions-public']) && $settings['page-subscriptions-public'] == 'yes')
-			|| (isset($ciniki['business']['modules']['ciniki.blog']) && ($ciniki['business']['modules']['ciniki.blog']['flags']&0x0100) > 0) // Used if there are other pages that allow customer only content
-		)) {
-		$signin_content .= "<div class='signin'><div class='signin-wrapper'>";
-		if( $social_icons != '' ) {
-			$signin_content .= "<span class='social-icons hide-babybear'>$social_icons</span><span class='social-divider hide-babybear'>|</span>";
-		}
-		// Check for a cart
-		if( $shopping_cart != '' ) {
-			$signin_content .= $shopping_cart . " | ";
-		}
-		if( isset($ciniki['session']['customer']['id']) > 0 ) {
-			$signin_content .= "<span><a rel='nofollow' href='" . $ciniki['request']['ssl_domain_base_url'] . "/account'>Account</a></span>";
-			$signin_content .= " | <span><a rel='nofollow' href='" . $ciniki['request']['ssl_domain_base_url'] . "/account/logout'>Logout</a></span>";
-		} else {
-			$signin_content .= "<span><a rel='nofollow' href='" . $ciniki['request']['ssl_domain_base_url'] . "/account'>Sign In</a></span>";
-		}
-		$signin_content .= "</div></div>\n";
-	} elseif( $shopping_cart != '' ) {
-		$signin_content .= "<div class='signin'><div class='signin-wrapper'>";
-		if( $social_icons != '' ) {
-			$signin_content .= "<span class='social-icons hide-babybear'>$social_icons</span><span class='social-divider hide-babybear'>|</span>";
-		}
-		$signin_content .= $shopping_cart;
-		$signin_content .= "</div></div>\n";
-	} elseif( $social_icons != '' ) {
-		$signin_content .= "<div class='signin'><div class='signin-wrapper hide-babybear'><span class='social-icons'>$social_icons</span></div></div>";
 	}
 
 	//
@@ -630,7 +636,10 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	if( isset($settings['page-memberblog-active']) && $settings['page-memberblog-active'] == 'yes' 
 		&& isset($ciniki['business']['modules']['ciniki.blog'])
 		&& ($ciniki['business']['modules']['ciniki.blog']['flags']&0x0100) > 0 
-		&& isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0
+		// Customer is logged in, or menu item should always be displayed
+		&& (isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0
+			|| (isset($settings['page-memberblog-menu-active']) && $settings['page-memberblog-menu-active'] == 'yes')
+			)
 		) {
 		$content .= "<li class='menu-item$hide_menu_class'><a href='" . $ciniki['request']['base_url'] . "/memberblog'>";
 		if( isset($settings['page-memberblog-name']) && $settings['page-memberblog-name'] != '' ) {

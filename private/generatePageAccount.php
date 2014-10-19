@@ -279,7 +279,10 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 			// Check if customer wants to change their password
 			//
 			if( isset($_POST['oldpassword']) && $_POST['oldpassword'] != '' 
-				&& isset($_POST['newpassword']) && $_POST['newpassword'] != '' ) {
+				&& isset($_POST['newpassword']) && $_POST['newpassword'] != '' 
+				&& (!isset($settings['page-account-password-change']) 
+					|| $settings['page-account-password-change'] == 'yes')
+				) {
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'changePassword');
 				$rc = ciniki_customers_web_changePassword($ciniki, $ciniki['request']['business_id'], 
 					$_POST['oldpassword'], $_POST['newpassword']);
@@ -782,9 +785,13 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 			. "<div class='input'><label for='password'>Password</label><input id='password' type='password' class='text' maxlength='100' name='password' value='' /></div>\n"
 			. "<div class='submit'><input type='submit' class='submit' value='Sign In' /></div>\n"
 			. "</form>"
-			. "<br/>"
-			. "<div id='forgot-link'><p><a class='color' href='javscript:void(0)' onclick='swapLoginForm(\"forgotpassword\");return false;'>Forgot your password?</a></p></div>\n"
-			. "</div>\n"
+			. "<br/>";
+		if( !isset($settings['page-account-password-change']) 
+			|| $settings['page-account-password-change'] == 'yes' ) {
+			$content .= "<div id='forgot-link'><p>"
+				. "<a class='color' href='javscript:void(0)' onclick='swapLoginForm(\"forgotpassword\");return false;'>Forgot your password?</a></p></div>\n";
+		}
+		$content .= "</div>\n"
 			. "<div id='forgotpassword-form' style='display:";
 		if( $display_form == 'forgot' ) { $content .= "block;"; } else { $content .= "none;"; }
 		$content .= "'>\n"

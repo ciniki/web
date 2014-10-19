@@ -815,6 +815,7 @@ function ciniki_web_main() {
 		this.memberblog.sections = {
 			'options':{'label':'', 'fields':{
 				'page-memberblog-active':{'label':'Display Member News', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-memberblog-menu-active':{'label':'Always in Menu', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-memberblog-name':{'label':'Name', 'type':'text', 'hint':'Member News'},
 				}},
 			'_save':{'label':'', 'buttons':{
@@ -1099,6 +1100,8 @@ function ciniki_web_main() {
 //			'info':{'label':'', 'html':'If you want to allow customers the ability to login and manage their account
 			'options':{'label':'', 'fields':{
 				'page-account-active':{'label':'Customer Logins', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-account-header-buttons':{'label':'Header Buttons', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+				'page-account-password-change':{'label':'Change Password', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-account-invoices-list':{'label':'View Orders', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-account-invoices-view-pdf':{'label':'Download Invoice', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				}},
@@ -1468,6 +1471,17 @@ function ciniki_web_main() {
 				this.account.sections.subscriptions.active = 'yes';
 			} else {
 				this.account.sections.subscriptions.active = 'no';
+			}
+			if( M.curBusiness.modules['ciniki.sapos'] != null ) {
+				this.account.sections.options.fields['page-account-invoices-list'].active = 'yes';
+				this.account.sections.options.fields['page-account-invoices-view-pdf'].active = 'yes';
+				this.account.sections.options.fields['page-account-password-change'].active = 'no';
+				this.account.sections.options.fields['page-account-header-buttons'].active = 'no';
+			} else {
+				this.account.sections.options.fields['page-account-invoices-list'].active = 'no';
+				this.account.sections.options.fields['page-account-invoices-view-pdf'].active = 'no';
+				this.account.sections.options.fields['page-account-password-change'].active = 'yes';
+				this.account.sections.options.fields['page-account-header-buttons'].active = 'yes';
 			}
 			// Setup the redirects
 			var popts = {'':'Nowhere', '/':'Home', 'back':'Previous Page'};
