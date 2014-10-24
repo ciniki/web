@@ -146,8 +146,14 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 	$javascript .= "		}\n";
 	$javascript .= "		this.ul.style.width = (this.ul.parentElement.clientWidth * this.li.length) + 'px'\n";
 	$javascript .= "		this.ul.style.maxWidth = (this.ul.parentElement.clientWidth * this.li.length) + 'px'\n";
-	$javascript .= "		this.ul.style.height = this.li[0].children[0].clientHeight + 'px'\n";
-	$javascript .= "		this.ul.parentElement.style.height = this.li[0].children[0].clientHeight + 'px'\n";
+//	$javascript .= "console.log(this.li[0].children[0].children[0].clientHeight);";
+	$javascript .= "		if( this.li[0].children[0].nodeName == 'A' ) {";
+	$javascript .= "			this.ul.style.height = this.li[0].children[0].children[0].clientHeight + 'px'\n";
+	$javascript .= "			this.ul.parentElement.style.height = this.li[0].children[0].children[0].clientHeight + 'px'\n";
+	$javascript .= "		} else {";
+	$javascript .= "			this.ul.style.height = this.li[0].children[0].clientHeight + 'px'\n";
+	$javascript .= "			this.ul.parentElement.style.height = this.li[0].children[0].clientHeight + 'px'\n";
+	$javascript .= "		}";
 //	$javascript .= "		this.ul.style.width = (this.li[0].clientWidth * this.li.length) + 'px'\n";
 //	$javascript .= "		this.ul.style.height = (this.li[0].clientHeight) + 'px'\n";
 //	$javascript .= "		this.ul.parentElement.style.height = (this.li[0].clientHeight) + 'px'\n";
