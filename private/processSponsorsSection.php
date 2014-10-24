@@ -29,6 +29,10 @@ function ciniki_web_processSponsorsSection($ciniki, $settings, $sponsors) {
 	//
 	$content = '';
 
+	if( !isset($sponsors['sponsors']) || count($sponsors['sponsors']) < 1 ) {
+		return array('stat'=>'ok', 'content'=>'');
+	}
+
 	$content .= "<h2 style='clear:right;'>" 
 		. (isset($sponsors['title'])&&$sponsors['title']!=''?$sponsors['title']:'Sponsors') 
 		. "</h2>";
