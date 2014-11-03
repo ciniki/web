@@ -699,6 +699,10 @@ div.googlemap p.exhibitors-more,
 	width: 95%;
 	height: 3em;
 }
+#content form textarea.medium {
+	width: 95%;
+	height: 9em;
+}
 #content form input.text {
 	width: 95%;
 }

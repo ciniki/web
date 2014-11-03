@@ -13,7 +13,7 @@
 // Returns
 // -------
 //
-function ciniki_web_generatePage500($ciniki, $settings, $errors) {
+function ciniki_web_generatePage500(&$ciniki, $settings, $errors) {
 
 	//
 	// Store the content created by the page

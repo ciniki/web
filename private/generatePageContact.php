@@ -12,18 +12,79 @@
 // Returns
 // -------
 //
-function ciniki_web_generatePageContact($ciniki, $settings) {
+function ciniki_web_generatePageContact(&$ciniki, $settings) {
 
 	//
 	// Store the content created by the page
 	// Make sure everything gets generated ok before returning the content
 	//
 	$content = '';
-
 	//
 	// FIXME: Check if anything has changed, and if not load from cache
 	//
-	
+	$contact_form_submitted = 'no';
+	$contact_form_errors = '';
+
+	if( isset($ciniki['business']['modules']['ciniki.web']['flags'])
+		&& ($ciniki['business']['modules']['ciniki.web']['flags']&0x04) > 0 
+		&& isset($_POST['contact-form-name']) ) {
+		if( !isset($_POST['contact-form-name']) || $_POST['contact-form-name'] == '' ) {
+			$contact_form_errors = "You must enter your name.<br/>";
+		}
+		if( !isset($_POST['contact-form-email']) || $_POST['contact-form-email'] == '' ) {
+			$contact_form_errors = "You must enter your email address to get a response.<br/>";
+		}
+		if( !isset($_POST['contact-form-subject']) || $_POST['contact-form-subject'] == '' ) {
+			$contact_form_errors = "Please add a subject.<br/>";
+		} else {
+			$subject = $_POST['contact-form-subject'];
+		}
+		if( !isset($_POST['contact-form-message']) || $_POST['contact-form-message'] == '' ) {
+			$msg = 'No message added';
+		} else {
+			$msg = $_POST['contact-form-message'];
+		}
+
+		if( $contact_form_errors == '' ) {
+			if( isset($settings['page-contact-form-emails']) && $settings['page-contact-form-emails'] != '' ) {
+				$send_to_emails = explode(',', $settings['page-contact-form-emails']);
+				foreach($send_to_emails as $email) {
+					$ciniki['emailqueue'][] = array('to'=>$email,
+						'replyto_email'=>$_POST['contact-form-email'],
+						'replyto-name'=>$_POST['contact-form-name'],
+						'subject'=>$subject,
+						'textmsg'=>$msg,
+						);
+				}
+			} else {
+				//
+				//	Email the owners a bug was added to the system.
+				//
+				$strsql = "SELECT user_id "
+					. "FROM ciniki_business_users "
+					. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+					. "AND package = 'ciniki' "
+					. "AND (permission_group = 'owners') "
+					. "";
+				$rc = ciniki_core_dbQueryList($ciniki, $strsql, 'ciniki.bugs', 'user_ids', 'user_id');
+				if( $rc['stat'] != 'ok' || !isset($rc['user_ids']) || !is_array($rc['user_ids']) ) {
+					$contact_form_errors = "Oops, we're sorry but we seem to have hit a bit of a snag.  We've already the geeks and they'll get the problem fixed for us.  Please try again later.";
+					error_log('WEB: Error with form submit');
+					error_log(print_r($_POST, true));
+				} else {
+					foreach($rc['user_ids'] as $user_id) {
+						$ciniki['emailqueue'][] = array('user_id'=>$user_id,
+							'replyto_email'=>$_POST['contact-form-email'],
+							'replyto_name'=>$_POST['contact-form-name'],
+							'subjext'=>$subject,
+							'textmsg'=>$msg,
+							);
+					}
+				}
+			}
+			$contact_form_submitted = 'yes';
+		}
+	}
 
 	//
 	// Check which parts of the business contact information to display automatically
@@ -183,6 +244,55 @@ function ciniki_web_generatePageContact($ciniki, $settings) {
 	if( $contact_content != '' ) {
 //		$content .= "<p>" . $contact_content . "</p>";
 		$content .= $contact_content;
+	}
+
+	//
+	// Check if contact form should be displayed
+	//
+	if( isset($ciniki['business']['modules']['ciniki.web']['flags'])
+		&& ($ciniki['business']['modules']['ciniki.web']['flags']&0x04) > 0 
+		) {
+		if( isset($settings['page-contact-form-display']) 
+			&& $settings['page-contact-form-display'] == 'yes' 
+			&& $contact_form_submitted == 'no' 
+			) {
+			$content .= "<br style='clear: both;'/>";
+			if( isset($settings['page-contact-form-intro-message']) 
+				&& $settings['page-contact-form-intro-message'] != '' ) {
+				$content .= "<p>" . $settings['page-contact-form-intro-message'] . "</p>";
+			}
+			if( isset($contact_form_errors) && $contact_form_errors != '' ) {
+				$content .= "<p>" . $contact_form_errors . "</p>";
+			}
+			$content .= "<form action='' method='post' id='contact-form'>";
+			$content .= "<div class='input'>"
+				. "<label for='contact-form-name'>Name</label>"
+				. "<input type='text' class='text' value='' name='contact-form-name' id='contact-form-name'/>"
+				. "</div>";
+			$content .= "<div class='input'>"
+				. "<label for='contact-form-name'>Email</label>"
+				. "<input type='email' class='text' value='' name='contact-form-email' id='contact-form-email'/>"
+				. "</div>";
+			$content .= "<div class='input'>"
+				. "<label for='contact-form-subject'>Subject</label>"
+				. "<input type='text' class='text' value='' name='contact-form-subject' id='contact-form-subject'/>"
+				. "</div>";
+			$content .= "<div class='textarea'>"
+				. "<label for='contact-form-message'>Message</label>"
+				. "<textarea name='contact-form-message' class='medium' id='contact-form-message'></textarea>"
+				. "</div>";
+			$content .= "<div class='submit'>"
+				. "<input type='submit' value='Submit' name='submit' id='contact-form-submit' class='submit'>"
+				. "</div>";
+			$content .= "</form>";
+		} elseif( $contact_form_submitted == 'yes' ) {
+			if( isset($settings['page-contact-form-submitted-message']) 
+				&& $settings['page-contact-form-submitted-message'] != '' ) {
+				$content .= "<p>" . $settings['page-contact-form-submitted-message'] . "</p>";
+			} else {
+				$content .= "<p>Your message has been sent.</p>";
+			}
+		}
 	}
 
 	$content .= "<br style='clear: both;'/>";
