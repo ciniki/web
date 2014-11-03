@@ -39,10 +39,13 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
 		} else {
 			$subject = $_POST['contact-form-subject'];
 		}
+		$msg = "New message from " . $_POST['contact-form-name'] . " (" . $_POST['contact-form-email'] . ")\n"
+			. "\n"
+			. "Message: \n";
 		if( !isset($_POST['contact-form-message']) || $_POST['contact-form-message'] == '' ) {
-			$msg = 'No message added';
+			$msg .= 'No message added';
 		} else {
-			$msg = $_POST['contact-form-message'];
+			$msg .= $_POST['contact-form-message'];
 		}
 
 		if( $contact_form_errors == '' ) {
@@ -62,10 +65,11 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
 				//
 				$strsql = "SELECT user_id "
 					. "FROM ciniki_business_users "
-					. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+					. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
 					. "AND package = 'ciniki' "
 					. "AND (permission_group = 'owners') "
 					. "";
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQueryList');
 				$rc = ciniki_core_dbQueryList($ciniki, $strsql, 'ciniki.bugs', 'user_ids', 'user_id');
 				if( $rc['stat'] != 'ok' || !isset($rc['user_ids']) || !is_array($rc['user_ids']) ) {
 					$contact_form_errors = "Oops, we're sorry but we seem to have hit a bit of a snag.  We've already the geeks and they'll get the problem fixed for us.  Please try again later.";
