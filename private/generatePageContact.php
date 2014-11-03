@@ -52,7 +52,7 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
 			if( isset($settings['page-contact-form-emails']) && $settings['page-contact-form-emails'] != '' ) {
 				$send_to_emails = explode(',', $settings['page-contact-form-emails']);
 				foreach($send_to_emails as $email) {
-					$ciniki['emailqueue'][] = array('to'=>$email,
+					$ciniki['emailqueue'][] = array('to'=>trim($email),
 						'replyto_email'=>$_POST['contact-form-email'],
 						'replyto-name'=>$_POST['contact-form-name'],
 						'subject'=>$subject,
