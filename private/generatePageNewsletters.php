@@ -41,7 +41,7 @@ function ciniki_web_generatePageNewsletters($ciniki, $settings) {
 		//
 		// If there was an error locating the files, display generic error
 		//
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1007', 'msg'=>'Unable to locate file'));
+		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1007', 'msg'=>"The newsletter you requested is not available."));
 	}
 
 
