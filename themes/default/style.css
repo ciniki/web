@@ -414,9 +414,13 @@ div.gallery-image-details span.image-awards {
 	color: #999;
 }
 
-#content div.largebutton-list div.button-list-wrap, 
+#content div.largebutton-list div.button-list-wrap {
+	padding-right: 0.3em;
+	padding-bottom: 0.5em;
+}
+
 #content div.button-list div.button-list-wrap {
-	padding-right: 0em;
+	padding-right: 0.1em;
 	padding-bottom: 0.5em;
 }
 
