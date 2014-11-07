@@ -54,6 +54,9 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
 		$page_title = $collection['name'];
 
 		if( isset($ciniki['business']['modules']['ciniki.blog']) && $collection_mod == 'blog' ) {
+			if( isset($collection['objects']['ciniki.blog.post']) ) {
+				$cobj = $collection['objects']['ciniki.blog.post'];
+			}
 			$page_post_limit = 10;
 			if( isset($ciniki['request']['args']['page']) && $ciniki['request']['args']['page'] != '' ) {
 				$page_post_cur = $ciniki['request']['args']['page'];
@@ -97,6 +100,9 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
 		} 
 		
 		elseif( isset($ciniki['business']['modules']['ciniki.events']) && $collection_mod == 'events' ) {
+			if( isset($collection['objects']['ciniki.events.event']) ) {
+				$cobj = $collection['objects']['ciniki.events.event'];
+			}
 			//
 			// Load and parse the upcoming events
 			//
@@ -157,6 +163,9 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
 		} 
 		
 		elseif( isset($ciniki['business']['modules']['ciniki.workshops']) && $collection_mod == 'workshops' ) {
+			if( isset($collection['objects']['ciniki.workshops.workshop']) ) {
+				$cobj = $collection['objects']['ciniki.workshops.workshop'];
+			}
 			//
 			// Load and parse the upcoming workshops
 			//
@@ -218,6 +227,9 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
 		} 
 		
 		elseif( isset($ciniki['business']['modules']['ciniki.artgallery']) && $collection_mod == 'exhibitions' ) {
+			if( isset($collection['objects']['ciniki.artgallery.exhibition']) ) {
+				$cobj = $collection['objects']['ciniki.artgallery.exhibition'];
+			}
 			//
 			// Load and parse the upcoming exhibitions
 			//
