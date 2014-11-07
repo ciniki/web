@@ -481,8 +481,10 @@ div.googlemap p.exhibitors-more,
 	text-align: right;
 }
 
+#content div.cilist-more,
 #content div.events-more {
 	text-align: right;
+	padding-bottom: 1.5em;
 }
 
 #content div.sponsor-gallery,
@@ -668,15 +670,14 @@ div.googlemap p.exhibitors-more,
 
 #content div.largebutton-list div.button-list-wrap,
 #content div.button-list div.button-list-wrap {
-	width: 100%;
+/*	width: 100%; */
 	text-align: center;
-	display: inline-block;
+/*	display: block; */
 }
 
 #content div.largebutton-list div.button-list-wrap a,
 #content div.button-list div.button-list-wrap a {
-	width: 100%;
-	display: inline-block;
+	display: block;
 }
 
 #content form {

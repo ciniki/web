@@ -63,6 +63,7 @@ function ciniki_web_main() {
 			'advanced':{'label':'Advanced', 'list':{
 				'header':{'label':'Header', 'fn':'M.ciniki_web_main.showHeader(\'M.ciniki_web_main.showMenu();\');'},
 				'social':{'label':'Social Media Links', 'fn':'M.startApp(\'ciniki.web.social\',null,\'M.ciniki_web_main.showMenu();\');'},
+				'collections':{'label':'Web Collections', 'visible':'no', 'fn':'M.startApp(\'ciniki.web.collections\',null,\'M.ciniki_web_main.showMenu();\');'},
 				}},
 //			'advanced':{'label':'Advanced', 'type':'simplegrid', 'num_cols':1, 'sortable':'no',
 //				'headerValues':null,
@@ -315,16 +316,19 @@ function ciniki_web_main() {
 			'_blog':{'label':'', 'active':'no', 'fields':{
 				'page-home-latest-blog':{'label':'Display Latest Blog', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-home-latest-blog-title':{'label':'Title', 'active':'yes', 'type':'text', 'hint':'Latest Blog Posts'},
+				'page-home-latest-blog-more':{'label':'More', 'active':'yes', 'type':'text', 'hint':'... more blog posts'},
 				'page-home-latest-blog-number':{'label':'Number of Blog Entries', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
 				}},
 			'_workshops':{'label':'', 'active':'no', 'fields':{
 				'page-home-upcoming-workshops':{'label':'Display Upcoming Workshops', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-home-upcoming-workshops-title':{'label':'Title', 'active':'yes', 'type':'text', 'hint':'Upcoming Workshops'},
+				'page-home-upcoming-workshops-more':{'label':'More', 'active':'yes', 'type':'text', 'hint':'... more workshops'},
 				'page-home-upcoming-workshops-number':{'label':'Number of Upcoming Workshops', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
 				}},
 			'_events':{'label':'', 'active':'no', 'fields':{
 				'page-home-upcoming-events':{'label':'Display Upcoming Events', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-home-upcoming-events-title':{'label':'Title', 'active':'yes', 'type':'text', 'hint':'Upcoming Events'},
+				'page-home-upcoming-events-more':{'label':'Title', 'active':'yes', 'type':'text', 'hint':'... more events'},
 				'page-home-upcoming-events-number':{'label':'Number of Upcoming Events', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
 				}},
 			'_slider':{'label':'Image Slider', 'active':'no', 'fields':{
@@ -341,8 +345,15 @@ function ciniki_web_main() {
 				'page-home-image-caption':{'label':'Caption', 'type':'text'},
 				'page-home-image-url':{'label':'Link', 'type':'text'},
 				}},
+			'_title':{'label':'Title', 'fields':{
+				'page-home-title':{'label':'', 'hidelabel':'yes', 'hint':'Welcome', 'type':'text'},
+				}},
 			'_content':{'label':'Welcome Message (optional)', 'fields':{
 				'page-home-content':{'label':'', 'hidelabel':'yes', 'hint':'', 'type':'textarea', 'size':'large'},
+				}},
+			'_collections':{'label':'Web Collections', 'active':'no', 'fields':{
+				'page-home-collections-display':{'label':'Display Web Collections', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-home-collections-title':{'label':'Title', 'type':'text', 'hint':'Collections'},
 				}},
 			'redirects':{'label':'Redirect Home', 'active':'no', 'fields':{
 				'page-home-url':{'label':'URL', 'type':'text'},
@@ -1266,6 +1277,20 @@ function ciniki_web_main() {
 				this.contact.sections._contact_form_intro_message.visible = 'no';
 				this.contact.sections._contact_form_submitted_message.visible = 'no';
 			}
+			if( (M.curBusiness.modules['ciniki.web'].flags&0x08) > 0 ) {
+				this.menu.sections.advanced.list.collections.visible = 'yes';
+				this.home.sections._collections.active = 'yes';
+			} else {
+				this.menu.sections.advanced.list.collections.visible = 'no';
+				this.home.sections._collections.active = 'no';
+			}
+		}
+		if( M.curBusiness.modules['ciniki.blog'] != null ) {
+			if( (M.curBusiness.modules['ciniki.blog'].flags&0x01) > 0 ) {
+				this.home.sections._blog.active = 'yes';
+			} else {
+				this.home.sections._blog.active = 'no';
+			}
 		}
 
 		//
@@ -1475,7 +1500,7 @@ function ciniki_web_main() {
 				this.home.sections.options.fields['page-home-products-latest'].active = 'no';
 				this.home.sections.options.fields['page-home-products-latest-title'].active = 'no';
 			}
-			this.home.sections._blog.active=(M.curBusiness.modules['ciniki.blog']!=null)?'yes':'no';
+//			this.home.sections._blog.active=(M.curBusiness.modules['ciniki.blog']!=null)?'yes':'no';
 			this.home.sections._events.active=(M.curBusiness.modules['ciniki.events']!=null)?'yes':'no';
 			this.home.sections._workshops.active = (M.curBusiness.modules['ciniki.workshops']!=null)?'yes':'no';
 			this.home.sections.options.fields['page-home-latest-recipes'].active=(M.curBusiness.modules['ciniki.recipes']!=null)?'yes':'no';

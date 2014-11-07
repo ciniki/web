@@ -90,6 +90,54 @@ function ciniki_web_objects($ciniki) {
 			),
 		'history_table'=>'ciniki_web_history',
 		);
+	$objects['collection'] = array(
+		'name'=>'Web Collection',
+		'o_name'=>'collection',
+		'o_container'=>'collections',
+		'listsort'=>'sequence',
+		'sync'=>'yes',
+		'table'=>'ciniki_web_collections',
+		'fields'=>array(
+			'name'=>array(),
+			'permalink'=>array(),
+			'status'=>array(),
+			'sequence'=>array(),
+			'image_id'=>array('ref'=>'ciniki.images.image'),
+			'image_caption'=>array(),
+			'synopsis'=>array(),
+			'description'=>array(),
+			),
+		'history_table'=>'ciniki_web_history',
+		);
+	$objects['collection_obj'] = array(
+		'name'=>'Web Collection Object',
+		'o_name'=>'obj',
+		'o_container'=>'objs',
+		'sync'=>'yes',
+		'table'=>'ciniki_web_collection_objs',
+		'fields'=>array(
+			'collection_id'=>array(),
+			'object'=>array(),
+			'sequence'=>array(),
+			'num_items'=>array(),
+			'title'=>array(),
+			'more'=>array(),
+			),
+		'history_table'=>'ciniki_web_history',
+		);
+	$objects['collection_objref'] = array(
+		'name'=>'Web Collection Reference',
+		'o_name'=>'ref',
+		'o_container'=>'refs',
+		'sync'=>'yes',
+		'table'=>'ciniki_web_collection_objrefs',
+		'fields'=>array(
+			'collection_id'=>array(),
+			'object'=>array(),
+			'object_id'=>array(),
+			),
+		'history_table'=>'ciniki_web_history',
+		);
 	
 	return array('stat'=>'ok', 'objects'=>$objects);
 }

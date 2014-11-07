@@ -173,6 +173,7 @@ if( $ciniki['request']['business_id'] == 0 ) {
 		|| $ciniki['request']['uri_split'][0] == 'downloads'
 		|| $ciniki['request']['uri_split'][0] == 'faq'
 		|| $ciniki['request']['uri_split'][0] == 'directory'
+		|| $ciniki['request']['uri_split'][0] == 'collection'
 //		|| $ciniki['request']['uri_split'][0] == 'plans'
 		) {
 		$ciniki['request']['page'] = $ciniki['request']['uri_split'][0];
@@ -623,6 +624,13 @@ elseif( $ciniki['request']['page'] == 'directory'
 	&& isset($settings['page-directory-active']) && $settings['page-directory-active'] == 'yes' ) {
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageDirectory.php');
 	$rc = ciniki_web_generatePageDirectory($ciniki, $settings);
+} 
+// Web Collection
+elseif( $ciniki['request']['page'] == 'collection' 
+	&& isset($ciniki['business']['modules']['ciniki.web']['flags'])
+	&& ($ciniki['business']['modules']['ciniki.web']['flags']&0x08) > 0 ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageWebCollections.php');
+	$rc = ciniki_web_generatePageWebCollections($ciniki, $settings);
 } 
 // Contact
 elseif( $ciniki['request']['page'] == 'contact' 

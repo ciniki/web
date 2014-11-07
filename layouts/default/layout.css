@@ -256,10 +256,24 @@ header span.title {
 
 #content div.largebutton-list div.button-list-wrap {
 	width: 49%;
+	display: inline-block;
+}
+
+#content aside div.largebutton-list div.button-list-wrap {
+	width: 100%;
+	display: block;
 }
 
 #content div.button-list div.button-list-wrap {
 	width: 32%;
+	margin-right: 0.6em;
+	display: inline-block;
+}
+
+#content div.largebutton-list div.button-list-wrap a,
+#content div.button-list div.button-list-wrap a {
+	width: 100%;
+	display: inline-block;
 }
 
 #content form,

@@ -258,8 +258,8 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
 			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $posts, 
 				array('page'=>$page_post_cur, 'limit'=>$page_post_limit,
-					'prev'=>'&larr; Newer Posts',
-					'next'=>'Older Posts &rarr;',
+					'prev'=>'Newer Posts &rarr;',
+					'next'=>'&larr; Older Posts',
 					'base_url'=>$nav_base_url,
 				));
 			if( $rc['stat'] != 'ok' ) {
@@ -361,8 +361,8 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
 			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $posts, 
 				array('page'=>$page_post_cur, 'limit'=>$page_post_limit,
-					'prev'=>'&larr; Newer Posts',
-					'next'=>'Older Posts &rarr;',
+					'prev'=>'Newer Posts &rarr;',
+					'next'=>'&larr; Older Posts',
 					'base_url'=>$nav_base_url,
 				));
 			if( $rc['stat'] != 'ok' ) {
@@ -669,8 +669,8 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 			$base_url = $ciniki['request']['base_url'] . "/$blogtype";
 			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $posts, 
 				array('page'=>$page_post_cur, 'limit'=>$page_post_limit,
-					'prev'=>'&larr; Newer Posts',
-					'next'=>'Older Posts &rarr;',
+					'prev'=>'Newer Posts &rarr;',
+					'next'=>'&larr; Older Posts',
 					'base_url'=>$ciniki['request']['base_url'] . "/$blogtype",
 				));
 			if( $rc['stat'] != 'ok' ) {

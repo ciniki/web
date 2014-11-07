@@ -195,7 +195,7 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 			}
 		}
 		$next = '';
-		if( $count > $page_limit ) {
+		if( isset($args['page']) && $count > $page_limit ) {
 			if( isset($args['base_url']) ) {
 				$next .= "<a href='" . $args['base_url'] . "?page=" . ($args['page']+1) . "'>";
 				array_push($ciniki['response']['head']['links'], array('rel'=>'next', 'href'=>$args['base_url'] . "?page=" . ($args['page']+1)));
@@ -209,13 +209,13 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 		}
 		if( $next != '' || $prev != '' ) {
 			$nav_content = "<nav class='content-nav'>"
-				. "<span class='prev'>$prev</span>"
-				. "<span class='next'>$next</span>"
+				. "<span class='prev'>$next</span>"
+				. "<span class='next'>$prev</span>"
 				. "</nav>"
 				. "";
 		}
 	}
 
-	return array('stat'=>'ok', 'content'=>$content, 'nav'=>$nav_content);
+	return array('stat'=>'ok', 'content'=>$content, 'nav'=>$nav_content, 'count'=>$count);
 }
 ?>
