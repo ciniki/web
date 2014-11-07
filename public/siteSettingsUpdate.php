@@ -233,6 +233,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-events-active',
 		'page-events-past',
 		'page-directory-active',
+		'page-directory-title',
+		'page-directory-layout',
 		'page-links-active',
 		'page-links-categories-format',
 		'page-links-tags-format',

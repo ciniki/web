@@ -21,29 +21,104 @@ function ciniki_web_generatePageDirectory($ciniki, $settings) {
 	$content = '';
 	$page_content = '';
 	$page_title = 'Directory';
+	if( isset($settings['page-directory-title']) && $settings['page-directory-title'] != '' ) {
+		$page_title = $settings['page-directory-title'];
+	}
+	$base_url = $ciniki['request']['base_url'] . '/directory';
 
 	//
 	// FIXME: Check if anything has changed, and if not load from cache
 	//
 	
+	//
+	// Generate the content for an item
+	//
+	if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' 
+		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] == 'gallery' 
+		&& isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' 
+		) {
+		$entry_permalink = $ciniki['request']['uri_split'][0];
+		$image_permalink = $ciniki['request']['uri_split'][2];
 
+	}
+	
 	//
-	// Generate the content of the page
+	// Generate the content for a category or an item
 	//
-	if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
+	elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
 		$category = $ciniki['request']['uri_split'][0];
 
+		// 
+		// Check if this is an entry
+		//
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'directory', 'web', 'entryDetails');
+		$rc = ciniki_directory_web_entryDetails($ciniki, $settings, $ciniki['request']['business_id'], $category);
+		if( $rc['stat'] != 'ok' && $rc['stat'] != '404' ) {
+			return $rc;
+		}
+		if( $rc['stat'] != '404' && isset($rc['entry']) ) {
+			$page = $rc['entry'];
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processPage');
+
+			$rc = ciniki_web_processPage($ciniki, $settings, $base_url, $page, array(
+				'article_title'=>"<a href='" . $ciniki['request']['base_url'] . "/directory'>$page_title</a>",
+				));
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= $rc['content'];
+			$page_title .= ' - ' . $page['title'];
+		} else {
+			//
+			// Get the list of links to be displayed
+			//
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'directory', 'web', 'list');
+			$rc = ciniki_directory_web_list($ciniki, $ciniki['request']['business_id'], $category);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+
+			$page_content .= "<div id='content'>\n"
+				. "<article class='page'>\n"
+				. "<header class='entry-title'><h1 class='entry-title'>"
+				. "<a href='" . $ciniki['request']['base_url'] . "/directory'>Directory</a>"
+				. "</h1></header>\n"
+				. "<div class='entry-content'>\n"
+				. "";
+
+			if( isset($rc['categories']) ) {
+				$base_url = $ciniki['request']['base_url'] . '/directory';
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
+				$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $rc['categories'], array());
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				$page_content .= $rc['content'];
+			}
+			$page_content .= "</div>"
+				. "</article>"
+				. "</div>"
+				. "";
+		}
+	}
+
+	//
+	// Display the complete list
+	//
+	elseif( isset($settings['page-directory-layout']) && $settings['page-directory-layout'] == 'list' ) {
 		$page_content .= "<div id='content'>\n"
 			. "<article class='page'>\n"
-			. "<header class='entry-title'><h1 class='entry-title'><a href='" . $ciniki['request']['base_url'] . "/directory'>Directory</a></h1></header>\n"
+			. "<header class='entry-title'><h1 class='entry-title'>"
+			. $page_title
+			. "</h1></header>\n"
 			. "<div class='entry-content'>\n"
 			. "";
 
 		//
-		// Get the list of links to be displayed
+		// Get the list of entries to be displayed
 		//
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'directory', 'web', 'list');
-		$rc = ciniki_directory_web_list($ciniki, $ciniki['request']['business_id'], $category);
+		$rc = ciniki_directory_web_list($ciniki, $ciniki['request']['business_id'], '');
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
@@ -61,6 +136,7 @@ function ciniki_web_generatePageDirectory($ciniki, $settings) {
 			. "</article>"
 			. "</div>"
 			. "";
+		
 	}
 
 	//

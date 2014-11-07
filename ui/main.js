@@ -28,6 +28,10 @@ function ciniki_web_main() {
 		'default':'Default',
 		'aspen':'Aspen',
 		};
+	this.directoryLayouts = {
+		'list':'List',
+		'categories':'Categories',
+		};
 	this.activeToggles = {'no':'No', 'yes':'Yes'};
 	this.activeRequiredToggles = {'no':'No', 'yes':'Yes', 'required':'Required'};
 	this.productThumbnailToggles = {'auto':'Auto', 'small':'Small', 'medium':'Medium', 'large':'Large'};
@@ -592,11 +596,13 @@ function ciniki_web_main() {
 		//
 		this.directory = new M.panel('Directory',
 			'ciniki_web_main', 'directory',
-			'mc', 'narrow', 'sectioned', 'ciniki.web.main.directory');
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.directory');
 		this.directory.data = {};
 		this.directory.sections = {
 			'options':{'label':'', 'fields':{
 				'page-directory-active':{'label':'Display Directory Page', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-directory-title':{'label':'Title', 'type':'text'},
+				'page-directory-layout':{'label':'Layout', 'type':'multitoggle', 'default':'categories', 'toggles':this.directoryLayouts},
 				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'directory\');'},
