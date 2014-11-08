@@ -18,7 +18,7 @@ function ciniki_web_flags($ciniki, $modules) {
 		array('flag'=>array('bit'=>'3', 'name'=>'Contact Form')),
 		array('flag'=>array('bit'=>'4', 'name'=>'Collections')),
 		// 0x10
-//		array('flag'=>array('bit'=>'5', 'name'=>'')),
+		array('flag'=>array('bit'=>'5', 'name'=>'Quick Links')),
 //		array('flag'=>array('bit'=>'6', 'name'=>'')),
 //		array('flag'=>array('bit'=>'7', 'name'=>'')),
 //		array('flag'=>array('bit'=>'8', 'name'=>'')),

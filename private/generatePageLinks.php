@@ -18,8 +18,13 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 	// Store the content created by the page
 	// Make sure everything gets generated ok before returning the content
 	//
-	$page_title = 'Links';
-	$article_title = 'Links';
+	if( isset($settings['page-links-title']) && $settings['page-links-title'] != '' ) {
+		$page_title = $settings['page-links-title'];
+		$article_title = $settings['page-links-title'];
+	} else {
+		$page_title = 'Links';
+		$article_title = 'Links';
+	}
 	$content = '';
 	$page_content = '';
 
@@ -44,7 +49,7 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 		) {
 		$tag_type = 10;
 		$tag_permalink = $ciniki['request']['uri_split'][1];
-		$article_title = "<a href='$base_url/categories'>Links</a>";
+		$article_title = "<a href='$base_url/categories'>$article_title</a>";
 		$show_tags = 'no';
 		$show_list = 'yes';
 	}
@@ -59,8 +64,7 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 		) {
 		$tag_type = 40;
 		$tag_permalink = $ciniki['request']['uri_split'][1];
-		$article_title = "<a href='$base_url/tags'>Links</a>";
-		$page_title = 'Links';
+		$article_title = "<a href='$base_url/tags'>$article_title</a>";
 		$show_tags = 'no';
 		$show_list = 'yes';
 	} 
@@ -86,8 +90,8 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 		) {
 		$tag_type = 10;
 		$tag_permalink = '';
-		$article_title = 'Links';
-		$page_title = 'Links';
+//		$article_title = 'Links';
+//		$page_title = 'Links';
 		if( $stats['categories'] > 1
 			&& (($stats['links'] > 20 && $stats['categories'] > 5)
 				|| ($stats['links'] > 30 && $stats['categories'] > 4)
@@ -111,8 +115,8 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 		) {
 		$tag_type = 40;
 		$tag_permalink = '';
-		$article_title = 'Links';
-		$page_title = 'Links';
+//		$article_title = 'Links';
+//		$page_title = 'Links';
 		if( $stats['tags'] > 1
 			&& (($stats['links'] > 20 && $stats['tags'] > 5)
 				|| ($stats['links'] > 30 && $stats['tags'] > 4)
@@ -142,8 +146,8 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 			) {
 			$tag_type = 10;
 			$tag_permalink = '';
-			$article_title = 'Links';
-			$page_title = 'Links';
+//			$article_title = 'Links';
+//			$page_title = 'Links';
 			$show_tags = 'yes';
 			$show_list = 'no';
 		}
@@ -158,8 +162,8 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 			) {
 			$tag_type = 40;
 			$tag_permalink = '';
-			$article_title = 'Links';
-			$page_title = 'Links';
+//			$article_title = 'Links';
+//			$page_title = 'Links';
 			$show_tags = 'yes';
 			$show_list = 'no';
 		} 
@@ -350,7 +354,7 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 	// Add the header
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Links', $submenu);
+	$rc = ciniki_web_generatePageHeader($ciniki, $settings, $page_title, $submenu);
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
 	}

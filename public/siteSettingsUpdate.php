@@ -236,6 +236,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-directory-title',
 		'page-directory-layout',
 		'page-links-active',
+		'page-links-title',
 		'page-links-categories-format',
 		'page-links-tags-format',
 		'page-contact-active',

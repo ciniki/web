@@ -623,6 +623,7 @@ function ciniki_web_main() {
 		this.links.sections = {
 			'options':{'label':'', 'fields':{
 				'page-links-active':{'label':'Display Links Page', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-links-title':{'label':'Title', 'type':'text'},
 				'page-links-categories-format':{'label':'Categories Format', 'type':'multitoggle', 'default':'wordcloud', 'toggles':this.linksDisplayToggles},
 				'page-links-tags-format':{'label':'Tags Format', 'type':'multitoggle', 'default':'wordcloud', 'toggles':this.linksDisplayToggles},
 				}},
