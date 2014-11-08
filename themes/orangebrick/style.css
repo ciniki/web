@@ -18,8 +18,6 @@ body {
 #site-title a:hover,
 #site-title a:active {
 	text-decoration: none;
-	color: #422213;
-	text-shadow: 0px 0px 35px #000;
 	color: #fff;
 	text-shadow: 2px 2px 10px #000;
 }
@@ -34,17 +32,19 @@ body {
 }
 
 #page-container.signin {
-	padding-top: 1.618em;
+	padding-top: 0em;
 }
 
 #page-container > header > hgroup {
+	text-align: center;
 	padding: 1em 1em 0.5em 1em;
 	border-radius: 10px;
-	box-shadow: 0 2px 10px rgba(0,0,0,0.7); 
-	background: #eee;
+/*	box-shadow: 0 2px 10px rgba(0,0,0,0.7);  */
+	background: #fff;
+	background: transparent;
 /*	background: url('/ciniki-web-themes/orangebrick/header_background.jpg');
 	background-size: cover; */
-	border: 2px solid #422213;
+	border: 0px solid #422213;
 	margin-bottom: 0.5em;
 }
 
@@ -56,15 +56,15 @@ header h1 a:active {
 }
 
 header div.signin div.signin-wrapper {
-	border-left: 1px solid #422213;
-	border-bottom: 1px solid #422213;
-	border-right: 1px solid #422213;
+	border-left: 0px solid #422213;
+	border-bottom: 0px solid #422213;
+	border-right: 0px solid #422213;
 	padding: 0.2em 0.6em 0.2em 0.6em;
 	border-bottom-left-radius: 0.5em;
 	border-bottom-right-radius: 0.5em;
 	margin-top: 2px;
-	background: #ddd;
-	background: rgba(255,255,255,0.6);
+/*	background: #ddd;
+	background: rgba(255,255,255,0.6); */
 }
 
 header div.signin a {
@@ -77,6 +77,7 @@ header div.title-logo img {
 
 header div.signin span.social-icons {
 	font-size: 1.75em;
+	font-size: 2.5em;
 	margin-bottom: 0.15em;
 	margin-top: -0.2em;
 }
@@ -92,7 +93,7 @@ header div.signin span.social-icons a,
 header div.signin span.social-icons a:visited,
 header div.signin span.social-icons a:hover,
 header div.signin span.social-icons a:active {
-	color: #bbb;
+	color: #444;
 }
 
 a img {
@@ -972,13 +973,6 @@ footer a:active {
 footer div.social-icons {
 	font-size: 3.0em;
 	padding-bottom: 0.25em;
-}
-
-footer div.social-icons a,
-footer div.social-icons a:visited,
-footer div.social-icons a:hover,
-footer div.social-icons a:active {
-	color: #bbb;
 }
 
 aside div.borderless {
