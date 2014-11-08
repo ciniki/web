@@ -104,8 +104,7 @@ function ciniki_web_generatePageDirectory($ciniki, $settings) {
 	// Display the complete list
 	//
 	elseif( isset($settings['page-directory-layout']) && $settings['page-directory-layout'] == 'list' ) {
-		$page_content .= "<div id='content'>\n"
-			. "<article class='page'>\n"
+		$page_content .= "<article class='page'>\n"
 			. "<header class='entry-title'><h1 class='entry-title'>"
 			. $page_title
 			. "</h1></header>\n"
@@ -132,7 +131,6 @@ function ciniki_web_generatePageDirectory($ciniki, $settings) {
 
 		$page_content .= "</div>"
 			. "</article>"
-			. "</div>"
 			. "";
 		
 	}
