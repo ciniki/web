@@ -76,16 +76,37 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
 	// Display the list of children
 	//
 	if( isset($page['children']) && count($page['children']) > 0 ) {
-//		$content .= "<article class='page'>\n"
-//				. "<header class='entry-title'><h1 class='entry-title'>$article_title</h1></header>\n"
-//			. "<div class='entry-content'>\n"
-//			. "";
 		$content .= "<br/>";
+		if( isset($page['child_title']) && $page['child_title'] != '' ) {
+			$content .= "<h2>" . $page['child_title'] . "</h2>";
+		}
 		if( count($page['children']) > 0 ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
 			$child_base_url = $base_url . '/' . $page['permalink'];
 			$rc = ciniki_web_processCIList($ciniki, $settings, $child_base_url, $page['children'], 
 				array('notitle'=>'yes'));
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$content .= $rc['content'];
+		} else {
+			$content .= "";
+		}
+	}
+
+	//
+	// Display the list of children with categories
+	//
+	if( isset($page['child_categories']) && count($page['child_categories']) > 0 ) {
+		$content .= "<br/>";
+		if( isset($page['child_title']) && $page['child_title'] != '' ) {
+			$content .= "<h2>" . $page['child_title'] . "</h2>";
+		}
+		if( count($page['child_categories']) > 0 ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
+			$child_base_url = $base_url . '/' . $page['permalink'];
+			$rc = ciniki_web_processCIList($ciniki, $settings, $child_base_url, $page['child_categories'], 
+				array());
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}

@@ -55,6 +55,8 @@ function ciniki_web_about() {
 				'page-about-greenpolicy-active':{'label':'Display Green Policy Page', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-about-whyus-active':{'label':'Display Why Us Page', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-about-privacypolicy-active':{'label':'Display Privacy Policy Page', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-about-volunteer-active':{'label':'Display Volunteer Page', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-about-rental-active':{'label':'Display Rental Page', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				}},
 //			'subpages':{'label':'', 'list':{
 //				'aboutartiststatement':{'label':'Artist Statement', 'visible':'no', 'fn':'M.ciniki_web_about.showPage(\'M.ciniki_web_about.about.show();\',\'aboutartiststatement\');'},
@@ -385,6 +387,8 @@ function ciniki_web_about() {
 				this.about.sections.options.fields['page-about-greenpolicy-active'].active = (flags&0x2000)>0?'yes':'no';
 				this.about.sections.options.fields['page-about-whyus-active'].active = (flags&0x4000)>0?'yes':'no';
 				this.about.sections.options.fields['page-about-privacypolicy-active'].active = (flags&0x8000)>0?'yes':'no';
+				this.about.sections.options.fields['page-about-volunteer-active'].active = (flags&0x010000)>0?'yes':'no';
+				this.about.sections.options.fields['page-about-rental-active'].active = (flags&0x020000)>0?'yes':'no';
 			} else {
 				this.about.sections.options.fields['page-about-active'].active = 'yes';
 				this.about.sections.options.fields['page-about-artiststatement-active'].active = 'no';
@@ -401,6 +405,8 @@ function ciniki_web_about() {
 				this.about.sections.options.fields['page-about-greenpolicy-active'].active = 'no';
 				this.about.sections.options.fields['page-about-whyus-active'].active = 'no';
 				this.about.sections.options.fields['page-about-privacypolicy-active'].active = 'no';
+				this.about.sections.options.fields['page-about-volunteer-active'].active = 'no';
+				this.about.sections.options.fields['page-about-rental-active'].active = 'no';
 			}
 
 //			this.about.sections.subpages.list.aboutartiststatement.visible = 'no';

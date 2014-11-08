@@ -303,10 +303,10 @@ function ciniki_web_main() {
 		//
 		this.home = new M.panel('Home',
 			'ciniki_web_main', 'home',
-			'mc', 'medium', 'sectioned', 'ciniki.web.main.home');
+			'mc', 'medium mediumaside', 'sectioned', 'ciniki.web.main.home');
 		this.home.data = {};
 		this.home.sections = {
-			'options':{'label':'', 'fields':{
+			'options':{'label':'', 'aside':'yes', 'fields':{
 				'page-home-active':{'label':'Display Home Page', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-home-gallery-latest':{'label':'Display Latest Work', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-home-gallery-latest-title':{'label':'Latest Work Title', 'active':'no', 'type':'text', 'size':'small', 'hint':'Latest Work'},
@@ -317,28 +317,28 @@ function ciniki_web_main() {
 				'page-home-products-latest':{'label':'Display Latest Products', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-home-products-latest-title':{'label':'Latest Products Title', 'active':'no', 'type':'text', 'size':'small', 'hint':'New Products'},
 				}},
-			'_blog':{'label':'', 'active':'no', 'fields':{
+			'_blog':{'label':'', 'aside':'yes', 'active':'no', 'fields':{
 				'page-home-latest-blog':{'label':'Display Latest Blog', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-home-latest-blog-title':{'label':'Title', 'active':'yes', 'type':'text', 'hint':'Latest Blog Posts'},
 				'page-home-latest-blog-more':{'label':'More', 'active':'yes', 'type':'text', 'hint':'... more blog posts'},
 				'page-home-latest-blog-number':{'label':'Number of Blog Entries', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
 				}},
-			'_workshops':{'label':'', 'active':'no', 'fields':{
+			'_workshops':{'label':'', 'aside':'yes', 'active':'no', 'fields':{
 				'page-home-upcoming-workshops':{'label':'Display Upcoming Workshops', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-home-upcoming-workshops-title':{'label':'Title', 'active':'yes', 'type':'text', 'hint':'Upcoming Workshops'},
 				'page-home-upcoming-workshops-more':{'label':'More', 'active':'yes', 'type':'text', 'hint':'... more workshops'},
 				'page-home-upcoming-workshops-number':{'label':'Number of Upcoming Workshops', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
 				}},
-			'_events':{'label':'', 'active':'no', 'fields':{
+			'_events':{'label':'', 'aside':'yes', 'active':'no', 'fields':{
 				'page-home-upcoming-events':{'label':'Display Upcoming Events', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-home-upcoming-events-title':{'label':'Title', 'active':'yes', 'type':'text', 'hint':'Upcoming Events'},
 				'page-home-upcoming-events-more':{'label':'Title', 'active':'yes', 'type':'text', 'hint':'... more events'},
 				'page-home-upcoming-events-number':{'label':'Number of Upcoming Events', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
 				}},
-			'_slider':{'label':'Image Slider', 'active':'no', 'fields':{
+			'_slider':{'label':'Image Slider', 'aside':'yes', 'active':'no', 'fields':{
 				'page-home-slider':{'label':'Slider', 'active':'no', 'type':'select', 'options':{}},
 				}},
-			'_slider_buttons':{'label':'', 'visible':'no', 'type':'simplegrid', 'num_cols':1,
+			'_slider_buttons':{'label':'', 'aside':'yes', 'visible':'no', 'type':'simplegrid', 'num_cols':1,
 				'addTxt':'Manage Sliders',
 				'addFn':'M.startApp(\'ciniki.web.sliders\',null,\'M.ciniki_web_main.showPage(null,"home");\');',
 				},
@@ -358,6 +358,27 @@ function ciniki_web_main() {
 			'_collections':{'label':'Web Collections', 'active':'no', 'fields':{
 				'page-home-collections-display':{'label':'Display Web Collections', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-home-collections-title':{'label':'Title', 'type':'text', 'hint':'Collections'},
+				}},
+			'_quicklinks':{'label':'Highlights', 'active':'no', 'fields':{
+				'page-home-quicklinks-title':{'label':'Title', 'type':'text', 'hint':''},
+				'page-home-quicklinks-001-name':{'label':'1) Name', 'type':'text'},
+				'page-home-quicklinks-001-url':{'label':'1) URL', 'type':'text', 'hint':'Enter the http:// address for the website'},
+				'page-home-quicklinks-002-name':{'label':'2) Name', 'type':'text'},
+				'page-home-quicklinks-002-url':{'label':'2) URL', 'type':'text', 'hint':'Enter the http:// address for the website'},
+				'page-home-quicklinks-003-name':{'label':'3) Name', 'type':'text'},
+				'page-home-quicklinks-003-url':{'label':'3) URL', 'type':'text', 'hint':'Enter the http:// address for the website'},
+				'page-home-quicklinks-004-name':{'label':'4) Name', 'type':'text'},
+				'page-home-quicklinks-004-url':{'label':'4) URL', 'type':'text', 'hint':'Enter the http:// address for the website'},
+				'page-home-quicklinks-005-name':{'label':'5) Name', 'type':'text'},
+				'page-home-quicklinks-005-url':{'label':'5) URL', 'type':'text', 'hint':'Enter the http:// address for the website'},
+				'page-home-quicklinks-006-name':{'label':'6) Name', 'type':'text'},
+				'page-home-quicklinks-006-url':{'label':'6) URL', 'type':'text', 'hint':'Enter the http:// address for the website'},
+				'page-home-quicklinks-007-name':{'label':'7) Name', 'type':'text'},
+				'page-home-quicklinks-007-url':{'label':'7) URL', 'type':'text', 'hint':'Enter the http:// address for the website'},
+				'page-home-quicklinks-008-name':{'label':'8) Name', 'type':'text'},
+				'page-home-quicklinks-008-url':{'label':'8) URL', 'type':'text', 'hint':'Enter the http:// address for the website'},
+				'page-home-quicklinks-009-name':{'label':'9) Name', 'type':'text'},
+				'page-home-quicklinks-009-url':{'label':'9) URL', 'type':'text', 'hint':'Enter the http:// address for the website'},
 				}},
 			'redirects':{'label':'Redirect Home', 'active':'no', 'fields':{
 				'page-home-url':{'label':'URL', 'type':'text'},
@@ -1290,6 +1311,11 @@ function ciniki_web_main() {
 			} else {
 				this.menu.sections.advanced.list.collections.visible = 'no';
 				this.home.sections._collections.active = 'no';
+			}
+			if( (M.curBusiness.modules['ciniki.web'].flags&0x10) > 0 ) {
+				this.home.sections._quicklinks.active = 'yes';
+			} else {
+				this.home.sections._quicklinks.active = 'no';
 			}
 		}
 		if( M.curBusiness.modules['ciniki.blog'] != null ) {

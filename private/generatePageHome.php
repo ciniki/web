@@ -129,11 +129,41 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 			}
 		}
 	}
+
+	//
+	// Determine if there are home page quick links
+	//
+	$home_page_quicklinks = '';
+	$home_page_quicklinks_title = '';
+	if( isset($ciniki['business']['modules']['ciniki.web']['flags'])
+		&& ($ciniki['business']['modules']['ciniki.web']['flags']&0x10) == 0x10 ) {
+		if( isset($settings['page-home-quicklinks-title']) ) {
+			$home_page_quicklinks_title = $settings['page-home-quicklinks-title'];
+		}
+		for($i=0;$i<10;$i++) {
+			$name = sprintf('page-home-quicklinks-%03d-name', $i);
+			$url = sprintf('page-home-quicklinks-%03d-url', $i);
+			if( isset($settings[$name]) && $settings[$name] != ''
+				&& isset($settings[$url]) && $settings[$url] != ''
+				) {
+				$home_page_quicklinks .= '<div class="button-list-wrap">';
+				$home_page_quicklinks .= '<div class="button-list-button">';
+				if( $settings[$url][0] == '/' ) {
+					$home_page_quicklinks .= '<a href="' . $ciniki['request']['base_url'] . $settings[$url] . '"><span>' . $settings[$name] . '</span></a>';
+				} else {
+					$home_page_quicklinks .= '<a href="' . $settings[$url] . '"><span>' . $settings[$name] . '</span></a>';
+				}
+				$home_page_quicklinks .= '</div>';
+				$home_page_quicklinks .= '</div>';
+			}
+		}
+	}
 	
 	//
 	// Check if there is an image to display
 	//
-	$home_page_image = '';
+	$home_page_wide_image = '';
+	$home_page_aside_image = '';
 	if( isset($settings['page-home-image']) 
 		&& $settings['page-home-image'] != '' && $settings['page-home-image'] > 0 
 		) {
@@ -148,27 +178,27 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 			$href = "<a href='" . $settings['page-home-image-url'] . "'>";
 			$_href = "</a>";
 		}
-		if( $home_page_welcome == '' && $home_page_collections == '' ) {
-			//
-			// If no content or collection list, then center the image
-			//
-			$home_page_image .= "<div class='wide aligncenter'>";
-			$home_page_image .= "<div class='image'>$href<img title='' alt='" . $ciniki['business']['details']['name'] . "' src='" . $rc['url'] . "' />$_href</div>";
-			$home_page_image .= "</div>";
-			if( isset($settings['page-home-image-caption']) && $settings['page-home-image-caption'] != '' ) {
-				$home_page_image .= "<div class='image-caption aligncenter'>$href" . $settings['page-home-image-caption'] . "$_href</div>";
-			}
-		} else {
-			$home_page_image .= "<aside><div class='image-wrap'>"
-				. "<div class='image'>$href<img title='' alt='" . $ciniki['business']['details']['name'] . "' src='" . $rc['url'] . "' />$_href</div>";
-			if( $ciniki['response']['head']['og']['image'] == '' ) {
-				$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
-			}
-			if( isset($settings['page-home-image-caption']) && $settings['page-home-image-caption'] != '' ) {
-				$home_page_image .= "<div class='image-caption'>$href" . $settings['page-home-image-caption'] . "$_href</div>";
-			}
-			$home_page_image .= "</div></aside>";
+		//
+		// Setup the image for wine format
+		//
+		$home_page_wide_image .= "<div class='wide aligncenter'>";
+		$home_page_wide_image .= "<div class='image'>$href<img title='' alt='" . $ciniki['business']['details']['name'] . "' src='" . $rc['url'] . "' />$_href</div>";
+		$home_page_wide_image .= "</div>";
+		if( isset($settings['page-home-image-caption']) && $settings['page-home-image-caption'] != '' ) {
+			$home_page_wide_image .= "<div class='image-caption aligncenter'>$href" . $settings['page-home-image-caption'] . "$_href</div>";
 		}
+		//
+		// Setup the image for the aside
+		//
+		$home_page_aside_image .= "<aside><div class='image-wrap'>"
+			. "<div class='image'>$href<img title='' alt='" . $ciniki['business']['details']['name'] . "' src='" . $rc['url'] . "' />$_href</div>";
+		if( $ciniki['response']['head']['og']['image'] == '' ) {
+			$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
+		}
+		if( isset($settings['page-home-image-caption']) && $settings['page-home-image-caption'] != '' ) {
+			$home_page_aside_image .= "<div class='image-caption'>$href" . $settings['page-home-image-caption'] . "$_href</div>";
+		}
+		$home_page_aside_image .= "</div></aside>";
 	} 
 	
 	//
@@ -177,28 +207,47 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 	if( $home_page_collections_title != '' ) {
 		$home_page_collections_title = '<h1>' . $home_page_collections_title . '</h1>';
 	}
-	if( $home_page_welcome != '' && $home_page_collections != '' && $home_page_image != '' ) {
+	if( $home_page_quicklinks_title != '' ) {
+		$home_page_quicklinks_title = '<h1>' . $home_page_quicklinks_title . '</h1>';
+	}
+	if( $home_page_welcome != '' && $home_page_collections != '' && $home_page_aside_image != '' ) {
 		$content1 .= $home_page_collections_title;
 		$content1 .= '<div class="wide aligncenter"><div class="button-list">' . $home_page_collections . '</div></div>';
 		$content1 .= '<br style="clear: right;"/>';
-		$content1 .= $home_page_image . $home_page_welcome;
+		$content1 .= $home_page_aside_image . $home_page_welcome;
+	} elseif( $home_page_welcome != '' && $home_page_quicklinks != '' && $home_page_aside_image != '' ) {
+		$content1 .= $home_page_quicklinks_title;
+		$content1 .= '<div class="wide aligncenter"><div class="button-list">' . $home_page_quicklinks . '</div></div>';
+		$content1 .= '<br style="clear: right;"/>';
+		$content1 .= $home_page_aside_image . $home_page_welcome;
 	} elseif( $home_page_welcome != '' && $home_page_collections != '' ) {
 		$content1 .= '<aside>' . $home_page_collections_title
 			. '<div class="largebutton-list">' . $home_page_collections . '</div></aside>';
 		$content1 .= $home_page_welcome;
-	} elseif( $home_page_welcome != '' && $home_page_image != '' ) {
-		$content1 .= $home_page_image . $home_page_welcome;
-	} elseif( $home_page_collections != '' && $home_page_image != '' ) {
-		$content1 .= $home_page_image;
+	} elseif( $home_page_welcome != '' && $home_page_quicklinks != '' ) {
+		$content1 .= '<aside>' . $home_page_quicklinks_title
+			. '<div class="largebutton-list">' . $home_page_quicklinks . '</div></aside>';
+		$content1 .= $home_page_welcome;
+	} elseif( $home_page_welcome != '' && $home_page_aside_image != '' ) {
+		$content1 .= $home_page_aside_image . $home_page_welcome;
+	} elseif( $home_page_collections != '' && $home_page_aside_image != '' ) {
+		$content1 .= $home_page_aside_image;
 		$content1 .= $home_page_collections_title;
 		$content1 .= '<div class="largebutton-list">' . $home_page_collections . '</div>';
+	} elseif( $home_page_quicklinks != '' && $home_page_aside_image != '' ) {
+		$content1 .= $home_page_aside_image;
+		$content1 .= $home_page_quicklinks_title;
+		$content1 .= '<div class="largebutton-list">' . $home_page_quicklinks . '</div>';
 	} elseif( $home_page_welcome != '' ) {
 		$content1 .= $home_page_welcome;
 	} elseif( $home_page_collections != '' ) {
 		$content1 .= $home_page_collections_title;
 		$content1 .= '<div class="wide aligncenter"><div class="button-list">' . $home_page_collections . '</div></div>';
-	} elseif( $home_page_image != '' ) {
-		$content1 .= $home_page_image;
+	} elseif( $home_page_quicklinks != '' ) {
+		$content1 .= $home_page_quicklinks_title;
+		$content1 .= '<div class="wide aligncenter"><div class="button-list">' . $home_page_quicklinks . '</div></div>';
+	} elseif( $home_page_wide_image != '' ) {
+		$content1 .= $home_page_wide_image;
 	}
 		
 	if( $content1 != '' ) {
