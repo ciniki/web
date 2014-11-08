@@ -78,8 +78,7 @@ function ciniki_web_generatePageDirectory($ciniki, $settings) {
 				return $rc;
 			}
 
-			$page_content .= "<div id='content'>\n"
-				. "<article class='page'>\n"
+			$page_content . "<article class='page'>\n"
 				. "<header class='entry-title'><h1 class='entry-title'>"
 				. "<a href='" . $ciniki['request']['base_url'] . "/directory'>Directory</a>"
 				. "</h1></header>\n"
@@ -97,7 +96,6 @@ function ciniki_web_generatePageDirectory($ciniki, $settings) {
 			}
 			$page_content .= "</div>"
 				. "</article>"
-				. "</div>"
 				. "";
 		}
 	}
