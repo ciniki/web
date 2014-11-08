@@ -481,14 +481,14 @@ function ciniki_web_main() {
 			'_content':{'label':'Content', 'fields':{
 				'page-contact-content':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'large'},
 				}},
-			'_contact_form':{'label':'Contact Form', 'fields':{
+			'_contact_form':{'label':'Contact Form', 'active':'no', 'fields':{
 				'page-contact-form-display':{'label':'Display Form', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-contact-form-emails':{'label':'Emails', 'type':'text'},
 				}},
-			'_contact_form_intro_message':{'label':'Contact Form Introduction', 'fields':{
+			'_contact_form_intro_message':{'label':'Contact Form Introduction', 'active':'no', 'fields':{
 				'page-contact-form-intro-message':{'label':'Form Message', 'hidelabel':'yes', 'type':'textarea', 'size':'small'},
 				}},
-			'_contact_form_submitted_message':{'label':'Contact Form Thank You', 'fields':{
+			'_contact_form_submitted_message':{'label':'Contact Form Thank You', 'active':'no', 'fields':{
 				'page-contact-form-submitted-message':{'label':'Thank you message', 'hidelabel':'yes', 'type':'textarea', 'size':'small'},
 				}},
 			'_mailchimp':{'label':'Mailchimp', 'fields':{
@@ -1298,13 +1298,13 @@ function ciniki_web_main() {
 		}
 		if( M.curBusiness.modules['ciniki.web'] != null ) {
 			if( (M.curBusiness.modules['ciniki.web'].flags&0x04) > 0 ) {
-				this.contact.sections._contact_form.visible = 'yes';
-				this.contact.sections._contact_form_intro_message.visible = 'yes';
-				this.contact.sections._contact_form_submitted_message.visible = 'yes';
+				this.contact.sections._contact_form.active = 'yes';
+				this.contact.sections._contact_form_intro_message.active = 'yes';
+				this.contact.sections._contact_form_submitted_message.active = 'yes';
 			} else {
-				this.contact.sections._contact_form.visible = 'no';
-				this.contact.sections._contact_form_intro_message.visible = 'no';
-				this.contact.sections._contact_form_submitted_message.visible = 'no';
+				this.contact.sections._contact_form.active = 'no';
+				this.contact.sections._contact_form_intro_message.active = 'no';
+				this.contact.sections._contact_form_submitted_message.active = 'no';
 			}
 			if( (M.curBusiness.modules['ciniki.web'].flags&0x08) > 0 ) {
 				this.menu.sections.advanced.list.collections.visible = 'yes';
