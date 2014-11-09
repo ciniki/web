@@ -39,7 +39,30 @@ function ciniki_web_generatePageDirectory($ciniki, $settings) {
 		) {
 		$entry_permalink = $ciniki['request']['uri_split'][0];
 		$image_permalink = $ciniki['request']['uri_split'][2];
+	
+		// 
+		// Check if this is an entry
+		//
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'directory', 'web', 'entryDetails');
+		$rc = ciniki_directory_web_entryDetails($ciniki, $settings, $ciniki['request']['business_id'], $entry_permalink);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$entry = $rc['entry'];
+		$article_title = $page_title;
+		$article_title = "<a href='" . $ciniki['request']['base_url'] . "/directory'>$page_title</a>";
+		$article_title .= " - <a href='$base_url/$entry_permalink'>" . $entry['title'] . "</a>";
 
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processGalleryImage');
+		$rc = ciniki_web_processGalleryImage($ciniki, $settings, $ciniki['request']['business_id'], array(
+			'item'=>$entry,
+			'article_title'=>$article_title,
+			'image_permalink'=>$image_permalink,
+			));
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$page_content .= $rc['content'];
 	}
 	
 	//
@@ -95,6 +118,7 @@ function ciniki_web_generatePageDirectory($ciniki, $settings) {
 				$page_content .= $rc['content'];
 			}
 			$page_content .= "</div>"
+				. "<br style='clear:both;'/>"
 				. "</article>"
 				. "";
 		}

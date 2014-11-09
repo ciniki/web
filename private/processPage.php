@@ -56,6 +56,7 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
 		}
 	}
 	$content .= "</div>";
+	$content .= "<br style='clear:both;'/>";
 	$content .= "</article>\n";
 
 	//
