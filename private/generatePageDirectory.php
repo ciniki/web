@@ -49,9 +49,9 @@ function ciniki_web_generatePageDirectory($ciniki, $settings) {
 			return $rc;
 		}
 		$entry = $rc['entry'];
-		$article_title = $page_title;
 		$article_title = "<a href='" . $ciniki['request']['base_url'] . "/directory'>$page_title</a>";
 		$article_title .= " - <a href='$base_url/$entry_permalink'>" . $entry['title'] . "</a>";
+		$page_title .= ' - ' . $entry['title'];
 
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processGalleryImage');
 		$rc = ciniki_web_processGalleryImage($ciniki, $settings, $ciniki['request']['business_id'], array(
@@ -82,15 +82,17 @@ function ciniki_web_generatePageDirectory($ciniki, $settings) {
 		if( $rc['stat'] != '404' && isset($rc['entry']) ) {
 			$page = $rc['entry'];
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processPage');
+			$article_title = "<a href='" . $ciniki['request']['base_url'] . "/directory'>$page_title</a>";
+//			$article_title .= ' - ' . $page['title'];
+			$page_title .= ' - ' . $page['title'];
 
 			$rc = ciniki_web_processPage($ciniki, $settings, $base_url, $page, array(
-				'article_title'=>"<a href='" . $ciniki['request']['base_url'] . "/directory'>$page_title</a>",
+				'article_title'=>$article_title,
 				));
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
 			$page_content .= $rc['content'];
-			$page_title .= ' - ' . $page['title'];
 		} else {
 			//
 			// Get the list of links to be displayed
@@ -100,10 +102,10 @@ function ciniki_web_generatePageDirectory($ciniki, $settings) {
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-
-			$page_content . "<article class='page'>\n"
+			$article_title = "<a href='" . $ciniki['request']['base_url'] . "/directory'>$page_title</a>";
+			$page_content .= "<article class='page'>\n"
 				. "<header class='entry-title'><h1 class='entry-title'>"
-				. "<a href='" . $ciniki['request']['base_url'] . "/directory'>Directory</a>"
+				. $article_title
 				. "</h1></header>\n"
 				. "<div class='entry-content'>\n"
 				. "";
@@ -171,7 +173,9 @@ function ciniki_web_generatePageDirectory($ciniki, $settings) {
 		}
 
 		$page_content .= "<article class='page'>\n"
-			. "<header class='entry-title'><h1 class='entry-title'>Directory</h1></header>\n"
+			. "<header class='entry-title'><h1 class='entry-title'>"
+			. $page_title
+			. "</h1></header>\n"
 			. "<div class='entry-content'>\n"
 			. "";
 

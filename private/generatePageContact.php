@@ -74,7 +74,7 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
 				if( $rc['stat'] != 'ok' || !isset($rc['user_ids']) || !is_array($rc['user_ids']) ) {
 					$contact_form_errors = "Oops, we're sorry but we seem to have hit a bit of a snag.  We've already the geeks and they'll get the problem fixed for us.  Please try again later.";
 					error_log('WEB: Error with form submit');
-					error_log(print_r($_POST, true));
+					error_log('WEB: ' . print_r($_POST, true));
 				} else {
 					foreach($rc['user_ids'] as $user_id) {
 						$ciniki['emailqueue'][] = array('user_id'=>$user_id,
