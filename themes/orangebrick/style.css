@@ -2,6 +2,7 @@ html {
 	background: #fff;
 	background-color: #fff;
 	background: url('/ciniki-web-themes/orangebrick/orangebricks.png');
+	background-attachment: fixed;
 }
 
 body {
