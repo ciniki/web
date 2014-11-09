@@ -123,7 +123,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 			foreach($rc['collections'] as $collection) {
 				$home_page_collections .= '<div class="button-list-wrap">';
 				$home_page_collections .= '<div class="button-list-button">';
-				$home_page_collections .= '<a href="' . $ciniki['request']['base_url'] . '/collection/' . $collection['permalink'] . '"><span>' . $collection['name'] . '</span></a>';
+				$home_page_collections .= '<a alt="' . $collection['name'] . '" title="' . $collection['name'] . '" href="' . $ciniki['request']['base_url'] . '/collection/' . $collection['permalink'] . '"><span>' . $collection['name'] . '</span></a>';
 				$home_page_collections .= '</div>';
 				$home_page_collections .= '</div>';
 			}
@@ -212,12 +212,12 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 	}
 	if( $home_page_welcome != '' && $home_page_collections != '' && $home_page_aside_image != '' ) {
 		$content1 .= $home_page_collections_title;
-		$content1 .= '<div class="wide aligncenter"><div class="button-list">' . $home_page_collections . '</div></div>';
+		$content1 .= '<div class="button-list">' . $home_page_collections . '</div>';
 		$content1 .= '<br style="clear: right;"/>';
 		$content1 .= $home_page_aside_image . $home_page_welcome;
 	} elseif( $home_page_welcome != '' && $home_page_quicklinks != '' && $home_page_aside_image != '' ) {
 		$content1 .= $home_page_quicklinks_title;
-		$content1 .= '<div class="wide aligncenter"><div class="button-list">' . $home_page_quicklinks . '</div></div>';
+		$content1 .= '<div class="button-list">' . $home_page_quicklinks . '</div>';
 		$content1 .= '<br style="clear: right;"/>';
 		$content1 .= $home_page_aside_image . $home_page_welcome;
 	} elseif( $home_page_welcome != '' && $home_page_collections != '' ) {
@@ -242,7 +242,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 		$content1 .= $home_page_welcome;
 	} elseif( $home_page_collections != '' ) {
 		$content1 .= $home_page_collections_title;
-		$content1 .= '<div class="wide aligncenter"><div class="button-list">' . $home_page_collections . '</div></div>';
+		$content1 .= '<div class="button-list">' . $home_page_collections . '</div>';
 	} elseif( $home_page_quicklinks != '' ) {
 		$content1 .= $home_page_quicklinks_title;
 		$content1 .= '<div class="wide aligncenter"><div class="button-list">' . $home_page_quicklinks . '</div></div>';

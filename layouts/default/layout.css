@@ -266,7 +266,8 @@ header span.title {
 
 #content div.button-list div.button-list-wrap {
 	width: 32%;
-	margin-right: 0.6em;
+	margin-right: 0.2em;
+	margin-left: 0.2em;
 	display: inline-block;
 }
 

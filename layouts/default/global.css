@@ -666,6 +666,7 @@ div.googlemap p.exhibitors-more,
 #content div.largebutton-list, 
 #content div.button-list {
 	width: 100%;
+	text-align: center;
 }
 
 #content div.largebutton-list div.button-list-wrap,

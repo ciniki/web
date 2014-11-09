@@ -119,6 +119,7 @@ function ciniki_web_generateMasterIndex(&$ciniki, $settings) {
 	if( count($businesses) > 0 ) {
 		$content .= "<article class='page'>\n"
 			. "<header class='entry-title'><h1 class='entry-title'>Featured Businesses</h1></header>\n"
+			. "<div class='entry-content'>"
 			. "<div class='button-list'>"
 			. "";
 		foreach($businesses as $bnum => $b) {
@@ -134,6 +135,7 @@ function ciniki_web_generateMasterIndex(&$ciniki, $settings) {
 				. "\n";
 		}
 		$content .= "</div>"
+			. "</div>"
 			. "</article>\n"
 			. "";
 		
