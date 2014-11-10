@@ -452,8 +452,8 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 					. "</article>\n"
 					. "";
 			} else {
-				if( isset($settings['page-members-membership-details']) 
-					&& $settings['page-members-membership-details'] == 'yes' 
+				if( !isset($settings['page-members-membership-details']) 
+					|| $settings['page-members-membership-details'] != 'yes' 
 					) {
 					$page_content .= "<article class='page'>\n"
 						. "<header class='entry-title'><h1 class='entry-title'>$page_title</h1></header>\n"
