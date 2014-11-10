@@ -380,6 +380,26 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 //		$content .= "<hgroup>\n";
 //	} else {
 //	}
+
+	//
+	// Setup the header image
+	//
+	$site_header_image = '';
+	if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+		if( !isset($settings['site-header-image-size']) || $settings['site-header-image-size'] == 'medium' ) {
+			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '125', '85');
+		} elseif( $settings['site-header-image-size'] == 'small' ) {
+			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '100', '75');
+		} elseif( $settings['site-header-image-size'] == 'large' ) {
+			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '150', '100');
+		} elseif( $settings['site-header-image-size'] == 'xlarge' ) {
+			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '200', '150');
+		} elseif( $settings['site-header-image-size'] == 'xxlarge' ) {
+			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '300', '225');
+		}
+	}
+
 	//
 	// Decide if there is a header image to be displayed, or display an h1 title
 	//
@@ -388,11 +408,11 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 //		if( $social_icons != '' ) {
 //			$content .= "<div class='social-icons'>" . $social_icons . "</div>";
 //		}
-		if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-			$rc = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '100', '85');
-			$content .= "<div class='title-logo'><a href='" . $page_home_url . "' title='" . $ciniki['business']['details']['name'] 
-				. "' rel='home'><img alt='Home' src='" . $rc['url'] . "' /></a></div>";
+		if( isset($page_home_image) && $page_home_image['stat'] == 'ok' ) {
+			$content .= "<div class='title-logo'>"
+				. "<a href='" . $page_home_url . "' title='" . $ciniki['business']['details']['name'] 
+				. "' rel='home'><img alt='Home' src='" . $page_home_image['url'] . "' /></a>"
+				. "</div>";
 		}
 		if( isset($ciniki['business']['details']['tagline']) && $ciniki['business']['details']['tagline'] != '' ) {
 			$content .= "<div class='title-block'>";
@@ -414,14 +434,16 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 //		if( $social_icons != '' ) {
 //			$content .= "<div class='social-icons'>" . $social_icons . "</div>";
 //		}
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-		$rc = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '125', '85');
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
-		}
-		$content .= "<span><a href='" . $page_home_url . "' title='" . $ciniki['business']['details']['name'] . "' rel='home'>"
-			. "<img alt='Home' src='" . $rc['url'] . "' />"
-			. "</a></span>\n";
+//		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+//		$rc = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '125', '85');
+//		if( $rc['stat'] != 'ok' ) {
+//			return $rc;
+//		}
+		$content .= "<span><a href='" . $page_home_url . "' title='" . $ciniki['business']['details']['name'] . "' rel='home'>";
+			if( isset($page_home_image) && $page_home_image['stat'] == 'ok' ) {
+				$content .= "<img alt='Home' src='" . $page_home_image['url'] . "' />";
+			}
+		$content .= "</a></span>\n";
 //		if( $social_icons != '' ) {
 //			$content .= "<span class='social-icons'>" . $social_icons . "</span>";
 //		}

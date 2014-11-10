@@ -28,6 +28,7 @@
 //		</settings>
 //		<header>
 //			<setting name="site-header-image" display_name="Header Image" value="0" />
+//			<setting name="site-header-image-size" display_name="Header Image Size" value="0" />
 //			<setting name="site-header-title" display_name="Header Logo" value="no" />
 //		</header>
 //		<advanced>
@@ -305,6 +306,11 @@ function ciniki_web_siteSettings($ciniki) {
 	} else {
 		array_push($rc_header, array('setting'=>array('name'=>'site-header-image', 'display_name'=>'Header Image', 'value'=>'0')));
 //		array_push($rc_advanced, array('setting'=>array('name'=>'site-header-image', 'display_name'=>'Header Image', 'value'=>'0')));
+	}
+	if( isset($settings['site-header-image-size']) && $settings['site-header-image-size'] != '' ) {
+		array_push($rc_header, array('setting'=>array('name'=>'site-header-image-size', 'display_name'=>'Header Title', 'value'=>$settings['site-header-image-size'])));
+	} else {
+		array_push($rc_header, array('setting'=>array('name'=>'site-header-image-size', 'display_name'=>'Header Title', 'value'=>'medium')));
 	}
 	if( isset($settings['site-header-title']) && $settings['site-header-title'] != '' ) {
 		array_push($rc_header, array('setting'=>array('name'=>'site-header-title', 'display_name'=>'Header Title', 'value'=>$settings['site-header-title'])));

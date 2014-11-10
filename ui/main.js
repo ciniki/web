@@ -24,6 +24,7 @@ function ciniki_web_main() {
 		this.themesAvailable['redbrick'] = 'Red Brick';
 		this.themesAvailable['orangebrick'] = 'Orange Brick';
 	}
+	this.headerImageSize = {'small':'Small', 'medium':'Medium', 'large':'Large', 'xlarge':'XLarge', 'xxlarge':'XXLarge'};
 	
 	this.layoutsAvailable = {
 		'default':'Default',
@@ -114,12 +115,6 @@ function ciniki_web_main() {
 			if( s == 'settings' && d.setting.name == 'theme') { 
 				return 'M.ciniki_web_main.showThemes(\'M.ciniki_web_main.showMenu();\',\'' + d.setting.value + '\');'; 
 			}
-//			if( s == 'advanced' && d.setting.name == 'site-header-image' ) { 
-//				return 'M.ciniki_web_main.showHeaderImage(\'M.ciniki_web_main.showMenu();\',\'' + d.setting.value + '\');'; 
-//			}
-//			if( s == 'advanced' && d.setting.name == 'site-logo-display' ) { 
-//				return 'M.ciniki_web_main.showLogo(\'M.ciniki_web_main.showMenu();\',\'' + d.setting.value + '\');'; 
-//			}
 			if( s == 'pages' ) { 
 //				if( d.page.name == 'about' && M.curBusiness.modules['ciniki.artgallery'] != null ) {
 //					return 'M.ciniki_web_main.showPage(\'M.ciniki_web_main.showMenu();\',\'aboutmenu\');'; 
@@ -190,18 +185,18 @@ function ciniki_web_main() {
 		//
 		this.header = new M.panel('Header',
 			'ciniki_web_main', 'header',
-			'mc', 'narrow', 'sectioned', 'ciniki.web.main.header');
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.header');
 		this.header.data = {'site-header-image':'0'};
 		this.header.sections = {
 			'_image':{'label':'Image', 'fields':{
 				'site-header-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
 				}},
 			'options':{'label':'Options', 'fields':{
+				'site-header-image-size':{'label':'Image Size', 'type':'multitoggle', 'default':'medium', 'toggles':this.headerImageSize},
 				'site-header-title':{'label':'Display Business Name', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'header\');'},
-//				'delete':{'label':'Delete', 'fn':'M.ciniki_web_main.deleteHeaderImage();'},
 				}},
 		};
 		this.header.fieldValue = this.fieldValue;
@@ -1789,19 +1784,6 @@ function ciniki_web_main() {
 				});
 		} else {
 			this[page].close();
-		}
-	};
-
-	this.deleteHeaderImage = function() {
-		if( confirm('Are you sure you want to remove the header image from your website?') ) {
-			var rsp = M.api.getJSONCb('ciniki.web.siteSettingsUpdate', 
-				{'business_id':M.curBusinessID, 'site-header-image':'0'}, function(rsp) {
-					if( rsp.stat != 'ok' ) {
-						M.api.err(rsp);
-						return false;
-					} 
-					M.ciniki_web_main.header.setFieldValue('site-header-image', 0, null, null);
-				});
 		}
 	};
 

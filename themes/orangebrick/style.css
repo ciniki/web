@@ -53,6 +53,12 @@ header h1 a:active {
 	color: #333;
 }
 
+header div.signin {
+	width: auto;
+	height: 0px;
+	overflow: visible;
+}
+
 header div.signin div.signin-wrapper {
 	border-left: 0px solid #422213;
 	border-bottom: 0px solid #422213;
