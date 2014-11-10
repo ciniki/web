@@ -277,11 +277,6 @@ nav {
 	display: none;
 }
 
-#sub-menu-container ul.menu li.menu-item a,
-#main-menu-container ul.menu li.menu-item a {
-	display: block;
-}
-
 article {
 	margin-bottom: 0em;
 }

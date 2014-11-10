@@ -112,10 +112,6 @@ a img {
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#888888', endColorstr='#555555');
 }
 
-#main-menu-container li.menu-item-selected a {
-	border-bottom: 1px dashed #bbb;
-}
-
 #sub-menu-container li a,
 #sub-menu-container li a:visited,
 #sub-menu-container li a:hover,
@@ -996,6 +992,10 @@ aside div.borderless {
 /* Styles for larger screens */
 @media screen and (min-width: 33em) {
 
+#main-menu-container li.menu-item-selected a {
+	border-bottom: 1px dashed #bbb;
+}
+
 #sub-menu-container {
 	background-color: #136B8D;
 	border: 2px solid #422213;
@@ -1006,6 +1006,7 @@ aside div.borderless {
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#53ABCD', endColorstr='#136B8D');
 }
 #main-menu-container {
+	text-align: center;
 	background-color: #444;
 	border: 2px solid #422213;
 	border-radius: 10px;
