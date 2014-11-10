@@ -434,12 +434,12 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 			}
 			$members = $rc['members'];
 
-			$page_content .= "<article class='page'>\n"
-				. "<header class='entry-title'><h1 class='entry-title'>$page_title</h1></header>\n"
-				. "<div class='entry-content'>\n"
-				. "";
-
 			if( count($members) > 0 ) {
+				$page_content .= "<article class='page'>\n"
+					. "<header class='entry-title'><h1 class='entry-title'>$page_title</h1></header>\n"
+					. "<div class='entry-content'>\n"
+					. "";
+
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
 				$base_url = $ciniki['request']['base_url'] . "/members";
 				$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $members, array('notitle'=>'yes'));
@@ -448,13 +448,23 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 					return $rc;
 				}
 				$page_content .= $rc['content'];
+				$page_content .= "</div>\n"
+					. "</article>\n"
+					. "";
 			} else {
-				$page_content .= "<p>Currently no members.</p>";
+				if( isset($settings['page-members-membership-details']) 
+					&& $settings['page-members-membership-details'] == 'yes' 
+					) {
+					$page_content .= "<article class='page'>\n"
+						. "<header class='entry-title'><h1 class='entry-title'>$page_title</h1></header>\n"
+						. "<div class='entry-content'>\n"
+						. "<p>Currently no members.</p>"
+						. "</div>\n"
+						. "</article>\n"
+						. "";
+				}
 			}
 
-			$page_content .= "</div>\n"
-				. "</article>\n"
-				. "";
 		}
 	
 		if( isset($settings['page-members-membership-details']) && $settings['page-members-membership-details'] == 'yes' ) {
