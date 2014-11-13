@@ -335,6 +335,7 @@ article {
 #content table.links-list,
 #content table.event-list {
 	width: 100%;
+	table-layout: fixed;
 }
 
 #content table.clist > tbody > tr > th,
@@ -386,6 +387,8 @@ article {
 	border-top: 1px solid;
 	padding-top: 0.25em;
 	vertical-align: top;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 #content table.cilist > tbody > tr > td,
@@ -468,6 +471,12 @@ div.googlemap p.exhibitors-more,
 	width: 100%;
 	max-width: 100%;
 	padding-bottom: 1.5em;
+}
+
+#content table span.oneline {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 #content p.exhibitors-application {
@@ -935,7 +944,6 @@ span.exhibitors-description {
 #content audio {
 	vertical-align: bottom;
 }
-
 
 /* 7. BROWSER AND NON-SEMANTIC STYLING
 ----------------------------------------------------------------------------------------*/

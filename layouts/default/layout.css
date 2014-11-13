@@ -141,6 +141,7 @@ header span.title {
 #content table.links-list,
 #content table.event-list {
 	border-collapse: collapse;
+	table-layout: auto;
 }
 
 #content table.clist > tbody > tr > th {

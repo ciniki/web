@@ -325,7 +325,7 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 						$page_content .= "<br/><span class='clist-description'>" . $link['description'] . "</span>";
 					}
 					if( $url != '' ) {
-						$page_content .= "<br/><a class='clist-url' target='_blank' href='" . $url . "' title='" . $link['name'] . "'>" . $display_url . "</a>";
+						$page_content .= "<br/><span class='oneline'><a class='clist-url' target='_blank' href='" . $url . "' title='" . $link['name'] . "'>" . $display_url . "</a></span>";
 					}
 					$page_content .= "<br/><br/>";
 					// $page_content .= "</p>";
