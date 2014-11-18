@@ -98,7 +98,7 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 		// Generate the image for the slider, must be cropped to exact dimensions
 		//
 		$rc = ciniki_web_getCroppedImageURL($ciniki, $image['image_id'], 'original', 
-			array('height'=>$slider_height, 'width'=>$slider_width, 'position'=>'middle-center'));
+			array('height'=>$slider_height, 'width'=>$slider_width, 'position'=>$image['image_offset'], 'last_updated'=>$image['last_updated']));
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}

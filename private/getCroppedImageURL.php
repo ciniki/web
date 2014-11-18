@@ -63,8 +63,18 @@ function ciniki_web_getCroppedImageURL($ciniki, $image_id, $version, $args) {
 	// Check last_updated against the file timestamp, if the file exists
 	//
 //	$utc_offset = date_offset_get(new DateTime);
-	if( !file_exists($img_filename) 
-		|| filemtime($img_filename) < $img['last_updated'] ) {
+	$cache_ok = 'yes';
+	if( !file_exists($img_filename) ) {
+		$cache_ok = 'no';
+	} else {
+		$ftime = filemtime($img_filename);
+		if( $ftime < $img['last_updated'] 
+			|| (isset($args['last_updated']) && $ftime < $args['last_updated']) 
+			) {
+			$cache_ok = 'no';
+		}
+	}
+	if( $cache_ok = 'no' ) {
 		//
 		// Load the image from the database
 		//

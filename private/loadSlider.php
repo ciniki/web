@@ -22,7 +22,9 @@ function ciniki_web_loadSlider(&$ciniki, $settings, $business_id, $slider_id) {
 		. "ciniki_web_slider_images.id AS slider_image_id, "
 		. "ciniki_web_slider_images.image_id, "
 		. "ciniki_web_slider_images.caption, "
-		. "ciniki_web_slider_images.url "
+		. "ciniki_web_slider_images.url, "
+		. "ciniki_web_slider_images.image_offset, "
+		. "UNIX_TIMESTAMP(ciniki_web_slider_images.last_updated) AS last_updated "
 		. "FROM ciniki_web_sliders "
 		. "LEFT JOIN ciniki_web_slider_images ON ("
 			. "ciniki_web_sliders.id = ciniki_web_slider_images.slider_id "
@@ -41,7 +43,7 @@ function ciniki_web_loadSlider(&$ciniki, $settings, $business_id, $slider_id) {
 		array('container'=>'sliders', 'fname'=>'id',
 			'fields'=>array('size', 'effect')),
 		array('container'=>'images', 'fname'=>'slider_image_id',
-			'fields'=>array('image_id', 'caption', 'url')),
+			'fields'=>array('image_id', 'caption', 'url', 'image_offset', 'last_updated')),
 		));
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;

@@ -19,6 +19,7 @@ function ciniki_web_sliderAdd(&$ciniki) {
         'name'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Name'), 
         'size'=>array('required'=>'no', 'default'=>'medium', 'blank'=>'no', 'name'=>'Size'), 
         'effect'=>array('required'=>'no', 'default'=>'slide', 'blank'=>'yes', 'name'=>'Effect'), 
+        'image_offset'=>array('required'=>'no', 'default'=>'middle-center', 'blank'=>'yes', 'name'=>'Position'), 
 		'images'=>array('required'=>'no', 'default'=>'', 'blank'=>'yes', 'type'=>'idlist', 'name'=>'Images'),
         )); 
     if( $rc['stat'] != 'ok' ) { 
@@ -72,7 +73,7 @@ function ciniki_web_sliderAdd(&$ciniki) {
 				'object'=>'',
 				'object_id'=>'',
 				'url'=>'',
-				'image_offset'=>'',
+				'image_offset'=>$args['image_offset'],
 				'overlay'=>'',
 				'overlay_position'=>'',
 				'start_date'=>'',

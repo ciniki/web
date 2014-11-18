@@ -37,12 +37,54 @@ function ciniki_web_sliderImageGet($ciniki) {
         return $rc;
     }   
 
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectGet');
-	$rc = ciniki_core_objectGet($ciniki, $args['business_id'], 'ciniki.web.slider_image', $args['slider_image_id']);
+	//
+	// Get the settings
+	//
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'intlSettings');
+	$rc = ciniki_businesses_intlSettings($ciniki, $args['business_id']);
 	if( $rc['stat'] != 'ok' ) {
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1758', 'msg'=>'Unable to find the slider image you requested.', 'err'=>$rc['err']));
+		return $rc;
 	}
+	$intl_timezone = $rc['settings']['intl-default-timezone'];
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'users', 'private', 'dateFormat');
+	$date_format = ciniki_users_dateFormat($ciniki, 'php');
 
-	return array('stat'=>'ok', 'image'=>$rc['image']);
+	//
+	// Get the main information
+	//
+	$strsql = "SELECT id, "
+		. "slider_id, "
+		. "image_id, "
+		. "sequence, "
+		. "object, "
+		. "object_id, "
+		. "caption, "
+		. "url, "
+		. "image_offset, "
+		. "overlay, "
+		. "overlay_position, "
+		. "start_date, "
+		. "end_date "
+		. "FROM ciniki_web_slider_images "
+		. "WHERE ciniki_web_slider_images.business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+		. "AND ciniki_web_slider_images.id = '" . ciniki_core_dbQuote($ciniki, $args['slider_image_id']) . "' "
+		. "";
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryTree');
+	$rc = ciniki_core_dbHashQueryTree($ciniki, $strsql, 'ciniki.web', array(
+		array('container'=>'images', 'fname'=>'id', 'name'=>'image',
+			'fields'=>array('id', 'slider_id', 'image_id', 'sequence', 'object', 'object_id',
+				'caption', 'url', 'image_offset', 'overlay', 'overlay_position', 'start_date', 'end_date'),
+				'utctotz'=>array('start_date'=>array('timezone'=>$intl_timezone, 'format'=>$date_format),
+					'end_date'=>array('timezone'=>$intl_timezone, 'format'=>$date_format))),
+		));
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+	if( !isset($rc['images']) ) {
+		return array('stat'=>'ok', 'err'=>array('pkg'=>'ciniki', 'code'=>'2075', 'msg'=>'Unable to find slider image'));
+	}
+	$image = $rc['images'][0]['image'];
+
+	return array('stat'=>'ok', 'image'=>$image);
 }
 ?>

@@ -24,7 +24,7 @@ function ciniki_web_sliderImageAdd(&$ciniki) {
         'object_id'=>array('required'=>'no', 'default'=>'', 'blank'=>'yes', 'name'=>'Object ID'), 
         'caption'=>array('required'=>'no', 'blank'=>'yes', 'default'=>'', 'name'=>'Caption'), 
         'url'=>array('required'=>'no', 'blank'=>'yes', 'default'=>'', 'name'=>'URL'), 
-        'image_offset'=>array('required'=>'no', 'blank'=>'yes', 'default'=>'', 'name'=>'Offset'), 
+        'image_offset'=>array('required'=>'no', 'blank'=>'yes', 'default'=>'middle-center', 'name'=>'Offset'), 
         'overlay'=>array('required'=>'no', 'default'=>'', 'blank'=>'yes', 'name'=>'Overlay'), 
         'overlay_position'=>array('required'=>'no', 'default'=>'', 'blank'=>'yes', 'name'=>'Overlay Position'), 
 		'start_date'=>array('required'=>'no', 'blank'=>'yes', 'default'=>'', 'type'=>'datetimetoutc', 'name'=>'Start Date'),

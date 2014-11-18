@@ -29,11 +29,11 @@ function ciniki_web_sliderImageUpdate(&$ciniki) {
         'object_id'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Object ID'), 
         'caption'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Caption'), 
         'url'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'URL'), 
-        'image_offest'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Offset'), 
+        'image_offset'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Offset'), 
         'overlay'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Overlay'), 
         'overlay_position'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Overlay Position'), 
-		'start_date'=>array('required'=>'no', 'blank'=>'no', 'type'=>'datetimetoutc', 'name'=>'Start Date'),
-		'end_date'=>array('required'=>'no', 'blank'=>'no', 'type'=>'datetimetoutc', 'name'=>'End Date'),
+		'start_date'=>array('required'=>'no', 'blank'=>'yes', 'type'=>'datetimetoutc', 'name'=>'Start Date'),
+		'end_date'=>array('required'=>'no', 'blank'=>'yes', 'type'=>'datetimetoutc', 'name'=>'End Date'),
         )); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;

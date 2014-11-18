@@ -5,6 +5,11 @@ function ciniki_web_sliderimages() {
 	this.webFlags = {
 		'1':{'name':'Hidden'},
 		};
+	this.imageOffsets = {
+		'top-center':'Top',
+		'middle-center':'Middle',
+		'bottom-center':'Bottom',
+		};
 	this.init = function() {
 		//
 		// The panel to display the edit form
@@ -22,9 +27,10 @@ function ciniki_web_sliderimages() {
 			'info':{'label':'Information', 'type':'simpleform', 'fields':{
 				'sequence':{'label':'Sequence', 'type':'text', 'size':'small'},
 //				'caption':{'label':'Sequence', 'type':'text', 'size':'small'},
+				'image_offset':{'label':'Position', 'type':'toggle', 'toggles':this.imageOffsets},
 				'url':{'label':'URL', 'type':'text'},
-				'start_date':{'label':'Start', 'type':'text', 'size':'medium'},
-				'end_date':{'label':'End', 'type':'text', 'size':'medium'},
+				'start_date':{'label':'Start', 'type':'date', 'size':'small'},
+				'end_date':{'label':'End', 'type':'date', 'size':'small'},
 			}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_sliderimages.saveImage();'},
@@ -97,7 +103,7 @@ function ciniki_web_sliderimages() {
 				});
 		} else {
 			this.edit.reset();
-			this.edit.data = {};
+			this.edit.data = {'image_offset':'middle-center'};
 			this.edit.refresh();
 			this.edit.show(cb);
 		}
