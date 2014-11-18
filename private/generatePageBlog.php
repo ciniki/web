@@ -683,8 +683,6 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 		if( isset($nav_content) && $nav_content != '' ) {
 			$page_content .= $nav_content;
 		}
-		$page_content .= "</div>"
-			. "";
 	}
 
 	$content = '';
