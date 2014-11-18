@@ -51,7 +51,7 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
 	}
 	if( isset($page['files']) ) {
 		foreach($page['files'] as $fid => $file) {
-			$url = $base_url . '/download/' . $file['permalink'] . '.' . $file['extension'];
+			$url = $base_url . '/' . $page['permalink'] . '/download/' . $file['permalink'] . '.' . $file['extension'];
 			$content .= "<p><a target='_blank' href='" . $url . "' title='" . $file['name'] . "'>" . $file['name'] . "</a></p>";
 		}
 	}
