@@ -564,6 +564,7 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 		//
 		// End of the main article content
 		//
+		$page_content .= "<br style='clear:both'/>";
 		$page_content .= "</article>";
 
 		//
