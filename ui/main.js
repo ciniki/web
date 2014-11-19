@@ -741,6 +741,7 @@ function ciniki_web_main() {
 			'options':{'label':'', 'fields':{
 				'page-blog-active':{'label':'Display Blog', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-blog-name':{'label':'Name', 'type':'text', 'hint':'default is Blog'},
+				'page-blog-share-buttons':{'label':'Sharing', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'blog\');'},

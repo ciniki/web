@@ -62,6 +62,7 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 	// Store the content created by the page
 	//
 	$page_content = '';
+	$ciniki['response']['head']['og']['url'] = $ciniki['request']['domain_base_url'] . '/blog';
 
 	//
 	// FIXME: Check if anything has changed, and if not load from cache
@@ -120,6 +121,24 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1590', 'msg'=>'Unable to find image'));
 		}
 
+		//
+		// Setup sharing information
+		//
+		$ciniki['response']['head']['og']['url'] .= '/' . $post_permalink;
+		if( isset($post['image_id']) && $post['image_id'] > 0 ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+			$rc = ciniki_web_getScaledImageURL($ciniki, $post['image_id'], 'original', '500', 0);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
+		}
+		if( isset($post['excerpt']) && $post['excerpt'] != '' ) {
+			$ciniki['response']['head']['og']['description'] = strip_tags($post['excerpt']);
+		} elseif( isset($post['content']) && $post['content'] != '' ) {
+			$ciniki['response']['head']['og']['description'] = strip_tags($post['content']);
+		}
+		
 		$first = NULL;
 		$last = NULL;
 		$img = NULL;
@@ -439,6 +458,7 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 		// Get the post information
 		//
 		$post_permalink = $ciniki['request']['uri_split'][0];
+		$ciniki['response']['head']['og']['url'] .= '/' . $post_permalink;
 		$rc = ciniki_blog_web_postDetails($ciniki, $settings, 
 			$ciniki['request']['business_id'], $post_permalink, $blogtype);
 		if( $rc['stat'] != 'ok' ) {
@@ -466,9 +486,16 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
+			$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
 			$page_content .= "<aside><div class='image-wrap'><div class='image'>"
 				. "<img title='' alt='" . $post['title'] . "' src='" . $rc['url'] . "' />"
 				. "</div></div></aside>";
+		}
+
+		if( isset($post['excerpt']) && $post['excerpt'] != '' ) {
+			$ciniki['response']['head']['og']['description'] = strip_tags($post['excerpt']);
+		} elseif( isset($post['content']) && $post['content'] != '' ) {
+			$ciniki['response']['head']['og']['description'] = strip_tags($post['content']);
 		}
 		
 		//
@@ -560,6 +587,34 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 		if( $meta_content != '' ) {
 			$page_content .= '<p class="entry-meta">' . $meta_content . '</p>';
 		}
+
+		//
+		// Check if share buttons should be shown
+		//
+		if( (!isset($settings['page-blog-share-buttons']) || $settings['page-blog-share-buttons'] == 'yes') 
+			&& $blogtype = 'blog'
+			) {
+			$tags = array();
+			if( isset($post['categories']) ) {
+				foreach($post['categories'] as $cat) {
+					$tags[] = $cat['name'];
+				}
+			}
+			if( isset($post['tags']) ) {
+				foreach($post['tags'] as $tag) {
+					$tags[] = $tag['name'];
+				}
+			}
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processShareButtons');
+			$rc = ciniki_web_processShareButtons($ciniki, $settings, array(
+				'title'=>$page_title,
+				'tags'=>$tags,
+				));
+			if( $rc['stat'] == 'ok' ) {
+				$page_content .= $rc['content'];
+			}
+		}
+
 
 		//
 		// End of the main article content

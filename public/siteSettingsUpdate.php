@@ -180,6 +180,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-artgalleryexhibitions-application-details',
 		'page-blog-active',
 		'page-blog-name',
+		'page-blog-share-buttons',
 		'page-memberblog-active',
 		'page-memberblog-menu-active',
 		'page-memberblog-name',
