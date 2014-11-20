@@ -47,14 +47,14 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 		}
 	} 
 
-	$slider_pause_time = 4000;
+	$slider_pause_time = 4500;
 	if( isset($slider['pause']) ) {
 		if( $slider['pause'] == 'xslow' ) {
-			$slider_pause_time = 7000;
+			$slider_pause_time = 8000;
 		} elseif( $slider['pause'] == 'slow' ) {
-			$slider_pause_time = 5500;
+			$slider_pause_time = 6000;
 		} elseif( $slider['pause'] == 'medium' ) {
-			$slider_pause_time = 4000;
+			$slider_pause_time = 4500;
 		} elseif( $slider['pause'] == 'fast' ) {
 			$slider_pause_time = 2500;
 		} elseif( $slider['pause'] == 'xfast' ) {
