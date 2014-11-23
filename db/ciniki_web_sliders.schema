@@ -25,6 +25,15 @@
 #					slide
 #					random **future**
 #
+# speed:			The length of time the slider waits before moving to the next slide. Refer
+#					to ciniki/web/private/processSlider.php for the speeds.
+#
+#					xslow - 
+#					slow -
+#					medium -
+#					fast -
+#					xfast -
+#
 # date_added:		The date and time the domain was added to the table.
 # last_updated:		The date and time the domain was last updated.
 #
@@ -35,8 +44,9 @@ create table ciniki_web_sliders (
 	name varchar(150) not null,
 	size varchar(50) not null,
 	effect varchar(20) not null,
+	speed varchar(20) not null,
 	date_added datetime not null,
 	last_updated datetime not null,
 	primary key (id),
 	unique index sync (business_id, uuid, last_updated)
-) ENGINE=InnoDB, COMMENT='v1.01', CHARACTER SET latin1, COLLATE latin1_swedish_ci;
+) ENGINE=InnoDB, COMMENT='v1.02';

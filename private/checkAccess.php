@@ -65,6 +65,12 @@ function ciniki_web_checkAccess(&$ciniki, $business_id, $method) {
 		|| $method == 'ciniki.web.sliderImages'
 		|| $method == 'ciniki.web.sliderList'
 		|| $method == 'ciniki.web.sliderUpdate'
+		|| $method == 'ciniki.web.collectionAdd'
+		|| $method == 'ciniki.web.collectionDelete'
+		|| $method == 'ciniki.web.collectionGet'
+		|| $method == 'ciniki.web.collectionHistory'
+		|| $method == 'ciniki.web.collectionList'
+		|| $method == 'ciniki.web.collectionUpdate'
 		) {
 		$strsql = "SELECT business_id, user_id FROM ciniki_business_users "
 			. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "

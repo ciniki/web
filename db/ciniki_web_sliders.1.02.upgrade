@@ -1,0 +1,4 @@
+#
+#
+ALTER TABLE ciniki_web_sliders ADD COLUMN speed varchar(20) not null AFTER effect;
+ALTER TABLE ciniki_web_sliders COMMENT='v1.02';

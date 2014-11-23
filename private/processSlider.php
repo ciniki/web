@@ -48,16 +48,16 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 	} 
 
 	$slider_pause_time = 4500;
-	if( isset($slider['pause']) ) {
-		if( $slider['pause'] == 'xslow' ) {
+	if( isset($slider['speed']) ) {
+		if( $slider['speed'] == 'xslow' ) {
 			$slider_pause_time = 8000;
-		} elseif( $slider['pause'] == 'slow' ) {
+		} elseif( $slider['speed'] == 'slow' ) {
 			$slider_pause_time = 6000;
-		} elseif( $slider['pause'] == 'medium' ) {
+		} elseif( $slider['speed'] == 'medium' ) {
 			$slider_pause_time = 4500;
-		} elseif( $slider['pause'] == 'fast' ) {
+		} elseif( $slider['speed'] == 'fast' ) {
 			$slider_pause_time = 2500;
-		} elseif( $slider['pause'] == 'xfast' ) {
+		} elseif( $slider['speed'] == 'xfast' ) {
 			$slider_pause_time = 1000;
 		}
 	}
