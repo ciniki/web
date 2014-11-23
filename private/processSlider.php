@@ -70,6 +70,7 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 	$image_list = '';
 	$pager_list = '';
 	$count = 0;
+	$style = '';
 	foreach($slider['images'] as $image) {
 		//
 		// Check if the image_id is specified
@@ -102,7 +103,6 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
-		$style = '';
 		if( $image['url'] != '' ) {
 			$url_target = '';
 			if( preg_match("/^http/", $image['url']) ) {
@@ -121,6 +121,7 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 		$pager_list .= "<a rel='$count' class='" . ($count==0?'active':'') . "' onclick='javascript: sliders[0].goTo($count);'>" . ($count + 1) . "</a>";
 
 		$count++;
+		$style = 'style="display:none;"';
 	}
 
 	$javascript = "var Slider = function() { this.initialize.apply(this, arguments) }\n";
@@ -140,6 +141,7 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 	$javascript .= "	resize: function(index) {\n";
 	$javascript .= "		for(i in this.li) {\n";
 	$javascript .= "			if( this.li[i].style != null ) { \n";
+	$javascript .= "				this.li[i].style.display = '';\n";
 	$javascript .= "				this.li[i].style.width = this.ul.parentElement.clientWidth + 'px';\n";
 //	$javascript .= "				this.li[i].style.height = ((this.li[i].children[0].clientHeight*this.ul.parentElement.clientWidth)/this.li[i].children[0].clientWidth) + 'px';\n";
 	$javascript .= "			}\n";
