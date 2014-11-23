@@ -45,8 +45,8 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 		//
 		// Load the slider
 		//
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'loadSlider');
-		$rc = ciniki_web_loadSlider($ciniki, $settings, 
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'sliderLoad');
+		$rc = ciniki_web_sliderLoad($ciniki, $settings, 
 			$ciniki['request']['business_id'], $settings['page-home-slider']);
 		if( $rc['stat'] == 'ok' ) {
 			$slider = $rc['slider'];

@@ -1,4 +1,5 @@
 #
 #
 ALTER TABLE ciniki_web_sliders ADD COLUMN speed varchar(20) not null AFTER effect;
+UPDATE ciniki_web_sliders SET speed = 'medium' WHERE speed = '';
 ALTER TABLE ciniki_web_sliders COMMENT='v1.02';

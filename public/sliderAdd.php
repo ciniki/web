@@ -19,6 +19,7 @@ function ciniki_web_sliderAdd(&$ciniki) {
         'name'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Name'), 
         'size'=>array('required'=>'no', 'default'=>'medium', 'blank'=>'no', 'name'=>'Size'), 
         'effect'=>array('required'=>'no', 'default'=>'slide', 'blank'=>'yes', 'name'=>'Effect'), 
+        'speed'=>array('required'=>'no', 'default'=>'medium', 'blank'=>'yes', 'name'=>'Speed'), 
         'image_offset'=>array('required'=>'no', 'default'=>'middle-center', 'blank'=>'yes', 'name'=>'Position'), 
 		'images'=>array('required'=>'no', 'default'=>'', 'blank'=>'yes', 'type'=>'idlist', 'name'=>'Images'),
         )); 
