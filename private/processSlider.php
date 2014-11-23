@@ -70,7 +70,7 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 	$image_list = '';
 	$pager_list = '';
 	$count = 0;
-	$style = '';
+	$style = 'width:1024px;';
 	foreach($slider['images'] as $image) {
 		//
 		// Check if the image_id is specified
@@ -141,7 +141,7 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 	$javascript .= "	resize: function(index) {\n";
 	$javascript .= "		for(i in this.li) {\n";
 	$javascript .= "			if( this.li[i].style != null ) { \n";
-	$javascript .= "				this.li[i].style.display = '';\n";
+	$javascript .= "				this.li[i].style.display = 'inline-block';\n";
 	$javascript .= "				this.li[i].style.width = this.ul.parentElement.clientWidth + 'px';\n";
 //	$javascript .= "				this.li[i].style.height = ((this.li[i].children[0].clientHeight*this.ul.parentElement.clientWidth)/this.li[i].children[0].clientWidth) + 'px';\n";
 	$javascript .= "			}\n";
