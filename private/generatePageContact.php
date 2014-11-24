@@ -260,7 +260,7 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
 			&& $settings['page-contact-form-display'] == 'yes' 
 			&& $contact_form_submitted == 'no' 
 			) {
-			$content .= "<br style='clear: both;'/>";
+			$content .= "<br>";
 			if( isset($settings['page-contact-form-intro-message']) 
 				&& $settings['page-contact-form-intro-message'] != '' ) {
 				$content .= "<p>" . $settings['page-contact-form-intro-message'] . "</p>";
