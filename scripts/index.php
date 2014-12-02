@@ -41,7 +41,8 @@ require_once($ciniki_root . '/ciniki-mods/core/private/loadMethod.php');
 require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/dbInit.php');
 $rc = ciniki_core_dbInit($ciniki);
 if( $rc['stat'] != 'ok' ) {
-	return $rc;
+	print_error(NULL, 'There is currently a problem with our systems.  We are working to fix it as quickly as possible.  Please try again in a few minutes.');
+	exit;
 }
 
 //
