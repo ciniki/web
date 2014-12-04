@@ -156,10 +156,10 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 			}
 		}
 
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'shortenURL');
-		$surl = ciniki_web_shortenURL($ciniki, $ciniki['request']['business_id'], 
-			$ciniki['response']['head']['og']['url']);
-		
+//		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'shortenURL');
+//		$surl = ciniki_web_shortenURL($ciniki, $settings, $ciniki['request']['business_id'], 
+//			$ciniki['response']['head']['og']['url']);
+//		
 		//
 		// Get the album details
 		//

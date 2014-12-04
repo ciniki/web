@@ -19,10 +19,10 @@ function ciniki_web_processShareButtons(&$ciniki, $settings, $args) {
 
 	//
 	// Shorten the url
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'shortenURL');
-	$surl = ciniki_web_shortenURL($ciniki, $ciniki['request']['business_id'],
-		$ciniki['response']['head']['og']['url']);
-
+//	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'shortenURL');
+//	$surl = ciniki_web_shortenURL($ciniki, $settings, $ciniki['request']['business_id'],
+//		$ciniki['response']['head']['og']['url']);
+	$url = $ciniki['response']['head']['og']['url'];
 
 	$content .= "<p class='share-buttons-wrap'><span class='share-buttons'>"
 		. "<span class='socialtext'>Share on: </span>";
@@ -51,11 +51,14 @@ function ciniki_web_processShareButtons(&$ciniki, $settings, $args) {
 	foreach($tags as $tag) {
 		if( $tag == '' ) { continue; }
 		$tag = preg_replace('/ /', '', $tag);
-		if( (strlen($surl) + 1 + strlen($msg) + 2 + strlen($tag)) < 140 ) {
+		
+//		if( (strlen($surl) + 1 + strlen($msg) + 2 + strlen($tag)) < 140 ) {
+//		URLs only count as 22 characters in twitter, plus 1 for space.
+		if( (23 + strlen($msg) + 2 + strlen($tag)) < 140 ) {
 			$msg .= ' #' . $tag;
 		}
 	}
-	$content .= "<a href='https://twitter.com/share?url=" . urlencode($surl) . "&text=" . urlencode($msg) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
+	$content .= "<a href='https://twitter.com/share?url=" . urlencode($url) . "&text=" . urlencode($msg) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
 		. "<span title='Share on Twitter' class='socialsymbol social-twitter'>&#xe286;</span>"
 		. "</a>";
 

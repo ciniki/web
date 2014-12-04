@@ -200,10 +200,6 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'processDateRange');
 
-//		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'shortenURL');
-//		$surl = ciniki_web_shortenURL($ciniki, $ciniki['request']['business_id'], 
-//			$ciniki['response']['head']['og']['url']);
-
 		//
 		// Get the event information
 		//

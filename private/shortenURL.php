@@ -12,7 +12,11 @@
 // Returns
 // -------
 //
-function ciniki_web_shortenURL($ciniki, $business_id, $url) {
+function ciniki_web_shortenURL($ciniki, $settings, $business_id, $url) {
+
+	if( !isset($ciniki['config']['ciniki.web']['url.shorten.domain']) ) {
+		return $url;	
+	}
 
 	//
 	// Check if it already exists
