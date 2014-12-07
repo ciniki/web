@@ -40,6 +40,9 @@ function ciniki_web_processSponsorImages($ciniki, $settings, $base_url, $sponsor
 		case '50': $maxlength = 300; $size_class = 'xlarge'; break;
 	}
 
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'loadImage');
+
 	foreach($sponsors as $snum => $sponsor) {
 		if( isset($sponsor['sponsor']) ) { $sponsor = $sponsor['sponsor']; }
 		// 
@@ -68,7 +71,6 @@ function ciniki_web_processSponsorImages($ciniki, $settings, $base_url, $sponsor
 				//
 				// Load the image from the database
 				//
-				ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'loadImage');
 				$rc = ciniki_images_loadImage($ciniki, $ciniki['request']['business_id'], $sponsor['image_id'], 'original');
 				if( $rc['stat'] != 'ok' ) {
 					return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2052', 'msg'=>'Unable to generate image: ' . $sponsor['image_id'], 'err'=>$rc['err']));
