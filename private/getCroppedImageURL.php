@@ -74,7 +74,7 @@ function ciniki_web_getCroppedImageURL($ciniki, $image_id, $version, $args) {
 			$cache_ok = 'no';
 		}
 	}
-	if( $cache_ok = 'no' ) {
+	if( $cache_ok == 'no' ) {
 		//
 		// Load the image from the database
 		//
