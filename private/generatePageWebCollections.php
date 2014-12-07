@@ -243,7 +243,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
 			if( isset($rc['exhibitions']) && count($rc['exhibitions']) > 0 ) {
 				$exhibitions = $rc['exhibitions'];
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processExhibitions');
-				$rc = ciniki_web_processExhibitions($ciniki, $settings, $exhibitions, 0);
+				$rc = ciniki_web_processExhibitions($ciniki, $settings, $exhibitions, array('limit'=>0));
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
@@ -271,7 +271,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
 				if( isset($rc['exhibitions']) && count($rc['exhibitions']) > 0 ) {
 					$exhibitions = $rc['exhibitions'];
 					ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processExhibitions');
-					$rc = ciniki_web_processExhibitions($ciniki, $settings, $exhibitions, 0);
+					$rc = ciniki_web_processExhibitions($ciniki, $settings, $exhibitions, array('limit'=>0));
 					if( $rc['stat'] != 'ok' ) {
 						return $rc;
 					}
@@ -497,7 +497,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
 			if( isset($rc['exhibitions']) && count($rc['exhibitions']) > 0 ) {
 				$exhibitions = $rc['exhibitions'];
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processExhibitions');
-				$rc = ciniki_web_processExhibitions($ciniki, $settings, $exhibitions, $list_size);
+				$rc = ciniki_web_processExhibitions($ciniki, $settings, $exhibitions, array('limit'=>$list_size));
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}

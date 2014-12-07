@@ -9,19 +9,23 @@
 // ciniki:
 // settings:		The web settings structure, similar to ciniki variable but only web specific information.
 // events:			The array of events as returned by ciniki_events_web_list.
-// limit:			The number of events to show.  Only 2 events are shown on the homepage.
 //
 // Returns
 // -------
 //
-function ciniki_web_processExhibitions($ciniki, $settings, $exhibitions, $limit) {
+function ciniki_web_processExhibitions($ciniki, $settings, $exhibitions, $args) {
 
-//	$content = "<table class='exhibitors-list'>\n"
+	$page_limit = 0;
+	if( isset($args['limit']) ) {
+		$page_limit = $args['limit'];
+	}
+
 	$content = "<table class='cilist'>\n"
 		. "";
+	$total = count($exhibitions);
 	$count = 0;
 	foreach($exhibitions as $eid => $e) {
-		if( $limit > 0 && $count >= $limit ) { break; }
+		if( $page_limit > 0 && $count >= $page_limit ) { $count++; break; }
 		$exhibition = $e['exhibition'];
 		// Display the date
 		$exhibition_date = $exhibition['start_month'];
@@ -86,6 +90,9 @@ function ciniki_web_processExhibitions($ciniki, $settings, $exhibitions, $limit)
 		$content .= "</td></tr>";
 		if( $exhibition_url != '' ) {
 			$content .= "<tr><td class='cilist-more'><a href='$exhibition_url'>... more</a></td></tr>";
+		} elseif( ($count+1) == $total || ($page_limit > 0 && ($count+1) >= $page_limit) ) {
+			// Display a more for extra padding between lists
+			$content .= "<tr><td class='cilist-more'></td></tr>";
 		}
 		$content .= "</tbody></table>";
 		$content .= "</td></tr>";
@@ -94,6 +101,46 @@ function ciniki_web_processExhibitions($ciniki, $settings, $exhibitions, $limit)
 	$content .= "</table>\n"
 		. "";
 
-	return array('stat'=>'ok', 'content'=>$content);
+	//
+	// Check to see if we need prev and next buttons
+	//
+	$nav_content = '';
+	if( $page_limit > 0 && isset($args['base_url']) && $args['base_url'] != '' ) {
+		$prev = '';
+		if( isset($args['page']) && $args['page'] > 1 ) {
+			if( isset($args['base_url']) ) {
+				$prev .= "<a href='" . $args['base_url'] . "?page=" . ($args['page']-1) . "'>";
+				array_push($ciniki['response']['head']['links'], array('rel'=>'prev', 'href'=>$args['base_url'] . "?page=" . ($args['page']-1)));
+				if( isset($args['prev']) && $args['prev'] != '' ) {
+					$prev .= $args['prev'];
+				} else {
+					$prev .= 'Prev';
+				}
+				$prev .= "</a>";
+			}
+		}
+		$next = '';
+		if( isset($args['page']) && $count > $page_limit ) {
+			if( isset($args['base_url']) ) {
+				$next .= "<a href='" . $args['base_url'] . "?page=" . ($args['page']+1) . "'>";
+				array_push($ciniki['response']['head']['links'], array('rel'=>'next', 'href'=>$args['base_url'] . "?page=" . ($args['page']+1)));
+				if( isset($args['prev']) && $args['prev'] != '' ) {
+					$next .= $args['next'];
+				} else {
+					$next .= 'Next';
+				}
+				$next .= "</a>";
+			}
+		}
+		if( $next != '' || $prev != '' ) {
+			$nav_content = "<nav class='content-nav'>"
+				. "<span class='prev'>$next</span>"
+				. "<span class='next'>$prev</span>"
+				. "</nav>"
+				. "";
+		}
+	}
+
+	return array('stat'=>'ok', 'content'=>$content, 'nav'=>$nav_content);
 }
 ?>

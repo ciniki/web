@@ -310,27 +310,37 @@ function ciniki_web_main() {
 				'page-home-gallery-random':{'label':'Display Random Example Work', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-home-gallery-random-title':{'label':'Random Example Work Title', 'active':'no', 'type':'text', 'size':'small', 'hint':'Example Work'},
 				'page-home-latest-recipes':{'label':'Display Latest Recipes', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
-				'page-home-upcoming-artgalleryexhibitions':{'label':'Display Upcoming Exhibtions', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+//				'page-home-upcoming-artgalleryexhibitions':{'label':'Display Upcoming Exhibtions', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-home-products-latest':{'label':'Display Latest Products', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-home-products-latest-title':{'label':'Latest Products Title', 'active':'no', 'type':'text', 'size':'small', 'hint':'New Products'},
 				}},
-			'_blog':{'label':'', 'aside':'yes', 'active':'no', 'fields':{
-				'page-home-latest-blog':{'label':'Display Latest Blog', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+			'_artgalleryexhibitions':{'label':'Exhibitions', 'aside':'yes', 'active':'no', 'fields':{
+				'page-home-current-artgalleryexhibitions':{'label':'Display Current', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+				'page-home-current-artgalleryexhibitions-title':{'label':'Current Title', 'active':'yes', 'type':'text', 'hint':'Current Exhibitions'},
+				'page-home-current-artgalleryexhibitions-more':{'label':'More', 'active':'yes', 'type':'text', 'hint':'... more exhibitions'},
+				'page-home-current-artgalleryexhibitions-number':{'label':'Number of Current', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
+				'page-home-upcoming-artgalleryexhibitions':{'label':'Display Upcoming', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+				'page-home-upcoming-artgalleryexhibitions-title':{'label':'Upcoming Title', 'active':'yes', 'type':'text', 'hint':'Upcoming Exhibitions'},
+				'page-home-upcoming-artgalleryexhibitions-more':{'label':'More', 'active':'yes', 'type':'text', 'hint':'... more exhibitions'},
+				'page-home-upcoming-artgalleryexhibitions-number':{'label':'Number of Upcoming', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
+				}},
+			'_blog':{'label':'Blog', 'aside':'yes', 'active':'no', 'fields':{
+				'page-home-latest-blog':{'label':'Display Latest', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-home-latest-blog-title':{'label':'Title', 'active':'yes', 'type':'text', 'hint':'Latest Blog Posts'},
 				'page-home-latest-blog-more':{'label':'More', 'active':'yes', 'type':'text', 'hint':'... more blog posts'},
-				'page-home-latest-blog-number':{'label':'Number of Blog Entries', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
+				'page-home-latest-blog-number':{'label':'Number of Entries', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
 				}},
-			'_workshops':{'label':'', 'aside':'yes', 'active':'no', 'fields':{
-				'page-home-upcoming-workshops':{'label':'Display Upcoming Workshops', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+			'_workshops':{'label':'Workshops', 'aside':'yes', 'active':'no', 'fields':{
+				'page-home-upcoming-workshops':{'label':'Display Upcoming', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-home-upcoming-workshops-title':{'label':'Title', 'active':'yes', 'type':'text', 'hint':'Upcoming Workshops'},
 				'page-home-upcoming-workshops-more':{'label':'More', 'active':'yes', 'type':'text', 'hint':'... more workshops'},
-				'page-home-upcoming-workshops-number':{'label':'Number of Upcoming Workshops', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
+				'page-home-upcoming-workshops-number':{'label':'Number of Upcoming', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
 				}},
-			'_events':{'label':'', 'aside':'yes', 'active':'no', 'fields':{
-				'page-home-upcoming-events':{'label':'Display Upcoming Events', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+			'_events':{'label':'Events', 'aside':'yes', 'active':'no', 'fields':{
+				'page-home-upcoming-events':{'label':'Display Upcoming', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-home-upcoming-events-title':{'label':'Title', 'active':'yes', 'type':'text', 'hint':'Upcoming Events'},
 				'page-home-upcoming-events-more':{'label':'Title', 'active':'yes', 'type':'text', 'hint':'... more events'},
-				'page-home-upcoming-events-number':{'label':'Number of Upcoming Events', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
+				'page-home-upcoming-events-number':{'label':'Number of Upcoming', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
 				}},
 			'_slider':{'label':'Image Slider', 'aside':'yes', 'active':'no', 'fields':{
 				'page-home-slider':{'label':'Slider', 'active':'no', 'type':'select', 'options':{}},
@@ -983,12 +993,14 @@ function ciniki_web_main() {
 		//
 		this.artgalleryexhibitions = new M.panel('Exhibitions',
 			'ciniki_web_main', 'artgalleryexhibitions',
-			'mc', 'medium', 'sectioned', 'ciniki.web.main.artgalleryexhibitions');
+			'mc', 'medium mediumaside', 'sectioned', 'ciniki.web.main.artgalleryexhibitions');
 		this.artgalleryexhibitions.data = {};
 		this.artgalleryexhibitions.sections = {
-			'options':{'label':'Exhibition', 'fields':{
+			'options':{'label':'Exhibition', 'aside':'yes', 'fields':{
 				'page-artgalleryexhibitions-active':{'label':'Display Exhibitions', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-artgalleryexhibitions-past':{'label':'Include Past Exhibitions', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-artgalleryexhibitions-initial-number':{'label':'Initial Exhibitions/page', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
+				'page-artgalleryexhibitions-archive-number':{'label':'Archive Exhibitions/page', 'active':'yes', 'type':'text', 'size':'small', 'hint':'10'},
 				'page-artgalleryexhibitions-application-details':{'label':'Display Application Information', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				}},
 			'_image':{'label':'Image', 'fields':{
@@ -1019,10 +1031,10 @@ function ciniki_web_main() {
 		//
 		this.courses = new M.panel('Courses',
 			'ciniki_web_main', 'courses',
-			'mc', 'medium', 'sectioned', 'ciniki.web.main.courses');
+			'mc', 'medium mediumaside', 'sectioned', 'ciniki.web.main.courses');
 		this.courses.data = {};
 		this.courses.sections = {
-			'options':{'label':'Courses', 'fields':{
+			'options':{'label':'Courses', 'aside':'yes', 'fields':{
 				'page-courses-active':{'label':'Display Courses', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-courses-name':{'label':'Name', 'type':'text', 'hint':'Courses'},
 				'page-courses-upcoming-active':{'label':'Upcoming Courses', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
@@ -1034,14 +1046,14 @@ function ciniki_web_main() {
 				'page-courses-level-display':{'label':'Display course level', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 //				'page-courses-past-name':{'label':'Name', 'type':'text', 'hint':'Past Courses'},
 				}},
-			'_content':{'label':'Content', 'fields':{
-				'page-courses-content':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'large'},
-				}},
 			'_image':{'label':'Image', 'fields':{
 				'page-courses-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
 				}},
 			'_image_caption':{'label':'', 'fields':{
 				'page-courses-image-caption':{'label':'Caption', 'type':'text'},
+				}},
+			'_content':{'label':'Content', 'fields':{
+				'page-courses-content':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'large'},
 				}},
 			'subpages':{'label':'', 'visible':'yes', 'list':{
 				}},
@@ -1535,7 +1547,8 @@ function ciniki_web_main() {
 			this.home.sections._events.active=(M.curBusiness.modules['ciniki.events']!=null)?'yes':'no';
 			this.home.sections._workshops.active = (M.curBusiness.modules['ciniki.workshops']!=null)?'yes':'no';
 			this.home.sections.options.fields['page-home-latest-recipes'].active=(M.curBusiness.modules['ciniki.recipes']!=null)?'yes':'no';
-			this.home.sections.options.fields['page-home-upcoming-artgalleryexhibitions'].active = (M.curBusiness.modules['ciniki.artgallery']!=null)?'yes':'no';
+			this.home.sections._artgalleryexhibitions.active=(M.curBusiness.modules['ciniki.artgallery']!=null)?'yes':'no';
+//			this.home.sections.options.fields['page-home-upcoming-artgalleryexhibitions'].active = (M.curBusiness.modules['ciniki.artgallery']!=null)?'yes':'no';
 			this[page].refresh();
 			this[page].show(cb);
 		} else if( page == 'gallery' ) {
