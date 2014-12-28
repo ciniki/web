@@ -157,6 +157,9 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 			}
 			$last = $image;
 		}
+		if( $img == NULL ) {
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2120', 'msg'=>"We're sorry, but we could not find the image you requested."));
+		}
 
 		if( count($post['images']) == 1 ) {
 			$prev = NULL;
@@ -174,6 +177,7 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 		} else {
 			$page_title = $post['title'];
 		}
+
 	
 		//
 		// Load the image

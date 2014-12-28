@@ -126,6 +126,9 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1309', 'msg'=>"I'm sorry, but we can't seem to find the image your requested.", $rc['err']));
 		}
 		$img = $rc['image'];
+		if( $img['image_id'] == 0 ) {
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2121', 'msg'=>"I'm sorry, but we can't seem to find the image your requested."));
+		}
 		$page_title = $img['title'];
 		$ciniki['response']['head']['og']['url'] .= '/' . $category_uri_component . '/' . $img['category_permalink'] . '/' . $img['permalink'];
 		$tags[] = preg_replace('/[^A-Za-z0-9_-]/', '', $img['category']);
