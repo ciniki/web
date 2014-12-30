@@ -65,11 +65,12 @@ function ciniki_web_generatePage500(&$ciniki, $settings, $errors) {
 	error_log($err_msg);
 
 	//
-	// FIXME: Email sysadmins there was a problem with a web request
+	// Email sysadmins there was a problem with a web request
 	//
 	$ciniki['emailqueue'][] = array('to'=>$ciniki['config']['ciniki.core']['alerts.notify'],
 		'subject'=>'Web ERR 500',
-		'textmsg'=>$_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'],
+		'textmsg'=>$_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "\n"
+			. print_r($errors, true),
 		);
 
 	//
