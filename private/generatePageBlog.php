@@ -126,6 +126,7 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 		//
 		$ciniki['response']['head']['og']['url'] .= '/' . $post_permalink;
 		if( isset($post['image_id']) && $post['image_id'] > 0 ) {
+			// Check for the primary image in the post
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 			$rc = ciniki_web_getScaledImageURL($ciniki, $post['image_id'], 'original', '500', 0);
 			if( $rc['stat'] != 'ok' ) {
@@ -182,12 +183,16 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 		//
 		// Load the image
 		//
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-		$rc = ciniki_web_getScaledImageURL($ciniki, $img['image_id'], 'original', 0, 600);
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
+		if( $img['image_id'] > 0 ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+			$rc = ciniki_web_getScaledImageURL($ciniki, $img['image_id'], 'original', 0, 600);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$img_url = $rc['url'];
+		} else {
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2117', 'msg'=>"We're sorry, but we could not find the image you requested."));
 		}
-		$img_url = $rc['url'];
 
 		//
 		// Set the page to wide if possible
