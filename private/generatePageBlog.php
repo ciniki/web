@@ -118,7 +118,7 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 		$post = $rc['post'];
 
 		if( !isset($post['images']) || count($post['images']) < 1 ) {
-			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1590', 'msg'=>'Unable to find image'));
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1590', 'msg'=>"We're sorry, but we could not find the image you requested."));
 		}
 
 		//
