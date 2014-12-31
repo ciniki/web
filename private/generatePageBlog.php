@@ -111,7 +111,7 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 		//
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'blog', 'web', 'postDetails');
 		$rc = ciniki_blog_web_postDetails($ciniki, $settings, 
-			$ciniki['request']['business_id'], $post_permalink, $blogtype);
+			$ciniki['request']['business_id'], array('permalink'=>$post_permalink, 'blogtype'=>$blogtype));
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
@@ -469,222 +469,20 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 		$post_permalink = $ciniki['request']['uri_split'][0];
 		$ciniki['response']['head']['og']['url'] .= '/' . $post_permalink;
 		$rc = ciniki_blog_web_postDetails($ciniki, $settings, 
-			$ciniki['request']['business_id'], $post_permalink, $blogtype);
+			$ciniki['request']['business_id'], array('permalink'=>$post_permalink, 'blogtype'=>$blogtype));
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
 		$post = $rc['post'];
 		$page_title = $post['title'];
-		$page_content .= "<article class='page'>\n"
-			. "<header class='entry-title'><h1 class='entry-title'>" . $post['title'] . "</h1>"
-			. "";
-		$meta_content = '';
-		$meta_content .= 'Published: <time datetime="' . $post['publish_datetime'] . '" pubdate="pubdate">' . $post['publish_date'] . '</time>';
-		if( $meta_content != '' ) {
-			$page_content .= "<div class='entry-meta'>" . $meta_content . "</div>";
-		}
-		$page_content .= "</header>\n"
-			. "";
 
-		//
-		// Add primary image
-		//
-		if( isset($post['image_id']) && $post['image_id'] > 0 ) {
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-			$rc = ciniki_web_getScaledImageURL($ciniki, $post['image_id'], 'original', '500', 0);
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
-			}
-			$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
-			$page_content .= "<aside><div class='image-wrap'><div class='image'>"
-				. "<img title='' alt='" . $post['title'] . "' src='" . $rc['url'] . "' />"
-				. "</div></div></aside>";
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlogPost');
+		$rc = ciniki_web_processBlogPost($ciniki, $settings, $post, 
+			array('blogtype'=>$blogtype, 'output'=>'web'));
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
 		}
-
-		if( isset($post['excerpt']) && $post['excerpt'] != '' ) {
-			$ciniki['response']['head']['og']['description'] = strip_tags($post['excerpt']);
-		} elseif( isset($post['content']) && $post['content'] != '' ) {
-			$ciniki['response']['head']['og']['description'] = strip_tags($post['content']);
-		}
-		
-		//
-		// Add description
-		//
-		if( isset($post['content']) && $post['content'] != '' ) {
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $post['content']);	
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
-			}
-			$page_content .= $rc['content'];
-		}
-
-		//
-		// Display the files for the posts
-		//
-		if( isset($post['files']) && count($post['files']) > 0 ) {
-			$page_content .= "<p>";
-			foreach($post['files'] as $file) {
-				$url = $ciniki['request']['base_url'] . "/$blogtype/" . $ciniki['request']['uri_split'][0] . '/download/' . $file['permalink'] . '.' . $file['extension'];
-//				$page_content .= "<span class='downloads-title'>";
-				if( $url != '' ) {
-					$page_content .= "<a target='_blank' href='" . $url . "' title='" . $file['name'] . "'>" . $file['name'] . "</a>";
-				} else {
-					$page_content .= $file['name'];
-				}
-//				$page_content .= "</span>";
-				if( isset($file['description']) && $file['description'] != '' ) {
-					$page_content .= "<br/><span class='downloads-description'>" . $file['description'] . "</span>";
-				}
-				$page_content .= "<br/>";
-			}
-			$page_content .= "</p>";
-		}
-	
-		//
-		// Display the links for the posts
-		//
-		if( isset($post['links']) && count($post['links']) > 0 ) {
-			$page_content .= "<p>";
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
-			foreach($post['links'] as $link) {
-				$rc = ciniki_web_processURL($ciniki, $link['url']);
-				if( $rc['stat'] != 'ok' ) {
-					return $rc;
-				}
-				if( $rc['url'] != '' ) {
-					$page_content .= "<a target='_blank' href='" . $rc['url'] . "' title='" 
-						. ($link['name']!=''?$link['name']:$rc['display_url']) . "'>" 
-						. ($link['name']!=''?$link['name']:$rc['display_url'])
-						. "</a>";
-				} else {
-					$page_content .= $link['name'];
-				}
-				if( isset($link['description']) && $link['description'] != '' ) {
-					$page_content .= "<br/><span class='downloads-description'>" . $link['description'] . "</span>";
-				}
-				$page_content .= "<br/>";
-			}
-			$page_content .= "</p>";
-		}
-	
-		//
-		// Display the categories and tags for the blog post
-		//
-		$meta_content = '';
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processTagList');
-		if( isset($post['categories']) && count($post['categories']) > 0 ) {
-			$rc = ciniki_web_processTagList($ciniki, $settings, 
-				$ciniki['request']['base_url'] . "/$blogtype/category", $post['categories'], array('delimiter'=>', '));
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
-			}
-			if( isset($rc['content']) && $rc['content'] != '' ) {
-				$meta_content .= 'Filed under: ' . $rc['content'];
-			}
-		}
-		if( isset($post['tags']) && count($post['tags']) > 0 ) {
-			$rc = ciniki_web_processTagList($ciniki, $settings,
-				$ciniki['request']['base_url'] . "/$blogtype/tag", $post['tags'], array('delimiter'=>', '));
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
-			}
-			if( isset($rc['content']) && $rc['content'] != '' ) {
-				$meta_content .= ($meta_content!=''?'<br/>':'') . 'Tags: ' . $rc['content'];
-			}
-		}
-		if( $meta_content != '' ) {
-			$page_content .= '<p class="entry-meta">' . $meta_content . '</p>';
-		}
-
-		//
-		// Check if share buttons should be shown
-		//
-		if( (!isset($settings['page-blog-share-buttons']) || $settings['page-blog-share-buttons'] == 'yes') 
-			&& $blogtype = 'blog'
-			) {
-			$tags = array();
-			if( isset($post['categories']) ) {
-				foreach($post['categories'] as $cat) {
-					$tags[] = $cat['name'];
-				}
-			}
-			if( isset($post['tags']) ) {
-				foreach($post['tags'] as $tag) {
-					$tags[] = $tag['name'];
-				}
-			}
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processShareButtons');
-			$rc = ciniki_web_processShareButtons($ciniki, $settings, array(
-				'title'=>$page_title,
-				'tags'=>$tags,
-				));
-			if( $rc['stat'] == 'ok' ) {
-				$page_content .= $rc['content'];
-			}
-		}
-
-
-		//
-		// End of the main article content
-		//
-		$page_content .= "<br style='clear:both'/>";
-		$page_content .= "</article>";
-
-		//
-		// Display the additional images for the post
-		//
-		if( isset($post['images']) && count($post['images']) > 0 ) {
-			$page_content .= "<article class='page'>"	
-				. "<header class='entry-title'><h2 class='entry-title'>Gallery</h2></header>\n"
-				. "";
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
-			$img_base_url = $ciniki['request']['base_url'] . "/$blogtype/" . $post['permalink'] . "/gallery";
-			$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $post['images'], 125);
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
-			}
-			$page_content .= "<div class='image-gallery'>" . $rc['content'] . "</div>";
-			$page_content .= "</article>";
-		}
-
-		//
-		// Display the products linked to this blog post
-		//
-		if( isset($post['products']) && count($post['products']) > 0 ) {
-			$page_content .= "<article class='page'>"
-				. "<header class='entry-title'><h2 class='entry-title'>Products</h2></header>\n"
-				. "";
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
-			$base_url = $ciniki['request']['base_url'] . "/products/p";
-			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, array('0'=>array(
-				'name'=>'', 'noimage'=>'/ciniki-web-layouts/default/img/noimage_240.png',
-				'list'=>$post['products'])), array());
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
-			}
-			$page_content .= "<div class='entry-content'>" . $rc['content'] . "</div>";
-			$page_content .= "</article>";
-		}
-
-		//
-		// Display the recipes
-		//
-		if( isset($post['recipes']) && count($post['recipes']) > 0 ) {
-			$page_content .= "<article class='page'>"
-				. "<header class='entry-title'><h2 class='entry-title'>Recipes</h2></header>\n"
-				. "";
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
-			$base_url = $ciniki['request']['base_url'] . "/recipes/i";
-			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, array('0'=>array(
-				'name'=>'', 'noimage'=>'/ciniki-web-layouts/default/img/noimage_240.png',
-				'list'=>$post['recipes'])), array());
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
-			}
-			$page_content .= "<div class='entry-content'>" . $rc['content'] . "</div>";
-			$page_content .= "</article>";
-		}
+		$page_content .= $rc['content'];
 	}
 
 	//

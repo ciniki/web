@@ -37,4 +37,3 @@ function ciniki_web_processTagList($ciniki, $settings, $base_url, $tags, $args) 
 	return array('stat'=>'ok', 'content'=>$content);
 }
 ?>
-

@@ -57,7 +57,6 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
 	}
 	$content .= "</div>";
 	$content .= "<br style='clear:both;'/>";
-	$content .= "</article>\n";
 
 	//
 	// Display the additional images for the content
@@ -133,7 +132,8 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
 		$content .= $rc['content'];
 	}
 
+	$content .= "</article>\n";
+
 	return array('stat'=>'ok', 'content'=>$content);
 }
 ?>
-

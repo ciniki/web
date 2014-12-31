@@ -120,4 +120,3 @@ function ciniki_web_processWorkshops($ciniki, $settings, $workshops, $limit) {
 	return array('stat'=>'ok', 'content'=>$content);
 }
 ?>
-

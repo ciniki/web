@@ -69,4 +69,3 @@ function ciniki_web_processAudio(&$ciniki, $settings, $business_id, $audio, $arg
 	return array('stat'=>'ok', 'content'=>$content);
 }
 ?>
-

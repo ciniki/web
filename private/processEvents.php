@@ -120,4 +120,3 @@ function ciniki_web_processEvents($ciniki, $settings, $events, $limit) {
 	return array('stat'=>'ok', 'content'=>$content);
 }
 ?>
-

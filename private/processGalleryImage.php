@@ -112,4 +112,3 @@ function ciniki_web_processGalleryImage(&$ciniki, $settings, $business_id, $args
 	return array('stat'=>'ok', 'content'=>$content);
 }
 ?>
-

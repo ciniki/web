@@ -169,4 +169,3 @@ function ciniki_web_processProduct(&$ciniki, $settings, $business_id, $base_url,
 	return array('stat'=>'ok', 'content'=>$content);
 }
 ?>
-
