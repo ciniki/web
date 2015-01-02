@@ -33,6 +33,9 @@ function ciniki_web_processContent($ciniki, $unprocessed_content, $pclass='') {
 //	$pattern1 = '#(www\.[a-zA-Z0-9\-\.]+)#m';
 //	$pattern1 = '#\n([^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#m';
 //	$pattern = '#\b(((?<!(href=(\"|\')|.....>))https?://?|(?<!(://|..>))www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';
+	//
+	// 	Similar code to mail/private/emailProcessContent
+	//
 	$pattern = '#\b(((?<!(=(\"|\')|.>))https?://?|(?<!(//|.>))www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';
 	$callback = create_function('$matches', '
 		$display_url = $matches[1];
