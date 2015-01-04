@@ -61,6 +61,7 @@ function ciniki_web_about() {
 				'page-about-artists-active':{'label':'Display Artists', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-about-employment-active':{'label':'Display Employment', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-about-staff-active':{'label':'Display Staff', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-about-sponsorship-active':{'label':'Display Sponsorship', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				}},
 //			'subpages':{'label':'', 'list':{
 //				'aboutartiststatement':{'label':'Artist Statement', 'visible':'no', 'fn':'M.ciniki_web_about.showPage(\'M.ciniki_web_about.about.show();\',\'aboutartiststatement\');'},
@@ -397,6 +398,7 @@ function ciniki_web_about() {
 				this.about.sections.options.fields['page-about-artists-active'].active = (flags&0x080000)>0?'yes':'no';
 				this.about.sections.options.fields['page-about-employment-active'].active = (flags&0x100000)>0?'yes':'no';
 				this.about.sections.options.fields['page-about-staff-active'].active = (flags&0x200000)>0?'yes':'no';
+				this.about.sections.options.fields['page-about-sponsorship-active'].active = (flags&0x400000)>0?'yes':'no';
 			} else {
 				this.about.sections.options.fields['page-about-active'].active = 'yes';
 				this.about.sections.options.fields['page-about-artiststatement-active'].active = 'no';
@@ -419,6 +421,7 @@ function ciniki_web_about() {
 				this.about.sections.options.fields['page-about-artists-active'].active = 'no';
 				this.about.sections.options.fields['page-about-employment-active'].active = 'no';
 				this.about.sections.options.fields['page-about-staff-active'].active = 'no';
+				this.about.sections.options.fields['page-about-sponsorship-active'].active = 'no';
 			}
 
 //			this.about.sections.subpages.list.aboutartiststatement.visible = 'no';

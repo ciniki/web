@@ -24,7 +24,8 @@ function ciniki_web_info() {
 		'19':{'name':'Financial Assistance', 'permalink':'financialassistance', 'flags':0x040000},
 		'20':{'name':'Artists', 'permalink':'artists', 'flags':0x080000},
 		'21':{'name':'Employment', 'permalink':'employment', 'flags':0x100000},
-		'22':{'name':'Staff', 'permalink':'Staff', 'flags':0x200000},
+		'22':{'name':'Staff', 'permalink':'staff', 'flags':0x200000},
+		'23':{'name':'Sponsorship', 'permalink':'sponsorship', 'flags':0x400000},
 	};
 	
 	this.init = function() {

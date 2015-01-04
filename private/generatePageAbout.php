@@ -109,6 +109,7 @@ function ciniki_web_generatePageAbout($ciniki, $settings) {
 				case 20: $page_settings_name = 'artists'; break;
 				case 21: $page_settings_name = 'employment'; break;
 				case 22: $page_settings_name = 'staff'; break;
+				case 23: $page_settings_name = 'sponsorship'; break;
 			}
 		}
 	}
@@ -468,6 +469,12 @@ function ciniki_web_generatePageAbout($ciniki, $settings) {
 		) {
 		$submenu['staff'] = array('name'=>$info_pages['22']['title'], 
 			'url'=>$ciniki['request']['base_url'] . '/about/' . $info_pages['22']['permalink']);
+	}
+	if( isset($settings['page-about-sponsorship-active']) && $settings['page-about-sponsorship-active'] == 'yes' 
+		&& isset($info_pages['23'])
+		) {
+		$submenu['sponsorship'] = array('name'=>$info_pages['23']['title'], 
+			'url'=>$ciniki['request']['base_url'] . '/about/' . $info_pages['23']['permalink']);
 	}
 
 	//
