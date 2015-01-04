@@ -65,7 +65,9 @@ function ciniki_web_siteSettings($ciniki) {
 	//
 	$pages = array();
 	$pages['home'] = array('display_name'=>'Home', 'active'=>'no');
-	$pages['about'] = array('display_name'=>'About', 'active'=>'no');
+	if( isset($modules['ciniki.info']) ) {
+		$pages['about'] = array('display_name'=>'About', 'active'=>'no');
+	}
 	if( isset($modules['ciniki.marketing']) && ($modules['ciniki.marketing']['flags']&0x01) == 0x01 ) {
 		$pages['features'] = array('display_name'=>'Features', 'active'=>'no');
 	}
@@ -157,6 +159,9 @@ function ciniki_web_siteSettings($ciniki) {
 		$pages['api'] = array('display_name'=>'API', 'active'=>'no');
 	}
 	$pages['faq'] = array('display_name'=>'FAQ', 'active'=>'no');
+	if( isset($modules['ciniki.info']) && ($modules['ciniki.web']['flags']&0x20) > 0 ) {
+		$pages['info'] = array('display_name'=>'Information', 'active'=>'no');
+	}
 	$pages['contact'] = array('display_name'=>'Contact', 'active'=>'no');
 
 	//
@@ -282,6 +287,9 @@ function ciniki_web_siteSettings($ciniki) {
 	}
 	if( isset($settings['page-memberblog-active']) && $settings['page-memberblog-active'] == 'yes' ) {
 		$pages['memberblog']['active'] = 'yes';
+	}
+	if( isset($settings['page-info-active']) && $settings['page-info-active'] == 'yes' ) {
+		$pages['info']['active'] = 'yes';
 	}
 
 	//

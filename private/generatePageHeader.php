@@ -702,6 +702,15 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 //	if( isset($settings['page-sponsors-active']) && $settings['page-sponsors-active'] == 'yes' ) {
 //		$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='sponsors'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/sponsors'>Sponsors</a></li>";
 //	}
+	if( isset($settings['page-info-active']) && $settings['page-info-active'] == 'yes' ) {
+		$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='info'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/info'>";
+		if( isset($settings['page-info-name']) && $settings['page-info-name'] != '' ) {
+			$content .= $settings['page-info-name'];
+		} else {
+			$content .= "Info";
+		}
+		$content .= "</a></li>";
+	}
 	if( isset($settings['page-contact-active']) && $settings['page-contact-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='contact'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/contact'>Contact</a></li>";
 	}

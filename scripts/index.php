@@ -633,6 +633,12 @@ elseif( $ciniki['request']['page'] == 'collection'
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageWebCollections.php');
 	$rc = ciniki_web_generatePageWebCollections($ciniki, $settings);
 } 
+// Info
+elseif( $ciniki['request']['page'] == 'info' 
+	&& isset($settings['page-info-active']) && $settings['page-info-active'] == 'yes' ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageInfo.php');
+	$rc = ciniki_web_generatePageInfo($ciniki, $settings, 'info');
+} 
 // Contact
 elseif( $ciniki['request']['page'] == 'contact' 
 	&& isset($settings['page-contact-active']) && $settings['page-contact-active'] == 'yes' ) {

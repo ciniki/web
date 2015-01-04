@@ -122,6 +122,8 @@ function ciniki_web_main() {
 //				}
 				if( d.page.name == 'about' ) {
 					return 'M.startApp(\'ciniki.web.about\',null,\'M.ciniki_web_main.showMenu();\')';
+				} else if( d.page.name == 'info' ) {
+					return 'M.startApp(\'ciniki.web.info\',null,\'M.ciniki_web_main.showMenu();\')';
 				} else if( d.page.name == 'faq' ) {
 					return 'M.startApp(\'ciniki.web.faq\',null,\'M.ciniki_web_main.showMenu();\')';
 				}
