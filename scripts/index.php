@@ -462,8 +462,10 @@ elseif( $ciniki['request']['page'] == 'home'
 // About
 elseif( $ciniki['request']['page'] == 'about' 
 	&& isset($settings['page-about-active']) && $settings['page-about-active'] == 'yes' ) {
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageAbout.php');
-	$rc = ciniki_web_generatePageAbout($ciniki, $settings);
+//	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageAbout.php');
+//	$rc = ciniki_web_generatePageAbout($ciniki, $settings);
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageInfo.php');
+	$rc = ciniki_web_generatePageInfo($ciniki, $settings, 'about');
 } 
 // Features
 elseif( $ciniki['request']['page'] == 'features' 

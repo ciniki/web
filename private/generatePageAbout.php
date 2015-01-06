@@ -110,6 +110,7 @@ function ciniki_web_generatePageAbout($ciniki, $settings) {
 				case 21: $page_settings_name = 'employment'; break;
 				case 22: $page_settings_name = 'staff'; break;
 				case 23: $page_settings_name = 'sponsorship'; break;
+				case 24: $page_settings_name = 'jobs'; break;
 			}
 		}
 	}
@@ -463,6 +464,12 @@ function ciniki_web_generatePageAbout($ciniki, $settings) {
 		) {
 		$submenu['employment'] = array('name'=>$info_pages['21']['title'], 
 			'url'=>$ciniki['request']['base_url'] . '/about/' . $info_pages['21']['permalink']);
+	}
+	if( isset($settings['page-about-jobs-active']) && $settings['page-about-jobs-active'] == 'yes' 
+		&& isset($info_pages['24'])
+		) {
+		$submenu['jobs'] = array('name'=>$info_pages['24']['title'], 
+			'url'=>$ciniki['request']['base_url'] . '/about/' . $info_pages['24']['permalink']);
 	}
 	if( isset($settings['page-about-staff-active']) && $settings['page-about-staff-active'] == 'yes' 
 		&& isset($info_pages['22'])

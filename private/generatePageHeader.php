@@ -486,7 +486,13 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	}
 //	print "<pre>" .  print_r($ciniki['request'], true) . "</pre>";
 	if( isset($settings['page-about-active']) && $settings['page-about-active'] == 'yes' ) {
-		$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='about'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/about'>About</a></li>";
+		$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='about'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/about'>";
+		if( isset($settings['page-about-title']) && $settings['page-about-title'] != '' ) {
+			$content .= $settings['page-about-title'];
+		} else {
+			$content .= "About";
+		}
+		$content .= "</a></li>";
 	}
 
 	//
@@ -704,8 +710,8 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 //	}
 	if( isset($settings['page-info-active']) && $settings['page-info-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='info'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/info'>";
-		if( isset($settings['page-info-name']) && $settings['page-info-name'] != '' ) {
-			$content .= $settings['page-info-name'];
+		if( isset($settings['page-info-title']) && $settings['page-info-title'] != '' ) {
+			$content .= $settings['page-info-title'];
 		} else {
 			$content .= "Info";
 		}

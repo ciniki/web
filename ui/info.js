@@ -5,27 +5,28 @@ function ciniki_web_info() {
 	
 	this.activeToggles = {'no':'No', 'yes':'Yes'};
 	this.subpages = {
-		'2':{'name':'Artist Statement', 'permalink':'artiststatement', 'flags':0x02},
-		'3':{'name':'CV', 'permalink':'cv', 'flags':0x04},
-		'4':{'name':'Awards', 'permalink':'awards', 'flags':0x08},
-		'5':{'name':'History', 'permalink':'history', 'flags':0x10},
-		'6':{'name':'Donations', 'permalink':'donations', 'flags':0x20},
-		'9':{'name':'Facilities', 'permalink':'facilities', 'flags':0x100},
-		'8':{'name':'Board of Directors', 'permalink':'boardofdirectors', 'flags':0x80},
-		'7':{'name':'Membership', 'permalink':'membership', 'flags':0x40},
-		'11':{'name':'Warranty', 'permalink':'warranty', 'flags':0x0400},
-		'12':{'name':'Testimonials', 'permalink':'testimonials', 'flags':0x0800},
-		'13':{'name':'Reviews', 'permalink':'reviews', 'flags':0x1000},
-		'14':{'name':'Green Policy', 'permalink':'greenpolicy', 'flags':0x2000},
-		'15':{'name':'Why us', 'permalink':'whyus', 'flags':0x4000},
-		'16':{'name':'Privacy Policy', 'permalink':'privacypolicy', 'flags':0x8000},
-		'17':{'name':'Volunteer', 'permalink':'volunteer', 'flags':0x010000},
-		'18':{'name':'Rental', 'permalink':'rental', 'flags':0x020000},
-		'19':{'name':'Financial Assistance', 'permalink':'financialassistance', 'flags':0x040000},
-		'20':{'name':'Artists', 'permalink':'artists', 'flags':0x080000},
-		'21':{'name':'Employment', 'permalink':'employment', 'flags':0x100000},
-		'22':{'name':'Staff', 'permalink':'staff', 'flags':0x200000},
-		'23':{'name':'Sponsorship', 'permalink':'sponsorship', 'flags':0x400000},
+		'2':{'name':'Artist Statement', 'ui':'artiststatement', 'permalink':'artiststatement', 'flags':0x02},
+		'3':{'name':'CV', 'ui':'cv', 'permalink':'cv', 'flags':0x04},
+		'4':{'name':'Awards', 'ui':'awards', 'permalink':'awards', 'flags':0x08},
+		'5':{'name':'History', 'ui':'history', 'permalink':'history', 'flags':0x10},
+		'6':{'name':'Donations', 'ui':'donations', 'permalink':'donations', 'flags':0x20},
+		'9':{'name':'Facilities', 'ui':'facilities', 'permalink':'facilities', 'flags':0x100},
+		'8':{'name':'Board of Directors', 'ui':'boardofdirectors', 'permalink':'boardofdirectors', 'flags':0x80},
+		'7':{'name':'Membership', 'ui':'membership', 'permalink':'membership', 'flags':0x40},
+		'11':{'name':'Warranty', 'ui':'warranty', 'permalink':'warranty', 'flags':0x0400},
+		'12':{'name':'Testimonials', 'ui':'testimonials', 'permalink':'testimonials', 'flags':0x0800},
+		'13':{'name':'Reviews', 'ui':'reviews', 'permalink':'reviews', 'flags':0x1000},
+		'14':{'name':'Green Policy', 'ui':'greenpolicy', 'permalink':'greenpolicy', 'flags':0x2000},
+		'15':{'name':'Why us', 'ui':'whyus', 'permalink':'whyus', 'flags':0x4000},
+		'16':{'name':'Privacy Policy', 'ui':'privacypolicy', 'permalink':'privacypolicy', 'flags':0x8000},
+		'17':{'name':'Volunteer', 'ui':'volunteer', 'permalink':'volunteer', 'flags':0x010000},
+		'18':{'name':'Rental', 'ui':'rental', 'permalink':'rental', 'flags':0x020000},
+		'19':{'name':'Financial Assistance', 'ui':'financialassistance', 'permalink':'financialassistance', 'flags':0x040000},
+		'20':{'name':'Artists', 'ui':'artists', 'permalink':'artists', 'flags':0x080000},
+		'21':{'name':'Employment', 'ui':'employment', 'permalink':'employment', 'flags':0x100000},
+		'22':{'name':'Staff', 'ui':'staff', 'permalink':'staff', 'flags':0x200000},
+		'23':{'name':'Sponsorship', 'ui':'sponsorship', 'permalink':'sponsorship', 'flags':0x400000},
+		'24':{'name':'Jobs', 'ui':'jobs', 'permalink':'jobs', 'flags':0x800000},
 	};
 	
 	this.init = function() {
@@ -92,7 +93,8 @@ function ciniki_web_info() {
 				for(i in spgs) {
 					if( (spgs[i].flags&flags) > 0 ) {	
 						options[i] = spgs[i].name;
-						p.sections.subpages.fields['page-info-' + spgs[i].permalink + '-active'] = {'label':'Display ' + spgs[i].name,
+						p.sections.subpages.fields['page-info-' + spgs[i].permalink + '-active'] = {'label':spgs[i].name,
+							'editFn':'M.ciniki_web_info.editInfo(\'' + i + '\');',
 							'type':'toggle', 'default':'no', 'toggles':M.ciniki_web_info.activeToggles};
 					}
 				}
@@ -100,6 +102,12 @@ function ciniki_web_info() {
 				p.refresh();
 				p.show(cb);
 			});
+	}
+
+	this.editInfo = function(ct) {
+		if( this.subpages[ct] != null ) {
+			M.startApp('ciniki.info.' + this.subpages[ct].ui,null,'M.ciniki_web_info.page.show();');
+		}
 	}
 
 	this.savePage = function() {

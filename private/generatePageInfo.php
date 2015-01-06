@@ -83,6 +83,10 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
 				$content_type = $page['content_type'];
 			}
 		}
+	} elseif( $pg == 'about' ) {
+		$content_type = 1;
+		$page_permalink = 'about';
+		$page_settings_name = 'about';
 	} elseif( isset($settings["page-$pg-defaultcontenttype"]) && $settings["page-$pg-defaultcontenttype"] != '' ) {
 		$content_type = $settings["page-$pg-defaultcontenttype"];
 		$page_permalink = '';
@@ -121,6 +125,7 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
 			case 21: $page_settings_name = 'employment'; break;
 			case 22: $page_settings_name = 'staff'; break;
 			case 23: $page_settings_name = 'sponsorship'; break;
+			case 24: $page_settings_name = 'jobs'; break;
 		}
 	}
 
@@ -292,6 +297,27 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
 		$page_content .= $rc['content'];
 	}
 
+	//
+	// Special page for about page
+	//
+	elseif(	$pg == 'about' && $content_type == 1 ) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'pageDetails');
+		$rc = ciniki_info_web_pageDetails($ciniki, $settings, $ciniki['request']['business_id'], 
+			array('content_type'=>1));
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$info = $rc['content'];
+		
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processPage');
+		$rc = ciniki_web_processPage($ciniki, $settings, $ciniki['request']['base_url'] . "/$pg", $info, 
+			array());
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$page_content .= $rc['content'];
+	}
+
 	else {
 		//
 		// No default page
@@ -405,6 +431,12 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
 		) {
 		$submenu['employment'] = array('name'=>$info_pages['21']['title'], 
 			'url'=>$ciniki['request']['base_url'] . "/$pg/" . $info_pages['21']['permalink']);
+	}
+	if( isset($settings['page-info-jobs-active']) && $settings['page-info-jobs-active'] == 'yes' 
+		&& isset($info_pages['24'])
+		) {
+		$submenu['jobs'] = array('name'=>$info_pages['24']['title'], 
+			'url'=>$ciniki['request']['base_url'] . '/info/' . $info_pages['24']['permalink']);
 	}
 	if( isset($settings["page-$pg-staff-active"]) && $settings["page-$pg-staff-active"] == 'yes' 
 		&& isset($info_pages['22'])

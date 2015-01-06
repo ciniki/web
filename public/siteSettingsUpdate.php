@@ -128,6 +128,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-home-quicklinks-009-name',
 		'page-home-quicklinks-009-url',
 		'page-about-active',
+		'page-about-title',
 		'page-about-history-active',
 		'page-about-artiststatement-active',
 		'page-about-cv-active',
