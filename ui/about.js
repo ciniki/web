@@ -143,6 +143,7 @@ function ciniki_web_about() {
 					var u = rsp.users[i].user;
 					p.sections._users.fields['page-about-user-display-flags-' + u.id] = {
 						'label':u.firstname + ' ' + u.lastname, 'type':'flags', 'join':'yes', 'flags':M.ciniki_web_about.userFlags,
+						'editFn':'M.startApp(\'ciniki.businesses.users\',null,\'M.ciniki_web_about.page.show();\',\'mc\',{\'user_id\':\'' + u.id + '\'});',
 						};
 				}
 				p.sections._users_display.visible = 'yes';

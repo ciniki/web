@@ -1284,9 +1284,7 @@ function ciniki_web_main() {
 
 	this.start = function(cb, ap, aG) {
 		args = {};
-		if( aG != null ) {
-			args = eval(aG);
-		}
+		if( aG != null ) { args = eval(aG); }
 
 		//
 		// Create the app container if it doesn't exist, and clear it out
@@ -1718,7 +1716,9 @@ function ciniki_web_main() {
 				for(i in rsp.users) {
 					var u = rsp.users[i].user;
 					p.sections._users.fields['page-contact-user-display-flags-' + u.id] = {
-						'label':u.firstname + ' ' + u.lastname, 'type':'flags', 'join':'yes', 'flags':M.ciniki_web_main.userFlags,
+						'label':u.firstname + ' ' + u.lastname, 
+						'editFn':'M.startApp(\'ciniki.businesses.users\',null,\'M.ciniki_web_main.contact.show();\',\'mc\',{\'user_id\':\'' + u.id + '\'});',
+						'type':'flags', 'join':'yes', 'flags':M.ciniki_web_main.userFlags,
 						};
 				}
 				p.sections._users_display.active = 'yes';
