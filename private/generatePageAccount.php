@@ -487,7 +487,6 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 		if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' 
 			&& in_array($ciniki['request']['uri_split'][0], array('accounts', 'orders', 'subscriptions', 'changepassword')) 
 			) {
-
 			$subpage = $ciniki['request']['uri_split'][0];
 		}
 		if( isset($ciniki['session']['customers']) && count($ciniki['session']['customers']) > 1 ) {
@@ -657,6 +656,16 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 		}
 
 		if( isset($modules['ciniki.subscriptions']) && $subpage == 'subscriptions' && isset($subscriptions) && count($subscriptions) > 0 ) {
+			//
+			// reload subscriptions to get the customer subscriptions
+			//
+			if( isset($modules['ciniki.subscriptions']) && count($subscriptions) > 0 ) {
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'subscriptions', 'web', 'list');
+				$rc = ciniki_subscriptions_web_list($ciniki, $settings, $ciniki['request']['business_id']);
+				if( $rc['stat'] == 'ok' && isset($rc['subscriptions']) ) {
+					$subscriptions = $rc['subscriptions'];
+				}
+			}
 			$content .= "<div class='entry-content'>\n";
 			$content .= "<form action='' method='POST'>";
 			$content .= "<input type='hidden' name='action' value='accountupdate'/>";
