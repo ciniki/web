@@ -20,9 +20,13 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 	$download_err = '';
 	if( isset($ciniki['business']['modules']['ciniki.info'])
 		&& isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'download'
-		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' ) {
+		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' 
+		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][2] != '' 
+		) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'fileDownload');
-		$rc = ciniki_info_web_fileDownload($ciniki, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][1]);
+		$rc = ciniki_info_web_fileDownload($ciniki, $ciniki['request']['business_id'], 
+			$ciniki['request']['uri_split'][1], '',
+			$ciniki['request']['uri_split'][2]);
 		if( $rc['stat'] == 'ok' ) {
 			header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 			header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
@@ -519,7 +523,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 		}
 		if( isset($info['files']) ) {
 			foreach($info['files'] as $fid => $file) {
-				$url = $ciniki['request']['base_url'] . '/members/download/' . $file['permalink'] . '.' . $file['extension'];
+				$url = $ciniki['request']['base_url'] . '/members/download/' . $info['permalink'] . '/' . $file['permalink'] . '.' . $file['extension'];
 				$page_content .= "<p><a target='_blank' href='" . $url . "' title='" . $file['name'] . "'>" . $file['name'] . "</a></p>";
 			}
 		}

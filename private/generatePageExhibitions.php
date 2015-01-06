@@ -24,7 +24,9 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 //		ciniki_core_loadMethod($ciniki, 'ciniki', 'artgallery', 'web', 'fileDownload');
 //		$rc = ciniki_artgallery_web_fileDownload($ciniki, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][1]);
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'fileDownload');
-		$rc = ciniki_info_web_fileDownload($ciniki, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][2]);
+		$rc = ciniki_info_web_fileDownload($ciniki, $ciniki['request']['business_id'], 
+			$ciniki['request']['uri_split'][0], '',
+			$ciniki['request']['uri_split'][2]);
 		if( $rc['stat'] == 'ok' ) {
 			header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 			header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
@@ -88,7 +90,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 	//
 	// Check if we are to display the application
 	//
-	if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'application' 
+	if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'exhibitionapplication' 
 //		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] == 'application'  
 		&& isset($settings['page-artgalleryexhibitions-application-details']) && $settings['page-artgalleryexhibitions-application-details'] == 'yes'
 		) {
@@ -551,7 +553,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 		//
 		if( isset($settings['page-artgalleryexhibitions-application-details']) 
 			&& $settings['page-artgalleryexhibitions-application-details'] == 'yes' 
-			&& $page_past_cur == 0
+			&& $page_past_cur == 1
 			) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'pageDetails');
@@ -566,7 +568,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 //					. "<header class='entry-title'><h1 class='entry-title'>Exhibitor Application</h1></header>\n"
 					. "<div class='entry-content'>\n"
 					. "";
-				$page_content .= "<p class='exhibitors-application'><a href='" . $ciniki['request']['base_url'] . "/exhibitions/application'>Apply to be an exhibitor</a></p>";
+				$page_content .= "<p class='exhibitors-application'><a href='" . $ciniki['request']['base_url'] . "/exhibitions/exhibitionapplication'>Apply to be an exhibitor</a></p>";
 				$page_content .= "</div>\n"
 					. "</article>";
 			}

@@ -15,38 +15,6 @@
 function ciniki_web_generatePageFeatures($ciniki, $settings) {
 
 	//
-	// Check if a file was specified to be downloaded
-	//
-	$download_err = '';
-	if( isset($ciniki['business']['modules']['ciniki.marketing'])
-		&& isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'download'
-		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' ) {
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'marketing', 'web', 'fileDownload');
-		$rc = ciniki_info_web_fileDownload($ciniki, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][1]);
-		if( $rc['stat'] == 'ok' ) {
-			header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-			header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
-			header('Cache-Control: no-cache, must-revalidate');
-			header('Pragma: no-cache');
-			$file = $rc['file'];
-			if( $file['extension'] == 'pdf' ) {
-				header('Content-Type: application/pdf');
-			}
-			header('Content-Disposition: attachment;filename="' . $file['filename'] . '"');
-			header('Content-Length: ' . strlen($file['binary_content']));
-			header('Cache-Control: max-age=0');
-
-			print $file['binary_content'];
-			exit;
-		}
-		
-		//
-		// If there was an error locating the files, display generic error
-		//
-		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1055', 'msg'=>'We\'re sorry, but the file you requested does not exist.'));
-	}
-
-	//
 	// Store the content created by the page
 	// Make sure everything gets generated ok before returning the content
 	//
