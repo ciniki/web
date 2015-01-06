@@ -83,8 +83,11 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
 		if( count($page['children']) > 0 ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
 			$child_base_url = $base_url . '/' . $page['permalink'];
-			$rc = ciniki_web_processCIList($ciniki, $settings, $child_base_url, $page['children'], 
-				array('notitle'=>'yes'));
+			$list_args = array('notitle'=>'yes');
+			if( isset($page['child_files']) ) {
+				$list_args['child_files'] = $page['child_files'];
+			}
+			$rc = ciniki_web_processCIList($ciniki, $settings, $child_base_url, $page['children'], $list_args);
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -105,8 +108,11 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
 		if( count($page['child_categories']) > 0 ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
 			$child_base_url = $base_url . '/' . $page['permalink'];
-			$rc = ciniki_web_processCIList($ciniki, $settings, $child_base_url, $page['child_categories'], 
-				array());
+			$list_args = array();
+			if( isset($page['child_files']) ) {
+				$list_args['child_files'] = $page['child_files'];
+			}
+			$rc = ciniki_web_processCIList($ciniki, $settings, $child_base_url, $page['child_categories'], $list_args);
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}

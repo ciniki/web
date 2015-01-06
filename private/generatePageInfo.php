@@ -22,10 +22,45 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
 //			|| isset($ciniki['business']['modules']['ciniki.artgallery']))
 	if( isset($ciniki['business']['modules']['ciniki.info']) 
 		&& isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != ''
+		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != ''
+		&& isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] == 'download'
+		&& isset($ciniki['request']['uri_split'][3]) && $ciniki['request']['uri_split'][3] != '' ) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'fileDownload');
+		$rc = ciniki_info_web_fileDownload($ciniki, $ciniki['request']['business_id'], 
+			$ciniki['request']['uri_split'][0],
+			$ciniki['request']['uri_split'][1],
+			$ciniki['request']['uri_split'][3]);
+		if( $rc['stat'] == 'ok' ) {
+			header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+			header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+			header('Cache-Control: no-cache, must-revalidate');
+			header('Pragma: no-cache');
+			$file = $rc['file'];
+			if( $file['extension'] == 'pdf' ) {
+				header('Content-Type: application/pdf');
+			}
+			header('Content-Disposition: attachment;filename="' . $file['filename'] . '"');
+			header('Content-Length: ' . strlen($file['binary_content']));
+			header('Cache-Control: max-age=0');
+
+			print $file['binary_content'];
+			exit;
+		}
+		
+		//
+		// If there was an error locating the files, display generic error
+		//
+		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1054', 'msg'=>'The file you requested does not exist.  Please check your link and try again.'));
+	}
+
+	if( isset($ciniki['business']['modules']['ciniki.info']) 
+		&& isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != ''
 		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] == 'download'
 		&& isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'fileDownload');
-		$rc = ciniki_info_web_fileDownload($ciniki, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][2]);
+		$rc = ciniki_info_web_fileDownload($ciniki, $ciniki['request']['business_id'], 
+			$ciniki['request']['uri_split'][0], '',
+			$ciniki['request']['uri_split'][2]);
 		if( $rc['stat'] == 'ok' ) {
 			header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 			header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
@@ -59,11 +94,6 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
 	//
 	// FIXME: Check if anything has changed, and if not load from cache
 	//
-//	print "<pre>";
-//	print_r($pg);
-//	print_r($settings["page-$pg-defaultcontenttype"]);
-//	print_r($settings);
-//	print "</pre>";
 
 	//
 	// Get the pages with content
@@ -74,6 +104,9 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
 		return $rc;
 	}
 	$info_pages = $rc['pages'];
+//	print "<pre>";
+//	print_r($info_pages);
+//	print "</pre>";
 
 	if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
 		$page_permalink = $ciniki['request']['uri_split'][0];
@@ -83,9 +116,6 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
 				$content_type = $page['content_type'];
 			}
 		}
-	} elseif( $pg == 'about' ) {
-		$content_type = 1;
-		$page_permalink = 'about';
 		$page_settings_name = 'about';
 	} elseif( isset($settings["page-$pg-defaultcontenttype"]) && $settings["page-$pg-defaultcontenttype"] != '' ) {
 		$content_type = $settings["page-$pg-defaultcontenttype"];
@@ -96,6 +126,9 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
 			}
 		}
 		$page_settings_name = $page_permalink;
+	} elseif( $pg == 'about' ) {
+		$content_type = 1;
+		$page_permalink = 'about';
 	} else {
 		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2139', 'msg'=>"I'm sorry, but we're still adding information"));
 	}
@@ -432,11 +465,11 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
 		$submenu['employment'] = array('name'=>$info_pages['21']['title'], 
 			'url'=>$ciniki['request']['base_url'] . "/$pg/" . $info_pages['21']['permalink']);
 	}
-	if( isset($settings['page-info-jobs-active']) && $settings['page-info-jobs-active'] == 'yes' 
+	if( isset($settings["page-$pg-jobs-active"]) && $settings["page-$pg-jobs-active"] == 'yes' 
 		&& isset($info_pages['24'])
 		) {
 		$submenu['jobs'] = array('name'=>$info_pages['24']['title'], 
-			'url'=>$ciniki['request']['base_url'] . '/info/' . $info_pages['24']['permalink']);
+			'url'=>$ciniki['request']['base_url'] . "/$pg/" . $info_pages['24']['permalink']);
 	}
 	if( isset($settings["page-$pg-staff-active"]) && $settings["page-$pg-staff-active"] == 'yes' 
 		&& isset($info_pages['22'])

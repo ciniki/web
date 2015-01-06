@@ -133,16 +133,26 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 				if( $rc['stat'] == 'ok' ) {
 					$content .= $rc['content'];
 				}
+				//
+				// Check for files
+				//
+				if( isset($args['child_files'][$iid]['files']) ) {
+					foreach($args['child_files'][$iid]['files'] as $file_id => $file) {
+						$file_url = $base_url . '/' . $item['permalink'] . '/download/' . $file['permalink'] . '.' . $file['extension'];
+						$content .= "<p><a target='_blank' href='" . $file_url . "' title='" . $file['name'] . "'>" . $file['name'] . "</a></p>";
+					}
+				}
 			} elseif( isset($item['short_description']) && $item['short_description'] != '' ) {
 				$rc = ciniki_web_processContent($ciniki, $item['short_description'], 'cilist-description');
 				if( $rc['stat'] == 'ok' ) {
 					$content .= $rc['content'];
 				}
+		
 			} else {
 				$content .= "<br/>";
 			}
 			$content .= "</tr>";
-		
+
 			if( $url != '' ) {
 				$content .= "<tr><td class='cilist-more'><a href='$url' target='$url_target'>$url_display</a></td></tr>";
 			} elseif( isset($item['urls']) && count($item['urls']) > 0 ) {
