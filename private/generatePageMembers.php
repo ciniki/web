@@ -179,12 +179,16 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 		//
 		// Load the image
 		//
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-		$rc = ciniki_web_getScaledImageURL($ciniki, $img['image_id'], 'original', 0, 600);
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
+		if( isset($img['image_id']) && $img['image_id'] > 0 ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+			$rc = ciniki_web_getScaledImageURL($ciniki, $img['image_id'], 'original', 0, 600);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$img_url = $rc['url'];
+		} else {
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2151', 'msg'=>"We're sorry, but the image you requested does not exist."));
 		}
-		$img_url = $rc['url'];
 
 		//
 		// Set the page to wide if possible
