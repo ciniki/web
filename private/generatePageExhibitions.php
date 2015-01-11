@@ -210,7 +210,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 			$article_title .= ' - ' . $img['title'];
 		}
 	
-		if( $img == NULL ) {
+		if( $img == NULL || $img['image_id'] <= 0 ) {
 			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1305', 'msg'=>"I'm sorry, but we can't seem to find the image your requested."));
 		}
 	
