@@ -31,27 +31,13 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 			&& $settings['page-gallery-artcatalog-split'] == 'yes' ) {
 			if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
 				switch($ciniki['request']['uri_split'][0]) {
-					case 'paintings': 
-						$artcatalog_type = 1; 
-						break;
-					case 'photographs': 
-						$artcatalog_type = 2; 
-						break;
-					case 'jewelry': 
-						$artcatalog_type = 3; 
-						break;
-					case 'sculptures': 
-						$artcatalog_type = 4; 
-						break;
-					case 'fibrearts': 
-						$artcatalog_type = 5; 
-						break;
-					case 'crafts': 
-						$artcatalog_type = 6; 
-						break;
-					case 'crafts': 
-						$artcatalog_type = 6; 
-						break;
+					case 'paintings': $artcatalog_type = 1; break;
+					case 'photographs': $artcatalog_type = 2; break;
+					case 'jewelry': $artcatalog_type = 3; break;
+					case 'sculptures': $artcatalog_type = 4; break;
+					case 'fibrearts': $artcatalog_type = 5; break;
+					case 'crafts': $artcatalog_type = 6; break;
+					case 'pottery': $artcatalog_type = 8; break;
 				}
 				if( $artcatalog_type > 0 ) {
 					$ciniki['response']['head']['og']['url'] .= '/' . $ciniki['request']['uri_split'][0];
