@@ -81,7 +81,7 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
 		//
 		// If there was an error locating the files, display generic error
 		//
-		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1054', 'msg'=>'The file you requested does not exist.  Please check your link and try again.'));
+		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1034', 'msg'=>'The file you requested does not exist.  Please check your link and try again.'));
 	}
 
 	//
@@ -130,7 +130,7 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
 		$content_type = 1;
 		$page_permalink = 'about';
 	} else {
-		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2139', 'msg'=>"I'm sorry, but we're still adding information"));
+		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2158', 'msg'=>"I'm sorry, but we're still adding information"));
 	}
 
 	// This allows for permalink and title renaming
