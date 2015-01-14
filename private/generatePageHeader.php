@@ -557,13 +557,13 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	}
 	if( isset($settings['page-gallery-active']) && $settings['page-gallery-active'] == 'yes' ) {
 		if( isset($settings['page-gallery-artcatalog-split']) && $settings['page-gallery-artcatalog-split'] == 'yes' ) {
-			if( isset($settings['page-gallery-artcatalog-painting']) 
-				&& $settings['page-gallery-artcatalog-painting'] == 'yes' ) {
+			if( isset($settings['page-gallery-artcatalog-paintings']) 
+				&& $settings['page-gallery-artcatalog-paintings'] == 'yes' ) {
 				$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='gallery'?' menu-item-selected':'') . "'>"
 					. "<a href='" . $ciniki['request']['base_url'] . "/gallery/paintings'>Paintings</a></li>";
 			} 
-			if( isset($settings['page-gallery-artcatalog-photograph']) 
-				&& $settings['page-gallery-artcatalog-photograph'] == 'yes' ) {
+			if( isset($settings['page-gallery-artcatalog-photographs']) 
+				&& $settings['page-gallery-artcatalog-photographs'] == 'yes' ) {
 				$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='gallery'?' menu-item-selected':'') . "'>"
 					. "<a href='" . $ciniki['request']['base_url'] . "/gallery/photographs'>Photographs</a></li>";
 			} 
@@ -572,8 +572,8 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 				$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='gallery'?' menu-item-selected':'') . "'>"
 					. "<a href='" . $ciniki['request']['base_url'] . "/gallery/jewelry'>Jewelry</a></li>";
 			} 
-			if( isset($settings['page-gallery-artcatalog-sculpture']) 
-				&& $settings['page-gallery-artcatalog-sculpture'] == 'yes' ) {
+			if( isset($settings['page-gallery-artcatalog-sculptures']) 
+				&& $settings['page-gallery-artcatalog-sculptures'] == 'yes' ) {
 				$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='gallery'?' menu-item-selected':'') . "'>"
 					. "<a href='" . $ciniki['request']['base_url'] . "/gallery/sculptures'>Sculptures</a></li>";
 			} 
