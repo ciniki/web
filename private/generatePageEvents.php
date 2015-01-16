@@ -51,6 +51,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 	// Store the content created by the page
 	// Make sure everything gets generated ok before returning the content
 	//
+	$submenu = array();
 	$content = '';
 	$page_content = '';
 	$page_title = 'Events';
@@ -60,16 +61,28 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 	// FIXME: Check if anything has changed, and if not load from cache
 	//
 
+	$display_event_list = 'yes';
+	$tag_type = 10;
+	$tag_permalink = '';
+
 	//
-	// Check if we are to display the gallery image for an events
+	// Check if we are to display a category
 	//
+	if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'category' 
+		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' 
+		) {
+		$tag_type = 10;
+		$tag_permalink = $ciniki['request']['uri_split'][1];
+	}
+
 	//
 	// Check if we are to display an image, from the gallery, or latest images
 	//
-	if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' 
+	elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' 
 		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] == 'gallery' 
 		&& isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' 
 		) {
+		$display_event_list = 'no';
 		$event_permalink = $ciniki['request']['uri_split'][0];
 		$image_permalink = $ciniki['request']['uri_split'][2];
 
@@ -205,6 +218,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 	// Check if we are to display an event
 	//
 	elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
+		$display_event_list = 'no';
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'eventDetails');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'processDateRange');
@@ -387,24 +401,131 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 	}
 
 	//
-	// Display the list of events if a specific one isn't selected
+	// Check if the event list is to be displayed
 	//
-	else {
+	if( $display_event_list == 'yes' ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'eventList');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processEvents');
-		$ciniki['response']['head']['og']['description'] = strip_tags('Upcoming Events');
+		//
+		// If categories are enabled, and no category specified
+		//
+		if( ($ciniki['business']['modules']['ciniki.events']['flags']&0x10) > 0 
+			&& isset($settings['page-events-categories-display'])
+			&& $settings['page-events-categories-display'] != 'off'
+			&& $tag_permalink == ''
+			) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'tags');
+			$rc = ciniki_events_web_tags($ciniki, $settings, $ciniki['request']['business_id'], '10');
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$categories = $rc['tags'];
+			
+			//
+			// Get the first category to display
+			//
+			if( count($categories) > 0 ) {
+				$cat = reset($categories);
+				$tag_type = 10;
+				$tag_permalink = $cat['permalink'];
+				$ciniki['response']['head']['links'][] = array('rel'=>'canonical',
+					'href'=>$ciniki['request']['domain_base_url'] . '/events/category/' . $cat['permalink']);
+			}
+		}
 
-		$rc = ciniki_events_web_eventList($ciniki, $settings, $ciniki['request']['business_id'], 'upcoming', 0);
+		$upcoming_title = 'Upcoming Events';
+		$past_title = 'Past Events';
+		if( $tag_permalink != '' ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'tagDetails');
+			$rc = ciniki_events_web_tagDetails($ciniki, $settings, $ciniki['request']['business_id'], 
+				$tag_type, $tag_permalink);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$tag = $rc['tag'];
+
+			if( isset($tag['title-upcoming']) && $tag['title-upcoming'] != '' ) {
+				$upcoming_title = $tag['title-upcoming'];
+			}
+			if( isset($tag['title-past']) && $tag['title-past'] != '' ) {
+				$past_title = $tag['title-past'];
+			}
+		
+			//
+			// Check if there is content and/or an image to display for the category
+			//
+			if( isset($tag['synopsis']) && $tag['synopsis'] != '' ) {
+				$ciniki['response']['head']['og']['description'] = $tag['synopsis'];
+			} else {
+				$ciniki['response']['head']['og']['description'] = $tag['title'] . ' - ' . $upcoming_title;
+			}
+			if( (isset($tag['content']) && $tag['content'] != '') 
+				|| (isset($tag['image-id']) && $tag['image-id'] != '' && $tag['image-id'] > 0) 
+				) {
+				$page_content .= "<article class='page'>\n"
+					. "<header class='entry-title'><h1 class='entry-title'>" . $tag['title'] . "</h1></header>\n"
+					. "<div class='entry-content'>\n"
+					. "";
+				
+				//
+				// Add image
+				//
+				if( isset($tag['image-id']) && $tag['image-id'] != '' && $tag['image-id'] > 0 ) {
+					ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+					$rc = ciniki_web_getScaledImageURL($ciniki, $tag['image-id'], 'original', '500', 0);
+					if( $rc['stat'] != 'ok' ) {
+						return $rc;
+					}
+					$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
+					$page_content .= "<aside><div class='image-wrap'>"
+						. "<div class='image'><img title='' src='" . $rc['url'] . "' /></div>";
+					if( isset($tag['image-caption']) && $tag['image-caption'] != '' ) {
+						$page_content .= "<div class='image-caption'>" . $tag['image-caption'] . "</div>";
+					}
+					$page_content .= "</div></aside>";
+				}
+
+				//
+				// Add content
+				//
+				if( isset($tag['content']) && $tag['content'] != '' ) {
+					ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+					$rc = ciniki_web_processContent($ciniki, $tag['content']);	
+					if( $rc['stat'] != 'ok' ) {
+						return $rc;
+					}
+					$page_content .= $rc['content'];
+					$page_content .= "<br style='clear: both;'/>";
+				}
+			} else {
+				$page_content .= "<article class='page'>\n"
+					. "<header class='entry-title'><h1 class='entry-title'>" . $tag['title'] . ' - ' . $upcoming_title . "</h1></header>\n"
+					. "<div class='entry-content'>\n"
+					. "";
+				$upcoming_title = '';
+				$past_title = $tag['title'] . ' - ' . $past_title;
+			}
+		} else {
+			$ciniki['response']['head']['og']['description'] = strip_tags($upcoming_title);
+			$page_content .= "<article class='page'>\n"
+				. "<header class='entry-title'><h1 class='entry-title'>" . $upcoming_title . "</h1></header>\n"
+				. "<div class='entry-content'>\n"
+				. "";
+			$upcoming_title = '';
+		}
+
+
+		$rc = ciniki_events_web_eventList($ciniki, $settings, $ciniki['request']['business_id'], 
+			array('type'=>'upcoming', 'tag_type'=>$tag_type, 'tag_permalink'=>$tag_permalink));
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
 		$events = $rc['events'];
 
-		$page_content .= "<article class='page'>\n"
-			. "<header class='entry-title'><h1 class='entry-title'>Upcoming Events</h1></header>\n"
-			. "<div class='entry-content'>\n"
-			. "";
+		if( isset($upcoming_title) && $upcoming_title != '' ) {
+			$page_content .= "<h2>" . $upcoming_title . "</h2>";
+		}
 
 		if( count($events) > 0 ) {
 			//
@@ -432,9 +553,6 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 			$page_content .= "<p>Currently no events.</p>";
 		}
 
-		$page_content .= "</div>\n"
-			. "</article>\n"
-			. "";
 		//
 		// Include past events if the user wants
 		//
@@ -443,16 +561,17 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 			// Generate the content of the page
 			//
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'eventList');
-			$rc = ciniki_events_web_eventList($ciniki, $settings, $ciniki['request']['business_id'], 'past', 10);
+			$rc = ciniki_events_web_eventList($ciniki, $settings, $ciniki['request']['business_id'], 
+				array('type'=>'past', 'limit'=>'10', 'tag_type'=>$tag_type, 'tag_permalink'=>$tag_permalink));
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
 			$events = $rc['events'];
 
-			$page_content .= "<article class='page'>\n"
-				. "<header class='entry-title'><h1 class='entry-title'>Past Events</h1></header>\n"
-				. "<div class='entry-content'>\n"
-				. "";
+			if( isset($past_title) && $past_title != '' ) {
+				$page_content .= "<br style='clear:both;'/>\n";
+				$page_content .= "<h2>" . $past_title . "</h2>\n";
+			}
 
 			if( count($events) > 0 ) {
 				$rc = ciniki_web_processEvents($ciniki, $settings, $events, 0);
@@ -463,10 +582,36 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 			} else {
 				$page_content .= "<p>No past events.</p>";
 			}
+		}
+		
+		//
+		// Close the content and article
+		//
+		$page_content .= "</div>\n"
+			. "</article>\n"
+			. "";
+	}
 
-			$page_content .= "</div>\n"
-				. "</article>\n"
-				. "";
+	//
+	// Decide what items should be in the submenu
+	//
+	if( ($ciniki['business']['modules']['ciniki.events']['flags']&0x10) > 0 
+		&& isset($settings['page-events-categories-display'])
+		&& $settings['page-events-categories-display'] == 'submenu'
+		) {
+		if( !isset($categories) ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'tags');
+			$rc = ciniki_events_web_tags($ciniki, $settings, $ciniki['request']['business_id'], '10');
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$categories = $rc['tags'];
+		}
+		if( count($categories) > 1 ) {
+			foreach($categories as $cid => $cat) {
+				$submenu[$cid] = array('name'=>$cat['tag_name'], 
+					'url'=>$ciniki['request']['base_url'] . "/events/category/" . $cat['permalink']);
+			}
 		}
 	}
 
@@ -478,7 +623,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 	// Add the header
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, $page_title, array());
+	$rc = ciniki_web_generatePageHeader($ciniki, $settings, $page_title, $submenu);
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
 	}

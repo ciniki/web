@@ -35,6 +35,10 @@ function ciniki_web_main() {
 		'list':'List',
 		'categories':'Categories',
 		};
+	this.eventCategoryDisplay = {
+		'off':'Off',
+		'submenu':'Menu',
+		};
 	this.activeToggles = {'no':'No', 'yes':'Yes'};
 	this.activeRequiredToggles = {'no':'No', 'yes':'Yes', 'required':'Required'};
 	this.productThumbnailToggles = {'auto':'Auto', 'small':'Small', 'medium':'Medium', 'large':'Large'};
@@ -564,13 +568,15 @@ function ciniki_web_main() {
 		//
 		this.events = new M.panel('Events',
 			'ciniki_web_main', 'events',
-			'mc', 'narrow', 'sectioned', 'ciniki.web.main.events');
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.events');
 		this.events.data = {};
 		this.events.sections = {
 			'options':{'label':'Options', 'fields':{
 				'page-events-active':{'label':'Show events', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-events-past':{'label':'Include past events', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-events-categories-display':{'label':'Display Categories', 'type':'toggle', 'default':'off', 'toggles':this.eventCategoryDisplay},
 				}},
+
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'events\');'},
 				}},
@@ -1333,6 +1339,13 @@ function ciniki_web_main() {
 				this.home.sections._blog.active = 'yes';
 			} else {
 				this.home.sections._blog.active = 'no';
+			}
+		}
+		if( M.curBusiness.modules['ciniki.events'] != null ) {
+			if( (M.curBusiness.modules['ciniki.events'].flags&0x10) > 0 ) {
+				this.events.sections.options.fields['page-events-categories-display'].active = 'yes';
+			} else {
+				this.events.sections.options.fields['page-events-categories-display'].active = 'no';
 			}
 		}
 
