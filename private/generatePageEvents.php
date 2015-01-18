@@ -330,6 +330,33 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 //		}
 
 		//
+		// Display the links for the event
+		//
+		if( isset($event['links']) && count($event['links']) > 0 ) {
+			$page_content .= "<p>";
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
+			foreach($event['links'] as $link) {
+				$rc = ciniki_web_processURL($ciniki, $link['url']);
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				if( $rc['url'] != '' ) {
+					$page_content .= "<a target='_blank' href='" . $rc['url'] . "' title='" 
+						. ($link['name']!=''?$link['name']:$rc['display']) . "'>" 
+						. ($link['name']!=''?$link['name']:$rc['display'])
+						. "</a>";
+				} else {
+					$page_content .= $link['name'];
+				}
+				if( isset($link['description']) && $link['description'] != '' ) {
+					$page_content .= "<br/><span class='downloads-description'>" . $link['description'] . "</span>";
+				}
+				$page_content .= "<br/>";
+			}
+			$page_content .= "</p>";
+		}
+
+		//
 		// Display the files for the events
 		//
 		if( isset($event['files']) && count($event['files']) > 0 ) {
