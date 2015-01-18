@@ -397,9 +397,6 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 		// Display the additional images for the event
 		//
 		if( isset($event['images']) && count($event['images']) > 0 ) {
-//			$page_content .= "<article class='page'>"	
-//				. "<header class='entry-title'><h1 class='entry-title'>Gallery</h1></header>\n"
-//				. "";
 			$page_content .= "<br style='clear: right;'/>";
 			$page_content .= "<h2>Gallery</h2>";
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
@@ -409,7 +406,6 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 				return $rc;
 			}
 			$page_content .= "<div class='image-gallery'>" . $rc['content'] . "</div>";
-//			$page_content .= "</article>";
 		}
 
 		//
@@ -424,6 +420,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 			$page_content .= $rc['content'];
 		}
 
+		$page_content .= "<br style='clear: right;'/>";
 		$page_content .= "</article>";
 	}
 

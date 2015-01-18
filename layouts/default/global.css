@@ -731,6 +731,7 @@ div.googlemap p.exhibitors-more,
 
 #content article {
 	clear: both;
+	overflow: auto;
 }
 
 /* #content.evensplit article.page {
