@@ -335,6 +335,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-cart-product-list',					// Show list of all products
 		'page-cart-po-number',
 		'page-cart-customer-notes',
+		'page-cart-dealersubmit-email-template',
+		'page-cart-dealersubmit-email-textmsg',
 		'page-signup-active',
 		'page-signup-menu',
 		'page-api-active',

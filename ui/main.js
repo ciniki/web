@@ -52,6 +52,10 @@ function ciniki_web_main() {
 		'6':{'name':'Email'},
 		'7':{'name':'Bio'},
 		};
+	this.dealerSubmitTemplates = {
+		'none':'No Email', 
+		'order':'Default',
+		};
 
 	this.deleteImage = function(fid) {
 		this.setFieldValue(fid, 0);
@@ -1225,6 +1229,12 @@ function ciniki_web_main() {
 				'page-cart-inventory-dealers-display':{'label':'Dealers', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-cart-inventory-distributors-display':{'label':'Distributors', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				}},
+			'_dealersubmit':{'label':'', 'active':'no', 'fields':{
+				'page-cart-dealersubmit-email-template':{'label':'Email Dealer Order Template', 'type':'multitoggle', 'default':'none', 'toggles':this.dealerSubmitTemplates},
+				}},
+			'_dealersubmit_email_textmsg':{'label':'Dealer Submit Order Email Message', 'active':'no', 'fields':{
+				'page-cart-dealersubmit-email-textmsg':{'label':'', 'hidelabel':'yes', 'type':'textarea'},
+				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'cart\');'},
 				}},
@@ -1349,6 +1359,18 @@ function ciniki_web_main() {
 			}
 		}
 
+		//
+		// Setup for cart
+		//
+		if( M.curBusiness.modules['ciniki.sapos'] != null
+			&& M.curBusiness.modules['ciniki.mail'] != null
+			) {
+			this.cart.sections._dealersubmit.active = 'yes';
+			this.cart.sections._dealersubmit_email_textmsg.active = 'yes';
+		} else {
+			this.cart.sections._dealersubmit.active = 'no';
+			this.cart.sections._dealersubmit_email_textmsg.active = 'no';
+		}
 		//
 		// Setup for sponsors
 		//

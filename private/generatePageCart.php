@@ -282,6 +282,77 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 			return $rc;
 		} else {
 			$content .= "<p>Your order has been submitted.</p>";
+			//
+			// Email the receipt to the dealer
+			//
+			if( isset($settings['page-cart-dealersubmit-email-template']) 
+				&& $settings['page-cart-dealersubmit-email-template'] != '' 
+				&& isset($cart['customer']['emails'][0]['email']['address'])
+				) {
+				//
+				// Load business details
+				//
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'businessDetails');
+				$rc = ciniki_businesses_businessDetails($ciniki, $ciniki['request']['business_id']);
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				$business_details = array();
+				if( isset($rc['details']) && is_array($rc['details']) ) {	
+					$business_details = $rc['details'];
+				}
+
+				//
+				// Load the invoice settings
+				//
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
+				$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_sapos_settings', 'business_id', $ciniki['request']['business_id'],
+					'ciniki.sapos', 'settings', 'invoice');
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				$sapos_settings = array();
+				if( isset($rc['settings']) ) {
+					$sapos_settings = $rc['settings'];
+				}
+				
+				//
+				// Create the pdf
+				//
+				$rc = ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'templates', $settings['page-cart-dealersubmit-email-template']);
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				$fn = $rc['function_call'];
+				$rc = $fn($ciniki, $ciniki['request']['business_id'], $cart['id'], $business_details, $sapos_settings, 'email');
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+
+				//
+				// Email the pdf to the customer
+				//
+				$filename = $rc['filename'];
+				$invoice = $rc['invoice'];
+				$pdf = $rc['pdf'];
+
+
+				$subject = "Order #" . $invoice['invoice_number'];
+				$textmsg = "Thank you for your order, please find the order summary attached.";
+				if( isset($settings['page-cart-dealersubmit-email-textmsg']) 
+					&& $settings['page-cart-dealersubmit-email-textmsg'] != '' 
+					) {
+					$textmsg = $settings['page-cart-dealersubmit-email-textmsg'];
+				}	
+				$ciniki['emailqueue'][] = array('to'=>$invoice['customer']['emails'][0]['email']['address'],
+					'to_name'=>(isset($invoice['customer']['display_name'])?$invoice['customer']['display_name']:''),
+					'business_id'=>$ciniki['request']['business_id'],
+					'subject'=>$subject,
+					'textmsg'=>$textmsg,
+					'attachments'=>array(array('string'=>$pdf->Output('invoice', 'S'), 'filename'=>$filename)),
+					);
+			}
+
 			$display_cart = 'no';
 			$cart = NULL;
 			unset($_SESSION['cart']);
