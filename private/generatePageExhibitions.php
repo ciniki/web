@@ -387,6 +387,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 			$page_content .= "<div class='image-gallery'>" . $rc['content'] . "</div>";
 		}
 
+		$page_content .= "<br style='clear: right;'/>";
 		$page_content .= "</article>";
 	}
 
