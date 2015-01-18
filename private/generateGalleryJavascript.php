@@ -11,12 +11,14 @@
 // Returns
 // -------
 //
-function ciniki_web_generateGalleryJavascript($ciniki, $next, $prev) {
+function ciniki_web_generateGalleryJavascript(&$ciniki, $next, $prev) {
 
 	//
 	// Javascript to resize the image, and arrow overlays once the image is loaded.
 	// This is done so the image can be properly fit to the size of the screen.
 	//
+//	$images = 'image = new Image();';
+	$images = '';
 	$javascript = "<script type='text/javascript'>\n"
 		. "function gallery_resize_arrows() {"
 			. "var i = document.getElementById('gallery-image-img');"
@@ -76,16 +78,37 @@ function ciniki_web_generateGalleryJavascript($ciniki, $next, $prev) {
 		. "function scrollto_header() {"
 			. "var e = document.getElementById('entry-title');"
 			. "window.scrollTo(0, e.offsetTop - 10);"
+			. "preload_images();"
 		. "}\n"
 		. "document.onkeydown = function(e) {"
 		. "";
 	if( $prev != null && isset($prev['permalink']) ) {
+		if( isset($prev['image_id']) && $prev['image_id'] > 0 ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+			$rc = ciniki_web_getScaledImageURL($ciniki, $prev['image_id'], 'original', 0, 600);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$img_url = $rc['url'];
+//			$ciniki['response']['head']['links'][] = array('rel'=>'prev', 'title'=>'Prev', 'href'=>$prev['permalink']);
+			$images .= "prev_pic = new Image(); prev_pic.src = '" . $img_url . "';";
+		}
 		$javascript .=  ""
 			. "if( e.keyCode == 37 || e.keyCode == 72 ) {"
 				. "document.location.href='" . $prev['permalink'] . "';"
 			. "}";
 	}
 	if( $next != null && isset($next['permalink']) ) {
+		if( isset($next['image_id']) && $next['image_id'] > 0 ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+			$rc = ciniki_web_getScaledImageURL($ciniki, $next['image_id'], 'original', 0, 600);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$img_url = $rc['url'];
+//			$ciniki['response']['head']['links'][] = array('rel'=>'next', 'title'=>'Next', 'href'=>$next['permalink']);
+			$images .= "next_pic = new Image(); next_pic.src = '" . $img_url . "';";
+		}
 		$javascript .=  ""
 			. "if( e.keyCode == 39 || e.keyCode == 76 ) {"
 				. "document.location.href='" . $next['permalink'] . "';"
@@ -99,6 +122,10 @@ function ciniki_web_generateGalleryJavascript($ciniki, $next, $prev) {
 			. "i.src = u;"
 			. "gallery_resize_arrows();"
 			. "return false;"
+		. "}\n";
+	$javascript .= ""
+		. "function preload_images() {console.log('test');"
+			. $images
 		. "}\n";
 	$javascript.= "</script>\n";
 

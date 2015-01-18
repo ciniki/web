@@ -146,7 +146,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	//
 	if( isset($ciniki['response']['head']['links']) ) {
 		foreach($ciniki['response']['head']['links'] as $link) {
-			$content .= "<link rel='" . $link['rel'] . "' href='" . $link['href'] . "'/>\n";
+			$content .= "<link rel='" . $link['rel'] . "'" . (isset($link['title'])?" title='" . $link['title'] . "'":'') . " href='" . $link['href'] . "'/>\n";
 		}
 	}
 

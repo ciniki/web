@@ -221,7 +221,6 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 		}
 		$img_url = $rc['url'];
 		$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
-
 		//
 		// Set the page to wide if possible
 		//
