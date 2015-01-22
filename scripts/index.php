@@ -573,6 +573,12 @@ elseif( $ciniki['request']['page'] == 'memberblog'
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageMemberBlog.php');
 	$rc = ciniki_web_generatePageMemberBlog($ciniki, $settings);
 } 
+// Membersonly
+elseif( $ciniki['request']['page'] == 'membersonly' 
+	&& isset($settings['page-membersonly-active']) && $settings['page-membersonly-active'] == 'yes' ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageMembersonly.php');
+	$rc = ciniki_web_generatePageMembersonly($ciniki, $settings);
+} 
 // FAQ
 elseif( $ciniki['request']['page'] == 'faq' 
 	&& isset($settings['page-faq-active']) && $settings['page-faq-active'] == 'yes' ) {

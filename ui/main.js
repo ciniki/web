@@ -910,6 +910,28 @@ function ciniki_web_main() {
 		this.memberblog.addClose('Cancel');
 
 		//
+		// The options and information for the membersonly page
+		//
+		this.membersonly = new M.panel('Members Only',
+			'ciniki_web_main', 'membersonly',
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.membersonly');
+		this.membersonly.data = {};
+		this.membersonly.sections = {
+			'options':{'label':'', 'fields':{
+				'page-membersonly-active':{'label':'Display Members Only Pages', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-membersonly-menu-active':{'label':'Always in Menu', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-membersonly-name':{'label':'Name', 'type':'text', 'hint':'Members Only'},
+				}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'membersonly\');'},
+				}},
+		};
+		this.membersonly.fieldValue = this.fieldValue;
+		this.membersonly.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.membersonly.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'membersonly\');');
+		this.membersonly.addClose('Cancel');
+
+		//
 		// The options and information for the sponsors page
 		//
 		this.sponsors = new M.panel('Sponsors',
@@ -1628,6 +1650,7 @@ function ciniki_web_main() {
 //			if( M.curBusiness.modules['ciniki.gallery'] != null ) { popts['/gallery'] = 'Gallery'; }
 			if( M.curBusiness.modules['ciniki.blog'] != null 
 				&& (M.curBusiness.modules['ciniki.blog'].flags&0x100) > 0) { popts['/memberblog'] = 'Member Blog'; }
+			if( M.curBusiness.modules['ciniki.membersonly'] != null ) { popts['/membersonly'] = 'Members Only'; }
 			this.account.sections.redirect.fields['page-account-signin-redirect'].options = popts;
 			this[page].refresh();
 			this[page].show(cb);

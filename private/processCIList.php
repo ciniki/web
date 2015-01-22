@@ -128,7 +128,21 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 			}
 			$content .= "<td $javascript_onclick class='cilist-details" . ($javascript_onclick!=''?' clickable':'') . "'>";
 
-			if( isset($item['description']) && $item['description'] != '' ) {
+			if( isset($item['synopsis']) && $item['synopsis'] != '' ) {
+				$rc = ciniki_web_processContent($ciniki, $item['synopsis'], 'cilist-description');
+				if( $rc['stat'] == 'ok' ) {
+					$content .= $rc['content'];
+				}
+				//
+				// Check for files
+				//
+				if( isset($args['child_files'][$iid]['files']) ) {
+					foreach($args['child_files'][$iid]['files'] as $file_id => $file) {
+						$file_url = $base_url . '/' . $item['permalink'] . '/download/' . $file['permalink'] . '.' . $file['extension'];
+						$content .= "<p><a target='_blank' href='" . $file_url . "' title='" . $file['name'] . "'>" . $file['name'] . "</a></p>";
+					}
+				}
+			} elseif( isset($item['description']) && $item['description'] != '' ) {
 				$rc = ciniki_web_processContent($ciniki, $item['description'], 'cilist-description');
 				if( $rc['stat'] == 'ok' ) {
 					$content .= $rc['content'];

@@ -51,7 +51,7 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
 	}
 	if( isset($page['files']) ) {
 		foreach($page['files'] as $fid => $file) {
-			$url = $base_url . '/' . $page['permalink'] . '/download/' . $file['permalink'] . '.' . $file['extension'];
+			$url = $base_url . ($page['permalink']!=''?'/' . $page['permalink']:'') . '/download/' . $file['permalink'] . '.' . $file['extension'];
 			$content .= "<p><a target='_blank' href='" . $url . "' title='" . $file['name'] . "'>" . $file['name'] . "</a></p>";
 		}
 	}
@@ -64,7 +64,11 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
 	if( isset($page['images']) && count($page['images']) > 0 ) {
 		$content .= "<h2 style='clear:right;'>Gallery</h2>\n";
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
-		$img_base_url = $base_url . '/' . $page['permalink'] . "/gallery";
+		if( $page['permalink'] != '' ) {
+			$img_base_url = $base_url . '/' . $page['permalink'] . '/gallery';
+		} else {
+			$img_base_url = $base_url . '/gallery';
+		}
 		$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $page['images'], 125);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
@@ -82,7 +86,10 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
 		}
 		if( count($page['children']) > 0 ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
-			$child_base_url = $base_url . '/' . $page['permalink'];
+			$child_base_url = $base_url;
+			if( $page['permalink'] != '' ) {
+				$child_base_url .= '/' . $page['permalink'];
+			}
 			$list_args = array('notitle'=>'yes');
 			if( isset($page['child_files']) ) {
 				$list_args['child_files'] = $page['child_files'];

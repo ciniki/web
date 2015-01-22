@@ -690,7 +690,6 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 			$content .= "Member News";
 		}
 		$content .= "</a></li>";
-
 	}
 
 	if( isset($settings['page-blog-active']) && $settings['page-blog-active'] == 'yes' ) {
@@ -702,6 +701,25 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		}
 		$content .= "</a></li>";
 	}
+	//
+	// Check if membersonly area is enabled, and the member has logged in
+	//
+	if( isset($settings['page-membersonly-active']) && $settings['page-membersonly-active'] == 'yes' 
+		&& isset($ciniki['business']['modules']['ciniki.membersonly'])
+		// Customer is logged in, or menu item should always be displayed
+		&& (isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0
+			|| (isset($settings['page-membersonly-menu-active']) && $settings['page-membersonly-menu-active'] == 'yes')
+			)
+		) {
+		$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='membersonly'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/membersonly'>";
+		if( isset($settings['page-membersonly-name']) && $settings['page-membersonly-name'] != '' ) {
+			$content .= $settings['page-membersonly-name'];
+		} else {
+			$content .= "Members Only";
+		}
+		$content .= "</a></li>";
+	}
+
 	if( isset($settings['page-faq-active']) && $settings['page-faq-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='faq'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/faq'>FAQ</a></li>";
 	}

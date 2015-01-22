@@ -150,6 +150,9 @@ function ciniki_web_siteSettings($ciniki) {
 	if( isset($modules['ciniki.filedepot']) || isset($modules['ciniki.products']) ) {
 		$pages['account'] = array('display_name'=>'Account', 'active'=>'no');
 	}
+	if( isset($modules['ciniki.membersonly']) || isset($modules['ciniki.membersonly']) ) {
+		$pages['membersonly'] = array('display_name'=>'Members Only', 'active'=>'no');
+	}
 
 	// 
 	// If this is the master business, allow extra options
@@ -287,6 +290,9 @@ function ciniki_web_siteSettings($ciniki) {
 	}
 	if( isset($settings['page-memberblog-active']) && $settings['page-memberblog-active'] == 'yes' ) {
 		$pages['memberblog']['active'] = 'yes';
+	}
+	if( isset($settings['page-membersonly-active']) && $settings['page-membersonly-active'] == 'yes' ) {
+		$pages['membersonly']['active'] = 'yes';
 	}
 	if( isset($settings['page-info-active']) && $settings['page-info-active'] == 'yes' ) {
 		$pages['info']['active'] = 'yes';
