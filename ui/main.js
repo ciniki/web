@@ -921,6 +921,7 @@ function ciniki_web_main() {
 				'page-membersonly-active':{'label':'Display Members Only Pages', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-membersonly-menu-active':{'label':'Always in Menu', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-membersonly-name':{'label':'Name', 'type':'text', 'hint':'Members Only'},
+				'page-membersonly-password':{'label':'Password', 'type':'text', 'hint':''},
 				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'membersonly\');'},

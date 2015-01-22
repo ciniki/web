@@ -110,16 +110,16 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 			$_SESSION['account_chooser_redirect'] = '';
 			if( $redirect == 'back' 
 				&& isset($_SESSION['login_referer']) && $_SESSION['login_referer'] != '' ) {
-				Header('Location: ' . $_SESSION['login_referer']);
+				header('Location: ' . $_SESSION['login_referer']);
 				$_SESSION['login_referer'] = '';
 				exit;
 			}
 			if( $redirect != '' ) {
-				Header('Location: ' . $ciniki['request']['ssl_domain_base_url'] . $redirect);
+				header('Location: ' . $ciniki['request']['ssl_domain_base_url'] . $redirect);
 				exit;
 			}
 		} 
-		Header('Location: ' . ($ciniki['request']['ssl_domain_base_url']!=''?$ciniki['request']['ssl_domain_base_url']:'') . '/account');
+		header('Location: ' . ($ciniki['request']['ssl_domain_base_url']!=''?$ciniki['request']['ssl_domain_base_url']:'') . '/account');
 		exit;
 	}
 	elseif( (isset($_POST['action']) && $_POST['action'] == 'logout') 
@@ -130,7 +130,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 		$ciniki['session']['change_log_id'] = '';
 		unset($_SESSION['customer']);
 		unset($_SESSION['cart']);
-		Header('Location: ' . ($ciniki['request']['ssl_domain_base_url']!=''?$ciniki['request']['ssl_domain_base_url']:'/'));
+		header('Location: ' . ($ciniki['request']['ssl_domain_base_url']!=''?$ciniki['request']['ssl_domain_base_url']:'/'));
 	}
 	elseif( isset($_POST['action']) ) {
 		if( $_POST['action'] == 'signin' ) {
@@ -179,12 +179,12 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 					elseif( isset($settings['page-account-signin-redirect']) ) {
 						if( $settings['page-account-signin-redirect'] == 'back' 
 							&& isset($_SESSION['login_referer']) && $_SESSION['login_referer'] != '' ) {
-							Header('Location: ' . $_SESSION['login_referer']);
+							header('Location: ' . $_SESSION['login_referer']);
 							$_SESSION['login_referer'] = '';
 							exit;
 						}
 						if( $settings['page-account-signin-redirect'] != '' ) {
-							Header('Location: ' . $ciniki['request']['ssl_domain_base_url'] . $settings['page-account-signin-redirect']);
+							header('Location: ' . $ciniki['request']['ssl_domain_base_url'] . $settings['page-account-signin-redirect']);
 							exit;
 						}
 					}

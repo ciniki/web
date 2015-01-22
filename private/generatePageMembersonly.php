@@ -24,21 +24,75 @@
 //
 function ciniki_web_generatePageMembersonly($ciniki, $settings) {
 
-	//
-	// Check if the membersonly area is active, and the customer is signed in.  Otherwise, redirect
-	// to the signin page
-	//
-	if( !isset($ciniki['business']['modules']['ciniki.membersonly']) ) {
-		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2195', 'msg'=>'Page does not exist.'));
-	}
-	if( !isset($settings['page-membersonly-active']) || $settings['page-membersonly-active'] != 'yes' ) {
-		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2196', 'msg'=>'Page does not active.'));
-	}
-	if( !isset($ciniki['session']['customer']['member_status']) 
-		|| $ciniki['session']['customer']['member_status'] != '10' ) {
-		
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageAccount');
-		return ciniki_web_generatePageAccount($ciniki, $settings);
+	if( isset($settings['page-membersonly-password']) 
+		&& $settings['page-membersonly-password'] != '' 
+		) {
+		if( !isset($_SESSION['membersonly']['authenticated']) 
+			|| $_SESSION['membersonly']['authenticated'] != 'yes' ) {
+			$err_msg = '';	
+			if( isset($_POST['password']) && $_POST['password'] == $settings['page-membersonly-password'] ) {
+				$_SESSION['membersonly']['authenticated'] = 'yes';
+				header('Location: http://' . $_SERVER[HTTP_HOST] . $_SERVER[REQUEST_URI]);
+				exit;
+			} else {
+				//
+				// Display the password form
+				//
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
+				$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'About', array());
+				if( $rc['stat'] != 'ok' ) {	
+					return $rc;
+				}
+				$content = $rc['content'];
+
+				$content .= "<div id='content'>\n";
+				$content .= "<p>This page is password protected.</p>";
+				$content .= "<form method='POST' action=''>";
+				if( $err_msg != '' ) {
+					$content .= "<p class='formerror'>$err_msg</p>\n";
+				}
+				$content .= "<input type='hidden' name='action' value='signin'>\n"
+					. "<div class='input'><label for='password'>Password</label><input id='password' type='password' class='text' maxlength='100' name='password' value='' /></div>\n"
+					. "<div class='submit'><input type='submit' class='submit' value='Continue' /></div>\n"
+					. "</form>"
+					. "<br/>";
+				$content .= "</form>";
+				$content .= "<br style='clear: both;' />\n";
+				$content .= "</div>\n";
+
+				//
+				// Add the footer
+				//
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageFooter');
+				$rc = ciniki_web_generatePageFooter($ciniki, $settings);
+				if( $rc['stat'] != 'ok' ) {	
+					return $rc;
+				}
+				$content .= $rc['content'];
+				return array('stat'=>'ok', 'content'=>$content);
+			}
+		} elseif( $_SESSION['membersonly']['authenticated'] == 'yes' && isset($_GET['logout']) ) {
+			$_SESSION['membersonly']['authenticated'] = 'no';
+			header('Location: ' . $ciniki['request']['domain_base_url'] . '/membersonly');
+			exit;
+		}
+	} else {
+		//
+		// Check if the membersonly area is active, and the customer is signed in.  Otherwise, redirect
+		// to the signin page
+		//
+		if( !isset($ciniki['business']['modules']['ciniki.membersonly']) ) {
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2195', 'msg'=>'Page does not exist.'));
+		}
+		if( !isset($settings['page-membersonly-active']) || $settings['page-membersonly-active'] != 'yes' ) {
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2196', 'msg'=>'Page does not active.'));
+		}
+		if( !isset($ciniki['session']['customer']['member_status']) 
+			|| $ciniki['session']['customer']['member_status'] != '10' ) {
+			
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageAccount');
+			return ciniki_web_generatePageAccount($ciniki, $settings);
+		}
 	}
 
 	//

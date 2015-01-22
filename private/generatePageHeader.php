@@ -347,6 +347,14 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		} elseif( $social_icons != '' ) {
 			$signin_content .= "<div class='signin'><div class='signin-wrapper hide-babybear'><span class='social-icons'>$social_icons</span></div></div>";
 		}
+	} 
+	//
+	// Logout button for membersonly page with password
+	//
+	elseif( isset($_SESSION['membersonly']['authenticated']) && $_SESSION['membersonly']['authenticated'] == 'yes' ) {
+		$signin_content .= "<div class='signin'><div class='signin-wrapper'>";
+		$signin_content .= "<span><a rel='nofollow' href='" . $ciniki['request']['domain_base_url'] . "/membersonly?logout'>Logout</a></span>";
+		$signin_content .= "</div></div>\n";
 	}
 
 	//
