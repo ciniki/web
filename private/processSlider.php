@@ -18,6 +18,7 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getCroppedImageURL');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 
 	//
 	// Make sure the slider is setup with at least one image
@@ -67,6 +68,14 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 		$slider_effect = $slider['effect'];
 	}
 
+	if( !isset($slider['resize']) ) {
+		$slider_format = 'cropped';
+	} elseif( $slider['resize'] == 'scaled' ) {
+		$slider_format = 'scaled';
+	} else {
+		$slider_format = 'cropped';
+	}
+
 	$image_list = '';
 	$pager_list = '';
 	$count = 0;
@@ -98,8 +107,13 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 		//
 		// Generate the image for the slider, must be cropped to exact dimensions
 		//
-		$rc = ciniki_web_getCroppedImageURL($ciniki, $image['image_id'], 'original', 
-			array('height'=>$slider_height, 'width'=>$slider_width, 'position'=>$image['image_offset'], 'last_updated'=>$image['last_updated']));
+		if( $slider_format == 'scaled' ) {
+			$rc = ciniki_web_getScaledImageURL($ciniki, $image['image_id'], 'original', 0, $slider_height);
+		} else {
+			$rc = ciniki_web_getCroppedImageURL($ciniki, $image['image_id'], 'original', 
+				array('height'=>$slider_height, 'width'=>$slider_width, 'position'=>$image['image_offset'], 
+					'last_updated'=>$image['last_updated']));
+		}
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
@@ -138,30 +152,55 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 	$javascript .= "		this.currentIndex = 0\n";
 	$javascript .= "	},\n";
 
-	$javascript .= "	resize: function(index) {\n";
-	$javascript .= "		for(i in this.li) {\n";
-	$javascript .= "			if( this.li[i].style != null ) { \n";
-	$javascript .= "				this.li[i].style.display = 'inline-block';\n";
-	$javascript .= "				this.li[i].style.width = this.ul.parentElement.clientWidth + 'px';\n";
-//	$javascript .= "				this.li[i].style.height = ((this.li[i].children[0].clientHeight*this.ul.parentElement.clientWidth)/this.li[i].children[0].clientWidth) + 'px';\n";
-	$javascript .= "			}\n";
-	$javascript .= "		}\n";
-	$javascript .= "		this.ul.style.width = (this.ul.parentElement.clientWidth * this.li.length) + 'px'\n";
-	$javascript .= "		this.ul.style.maxWidth = (this.ul.parentElement.clientWidth * this.li.length) + 'px'\n";
-//	$javascript .= "console.log(this.li[0].children[0].children[0].clientHeight);";
-	$javascript .= "		if( this.li[0].children[0].nodeName == 'A' ) {";
-	$javascript .= "			this.ul.style.height = this.li[0].children[0].children[0].clientHeight + 'px'\n";
-	$javascript .= "			this.ul.parentElement.style.height = this.li[0].children[0].children[0].clientHeight + 'px'\n";
-	$javascript .= "		} else {";
-	$javascript .= "			this.ul.style.height = this.li[0].children[0].clientHeight + 'px'\n";
-	$javascript .= "			this.ul.parentElement.style.height = this.li[0].children[0].clientHeight + 'px'\n";
-	$javascript .= "		}";
-//	$javascript .= "		this.ul.style.width = (this.li[0].clientWidth * this.li.length) + 'px'\n";
-//	$javascript .= "		this.ul.style.height = (this.li[0].clientHeight) + 'px'\n";
-//	$javascript .= "		this.ul.parentElement.style.height = (this.li[0].clientHeight) + 'px'\n";
-//	$javascript .= "		this.ul.style.maxHeight = this.li[0].clientHeight + 'px'\n";
-
-	$javascript .= "	},\n";
+	if( $slider_format == 'scaled' ) {
+		$javascript .= "	resize: function(index) {\n";
+		$javascript .= "		for(i in this.li) {\n";
+		$javascript .= "			if( this.li[i].style != null ) { \n";
+		$javascript .= "				this.li[i].style.display = 'inline-block';\n";
+		$javascript .= "				this.li[i].style.width = this.ul.parentElement.clientWidth + 'px';\n";
+	//	$javascript .= "				this.li[i].style.height = ((this.li[i].children[0].clientHeight*this.ul.parentElement.clientWidth)/this.li[i].children[0].clientWidth) + 'px';\n";
+		$javascript .= "			}\n";
+		$javascript .= "		}\n";
+		$javascript .= "		this.ul.style.width = (this.ul.parentElement.clientWidth * this.li.length) + 'px'\n";
+		$javascript .= "		this.ul.style.maxWidth = (this.ul.parentElement.clientWidth * this.li.length) + 'px'\n";
+	//	$javascript .= "console.log(this.li[0].children[0].children[0].clientHeight);";
+		$javascript .= "		if( this.li[0].children[0].nodeName == 'A' ) {";
+		$javascript .= "			this.ul.style.height = this.li[0].children[0].children[0].clientHeight + 8 + 'px'\n";
+		$javascript .= "			this.ul.parentElement.style.height = this.li[0].children[0].children[0].clientHeight + 8 + 'px'\n";
+		$javascript .= "		} else {";
+		$javascript .= "			this.ul.style.height = this.li[0].children[0].clientHeight + 8 + 'px'\n";
+		$javascript .= "			this.ul.parentElement.style.height = this.li[0].children[0].clientHeight + 8 + 'px'\n";
+		$javascript .= "		}";
+	//	$javascript .= "		this.ul.style.width = (this.li[0].clientWidth * this.li.length) + 'px'\n";
+	//	$javascript .= "		this.ul.style.height = (this.li[0].clientHeight) + 'px'\n";
+	//	$javascript .= "		this.ul.parentElement.style.height = (this.li[0].clientHeight) + 'px'\n";
+	//	$javascript .= "		this.ul.style.maxHeight = this.li[0].clientHeight + 'px'\n";
+		$javascript .= "	},\n";
+	} else {
+		$javascript .= "	resize: function(index) {\n";
+		$javascript .= "		for(i in this.li) {\n";
+		$javascript .= "			if( this.li[i].style != null ) { \n";
+		$javascript .= "				this.li[i].style.display = 'inline-block';\n";
+		$javascript .= "				this.li[i].style.width = this.ul.parentElement.clientWidth + 'px';\n";
+	//	$javascript .= "				this.li[i].style.height = ((this.li[i].children[0].clientHeight*this.ul.parentElement.clientWidth)/this.li[i].children[0].clientWidth) + 'px';\n";
+		$javascript .= "			}\n";
+		$javascript .= "		}\n";
+		$javascript .= "		this.ul.style.width = (this.ul.parentElement.clientWidth * this.li.length) + 'px'\n";
+		$javascript .= "		this.ul.style.maxWidth = (this.ul.parentElement.clientWidth * this.li.length) + 'px'\n";
+	//	$javascript .= "console.log(this.li[0].children[0].children[0].clientHeight);";
+		$javascript .= "		if( this.li[0].children[0].nodeName == 'A' ) {";
+		$javascript .= "			this.ul.style.height = this.li[0].children[0].children[0].clientHeight + 'px'\n";
+		$javascript .= "			this.ul.parentElement.style.height = this.li[0].children[0].children[0].clientHeight + 'px'\n";
+		$javascript .= "		} else {";
+		$javascript .= "			this.ul.style.height = this.li[0].children[0].clientHeight + 'px'\n";
+		$javascript .= "			this.ul.parentElement.style.height = this.li[0].children[0].clientHeight + 'px'\n";
+		$javascript .= "		}";
+	//	$javascript .= "		this.ul.style.width = (this.li[0].clientWidth * this.li.length) + 'px'\n";
+	//	$javascript .= "		this.ul.style.height = (this.li[0].clientHeight) + 'px'\n";
+	//	$javascript .= "		this.ul.parentElement.style.height = (this.li[0].clientHeight) + 'px'\n";
+	//	$javascript .= "		this.ul.style.maxHeight = this.li[0].clientHeight + 'px'\n";
+		$javascript .= "	},\n";
+	}
 	$javascript .= "	goTo: function(index) {\n";
 	// filter invalid indices
 	$javascript .= "		if( index >= this.li.length ) { index = 0; }\n";
@@ -209,7 +248,7 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 		$ciniki['request']['onresize'] .= 'sliders[0].resize();';
 
 		
-		$content = "<div class='slider'>";
+		$content = "<div class='slider slider-" . $slider_format . "'>";
 		$content .= "<div class='slider-image-wrap'>";
 		$content .= "<div id='slider-ctl' class='slider-image'>";
 		$content .= "<ul>";

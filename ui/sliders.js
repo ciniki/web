@@ -17,6 +17,10 @@ function ciniki_web_sliders() {
 		'fast':'Fast',
 		'xfast':'X-Fast',
 		};
+	this.resizeOptions = {
+		'cropped':'Cropped',
+		'scaled':'Scaled',
+		};
 	this.init = function() {
 		//
 		// Global functions for history and field value
@@ -69,6 +73,7 @@ function ciniki_web_sliders() {
 				'name':{'label':'Name', 'type':'text'},
 				'size':{'label':'Size', 'type':'select', 'options':this.sizeOptions},
 				'speed':{'label':'Speed', 'type':'select', 'options':this.speedOptions},
+				'resize':{'label':'Format', 'type':'select', 'options':this.resizeOptions},
 				}},
 			'images':{'label':'Images', 'type':'simplethumbs'},
 			'_images':{'label':'', 'type':'simplegrid', 'num_cols':1,

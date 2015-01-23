@@ -672,15 +672,24 @@ aside div.googlemap {
 	border-bottom: 1px solid #333;
 }
 
-#content div.slider-image-wrap {
+#content div.slider-cropped div.slider-image-wrap {
 	background: #fff;
 	margin: 0px;
 	padding: 0px;
 	border: 8px solid #fff;
 }
 
+#content div.slider-scaled div.slider-image-wrap {
+}
+
 #content div.slider-pager-wrap {
 	padding-top: 0.5em;
+}
+
+#content div.slider-scaled div.slider-image-wrap ul li img {
+	border: 8px solid #fff;
+	padding: 0px;
+	margin: 0px;
 }
 
 #content div.slider-pager a {

@@ -20,6 +20,7 @@ function ciniki_web_sliderLoad(&$ciniki, $settings, $business_id, $slider_id) {
 		. "ciniki_web_sliders.size, "
 		. "ciniki_web_sliders.effect, "
 		. "ciniki_web_sliders.speed, "
+		. "ciniki_web_sliders.resize, "
 		. "ciniki_web_slider_images.id AS slider_image_id, "
 		. "ciniki_web_slider_images.image_id, "
 		. "ciniki_web_slider_images.caption, "
@@ -42,7 +43,7 @@ function ciniki_web_sliderLoad(&$ciniki, $settings, $business_id, $slider_id) {
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
 	$rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.web', array(
 		array('container'=>'sliders', 'fname'=>'id',
-			'fields'=>array('size', 'effect', 'speed')),
+			'fields'=>array('size', 'effect', 'speed', 'resize')),
 		array('container'=>'images', 'fname'=>'slider_image_id',
 			'fields'=>array('image_id', 'caption', 'url', 'image_offset', 'last_updated')),
 		));

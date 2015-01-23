@@ -26,6 +26,7 @@ function ciniki_web_sliderUpdate(&$ciniki) {
         'size'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Size'), 
         'effect'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Effect'), 
         'speed'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Speed'), 
+        'resize'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Resize'), 
         )); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;

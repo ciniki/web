@@ -683,11 +683,22 @@ div.word-cloud {
 	font-size: 1.0em;
 }
 
-#content div.slider-image-wrap {
+#content div.slider-cropped div.slider-image-wrap {
 	background: #fff;
-	border: 2px solid #ccc;
+	border: 2px solid #ccc; 
 	margin: 0px;
 	padding: 9px;
+}
+
+#content div.slider-scaled div.slider-image-wrap {
+	background: #fff;
+	padding: 2px;
+}
+
+#content div.slider-scaled div.slider-image-wrap ul li img {
+	border: 2px solid #ccc; 
+	padding: 9px;
+	margin: 2px;
 }
 
 #content div.slider-pager-wrap {

@@ -1,0 +1,4 @@
+#
+#
+ALTER TABLE ciniki_web_sliders ADD COLUMN resize varchar(20) not null AFTER speed;
+ALTER TABLE ciniki_web_sliders COMMENT='v1.03';
