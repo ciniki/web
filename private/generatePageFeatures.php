@@ -127,7 +127,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 		$feature = $rc['feature'];
 
 		if( !isset($feature['images']) || count($feature['images']) < 1 ) {
-			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1694', 'msg'=>'Unable to find image'));
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1720', 'msg'=>"We're sorry, but the image you requested does not exist."));
 		}
 
 		$first = NULL;
@@ -171,12 +171,16 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 		//
 		// Load the image
 		//
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-		$rc = ciniki_web_getScaledImageURL($ciniki, $img['image_id'], 'original', 0, 600);
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
-		}
+		if( isset($img['image_id']) && $img['image_id'] > 0 ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+			$rc = ciniki_web_getScaledImageURL($ciniki, $img['image_id'], 'original', 0, 600);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
 		$img_url = $rc['url'];
+		} else {
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1758', 'msg'=>"We're sorry, but the image you requested does not exist."));
+		}
 
 		//
 		// Set the page to wide if possible

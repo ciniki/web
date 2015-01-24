@@ -123,7 +123,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 		}
 		
 		if( !isset($event['images']) || count($event['images']) < 1 ) {
-			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1287', 'msg'=>'Unable to find image'));
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1287', 'msg'=>"I'm sorry, but we don't seem to have the photo you requested."));
 		}
 
 		$first = NULL;
