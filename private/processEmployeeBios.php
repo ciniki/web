@@ -130,7 +130,7 @@ function ciniki_web_processEmployeeBios($ciniki, $settings, $page, $employees) {
 					$content .= '<span class="contact-title">' . $u['user']['firstname'] . ' ' . $u['user']['lastname'] . '</span><br/>';
 				}
 				if( ($settings[$setting]&0x02) == 0x02 && isset($u['user']['employee.title']) && $u['user']['employee.title'] != '' ) {
-					$content .= $u['user']['employee.title'] . '<br/>';
+					$content .= '<span class="contact-title">' . $u['user']['employee.title'] . '</span><br/>';
 				}
 				// Check if employee bio content is to be displayed.
 				if( ($settings[$setting]&0x40) == 0x40 ) {
