@@ -68,6 +68,9 @@ function ciniki_web_main() {
 			'mc', 'medium', 'sectioned', 'ciniki.web.main.menu');
 		this.menu.data = {};
 		this.menu.sections = {
+			'_url':{'label':'', 'aside':'no', 'list':{
+				'url':{'label':'Website', 'value':'', 'fn':''},
+				}},
 			'settings':{'label':'Settings', 'aside':'no', 'type':'simplegrid', 'num_cols':2, 'sortable':'no',
 				'headerValues':null,
 				'cellClasses':['',''],
@@ -87,11 +90,19 @@ function ciniki_web_main() {
 		};
 		this.menu.noData = function(s) { return 'No options added'; }
 		this.menu.sectionData = function(s) { 
+			if( s == '_url' ) { return this.sections._url.list; }
 			if( s == 'advanced' ) { return this.sections.advanced.list; }
 			if( s == 'adm' ) { return this.sections.adm.list; }
 			return this.data[s]; 
 		};
-		this.menu.listValue = function(s, i, d) { return d.label; };
+		this.menu.listLabel = function(s, i, d) { 
+			if( s == '_url' ) { return d.label; }
+			return '';
+		};
+		this.menu.listValue = function(s, i, d) { 
+			if( s == '_url' ) { return "<a class='website' target='_mycinikisite' href='" + d.value + "'>" + d.value + '</a>'; }
+			return d.label; 
+		};
 		this.menu.cellValue = function(s, i, j, d) {
 			if( s == 'settings' ) {
 				if( j == 0 && d.setting.display_name == 'Theme' ) { return 'Color Scheme'; }
@@ -1436,6 +1447,7 @@ function ciniki_web_main() {
 		//
 		if( M.userPerms&0x01 == 0x01 ) {
 			this.menu.size = 'medium mediumaside';
+			this.menu.sections._url.aside = 'yes';
 			this.menu.sections.settings.aside = 'yes';
 			this.menu.sections.pages.aside = 'yes';
 			this.menu.sections.adm = {'label':'Admin Options', 'list':{
@@ -1451,6 +1463,7 @@ function ciniki_web_main() {
 			this.home.sections.redirects.active = 'yes';
 		} else {
 			this.menu.size = 'medium';
+			this.menu.sections._url.aside = 'no';
 			this.menu.sections.settings.aside = 'no';
 			this.menu.sections.pages.aside = 'no';
 			this.home.sections.redirects.active = 'no';
@@ -1464,18 +1477,21 @@ function ciniki_web_main() {
 				M.api.err(rsp);
 				return false;
 			}
-			M.ciniki_web_main.menu.data.pages = rsp.pages;
+			var p = M.ciniki_web_main.menu;
+			p.data.pages = rsp.pages;
 
-			M.ciniki_web_main.menu.data.settings = [];
+			p.data.settings = [];
 			for(i in rsp.settings) {
 				if( rsp.settings[i].setting.name == 'theme' ) {
-					M.ciniki_web_main.menu.data.settings[i] = rsp.settings[i];
+					p.data.settings[i] = rsp.settings[i];
 				}
 				if( rsp.settings[i].setting.name == 'layout' ) {
 					M.ciniki_web_main.layout.data['site-layout'] = rsp.settings[i].setting.value;
 				}
 			}
-//			M.ciniki_web_main.menu.data.settings = rsp.settings;
+			p.sections._url.list.url.value = rsp.url;
+//			p.sections._url.list.url.fn = 'window.open(\'' + rsp.url + '\');';
+//			p.data.settings = rsp.settings;
 			M.ciniki_web_main.header.data = {};
 			for(i in rsp.header) {
 				M.ciniki_web_main.header.data[rsp.header[i].setting.name] = rsp.header[i].setting.value;
@@ -1483,21 +1499,21 @@ function ciniki_web_main() {
 			if( rsp.settings['page-home-url'] != null ) {
 				M.ciniki_web_main.header.data['page-home-url'] = rsp.settings['page-home-url'];
 			}
-			M.ciniki_web_main.menu.data.advanced = rsp.advanced;
+			p.data.advanced = rsp.advanced;
 			
 			//
 			// Allow sysadmins to mark a site as featured for the home page
 			//
 			if( M.userPerms&0x01 == 0x01 ) {
 				if( rsp.featured == 'yes' ) {
-					M.ciniki_web_main.menu.sections.admin.buttons.featured = {'label':'Remove Featured', 'fn':'M.ciniki_web_main.removeFeatured();'};
+					p.sections.admin.buttons.featured = {'label':'Remove Featured', 'fn':'M.ciniki_web_main.removeFeatured();'};
 				} else {
-					M.ciniki_web_main.menu.sections.admin.buttons.featured = {'label':'Make Featured', 'fn':'M.ciniki_web_main.makeFeatured();'};
+					p.sections.admin.buttons.featured = {'label':'Make Featured', 'fn':'M.ciniki_web_main.makeFeatured();'};
 				}
 			}
 
-			M.ciniki_web_main.menu.refresh();
-			M.ciniki_web_main.menu.show(cb);
+			p.refresh();
+			p.show(cb);
 		});
 	}
 

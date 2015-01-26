@@ -59,6 +59,16 @@ function ciniki_web_siteSettings($ciniki) {
 		return $ac;
 	}
 	$modules = $ac['modules'];
+
+	//
+	// Get the website URL
+	// 
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'lookupBusinessURL');
+	$rc = ciniki_web_lookupBusinessURL($ciniki, $args['business_id']);
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+	$url = $rc['url'];
 	
 	//
 	// Build list of available pages from modules enabled
@@ -350,6 +360,6 @@ function ciniki_web_siteSettings($ciniki) {
 		}
 	}
 
-	return array('stat'=>'ok', 'featured'=>$featured, 'pages'=>$rc_pages, 'settings'=>$rc_settings, 'header'=>$rc_header, 'advanced'=>$rc_advanced);
+	return array('stat'=>'ok', 'featured'=>$featured, 'pages'=>$rc_pages, 'settings'=>$rc_settings, 'header'=>$rc_header, 'advanced'=>$rc_advanced, 'url'=>$url);
 }
 ?>
