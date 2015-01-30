@@ -119,6 +119,8 @@ function ciniki_web_processProduct(&$ciniki, $settings, $business_id, $base_url,
 		}
 	}
 
+	$content .= "<br style='clear:right;'/>";
+
 	//
 	// Display the additional images for the product
 	//
