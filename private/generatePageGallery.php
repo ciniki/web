@@ -249,13 +249,23 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 
 		$page_content .= "<span class='image-title'>" . $img['title'] . '</span>'
 			. "<span class='image-details'>" . $img['details'] . '</span>';
-		if( $img['description'] != '' ) {
+		if( $img['description'] != '' && (!isset($img['webflags']) || ($img['webflags']&0x0100) > 0) ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 			$rc = ciniki_web_processContent($ciniki, $img['description']);
 			$page_content .= "<span class='image-description'>" . $rc['content'] . "</span>";
 			$ciniki['response']['head']['og']['description'] = strip_tags($img['description']);
 		}
-		if( $img['awards'] != '' ) {
+		if( isset($img['inspiration']) && $img['inspiration'] != '' && isset($img['webflags']) && ($img['webflags']&0x0200) > 0 ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+			$rc = ciniki_web_processContent($ciniki, $img['inspiration']);	
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= "<span class='image-awards-title'>Inspiration</span>"
+				. "<span class='image-awards'>" . $rc['content'] . "</span>"
+				. "";
+		}
+		if( isset($img['awards']) && $img['awards'] != '' && isset($img['webflags']) && ($img['webflags']&0x0400) > 0 ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 			$rc = ciniki_web_processContent($ciniki, $img['awards']);	
 			if( $rc['stat'] != 'ok' ) {
