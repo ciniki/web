@@ -206,11 +206,13 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 		//
 		$business_id = 0;
 		if( $err == 0 ) {
-			$strsql = "INSERT INTO ciniki_businesses (uuid, name, sitename, status, date_added, last_updated) VALUES ("
+			$strsql = "INSERT INTO ciniki_businesses (uuid, name, sitename, status, reseller_id, date_added, last_updated) VALUES ("
 				. "UUID(), "
 				. "'" . ciniki_core_dbQuote($ciniki, $signup['business_name']) . "' "
 				. ", '" . ciniki_core_dbQuote($ciniki, $signup['sitename']) . "' "
-				. ", 1, UTC_TIMESTAMP(), UTC_TIMESTAMP())";
+				. ", 1 "
+				. ", '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_business_id']) . "' "
+				. ", UTC_TIMESTAMP(), UTC_TIMESTAMP())";
 			$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.businesses');
 			if( $rc['stat'] != 'ok' ) { 
 				ciniki_core_dbTransactionRollback($ciniki, 'ciniki.businesses');
@@ -362,28 +364,68 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 			ciniki_businesses_updateModuleChangeDate($ciniki, $business_id, 'ciniki', 'businesses');
 
 			//
+			// Load the business mail template
+			//
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'mail', 'private', 'loadBusinessTemplate');
+			$rc = ciniki_mail_loadBusinessTemplate($ciniki, $ciniki['config']['ciniki.core']['master_business_id'], array('title'=>'Welcome'));
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$template = $rc['template'];
+			$theme = $rc['theme'];
+
+			//
 			// Email user welcome message
 			//
 			$subject = "Welcome to Ciniki";
-			$msg = 'Thank you for choosing the Ciniki platform to manage your business.  '
-				. 'We hope you have a pleasant experience and we look forward to your feedback.  '
-				. 'Please use the "Help" feature to ask a question, report a bug, or request a feature.  '
-				. 'You may also find that other users have already provided advice and suggestions that may be helpful.  '
-				. 'The Ciniki platform is a community effort and everybody benefits when you contribute.  '
-				. 'Thanks for doing your part to improve small business management.'
-				. "\n\n"
-				. "Please save this e-mail for future reference.  We've included some important information and links below."
-				. "\n\n"
-				. "Email: " . $signup['email_address'] . "\n"
-				. "Username: " . $signup['username'] . "\n"
-				. "Manage: " . $ciniki['config']['ciniki.core']['manage.url'] . "\n";
+			$manager_url = $ciniki['config']['ciniki.core']['manage.url'];
+			$msg = "<tr><td style='" . $theme['td_body'] . "'>"
+				. "<p style='" . $theme['p'] . "'>"
+				. 'Thank you for choosing the Ciniki platform to manage your business. '
+				. "Please save this email for future reference.  We've included some important information and links below."
+				. "</p>\n\n<p style='" . $theme['p'] . "'>"
+				. "To get started, you can login at <a style='" . $theme['a'] . "' href='$manager_url'>$manager_url</a> with your email address and the password shown below."
+				. "</p>\n\n<p style='" . $theme['p'] . "'>"
+				. "";
+//			if( preg_match('/ciniki\.web/', $signup['plan_modules']) ) {
+//				$weburl = "http://" . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $signup['sitename'] . "<br/>\n";
+//				$msg .= "Your view your website at: <a style='" . $theme['a'] . "' href='$weburl'>$weburl</a>";
+//			}
+
+//				. 'We hope you have a pleasant experience and we look forward to your feedback.  '
+//				. 'Please use the "Help" feature to ask a question, report a bug, or request a feature.  '
+//				. 'You may also find that other users have already provided advice and suggestions that may be helpful.  '
+//				. 'The Ciniki platform is a community effort and everybody benefits when you contribute.  '
+//				. 'Thanks for doing your part to improve small business management.'
+			$msg .= "<p style='" . $theme['p'] . "'>"
+//				. "Please save this e-mail for future reference.  We've included some important information and links below."
+//				. "</p>\n\n<p style='" . $theme['p'] . "'>"
+				. "Email: " . $signup['email_address'] . "<br/>\n"
+				. "Username: " . $signup['username'] . "<br/>\n"
+				. "Password: " . $signup['password'] . "<br/>\n"
+				. "Ciniki Manager: <a style='" . $theme['a'] . "' href='$manager_url'>$manager_url</a><br/>\n"
+				. "";
+//				. "Ciniki Manager: " . $ciniki['config']['ciniki.core']['manage.url'] . "<br/>\n";
 			if( preg_match('/ciniki\.web/', $signup['plan_modules']) ) {
-				$msg .= "Your website: http://" . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $signup['sitename'] . "\n";
+				$weburl = "http://" . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $signup['sitename'] . "<br/>\n";
+				$msg .= "Your website: <a style='" . $theme['a'] . "' href='$weburl'>$weburl</a><br/>\n";
+				
+//				$msg .= "Your website: http://" . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $signup['sitename'] . "<br/>\n";
 			}
-			$msg .= "\n\n";
+			$msg .= "</p>\n\n";
+
+			$htmlmsg = $template['html_header']
+				. $msg
+				. $template['html_footer']
+				. "";
+			$textmsg = $template['text_header']
+				. strip_tags($msg)
+				. $template['text_footer']
+				. "";
 			$ciniki['emailqueue'][] = array('to'=>$signup['email_address'],
 				'subject'=>$subject,
-				'textmsg'=>$msg,
+				'htmlmsg'=>$htmlmsg,
+				'textmsg'=>$textmsg,
 				);
 
 			//
@@ -473,20 +515,20 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 			$err = 14;
 		}
 
-		if( !isset($_POST['password']) || $_POST['password'] == '' || strlen($_POST['password']) < 8 ) {
-			$password_err = 'yes';
-			$err = 15;
-		}
-
-		if( $_POST['password'] != $_POST['password2'] ) {
-			$password_err = "I'm sorry, but the passwords you entered did not match.";
-			$err = 26;
-		}
-
-		if( !preg_match('/[0-9]/', $_POST['password']) ) {
-			$password_err = 'yes';
-			$err = 16;
-		}
+//		if( !isset($_POST['password']) || $_POST['password'] == '' || strlen($_POST['password']) < 8 ) {
+//			$password_err = 'yes';
+//			$err = 15;
+//		}
+//
+//		if( $_POST['password'] != $_POST['password2'] ) {
+//			$password_err = "I'm sorry, but the passwords you entered did not match.";
+//			$err = 26;
+//		}
+//
+//		if( !preg_match('/[0-9]/', $_POST['password']) ) {
+//			$password_err = 'yes';
+//			$err = 16;
+//		}
 
 		if( !isset($_POST['useragrees']) || $_POST['useragrees'] != 'yes' ) {
 			$useragrees_err = 'You must agree to the user agreement if you would like to sign up.';
@@ -511,13 +553,67 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 			$err = 17;
 		}
 
+		$username = '';
+		$password = '';
+		if( $err == 0 ) {
+			$usernames = array(
+				strtolower($_POST['firstname']),
+				strtolower($_POST['firstname'] . $_POST['lastname'][0]),
+				strtolower($_POST['firstname'][0] . $_POST['lastname']),
+				strtolower($_POST['firstname'] . '.' . $_POST['lastname']),
+				strtolower($_POST['firstname'] . '_' . $_POST['lastname']),
+				strtolower($_POST['firstname'] . $_POST['lastname']),
+				strtolower($_POST['firstname'] . rand(10,99)),
+				strtolower($_POST['firstname'] . rand(10,99)),
+				strtolower($_POST['firstname'] . rand(10,99)),
+				strtolower($_POST['firstname'] . rand(10,99)),
+				strtolower($_POST['firstname'] . rand(100,999)),
+				strtolower($_POST['firstname'] . rand(100,999)),
+				strtolower($_POST['firstname'] . rand(100,999)),
+				strtolower($_POST['firstname'] . rand(1000,9999)),
+				strtolower($_POST['firstname'] . rand(10000,99999)),
+				);
+			foreach($usernames as $uname) {
+				$strsql = "SELECT email, username "
+					. "FROM ciniki_users "
+					. "WHERE username = '" . ciniki_core_dbQuote($ciniki, $uname) . "' "
+					. "";
+				$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'user');
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				if( !isset($rc['user']) ) {
+					$username = $uname;
+					break;
+				}
+			}
+			if( $username == '' ) {
+				$email_address_err = "Username already take, please choose another.";
+				$err = 18;
+			}
+		}
+
+		//
+		// Set the password for the user
+		//
+		if( $err == 0 ) {
+			if( isset($_POST['password']) && $_POST['password'] != '' ) {
+				$password = $_POST['password'];
+			} else {
+				 $chars = 'ABCDEF2GHJK34MN56PQ789RS2TU3VWX654YZa9bc8def7ghj6kmnpqrstuvwxyz23456789';
+				 for($i=0;$i<8;$i++) {
+					 $password .= substr($chars, rand(0, strlen($chars)-1), 1);
+				 }
+			}
+		}
+
 		//
 		// Check if email address and/or username already exists, then check if password matches
 		//
 		if( $err == 0 ) {
 			$strsql = "SELECT email, username "
 				. "FROM ciniki_users "
-				. "WHERE username = '" . ciniki_core_dbQuote($ciniki, $_POST['username']) . "' "
+				. "WHERE username = '" . ciniki_core_dbQuote($ciniki, $username) . "' "
 				. "OR email = '" . ciniki_core_dbQuote($ciniki, $_POST['email_address']) . "' "
 				. "";
 			$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'user');
@@ -530,6 +626,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 				if( $rc['user']['email'] != $_POST['email_address'] ) {
 					// Username matches, but email doesn't, they are trying to create a new account
 					$username_err = 'Username already taken, please choose another.';
+					error_log('WEB-SIGNUP: username taken: ' . $username);
 					$err = 18;
 				}
 				else {
@@ -538,7 +635,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 					$strsql = "SELECT id,email, username "
 						. "FROM ciniki_users "
 						. "WHERE email = '" . ciniki_core_dbQuote($ciniki, $_POST['email_address']) . "' "
-						. "AND password = SHA1('" . ciniki_core_dbQuote($ciniki, $_POST['password']) . "') "
+						. "AND password = SHA1('" . ciniki_core_dbQuote($ciniki, $password) . "') "
 						. "";
 					$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'user');
 					if( $rc['stat'] != 'ok' ) {
@@ -546,7 +643,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 					}
 					// Password is not correct for account
 					if( !isset($rc['user']) ) {
-						$email_address_err = 'Email address is already setup in the system, please enter your account password.';
+						$password_err = 'Email address is already setup in the system, please enter your account password.';
 						$err = 19;
 					} else {
 						$user_id = $rc['user']['id'];
@@ -594,8 +691,10 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 			$signup['business_name'] = $_POST['business_name'];
 			$signup['sitename'] = $sitename;
 			$signup['email_address'] = $_POST['email_address'];
-			$signup['username'] = $_POST['username'];
-			$signup['password'] = $_POST['password'];
+//			$signup['username'] = $_POST['username'];
+//			$signup['password'] = $_POST['password'];
+			$signup['username'] = $username;
+			$signup['password'] = $password;
 			$signup['user_id'] = $user_id;
 			$signup['time'] = time();
 			$signup['key'] = md5(date('Y-m-d-H-i-s') . rand());	
@@ -629,19 +728,41 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 		if( $err == 0 ) {
 //			session_write_close();
 			$verify_url = $verify_base_url . "?t=" . $signup['key'];
-			
+		
+			//
+			// Load the business mail template
+			//
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'mail', 'private', 'loadBusinessTemplate');
+			$rc = ciniki_mail_loadBusinessTemplate($ciniki, $ciniki['config']['ciniki.core']['master_business_id'], array('title'=>'Email Verification'));
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$template = $rc['template'];
+			$theme = $rc['theme'];
+
 			//
 			// Send email to user
 			//
 			$subject = "Email verification";
-			$msg = "Please click on the following link to verify your email address and your business will be setup in Ciniki.  "
+			$htmlmsg = $template['html_header']
+				. "<tr><td style='" . $theme['td_body'] . "'>"
+				. "<p style='" . $theme['p'] . "'>Please click on the following link to verify your email address and your business will be setup in Ciniki.</p>"
+				. "<p style='" . $theme['p'] . "'><a style='" . $theme['a'] . "' href='$verify_url'>$verify_url</a></p>"
+				. "</td></tr>"
+				. $template['html_footer']
+				. "";
+			$textmsg = $template['text_header']
+				. "Please click on the following link to verify your email address and your business will be setup in Ciniki."
 				. "\n\n"
-//				. "<a href='$verify_url'>$verify_url</a>";
 				. "$verify_url"
-				. "\n\n";
+				. "\n\n"
+				. $template['text_footer']
+				. "";
+
 			$ciniki['emailqueue'][] = array('to'=>$signup['email_address'],
 				'subject'=>$subject,
-				'textmsg'=>$msg,
+				'htmlmsg'=>$htmlmsg,
+				'textmsg'=>$textmsg,
 				);
 			error_log('WEB-SIGNUP: ' 
 				. $signup['firstname'] . ', '
@@ -749,8 +870,8 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 		if( isset($_POST['sitename']) ) { $sitename = $_POST['sitename']; }
 		$email_address = '';
 		if( isset($_POST['email_address']) ) { $email_address = $_POST['email_address']; }
-		$username = '';
-		if( isset($_POST['username']) ) { $username = $_POST['username']; }
+//		$username = '';
+//		if( isset($_POST['username']) ) { $username = $_POST['username']; }
 		$useragrees = '';
 		if( isset($_POST['useragrees']) ) { $useragrees = $_POST['useragrees']; }
 
@@ -811,24 +932,26 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 			$page_content .= "<p class='formerror'>$email_address_err</p>";
 		}
 		$page_content .= "</div>";
-		$page_content .= "<div class='input'><label for='username'>Username</label><input type='text' class='text' name='username' value='$username'>";
-		if( $username_err != '' ) {
-			$page_content .= "<p class='formerror'>$username_err</p>";
+//		$page_content .= "<div class='input'><label for='username'>Username</label><input type='text' class='text' name='username' value='$username'>";
+//		if( $username_err != '' ) {
+//			$page_content .= "<p class='formerror'>$username_err</p>";
+//		}
+//		$page_content .= "</div>";
+		if( $password_err != '' ) {
+			$page_content .= "<div class='input'><label for='password'>Password</label><input type='password' class='text' name='password' value='' />";
+			if( $password_err != '' && $password_err != 'yes' ) {
+				$page_content .= "<p class='formerror'>$password_err</p>";
+			}
+//			if( $password_err != '' && $password_err == 'yes' ) {
+//				$page_content .= "<p class='formerror'>";
+//			} else {
+//				$page_content .= "<p class='formhelp'>";
+//			}
+			$page_content .= "</div>";
 		}
-		$page_content .= "</div>";
-		$page_content .= "<div class='input'><label for='password'>Password</label><input type='password' class='text' name='password' value=''>";
-		if( $password_err != '' && $password_err != 'yes' ) {
-			$page_content .= "<p class='formerror'>$password_err</p>";
-		}
-		if( $password_err != '' && $password_err == 'yes' ) {
-			$page_content .= "<p class='formerror'>";
-		} else {
-			$page_content .= "<p class='formhelp'>";
-		}
-		$page_content .= "Password must be at least 8 characters, and contain 1 number.  This password will protect your business information, so longer and more cryptic is better.</p>";
-		$page_content .= "</div>";
-		$page_content .= "<div class='input'><label for='password2'>Retype Password</label><input type='password' class='text' name='password2' value=''>";
-		$page_content .= "<label for='useragrees'></label><input type='checkbox' class='' name='useragrees' value='yes'";
+//		$page_content .= "Password must be at least 8 characters, and contain 1 number.  This password will protect your business information, so longer and more cryptic is better.</p>";
+//		$page_content .= "<div class='input'><label for='password2'>Retype Password</label><input type='password' class='text' name='password2' value=''>";
+		$page_content .= "<div class='input'><label for='useragrees'></label><input type='checkbox' class='' name='useragrees' value='yes'";
 		if( $useragrees == 'yes' ) { $page_content .= " checked"; }
 		$page_content .= "> I agree to the User Agreement.";
 		if( $useragrees_err != '' ) {
@@ -853,6 +976,9 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 	//
 	// Add the footer
 	//
+	if( $err != 0 ) {
+		$ciniki['request']['error_codes_msg'] = "err: $err";
+	}
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageFooter');
 	$rc = ciniki_web_generatePageFooter($ciniki, $settings);
 	if( $rc['stat'] != 'ok' ) {	
