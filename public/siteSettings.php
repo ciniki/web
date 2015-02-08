@@ -164,6 +164,28 @@ function ciniki_web_siteSettings($ciniki) {
 		$pages['membersonly'] = array('display_name'=>'Members Only', 'active'=>'no');
 	}
 
+	//
+	// Pages
+	//
+	if( isset($modules['ciniki.web']) && ($modules['ciniki.web']['flags']&0x40) == 0x40) {
+		$strsql = "SELECT id, title, permalink, "
+			. "IF((flags&0x01)=1,'yes','no') AS active "
+			. "FROM ciniki_web_pages "
+			. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+			. "AND parent_id = 0 "
+			. "ORDER BY sequence, title "
+			. "";
+		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'page');
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		if( isset($rc['rows']) ) {
+			foreach($rc['rows'] as $row) {
+				$pages[$row['permalink']] = array('id'=>$row['id'], 'display_name'=>$row['title'], 'active'=>$row['active']);
+			}
+		}
+	}
+
 	// 
 	// If this is the master business, allow extra options
 	//
@@ -171,7 +193,9 @@ function ciniki_web_siteSettings($ciniki) {
 		$pages['signup'] = array('display_name'=>'Signup', 'active'=>'no');
 		$pages['api'] = array('display_name'=>'API', 'active'=>'no');
 	}
-	$pages['faq'] = array('display_name'=>'FAQ', 'active'=>'no');
+	if( isset($modules['ciniki.web']) && ($modules['ciniki.web']['flags']&0x80) == 0x80) {
+		$pages['faq'] = array('display_name'=>'FAQ', 'active'=>'no');
+	}
 	if( isset($modules['ciniki.info']) && ($modules['ciniki.web']['flags']&0x20) > 0 ) {
 		$pages['info'] = array('display_name'=>'Information', 'active'=>'no');
 	}
@@ -194,15 +218,17 @@ function ciniki_web_siteSettings($ciniki) {
 //		$pages['custom']['display_name'] = $settings['page-custom-001-name'];
 //	}
 
-	for($i=1;$i<6;$i++) {
-		$pname = 'page-custom-' . sprintf("%03d", $i);
-		$cname = 'custom-' . sprintf("%03d", $i);
-		if( isset($settings[$pname . '-name']) && $settings[$pname . '-name'] != '' ) {
-			$pages['custom-00' . $i]['display_name'] = $settings[$pname . '-name'];
-		}
-		if( isset($settings[$pname . '-active']) 
-			&& $settings[$pname . '-active'] == 'yes' && ($modules['ciniki.web']['flags']&0x01) == 1 ) {
-			$pages[$cname]['active'] = 'yes';
+	if( isset($modules['ciniki.web']) && ($modules['ciniki.web']['flags']&0x01) == 0x01) {
+		for($i=1;$i<6;$i++) {
+			$pname = 'page-custom-' . sprintf("%03d", $i);
+			$cname = 'custom-' . sprintf("%03d", $i);
+			if( isset($settings[$pname . '-name']) && $settings[$pname . '-name'] != '' ) {
+				$pages['custom-00' . $i]['display_name'] = $settings[$pname . '-name'];
+			}
+			if( isset($settings[$pname . '-active']) 
+				&& $settings[$pname . '-active'] == 'yes' && ($modules['ciniki.web']['flags']&0x01) == 1 ) {
+				$pages[$cname]['active'] = 'yes';
+			}
 		}
 	}
 
@@ -356,7 +382,11 @@ function ciniki_web_siteSettings($ciniki) {
 	$rc_pages = array();
 	foreach($pages as $page => $pagedetails) {
 		if( isset($pagedetails['display_name']) ) {
-			array_push($rc_pages, array('page'=>array('name'=>$page, 'display_name'=>$pagedetails['display_name'], 'active'=>$pagedetails['active'])));
+			$rc_page = array('page'=>array('name'=>$page, 'display_name'=>$pagedetails['display_name'], 'active'=>$pagedetails['active']));
+			if( isset($pagedetails['id']) ) {
+				$rc_page['page']['id'] = $pagedetails['id'];
+			}
+			array_push($rc_pages, $rc_page);
 		}
 	}
 

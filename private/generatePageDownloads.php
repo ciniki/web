@@ -31,7 +31,7 @@ function ciniki_web_generatePageDownloads($ciniki, $settings) {
 			if( $finfo ) {
 				header('Content-Type: ' . finfo_file($finfo, $rc['storage_filename']));
 			}
-			header('Content-Disposition: attachment;filename="' . $rc['filename'] . '"');
+//			header('Content-Disposition: attachment;filename="' . $rc['filename'] . '"');
 			header('Content-Length: ' . filesize($rc['storage_filename']));
 			header('Cache-Control: max-age=0');
 

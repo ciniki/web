@@ -20,8 +20,8 @@ function ciniki_web_flags($ciniki, $modules) {
 		// 0x10
 		array('flag'=>array('bit'=>'5', 'name'=>'Quick Links')),
 		array('flag'=>array('bit'=>'6', 'name'=>'Info Pages')),	// Single page for now before contact
-//		array('flag'=>array('bit'=>'7', 'name'=>'')),
-//		array('flag'=>array('bit'=>'8', 'name'=>'')),
+		array('flag'=>array('bit'=>'7', 'name'=>'Pages')),		// Customizable pages, good for website only customers
+		array('flag'=>array('bit'=>'8', 'name'=>'FAQ')),		// Enable FAQ on website
 		);
 
 	return array('stat'=>'ok', 'flags'=>$flags);

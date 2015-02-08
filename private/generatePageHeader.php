@@ -479,6 +479,28 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 //	}
 
 	//
+	// Get any pages if enables
+	//
+	if( isset($ciniki['business']['modules']['ciniki.web']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x40) == 0x40) {
+		$strsql = "SELECT id, title, permalink "
+			. "FROM ciniki_web_pages "
+			. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+			. "AND parent_id = 0 "
+			. "AND (flags&0x01) = 1 "	// Active pages
+			. "ORDER BY sequence, title "
+			. "";
+		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'page');
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		if( isset($rc['rows']) ) {
+			$pages = $rc['rows'];
+		} else {
+			$pages = array();
+		}
+	}
+
+	//
 	// Generate menu
 	//
 	$content .= "<nav id='access' role='navigation'>\n"
@@ -709,6 +731,19 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		}
 		$content .= "</a></li>";
 	}
+
+	//
+	// Check for any pages
+	//
+	if( isset($ciniki['business']['modules']['ciniki.web']) 
+		&& ($ciniki['business']['modules']['ciniki.web']['flags']&0x40) == 0x40 && isset($pages) ) {
+		foreach($pages as $page) {
+			if( $page['title'] != '' && $page['permalink'] != '' ) {
+				$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']==$page['permalink']?' menu-item-select':'') . "'><a href='" . $ciniki['request']['base_url'] . "/" . $page['permalink'] . "'>" . $page['title'] . "</a></li>";
+			}
+		}
+	}
+
 	//
 	// Check if membersonly area is enabled, and the member has logged in
 	//

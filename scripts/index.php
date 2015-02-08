@@ -653,6 +653,13 @@ elseif( $ciniki['request']['page'] == 'contact'
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageContact.php');
 	$rc = ciniki_web_generatePageContact($ciniki, $settings);
 } 
+// Pages
+elseif( $ciniki['request']['page'] != '' 
+	&& isset($ciniki['business']['modules']['ciniki.web']['flags'])
+	&& ($ciniki['business']['modules']['ciniki.web']['flags']&0x40) > 0 ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePage.php');
+	$rc = ciniki_web_generatePage($ciniki, $settings);
+}
 // FIXME: Need to make accessible for all custom pages, not just 001.
 // Custom pages
 //elseif( isset($settings['page-custom-001-permalink']) && $settings['page-custom-001-permalink'] == $ciniki['request']['page'] ) {

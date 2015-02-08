@@ -140,6 +140,56 @@ function ciniki_web_objects($ciniki) {
 			),
 		'history_table'=>'ciniki_web_history',
 		);
+	$objects['page'] = array(
+		'name'=>'Page',
+		'sync'=>'yes',
+		'table'=>'ciniki_web_pages',
+		'fields'=>array(
+			'parent_id'=>array('ref'=>'ciniki.web.page'),
+			'title'=>array(),
+			'permalink'=>array(),
+			'category'=>array('default'=>''),
+			'sequence'=>array('default'=>'1'),
+			'flags'=>array('default'=>'1'),
+			'primary_image_id'=>array('default'=>'0'),
+			'primary_image_caption'=>array('default'=>''),
+			'primary_image_url'=>array('default'=>''),
+			'synopsis'=>array('default'=>''),
+			'content'=>array('default'=>''),
+			'child_title'=>array('default'=>''),
+			),
+		'history_table'=>'ciniki_web_history',
+		);
+	$objects['page_image'] = array(
+		'name'=>'Content Image',
+		'sync'=>'yes',
+		'table'=>'ciniki_web_page_images',
+		'fields'=>array(
+			'page_id'=>array('ref'=>'ciniki.web.page'),
+			'name'=>array(),
+			'permalink'=>array(),
+			'webflags'=>array(),
+			'image_id'=>array('ref'=>'ciniki.images.image'),
+			'description'=>array(),
+			),
+		'history_table'=>'ciniki_web_history',
+		);
+	$objects['page_file'] = array(
+		'name'=>'Content File',
+		'sync'=>'yes',
+		'table'=>'ciniki_web_page_files',
+		'fields'=>array(
+			'page_id'=>array('ref'=>'ciniki.web.page'),
+			'extension'=>array(),
+			'name'=>array(),
+			'permalink'=>array(),
+			'webflags'=>array(),
+			'description'=>array(),
+			'org_filename'=>array(),
+			'binary_content'=>array('history'=>'no'),
+			),
+		'history_table'=>'ciniki_web_history',
+		);
 	
 	return array('stat'=>'ok', 'objects'=>$objects);
 }

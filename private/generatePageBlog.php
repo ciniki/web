@@ -44,7 +44,7 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 			if( $file['extension'] == 'pdf' ) {
 				header('Content-Type: application/pdf');
 			}
-			header('Content-Disposition: attachment;filename="' . $file['filename'] . '"');
+//			header('Content-Disposition: attachment;filename="' . $file['filename'] . '"');
 			header('Content-Length: ' . strlen($file['binary_content']));
 			header('Cache-Control: max-age=0');
 

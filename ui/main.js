@@ -77,6 +77,8 @@ function ciniki_web_main() {
 				},
 			'pages':{'label':'Pages', 'aside':'no', 'type':'simplegrid', 'num_cols':1, 'sortable':'yes',
 				'headerValues':null,
+				'addTxt':'',
+				'addFn':'M.startApp(\'ciniki.web.pages\',null,\'M.ciniki_web_main.showMenu();\',\'mc\',{\'page_id\':0,\'parent_id\':0});',
 				},
 			'advanced':{'label':'Advanced', 'list':{
 				'header':{'label':'Header', 'fn':'M.ciniki_web_main.showHeader(\'M.ciniki_web_main.showMenu();\');'},
@@ -136,6 +138,9 @@ function ciniki_web_main() {
 				return 'M.ciniki_web_main.showThemes(\'M.ciniki_web_main.showMenu();\',\'' + d.setting.value + '\');'; 
 			}
 			if( s == 'pages' ) { 
+				if( d.page.id != null && d.page.id > 0 ) {
+					return 'M.startApp(\'ciniki.web.pages\',null,\'M.ciniki_web_main.showMenu();\',\'mc\',{\'page_id\':\'' + d.page.id + '\',\'parent_id\':0});';
+				}
 //				if( d.page.name == 'about' && M.curBusiness.modules['ciniki.artgallery'] != null ) {
 //					return 'M.ciniki_web_main.showPage(\'M.ciniki_web_main.showMenu();\',\'aboutmenu\');'; 
 //				}
@@ -1377,6 +1382,11 @@ function ciniki_web_main() {
 			} else {
 				this.home.sections._quicklinks.active = 'no';
 			}
+			if( (M.curBusiness.modules['ciniki.web'].flags&0x40) > 0 ) {
+				this.menu.sections.pages.addTxt = 'Add Page';
+			} else {
+				this.menu.sections.pages.addTxt = '';
+			}
 		}
 		if( M.curBusiness.modules['ciniki.blog'] != null ) {
 			if( (M.curBusiness.modules['ciniki.blog'].flags&0x01) > 0 ) {
@@ -1414,6 +1424,7 @@ function ciniki_web_main() {
 		} else {
 			this.home.sections.sponsors.visible = 'no';
 		}
+
 
 		//
 		// Setup the gallery sort fields
