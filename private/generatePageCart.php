@@ -36,9 +36,12 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 	//
 	$content = '';
 	$display_cart = 'yes';
+	$display_signup = 'no';
 	$cart_err_msg = '';
+	$signup_err_msg = '';
 	$cart = NULL;
 	$cart_edit = 'yes';
+	$errors = array();
 	$page_title = "Shopping Cart";
 
 	//
@@ -378,18 +381,118 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 	//
 	// Check if checkout
 	//
-	elseif( isset($_POST['checkout']) && $_POST['checkout'] != '' ) {
-		$content .= "ERROR - Unable to Process checkout";
+	elseif( isset($_POST['checkout']) && $_POST['checkout'] != '' && $cart != NULL ) {
+		if( isset($cart['customer_id']) && $cart['customer_id'] > 0 ) {
+			$content .= "ERROR - Unable to Process checkout";
+			$display_cart = 'review';
+			$cart_edit = 'no';
+		} else {
+			$display_signup = 'yes';
+			$display_cart = 'no';
+		}
 	}
 
 	//
 	// Check if returned from Paypal
 	//
 
+
+	if( $display_signup == 'yes' || $display_signup == 'forgot' ) {
+		$content .= "<article class='page cart'>\n";
+		$post_email = '';
+		if( isset($_POST['email']) ) {
+			$post_email = $_POST['email'];
+		}
+		$content .= "<aside>";
+		// Javascript to switch forms	
+		$ciniki['request']['inline_javascript'] = "<script type='text/javascript'>\n"
+			. "	function swapLoginForm(l) {\n"
+			. "		if( l == 'forgotpassword' ) {\n"
+			. "			document.getElementById('signin-form').style.display = 'none';\n"
+			. "			document.getElementById('forgotpassword-form').style.display = 'block';\n"
+			. "			document.getElementById('forgotemail').value = document.getElementById('email').value;\n"
+			. "		} else {\n"
+			. "			document.getElementById('signin-form').style.display = 'block';\n"
+			. "			document.getElementById('forgotpassword-form').style.display = 'none';\n"
+			. "		}\n"
+			. "		return true;\n"
+			. "	}\n"
+			. "</script>"
+			. "";
+//			$content .= "<div class='entry-content'>";
+		$content .= "<div id='signin-form' style='display:" . ($display_signup=='yes'?'block':'none') . ";'>\n";
+		$content .= "<h2>Existing Account</h2>";
+		$content .= "<p>Bought something here before? Please sign in to your account:</p>";
+		$content .= "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/account' method='POST'>";
+		if( $signup_err_msg != '' ) {
+			$content .= "<p class='formerror'>$signup_err_msg</p>\n";
+		}
+		$content .="<input type='hidden' name='action' value='signin'>\n"
+			. "<div class='input'><label for='email'>Email</label><input id='email' type='email' class='text' maxlength='250' name='email' value='$post_email' /></div>\n" 
+			. "<div class='input'><label for='password'>Password</label><input id='password' type='password' class='text' maxlength='100' name='password' value='' /></div>\n"
+			. "<div class='submit'><input type='submit' class='submit' value='Sign In' /></div>\n"
+			. "</form>"
+			. "<br/>";
+		if( !isset($settings['page-account-password-change']) 
+			|| $settings['page-account-password-change'] == 'yes' ) {
+			$content .= "<div id='forgot-link'><p>"
+				. "<a class='color' href='javscript:void(0);' onclick='swapLoginForm(\"forgotpassword\");return false;'>Forgot your password?</a></p></div>\n";
+		}
+		$content .= "</div>\n";
+
+		// Forgot password form
+		$content .= "<div id='forgotpassword-form' style='display:" . ($display_signup=='forgot'?'block':'none') . ";'>\n";
+		$content .= "<h2>Forgot Password</h2>";
+		$content .= "<p>Please enter your email address and you will receive a link to create a new password.</p>";
+		$content .= "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/account' method='POST'>";
+		if( $signup_err_msg != '' ) {
+			$content .= "<p class='formerror'>$signup_err_msg</p>\n";
+		}
+		$content .= "<input type='hidden' name='action' value='forgot'>\n"
+			. "<div class='input'><label for='forgotemail'>Email </label><input id='forgotemail' type='email' class='text' maxlength='250' name='email' value='$post_email' /></div>\n" 
+			. "<div class='submit'><input type='submit' class='submit' value='Get New Password' /></div>\n"
+			. "</form>"
+			. "<br/>"
+			. "<div id='forgot-link'><p><a class='color' href='javascript:void();' onclick='swapLoginForm(\"signin\"); return false;'>Sign In</a></p></div>\n"
+			. "</div>\n";
+
+		$content .= "</aside>";
+
+		//
+		// Signup for a new account form
+		//
+		$content .= "<h2>Create a new account</h2>";
+		$content .= "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' method='POST'>";
+		$fields = array(
+			'first'=>array('name'=>'First Name', 'type'=>'text', 'class'=>'text', 'value'=>(isset($_POST['first'])?$_POST['first']:'')),
+			'last'=>array('name'=>'Last Name', 'type'=>'text', 'class'=>'text', 'value'=>(isset($_POST['last'])?$_POST['last']:'')),
+			'phone'=>array('name'=>'Phone Number', 'type'=>'text', 'class'=>'text', 'value'=>(isset($_POST['phone'])?$_POST['phone']:'')),
+			'email'=>array('name'=>'Email Address', 'type'=>'email', 'class'=>'text', 'value'=>(isset($_POST['email'])?$_POST['email']:'')),
+			);
+		foreach($fields as $fid => $field) {
+			$content .= "<div class='input'><label for='$fid'>" . $field['name'] . "</label>"
+				. "<input type='" . $field['type'] . "' class='" . $field['class'] . "' name='$fid' value='" . $field['value'] . "'>";
+			if( isset($errors[$fid]) && $errors[$fid] != '' ) {
+				$content .= "<p class='formerror'>" . $errors[$fid] . "</p>";
+			}
+			$content .= "</div>";
+		}
+
+		$content .= "<div class='submit'><input type='submit' name='continue' class='submit' value='Continue Shopping' />";
+		$content .= " <input type='submit' name='next' class='submit' value='Next' /></div>\n";
+//		$content .= "<div class='cart-buttons'>";
+//		$content .= "<span class='cart-submit'>"
+//			. "<input class='cart-submit' type='submit' name='continue' value='Continue Shopping'/>"
+//			. "</span>";
+//		$content .= "</div>";
+		$content .= "</form>";
+		$content .= "</article>\n";
+	}
+
 	//
 	// Display the contents of the shopping cart
 	//
-	if( $display_cart == 'yes' || $display_cart == 'confirm' ) {
+	if( $display_cart == 'yes' || $display_cart == 'confirm' || $display_cart == 'review' ) {
 		$content .= "<article class='page cart'>\n"
 //			. "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' method='POST'>"
 			. "<header class='entry-title'>"
@@ -539,6 +642,13 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 //				. "</form>"
 				. "</div>\n";
 		}
+		//
+		// Check if there is a review message
+		//
+		elseif( $display_cart == 'review' ) {
+			$content .= "<p>Please review your order.</p>";
+		}
+
 
 		if( $inv == 'yes' ) {
 			$item_objects = array();
@@ -855,9 +965,15 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 						. "</span>";
 				}
 			} else {
-				$content .= "<span class='cart-submit'>"
-					. "<input class='cart-submit' type='submit' name='checkout' value='Checkout'/>"
-					. "</span>";
+				if( $display_cart == 'review' ) {
+					$content .= "<span class='cart-submit'>"
+						. "<input class='cart-submit' type='submit' name='confirmorder' value='Checkout via Paypal'/>"
+						. "</span>";
+				} else {
+					$content .= "<span class='cart-submit'>"
+						. "<input class='cart-submit' type='submit' name='checkout' value='Checkout'/>"
+						. "</span>";
+				}
 			}
 //			$content .= "</td></tr>";
 //			$content .= "</tfoot>";

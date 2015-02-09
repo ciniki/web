@@ -1015,6 +1015,7 @@ aside div.borderless {
 }
 
 #content div.cart form input.cart-submit, 
+#content form div.cart-buttons input.cart-submit, 
 #content div.cart-buttons form input.cart-submit, 
 #content div.cart-pricelist form input.cart-submit {
 	cursor: pointer;

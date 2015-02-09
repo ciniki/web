@@ -805,7 +805,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 		if( !isset($settings['page-account-password-change']) 
 			|| $settings['page-account-password-change'] == 'yes' ) {
 			$content .= "<div id='forgot-link'><p>"
-				. "<a class='color' href='javscript:void(0)' onclick='swapLoginForm(\"forgotpassword\");return false;'>Forgot your password?</a></p></div>\n";
+				. "<a class='color' href='javscript:void(0);' onclick='swapLoginForm(\"forgotpassword\");return false;'>Forgot your password?</a></p></div>\n";
 		}
 		$content .= "</div>\n"
 			. "<div id='forgotpassword-form' style='display:";
@@ -821,7 +821,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 			. "<div class='submit'><input type='submit' class='submit' value='Get New Password' /></div>\n"
 			. "</form>"
 			. "<br/>"
-			. "<div id='forgot-link'><p><a class='color' href='javascript: swapLoginForm(\"signin\"); return false;'>Sign In</a></p></div>\n"
+			. "<div id='forgot-link'><p><a class='color' href='javascript:void();' onclick='swapLoginForm(\"signin\"); return false;'>Sign In</a></p></div>\n"
 			. "</div>\n"
 			. "</div>";
 		$content .= "</article>\n"

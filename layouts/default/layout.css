@@ -312,6 +312,7 @@ header span.title {
 
 #content form div.submit {
 	max-width: 31.2em;
+	max-width: 29.2em;
 	padding-right: 0em;
 }
 
