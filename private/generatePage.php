@@ -66,7 +66,7 @@ function ciniki_web_generatePage($ciniki, $settings) {
 				$prev_parent_id = $rc['page']['id'];
 				$prev_page = $rc['page'];
 				$base_url .= '/' . $rc['page']['permalink'];
-				$article_title .= "<a href='$base_url'>" . $rc['page']['title'] . "</a>";
+				$article_title .= ($article_title!=''?' - ':'') . "<a href='$base_url'>" . $rc['page']['title'] . "</a>";
 			}
 		}
 	}
@@ -89,9 +89,10 @@ function ciniki_web_generatePage($ciniki, $settings) {
 			$submenu[$child['permalink']] = array('name'=>$child['name'],
 				'url'=>$ciniki['request']['base_url'] . '/' . $top_page['permalink'] . '/' . $child['permalink']);
 		}
-		unset($page['children']);
+		if( $top_page['id'] == $page['id'] ) {
+			unset($page['children']);
+		}
 	}
-
 
 	//
 	// Check if a file was specified to be downloaded

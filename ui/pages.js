@@ -39,6 +39,7 @@ function ciniki_web_pages() {
 						'controls':'all', 'history':'no', 
 						'addDropImage':function(iid) {
 							M.ciniki_web_pages[pn].setFieldValue('primary_image_id', iid, null, null);
+//							M.ciniki_web_pages[pn].refreshSection('primary_image_id');
 							return true;
 							},
 						'addDropImageRefresh':'',
