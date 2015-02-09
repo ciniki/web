@@ -386,7 +386,7 @@ function ciniki_web_pages() {
 
 	this.pageEdit = function(cb, pid, parent_id) {
 		M.api.getJSONCb('ciniki.web.pageGet', {'business_id':M.curBusinessID,
-			'page_id':pid, 'images':'yes', 'files':'yes', 
+			'page_id':pid, 'parent_id':parent_id, 'images':'yes', 'files':'yes', 
 				'children':'yes', 'parentlist':'yes', 'sponsors':'yes'}, function(rsp) {
 				if( rsp.stat != 'ok' ) {
 					M.api.err(rsp);
