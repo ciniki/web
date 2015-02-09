@@ -50,6 +50,22 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
 		if( isset($rc['children']) ) {
 			$page['children'] = $rc['children'];
 		}
+		//
+		// Get any sponsors for this page, and that references for sponsors is enabled
+		//
+		if( isset($ciniki['business']['modules']['ciniki.sponsors']) 
+			&& ($ciniki['business']['modules']['ciniki.sponsors']['flags']&0x02) == 0x02
+			) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'sponsors', 'web', 'sponsorRefList');
+			$rc = ciniki_sponsors_web_sponsorRefList($ciniki, $settings, $business_id, 
+				'ciniki.web.page', $page['id']);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			if( isset($rc['sponsors']) ) {
+				$page['sponsors'] = $rc['sponsors'];
+			}
+		}
 		return array('stat'=>'ok', 'page'=>$page);
 	}
 
@@ -168,6 +184,23 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
 			}
 		} else {
 			$page['child_categories'] = $rc['children'];
+		}
+	}
+
+	//
+	// Get any sponsors for this page, and that references for sponsors is enabled
+	//
+	if( isset($ciniki['business']['modules']['ciniki.sponsors']) 
+		&& ($ciniki['business']['modules']['ciniki.sponsors']['flags']&0x02) == 0x02
+		) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'sponsors', 'web', 'sponsorRefList');
+		$rc = ciniki_sponsors_web_sponsorRefList($ciniki, $settings, $business_id, 
+			'ciniki.web.page', $page['id']);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		if( isset($rc['sponsors']) ) {
+			$page['sponsors'] = $rc['sponsors'];
 		}
 	}
 

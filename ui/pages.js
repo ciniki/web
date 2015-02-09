@@ -39,7 +39,6 @@ function ciniki_web_pages() {
 						'controls':'all', 'history':'no', 
 						'addDropImage':function(iid) {
 							M.ciniki_web_pages[pn].setFieldValue('primary_image_id', iid, null, null);
-//							M.ciniki_web_pages[pn].refreshSection('primary_image_id');
 							return true;
 							},
 						'addDropImageRefresh':'',
@@ -82,6 +81,10 @@ function ciniki_web_pages() {
 					'addTxt':'Add Child Page',
 					'addFn':'M.ciniki_web_pages.'+pn+'.childEdit(0);',
 					},
+				'sponsors':{'label':'Sponsors', 'type':'simplegrid', 'num_cols':1,
+					'addTxt':'Manage Sponsors',
+					'addFn':'M.ciniki_web_pages.'+pn+'.sponsorEdit(0);',
+					},
 				'_buttons':{'label':'', 'buttons':{
 					'save':{'label':'Save', 'fn':'M.ciniki_web_pages.'+pn+'.savePage();'},
 					'delete':{'label':'Delete', 'fn':'M.ciniki_web_pages.'+pn+'.deletePage();'},
@@ -102,6 +105,8 @@ function ciniki_web_pages() {
 					return d.page.title;
 				} else if( s == 'files' ) {
 					return d.file.name;
+				} else if( s == 'sponsors' && j == 0 ) { 
+					return '<span class="maintext">' + d.sponsor.title + '</span>';
 				}
 			};
 			this[pn].rowFn = function(s, i, d) {
@@ -110,6 +115,8 @@ function ciniki_web_pages() {
 					return 'M.ciniki_web_pages.'+pn+'.childEdit(\'' + d.page.id + '\');';
 				} else if( s == 'files' ) {
 					return 'M.startApp(\'ciniki.web.pagefiles\',null,\'M.ciniki_web_pages.'+pn+'.updateFiles();\',\'mc\',{\'file_id\':\'' + d.file.id + '\'});';
+				} else if( s == 'sponsors' ) {
+					return 'M.startApp(\'ciniki.sponsors.ref\',null,\'M.ciniki_web_pages.'+pn+'.updateSponsors();\',\'mc\',{\'ref_id\':\'' + d.sponsor.ref_id + '\'});';
 				}
 			};
 			this[pn].thumbFn = function(s, i, d) {
@@ -207,6 +214,22 @@ function ciniki_web_pages() {
 				}
 				return true;
 			};
+			this[pn].updateSponsors = function() {
+				if( this.page_id > 0 ) {
+					M.api.getJSONCb('ciniki.web.pageGet', {'business_id':M.curBusinessID, 
+						'page_id':this.page_id, 'sponsors':'yes'}, function(rsp) {
+							if( rsp.stat != 'ok' ) {
+								M.api.err(rsp);
+								return false;
+							}
+							var p = M.ciniki_web_pages[pn];
+							p.data.sponsors = rsp.page.sponsors;
+							p.refreshSection('sponsors');
+							p.show();
+						});
+				}
+				return true;
+			};
 
 			this[pn].childEdit = function(cid) {
 				if( this.page_id == 0 ) {
@@ -224,6 +247,25 @@ function ciniki_web_pages() {
 						});
 				} else {
 					M.ciniki_web_pages.pageEdit('M.ciniki_web_pages.'+pn+'.updateChildren();',cid,this.page_id);
+				}
+			};
+			this[pn].sponsorEdit = function(cid) {
+				if( this.page_id == 0 ) {
+					// Save existing data as new page
+					var p = this;
+					var c = this.serializeFormData('yes');
+					M.api.postJSONFormData('ciniki.web.pageAdd', 
+						{'business_id':M.curBusinessID}, c, function(rsp) {
+							if( rsp.stat != 'ok' ) {
+								M.api.err(rsp);
+								return false;
+							}
+							p.page_id = rsp.id;
+//							M.ciniki_web_pages.pageEdit('M.ciniki_web_pages.'+pn+'.updateChildren();',cid,p.page_id);
+							M.startApp('ciniki.sponsors.ref',null,p.panelRef+'.updateSponsors();','mc',{'object':'ciniki.web.page','object_id':p.page_id});
+						});
+				} else {
+					M.startApp('ciniki.sponsors.ref',null,this.panelRef+'.updateSponsors();','mc',{'object':'ciniki.web.page','object_id':this.page_id});
 				}
 			};
 			this[pn].addButton('save', 'Save', 'M.ciniki_web_pages.'+pn+'.savePage();');
@@ -310,6 +352,13 @@ function ciniki_web_pages() {
 		} else {
 			this[pn].sections._children.fields.child_format.flags = this.childFormat;
 		}
+		if( M.curBusiness.modules['ciniki.sponsors'] != null 
+			&& (M.curBusiness.modules['ciniki.sponsors'].flags&0x02) ) {
+			this[pn].sections.sponsors.visible = 'yes';
+		} else {
+			this[pn].sections.sponsors.visible = 'no';
+		}
+
 		this[pn].refresh();
 		this[pn].show(cb);
 	}
@@ -338,7 +387,7 @@ function ciniki_web_pages() {
 	this.pageEdit = function(cb, pid, parent_id) {
 		M.api.getJSONCb('ciniki.web.pageGet', {'business_id':M.curBusinessID,
 			'page_id':pid, 'images':'yes', 'files':'yes', 
-				'children':'yes', 'parentlist':'yes'}, function(rsp) {
+				'children':'yes', 'parentlist':'yes', 'sponsors':'yes'}, function(rsp) {
 				if( rsp.stat != 'ok' ) {
 					M.api.err(rsp);
 					return false;

@@ -28,6 +28,7 @@ function ciniki_web_generatePage($ciniki, $settings) {
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'pageLoad');
 	$depth = count($request_pages);
 	$base_url = $ciniki['request']['base_url'];
+	$sponsors = array();
 	for($i=0;$i<$depth;$i++) {
 		$uri_depth = $i-1;
 		if( $i == ($depth-1) ) {
@@ -40,6 +41,9 @@ function ciniki_web_generatePage($ciniki, $settings) {
 			$page = $rc['page'];
 //			$base_url .= '/' . $rc['page']['permalink'];
 			if( $top_page == NULL ) { $top_page = $rc['page']; }
+			if( isset($rc['page']['sponsors']) && count($rc['page']['sponsors']) > 0 ) {
+				$sponsors = $rc['page']['sponsors'];
+			}
 		} else {
 			// Intermediate page, need title and id only
 			$rc = ciniki_web_pageLoad($ciniki, $settings, $ciniki['request']['business_id'], 
@@ -48,6 +52,9 @@ function ciniki_web_generatePage($ciniki, $settings) {
 				return $rc;
 			}
 			if( $top_page == NULL ) { $top_page = $rc['page']; }
+			if( isset($rc['page']['sponsors']) && count($rc['page']['sponsors']) > 0 ) {
+				$sponsors = $rc['page']['sponsors'];
+			}
 
 			//
 			// Check if next item is a child, otherwise this is the parent
@@ -169,6 +176,9 @@ function ciniki_web_generatePage($ciniki, $settings) {
 		$page_content .= $rc['content'];
 
 	} else {
+		if( isset($sponsors) && is_array($sponsors) && count($sponsors) > 0 ) {
+			$page['sponsors'] = $sponsors;
+		}
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processPage');
 		$rc =  ciniki_web_processPage($ciniki, 0, $base_url, $page, array('article_title'=>$article_title));
 		if( $rc['stat'] != 'ok' ) {

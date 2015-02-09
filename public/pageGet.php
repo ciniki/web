@@ -25,6 +25,7 @@ function ciniki_web_pageGet($ciniki) {
 		'files'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Files'),
 		'parentlist'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Parent List'),
 		'children'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Children'),
+		'sponsors'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Sponsors'),
         )); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
@@ -234,6 +235,25 @@ function ciniki_web_pageGet($ciniki) {
 			}
 			$pages = $rc['pages'];
 			$parentlist = buildParentList(array(), 0, array('id'=>'0', 'title'=>''), $pages);
+		}
+	}
+
+	//
+	// Get any sponsors for this page, and that references for sponsors is enabled
+	//
+	if( isset($args['sponsors']) && $args['sponsors'] == 'yes' 
+		&& isset($ciniki['business']['modules']['ciniki.sponsors']) 
+		&& ($ciniki['business']['modules']['ciniki.sponsors']['flags']&0x02) == 0x02
+		&& $page['id'] > 0 
+		) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'sponsors', 'hooks', 'sponsorList');
+		$rc = ciniki_sponsors_hooks_sponsorList($ciniki, $args['business_id'], 
+			array('object'=>'ciniki.web.page', 'object_id'=>$page['id']));
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		if( isset($rc['sponsors']) ) {
+			$page['sponsors'] = $rc['sponsors'];
 		}
 	}
 
