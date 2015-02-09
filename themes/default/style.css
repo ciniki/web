@@ -824,7 +824,7 @@ aside div.borderless {
 	border: 0px solid;
 }
 
-/* Shopping Cart Styles */
+/****** Shopping Cart Styles *****/
 #content div.cart-pricelist {
 	font-size: 1.1em;
 }
@@ -844,14 +844,25 @@ aside div.borderless {
 	color: #555;
 }
 
-#content div.cart-items {
+#content p.cart-error {
+	color: #F00;
+}
+
+#content div.cart-search-items,
+#content div.cart-items, 
+#content div.cart-details {
 	padding: 0px;
 	margin: 0px;
 	border: 2px solid #aaa;
 	border-radius: 10px; 
 }
 
-#content div.cart table.cart-items {
+#content div.cart-search-items {
+	margin-bottom: 1.5em;
+}
+
+#content div.cart table.cart-items,
+#content div.cart table.cart-details {
 /*	border-collapse: collapse;   */
 	border-spacing: 0; 
 	border-radius: 10px; 
@@ -861,6 +872,18 @@ aside div.borderless {
 
 #content div.cart table.cart-items thead tr:last-child th {
 	border-bottom: 2px solid #aaa;
+}
+#content div.cart table.cart-details tbody tr td {
+	border-bottom: 2px solid #aaa;
+}
+#content div.cart table.cart-details tbody tr th {
+	border-right: 2px solid #aaa;
+	border-bottom: 2px solid #aaa;
+	text-align: right;
+}
+#content div.cart table.cart-details tbody tr:last-child th,
+#content div.cart table.cart-details tbody tr:last-child td {
+	border-bottom: 0px solid #aaa;
 }
 
 #content div.cart table.cart-items tfoot tr:first-child td {
@@ -873,18 +896,16 @@ aside div.borderless {
 	border-left-top-radius: 10px;
 }
 
-/*
 #content div.cart table.cart-items tfoot tr:last-child td:first-child {
 	border-left-bottom-radius: 10px;
 }
-*/
 
 #content div.cart table.cart-items tr th,
 #content div.cart table.cart-items tr td {
 	padding: 0.3em;
 }
 
-/*
+
 #content div.cart table.cart-items thead {
 	border-left-top-radius: 0.75em;
 	border-right-top-radius: 0.75em;
@@ -936,15 +957,6 @@ aside div.borderless {
 	margin: 0px;
 	border: 0px;
 }
-*/
-
-#content div.cart table.cart-items tr.item-even td {
-	background: #ffffff;
-}
-
-#content div.cart table.cart-items tr.item-odd td {
-	background: #f4f4f4;
-}
 
 #content div.cart table.cart-items thead th {
 	color: #222;
@@ -952,7 +964,36 @@ aside div.borderless {
 	background: #ddd;
 }
 
-#content div.cart table.cart-items {
+#content div.cart table.cart-items tr th,
+#content div.cart table.cart-items tr td,
+#content div.cart table.cart-details tr th,
+#content div.cart table.cart-details tr td {
+	padding: 0.3em;
+}
+
+#content div.cart table.cart-items tr th:first-child,
+#content div.cart table.cart-items tr td:first-child,
+#content div.cart table.cart-details tr td {
+	padding-left: 0.5em;
+}
+
+#content div.cart table.cart-items tr th:last-child,
+#content div.cart table.cart-items tr td:last-child,
+#content div.cart table.cart-details tr td {
+	padding-right: 0.5em;
+}
+
+#content div.cart table.cart-items tr.item-even td { background: #fff; }
+#content div.cart table.cart-items tr.item-odd td { background: #f4f4f4; }
+#content div.cart table.cart-details tr.item-even th { background: #ddd; }
+#content div.cart table.cart-details tr.item-even td { background: #fff; }
+#content div.cart table.cart-details tr.item-odd th { background: #ddd; }
+#content div.cart table.cart-details tr.item-odd td { background: #f4f4f4; }
+
+#content div.cart table.cart-details th,
+#content div.cart table.cart-items thead th {
+	color: #555;
+	font-weight: bold;
 	background: #ddd;
 }
 
@@ -990,6 +1031,7 @@ aside div.borderless {
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0078a5');
 	background: linear-gradient(to bottom, #00adee, #0078a5);
 }
+
 /* Styles for larger screens */
 @media screen and (min-width: 33em) {
 	#sub-menu-container {

@@ -506,6 +506,7 @@ div.gallery-image-details span.image-awards {
 	padding: 0.5em 0 0.5em 0;
 }
 
+/****** Shopping Cart Styles *****/
 #content div.cart-pricelist {
 	font-size: 1.2em;
 }
@@ -873,13 +874,8 @@ footer div.social-icons a:active {
 	padding-right: 0.5em;
 }
 
-#content div.cart table.cart-items tr.item-even td {
-	background: #ccc;
-}
-
-#content div.cart table.cart-items tr.item-odd td {
-	background: #bbb;
-}
+#content div.cart table.cart-items tr.item-even td { background: #ccc; }
+#content div.cart table.cart-items tr.item-odd td { background: #bbb; }
 #content div.cart table.cart-details tr.item-even th { background: #999; }
 #content div.cart table.cart-details tr.item-even td { background: #ccc; }
 #content div.cart table.cart-details tr.item-odd th { background: #999; }

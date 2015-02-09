@@ -87,6 +87,21 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		$ciniki['session']['cart']['num_items'] = count($cart['items']);
 	}
 
+	//
+	// Check if no customer, and create dummy information
+	//
+	if( !isset($ciniki['session']['customer']) ) {
+		$_SESSION['customer'] = array(
+			'price_flags'=>0x01,
+			'pricepoint_id'=>0,
+			'first'=>'',
+			'last'=>'',
+			'display_name'=>'',
+			'email'=>'',
+			);
+		$ciniki['session']['customer'] = $_SESSION['customer'];
+	}
+
 	// $ct = print_r($rc, true);
 
 	//
@@ -709,28 +724,20 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 			//
 			// Display the bill to and ship to information
 			//
-			$content .= "<div class='cart-details'>";
-			$content .= "<table class='cart-details'>";
-//			$content .= "<thead><tr>"
-//				. "<th class='alignleft'>Bill To</th>"
-//				. "<th class='alignleft'>Ship To</th>"
-//				. "</tr></thead>";
-			$content .= "<tbody>";
 			$count = 1;
+			$cart_details = '';
 			if( isset($settings['page-cart-po-number']) && $settings['page-cart-po-number'] != 'no' ) {
-				$content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
-				$content .= "<th>PO Number:</td>" . "<td>";
+				$cart_details .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
+				$cart_details .= "<th>PO Number:</td>" . "<td>";
 				if( $cart_edit == 'yes' ) {
-					$content .= "<input id='po_number' class='text' type='text' placeholder='PO Number' "
+					$cart_details .= "<input id='po_number' class='text' type='text' placeholder='PO Number' "
 							. "name='po_number' value='" . $cart['po_number'] . "' />";
 				} else {
-					$content .= $cart['po_number'];
+					$cart_details .= $cart['po_number'];
 				}
-				$content .= "</td></tr>";
+				$cart_details .= "</td></tr>";
 				$count++;
 			}
-			$content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
-			$content .= "<th>Bill To:</th><td>";
 			$baddr = '';
 			if( isset($cart['billing_name']) && $cart['billing_name'] != '' ) {
 				$baddr .= ($baddr!=''?'<br/>':'') . $cart['billing_name'];
@@ -758,12 +765,12 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 				$baddr .= ($baddr!=''?'<br/>':'') . $cart['billing_country'];
 			}
 			if( $baddr != '' ) {
-				$content .= $baddr;
+				$cart_details .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
+				$cart_details .= "<th>Bill To:</th><td>";
+				$cart_details .= $baddr;
+				$cart_details .= "</td></tr>";
+				$count++;
 			}
-			$content .= "</td></tr>";
-			$count++;
-			$content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
-			$content .= "<th>Ship To:</th><td>";
 			$saddr = '';
 			if( isset($cart['shipping_name']) && $cart['shipping_name'] != '' ) {
 				$saddr .= ($saddr!=''?'<br/>':'') . $cart['shipping_name'];
@@ -791,15 +798,22 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 				$saddr .= ($saddr!=''?'<br/>':'') . $cart['shipping_country'];
 			}
 			if( $saddr != '' ) {
-				$content .= $saddr;
+				$cart_details .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
+				$cart_details .= "<th>Ship To:</th><td>";
+				$cart_details .= $saddr;
+				$cart_details .= "</td></tr>";
+				$count++;
 			}
-			$count++;
 
-			$content .= "</td></tr>";
-			$content .= "</tbody>";
-			$content .= "</table>";
-			$content .= "</div>";
-
+			if( $cart_details != '' ) {
+				$content .= "<div class='cart-details'>";
+				$content .= "<table class='cart-details'>";
+				$content .= "<tbody>";
+				$content .= $cart_details;
+				$content .= "</tbody>";
+				$content .= "</table>";
+				$content .= "</div>";
+			}
 
 			if( isset($settings['page-cart-customer-notes']) && $settings['page-cart-customer-notes'] == 'yes' ) {
 				if( $cart_edit == 'yes' ) {

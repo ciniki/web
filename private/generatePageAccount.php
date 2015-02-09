@@ -159,10 +159,17 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 					ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartLoad');
 					$rc = ciniki_sapos_web_cartLoad($ciniki, $settings, $ciniki['request']['business_id']);
 					if( $rc['stat'] == 'ok' ) {
-					//	print "Loaded cart";
 						$_SESSION['cart'] = $rc['cart'];
 						$_SESSION['cart']['sapos_id'] = $rc['cart']['id'];
 						$_SESSION['cart']['num_items'] = count($rc['cart']['items']);
+						// Check if cart exists with no customer, assign customer
+						if( isset($rc['cart']['customer_id']) && $rc['cart']['customer_id'] == 0 ) {
+							ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartCustomerUpdate');
+							$rc = ciniki_sapos_web_cartCustomerUpdate($ciniki, $settings, $ciniki['request']['business_id']);
+							if( $rc['stat'] != 'ok' ) {
+								return $rc;
+							}
+						}
 					}
 					//
 					// If multiple accounts, then display account chooser
