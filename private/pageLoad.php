@@ -23,6 +23,7 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
 			. "WHERE ciniki_web_pages.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
 			. "AND ciniki_web_pages.parent_id = '" . ciniki_core_dbQuote($ciniki, $args['parent_id']) . "' "
 			. "AND ciniki_web_pages.permalink = '" . ciniki_core_dbQuote($ciniki, $args['intermediate_permalink']) . "' "
+			. "AND (ciniki_web_pages.flags&0x01) = 0x01 "
 			. "";
 		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'page');
 		if( $rc['stat'] != 'ok' || !isset($rc['page']) ) {
@@ -96,6 +97,7 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
 			. "AND (ciniki_web_page_images.webflags&0x01) = 0 "
 			. ") "
 		. "WHERE ciniki_web_pages.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+		. "AND (ciniki_web_pages.flags&0x01) = 0x01 "
 		. "";
 	//
 	// Permalink or Content Type must be specified
