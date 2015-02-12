@@ -74,12 +74,10 @@ a img {
 #sub-menu-container {
 	background-color: transparent;
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#53ABCD', endColorstr='#136B8D');
-	background: linear-gradient(to bottom, #53ABCD, #136B8D);
 }
 #main-menu-container {
 	background-color: transparent;
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#888888', endColorstr='#555555');
-	background: linear-gradient(to bottom, #888888, #555555);
 }
 
 #sub-menu-container li a,
