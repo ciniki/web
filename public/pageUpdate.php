@@ -62,7 +62,7 @@ function ciniki_web_pageUpdate(&$ciniki) {
 		return $rc;
 	}
 	if( !isset($rc['item']) ) {
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2190', 'msg'=>'Page not found'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2202', 'msg'=>'Page not found'));
 	}
 	$item = $rc['item'];
 
@@ -84,7 +84,7 @@ function ciniki_web_pageUpdate(&$ciniki) {
 			return $rc;
 		}
 		if( $rc['num_rows'] > 0 ) {
-			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2191', 'msg'=>'You already have page with this title, please choose another title.'));
+			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2203', 'msg'=>'You already have page with this title, please choose another title.'));
 		}
 	}
 
@@ -102,7 +102,7 @@ function ciniki_web_pageUpdate(&$ciniki) {
 			return $rc;
 		}
 		if( !isset($rc['item']) ) {
-			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1770', 'msg'=>'Unable to find page'));
+			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2204', 'msg'=>'Unable to find page'));
 		}
 		$old_sequence = $rc['item']['sequence'];
 		$parent_id = $rc['item']['parent_id'];

@@ -100,7 +100,7 @@ function ciniki_web_processMembersonlyURI(&$ciniki, $settings, $depth, $base_url
 			//
 			// If there was an error locating the files, display generic error
 			//
-			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2077', 'msg'=>'The file you requested does not exist.'));
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2199', 'msg'=>'The file you requested does not exist.'));
 		}
 
 		//

@@ -27,7 +27,7 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
 			. "";
 		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'page');
 		if( $rc['stat'] != 'ok' || !isset($rc['page']) ) {
-			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2199', 'msg'=>"I'm sorry, but we were unable to find the page you requested."));
+			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2231', 'msg'=>"I'm sorry, but we were unable to find the page you requested."));
 		}
 		$page = $rc['page'];
 
@@ -109,7 +109,7 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
 			. "AND ciniki_web_pages.parent_id = '" . ciniki_core_dbQuote($ciniki, $args['parent_id']) . "' "
 			. "";
 	} else {
-		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2200', 'msg'=>'I\'m sorry, we were unable to find the page you requested.'));
+		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2232', 'msg'=>'I\'m sorry, we were unable to find the page you requested.'));
 	}
 	$rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.info', array(
 		array('container'=>'page', 'fname'=>'id',
@@ -125,7 +125,7 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
 		return $rc;
 	}
 	if( !isset($rc['page']) || count($rc['page']) < 1 ) {
-		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2194', 'msg'=>"I'm sorry, but we can't find the page you requested."));
+		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2233', 'msg'=>"I'm sorry, but we can't find the page you requested."));
 	}
 	$page = array_pop($rc['page']);
 

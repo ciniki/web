@@ -51,7 +51,7 @@ function ciniki_web_pageDelete(&$ciniki) {
 		return $rc;
 	}
 	if( !isset($rc['item']) ) {
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2171', 'msg'=>'The page does not exist'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2215', 'msg'=>'The page does not exist'));
 	}
 	$item = $rc['item'];
 
@@ -82,7 +82,7 @@ function ciniki_web_pageDelete(&$ciniki) {
 		return $rc;
 	}
 	if( isset($rc['pages']['num_pages']) && $rc['pages']['num_pages'] > 0 ) {
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2172', 'msg'=>'There are still children, you must remove them first.'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2216', 'msg'=>'There are still children, you must remove them first.'));
 	}
 
 	//
