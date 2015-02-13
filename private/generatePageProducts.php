@@ -779,60 +779,80 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 			}
 			$page_content .= $rc['content'];
 		}
-
-		//
-		// List the categories the user has created in the artcatalog, 
-		// OR just show all the thumbnails if they haven't created any categories
-		//
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'products', 'web', 'categories');
-		$rc = ciniki_products_web_categories($ciniki, $settings, $ciniki['request']['business_id']); 
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
-		}
 		if( isset($settings['page-products-name']) && $settings['page-products-name'] != '' ) {
 			$page_title = $settings['page-products-name'];
 		} else {
 			$page_title = 'Products';
 		}
-		if( !isset($rc['categories']) ) {
-			$page_content .= "<p>I'm sorry, but we currently don't have any products available.</p>";
-		} else {
-			$page_content .= "<div class='image-categories'>";
-			$size = 'large';
-			if( isset($settings['page-products-categories-size']) 
-				&& $settings['page-products-categories-size'] != '' 
-				&& $settings['page-products-categories-size'] != 'auto' 
-				) {
-				$size = $settings['page-products-categories-size'];
-			} elseif( count($rc['categories']) > 12 ) {
-				$size = 'small';
-			} elseif( count($rc['categories']) > 6 ) {
-				$size = 'medium';
+
+		//
+		// List the categories the user has created in the artcatalog, 
+		// OR just show all the thumbnails if they haven't created any categories
+		//
+		if( isset($settings['page-products-categories-format']) 
+			&& $settings['page-products-categories-format'] == 'list' 
+			) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'products', 'web', 'categoryList');
+			$rc = ciniki_products_web_categoryList($ciniki, $settings, $ciniki['request']['business_id']); 
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
 			}
-			foreach($rc['categories'] AS $cnum => $category) {
-				$name = $category['name'];
-				$permalink = $category['permalink'];
-				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-				$rc = ciniki_web_getScaledImageURL($ciniki, $category['image_id'], 'thumbnail', '240', 0);
-				if( $rc['stat'] != 'ok' ) {
-					$img_url = '/ciniki-web-layouts/default/img/noimage_240.png';
-				} else {
-					$img_url = $rc['url'];
+			if( !isset($rc['categories']) ) {
+				$page_content .= "<p>I'm sorry, but we currently don't have any products available.</p>";
+			} else {
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
+				$rc = ciniki_web_processCIList($ciniki, $settings, $ciniki['request']['base_url'] . '/products/category', 
+					$rc['categories'], array('notitle'=>'yes'));
+				if( $rc['content'] != '' ) {
+					$page_content .= $rc['content'];
 				}
-				$page_content .= "<div class='image-categories-thumbnail-wrap image-categories-thumbnail-$size'>"
-					. "<a href='" . $ciniki['request']['base_url'] . "/products/category/" . $permalink . "' "
-						. "title='" . $name . "'>"
-					. "<div class='image-categories-thumbnail'>"
-					. "<img title='$name' alt='$name' src='$img_url' />"
-					. "</div>"
-					. "<span class='image-categories-name'>$name</span>"
-					. "</a></div>";
+			}
+		} else {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'products', 'web', 'categories');
+			$rc = ciniki_products_web_categories($ciniki, $settings, $ciniki['request']['business_id']); 
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			if( !isset($rc['categories']) ) {
+				$page_content .= "<p>I'm sorry, but we currently don't have any products available.</p>";
+			} else {
+				$page_content .= "<div class='image-categories'>";
+				$size = 'large';
+				if( isset($settings['page-products-categories-size']) 
+					&& $settings['page-products-categories-size'] != '' 
+					&& $settings['page-products-categories-size'] != 'auto' 
+					) {
+					$size = $settings['page-products-categories-size'];
+				} elseif( count($rc['categories']) > 12 ) {
+					$size = 'small';
+				} elseif( count($rc['categories']) > 6 ) {
+					$size = 'medium';
+				}
+				foreach($rc['categories'] AS $cnum => $category) {
+					$name = $category['name'];
+					$permalink = $category['permalink'];
+					ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+					$rc = ciniki_web_getScaledImageURL($ciniki, $category['image_id'], 'thumbnail', '240', 0);
+					if( $rc['stat'] != 'ok' ) {
+						$img_url = '/ciniki-web-layouts/default/img/noimage_240.png';
+					} else {
+						$img_url = $rc['url'];
+					}
+					$page_content .= "<div class='image-categories-thumbnail-wrap image-categories-thumbnail-$size'>"
+						. "<a href='" . $ciniki['request']['base_url'] . "/products/category/" . $permalink . "' "
+							. "title='" . $name . "'>"
+						. "<div class='image-categories-thumbnail'>"
+						. "<img title='$name' alt='$name' src='$img_url' />"
+						. "</div>"
+						. "<span class='image-categories-name'>$name</span>"
+						. "</a></div>";
+				}
+				$page_content .= "</div>";
 			}
 			$page_content .= "</div>";
+			$page_content .= "</article>"
+				. "";
 		}
-		$page_content .= "</div>";
-		$page_content .= "</article>"
-			. "";
 	}
 
 	$content = '';

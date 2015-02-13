@@ -8,6 +8,14 @@ function ciniki_web_main() {
 //		'5':{'name':'Domain'},
 //		'6':{'name':'Primary'},
 //		};
+	this.sliderSizeOptions = {
+		'tiny':'Tiny',
+		'small':'Small',
+		'medium':'Medium',
+		'large':'Large',
+		'xlarge':'X-Large',
+		'xxlarge':'XX-Large',
+		};
 	this.domainStatus = {
 		'1':'Active',
 		'50':'Suspended',
@@ -332,6 +340,8 @@ function ciniki_web_main() {
 			'options':{'label':'', 'aside':'yes', 'fields':{
 				'page-home-active':{'label':'Display Home Page', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-home-gallery-latest':{'label':'Display Latest Work', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+				'page-home-gallery-slider-type':{'label':'Slide Show', 'active':'no', 'type':'toggle', 'default':'no', 'toggles':{'no':'Off', 'random':'Random', 'latest':'Latest'}},
+				'page-home-gallery-slider-size':{'label':'Size', 'active':'no', 'type':'select', 'default':'large', 'options':this.sliderSizeOptions},
 				'page-home-gallery-latest-title':{'label':'Latest Work Title', 'active':'no', 'type':'text', 'size':'small', 'hint':'Latest Work'},
 				'page-home-gallery-random':{'label':'Display Random Example Work', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-home-gallery-random-title':{'label':'Random Example Work Title', 'active':'no', 'type':'text', 'size':'small', 'hint':'Example Work'},
@@ -732,6 +742,7 @@ function ciniki_web_main() {
 			'options':{'label':'', 'fields':{
 				'page-products-active':{'label':'Display Products', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-products-name':{'label':'Name', 'type':'text', 'hint':'default is Products'},
+				'page-products-categories-format':{'label':'Category Format', 'type':'toggle', 'default':'thumbnails', 'toggles':{'thumbnails':'Thumbnails', 'list':'List'}},
 				'page-products-categories-size':{'label':'Category Thumbnail Size', 'type':'toggle', 'default':'auto', 'toggles':this.productThumbnailToggles},
 				'page-products-subcategories-size':{'label':'Sub-Category Thumbnail Size', 'type':'toggle', 'default':'auto', 'toggles':this.productThumbnailToggles},
 				}},
@@ -1596,6 +1607,9 @@ function ciniki_web_main() {
 			this.contact.business_address = rsp.business_address;
 			this.showContact(cb);
 		} else if( page == 'home' ) {
+			if( this[page].data != null && this[page].data['page-home-gallery-slider-size'] == null ) {
+				this[page].data['page-home-gallery-slider-size'] = 'large';
+			}
 			if( (M.curBusiness.modules['ciniki.web'].flags&0x02) > 0 ) {
 				this.home.sections._slider.active = 'yes';
 				this.home.sections._slider_buttons.visible = 'yes';
@@ -1613,14 +1627,21 @@ function ciniki_web_main() {
 				this.home.sections._slider.fields['page-home-slider'].active = 'no';
 			}
 			if( M.curBusiness.modules['ciniki.artcatalog'] != null ) {
+//				this.home.sections.options.fields['page-home-gallery-slider-type'].active = 'yes';
+//				this.home.sections.options.fields['page-home-gallery-slider-size'].active = 'yes';
 				this.home.sections.options.fields['page-home-gallery-latest'].active = 'yes';
 				this.home.sections.options.fields['page-home-gallery-latest-title'].active = 'yes';
 				this.home.sections.options.fields['page-home-gallery-random'].active = 'yes';
 				this.home.sections.options.fields['page-home-gallery-random-title'].active = 'yes';
 			} else if( M.curBusiness.modules['ciniki.products'] != null ) {
+				this.home.sections.options.fields['page-home-gallery-slider-type'].active = 'no';
+				this.home.sections.options.fields['page-home-gallery-slider-size'].active = 'no';
+				this.home.sections.options.fields['page-home-gallery-slider'].active = 'no';
 				this.home.sections.options.fields['page-home-products-latest'].active = 'yes';
 				this.home.sections.options.fields['page-home-products-latest-title'].active = 'yes';
 			} else {
+				this.home.sections.options.fields['page-home-gallery-slider-type'].active = 'no';
+				this.home.sections.options.fields['page-home-gallery-slider-size'].active = 'no';
 				this.home.sections.options.fields['page-home-gallery-latest'].active = 'no';
 				this.home.sections.options.fields['page-home-gallery-latest-title'].active = 'no';
 				this.home.sections.options.fields['page-home-gallery-random'].active = 'no';

@@ -122,12 +122,12 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 			if( preg_match("/^http/", $image['url']) ) {
 				$url_target = '_blank';
 			}
-			$image_list .= "<li $style>"
+			$image_list .= "<li style='$style'>"
 				. "<a href='" . $image['url'] . "' target='$url_target' title='" . $image['caption'] . "'>"
 				. "<img title='' alt='" . $image['caption'] . "' src='" . $rc['url'] . "' /></a>"
 				. "</li>";
 		} else {
-			$image_list .= "<li $style>"
+			$image_list .= "<li style='$style'>"
 				. "<img title='' alt='" . $image['caption'] . "' src='" . $rc['url'] . "' />"
 				. "</li>";
 		}
@@ -135,7 +135,7 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 		$pager_list .= "<a rel='$count' class='" . ($count==0?'active':'') . "' onclick='javascript: sliders[0].goTo($count);'>" . ($count + 1) . "</a>";
 
 		$count++;
-		$style = 'style="display:none;"';
+		$style = 'display:none;';
 	}
 
 	$javascript = "var Slider = function() { this.initialize.apply(this, arguments) }\n";
@@ -157,19 +157,27 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 		$javascript .= "		for(i in this.li) {\n";
 		$javascript .= "			if( this.li[i].style != null ) { \n";
 		$javascript .= "				this.li[i].style.display = 'inline-block';\n";
+//		$javascript .= "				console.log(this.li[i].childNodes);\n";
+//		$javascript .= "				console.log(this.li[i].childNodes[0].offsetWidth);\n";
+//		$javascript .= "				console.log(this.li[i].childNodes[0].offsetWidth);\n";
+//		$javascript .= "				console.log(this.li[i].childNodes[0].clientWidth);\n";
+//		$javascript .= "				console.log(this.li[i].childNodes[0].style);\n";
 		$javascript .= "				this.li[i].style.width = this.ul.parentElement.clientWidth + 'px';\n";
-	//	$javascript .= "				this.li[i].style.height = ((this.li[i].children[0].clientHeight*this.ul.parentElement.clientWidth)/this.li[i].children[0].clientWidth) + 'px';\n";
+//		$javascript .= "				this.li[i].style.width = (this.ul.parentElement.clientWidth - (this.li[i].childNodes[0].offsetLeft*2) - (this.li[i].childNodes[0].offsetWidth - 1024))+ 'px';\n";
 		$javascript .= "			}\n";
 		$javascript .= "		}\n";
 		$javascript .= "		this.ul.style.width = (this.ul.parentElement.clientWidth * this.li.length) + 'px'\n";
 		$javascript .= "		this.ul.style.maxWidth = (this.ul.parentElement.clientWidth * this.li.length) + 'px'\n";
 	//	$javascript .= "console.log(this.li[0].children[0].children[0].clientHeight);";
 		$javascript .= "		if( this.li[0].children[0].nodeName == 'A' ) {";
-		$javascript .= "			this.ul.style.height = this.li[0].children[0].children[0].clientHeight + 8 + 'px'\n";
-		$javascript .= "			this.ul.parentElement.style.height = this.li[0].children[0].children[0].clientHeight + 8 + 'px'\n";
+		$javascript .= "			var e = this.li[0].childNodes[0].childNodes[0];\n";
+//		$javascript .= "			this.ul.style.height = e.clientHeight + (e.clientTop*2) + 'px'\n";
+		$javascript .= "			this.ul.style.height = this.li[0].childNodes[0].childNodes[0].clientHeight + 16 + 'px'\n";
+//		$javascript .= "			this.ul.parentElement.style.height = this.li[0].childNodes[0].childNodes[0].clientHeight + 16 + 'px'\n";
+		$javascript .= "			this.ul.parentElement.style.height = e.clientHeight + (e.clientTop*2) + 'px'\n";
 		$javascript .= "		} else {";
-		$javascript .= "			this.ul.style.height = this.li[0].children[0].clientHeight + 8 + 'px'\n";
-		$javascript .= "			this.ul.parentElement.style.height = this.li[0].children[0].clientHeight + 8 + 'px'\n";
+		$javascript .= "			this.ul.style.height = this.li[0].childNodes[0].clientHeight + 16 + 'px'\n";
+		$javascript .= "			this.ul.parentElement.style.height = this.li[0].childNodes[0].clientHeight + 16 + 'px'\n";
 		$javascript .= "		}";
 	//	$javascript .= "		this.ul.style.width = (this.li[0].clientWidth * this.li.length) + 'px'\n";
 	//	$javascript .= "		this.ul.style.height = (this.li[0].clientHeight) + 'px'\n";
@@ -232,6 +240,7 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 	$javascript .= "}\n";
 
 
+	$content = '';
 	if( $image_list != '' ) {
 		if( !isset($ciniki['request']['inline_javascript']) ) {
 			$ciniki['request']['inline_javascript'] = '';

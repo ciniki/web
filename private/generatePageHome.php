@@ -61,6 +61,42 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 		}
 	}
 
+	//
+	// Check if there is a slider to display based on artcatalog work
+	//
+	if( isset($ciniki['business']['modules']['ciniki.artcatalog']) 
+		&& isset($settings['page-gallery-active']) && $settings['page-gallery-active'] == 'yes' 
+		&& (!isset($settings['page-home-gallery-slider-type']) 
+			|| $settings['page-home-gallery-slider-type'] == 'latest'
+			|| $settings['page-home-gallery-slider-type'] == 'random') 
+		) {
+
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'artcatalog', 'web', 'sliderImages');
+		$rc = ciniki_artcatalog_web_sliderImages($ciniki, $settings, $ciniki['request']['business_id'], 
+			$settings['page-home-gallery-slider-type'], 1);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		if( isset($rc['images']) && count($rc['images']) > 0 ) {
+			foreach($rc['images'] as $iid => $img) {
+				$rc['images'][$iid]['url'] = '';
+			}
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processSlider');
+			$size = 'xlarge';
+			if( isset($settings['page-home-gallery-slider-size']) && $settings['page-home-gallery-slider-size'] != '' ) {
+				$size = $settings['page-home-gallery-slider-size'];
+			}
+			$rc = ciniki_web_processSlider($ciniki, $settings, array(
+				'size'=>$size,
+				'speed'=>'medium',
+				'resize'=>'scaled',
+				'images'=>$rc['images']));
+			if( $rc['stat'] == 'ok' ) {
+				$slider_content = $rc['content'];
+			}
+		}
+	}
+
 	$page_content .= "<div id='content'>\n"
 		. "";
 	if( $slider_content != '' ) {

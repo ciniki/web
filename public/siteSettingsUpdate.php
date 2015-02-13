@@ -72,6 +72,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 	$settings_fields = array(
 		'page-home-active',
 		'page-home-slider',
+		'page-home-gallery-slider-type',
+		'page-home-gallery-slider-size',
 		'page-home-gallery-latest',
 		'page-home-gallery-latest-title',
 		'page-home-gallery-random',
@@ -232,6 +234,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-products-active',
 		'page-products-name',
 		'page-products-share-buttons',
+		'page-products-categories-format',
 		'page-products-categories-size',
 		'page-products-subcategories-size',
 		'page-recipes-active',

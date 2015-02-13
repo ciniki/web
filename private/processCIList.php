@@ -25,6 +25,10 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 		$page_limit = $args['limit'];
 	}
 
+//	print "<pre>";
+//	print_r($categories);
+//	print "</pre>";
+
 	$content = "<table class='cilist'><tbody>";
 	$count = 0;
 	foreach($categories as $cid => $category) {
