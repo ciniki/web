@@ -154,8 +154,17 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 
 	if( $slider_format == 'scaled' ) {
 		$javascript .= "	resize: function(index) {\n";
+//		$javascript .= "		var height_spacing = 0;\n";
 		$javascript .= "		for(i in this.li) {\n";
 		$javascript .= "			if( this.li[i].style != null ) { \n";
+//		$javascript .= "				var e = this.li[i].childNodes[0];\n";
+//		$javascript .= "				if( this.li[i].children[0].nodeName == 'A' ) {";
+//		$javascript .= "					e = e.childNodes[0];\n";
+//		$javascript .= "				}\n";
+//		$javascript .= "				if( e.offsetHeight > $slider_height ) {";
+//		$javascript .= "					var s = (e.offsetHeight - $slider_height) + (e.clientTop*2);";
+//		$javascript .= "					if( s > height_spacing ) { height_spacing = s; }";
+//		$javascript .= "				}\n";
 		$javascript .= "				this.li[i].style.display = 'inline-block';\n";
 //		$javascript .= "				console.log(this.li[i].childNodes);\n";
 //		$javascript .= "				console.log(this.li[i].childNodes[0].offsetWidth);\n";
@@ -170,17 +179,21 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 		$javascript .= "		this.ul.style.maxWidth = (this.ul.parentElement.clientWidth * this.li.length) + 'px'\n";
 	//	$javascript .= "console.log(this.li[0].children[0].children[0].clientHeight);";
 		$javascript .= "		if( this.li[0].children[0].nodeName == 'A' ) {";
-		$javascript .= "			var e = this.li[0].childNodes[0].childNodes[0];\n";
+//		$javascript .= "			var e = this.li[0].childNodes[0].childNodes[0];\n";
 //		$javascript .= "			this.ul.style.height = e.clientHeight + (e.clientTop*2) + 'px'\n";
-		$javascript .= "			this.ul.style.height = this.li[0].childNodes[0].childNodes[0].clientHeight + 16 + 'px'\n";
+//		$javascript .= "			height_spacing = (e.clientTop*2);\n";
+//		$javascript .= "			height_spacing = (e.offsetHeight - $slider_height) + (e.clientTop*2);\n";
+//		$javascript .= "			this.ul.style.height = this.li[0].childNodes[0].childNodes[0].clientHeight + 16 + 'px'\n";
 //		$javascript .= "			this.ul.parentElement.style.height = this.li[0].childNodes[0].childNodes[0].clientHeight + 16 + 'px'\n";
-		$javascript .= "			this.ul.parentElement.style.height = e.clientHeight + (e.clientTop*2) + 'px'\n";
+//		$javascript .= "			this.ul.parentElement.style.height = e.clientHeight + (e.clientTop*2) + 'px'\n";
 		$javascript .= "		} else {";
-		$javascript .= "			this.ul.style.height = this.li[0].childNodes[0].clientHeight + 16 + 'px'\n";
-		$javascript .= "			this.ul.parentElement.style.height = this.li[0].childNodes[0].clientHeight + 16 + 'px'\n";
-		$javascript .= "		}";
+//		$javascript .= "			height_spacing = 22;\n";
+//		$javascript .= "			this.ul.style.height = this.li[0].childNodes[0].clientHeight + 16 + 'px'\n";
+//		$javascript .= "			this.ul.parentElement.style.height = this.li[0].childNodes[0].clientHeight + 16 + 'px'\n";
+		$javascript .= "		}\n";
 	//	$javascript .= "		this.ul.style.width = (this.li[0].clientWidth * this.li.length) + 'px'\n";
-	//	$javascript .= "		this.ul.style.height = (this.li[0].clientHeight) + 'px'\n";
+//		$javascript .= "		console.log(height_spacing);\n";
+//		$javascript .= "		this.ul.style.height = ($slider_height + height_spacing) + 'px';\n";
 	//	$javascript .= "		this.ul.parentElement.style.height = (this.li[0].clientHeight) + 'px'\n";
 	//	$javascript .= "		this.ul.style.maxHeight = this.li[0].clientHeight + 'px'\n";
 		$javascript .= "	},\n";
@@ -259,7 +272,11 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 		
 		$content = "<div class='slider slider-" . $slider_format . "'>";
 		$content .= "<div class='slider-image-wrap'>";
-		$content .= "<div id='slider-ctl' class='slider-image'>";
+		$content .= "<div id='slider-ctl' class='slider-image'";
+		if( $slider_format == 'scaled' ) {
+//			$content .= " style='height:" . ($slider_height+22) . "px;'";
+		}
+		$content .=	">";
 		$content .= "<ul>";
 		$content .= $image_list;
 		$content .= "</ul>\n";

@@ -1627,8 +1627,8 @@ function ciniki_web_main() {
 				this.home.sections._slider.fields['page-home-slider'].active = 'no';
 			}
 			if( M.curBusiness.modules['ciniki.artcatalog'] != null ) {
-//				this.home.sections.options.fields['page-home-gallery-slider-type'].active = 'yes';
-//				this.home.sections.options.fields['page-home-gallery-slider-size'].active = 'yes';
+				this.home.sections.options.fields['page-home-gallery-slider-type'].active = 'yes';
+				this.home.sections.options.fields['page-home-gallery-slider-size'].active = 'yes';
 				this.home.sections.options.fields['page-home-gallery-latest'].active = 'yes';
 				this.home.sections.options.fields['page-home-gallery-latest-title'].active = 'yes';
 				this.home.sections.options.fields['page-home-gallery-random'].active = 'yes';
@@ -1636,7 +1636,7 @@ function ciniki_web_main() {
 			} else if( M.curBusiness.modules['ciniki.products'] != null ) {
 				this.home.sections.options.fields['page-home-gallery-slider-type'].active = 'no';
 				this.home.sections.options.fields['page-home-gallery-slider-size'].active = 'no';
-				this.home.sections.options.fields['page-home-gallery-slider'].active = 'no';
+//				this.home.sections.options.fields['page-home-gallery-slider'].active = 'no';
 				this.home.sections.options.fields['page-home-products-latest'].active = 'yes';
 				this.home.sections.options.fields['page-home-products-latest-title'].active = 'yes';
 			} else {

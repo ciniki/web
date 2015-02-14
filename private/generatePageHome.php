@@ -73,7 +73,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'artcatalog', 'web', 'sliderImages');
 		$rc = ciniki_artcatalog_web_sliderImages($ciniki, $settings, $ciniki['request']['business_id'], 
-			$settings['page-home-gallery-slider-type'], 1);
+			$settings['page-home-gallery-slider-type'], 2);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
