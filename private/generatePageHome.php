@@ -441,7 +441,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 			&& $settings['page-home-products-latest-number'] > 0 ) {
 			$list_size = $settings['page-home-products-latest-number'];
 		}
-
+		print_r($list_size);
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'products', 'web', 'newProducts');
 		$rc = ciniki_products_web_newProducts($ciniki, $settings, $ciniki['request']['business_id'], $list_size);
 		if( $rc['stat'] != 'ok' ) {
@@ -468,8 +468,19 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 				$page_content .= "New Products";
 			}
 			$page_content .= "</h1></header>\n"
-				. "<div class='entry-content'>" . $rc['content'] . "</div>"
-				. "</article>\n"
+				. $rc['content']
+				. "";
+			if( $num_posts > $list_size ) {
+				$page_content .= "<div class='cilist-more'><a href='" . $ciniki['request']['base_url'] . "/products'>";
+				if( isset($settings['page-home-products-latest-more']) 
+					&& $settings['page-home-products-latest-more'] != '' ) {
+					$page_content .= $settings['page-home-products-latest-more'];
+				} else {
+					$page_content .= "... more blog posts";
+				}
+				$page_content .= "</a></div>";
+			}
+			$page_content .= "</article>\n"
 				. "";
 		}
 	}
@@ -599,12 +610,12 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 	//
 	if( isset($ciniki['business']['modules']['ciniki.recipes']) 
 		&& isset($settings['page-recipes-active']) && $settings['page-recipes-active'] == 'yes' 
-		&& (!isset($settings['page-home-latest-recipes']) || $settings['page-home-latest-recipes'] == 'yes') 
+		&& (!isset($settings['page-home-recipes-latest']) || $settings['page-home-recipes-latest'] == 'yes') 
 		) {
 		$list_size = 2;
-		if( isset($settings['page-home-latest-recipes-number']) 
-			&& $settings['page-home-latest-recipes-number'] > 0 ) {
-			$list_size = $settings['page-home-latest-recipes-number'];
+		if( isset($settings['page-home-recipes-latest-number']) 
+			&& $settings['page-home-recipes-latest-number'] > 0 ) {
+			$list_size = $settings['page-home-recipes-latest-number'];
 		}
 		//
 		// Load and parse the recipes
@@ -621,26 +632,26 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
 			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, array('0'=>array(
 				'name'=>'', 'noimage'=>'/ciniki-web-layouts/default/img/noimage_240.png',
-				'list'=>$recipes)), array('limit'=>2));
+				'list'=>$recipes)), array('limit'=>$list_size));
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
 			$page_content .= "<article class='page'>\n"
 				. "<header class='entry-title'><h1 class='entry-title'>";
-			if( isset($settings['page-home-latest-recipes-title']) 
-				&& $settings['page-home-latest-recipes-title'] != '' ) {
-				$page_content .= $settings['page-home-latest-recipes-title'];
+			if( isset($settings['page-home-recipes-latest-title']) 
+				&& $settings['page-home-recipes-latest-title'] != '' ) {
+				$page_content .= $settings['page-home-recipes-latest-title'];
 			} else {
 				$page_content .= "Latest Recipes";
 			}
 			$page_content .= "</h1></header>\n"
 				. $rc['content']
 				. "";
-			if( $number_of_recipes > 2 ) {
+			if( $number_of_recipes > $list_size ) {
 				$page_content .= "<div class='cilist-more'><a href='" . $ciniki['request']['base_url'] . "/recipes'>";
-				if( isset($settings['page-home-latest-recipes-more']) 
-					&& $settings['page-home-latest-recipes-more'] != '' ) {
-					$page_content .= $settings['page-home-latest-recipes-more'];
+				if( isset($settings['page-home-recipes-latest-more']) 
+					&& $settings['page-home-recipes-latest-more'] != '' ) {
+					$page_content .= $settings['page-home-recipes-latest-more'];
 				} else {
 					$page_content .= "... more recipes";
 				}

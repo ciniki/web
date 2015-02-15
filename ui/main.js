@@ -345,10 +345,8 @@ function ciniki_web_main() {
 				'page-home-gallery-latest-title':{'label':'Latest Work Title', 'active':'no', 'type':'text', 'size':'small', 'hint':'Latest Work'},
 				'page-home-gallery-random':{'label':'Display Random Example Work', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-home-gallery-random-title':{'label':'Random Example Work Title', 'active':'no', 'type':'text', 'size':'small', 'hint':'Example Work'},
-				'page-home-latest-recipes':{'label':'Display Latest Recipes', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+//				'page-home-latest-recipes':{'label':'Display Latest Recipes', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 //				'page-home-upcoming-artgalleryexhibitions':{'label':'Display Upcoming Exhibtions', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
-				'page-home-products-latest':{'label':'Display Latest Products', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
-				'page-home-products-latest-title':{'label':'Latest Products Title', 'active':'no', 'type':'text', 'size':'small', 'hint':'New Products'},
 				}},
 			'_artgalleryexhibitions':{'label':'Exhibitions', 'aside':'yes', 'active':'no', 'fields':{
 				'page-home-current-artgalleryexhibitions':{'label':'Display Current', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
@@ -366,6 +364,12 @@ function ciniki_web_main() {
 				'page-home-latest-blog-more':{'label':'More', 'active':'yes', 'type':'text', 'hint':'... more blog posts'},
 				'page-home-latest-blog-number':{'label':'Number of Entries', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
 				}},
+			'_recipes':{'label':'Recipes', 'aside':'yes', 'active':'no', 'fields':{
+				'page-home-recipes-latest':{'label':'Display Latest', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+				'page-home-recipes-latest-title':{'label':'Title', 'active':'yes', 'type':'text', 'hint':'New Recipes'},
+				'page-home-recipes-latest-more':{'label':'More', 'active':'yes', 'type':'text', 'hint':'... more recipes'},
+				'page-home-recipes-latest-number':{'label':'Number of recipes', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
+				}},
 			'_workshops':{'label':'Workshops', 'aside':'yes', 'active':'no', 'fields':{
 				'page-home-upcoming-workshops':{'label':'Display Upcoming', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-home-upcoming-workshops-title':{'label':'Title', 'active':'yes', 'type':'text', 'hint':'Upcoming Workshops'},
@@ -377,6 +381,12 @@ function ciniki_web_main() {
 				'page-home-upcoming-events-title':{'label':'Title', 'active':'yes', 'type':'text', 'hint':'Upcoming Events'},
 				'page-home-upcoming-events-more':{'label':'Title', 'active':'yes', 'type':'text', 'hint':'... more events'},
 				'page-home-upcoming-events-number':{'label':'Number of Upcoming', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
+				}},
+			'_products':{'label':'Products', 'aside':'yes', 'active':'no', 'fields':{
+				'page-home-products-latest':{'label':'Display New Products', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+				'page-home-products-latest-title':{'label':'Title', 'active':'yes', 'type':'text', 'hint':'New Products'},
+				'page-home-products-latest-more':{'label':'More', 'active':'yes', 'type':'text', 'hint':'... more products'},
+				'page-home-products-latest-number':{'label':'Number of products', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
 				}},
 			'_slider':{'label':'Image Slider', 'aside':'yes', 'active':'no', 'fields':{
 				'page-home-slider':{'label':'Slider', 'active':'no', 'type':'select', 'options':{}},
@@ -1633,12 +1643,12 @@ function ciniki_web_main() {
 				this.home.sections.options.fields['page-home-gallery-latest-title'].active = 'yes';
 				this.home.sections.options.fields['page-home-gallery-random'].active = 'yes';
 				this.home.sections.options.fields['page-home-gallery-random-title'].active = 'yes';
-			} else if( M.curBusiness.modules['ciniki.products'] != null ) {
-				this.home.sections.options.fields['page-home-gallery-slider-type'].active = 'no';
-				this.home.sections.options.fields['page-home-gallery-slider-size'].active = 'no';
+//			} else if( M.curBusiness.modules['ciniki.products'] != null ) {
+//				this.home.sections.options.fields['page-home-gallery-slider-type'].active = 'no';
+//				this.home.sections.options.fields['page-home-gallery-slider-size'].active = 'no';
 //				this.home.sections.options.fields['page-home-gallery-slider'].active = 'no';
-				this.home.sections.options.fields['page-home-products-latest'].active = 'yes';
-				this.home.sections.options.fields['page-home-products-latest-title'].active = 'yes';
+//				this.home.sections.options.fields['page-home-products-latest'].active = 'yes';
+//				this.home.sections.options.fields['page-home-products-latest-title'].active = 'yes';
 			} else {
 				this.home.sections.options.fields['page-home-gallery-slider-type'].active = 'no';
 				this.home.sections.options.fields['page-home-gallery-slider-size'].active = 'no';
@@ -1646,13 +1656,11 @@ function ciniki_web_main() {
 				this.home.sections.options.fields['page-home-gallery-latest-title'].active = 'no';
 				this.home.sections.options.fields['page-home-gallery-random'].active = 'no';
 				this.home.sections.options.fields['page-home-gallery-random-title'].active = 'no';
-				this.home.sections.options.fields['page-home-products-latest'].active = 'no';
-				this.home.sections.options.fields['page-home-products-latest-title'].active = 'no';
 			}
-//			this.home.sections._blog.active=(M.curBusiness.modules['ciniki.blog']!=null)?'yes':'no';
+			this.home.sections._recipes.active=(M.curBusiness.modules['ciniki.recipes']!=null)?'yes':'no';
 			this.home.sections._events.active=(M.curBusiness.modules['ciniki.events']!=null)?'yes':'no';
+			this.home.sections._products.active=(M.curBusiness.modules['ciniki.products']!=null)?'yes':'no';
 			this.home.sections._workshops.active = (M.curBusiness.modules['ciniki.workshops']!=null)?'yes':'no';
-			this.home.sections.options.fields['page-home-latest-recipes'].active=(M.curBusiness.modules['ciniki.recipes']!=null)?'yes':'no';
 			this.home.sections._artgalleryexhibitions.active=(M.curBusiness.modules['ciniki.artgallery']!=null)?'yes':'no';
 //			this.home.sections.options.fields['page-home-upcoming-artgalleryexhibitions'].active = (M.curBusiness.modules['ciniki.artgallery']!=null)?'yes':'no';
 			this[page].refresh();
