@@ -60,10 +60,10 @@ function ciniki_web_about() {
 		this.page.data = {};
 		this.page.sections = {
 			'options':{'label':'', 'fields':{
-				'page-about-active':{'label':'Display About Page', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-about-active':{'label':'Display About Page', 'type':'toggle', 'default':'no', 'toggles':this.activeToggles, 'editFn':'M.ciniki_web_about.editInfo(\'1\');'},
 				'page-about-title':{'label':'Title', 'type':'text', 'hint':'About'},
 				}},
-			'subpages':{'label':'', 'fields':{}},
+			'subpages':{'label':'', 'active':'no', 'fields':{}},
 			'_users':{'label':'Business Employees', 'visible':'no', 'active':'no', 'fields':{
 				}},
 			'_users_display':{'label':'', 'visible':'no', 'active':'no', 'fields':{
@@ -117,8 +117,10 @@ function ciniki_web_about() {
 		var flags = M.curBusiness.modules['ciniki.info'].flags;
 		var options = {};
 		var spgs = M.ciniki_web_about.subpages;
+		p.sections.subpages.active = 'no';
 		for(i in spgs) {
 			if( (spgs[i].flags&flags) > 0 ) {	
+				p.sections.subpages.active = 'yes';
 				options[i] = spgs[i].name;
 				p.sections.subpages.fields['page-about-' + spgs[i].permalink + '-active'] = {'label':spgs[i].name,
 					'editFn':'M.ciniki_web_about.editInfo(\'' + i + '\');',
@@ -160,7 +162,9 @@ function ciniki_web_about() {
 	};
 
 	this.editInfo = function(ct) {
-		if( this.subpages[ct] != null ) {
+		if( ct == 1 ) {
+			M.startApp('ciniki.info.about',null,'M.ciniki_web_about.page.show();');
+		} else if( this.subpages[ct] != null ) {
 			M.startApp('ciniki.info.' + this.subpages[ct].ui,null,'M.ciniki_web_about.page.show();');
 		}
 	}

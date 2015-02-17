@@ -228,7 +228,7 @@ function ciniki_web_main() {
 				}},
 			'options':{'label':'Options', 'fields':{
 				'site-header-image-size':{'label':'Image Size', 'type':'multitoggle', 'default':'medium', 'toggles':this.headerImageSize},
-				'site-header-title':{'label':'Display Business Name', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+				'site-header-title':{'label':'Display Business Name', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles, 'editFn':'M.startApp(\'ciniki.businesses.info\',null,\'M.ciniki_web_main.header.show();\');'},
 				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'header\');'},
@@ -339,14 +339,22 @@ function ciniki_web_main() {
 		this.home.sections = {
 			'options':{'label':'', 'aside':'yes', 'fields':{
 				'page-home-active':{'label':'Display Home Page', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
-				'page-home-gallery-latest':{'label':'Display Latest Work', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
-				'page-home-gallery-slider-type':{'label':'Slide Show', 'active':'no', 'type':'toggle', 'default':'no', 'toggles':{'no':'Off', 'random':'Random', 'latest':'Latest'}},
-				'page-home-gallery-slider-size':{'label':'Size', 'active':'no', 'type':'select', 'default':'large', 'options':this.sliderSizeOptions},
-				'page-home-gallery-latest-title':{'label':'Latest Work Title', 'active':'no', 'type':'text', 'size':'small', 'hint':'Latest Work'},
-				'page-home-gallery-random':{'label':'Display Random Example Work', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
-				'page-home-gallery-random-title':{'label':'Random Example Work Title', 'active':'no', 'type':'text', 'size':'small', 'hint':'Example Work'},
-//				'page-home-latest-recipes':{'label':'Display Latest Recipes', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
-//				'page-home-upcoming-artgalleryexhibitions':{'label':'Display Upcoming Exhibtions', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+				}},
+			'_slideshow':{'label':'Slide Show', 'aside':'yes', 'fields':{
+				'page-home-gallery-slider-type':{'label':'Display Slide Show', 'type':'toggle', 'default':'no', 'toggles':{'no':'Off', 'random':'Random', 'latest':'Latest'}},
+				'page-home-gallery-slider-size':{'label':'Size', 'type':'select', 'default':'large', 'options':this.sliderSizeOptions},
+				}},
+			'_artcatalog':{'label':'Art Catalog', 'aside':'yes', 'fields':{
+				'page-home-gallery-latest':{'label':'Latest Work', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+				'page-home-gallery-latest-title':{'label':'Latest Work Title', 'type':'text', 'hint':'Latest Work'},
+				'page-home-gallery-random':{'label':'Random Example Work', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-home-gallery-random-title':{'label':'Random Example Work Title', 'type':'text', 'hint':'Example Work'},
+				}},
+			'_gallery':{'label':'Gallery', 'aside':'yes', 'fields':{
+				'page-home-gallery-latest':{'label':'Display Latest Work', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+				'page-home-gallery-latest-title':{'label':'Latest Work Title', 'type':'text', 'size':'small', 'hint':'Latest Work'},
+				'page-home-gallery-random':{'label':'Display Random Example Work', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-home-gallery-random-title':{'label':'Random Example Work Title', 'type':'text', 'size':'small', 'hint':'Example Work'},
 				}},
 			'_artgalleryexhibitions':{'label':'Exhibitions', 'aside':'yes', 'active':'no', 'fields':{
 				'page-home-current-artgalleryexhibitions':{'label':'Display Current', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
@@ -510,12 +518,12 @@ function ciniki_web_main() {
 				'page-contact-active':{'label':'Display Contact Page', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				}},
 			'_display':{'label':'Business Information', 'fields':{
-				'page-contact-business-name-display':{'label':'Business Name', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':''},
-				'page-contact-person-name-display':{'label':'Contact Name', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':''},
-				'page-contact-address-display':{'label':'Address', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':''},
-				'page-contact-phone-display':{'label':'Phone', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':''},
-				'page-contact-fax-display':{'label':'Fax', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':''},
-				'page-contact-email-display':{'label':'Email', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':''},
+				'page-contact-business-name-display':{'label':'Business Name', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':'', 'editFn':'M.startApp(\'ciniki.businesses.info\',null,\'M.ciniki_web_main.contact.show();\');'},
+				'page-contact-person-name-display':{'label':'Contact Name', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':'', 'editFn':'M.startApp(\'ciniki.businesses.info\',null,\'M.ciniki_web_main.contact.show();\');'},
+				'page-contact-address-display':{'label':'Address', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':'', 'editFn':'M.startApp(\'ciniki.businesses.info\',null,\'M.ciniki_web_main.contact.show();\');'},
+				'page-contact-phone-display':{'label':'Phone', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':'', 'editFn':'M.startApp(\'ciniki.businesses.info\',null,\'M.ciniki_web_main.contact.show();\');'},
+				'page-contact-fax-display':{'label':'Fax', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':'', 'editFn':'M.startApp(\'ciniki.businesses.info\',null,\'M.ciniki_web_main.contact.show();\');'},
+				'page-contact-email-display':{'label':'Email', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':'', 'editFn':'M.startApp(\'ciniki.businesses.info\',null,\'M.ciniki_web_main.contact.show();\');'},
 				}},
 			'_users':{'label':'Business Employees', 'active':'no', 'fields':{
 				}},
@@ -1409,6 +1417,15 @@ function ciniki_web_main() {
 				this.menu.sections.pages.addTxt = '';
 			}
 		}
+		this.home.sections._slideshow.active=(M.curBusiness.modules['ciniki.artcatalog']!=null)?'yes':'no';
+		this.home.sections._artcatalog.active=(M.curBusiness.modules['ciniki.artcatalog']!=null)?'yes':'no';
+		this.home.sections._gallery.active=(M.curBusiness.modules['ciniki.gallery']!=null)?'yes':'no';
+		this.home.sections._recipes.active=(M.curBusiness.modules['ciniki.recipes']!=null)?'yes':'no';
+		this.home.sections._events.active=(M.curBusiness.modules['ciniki.events']!=null)?'yes':'no';
+		this.home.sections._products.active=(M.curBusiness.modules['ciniki.products']!=null)?'yes':'no';
+		this.home.sections._workshops.active = (M.curBusiness.modules['ciniki.workshops']!=null)?'yes':'no';
+		this.home.sections._artgalleryexhibitions.active=(M.curBusiness.modules['ciniki.artgallery']!=null)?'yes':'no';
+
 		if( M.curBusiness.modules['ciniki.blog'] != null ) {
 			if( (M.curBusiness.modules['ciniki.blog'].flags&0x01) > 0 ) {
 				this.home.sections._blog.active = 'yes';
@@ -1636,32 +1653,27 @@ function ciniki_web_main() {
 				this.home.sections._slider_buttons.visible = 'no';
 				this.home.sections._slider.fields['page-home-slider'].active = 'no';
 			}
-			if( M.curBusiness.modules['ciniki.artcatalog'] != null ) {
-				this.home.sections.options.fields['page-home-gallery-slider-type'].active = 'yes';
-				this.home.sections.options.fields['page-home-gallery-slider-size'].active = 'yes';
-				this.home.sections.options.fields['page-home-gallery-latest'].active = 'yes';
-				this.home.sections.options.fields['page-home-gallery-latest-title'].active = 'yes';
-				this.home.sections.options.fields['page-home-gallery-random'].active = 'yes';
-				this.home.sections.options.fields['page-home-gallery-random-title'].active = 'yes';
+//			if( M.curBusiness.modules['ciniki.artcatalog'] != null ) {
+//				this.home.sections.options.fields['page-home-gallery-slider-type'].active = 'yes';
+//				this.home.sections.options.fields['page-home-gallery-slider-size'].active = 'yes';
+//				this.home.sections.options.fields['page-home-gallery-latest'].active = 'yes';
+//				this.home.sections.options.fields['page-home-gallery-latest-title'].active = 'yes';
+//				this.home.sections.options.fields['page-home-gallery-random'].active = 'yes';
+//				this.home.sections.options.fields['page-home-gallery-random-title'].active = 'yes';
 //			} else if( M.curBusiness.modules['ciniki.products'] != null ) {
 //				this.home.sections.options.fields['page-home-gallery-slider-type'].active = 'no';
 //				this.home.sections.options.fields['page-home-gallery-slider-size'].active = 'no';
 //				this.home.sections.options.fields['page-home-gallery-slider'].active = 'no';
 //				this.home.sections.options.fields['page-home-products-latest'].active = 'yes';
 //				this.home.sections.options.fields['page-home-products-latest-title'].active = 'yes';
-			} else {
-				this.home.sections.options.fields['page-home-gallery-slider-type'].active = 'no';
-				this.home.sections.options.fields['page-home-gallery-slider-size'].active = 'no';
-				this.home.sections.options.fields['page-home-gallery-latest'].active = 'no';
-				this.home.sections.options.fields['page-home-gallery-latest-title'].active = 'no';
-				this.home.sections.options.fields['page-home-gallery-random'].active = 'no';
-				this.home.sections.options.fields['page-home-gallery-random-title'].active = 'no';
-			}
-			this.home.sections._recipes.active=(M.curBusiness.modules['ciniki.recipes']!=null)?'yes':'no';
-			this.home.sections._events.active=(M.curBusiness.modules['ciniki.events']!=null)?'yes':'no';
-			this.home.sections._products.active=(M.curBusiness.modules['ciniki.products']!=null)?'yes':'no';
-			this.home.sections._workshops.active = (M.curBusiness.modules['ciniki.workshops']!=null)?'yes':'no';
-			this.home.sections._artgalleryexhibitions.active=(M.curBusiness.modules['ciniki.artgallery']!=null)?'yes':'no';
+//			} else {
+//				this.home.sections.options.fields['page-home-gallery-slider-type'].active = 'no';
+//				this.home.sections.options.fields['page-home-gallery-slider-size'].active = 'no';
+//				this.home.sections.options.fields['page-home-gallery-latest'].active = 'no';
+//				this.home.sections.options.fields['page-home-gallery-latest-title'].active = 'no';
+//				this.home.sections.options.fields['page-home-gallery-random'].active = 'no';
+//				this.home.sections.options.fields['page-home-gallery-random-title'].active = 'no';
+//			}
 //			this.home.sections.options.fields['page-home-upcoming-artgalleryexhibitions'].active = (M.curBusiness.modules['ciniki.artgallery']!=null)?'yes':'no';
 			this[page].refresh();
 			this[page].show(cb);
