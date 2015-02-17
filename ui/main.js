@@ -1635,7 +1635,7 @@ function ciniki_web_main() {
 			this.showContact(cb);
 		} else if( page == 'home' ) {
 			if( this[page].data != null && this[page].data['page-home-gallery-slider-size'] == null ) {
-				this[page].data['page-home-gallery-slider-size'] = 'large';
+				this[page].data['page-home-gallery-slider-size'] = 'xlarge';
 			}
 			if( (M.curBusiness.modules['ciniki.web'].flags&0x02) > 0 ) {
 				this.home.sections._slider.active = 'yes';

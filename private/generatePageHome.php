@@ -441,7 +441,6 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 			&& $settings['page-home-products-latest-number'] > 0 ) {
 			$list_size = $settings['page-home-products-latest-number'];
 		}
-		print_r($list_size);
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'products', 'web', 'newProducts');
 		$rc = ciniki_products_web_newProducts($ciniki, $settings, $ciniki['request']['business_id'], $list_size);
 		if( $rc['stat'] != 'ok' ) {
