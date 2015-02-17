@@ -79,7 +79,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 		}
 		if( isset($rc['images']) && count($rc['images']) > 0 ) {
 			foreach($rc['images'] as $iid => $img) {
-				$rc['images'][$iid]['url'] = '';
+				$rc['images'][$iid]['url'] = $ciniki['request']['base_url'] . '/gallery/category/' . $img['category'] . '/' . $img['permalink'];
 			}
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processSlider');
 			$size = 'xlarge';
