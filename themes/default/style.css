@@ -704,7 +704,7 @@ div.word-cloud {
 #content div.slider-scaled div.slider-image-wrap ul li img {
 	border: 2px solid #ccc; 
 	padding: 9px;
-	margin: 2px;
+	margin: 2px 0px 2px 0px;
 }
 
 #content div.slider-pager-wrap {

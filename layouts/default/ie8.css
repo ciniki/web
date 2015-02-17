@@ -2,6 +2,14 @@
 	max-height: 100%;
 }
 
+#content aside img {
+	display: block;
+	width: auto;
+}
+#content aside {
+	text-align: left;
+	padding-right: 20px;
+}
 #content div.gallery-image-wrap img {
 	display: block;
 	max-height: 600px;
