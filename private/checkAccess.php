@@ -38,7 +38,7 @@ function ciniki_web_checkAccess(&$ciniki, $business_id, $method) {
 	// Not all methods are available to business owners
 	//
 
-	//
+ 	//
 	// Users who are an owner or employee of a business can see the business 
 	// FIXME: Add proper methods here
 	if( $method == 'ciniki.web.siteSettings' 
@@ -47,6 +47,23 @@ function ciniki_web_checkAccess(&$ciniki, $business_id, $method) {
 		|| $method == 'ciniki.web.businessUsers'
 		|| $method == 'ciniki.web.siteSettingsGet'
 		|| $method == 'ciniki.web.siteSettingsUpdate'
+		|| $method == 'ciniki.web.pageAdd'
+		|| $method == 'ciniki.web.pageDelete'
+		|| $method == 'ciniki.web.pageFileAdd'
+		|| $method == 'ciniki.web.pageFileDelete'
+		|| $method == 'ciniki.web.pageFileDownload'
+		|| $method == 'ciniki.web.pageFileGet'
+		|| $method == 'ciniki.web.pageFileHistory'
+		|| $method == 'ciniki.web.pageFileUpdate'
+		|| $method == 'ciniki.web.pageGet'
+		|| $method == 'ciniki.web.pageHistory'
+		|| $method == 'ciniki.web.pageImageAdd'
+		|| $method == 'ciniki.web.pageImageDelete'
+		|| $method == 'ciniki.web.pageImageGet'
+		|| $method == 'ciniki.web.pageImageHistory'
+		|| $method == 'ciniki.web.pageImageUpdate'
+		|| $method == 'ciniki.web.pageList'
+		|| $method == 'ciniki.web.pageUpdate'
 		|| $method == 'ciniki.web.faqAdd'
 		|| $method == 'ciniki.web.faqDelete'
 		|| $method == 'ciniki.web.faqGet'
