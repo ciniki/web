@@ -367,6 +367,8 @@ div.gallery-image-details span.image-awards {
 	color: #539BBD;
 }
 
+#content table.blist > tbody > tr > th,
+#content table.blist > tbody > tr > td,
 #content table.clist > tbody > tr > th,
 #content table.clist > tbody > tr > td,
 #content table.cilist > tbody > tr > th,
@@ -379,13 +381,12 @@ div.gallery-image-details span.image-awards {
 #content table.exhibitors-list > tbody > tr > td,
 #content table.downloads-list th,
 #content table.downloads-list td,
-#content table.links-list th,
-#content table.links-list td,
 #content table.event-list th,
 #content table.event-list td {
 	border-color: #999;
 }
 
+#content span.blist-category,
 #content span.clist-category,
 #content span.cilist-category,
 #content span.members-category,

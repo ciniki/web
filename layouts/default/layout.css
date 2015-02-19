@@ -137,18 +137,23 @@ header span.title {
 	margin-left: 1.8em;
 }
 
+#content table.blist {
+	border-collapse: collapse;
+	table-layout: auto;
+}
+
 #content table.clist,
 #content table.cilist,
 #content table.members-list,
 #content table.sponsors-list,
 #content table.exhibitors-list,
 #content table.downloads-list,
-#content table.links-list,
 #content table.event-list {
 	border-collapse: collapse;
 	table-layout: auto;
 }
 
+#content table.blist > tbody > tr > th,
 #content table.clist > tbody > tr > th {
 	display: table-cell;
 	padding-bottom: 1em;
@@ -160,7 +165,6 @@ header span.title {
 #content table.members-list > tbody > tr > th,
 #content table.exhibitors-list > tbody > tr > th,
 #content table.downloads-list th,
-#content table.links-list th,
 #content table.event-list th {
 	display: table-cell;
 	padding-bottom: 1em;
@@ -190,9 +194,13 @@ header span.title {
 	min-width: 9.5em;
 }
 
+#content table.blist td {
+	display: table-cell;
+	min-width: 30em;
+}
+
 #content table.clist td,
 #content table.downloads-list td,
-#content table.links-list td,
 #content table.event-list td {
 	display: table-cell;
 	padding-left: 1.5em;
@@ -200,6 +208,8 @@ header span.title {
 }
 
 /* #content table.sponsors-list > tbody > tr > th, */
+#content table.blist > tbody > tr > th,
+#content table.blist > tbody > tr > td,
 #content table.clist > tbody > tr > th,
 #content table.clist > tbody > tr > td,
 #content table.cilist > tbody > tr > th,
@@ -211,8 +221,6 @@ header span.title {
 #content table.exhibitors-list > tbody > tr > td,
 #content table.downloads-list th,
 #content table.downloads-list td,
-#content table.links-list th,
-#content table.links-list td,
 #content table.event-list th,
 #content table.event-list td {
 	border-top: 1px solid;
@@ -222,6 +230,7 @@ header span.title {
 	width: 100%;
 }
 
+#content span.blist-category,
 #content span.clist-category,
 #content span.cilist-category,
 #content span.members-category,
@@ -281,6 +290,20 @@ header span.title {
 #content div.button-list div.button-list-wrap a {
 	width: 100%;
 	display: inline-block;
+}
+
+/* blist buttons */
+#content table.blist div.button-list div.button-list-wrap {
+	width: 100%;
+	margin-left: 0em;
+	margin-right: 0em;
+}
+
+#content table.blist div.button-list-wrap a {
+	margin: 0.2em 0em 0.2em 0em;
+	display: block;
+	width: auto;
+	text-align: left;
 }
 
 #content form,
@@ -434,24 +457,24 @@ body { width: 100%; }
 
 /* #content table.sponsors-list > tbody > tr > th, */
 #content table.exhibitors-list > tbody > tr > th,
+#content table.blist > tbody > tr > th,
 #content table.clist > tbody > tr > th,
 #content table.cilist > tbody > tr > th,
 #content table.members-list > tbody > tr > th,
 #content table.downloads-list th,
-#content table.links-list th,
 #content table.event-list th {
 	display: block;
 	padding-bottom: 0em;
 	border-top-width: 0px;
 }
 
+#content table.blist > tbody > tr > td,
 #content table.clist > tbody > tr > td,
 #content table.cilist > tbody > tr > td,
 #content table.members-list > tbody > tr > td,
 #content table.sponsors-list > tbody > tr > td,
 #content table.exhibitors-list > tbody > tr > td,
 #content table.downloads-list td,
-#content table.links-list td,
 #content table.event-list td {
 	display: block;
 }
@@ -464,9 +487,9 @@ body { width: 100%; }
 	margin-left: 0px;
 }
 
+#content table.blist td,
 #content table.clist td,
 #content table.downloads-list td,
-#content table.links-list td,
 #content table.event-list td {
 	padding-left: 5em;
 	margin-left: 0px;
@@ -555,7 +578,7 @@ span.exhibitors-description {
 ----------------------------------------------------------------------------------------*/
 @media screen and (min-width: 40em) and (max-width: 63.236em) {
 	body { width: 100%; }
-	#page-container.page-container-wide { width: 36em; width: 100% }
+	#page-container.page-container-wide { width: auto; max-width: 100% }
 	#content article.page { width: 36em; width: 100%; }
 	#content.evensplit aside,
 	aside { max-width: 100%; width: 36em; width: 100%; } 

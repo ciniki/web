@@ -635,6 +635,26 @@ function ciniki_web_main() {
 		this.events.addClose('Cancel');
 
 		//
+		// The options and information for the Tutorials page
+		//
+		this.tutorials = new M.panel('Tutorials',
+			'ciniki_web_main', 'tutorials',
+			'mc', 'narrow', 'sectioned', 'ciniki.web.main.tutorials');
+		this.tutorials.data = {};
+		this.tutorials.sections = {
+			'options':{'label':'Options', 'fields':{
+				'page-tutorials-active':{'label':'Show tutorials', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'tutorials\');'},
+				}},
+		};
+		this.tutorials.fieldValue = this.fieldValue;
+		this.tutorials.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.tutorials.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'tutorials\');');
+		this.tutorials.addClose('Cancel');
+
+		//
 		// The options and information for the Workshops page
 		//
 		this.workshops = new M.panel('Workshops',

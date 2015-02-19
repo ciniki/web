@@ -160,7 +160,7 @@ function ciniki_web_siteSettings($ciniki) {
 	if( isset($modules['ciniki.filedepot']) || isset($modules['ciniki.products']) ) {
 		$pages['account'] = array('display_name'=>'Account', 'active'=>'no');
 	}
-	if( isset($modules['ciniki.membersonly']) || isset($modules['ciniki.membersonly']) ) {
+	if( isset($modules['ciniki.membersonly']) ) {
 		$pages['membersonly'] = array('display_name'=>'Members Only', 'active'=>'no');
 	}
 
@@ -192,6 +192,9 @@ function ciniki_web_siteSettings($ciniki) {
 	if( $ciniki['config']['ciniki.core']['master_business_id'] == $args['business_id'] ) {
 		$pages['signup'] = array('display_name'=>'Signup', 'active'=>'no');
 		$pages['api'] = array('display_name'=>'API', 'active'=>'no');
+	}
+	if( isset($modules['ciniki.tutorials']) ) {
+		$pages['tutorials'] = array('display_name'=>'Tutorials', 'active'=>'no');
 	}
 	if( isset($modules['ciniki.web']) && ($modules['ciniki.web']['flags']&0x80) == 0x80) {
 		$pages['faq'] = array('display_name'=>'FAQ', 'active'=>'no');
@@ -258,6 +261,9 @@ function ciniki_web_siteSettings($ciniki) {
 //	}
 	if( isset($settings['page-contact-active']) && $settings['page-contact-active'] == 'yes' ) {
 		$pages['contact']['active'] = 'yes';
+	}
+	if( isset($settings['page-tutorials-active']) && $settings['page-tutorials-active'] == 'yes' ) {
+		$pages['tutorials']['active'] = 'yes';
 	}
 	if( isset($settings['page-faq-active']) && $settings['page-faq-active'] == 'yes' ) {
 		$pages['faq']['active'] = 'yes';

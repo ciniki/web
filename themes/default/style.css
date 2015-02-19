@@ -305,6 +305,7 @@ div.gallery-image-details span.image-awards {
 
 #content p.clist-title,
 #content p.cilist-title,
+#content span.blist-title,
 #content span.clist-title,
 #content span.cilist-title,
 #content span.contact-title,
@@ -381,6 +382,8 @@ div.gallery-image-details span.image-awards {
 }
 
 
+#content table.blist > tbody > tr > th,
+#content table.blist > tbody > tr > td,
 #content table.clist > tbody > tr > th,
 #content table.clist > tbody > tr > td,
 #content table.cilist > tbody > tr > th,
@@ -393,13 +396,12 @@ div.gallery-image-details span.image-awards {
 #content table.exhibitors-list > tbody > tr > td,
 #content table.downloads-list th,
 #content table.downloads-list td,
-#content table.links-list th,
-#content table.links-list td,
 #content table.event-list th,
 #content table.event-list td {
 	border-color: #777;
 }
 
+#content span.blist-category,
 #content span.clist-category,
 #content span.cilist-category,
 #content span.members-category,
@@ -407,7 +409,7 @@ div.gallery-image-details span.image-awards {
 #content span.exhibitors-category,
 #content span.downloads-category,
 #content span.links-category {
-	font-size: 1.1em;
+	font-size: 1.2em;
 	color: #555;
 }
 
@@ -424,6 +426,10 @@ div.gallery-image-details span.image-awards {
 #content div.button-list div.button-list-wrap {
 	padding-right: 0.1em;
 	padding-bottom: 0.5em;
+}
+
+#content table.blist div.button-list div.button-list-wrap {
+	padding-right: 0em;
 }
 
 #content div.largebutton-list div.button-list-button a, 

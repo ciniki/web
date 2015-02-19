@@ -44,6 +44,15 @@ function ciniki_web_generatePage404($ciniki, $settings, $errors) {
 	$content .= "<header class='entry-title'><h1 class='entry-title'>Unable to find page</h1></header>";
 	if( $errors != null && isset($errors['err']['msg']) ) {
 		$content .= "<p>" . $errors['err']['msg'] . "</p>";
+		$ciniki['request']['error_codes_msg'] = 'err:' . $errors['err']['code'];
+		// Check for nested errors
+		if( isset($errors['err']['err']) ) {
+			$err = $errors['err'];
+			while( isset($err['err']) ) {
+				$ciniki['request']['error_codes_msg'] .= ',' . $err['err']['code'];
+				$err = $err['err'];
+			}
+		}
 	} else {
 		$content .= "<p>I'm sorry, but we are unable to find the page you requested.</p>";
 	}

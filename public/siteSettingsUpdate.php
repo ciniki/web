@@ -351,6 +351,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-signup-active',
 		'page-signup-menu',
 		'page-api-active',
+		'page-tutorials-active',
 		'page-faq-active',
 		'site-theme',
 		'site-layout',

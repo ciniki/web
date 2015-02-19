@@ -326,25 +326,25 @@ article {
 	margin-bottom: 1em;
 }
 
+#content table.blist,
 #content table.clist,
 #content table.cilist,
 #content table.members-list,
 #content table.sponsors-list,
 #content table.exhibitors-list,
 #content table.downloads-list,
-#content table.links-list,
 #content table.event-list {
 	width: 100%;
 	table-layout: fixed;
 }
 
+#content table.blist > tbody > tr > th,
 #content table.clist > tbody > tr > th,
 #content table.cilist > tbody > tr > th,
 #content table.members-list > tbody > tr > th,
 #content table.sponsors-list > tbody > tr > th,
 #content table.exhibitors-list > tbody > tr > th,
 #content table.downloads-list th,
-#content table.links-list th,
 #content table.event-list th {
 	display: block;
 	text-align: left;
@@ -378,7 +378,6 @@ article {
 #content table.sponsors-list > tbody > tr > td,
 #content table.exhibitors-list > tbody > tr > td,
 #content table.downloads-list td,
-#content table.links-list td,
 #content table.event-list td {
 	display: block;
 	padding-left: 1em;
@@ -389,6 +388,14 @@ article {
 	vertical-align: top;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+#content table.blist > tbody > tr > td {
+	display: block;
+	border-top: 1px solid;
+	margin-left: 0em;
+	padding-left: 0em;
+	padding-right: 0em;
 }
 
 #content table.cilist > tbody > tr > td,
@@ -403,6 +410,7 @@ article {
 	width: 100%;
 }
 
+#content table.blist,
 #content table.clist,
 #content table.cilist-categories,
 #content table.members-category-list,
@@ -683,6 +691,25 @@ div.googlemap p.exhibitors-more,
 #content div.largebutton-list div.button-list-wrap a,
 #content div.button-list div.button-list-wrap a {
 	display: block;
+}
+
+/* blist buttons */
+#content table.blist div.button-list div.button-list-wrap {
+	width: 100%;
+	padding-top: 0.25em;
+	padding-bottom: 2.0em;
+}
+
+#content table.blist div.button-list-wrap a {
+	margin: 0.2em 0em 0.2em 0em;
+	padding-right: 0em;
+	padding-left: 0em;
+	text-align: left;
+}
+
+#content table.blist div.button-list-wrap a span {
+	padding-left: 0.75em;
+	display: inline-block;
 }
 
 #content form {

@@ -175,6 +175,7 @@ if( $ciniki['request']['business_id'] == 0 ) {
 		|| $ciniki['request']['uri_split'][0] == 'faq'
 		|| $ciniki['request']['uri_split'][0] == 'directory'
 		|| $ciniki['request']['uri_split'][0] == 'collection'
+		|| $ciniki['request']['uri_split'][0] == 'tutorials'
 //		|| $ciniki['request']['uri_split'][0] == 'plans'
 		) {
 		$ciniki['request']['page'] = $ciniki['request']['uri_split'][0];
@@ -578,6 +579,12 @@ elseif( $ciniki['request']['page'] == 'membersonly'
 	&& isset($settings['page-membersonly-active']) && $settings['page-membersonly-active'] == 'yes' ) {
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageMembersonly.php');
 	$rc = ciniki_web_generatePageMembersonly($ciniki, $settings);
+} 
+// Tutorials
+elseif( $ciniki['request']['page'] == 'tutorials' 
+	&& isset($settings['page-tutorials-active']) && $settings['page-tutorials-active'] == 'yes' ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageTutorials.php');
+	$rc = ciniki_web_generatePageTutorials($ciniki, $settings);
 } 
 // FAQ
 elseif( $ciniki['request']['page'] == 'faq' 

@@ -766,6 +766,9 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		$content .= "</a></li>";
 	}
 
+	if( isset($settings['page-tutorials-active']) && $settings['page-tutorials-active'] == 'yes' ) {
+		$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='tutorials'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/tutorials'>Tutorials</a></li>";
+	}
 	if( isset($settings['page-faq-active']) && $settings['page-faq-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='faq'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/faq'>FAQ</a></li>";
 	}
