@@ -232,7 +232,7 @@ function ciniki_web_generatePageTutorials($ciniki, $settings) {
 			$ciniki['request']['onresize'] = "gallery_resize_arrows();";
 			$ciniki['request']['onload'] = "scrollto_header();";
 			$page_content .= "<article class='page'>\n"
-				. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$page_title</h1></header>\n"
+				. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$article_title</h1></header>\n"
 				. "<div class='entry-content'>\n"
 				. "";
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
