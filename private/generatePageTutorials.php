@@ -236,13 +236,13 @@ function ciniki_web_generatePageTutorials($ciniki, $settings) {
 				. "<div class='entry-content'>\n"
 				. "";
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			if( isset($cur_step['content']) && $cur_step['content'] != '' ) {
+			if( isset($cur_step['description']) && $cur_step['description'] != '' ) {
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-				$rc = ciniki_web_processContent($ciniki, $cur_step['content']);	
+				$rc = ciniki_web_processContent($ciniki, $cur_step['description']);	
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
-				$step_description .= $rc['content'];
+				$step_description = $rc['content'];
 			}
 
 			//
@@ -257,10 +257,10 @@ function ciniki_web_generatePageTutorials($ciniki, $settings) {
 				$img_url = $rc['url'];
 				$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
 				$page_content .= "<div id='gallery-image' class='gallery-image'>";
-				$page_content .= "<div id='gallery-image-details' class='gallery-image-details'>"
-					. "<span class='image-title'>" . $cur_step['title'] . '</span>'
-					. "<span class='image-details'></span>";
-				if( isset($cur_step['content']) && $cur_step['content'] != '' ) {
+				$page_content .= "<div id='gallery-image-details' class='gallery-image-details gallery-image-details-top'>"
+					. "<span class='image-title'>" . $cur_step['title'] . '</span>';
+//					. "<span class='image-details'></span>";
+				if( isset($step_description) && $step_description != '' ) {
 					$page_content .= "<span class='image-description'>$step_description</span>";
 				}
 				$page_content .= "</div>";

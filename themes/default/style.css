@@ -234,9 +234,19 @@ div.gallery-image-wrap {
 div.gallery-image-details {
 	line-height: 1.5em;
 	margin-top: 1em;
+	margin-bottom: 1em;
 	text-align: left;
 	width: auto;
 	display: inline-block;
+}
+
+div.gallery-image-details-top {
+	margin-top: 0px;
+	margin-bottom: 1em;
+}
+
+div.gallery-image-details p:last-child {
+	margin-bottom: 0px;
 }
 
 div.gallery-image-details span.image-title {
