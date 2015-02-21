@@ -214,7 +214,8 @@ function ciniki_web_generatePageTutorials($ciniki, $settings) {
 				$prev = NULL;
 				$next = NULL;
 			}
-			$page_title = "<a href='$base_url'>" . $tutorial['title'] . '</a>';//: Step ' . $cur_step['number'] . ' - ' . $cur_step['title'];
+			$page_title = $tutorial['title'];
+			$article_title = "<a href='$base_url'>" . $tutorial['title'] . '</a>'; //: Step ' . $cur_step['number'] . ' - ' . $cur_step['title'];
 
 			//
 			// Set the page to wide if possible
@@ -256,6 +257,13 @@ function ciniki_web_generatePageTutorials($ciniki, $settings) {
 				$img_url = $rc['url'];
 				$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
 				$page_content .= "<div id='gallery-image' class='gallery-image'>";
+				$page_content .= "<div id='gallery-image-details' class='gallery-image-details'>"
+					. "<span class='image-title'>" . $cur_step['title'] . '</span>'
+					. "<span class='image-details'></span>";
+				if( isset($cur_step['content']) && $cur_step['content'] != '' ) {
+					$page_content .= "<span class='image-description'>$step_description</span>";
+				}
+				$page_content .= "</div>";
 				$page_content .= "<div id='gallery-image-wrap' class='gallery-image-wrap'>";
 				if( $prev != null ) {
 					$page_content .= "<a id='gallery-image-prev' class='gallery-image-prev' href='" . $prev['permalink'] . "'><div id='gallery-image-prev-img'></div></a>";
@@ -265,13 +273,14 @@ function ciniki_web_generatePageTutorials($ciniki, $settings) {
 				}
 				$page_content .= "<img id='gallery-image-img' title='" . $cur_step['title'] . "' alt='" . $cur_step['title'] . "' src='" . $img_url . "' onload='javascript: gallery_resize_arrows();' />";
 				$page_content .= "</div><br/>";
-				$page_content .= "<div id='gallery-image-details' class='gallery-image-details'>"
-					. "<span class='image-title'>" . $cur_step['title'] . '</span>'
-					. "<span class='image-details'></span>";
-				if( isset($cur_step['content']) && $cur_step['content'] != '' ) {
-					$page_content .= "<span class='image-description'>$step_description</span>";
-				}
-				$page_content .= "</div></div>";
+//				$page_content .= "<div id='gallery-image-details' class='gallery-image-details'>"
+//					. "<span class='image-title'>" . $cur_step['title'] . '</span>'
+//					. "<span class='image-details'></span>";
+//				if( isset($cur_step['content']) && $cur_step['content'] != '' ) {
+//					$page_content .= "<span class='image-description'>$step_description</span>";
+//				}
+//				$page_content .= "</div>";
+				$page_content .= "</div>";
 			} else {
 				$page_content .= "<p>$step_description</p>";
 			}
