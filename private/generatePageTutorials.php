@@ -208,7 +208,7 @@ function ciniki_web_generatePageTutorials($ciniki, $settings) {
 				$last = $step;
 			}
 			if( !isset($tutorial['steps']) || count($tutorial['steps']) < 1 ) {
-				return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1553', 'msg'=>'Unable to find step'));
+				return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2246', 'msg'=>'Unable to find step'));
 			}
 			if( count($tutorial['steps']) == 1 ) {
 				$prev = NULL;
