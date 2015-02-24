@@ -624,13 +624,26 @@ function ciniki_web_main() {
 				'page-events-past':{'label':'Include past events', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-events-categories-display':{'label':'Display Categories', 'type':'toggle', 'default':'off', 'toggles':this.eventCategoryDisplay},
 				}},
-
+			'_image':{'label':'Image', 'active':'no', 'fields':{
+				'page-events-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
+				}},
+			'_image_caption':{'label':'', 'active':'no', 'fields':{
+				'page-events-image-caption':{'label':'Caption', 'type':'text'},
+				}},
+			'_content':{'label':'Content', 'active':'no', 'fields':{
+				'page-events-content':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'large'},
+				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'events\');'},
 				}},
 		};
 		this.events.fieldValue = this.fieldValue;
 		this.events.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.events.addDropImage = function(iid) {
+			this.setFieldValue('page-events-image', iid);
+			return true;
+		};
+		this.events.deleteImage = this.deleteImage;
 		this.events.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'events\');');
 		this.events.addClose('Cancel');
 
@@ -1456,8 +1469,14 @@ function ciniki_web_main() {
 		if( M.curBusiness.modules['ciniki.events'] != null ) {
 			if( (M.curBusiness.modules['ciniki.events'].flags&0x10) > 0 ) {
 				this.events.sections.options.fields['page-events-categories-display'].active = 'yes';
+				this.events.sections._image.active = 'yes';
+				this.events.sections._image_caption.active = 'yes';
+				this.events.sections._content.active = 'yes';
 			} else {
 				this.events.sections.options.fields['page-events-categories-display'].active = 'no';
+				this.events.sections._image.active = 'no';
+				this.events.sections._image_caption.active = 'no';
+				this.events.sections._content.active = 'no';
 			}
 		}
 
