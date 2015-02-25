@@ -21,12 +21,14 @@ function ciniki_web_generatePageTutorials($ciniki, $settings) {
 	//
 	$download_err = '';
 	if( isset($ciniki['business']['modules']['ciniki.tutorials'])
-		&& isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != ''
-		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] == 'download'
-		&& isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' ) {
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'tutorials', 'web', 'fileDownload');
-		$rc = ciniki_tutorials_web_fileDownload($ciniki, $ciniki['request']['business_id'], 
-			$ciniki['request']['uri_split'][0], $ciniki['request']['uri_split'][2]);
+		&& isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'download'
+		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != ''
+		&& isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' 
+		&& preg_match("/^(.*)\.pdf$/", $ciniki['request']['uri_split'][2], $matches)
+		) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'tutorials', 'web', 'downloadPDF');
+		$rc = ciniki_tutorials_web_downloadPDF($ciniki, $settings, $ciniki['request']['business_id'], 
+			$matches[1], array('layout'=>$ciniki['request']['uri_split'][1]));
 		if( $rc['stat'] == 'ok' ) {
 			header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 			header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
@@ -36,7 +38,6 @@ function ciniki_web_generatePageTutorials($ciniki, $settings) {
 			if( $file['extension'] == 'pdf' ) {
 				header('Content-Type: application/pdf');
 			}
-//			header('Content-Disposition: attachment;filename="' . $file['filename'] . '"');
 			header('Content-Length: ' . strlen($file['binary_content']));
 			header('Cache-Control: max-age=0');
 
@@ -327,6 +328,8 @@ function ciniki_web_generatePageTutorials($ciniki, $settings) {
 					return $rc;
 				}
 				$page_content .= $rc['content'];
+
+				$page_content .= "<p><a target='_blank' href='" . $ciniki['request']['base_url'] . "/tutorials/download/single/" . $tutorial['permalink'] . ".pdf'>Download Printable PDF</a>";
 			}
 
 //	print "<pre>" . print_r($tutorial, true) . "</pre>";
