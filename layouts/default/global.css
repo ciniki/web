@@ -959,7 +959,6 @@ span.exhibitors-description {
 	margin: 0px;
 	padding: 0px;
 	list-style-type: none;
-	line-height: 400px;
 	vertical-align: middle;
 }
 
@@ -976,6 +975,7 @@ span.exhibitors-description {
 #content div.slider-scaled li {
 	height: 100%;
 	vertical-align: bottom;
+	line-height: 400px;
 	list-style-type: none;
 }
 
