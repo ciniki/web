@@ -73,11 +73,11 @@ a img {
 
 #sub-menu-container {
 	background-color: transparent;
-	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#53ABCD', endColorstr='#136B8D');
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#53ABCD', endColorstr='#136B8D');
 }
 #main-menu-container {
 	background-color: transparent;
-	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#888888', endColorstr='#555555');
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#888888', endColorstr='#555555');
 }
 
 #sub-menu-container li a,
