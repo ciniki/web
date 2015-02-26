@@ -652,11 +652,20 @@ function ciniki_web_main() {
 		//
 		this.tutorials = new M.panel('Tutorials',
 			'ciniki_web_main', 'tutorials',
-			'mc', 'narrow', 'sectioned', 'ciniki.web.main.tutorials');
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.tutorials');
 		this.tutorials.data = {};
 		this.tutorials.sections = {
 			'options':{'label':'Options', 'fields':{
 				'page-tutorials-active':{'label':'Show tutorials', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				}},
+			'_image':{'label':'Image', 'fields':{
+				'page-tutorials-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
+				}},
+			'_image_caption':{'label':'', 'fields':{
+				'page-tutorials-image-caption':{'label':'Caption', 'type':'text'},
+				}},
+			'_content':{'label':'Content', 'fields':{
+				'page-tutorials-content':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'large'},
 				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'tutorials\');'},
@@ -664,6 +673,11 @@ function ciniki_web_main() {
 		};
 		this.tutorials.fieldValue = this.fieldValue;
 		this.tutorials.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.tutorials.addDropImage = function(iid) {
+			this.setFieldValue('page-tutorials-image', iid);
+			return true;
+		};
+		this.tutorials.deleteImage = this.deleteImage;
 		this.tutorials.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'tutorials\');');
 		this.tutorials.addClose('Cancel');
 

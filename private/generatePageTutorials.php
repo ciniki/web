@@ -86,6 +86,30 @@ function ciniki_web_generatePageTutorials($ciniki, $settings) {
 			. "<header class='entry-title'><h1 class='entry-title'>$article_title</h1></header>\n"
 			. "<div class='entry-content'>\n";
 
+		if( isset($settings['page-tutorials-image']) && $settings['page-tutorials-image'] != '' && $settings['page-tutorials-image'] != 0 ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+			$rc = ciniki_web_getScaledImageURL($ciniki, $settings['page-tutorials-image'], 'original', '500', 0);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= "<aside><div class='image-wrap'>"
+				. "<div class='image'><img title='' src='" . $rc['url'] . "' /></div>";
+			if( isset($settings['page-tutorials-image-caption']) && $settings['page-tutorials-image-caption'] != '' ) {
+				$page_content .= "<div class='image-caption'>" . $settings['page-tutorials-image-caption'] . "</div>";
+			}
+			$page_content .= "</div></aside>";
+		}
+
+		$page_content .= "<div class='entry-content'>";
+		if( isset($settings['page-tutorials-content']) ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+			$rc = ciniki_web_processContent($ciniki, $settings['page-tutorials-content']);	
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= $rc['content'];
+		}
+
 		//
 		// Load the list of tutorials to display
 		//
