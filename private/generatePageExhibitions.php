@@ -265,7 +265,9 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 	//
 	// Check if we are to display an exhibition
 	//
-	elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
+	elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' 
+		&& $ciniki['request']['uri_split'][0] != 'category' 
+		) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'artgallery', 'web', 'exhibitionDetails');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
 
@@ -301,6 +303,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 		//
 		// Add primary image
 		//
+		$aside_display = 'block';
 		if( isset($exhibition['image_id']) && $exhibition['image_id'] > 0 ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 			$rc = ciniki_web_getScaledImageURL($ciniki, $exhibition['image_id'], 'original', '500', 0);
@@ -308,9 +311,60 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 				return $rc;
 			}
 			$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
-			$page_content .= "<aside><div class='image-wrap'><div class='image'>"
+			$page_content .= "<aside id='aside-image'><div class='image-wrap'><div class='image'>"
 				. "<img title='' alt='" . htmlspecialchars(strip_tags($exhibition['name'])) . "' src='" . $rc['url'] . "' />"
 				. "</div></div></aside>";
+			$aside_display = 'none';
+		} 
+		//
+		// No primary image, display a map to the location
+		//
+		if( isset($exhibition['location_details']['latitude']) && $exhibition['location_details']['latitude'] != 0
+			&& isset($exhibition['location_details']['longitude']) && $exhibition['location_details']['longitude'] != 0
+			) {
+			if( !isset($ciniki['request']['inline_javascript']) ) {
+				$ciniki['request']['inline_javascript'] = '';
+			}
+			$ciniki['request']['inline_javascript'] .= ''
+				. '<script type="text/javascript">'
+				. 'var gmap_loaded=0;'
+				. 'function gmap_initialize() {'
+					. 'var myLatlng = new google.maps.LatLng(' . $exhibition['location_details']['latitude'] . ',' . $exhibition['location_details']['longitude'] . ');'
+					. 'var mapOptions = {'
+						. 'zoom: 13,'
+						. 'center: myLatlng,'
+						. 'panControl: false,'
+						. 'zoomControl: true,'
+						. 'scaleControl: true,'
+						. 'mapTypeId: google.maps.MapTypeId.ROADMAP'
+					. '};'
+					. 'var map = new google.maps.Map(document.getElementById("googlemap"), mapOptions);'
+					. 'var marker = new google.maps.Marker({'
+						. 'position: myLatlng,'
+						. 'map: map,'
+						. 'title:"",'
+						. '});'
+				. '};'
+				. 'function loadMap() {'
+					. 'if(gmap_loaded==1) {return;}'
+					. 'var script = document.createElement("script");'
+					. 'script.type = "text/javascript";'
+					. 'script.src = "' . ($ciniki['request']['ssl']=='yes'?'https':'http') . '://maps.googleapis.com/maps/api/js?key=' . $ciniki['config']['ciniki.web']['google.maps.api.key'] . '&sensor=false&callback=gmap_initialize";'
+					. 'document.body.appendChild(script);'
+					. 'gmap_loaded=1;'
+				. '};'
+				. 'function toggleMap() {'
+					. "var i = document.getElementById('aside-image');\n"
+					. "var m = document.getElementById('aside-map');\n"
+					. "if(i!=null){"
+						. "if(i.style.display!='none') {i.style.display='none';m.style.display='block'; loadMap();"
+						. "} else {i.style.display='block';m.style.display='none'; "
+						. "}\n"
+					. "}"
+				. '};'
+				. ((!isset($exhibition['image_id']) || $exhibition['image_id'] == 0)?'window.onload=loadMap;':'')
+				. '</script>';
+			$page_content .= "<aside id='aside-map' style='display:${aside_display};'><div class='googlemap' id='googlemap'></div></aside>";
 		}
 
 		if( isset($exhibition['short_description']) && $exhibition['short_description'] != '' ) {
@@ -336,6 +390,21 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 				return $rc;
 			}
 			$page_content .= $rc['content'];
+		}
+
+		if( isset($exhibition['location_address']) && $exhibition['location_address'] != '' ) {
+			$page_content .= "<h2>Location</h2>";
+			$toggle_map = '';
+			if( isset($exhibition['image_id']) && $exhibition['image_id'] > 0 
+				&& isset($exhibition['location_details']['latitude']) && $exhibition['location_details']['latitude'] != 0
+				&& isset($exhibition['location_details']['longitude']) && $exhibition['location_details']['longitude'] != 0
+				) {
+				$toggle_map = "<a href='javascript: toggleMap();'>Click here for map</a>";
+			}
+			$page_content .= "<p>" . $exhibition['location_details']['name'] . '</br>' 
+				. $exhibition['location_address'] 
+				. $toggle_map
+				. "</p>";
 		}
 
 		//
@@ -438,10 +507,16 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 		//
 		// Display list of upcoming exhibitions
 		//
+		$category = '';
+		if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'category' 
+			&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' 
+			) {
+			$category = $ciniki['request']['uri_split'][1];
+		}
 		if( $page_past_cur == 1 ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'artgallery', 'web', 'exhibitionList');
 			$rc = ciniki_artgallery_web_exhibitionList($ciniki, $settings, $ciniki['request']['business_id'], 
-				array('type'=>'current', 'limit'=>0));
+				array('type'=>'current', 'limit'=>0, 'category'=>$category));
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -470,7 +545,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'artgallery', 'web', 'exhibitionList');
 			$rc = ciniki_artgallery_web_exhibitionList($ciniki, $settings, $ciniki['request']['business_id'], 
-				array('type'=>'upcoming', 'limit'=>0));
+				array('type'=>'upcoming', 'limit'=>0, 'category'=>$category));
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -511,6 +586,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 			}
 			$rc = ciniki_artgallery_web_exhibitionList($ciniki, $settings, $ciniki['request']['business_id'], 
 				array('type'=>'past', 
+					'category'=>$category,
 					'offset'=>$offset,
 					'limit'=>($page_past_cur==1?($page_past_initial_limit+1):($page_past_limit+1))));
 			if( $rc['stat'] != 'ok' ) {
@@ -529,7 +605,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 						'limit'=>($page_past_cur==1?$page_past_initial_limit:$page_past_limit), 
 						'prev'=>'Newer Exhibitions &rarr;',
 						'next'=>'&larr; Older Exhibitions',
-						'base_url'=>$ciniki['request']['base_url'] . "/exhibitions"));
+						'base_url'=>$ciniki['request']['base_url'] . "/exhibitions" . ($category!=''?'/category/'.$category:'')));
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
@@ -575,6 +651,24 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 	}
 
 	//
+	// Check for categories
+	//
+	$submenu = array();
+	if( ($ciniki['business']['modules']['ciniki.artgallery']['flags']&0x04) > 0 ) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'artgallery', 'web', 'categories');
+		$rc = ciniki_artgallery_web_categories($ciniki, $settings, $ciniki['request']['business_id'], array());
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		if( isset($rc['categories']) ) {
+			foreach($rc['categories'] as $category) {
+				$submenu[$category['permalink']] = array('name'=>$category['name'],
+					'url'=>$ciniki['request']['base_url'] . '/exhibitions/category/' . $category['permalink']);
+			}
+		}
+	}
+
+	//
 	// Generate the complete page
 	//
 
@@ -582,7 +676,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 	// Add the header
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, $page_title, array());
+	$rc = ciniki_web_generatePageHeader($ciniki, $settings, $page_title, $submenu);
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
 	}

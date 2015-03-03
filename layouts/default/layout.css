@@ -243,6 +243,7 @@ header span.title {
 	white-space: pre;
 	max-width: 100%;
 	padding-right: 0px;
+	width: 49%;
 }
 
 #content table.cilist th {
