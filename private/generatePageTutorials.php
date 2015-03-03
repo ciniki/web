@@ -354,8 +354,8 @@ function ciniki_web_generatePageTutorials($ciniki, $settings) {
 				$page_content .= $rc['content'];
 
 				$page_content .= "<p><b>Download Options</b><br/>"
-					. "<a target='_blank' href='" . $ciniki['request']['base_url'] . "/tutorials/download/single/" . $tutorial['permalink'] . ".pdf'>Printable PDF</a><br/>"
-					. "<a target='_blank' href='" . $ciniki['request']['base_url'] . "/tutorials/download/double/" . $tutorial['permalink'] . ".pdf'>Printable PDF (compact format)</a><br/>";
+					. "<a target='_blank' href='" . $ciniki['request']['base_url'] . "/tutorials/download/single/" . $tutorial['permalink'] . ".pdf'>Printable PDF (1 step/page, large images)</a><br/>"
+					. "<a target='_blank' href='" . $ciniki['request']['base_url'] . "/tutorials/download/double/" . $tutorial['permalink'] . ".pdf'>Printable PDF (2 steps/page, smaller images)</a><br/>";
 			}
 
 //	print "<pre>" . print_r($tutorial, true) . "</pre>";
