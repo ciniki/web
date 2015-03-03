@@ -861,6 +861,11 @@ footer {
 	text-align: center;
 }
 
+footer p {
+	max-width: 100%;
+	width: 100%;
+}
+
 header div.signin .hide-babybear, 
 div.hide-babybear {
 	display: none;

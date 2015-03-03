@@ -92,6 +92,7 @@ function ciniki_web_main() {
 				'header':{'label':'Header', 'fn':'M.ciniki_web_main.showHeader(\'M.ciniki_web_main.showMenu();\');'},
 				'social':{'label':'Social Media Links', 'fn':'M.startApp(\'ciniki.web.social\',null,\'M.ciniki_web_main.showMenu();\');'},
 				'collections':{'label':'Web Collections', 'visible':'no', 'fn':'M.startApp(\'ciniki.web.collections\',null,\'M.ciniki_web_main.showMenu();\');'},
+				'footer':{'label':'Footer', 'fn':'M.ciniki_web_main.showFooter(\'M.ciniki_web_main.showMenu();\');'},
 				}},
 //			'advanced':{'label':'Advanced', 'type':'simplegrid', 'num_cols':1, 'sortable':'no',
 //				'headerValues':null,
@@ -243,6 +244,30 @@ function ciniki_web_main() {
 		this.header.deleteImage = this.deleteImage;
 		this.header.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'header\');');
 		this.header.addClose('Cancel');
+
+		//
+		// The panel to allow the user to set footer properties
+		//
+		this.footer = new M.panel('Footer',
+			'ciniki_web_main', 'footer',
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.footer');
+		this.footer.data = {};
+		this.footer.sections = {
+			'options':{'label':'Options', 'fields':{
+				'site-footer-copyright-name':{'label':'Copyright Name', 'type':'text', 'hint':M.curBusiness.name},
+				}},
+			'_copyright':{'label':'Copyright Message', 'fields':{
+				'site-footer-copyright-message':{'label':'', 'type':'textarea', 'size':'medium', 'hidelabel':'yes'},
+				}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'footer\');'},
+				}},
+		};
+		this.footer.fieldValue = this.fieldValue;
+		this.footer.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.footer.deleteImage = this.deleteImage;
+		this.footer.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'footer\');');
+		this.footer.addClose('Cancel');
 
 		//
 		// The options and information for the logo page
@@ -1598,6 +1623,10 @@ function ciniki_web_main() {
 			for(i in rsp.header) {
 				M.ciniki_web_main.header.data[rsp.header[i].setting.name] = rsp.header[i].setting.value;
 			}
+			M.ciniki_web_main.footer.data = {};
+			for(i in rsp.footer) {
+				M.ciniki_web_main.footer.data[rsp.footer[i].setting.name] = rsp.footer[i].setting.value;
+			}
 			if( rsp.settings['page-home-url'] != null ) {
 				M.ciniki_web_main.header.data['page-home-url'] = rsp.settings['page-home-url'];
 			}
@@ -1634,6 +1663,11 @@ function ciniki_web_main() {
 	this.showHeader = function(cb) {
 		this.header.refresh();
 		this.header.show(cb);
+	};
+
+	this.showFooter = function(cb) {
+		this.footer.refresh();
+		this.footer.show(cb);
 	};
 
 	this.showPage = function(cb, page, subpage, subpagetitle) {

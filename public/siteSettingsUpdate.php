@@ -392,6 +392,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'site-ssl-active',
 		'site-ssl-force-cart',
 		'site-ssl-force-account',
+		'site-footer-copyright-name',
+		'site-footer-copyright-message',
 		);
 
 	//

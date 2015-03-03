@@ -35,8 +35,17 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
 		$content .= "<div class='social-icons'>" . $rc['social'] . "</div>";
 	}
 	
-	$content .= "<span class='copyright'>All content &copy; Copyright " . date('Y') . " by " . $ciniki['business']['details']['name'] . ".</span>"
+	$content .= "<span class='copyright'>All content &copy; Copyright " . date('Y') . " by " . ((isset($settings['site-footer-copyright-name']) && $settings['site-footer-copyright-name'] != '')?$settings['site-footer-copyright-name']:$ciniki['business']['details']['name']) . ".</span>"
 		. "<br/>";
+	if( isset($settings['site-footer-copyright-message']) && $settings['site-footer-copyright-message'] != '' ) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+		$rc = ciniki_web_processContent($ciniki, $settings['site-footer-copyright-message'], 'copyright');	
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$content .= $rc['content'];
+	}
+
 	if( $ciniki['config']['ciniki.web']['poweredby.url'] != '' && $ciniki['config']['ciniki.core']['master_business_id'] != $ciniki['request']['business_id'] ) {
 		$content .= "<span class='poweredby'>Powered by <a href='" . $ciniki['config']['ciniki.web']['poweredby.url'] . "'>" . $ciniki['config']['ciniki.web']['poweredby.name'] . "</a></span>"
 			. "";
