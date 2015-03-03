@@ -398,180 +398,121 @@ span.exhibitors-description {
 /* 9. CUSTOM LAYOUT & TYPOGRAPHY (Mummy bear)
 ----------------------------------------------------------------------------------------*/
 @media screen and (min-width: 30em) and (max-width: 63.236em) {
+	body { width: 100%; }
+	#page-container { width: auto; max-width: 45em; }
+	#sub-menu-container { text-align: left; }
+	#content dl dd { margin-left: 3em; }
+	#content span.exhibitors-category {
+		display: inline-block;
+		width: 49%;
+	}
+	#content span.cilist-subcategory,
+	#content span.exhibitors-subcategory {
+		display: inline-block;
+		text-align: right;
+		width: 50%;
+	}
+	#content span.image-categories-name { width: 190px; }
+	#content div.image-categories-thumbnail img {
+		width: 190px;
+		height: 190px;
+	}
 
-body { width: 100%; }
+	#content div.gallery-image { width: 100%; }
+	#content table.sponsors-list table.sponsors-category-list td.sponsors-image {
+		padding-right: 0.1em;
+		padding-left: 0;
+	}
 
-#page-container { width: auto; max-width: 45em; }
+	#content table.cilist table.cilist-categories td.cilist-image,
+	#content table.members-list table.members-category-list td.members-image,
+	#content table.exhibitors-list table.exhibitors-category-list td.exhibitors-image {
+		padding-right: 0.1em;
+		padding-left: 0;
+		min-width: 9.0em;
+	}
+	#content table.exhibitors-list > tbody > tr > th,
+	#content table.blist > tbody > tr > th,
+	#content table.clist > tbody > tr > th,
+	#content table.cilist > tbody > tr > th,
+	#content table.members-list > tbody > tr > th,
+	#content table.downloads-list th,
+	#content table.event-list th {
+		display: block;
+		padding-bottom: 0em;
+		border-top-width: 0px;
+	}
 
-#sub-menu-container { text-align: left; }
-
-#content dl dd {
-	margin-left: 3em;
-}
-
-#content span.exhibitors-category {
-	display: inline-block;
-	width: 49%;
-}
-
-#content span.cilist-subcategory,
-#content span.exhibitors-subcategory {
-	display: inline-block;
-	text-align: right;
-	width: 50%;
-}
-
-/* #content div.image-categories div.image-categories-thumbnail-wrap {
-	width: 190px;
-}
-
-#content div.image-categories div.image-categories-thumbnail {
-	width: 190px;
-} */
-#content span.image-categories-name {
-	width: 190px;
-}
-
-#content div.image-categories-thumbnail img {
-	width: 190px;
-	height: 190px;
-}
-
-#content div.gallery-image {
-	width: 100%;
-}
-
-#content table.sponsors-list table.sponsors-category-list td.sponsors-image {
-	padding-right: 0.1em;
-	padding-left: 0;
-/* 	min-width: 9.0em; */
-}
-
-#content table.cilist table.cilist-categories td.cilist-image,
-#content table.members-list table.members-category-list td.members-image,
-#content table.exhibitors-list table.exhibitors-category-list td.exhibitors-image {
-	padding-right: 0.1em;
-	padding-left: 0;
-	min-width: 9.0em;
-}
-
-/* #content table.sponsors-list > tbody > tr > th, */
-#content table.exhibitors-list > tbody > tr > th,
-#content table.blist > tbody > tr > th,
-#content table.clist > tbody > tr > th,
-#content table.cilist > tbody > tr > th,
-#content table.members-list > tbody > tr > th,
-#content table.downloads-list th,
-#content table.event-list th {
-	display: block;
-	padding-bottom: 0em;
-	border-top-width: 0px;
-}
-
-#content table.blist > tbody > tr > td,
-#content table.clist > tbody > tr > td,
-#content table.cilist > tbody > tr > td,
-#content table.members-list > tbody > tr > td,
-#content table.sponsors-list > tbody > tr > td,
-#content table.exhibitors-list > tbody > tr > td,
-#content table.downloads-list td,
-#content table.event-list td {
-	display: block;
-}
-
-#content table.cilist >tbody > tr > td,
-#content table.members-list >tbody > tr > td,
-#content table.sponsors-list >tbody > tr > td,
-#content table.exhibitors-list >tbody > tr > td {
-	padding-left: 0em;
-	margin-left: 0px;
-}
-
-#content table.blist td,
-#content table.clist td,
-#content table.downloads-list td,
-#content table.event-list td {
-	padding-left: 5em;
-	margin-left: 0px;
-}
-
-#content div.largebutton-list div.button-list-wrap, 
-#content div.button-list div.button-list-wrap {
-	width: 100%;
-}
-
-#content form div.input {
-	width: 100%;
-}
-
-#content form {
-	width: 100%;
-	max-width: 100%;
-}
-
-#content dl {
-	width: 100%;
-	max-width: 100%;
-}
-
-#content form input.text {
-	width: 100%;
-	max-width: 100%;
-}
-
-#content.evensplit form input.text {
-	max-width: 96%;
-}
-
-#content form div.submit {
-	width: 100%;
-}
-
-#content.evensplit form div.submit {
-	max-width: 100%;
-}
-
-#content ul {
-	max-width: 45em;
-}
-
-#content p,
-#content dl.wide,
-#content ul.wide {
-	max-width: 45em;
-}
-
-aside {
-	float: none;
-	width: auto; 
-	max-width: 30em;
-/* 	width: 30em; */
-	height: auto;
-	margin: 0 auto 2.2em;
-}
-
-aside div.image-wrap { max-width: 30em; margin: 0 auto; }
-
-#content article.page {
-	width: 100%; 
-	margin: 0 auto;
-}
-
-#content.evensplit aside {
-	width: 30em;
-}
-#content.evensplit form div.bigsubmit,
-#content.evensplit form div.bigsubmit2 {
-	width: 100%;
-	max-width: 100%;
-}
-
-div.hide-babybear { display: block; }
-
-span.exhibitors-description {
-	display: inline;
-}
-
+	#content table.blist > tbody > tr > td,
+	#content table.clist > tbody > tr > td,
+	#content table.cilist > tbody > tr > td,
+	#content table.members-list > tbody > tr > td,
+	#content table.sponsors-list > tbody > tr > td,
+	#content table.exhibitors-list > tbody > tr > td,
+	#content table.downloads-list td,
+	#content table.event-list td {
+		display: block;
+	}
+	#content table.cilist >tbody > tr > td,
+	#content table.members-list >tbody > tr > td,
+	#content table.sponsors-list >tbody > tr > td,
+	#content table.exhibitors-list >tbody > tr > td {
+		padding-left: 0em;
+		margin-left: 0px;
+	}
+	#content table.blist td,
+	#content table.clist td,
+	#content table.downloads-list td,
+	#content table.event-list td {
+		padding-left: 5em;
+		margin-left: 0px;
+	}
+	#content div.largebutton-list div.button-list-wrap, 
+	#content div.button-list div.button-list-wrap {
+		width: 100%;
+	}
+	#content form div.input { width: 100%; }
+	#content form {
+		width: 100%;
+		max-width: 100%;
+	}
+	#content dl {
+		width: 100%;
+		max-width: 100%;
+	}
+	#content form input.text {
+		width: 100%;
+		max-width: 100%;
+	}
+	#content.evensplit form input.text { max-width: 96%; }
+	#content form div.submit { width: 100%; }
+	#content.evensplit form div.submit { max-width: 100%; }
+	#content ul { max-width: 45em; }
+	#content p,
+	#content dl.wide,
+	#content ul.wide {
+		max-width: 45em;
+	}
+	aside {
+		float: none;
+		width: auto; 
+		max-width: 30em;
+		height: auto;
+		margin: 0 auto 2.2em;
+	}
+	aside div.image-wrap { max-width: 30em; margin: 0 auto; }
+	#content article.page {
+		width: 100%; 
+		margin: 0 auto;
+	}
+	#content.evensplit aside { width: 30em; }
+	#content.evensplit form div.bigsubmit,
+	#content.evensplit form div.bigsubmit2 {
+		width: 100%;
+		max-width: 100%;
+	}
+	div.hide-babybear { display: block; }
+	span.exhibitors-description { display: inline; }
 }
 
 /* 10. CUSTOM LAYOUT & TYPOGRAPHY (Older Sister bear)
@@ -644,3 +585,122 @@ span.exhibitors-description {
 	}
 }
 
+/* 13. Print 
+------------------------------------------------------------------------------*/
+@media print {
+	body { width: 100%; }
+	#page-container { width: auto; max-width: 45em; }
+	#sub-menu-container { text-align: left; }
+	#content dl dd { margin-left: 3em; }
+	#content span.exhibitors-category {
+		display: inline-block;
+		width: 49%;
+	}
+	#content span.cilist-subcategory,
+	#content span.exhibitors-subcategory {
+		display: inline-block;
+		text-align: right;
+		width: 50%;
+	}
+	#content span.image-categories-name { width: 190px; }
+	#content div.image-categories-thumbnail img {
+		width: 190px;
+		height: 190px;
+	}
+
+	#content div.gallery-image { width: 100%; }
+	#content table.sponsors-list table.sponsors-category-list td.sponsors-image {
+		padding-right: 0.1em;
+		padding-left: 0;
+	}
+
+	#content table.cilist table.cilist-categories td.cilist-image,
+	#content table.members-list table.members-category-list td.members-image,
+	#content table.exhibitors-list table.exhibitors-category-list td.exhibitors-image {
+		padding-right: 0.1em;
+		padding-left: 0;
+		min-width: 9.0em;
+	}
+	#content table.exhibitors-list > tbody > tr > th,
+	#content table.blist > tbody > tr > th,
+	#content table.clist > tbody > tr > th,
+	#content table.cilist > tbody > tr > th,
+	#content table.members-list > tbody > tr > th,
+	#content table.downloads-list th,
+	#content table.event-list th {
+		display: block;
+		padding-bottom: 0em;
+		border-top-width: 0px;
+	}
+
+	#content table.blist > tbody > tr > td,
+	#content table.clist > tbody > tr > td,
+	#content table.cilist > tbody > tr > td,
+	#content table.members-list > tbody > tr > td,
+	#content table.sponsors-list > tbody > tr > td,
+	#content table.exhibitors-list > tbody > tr > td,
+	#content table.downloads-list td,
+	#content table.event-list td {
+		display: block;
+	}
+	#content table.cilist >tbody > tr > td,
+	#content table.members-list >tbody > tr > td,
+	#content table.sponsors-list >tbody > tr > td,
+	#content table.exhibitors-list >tbody > tr > td {
+		padding-left: 0em;
+		margin-left: 0px;
+	}
+	#content table.blist td,
+	#content table.clist td,
+	#content table.downloads-list td,
+	#content table.event-list td {
+		padding-left: 5em;
+		margin-left: 0px;
+	}
+	#content div.largebutton-list div.button-list-wrap, 
+	#content div.button-list div.button-list-wrap {
+		width: 100%;
+	}
+	#content form div.input { width: 100%; }
+	#content form {
+		width: 100%;
+		max-width: 100%;
+	}
+	#content dl {
+		width: 100%;
+		max-width: 100%;
+	}
+	#content form input.text {
+		width: 100%;
+		max-width: 100%;
+	}
+	#content.evensplit form input.text { max-width: 96%; }
+	#content form div.submit { width: 100%; }
+	#content.evensplit form div.submit { max-width: 100%; }
+	#content ul { max-width: 45em; }
+	#content p,
+	#content dl.wide,
+	#content ul.wide {
+		max-width: 45em;
+	}
+	aside {
+		float: none;
+		width: auto; 
+		max-width: 30em;
+		height: auto;
+		margin: 0 auto 2.2em;
+	}
+	aside div.image-wrap { max-width: 30em; margin: 0 auto; }
+	#content article.page {
+		width: 100%; 
+		margin: 0 auto;
+	}
+	#content.evensplit aside { width: 30em; }
+	#content.evensplit form div.bigsubmit,
+	#content.evensplit form div.bigsubmit2 {
+		width: 100%;
+		max-width: 100%;
+	}
+	div.hide-babybear { display: block; }
+	span.exhibitors-description { display: inline; }
+}
