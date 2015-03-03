@@ -475,7 +475,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 					&& $settings['page-home-products-latest-more'] != '' ) {
 					$page_content .= $settings['page-home-products-latest-more'];
 				} else {
-					$page_content .= "... more blog posts";
+					$page_content .= "... more products";
 				}
 				$page_content .= "</a></div>";
 			}
