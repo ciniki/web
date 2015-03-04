@@ -51,14 +51,6 @@ header h1 a:active {
 	color: #8d7052;
 	font-weight: 500;
 	line-height: 120%;
-/*	text-shadow: 0 1px 3px rgba(0,0,0,1.0);
-	color: #7d6042;
-	text-shadow: 0 1px 5px rgba(0,0,0,1.0);
-	text-shadow: 0px 0px 5px #fff;
-	text-shadow: 0px 0px 25px #000;
-	text-shadow: 1px 1px 15px rgba(255,255,255,1.0);
-	text-shadow: inset 1px 1px 1px #5d4022; 
-	text-shadow: inset 1px 1px 2px #000; */
 	text-shadow: 1px 1px 8px rgba(0,0,0,0.4);
 	font-style: italic;
 }
@@ -325,13 +317,28 @@ div.gallery-image-details span.image-awards {
 	box-shadow: 0 2px 10px rgba(0,0,0,0.7);
 }
 
+#content header {
+	margin-bottom: 0.5em;
+}
+
 #content h1,
+#content h1 a,
+#content h1 a:visited,
+#content h1 a:hover,
+#content h1 a:active,
 #content h1.entry-title,
 #content b.entry-title,
 #content h2 {
+	line-height: 100%;
+	margin-top: 0.2em;
+	margin-bottom: 0.0em;
 	color: #4d3012;
 	text-shadow: none;
 	font-style: italic;
+}
+
+#content h1 a {
+	font-size: 1em;
 }
 
 #content p.entry-meta,
@@ -1019,6 +1026,7 @@ hr.header-section-divider {
 footer div.social-icons {
 	font-size: 3.0em;
 	padding-bottom: 0.25em;
+	vertical-align: top;
 }
 
 footer div.social-icons a,
@@ -1027,6 +1035,8 @@ footer div.social-icons a:hover,
 footer div.social-icons a:active {
 	color: #916b41;
 	color: #f4eee1;
+	line-height: 0.6em;
+	vertical-align: top;
 }
 
 hr.footer-section-divider {
