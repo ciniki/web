@@ -849,10 +849,9 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 				}
 				$page_content .= "</div>";
 			}
-			$page_content .= "</div>";
-			$page_content .= "</article>"
-				. "";
 		}
+		$page_content .= "</div>";
+		$page_content .= "</article>";
 	}
 
 	$content = '';

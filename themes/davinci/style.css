@@ -117,7 +117,7 @@ a img {
 
 #sub-menu-container {
 	background-color: transparent;
-	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#53ABCD', endColorstr='#136B8D');
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#b68f6c', endColorstr='#7d6042');
 }
 #main-menu-container {
 	text-align: center;
@@ -132,6 +132,7 @@ a img {
 	text-decoration: none;
 	font-style: italic;
 	color: #b6a37d;
+	color: #d6c39d;
 }
 #main-menu-container li a,
 #main-menu-container li a:visited,
@@ -145,16 +146,16 @@ a img {
 #sub-menu-container li.menu-item {
 	border: 2px solid #5d4022;
 	margin-bottom: 5px;
-	background-color: #136B8D;
+	background-color: #6d5032;
 	background-color: transparent;
 	border-radius: 10px;
 	font-size: 1.1em;
 	text-align: center;
 	text-shadow: 0 1px 1px rgba(0,0,0,0.5);
 	box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-	background: -webkit-gradient(linear, left top, left bottom, from(#53ABCD), to(#136B8D));
-	background: -moz-linear-gradient(top,  #53ABCD,  #136B8D);
-	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#53ABCD', endColorstr='#136B8D');
+	background: -webkit-gradient(linear, left top, left bottom, from(#b68f6c), to(#7d6042));
+	background: -moz-linear-gradient(top,  #b68f6c,  #7d6042);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#b68f6c', endColorstr='#7d6042');
 }
 
 #main-menu-container li.menu-item {
@@ -179,25 +180,26 @@ div.image-categories-thumbnail-wrap {
 	padding: 0px;
 	border: 0px solid #fff;
 	line-height: 0.7em;
-	background: #fff;
+	background: #ad9072;
+	border-radius: 5px;
 }
 
 div.image-categories-thumbnail {
 	margin: 0px;
 	padding: 8px;
-	border: 1px solid #ad9072;
 }
 
 div.image-categories-thumbnail img {
 	border: 0px none;
 	padding: 0px;
 	margin: 0px;
+	box-shadow: 1px 1px 5px #000;
+	border-radius: 4px;
 }
 
 span.image-categories-name {
 	display: inline-block;
-	background-color: #fff;
-	color: #333;
+	color: #3d2002;
 	margin: 0px;
 	font-size: 1.1em;
 	padding-top: 0.8em;
@@ -207,6 +209,9 @@ span.image-categories-name {
 	line-height: 1.2em;
 	vertical-align: top;
 	font-style: italic;
+	background: #ad9072;
+	border: 1px solid #ad9072;
+	border-radius: 5px;
 }
 
 #content span.image-categories-name a,
@@ -229,9 +234,13 @@ div.image-members-thumbnail,
 div.image-exhibitors-thumbnail,
 div.image-gallery-thumbnail {
 	border: 1px solid #ad9072;
+	border: 0px;
+	background: #ede0c8;
+	background: #ad9072;
 	display: inline-block;
 	margin: 4px;
-	padding: 7px;
+	padding: 9px;
+	border-radius: 5px;
 }
 
 div.additional-image-gallery div.image-gallery-thumbnail {
@@ -247,6 +256,8 @@ div.image-gallery-thumbnail img {
 	border: 0px;
 	padding: 0px;
 	margin: 0px;
+	border-radius: 4px;
+	box-shadow: 1px 1px 5px #000;
 }
 
 div.gallery-image {
@@ -254,10 +265,20 @@ div.gallery-image {
 }
 
 div.gallery-image-wrap {
-	border: 2px solid #ad9072;
+	background: #ad9072;
 	display: inline-block;
 	margin: 4px;
-	padding: 9px;
+	padding: 11px;
+	border-radius: 9px;
+}
+
+div.gallery-image-wrap img {
+	border-radius: 7px;
+	box-shadow: 2px 2px 6px #000;
+}
+
+#content div.gallery-image-wrap a.gallery-image-prev div,
+#content div.gallery-image-wrap a.gallery-image-next div {
 }
 
 div.gallery-image-details {
@@ -315,7 +336,7 @@ div.gallery-image-details span.image-awards {
 
 #content p.entry-meta,
 #content div.entry-meta {
-	color: #ad9072;
+	color: #8d7052;
 	letter-spacing: 0.04em;
 }
 
@@ -767,10 +788,12 @@ aside div.image {
 
 #content div.image {
 	display: inline-block;
-	border: 2px solid #ad9072;
 	height: auto;
-	padding: 9px;
+	padding: 12px;
 	line-height: 0em;
+	/*background: #ad9072; */
+	background: #ad9072;
+	border-radius: 5px;
 }
 
 aside div.image img {
@@ -778,6 +801,8 @@ aside div.image img {
 	width: 100%;
 	padding: 0px;
 	margin: 0px;
+	box-shadow: 1px 1px 5px #000; 
+	border-radius: 4px;
 }
 
 aside div.image-wrap div.image-caption {
@@ -875,7 +900,7 @@ div.word-cloud {
 }
 
 #content nav.content-nav a {
-	color: #439BBD;
+	color: #9d8062;
 	font-size: 1.0em;
 }
 
@@ -962,11 +987,12 @@ hr.header-section-divider {
 }
 
 .share-buttons-wrap span.share-buttons {
-	background-color: #EEE;
+	background-color: #ede0c8;
+	background-color: #cdc0a8;
 	padding: 1.05em 0.75em 0.45em 0.75em;
-	border: 1px solid #aaa;
+	border: 1px solid #ad9072;
 	border-radius: 10px;
-	text-shadow: 0px 0px 5px #fff;
+	text-shadow: 0px 0px 5px #ede0c8;
 }
 
 .share-buttons-wrap span.socialsymbol {
@@ -983,12 +1009,12 @@ hr.header-section-divider {
 .share-buttons-wrap span.social-pinterest { color: #CC2127; }
 .share-buttons-wrap span.social-googleplus { color: #DD4B39; }
 
-div.page-container > footer a,
-div.page-container > footer a:visited,
-div.page-container > footer a:hover,
-div.page-container > footer a:active {
+#page-container > footer a,
+#page-container > footer a:visited,
+#page-container > footer a:hover,
+#page-container > footer a:active {
 	text-decoration: none;
-	color: #eee;
+	color: #9d8062;
 }
 
 footer div.social-icons {
@@ -1008,16 +1034,14 @@ hr.footer-section-divider {
 	display: none;
 }
 
-div.page-container > footer {
+#page-container > footer {
 	margin-top: 1.5em;
-	background: #93734a;
-	background: rgba(125,96,66,0.7);
-	padding: 0.5em;
+	background: #ededc8;
+	background: rgba(200,200,200,0.7);
+	padding: 1em;
 	border: 2px solid #5d4022;
 	border-radius: 10px;
-	color: #d4cec1;
 	box-shadow: 0 2px 10px rgba(0,0,0,0.7);
-	text-shadow: 0 1px 1px #7d6042;
 }
 
 aside div.borderless {
@@ -1029,11 +1053,11 @@ aside div.borderless {
 
 #sub-menu-container {
 	background-color: #136B8D;
-	border: 2px solid #033B5D;
+	border: 2px solid #5d4022;
 	border-radius: 10px;
-	background: -webkit-gradient(linear, left top, left bottom, from(#53ABCD), to(#136B8D));
-	background: -moz-linear-gradient(top,  #53ABCD,  #136B8D);
-	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#53ABCD', endColorstr='#136B8D');
+	background: -webkit-gradient(linear, left top, left bottom, from(#b68f6c), to(#7d6042));
+	background: -moz-linear-gradient(top,  #b68f6c,  #7d6042);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#b68f6c', endColorstr='#7d6042');
 }
 #main-menu-container {
 	border: 0px;
