@@ -514,6 +514,14 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 			$business_name_err = "The business name you choose is restricted, please choose another.";
 			$err = 14;
 		}
+		if( !isset($_POST['email_address']) || $_POST['email_address'] == '' ) {
+			$email_address_err = 'You must specify your email address.';
+			$err = 15;
+		}
+		if( isset($_POST['email_address']) && preg_match("/\@.*\./", $_POST['email_address']) == 0 ) {
+			$email_address_err = 'Invalid email address.';
+			$err = 26;
+		}
 
 //		if( !isset($_POST['password']) || $_POST['password'] == '' || strlen($_POST['password']) < 8 ) {
 //			$password_err = 'yes';
