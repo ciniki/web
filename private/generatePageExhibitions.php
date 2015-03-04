@@ -399,11 +399,16 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 				&& isset($exhibition['location_details']['latitude']) && $exhibition['location_details']['latitude'] != 0
 				&& isset($exhibition['location_details']['longitude']) && $exhibition['location_details']['longitude'] != 0
 				) {
-				$toggle_map = "<a href='javascript: toggleMap();'>Click here for map</a>";
+				$toggle_map = "<a href='javascript: toggleMap();'>map</a>";
 			}
-			$page_content .= "<p>" . $exhibition['location_details']['name'] . '</br>' 
-				. $exhibition['location_address'] 
-				. $toggle_map
+			if( isset($exhibition['location_details']['url']) && $exhibition['location_details']['url'] != '' ) {
+				$page_content .= "<p><a target='_blank' href='" . $exhibition['location_details']['url'] . "'>" . $exhibition['location_details']['name'] . '</a></br>';
+				$toggle_map .= ($toggle_map!=''?', ':'') . "<a target='_blank' href='" . $exhibition['location_details']['url'] . "'>website</a>";
+			} else {
+				$page_content .= "<p>" . $exhibition['location_details']['name'] . '</br>';
+			}
+			$page_content .= $exhibition['location_address'] 
+				. ($toggle_map!=''?"(" . $toggle_map . ")":'')
 				. "</p>";
 		}
 
