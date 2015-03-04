@@ -791,12 +791,11 @@ aside div.image {
 	height: auto;
 	padding: 12px;
 	line-height: 0em;
-	/*background: #ad9072; */
 	background: #ad9072;
 	border-radius: 5px;
 }
 
-aside div.image img {
+#content div.image img {
 	line-height: 1px;
 	width: 100%;
 	padding: 0px;
