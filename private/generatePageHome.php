@@ -457,6 +457,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
+			$num_products = $rc['count'];
 			$page_content .= "<article class='page'>\n"
 				. "<header class='entry-title'><h1 class='entry-title'>";
 			if( isset($settings['page-home-products-latest-title']) 
@@ -469,7 +470,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 			$page_content .= "</h1></header>\n"
 				. $rc['content']
 				. "";
-			if( $num_posts > $list_size ) {
+			if( $num_products > $list_size ) {
 				$page_content .= "<div class='cilist-more'><a href='" . $ciniki['request']['base_url'] . "/products'>";
 				if( isset($settings['page-home-products-latest-more']) 
 					&& $settings['page-home-products-latest-more'] != '' ) {
