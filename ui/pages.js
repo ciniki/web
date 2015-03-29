@@ -309,11 +309,11 @@ function ciniki_web_pages() {
 						});
 				}
 			};
-			this[pn].pageDelete = function() {
+			this[pn].deletePage = function() {
 				var p = this;
 				if( confirm('Are you sure you want to delete this page? All files and images will also be removed from this page.') ) {
-					var rsp = M.api.getJSONCb('ciniki.web.pageDelete', {'business_id':M.curBusinessID, 
-						'page_id':this.page_id}, function(rsp) {
+					M.api.getJSONCb('ciniki.web.pageDelete', {'business_id':M.curBusinessID, 
+						'page_id':p.page_id}, function(rsp) {
 							if( rsp.stat != 'ok' ) {
 								M.api.err(rsp);
 								return false;
