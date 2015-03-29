@@ -29,7 +29,7 @@ function ciniki_web_pages() {
 			//
 			this[pn] = new M.panel('Page',
 				'ciniki_web_pages', pn,
-				'mc', 'medium mediumaside', 'sectioned', 'ciniki.web.pages.' + pn);
+				'mc', 'medium mediumaside', 'sectioned', 'ciniki.web.pages.edit');
 			this[pn].data = {};	
 			this[pn].stackedData = [];
 			this[pn].page_id = pid;
