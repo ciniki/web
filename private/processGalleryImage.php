@@ -54,6 +54,10 @@ function ciniki_web_processGalleryImage(&$ciniki, $settings, $business_id, $args
 		$next = $first;
 	}
 
+	if( $img == NULL ) {
+		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2326', 'msg'=>"I'm sorry, but we don't seem to have the image your requested."));
+	}
+
 	if( $img['title'] != '' ) {
 		$args['article_title'] .= ' - ' . $img['title'];
 	}
