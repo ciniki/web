@@ -156,8 +156,10 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 			$next = $first;
 		}
 
+		$article_title = '<a href="' . $ciniki['request']['base_url'] . "/events/$event_permalink\">" . $event['name'] . "</a>";
 		if( $img['title'] != '' ) {
 			$page_title = $event['name'] . ' - ' . $img['title'];
+			$article_title .= ' - ' . $img['title'];
 		} else {
 			$page_title = $event['name'];
 		}
@@ -191,7 +193,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 		$ciniki['request']['onresize'] = "gallery_resize_arrows();";
 		$ciniki['request']['onload'] = "scrollto_header();";
 		$page_content .= "<article class='page'>\n"
-			. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$page_title</h1></header>\n"
+			. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$article_title</h1></header>\n"
 			. "<div class='entry-content'>\n"
 			. "";
 		$page_content .= "<div id='gallery-image' class='gallery-image'>";
