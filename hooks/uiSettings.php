@@ -29,6 +29,21 @@ function ciniki_web_hooks_uiSettings($ciniki, $business_id, $args) {
 	}
 
 	//
+	// Get the sitename if no domain is specified
+	//
+	$strsql = "SELECT sitename FROM ciniki_businesses "
+		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+		. "";
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
+	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'business');
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+	if( isset($rc['business']) ) {
+		$settings['sitename'] = $rc['business']['sitename'];
+	}
+
+	//
 	// Get the settings
 	//
 /*	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_settings', 'business_id', 

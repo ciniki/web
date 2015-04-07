@@ -20,6 +20,7 @@ if( !file_exists($ciniki_root . '/ciniki-api.ini') ) {
 }
 $themes_root = "/ciniki-mods/web/themes";
 $themes_root_url = "/ciniki-web-themes";
+$preview = 'no';
 
 //
 // Initialize Ciniki
@@ -106,6 +107,16 @@ if( isset($_GET) && is_array($_GET) ) {
 	}
 }
 
+// 
+// Check if this is a preview request
+//
+if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'preview'  ) {
+	$preview = 'yes';
+	$uris = $ciniki['request']['uri_split'];
+	array_shift($uris);
+	$ciniki['request']['uri_split'] = $uris;
+}
+
 //
 // Determine which site and page should be displayed
 // FIXME: Check for redirects from sitename or domain names to primary domain name.
@@ -129,7 +140,7 @@ if( $ciniki['config']['ciniki.web']['master.domain'] != $_SERVER['HTTP_HOST'] ) 
 		$ciniki['request']['business_id'] = $rc['business_id'];
 		$ciniki['business']['uuid'] = $rc['business_uuid'];
 		$ciniki['business']['modules'] = $rc['modules'];
-		if( isset($rc['redirect']) && $rc['redirect'] != '' ) {
+		if( isset($rc['redirect']) && $rc['redirect'] != '' && $preview == 'no' ) {
 			Header('HTTP/1.1 301 Moved Permanently'); 
 			Header('Location: http://' . $rc['redirect'] . $_SERVER['REQUEST_URI']);
 		}
@@ -224,11 +235,11 @@ if( $ciniki['request']['business_id'] == 0 ) {
 		$ciniki['request']['business_id'] = $rc['business_id'];
 		$ciniki['business']['uuid'] = $rc['business_uuid'];
 		$ciniki['business']['modules'] = $rc['modules'];
-		$ciniki['request']['base_url'] = '/' . $ciniki['request']['uri_split'][0];
+		$ciniki['request']['base_url'] = ($preview=='yes'?'/preview/':'/') . $ciniki['request']['uri_split'][0];
 		$ciniki['request']['domain'] = $ciniki['config']['ciniki.web']['master.domain'];
 		$ciniki['request']['domain_base_url'] = 'http://' . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $ciniki['request']['uri_split'][0];
 		$ciniki['request']['ssl_domain_base_url'] = 'http://' . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $ciniki['request']['uri_split'][0];
-		if( isset($rc['redirect']) && $rc['redirect'] != '' ) {
+		if( isset($rc['redirect']) && $rc['redirect'] != '' && $preview == 'no' ) {
 			Header('HTTP/1.1 301 Moved Permanently'); 
 			Header('Location: http://' . $rc['redirect'] . preg_replace('/^\/[^\/]+/', '', $_SERVER['REQUEST_URI']));
 		}
