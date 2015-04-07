@@ -194,16 +194,16 @@ function ciniki_web_pageGet($ciniki) {
 	//
 	$parentlist = array();
 	if( isset($args['parentlist']) && $args['parentlist'] == 'yes' ) {
-		$strsql = "SELECT id, parent_id, title "
+		$strsql = "SELECT id, parent_id, title, permalink "
 			. "FROM ciniki_web_pages "
 			. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
 			. "ORDER BY parent_id, sequence, title ";
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
 		$rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.web', array(
 			array('container'=>'pages', 'fname'=>'parent_id',
-				'fields'=>array('parent_id', 'title')),
+				'fields'=>array('parent_id', 'title', 'permalink')),
 			array('container'=>'pages', 'fname'=>'id',
-				'fields'=>array('id', 'parent_id', 'title')),
+				'fields'=>array('id', 'parent_id', 'title', 'permalink')),
 			));
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
@@ -212,7 +212,7 @@ function ciniki_web_pageGet($ciniki) {
 		// Check if there are pages with no parent
 		//
 		if( isset($rc['pages'][0]['pages']) ) {
-			function buildParentList($parentlist, $depth, $cpage, $pages) {
+			function buildParentList($parentlist, $depth, $cpage, $pages, $permalink) {
 				// Check for children
 				if( $depth > 0 ) {
 					$indent = '';
@@ -222,19 +222,25 @@ function ciniki_web_pageGet($ciniki) {
 					$parentlist[] = array('page'=>array(
 						'id'=>$cpage['id'], 
 						'depth'=>$depth,
+						'permalink'=>$permalink . '/' . $cpage['permalink'],
 						'title'=>$indent . $cpage['title'],
 						));
 				}
 				if( isset($pages[$cpage['id']]['pages']) ) {
 					$child_pages = $pages[$cpage['id']]['pages'];
 					foreach($child_pages as $child_id => $child_page) {
-						$parentlist = buildParentList($parentlist, $depth+1, $child_page, $pages);
+						$parentlist = buildParentList($parentlist, $depth+1, $child_page, $pages, ($depth>0?$permalink . '/':'') . $cpage['permalink']);
 					}
 				}
 				return $parentlist;
 			}
 			$pages = $rc['pages'];
-			$parentlist = buildParentList(array(), 0, array('id'=>'0', 'title'=>''), $pages);
+			$parentlist = buildParentList(array(), 0, array('id'=>'0', 'title'=>'', 'permalink'=>''), $pages, '');
+			foreach($parentlist as $pl_page) {
+				if( $pl_page['page']['id'] == $args['page_id'] ) {
+					$page['full_permalink'] = $pl_page['page']['permalink'] . '/' . $page['permalink'];
+				}
+			}
 		}
 	}
 

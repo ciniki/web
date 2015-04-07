@@ -269,8 +269,9 @@ function ciniki_web_pages() {
 				}
 			};
 			this[pn].addButton('save', 'Save', 'M.ciniki_web_pages.'+pn+'.savePage();');
+			this[pn].addLeftButton('website', 'Preview', 'M.ciniki_web_pages.'+pn+'.previewPage();');
 			this[pn].addClose('Cancel');
-			this[pn].savePage = function() {
+			this[pn].savePage = function(preview) {
 				var p = this;
 				var flags = this.formValue('child_format');
 				if( this.formValue('_flags_1') == 'on' ) {
@@ -291,10 +292,18 @@ function ciniki_web_pages() {
 									M.api.err(rsp);
 									return false;
 								}
-								p.close();
+								if( preview != null ) {
+									M.showWebsite(preview);
+								} else {
+									p.close();
+								}
 							});
 					} else {
-						this.close();
+						if( preview != null ) {
+							M.showWebsite(preview);
+						} else {
+							this.close();
+						}
 					}
 				} else {
 					var c = this.serializeFormData('yes');
@@ -305,9 +314,17 @@ function ciniki_web_pages() {
 								M.api.err(rsp);
 								return false;
 							}
-							p.close();
+							if( preview != null ) {
+								M.showWebsite(preview);
+							} else {
+								p.close();
+							}
 						});
 				}
+			};
+			this[pn].previewPage = function() {
+				console.log(this.data.full_permalink);
+				this.savePage(this.data.full_permalink);
 			};
 			this[pn].deletePage = function() {
 				var p = this;
