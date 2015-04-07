@@ -163,6 +163,7 @@ function ciniki_web_main() {
 				return 'M.ciniki_web_main.showPage(\'M.ciniki_web_main.showMenu();\',\'' + d.page.name + '\');'; 
 			}
 		};
+		this.menu.addLeftButton('website', 'Preview', 'M.showWebsite(\'/\');');
 		this.menu.addClose('Back');
 
 		//
@@ -492,6 +493,7 @@ function ciniki_web_main() {
 		};
 		this.home.deleteImage = this.deleteImage;
 		this.home.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'home\');');
+		this.home.addLeftButton('website', 'Preview', 'M.showWebsite(\'/\');');
 		this.home.addClose('Cancel');
 
 		//
@@ -587,6 +589,7 @@ function ciniki_web_main() {
 		this.contact.fieldValue = this.fieldValue;
 		this.contact.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.contact.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'contact\');');
+		this.contact.addLeftButton('website', 'Preview', 'M.showWebsite(\'/contact\');');
 		this.contact.addClose('Cancel');
 		this.contact.lookupLatLong = function() {
 			M.startLoad();
@@ -634,6 +637,7 @@ function ciniki_web_main() {
 		this.features.fieldValue = this.fieldValue;
 		this.features.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.features.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'features\');');
+		this.features.addLeftButton('website', 'Preview', 'M.showWebsite(\'/features\');');
 		this.features.addClose('Cancel');
 
 		//
@@ -670,6 +674,7 @@ function ciniki_web_main() {
 		};
 		this.events.deleteImage = this.deleteImage;
 		this.events.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'events\');');
+		this.events.addLeftButton('website', 'Preview', 'M.showWebsite(\'/events\');');
 		this.events.addClose('Cancel');
 
 		//
@@ -704,6 +709,7 @@ function ciniki_web_main() {
 		};
 		this.tutorials.deleteImage = this.deleteImage;
 		this.tutorials.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'tutorials\');');
+		this.tutorials.addLeftButton('website', 'Preview', 'M.showWebsite(\'/tutorials\');');
 		this.tutorials.addClose('Cancel');
 
 		//
@@ -725,6 +731,7 @@ function ciniki_web_main() {
 		this.workshops.fieldValue = this.fieldValue;
 		this.workshops.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.workshops.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'workshops\');');
+		this.workshops.addLeftButton('website', 'Preview', 'M.showWebsite(\'/workshops\');');
 		this.workshops.addClose('Cancel');
 
 		//
@@ -745,6 +752,7 @@ function ciniki_web_main() {
 		this.friends.fieldValue = this.fieldValue;
 		this.friends.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.friends.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'friends\');');
+		this.friends.addLeftButton('website', 'Preview', 'M.showWebsite(\'/friends\');');
 		this.friends.addClose('Cancel');
 
 		//
@@ -767,6 +775,7 @@ function ciniki_web_main() {
 		this.directory.fieldValue = this.fieldValue;
 		this.directory.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.directory.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'directory\');');
+		this.directory.addLeftButton('website', 'Preview', 'M.showWebsite(\'/directory\');');
 		this.directory.addClose('Cancel');
 
 		//
@@ -790,6 +799,7 @@ function ciniki_web_main() {
 		this.links.fieldValue = this.fieldValue;
 		this.links.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.links.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'links\');');
+		this.links.addLeftButton('website', 'Preview', 'M.showWebsite(\'/links\');');
 		this.links.addClose('Cancel');
 
 		//
@@ -819,6 +829,7 @@ function ciniki_web_main() {
 		this.gallery.fieldValue = this.fieldValue;
 		this.gallery.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.gallery.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'gallery\');');
+		this.gallery.addLeftButton('website', 'Preview', 'M.showWebsite(\'/gallery\');');
 		this.gallery.addClose('Cancel');
 
 		//
@@ -846,6 +857,7 @@ function ciniki_web_main() {
 		this.products.fieldValue = this.fieldValue;
 		this.products.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.products.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'products\');');
+		this.products.addLeftButton('website', 'Preview', 'M.showWebsite(\'/products\');');
 		this.products.addClose('Cancel');
 
 		//
@@ -868,6 +880,7 @@ function ciniki_web_main() {
 		this.recipes.fieldValue = this.fieldValue;
 		this.recipes.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.recipes.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'recipes\');');
+		this.recipes.addLeftButton('website', 'Preview', 'M.showWebsite(\'/recipes\');');
 		this.recipes.addClose('Cancel');
 
 		//
@@ -890,6 +903,7 @@ function ciniki_web_main() {
 		this.blog.fieldValue = this.fieldValue;
 		this.blog.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.blog.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'recipes\');');
+		this.blog.addLeftButton('website', 'Preview', 'M.showWebsite(\'/blog\');');
 		this.blog.addClose('Cancel');
 
 		//
@@ -928,6 +942,7 @@ function ciniki_web_main() {
 		this.members.fieldValue = this.fieldValue;
 		this.members.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.members.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'members\');');
+		this.members.addLeftButton('website', 'Preview', 'M.showWebsite(\'/members\');');
 		this.members.addClose('Cancel');
 
 		//
@@ -965,6 +980,7 @@ function ciniki_web_main() {
 		this.dealers.fieldValue = this.fieldValue;
 		this.dealers.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.dealers.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'dealers\');');
+		this.dealers.addLeftButton('website', 'Preview', 'M.showWebsite(\'/dealers\');');
 		this.dealers.addClose('Cancel');
 
 		//
@@ -1002,6 +1018,7 @@ function ciniki_web_main() {
 		this.distributors.fieldValue = this.fieldValue;
 		this.distributors.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.distributors.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'distributors\');');
+		this.distributors.addLeftButton('website', 'Preview', 'M.showWebsite(\'/distributors\');');
 		this.distributors.addClose('Cancel');
 
 		//
@@ -1047,6 +1064,7 @@ function ciniki_web_main() {
 		this.membersonly.fieldValue = this.fieldValue;
 		this.membersonly.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.membersonly.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'membersonly\');');
+		this.membersonly.addLeftButton('website', 'Preview', 'M.showWebsite(\'/membersonly\');');
 		this.membersonly.addClose('Cancel');
 
 		//
@@ -1067,6 +1085,7 @@ function ciniki_web_main() {
 		this.sponsors.fieldValue = this.fieldValue;
 		this.sponsors.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.sponsors.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'sponsors\');');
+		this.sponsors.addLeftButton('website', 'Preview', 'M.showWebsite(\'/sponsors\');');
 		this.sponsors.addClose('Cancel');
 
 		//
@@ -1087,6 +1106,7 @@ function ciniki_web_main() {
 		this.newsletters.fieldValue = this.fieldValue;
 		this.newsletters.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.newsletters.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'newsletters\');');
+		this.newsletters.addLeftButton('website', 'Preview', 'M.showWebsite(\'/newsletter\');');
 		this.newsletters.addClose('Cancel');
 
 		//
@@ -1107,6 +1127,7 @@ function ciniki_web_main() {
 		this.surveys.fieldValue = this.fieldValue;
 		this.surveys.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.surveys.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'surveys\');');
+		this.surveys.addLeftButton('website', 'Preview', 'M.showWebsite(\'/surveys\');');
 		this.surveys.addClose('Cancel');
 
 		//
@@ -1138,6 +1159,7 @@ function ciniki_web_main() {
 		this.exhibitions.fieldValue = this.fieldValue;
 		this.exhibitions.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.exhibitions.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'exhibitions\');');
+		this.exhibitions.addLeftButton('website', 'Preview', 'M.showWebsite(\'/exhibitions\');');
 		this.exhibitions.addClose('Cancel');
 
 		//
@@ -1176,6 +1198,7 @@ function ciniki_web_main() {
 		};
 		this.artgalleryexhibitions.deleteImage = this.deleteImage;
 		this.artgalleryexhibitions.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'artgalleryexhibitions\');');
+		this.artgalleryexhibitions.addLeftButton('website', 'Preview', 'M.showWebsite(\'/exhibitions\');');
 		this.artgalleryexhibitions.addClose('Cancel');
 
 		//
@@ -1221,6 +1244,7 @@ function ciniki_web_main() {
 		};
 		this.courses.deleteImage = this.deleteImage;
 		this.courses.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'courses\');');
+		this.courses.addLeftButton('website', 'Preview', 'M.showWebsite(\'/courses\');');
 		this.courses.addClose('Cancel');
 
 		this.coursestype = new M.panel('Course Types',
@@ -1259,6 +1283,7 @@ function ciniki_web_main() {
 		this.classes.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.classes.deleteImage = this.deleteImage;
 		this.classes.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'classes\');');
+		this.classes.addLeftButton('website', 'Preview', 'M.showWebsite(\'/classes\');');
 		this.classes.addClose('Cancel');
 
 		//
@@ -1290,6 +1315,7 @@ function ciniki_web_main() {
 		};
 		this.coursesregistration.deleteImage = this.deleteImage;
 		this.coursesregistration.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'coursesregistration\');');
+		this.coursesregistration.addLeftButton('website', 'Preview', 'M.showWebsite(\'/coursesregistration\');');
 		this.coursesregistration.addClose('Cancel');
 
 		//
@@ -1311,6 +1337,7 @@ function ciniki_web_main() {
 		this.downloads.fieldValue = this.fieldValue;
 		this.downloads.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.downloads.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'downloads\');');
+		this.downloads.addLeftButton('website', 'Preview', 'M.showWebsite(\'/downloads\');');
 		this.downloads.addClose('Cancel');
 
 		//
