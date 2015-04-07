@@ -77,6 +77,7 @@ function ciniki_web_about() {
 		this.page.fieldValue = this.fieldValue;
 		this.page.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.page.addButton('save', 'Save', 'M.ciniki_web_about.savePage();');
+		this.page.addLeftButton('website', 'Preview', 'M.showWebsite(\'/about\');');
 		this.page.addClose('Cancel');
 	}
 

@@ -323,7 +323,6 @@ function ciniki_web_pages() {
 				}
 			};
 			this[pn].previewPage = function() {
-				console.log(this.data.full_permalink);
 				this.savePage(this.data.full_permalink);
 			};
 			this[pn].deletePage = function() {
