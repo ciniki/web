@@ -43,15 +43,6 @@ function ciniki_web_hooks_uiSettings($ciniki, $business_id, $args) {
 		$settings['sitename'] = $rc['business']['sitename'];
 	}
 
-	//
-	// Get the settings
-	//
-/*	$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_settings', 'business_id', 
-		$business_id, 'ciniki.web', 'settings', '');
-	if( $rc['stat'] == 'ok' && isset($rc['settings']) ) {
-		$settings = $rc['settings'];
-	}*/
-
 	return array('stat'=>'ok', 'settings'=>$settings);	
 }
 ?>
