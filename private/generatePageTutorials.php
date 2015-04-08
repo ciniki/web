@@ -74,6 +74,51 @@ function ciniki_web_generatePageTutorials($ciniki, $settings) {
 	$base_url = $ciniki['request']['base_url'] . '/tutorials';
 	$page_title = 'Tutorials';
 	$article_title = 'Tutorials';
+	
+	//
+	// If groups is enabled, then select all the groups for the top menu
+	//
+	$groups = array();
+	$cur_group = array('name'=>'', 'permalink'=>'');
+	$submenu = array();
+	if( ($ciniki['business']['modules']['ciniki.tutorials']['flags']&0x04) > 0 ) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'tutorials', 'web', 'groups');
+		$rc = ciniki_tutorials_web_groups($ciniki, $settings, $ciniki['request']['business_id'], array());
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		if( isset($rc['groups']) ) {
+			$groups = $rc['groups'];
+			// Build the submenu 
+			if( count($groups) > 1 ) {
+				$group_permalink = '';
+				if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
+					$group_permalink = $ciniki['request']['uri_split'][0];
+				}
+				foreach($groups as $group) {
+					if( $cur_group['name'] == '' ) {
+						$cur_group = $group;
+						if( $group_permalink == '' ) {
+							$group_permalink = $group['permalink'];
+						}
+					}
+					if( $group['permalink'] == $group_permalink ) {
+						$cur_group = $group;
+					}
+					$submenu[$group['permalink']] = array('name'=>$group['name'], 
+						'url'=>$ciniki['request']['base_url'] . '/tutorials/' . $group['permalink']);
+				}
+			} elseif( count($groups) == 1 ) {
+				$cur_group = array_pop($groups);
+			}
+		}	
+	}
+	if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == $cur_group['permalink'] ) {
+		array_shift($ciniki['request']['uri_split']);
+	}
+	if( $cur_group['permalink'] != '' ) {
+		$base_url .= "/" . $cur_group['permalink'];
+	}
 
 	//
 	// Generate the list of categories
@@ -82,28 +127,56 @@ function ciniki_web_generatePageTutorials($ciniki, $settings) {
 	if( (!isset($ciniki['request']['uri_split'][0]) || $ciniki['request']['uri_split'][0] == '') // nothing specified
 //		&& ($ciniki['business']['modules']['ciniki.tutorials']['flags']&0x02) > 0 // categories on
 		) {
+
+		//
+		// Get the group details if any
+		//
+		$page_details = array('image'=>0, 'image-caption'=>'', 'content'=>'');
+		if( isset($settings['page-tutorials-image']) ) {
+			$page_details['image'] = $settings['page-tutorials-image'];
+		}
+		if( isset($settings['page-tutorials-image-caption']) ) {
+			$page_details['image-caption'] = $settings['page-tutorials-image-caption'];
+		}
+		if( isset($settings['page-tutorials-content']) ) {
+			$page_details['content'] = $settings['page-tutorials-content'];
+		}
+		if( $cur_group['permalink'] != '' ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'tutorials', 'web', 'groupDetails');
+			$rc = ciniki_tutorials_web_groupDetails($ciniki, $settings, $ciniki['request']['business_id'], $cur_group['permalink']);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			if( isset($rc['group']) ) {
+				$page_details['image'] = (isset($rc['group']['image'])?$rc['group']['image']:'');
+				$page_details['image-caption'] = (isset($rc['group']['image-caption'])?$rc['group']['image-caption']:'');
+				$page_details['content'] = (isset($rc['group']['content'])?$rc['group']['content']:'');
+				$page_title .= " - " . $cur_group['name'];
+				$article_title .= " - " . $cur_group['name'];
+			}
+		}
 		$page_content .= "<article class='page tutorials'>\n"
 			. "<header class='entry-title'><h1 class='entry-title'>$article_title</h1></header>\n"
 			. "<div class='entry-content'>\n";
 
-		if( isset($settings['page-tutorials-image']) && $settings['page-tutorials-image'] != '' && $settings['page-tutorials-image'] != 0 ) {
+		if( isset($page_details['image']) && $page_details['image'] != '' && $page_details['image'] != 0 ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-			$rc = ciniki_web_getScaledImageURL($ciniki, $settings['page-tutorials-image'], 'original', '500', 0);
+			$rc = ciniki_web_getScaledImageURL($ciniki, $page_details['image'], 'original', '500', 0);
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
 			$page_content .= "<aside><div class='image-wrap'>"
 				. "<div class='image'><img title='' src='" . $rc['url'] . "' /></div>";
-			if( isset($settings['page-tutorials-image-caption']) && $settings['page-tutorials-image-caption'] != '' ) {
-				$page_content .= "<div class='image-caption'>" . $settings['page-tutorials-image-caption'] . "</div>";
+			if( isset($page_details['image-caption']) && $page_details['image-caption'] != '' ) {
+				$page_content .= "<div class='image-caption'>" . $page_details['image-caption'] . "</div>";
 			}
 			$page_content .= "</div></aside>";
 		}
 
 		$page_content .= "<div class='entry-content'>";
-		if( isset($settings['page-tutorials-content']) ) {
+		if( isset($page_details['content']) ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $settings['page-tutorials-content']);	
+			$rc = ciniki_web_processContent($ciniki, $page_details['content']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -114,7 +187,8 @@ function ciniki_web_generatePageTutorials($ciniki, $settings) {
 		// Load the list of tutorials to display
 		//
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'tutorials', 'web', 'tutorialList');
-		$rc = ciniki_tutorials_web_tutorialList($ciniki, $settings, $ciniki['request']['business_id'], array());
+		$rc = ciniki_tutorials_web_tutorialList($ciniki, $settings, $ciniki['request']['business_id'], 
+			array('group'=>$cur_group['permalink']));
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
@@ -392,11 +466,6 @@ function ciniki_web_generatePageTutorials($ciniki, $settings) {
 	else {
 		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2255', 'msg'=>"I'm sorry, but there are no tutorials available."));
 	}
-
-	//
-	// The submenu 
-	//
-	$submenu = array();
 
 	//
 	// Add the header
