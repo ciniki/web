@@ -36,6 +36,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		$content .= " - " . $title;
 	}
 	$content .= "</title>\n"
+		. "<link rel='icon' href='/ciniki-mods/core/ui/themes/default/img/favicon.png' type='image/png' />\n"
 		. "";
 
 	//
