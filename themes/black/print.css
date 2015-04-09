@@ -1,6 +1,7 @@
 /* Elements not to print */
 header div.signin { display: none; }
 header nav { display: none; }
+.cilist-more { display: none; }
 hr.header-section-divider { display: none; }
 body { color: #000; }
 #content p { max-width: 100%; }

@@ -427,9 +427,14 @@ function ciniki_web_generatePageTutorials($ciniki, $settings) {
 				}
 				$page_content .= $rc['content'];
 
-				$page_content .= "<p><b>Download Options</b><br/>"
-					. "<a target='_blank' href='" . $ciniki['request']['base_url'] . "/tutorials/download/single/" . $tutorial['permalink'] . ".pdf'>Printable PDF (1 step/page, large images)</a><br/>"
-					. "<a target='_blank' href='" . $ciniki['request']['base_url'] . "/tutorials/download/double/" . $tutorial['permalink'] . ".pdf'>Printable PDF (2 steps/page, smaller images)</a><br/>";
+				$page_content .= "<p><b>Printing Options</b><br/>"
+					. "If you would like to print this tutorial, you can print this page from your browser, or select one of the PDFs below. "
+					. "PDFs are formatted for printing on 8.5\" x 11\" paper. "
+					. "</p><p>"
+					. "<a target='_blank' href='" . $ciniki['request']['base_url'] . "/tutorials/download/single/" . $tutorial['permalink'] . ".pdf'>Large (1 step per page, large images, more paper)</a><br/>"
+					. "<a target='_blank' href='" . $ciniki['request']['base_url'] . "/tutorials/download/double/" . $tutorial['permalink'] . ".pdf'>Medium (2 steps per page, smaller images, less paper)</a><br/>"
+					. "<a target='_blank' href='" . $ciniki['request']['base_url'] . "/tutorials/download/triple/" . $tutorial['permalink'] . ".pdf'>Small (3 steps per page, small images, least paper)</a><br/>"
+					. "";
 			}
 
 //	print "<pre>" . print_r($tutorial, true) . "</pre>";
