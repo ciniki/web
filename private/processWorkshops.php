@@ -26,7 +26,7 @@ function ciniki_web_processWorkshops($ciniki, $settings, $workshops, $limit) {
 		if( $limit > 0 && $count >= $limit ) { break; }
 		$workshop_date = $workshop['start_month'];
 		$workshop_date .= " " . $workshop['start_day'];
-		if( $workshop['end_day'] != '' && $workshop['start_day'] != $workshop['end_day'] ) {
+		if( $workshop['end_day'] != '' && ($workshop['start_day'] != $workshop['end_day'] || $workshop['start_month'] != $workshop['end_month']) ) {
 			if( $workshop['end_month'] != '' && $workshop['end_month'] == $workshop['start_month'] ) {
 				$workshop_date .= " - " . $workshop['end_day'];
 			} else {

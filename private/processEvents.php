@@ -26,7 +26,7 @@ function ciniki_web_processEvents($ciniki, $settings, $events, $limit) {
 		if( $limit > 0 && $count >= $limit ) { break; }
 		$event_date = $event['start_month'];
 		$event_date .= " " . $event['start_day'];
-		if( $event['end_day'] != '' && $event['start_day'] != $event['end_day'] ) {
+		if( $event['end_day'] != '' && ($event['start_day'] != $event['end_day'] || $event['start_month'] != $event['end_month']) ) {
 			if( $event['end_month'] != '' && $event['end_month'] == $event['start_month'] ) {
 				$event_date .= " - " . $event['end_day'];
 			} else {
