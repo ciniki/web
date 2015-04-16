@@ -23,7 +23,7 @@ function ciniki_web_settings($ciniki, $business_id) {
 		return $rc;
 	}
 	if( !isset($rc['settings']) ) {
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'622', 'msg'=>'No settings found, site not configured.'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2319', 'msg'=>'No settings found, site not configured.'));
 	}
 	$settings = $rc['settings'];
 
