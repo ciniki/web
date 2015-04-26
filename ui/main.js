@@ -370,6 +370,10 @@ function ciniki_web_main() {
 				'page-home-gallery-slider-type':{'label':'Display Slide Show', 'type':'toggle', 'default':'no', 'toggles':{'no':'Off', 'random':'Random', 'latest':'Latest'}},
 				'page-home-gallery-slider-size':{'label':'Size', 'type':'select', 'default':'large', 'options':this.sliderSizeOptions},
 				}},
+			'_memberslideshow':{'label':'Members Slide Show', 'aside':'yes', 'fields':{
+				'page-home-membergallery-slider-type':{'label':'Display Slide Show', 'type':'toggle', 'default':'no', 'toggles':{'no':'Off', 'random':'Random', 'latest':'Latest'}},
+				'page-home-membergallery-slider-size':{'label':'Size', 'type':'select', 'default':'large', 'options':this.sliderSizeOptions},
+				}},
 			'_artcatalog':{'label':'Art Catalog', 'aside':'yes', 'fields':{
 				'page-home-gallery-latest':{'label':'Latest Work', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-home-gallery-latest-title':{'label':'Latest Work Title', 'type':'text', 'hint':'Latest Work'},
@@ -1518,6 +1522,7 @@ function ciniki_web_main() {
 			}
 		}
 		this.home.sections._slideshow.active=(M.curBusiness.modules['ciniki.artcatalog']!=null)?'yes':'no';
+		this.home.sections._memberslideshow.active=(M.curBusiness.modules['ciniki.customers']!=null&&(M.curBusiness.modules['ciniki.customers'].flags&0x02)>0)?'yes':'no';
 		this.home.sections._artcatalog.active=(M.curBusiness.modules['ciniki.artcatalog']!=null)?'yes':'no';
 		this.home.sections._gallery.active=(M.curBusiness.modules['ciniki.gallery']!=null)?'yes':'no';
 		this.home.sections._recipes.active=(M.curBusiness.modules['ciniki.recipes']!=null)?'yes':'no';
@@ -1751,6 +1756,9 @@ function ciniki_web_main() {
 		} else if( page == 'home' ) {
 			if( this[page].data != null && this[page].data['page-home-gallery-slider-size'] == null ) {
 				this[page].data['page-home-gallery-slider-size'] = 'xlarge';
+			}
+			if( this[page].data != null && this[page].data['page-home-membergallery-slider-size'] == null ) {
+				this[page].data['page-home-membergallery-slider-size'] = 'xlarge';
 			}
 			if( (M.curBusiness.modules['ciniki.web'].flags&0x02) > 0 ) {
 				this.home.sections._slider.active = 'yes';

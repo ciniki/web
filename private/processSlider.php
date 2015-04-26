@@ -123,12 +123,12 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 				$url_target = '_blank';
 			}
 			$image_list .= "<li style='${style}height:${slider_height}px;max-height:${slider_height}px;'>"
-				. "<a href='" . $image['url'] . "' target='$url_target' title='" . $image['caption'] . "'>"
-				. "<img title='' alt='" . $image['caption'] . "' src='" . $rc['url'] . "' /></a>"
+				. "<a href='" . $image['url'] . "' target='$url_target' title='" . (isset($image['caption'])?$image['caption']:'') . "'>"
+				. "<img title='' alt='" . (isset($image['caption'])?$image['caption']:'') . "' src='" . $rc['url'] . "' /></a>"
 				. "</li>";
 		} else {
 			$image_list .= "<li style='${style}height:${slider_height}px;max-height:${slider_height}px;'>"
-				. "<img title='' alt='" . $image['caption'] . "' src='" . $rc['url'] . "' />"
+				. "<img title='' alt='" . (isset($image['caption'])?$image['caption']:'') . "' src='" . $rc['url'] . "' />"
 				. "</li>";
 		}
 
