@@ -55,6 +55,11 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 	$content = '';
 	$page_content = '';
 	$page_title = 'Events';
+	$page_name = 'Events';	// Used in listings, tags etc, no always the same as page_title
+	if( isset($settings['page-events-title']) && $settings['page-events-title'] != '' ) {
+		$page_title = $settings['page-events-title'];
+		$page_name = $settings['page-events-title'];
+	}
 	$ciniki['response']['head']['og']['url'] = $ciniki['request']['domain_base_url'] . '/events';
 
 	//
@@ -388,7 +393,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processShareButtons');
 			$rc = ciniki_web_processShareButtons($ciniki, $settings, array(
 				'title'=>$page_title,
-				'tags'=>array('Events'),
+				'tags'=>array($page_name),
 				));
 			if( $rc['stat'] == 'ok' ) {
 				$page_content .= $rc['content'];
@@ -474,7 +479,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 			&& $tag_permalink == ''
 			) {
 			$page_content .= "<article class='page'>\n"
-				. "<header class='entry-title'><h1 class='entry-title'>Events</h1></header>\n"
+				. "<header class='entry-title'><h1 class='entry-title'>$page_name</h1></header>\n"
 				. "<div class='entry-content'>\n"
 				. "";
 			if( isset($settings['page-events-image']) && $settings['page-events-image'] != '' && $settings['page-events-image'] != 0 ) {
@@ -503,8 +508,8 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 
 			$page_content .= "</div></article>";
 		} else {
-			$upcoming_title = 'Upcoming Events';
-			$past_title = 'Past Events';
+			$upcoming_title = 'Upcoming ' . $page_name;
+			$past_title = 'Past '. $page_name;
 			if( $tag_permalink != '' ) {
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'tagDetails');
 				$rc = ciniki_events_web_tagDetails($ciniki, $settings, $ciniki['request']['business_id'], 

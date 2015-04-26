@@ -650,6 +650,7 @@ function ciniki_web_main() {
 		this.events.sections = {
 			'options':{'label':'Options', 'fields':{
 				'page-events-active':{'label':'Show events', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-events-title':{'label':'Title', 'hint':'Events', 'type':'text'},
 				'page-events-past':{'label':'Include past events', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-events-categories-display':{'label':'Display Categories', 'type':'toggle', 'default':'off', 'toggles':this.eventCategoryDisplay},
 				}},

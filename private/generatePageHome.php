@@ -559,7 +559,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 			$list_size = $settings['page-home-upcoming-artgalleryexhibitions-number'];
 		}
 		//
-		// Load and parse the events
+		// Load and parse the exhibitions
 		//
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'artgallery', 'web', 'exhibitionList');
 		$rc = ciniki_artgallery_web_exhibitionList($ciniki, $settings, $ciniki['request']['business_id'], 
@@ -735,7 +735,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 		// Load and parse the events
 		//
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'eventList');
-		$rc = ciniki_events_web_eventList($ciniki, $settings, $ciniki['request']['business_id'], 'upcoming', $list_size+1);
+		$rc = ciniki_events_web_eventList($ciniki, $settings, $ciniki['request']['business_id'], array('type'=>'upcoming', 'limit'=>$list_size+1));
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
@@ -749,8 +749,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 			}
 			$page_content .= "<article class='page page-home'>\n"
 				. "<header class='entry-title'><h1 class='entry-title'>";
-			if( isset($settings['page-home-upcoming-events-title']) 
-				&& $settings['page-home-upcoming-events-title'] != '' ) {
+			if( isset($settings['page-home-upcoming-events-title']) && $settings['page-home-upcoming-events-title'] != '' ) {
 				$page_content .= $settings['page-home-upcoming-events-title'];
 			} else {
 				$page_content .= "Upcoming Events";
@@ -760,9 +759,8 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 				. "";
 			if( $number_of_events > $list_size ) {
 				$page_content .= "<div class='cilist-more'><a href='" . $ciniki['request']['base_url'] . "/events'>";
-				if( isset($settings['page-home-latest-events-more']) 
-					&& $settings['page-home-latest-events-more'] != '' ) {
-					$page_content .= $settings['page-home-latest-events-more'];
+				if( isset($settings['page-home-upcoming-events-more']) && $settings['page-home-upcoming-events-more'] != '' ) {
+					$page_content .= $settings['page-home-upcoming-events-more'];
 				} else {
 					$page_content .= "... more events";
 				}

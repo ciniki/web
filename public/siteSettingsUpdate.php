@@ -299,6 +299,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-workshops-active',
 		'page-workshops-past',
 		'page-events-active',
+		'page-events-title',
 		'page-events-past',
 		'page-events-categories-display',
 		'page-events-image',
