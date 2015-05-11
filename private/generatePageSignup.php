@@ -387,30 +387,15 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 				. "To get started, you can login at <a style='" . $theme['a'] . "' href='$manager_url'>$manager_url</a> with your email address and the password shown below."
 				. "</p>\n\n<p style='" . $theme['p'] . "'>"
 				. "";
-//			if( preg_match('/ciniki\.web/', $signup['plan_modules']) ) {
-//				$weburl = "http://" . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $signup['sitename'] . "<br/>\n";
-//				$msg .= "Your view your website at: <a style='" . $theme['a'] . "' href='$weburl'>$weburl</a>";
-//			}
-
-//				. 'We hope you have a pleasant experience and we look forward to your feedback.  '
-//				. 'Please use the "Help" feature to ask a question, report a bug, or request a feature.  '
-//				. 'You may also find that other users have already provided advice and suggestions that may be helpful.  '
-//				. 'The Ciniki platform is a community effort and everybody benefits when you contribute.  '
-//				. 'Thanks for doing your part to improve small business management.'
 			$msg .= "<p style='" . $theme['p'] . "'>"
-//				. "Please save this e-mail for future reference.  We've included some important information and links below."
-//				. "</p>\n\n<p style='" . $theme['p'] . "'>"
 				. "Email: " . $signup['email_address'] . "<br/>\n"
 				. "Username: " . $signup['username'] . "<br/>\n"
 				. "Password: " . $signup['password'] . "<br/>\n"
 				. "Ciniki Manager: <a style='" . $theme['a'] . "' href='$manager_url'>$manager_url</a><br/>\n"
 				. "";
-//				. "Ciniki Manager: " . $ciniki['config']['ciniki.core']['manage.url'] . "<br/>\n";
 			if( preg_match('/ciniki\.web/', $signup['plan_modules']) ) {
 				$weburl = "http://" . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $signup['sitename'] . "<br/>\n";
 				$msg .= "Your website: <a style='" . $theme['a'] . "' href='$weburl'>$weburl</a><br/>\n";
-				
-//				$msg .= "Your website: http://" . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $signup['sitename'] . "<br/>\n";
 			}
 			$msg .= "</p>\n\n";
 
