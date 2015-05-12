@@ -60,10 +60,11 @@ function ciniki_web_about() {
 		this.page.data = {};
 		this.page.sections = {
 			'options':{'label':'', 'fields':{
-				'page-about-active':{'label':'Display About Page', 'type':'toggle', 'default':'no', 'toggles':this.activeToggles, 'editFn':'M.ciniki_web_about.editInfo(\'1\');'},
-				'page-about-title':{'label':'Title', 'type':'text', 'hint':'About'},
+				'page-about-active':{'label':'Display About Page', 'type':'toggle', 'default':'no', 'toggles':this.activeToggles}, //, 'editFn':'M.ciniki_web_about.editInfo(\'1\');'},
+				'page-about-title':{'label':'About Page Title', 'type':'text', 'hint':'About'},
 				}},
-			'subpages':{'label':'', 'active':'no', 'fields':{}},
+//			'subpages':{'label':'', 'active':'no', 'fields':{}},
+			'subpagesedit':{'label':'', 'active':'no', 'list':{}},
 			'_users':{'label':'Business Employees', 'visible':'no', 'active':'no', 'fields':{
 				}},
 			'_users_display':{'label':'', 'visible':'no', 'active':'no', 'fields':{
@@ -76,6 +77,8 @@ function ciniki_web_about() {
 		};
 		this.page.fieldValue = this.fieldValue;
 		this.page.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.page.listValue = function(s, i, d) { return d.label; }
+		this.page.listFn = function(s, i, d) { return d.fn; }
 		this.page.addButton('save', 'Save', 'M.ciniki_web_about.savePage();');
 		this.page.addLeftButton('website', 'Preview', 'M.showWebsite(\'/about\');');
 		this.page.addClose('Cancel');
@@ -116,50 +119,61 @@ function ciniki_web_about() {
 	this.showPageFinish = function(cb, page, rsp) {
 		var p = this.page;
 		var flags = M.curBusiness.modules['ciniki.info'].flags;
-		var options = {};
+//		var options = {};
 		var spgs = M.ciniki_web_about.subpages;
-		p.sections.subpages.active = 'no';
+		p.sections.subpagesedit.list = {'_':{'label':'Edit About Page', 'fn':'M.ciniki_web_about.editInfo(\'1\');'}};
+//		p.sections.subpages.active = 'no';
 		for(i in spgs) {
 			if( (spgs[i].flags&flags) > 0 ) {	
-				p.sections.subpages.active = 'yes';
-				options[i] = spgs[i].name;
-				p.sections.subpages.fields['page-about-' + spgs[i].permalink + '-active'] = {'label':spgs[i].name,
-					'editFn':'M.ciniki_web_about.editInfo(\'' + i + '\');',
+//				p.sections.subpages.active = 'yes';
+//				options[i] = spgs[i].name;
+//				p.sections.subpages.fields['page-about-' + spgs[i].permalink + '-active'] = {'label':spgs[i].name,
+//					'editFn':'M.ciniki_web_about.editInfo(\'' + i + '\');',
+//					'type':'toggle', 'default':'no', 'toggles':M.ciniki_web_about.activeToggles};
+				p.sections.options.fields['page-about-' + spgs[i].permalink + '-active'] = {'label':'Display ' + spgs[i].name + ' Page',
+//					'editFn':'M.ciniki_web_about.editInfo(\'' + i + '\');',
 					'type':'toggle', 'default':'no', 'toggles':M.ciniki_web_about.activeToggles};
+				p.sections.subpagesedit.active = 'yes';
+				p.sections.subpagesedit.list['page_' + i] = {'label':'Edit ' + spgs[i].name + ' Page', 'fn':'M.ciniki_web_about.editInfo(\'' + i + '\');'};
 			}
 		}
 
 		// Get the user associated with this business
 		this.page.sections._users.visible = 'no';
 		this.page.sections._users_display.visible = 'no';
-		M.api.getJSONCb('ciniki.web.businessUsers', {'business_id':M.curBusinessID}, function(rsp) {
-			if( rsp.stat != 'ok' ) {
-				M.api.err(rsp);
-				return false;
-			}
-			var p = M.ciniki_web_about.page;
-			if( (M.curBusiness.modules['ciniki.businesses'].flags&0x01) == 1 && rsp.users.length > 0 ) {
-				p.sections._users.visible = 'yes';
-				p.sections._users.active = 'yes';
-				p.sections._users.fields = {};
-				for(i in rsp.users) {
-					var u = rsp.users[i].user;
-					p.sections._users.fields['page-about-user-display-flags-' + u.id] = {
-						'label':u.firstname + ' ' + u.lastname, 'type':'flags', 'join':'yes', 'flags':M.ciniki_web_about.userFlags,
-						'editFn':'M.startApp(\'ciniki.businesses.users\',null,\'M.ciniki_web_about.page.show();\',\'mc\',{\'user_id\':\'' + u.id + '\'});',
-						};
+		if( (M.curBusiness.modules['ciniki.businesses'].flags&0x01) == 1 ) {
+			M.api.getJSONCb('ciniki.web.businessUsers', {'business_id':M.curBusinessID}, function(rsp) {
+				if( rsp.stat != 'ok' ) {
+					M.api.err(rsp);
+					return false;
 				}
-				p.sections._users_display.visible = 'yes';
-				p.sections._users_display.active = 'yes';
-			} else {
-				p.sections._users.visible = 'no';
-				p.sections._users_display.visible = 'no';
-				p.sections._users.active = 'no';
-				p.sections._users_display.active = 'no';
-			}
-			p.refresh();
-			p.show(cb);
-		});
+				var p = M.ciniki_web_about.page;
+				if( rsp.users.length > 0 ) {
+					p.sections._users.visible = 'yes';
+					p.sections._users.active = 'yes';
+					p.sections._users.fields = {};
+					for(i in rsp.users) {
+						var u = rsp.users[i].user;
+						p.sections._users.fields['page-about-user-display-flags-' + u.id] = {
+							'label':u.firstname + ' ' + u.lastname, 'type':'flags', 'join':'yes', 'flags':M.ciniki_web_about.userFlags,
+							'editFn':'M.startApp(\'ciniki.businesses.users\',null,\'M.ciniki_web_about.page.show();\',\'mc\',{\'user_id\':\'' + u.id + '\'});',
+							};
+					}
+					p.sections._users_display.visible = 'yes';
+					p.sections._users_display.active = 'yes';
+				} else {
+					p.sections._users.visible = 'no';
+					p.sections._users_display.visible = 'no';
+					p.sections._users.active = 'no';
+					p.sections._users_display.active = 'no';
+				}
+				p.refresh();
+				p.show(cb);
+			});
+		} else {
+			this.page.refresh();
+			this.page.show(cb);
+		}
 	};
 
 	this.editInfo = function(ct) {
