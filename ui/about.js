@@ -138,7 +138,7 @@ function ciniki_web_about() {
 				return false;
 			}
 			var p = M.ciniki_web_about.page;
-			if( rsp.users.length > 0 ) {
+			if( (M.curBusiness.modules['ciniki.businesses'].flags&0x01) == 1 && rsp.users.length > 0 ) {
 				p.sections._users.visible = 'yes';
 				p.sections._users.active = 'yes';
 				p.sections._users.fields = {};
