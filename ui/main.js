@@ -417,7 +417,7 @@ function ciniki_web_main() {
 			'_events':{'label':'Events', 'aside':'yes', 'active':'no', 'fields':{
 				'page-home-upcoming-events':{'label':'Display Upcoming', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-home-upcoming-events-title':{'label':'Title', 'active':'yes', 'type':'text', 'hint':'Upcoming Events'},
-				'page-home-upcoming-events-more':{'label':'Title', 'active':'yes', 'type':'text', 'hint':'... more events'},
+				'page-home-upcoming-events-more':{'label':'More', 'active':'yes', 'type':'text', 'hint':'... more events'},
 				'page-home-upcoming-events-number':{'label':'Number of Upcoming', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
 				}},
 			'_products':{'label':'Products', 'aside':'yes', 'active':'no', 'fields':{
