@@ -441,7 +441,7 @@ function ciniki_web_main() {
 				'page-home-image-url':{'label':'Link', 'type':'text'},
 				}},
 			'_title':{'label':'Title', 'fields':{
-				'page-home-title':{'label':'', 'hidelabel':'yes', 'hint':'Welcome', 'type':'text'},
+				'page-home-title':{'label':'', 'hidelabel':'yes', 'hint':'', 'type':'text'},
 				}},
 			'_content':{'label':'Welcome Message (optional)', 'fields':{
 				'page-home-content':{'label':'', 'hidelabel':'yes', 'hint':'', 'type':'textarea', 'size':'large'},
