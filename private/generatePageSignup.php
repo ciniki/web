@@ -421,6 +421,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 			$strsql = "SELECT user_id FROM ciniki_business_users "
 				. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_business_id']) . "' "
 				. "AND permission_group = 'owners' "
+				. "AND status = 10 "
 				. "";
 			$rc = ciniki_core_dbQueryList($ciniki, $strsql, 'ciniki.businesses', 'user_ids', 'user_id');
 			if( $rc['stat'] == 'ok' ) {
@@ -775,6 +776,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 			$strsql = "SELECT user_id FROM ciniki_business_users "
 				. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_business_id']) . "' "
 				. "AND permission_group = 'owners' "
+				. "AND status = 10 "
 				. "";
 			$rc = ciniki_core_dbQueryList($ciniki, $strsql, 'ciniki.businesses', 'user_ids', 'user_id');
 			if( $rc['stat'] == 'ok' ) {
