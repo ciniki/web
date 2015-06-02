@@ -659,6 +659,12 @@ elseif( $ciniki['request']['page'] == 'collection'
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageWebCollections.php');
 	$rc = ciniki_web_generatePageWebCollections($ciniki, $settings);
 } 
+// Property Rentals
+elseif( $ciniki['request']['page'] == 'properties' 
+	&& isset($settings['page-propertyrentals-active']) && $settings['page-propertyrentals-active'] == 'yes' ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePagePropertyRentals.php');
+	$rc = ciniki_web_generatePagePropertyRentals($ciniki, $settings, 'info');
+} 
 // Info
 elseif( $ciniki['request']['page'] == 'info' 
 	&& isset($settings['page-info-active']) && $settings['page-info-active'] == 'yes' ) {

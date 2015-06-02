@@ -626,6 +626,28 @@ function ciniki_web_main() {
 		//
 		// The options and information for the Features page
 		//
+		this.propertyrentals = new M.panel('Properties',
+			'ciniki_web_main', 'propertyrentals',
+			'mc', 'narrow', 'sectioned', 'ciniki.web.main.propertyrentals');
+		this.propertyrentals.data = {};
+		this.propertyrentals.sections = {
+			'options':{'label':'Options', 'fields':{
+				'page-propertyrentals-active':{'label':'Show Properties', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-propertyrentals-rented':{'label':'Show Rented', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'propertyrentals\');'},
+				}},
+		};
+		this.propertyrentals.fieldValue = this.fieldValue;
+		this.propertyrentals.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.propertyrentals.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'features\');');
+//		this.features.addLeftButton('website', 'Preview', 'M.showWebsite(\'/features\');');
+		this.propertyrentals.addClose('Cancel');
+
+		//
+		// The options and information for the Features page
+		//
 		this.features = new M.panel('Features',
 			'ciniki_web_main', 'features',
 			'mc', 'narrow', 'sectioned', 'ciniki.web.main.features');

@@ -88,6 +88,9 @@ function ciniki_web_siteSettings($ciniki) {
 		$pages['custom-004'] = array('display_name'=>'Custom Page', 'active'=>'no');
 		$pages['custom-005'] = array('display_name'=>'Custom Page', 'active'=>'no');
 	}
+	if( isset($modules['ciniki.propertyrentals']) ) {
+		$pages['propertyrentals'] = array('display_name'=>'Properties', 'active'=>'no');
+	}
 	if( isset($modules['ciniki.products']) ) {
 		$pages['products'] = array('display_name'=>'Products', 'active'=>'no');
 	}
@@ -261,6 +264,9 @@ function ciniki_web_siteSettings($ciniki) {
 //	}
 	if( isset($settings['page-contact-active']) && $settings['page-contact-active'] == 'yes' ) {
 		$pages['contact']['active'] = 'yes';
+	}
+	if( isset($settings['page-propertyrentals-active']) && $settings['page-propertyrentals-active'] == 'yes' ) {
+		$pages['propertyrentals']['active'] = 'yes';
 	}
 	if( isset($settings['page-tutorials-active']) && $settings['page-tutorials-active'] == 'yes' ) {
 		$pages['tutorials']['active'] = 'yes';

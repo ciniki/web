@@ -141,7 +141,7 @@ function ciniki_web_about() {
 		// Get the user associated with this business
 		this.page.sections._users.visible = 'no';
 		this.page.sections._users_display.visible = 'no';
-		if( (M.curBusiness.modules['ciniki.businesses'].flags&0x01) == 1 ) {
+		if( M.curBusiness.modules['ciniki.businesses']!=null && (M.curBusiness.modules['ciniki.businesses'].flags&0x01) == 1 ) {
 			M.api.getJSONCb('ciniki.web.businessUsers', {'business_id':M.curBusinessID}, function(rsp) {
 				if( rsp.stat != 'ok' ) {
 					M.api.err(rsp);

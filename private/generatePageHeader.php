@@ -569,6 +569,15 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		}
 		$content .= "</a></li>";
 	}
+	if( isset($settings['page-propertyrentals-active']) && $settings['page-propertyrentals-active'] == 'yes' ) {
+		$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='properties'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/properties'>";
+		if( isset($settings['page-propertyrentals-name']) && $settings['page-propertyrentals-name'] != '' ) {
+			$content .= $settings['page-propertyrentals-name'];
+		} else {
+			$content .= "Properties";
+		}
+		$content .= "</a></li>";
+	}
 	if( isset($settings['page-exhibitions-exhibition']) && $settings['page-exhibitions-exhibition'] > 0
 		&& isset($settings['page-exhibitions-tourexhibitors-active']) && $settings['page-exhibitions-tourexhibitors-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='exhibitions'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/tour'>";
