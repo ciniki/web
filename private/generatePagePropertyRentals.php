@@ -43,8 +43,8 @@ function ciniki_web_generatePagePropertyRentals($ciniki, $settings) {
 	// Check if we are to display an image, from the gallery, or latest images
 	//
 	if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' 
-		&& isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != 'available' 
-		&& isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != 'rented' 
+		&& $ciniki['request']['uri_split'][0] != 'available' 
+		&& $ciniki['request']['uri_split'][0] != 'rented' 
 		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] == 'gallery' 
 		&& isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' 
 		) {
@@ -160,6 +160,8 @@ function ciniki_web_generatePagePropertyRentals($ciniki, $settings) {
 	// Check if we are to display a property 
 	//
 	elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' 
+		&& $ciniki['request']['uri_split'][0] != 'available' 
+		&& $ciniki['request']['uri_split'][0] != 'rented' 
 		) {
 		$permalink = $ciniki['request']['uri_split'][0];
 		
@@ -170,18 +172,76 @@ function ciniki_web_generatePagePropertyRentals($ciniki, $settings) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processPage');
 
 		//
-		// Get the class information
+		// Get the property information
 		//
 		$rc = ciniki_propertyrentals_web_propertyDetails($ciniki, $settings, $ciniki['request']['business_id'], $permalink);
 		if( $rc['stat'] != 'ok' ) {
 			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2417', 'msg'=>"I'm sorry, but we can't find the property you requested.", $rc['err']));
 		}
 		$property = $rc['property'];
-		$rc = ciniki_web_processPage($ciniki, $settings, $base_url, $property, array());
-		if( $rc['stat'] != 'ok' ) {
-			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2417', 'msg'=>"I'm sorry, but we can't find the property you requested.", $rc['err']));
+
+		$page_content .= "<article class='page'>\n"
+			. "<header class='entry-title'><h1 class='entry-title'>" . $property['title'] . "</h1></header>\n"
+			. "";
+
+		if( isset($property['image_id']) && $property['image_id'] != '' && $property['image_id'] != 0 ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+			$rc = ciniki_web_getScaledImageURL($ciniki, $property['image_id'], 'original', '500', 0);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= "<aside><div class='image-wrap'>"
+				. "<div class='image'><img title='' src='" . $rc['url'] . "' /></div>";
+			if( isset($property['image_caption']) && $property['image_caption'] != '' ) {
+				$page_content .= "<div class='image-caption'>" . $property['image_caption'] . "</div>";
+			}
+			$page_content .= "</div></aside>";
 		}
-		$page_content .= $rc['content'];
+		$page_content .= "<div class='entry-content'>";
+
+		$details = '';
+		if( isset($property['sqft']) && $property['sqft'] > 0 ) {
+			$details .= "<b>Size</b>: " . $property['sqft'] . ' sqft<br/>';
+		}
+		if( isset($property['owner']) && $property['owner'] != '' ) {
+			$details .= "<b>Owner</b>: " . $property['owner'] . '<br/>';
+		}
+		if( $details != '' ) {
+			$page_content .= '<p>' . $details . '</p>';
+		}
+
+		if( isset($property['description']) ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+			$rc = ciniki_web_processContent($ciniki, $property['description']);	
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= $rc['content'];
+		}
+		if( isset($info['image_id']) && $info['image_id'] != '' && $info['image_id'] != 0 ) {
+			$page_content .= "<br style='clear:both;' />\n";
+		}
+		$page_content .= "</div>";	
+
+		//
+		// Display the additional images for the content
+		//
+		if( isset($property['images']) && count($property['images']) > 0 ) {
+			$page_content .= "<h2 style='clear:right;'>Gallery</h2>\n";
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
+			if( $property['permalink'] != '' ) {
+				$img_base_url = $base_url . '/' . $property['permalink'] . '/gallery';
+			} else {
+				$img_base_url = $base_url . '/gallery';
+			}
+			$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $property['images'], 125);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= "<div class='image-gallery'>" . $rc['content'] . "</div>";
+		}
+
+		$page_content .= "</article>";
 	}
 
 	//
@@ -298,6 +358,13 @@ function ciniki_web_generatePagePropertyRentals($ciniki, $settings) {
 		//
 		// Load any content for this page
 		//
+		$status = 10;
+		if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'rented' ) {
+			$status = 20;
+			$page_title = "Rented Properties";
+		} else {
+			$page_title = "Available Properties";
+		}
 /*		ciniki_core_loadMethod($ciniki, 'ciniki', 'propertyrentals', 'web', 'propertyList');
 		$rc = ciniki_classes_web_pageInfo($ciniki, $settings, 
 			$ciniki['request']['business_id'], 'introduction');
@@ -305,11 +372,11 @@ function ciniki_web_generatePagePropertyRentals($ciniki, $settings) {
 			return $rc;
 		}
 		$info = $rc['info'];
-
+*/
 		$page_content .= "<article class='page'>\n"
 			. "<header class='entry-title'><h1 class='entry-title'>" . $page_title . "</h1></header>\n"
 			. "";
-		if( isset($info['image_id']) && $info['image_id'] != '' && $info['image_id'] != 0 ) {
+/*		if( isset($info['image_id']) && $info['image_id'] != '' && $info['image_id'] != 0 ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 			$rc = ciniki_web_getScaledImageURL($ciniki, $info['image_id'], 'original', '500', 0);
 			if( $rc['stat'] != 'ok' ) {
@@ -336,25 +403,29 @@ function ciniki_web_generatePagePropertyRentals($ciniki, $settings) {
 			$page_content .= "<br style='clear:both;' />\n";
 		}
 */
+
 		//
 		// Get the list of classes
 		//
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'propertyrentals', 'web', 'properties');
-		$rc = ciniki_propertyrentals_web_properties($ciniki, $settings, $ciniki['request']['business_id'], array('status'=>'10'));
+		$rc = ciniki_propertyrentals_web_properties($ciniki, $settings, $ciniki['request']['business_id'], array('status'=>$status));
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
-		
 		$properties = $rc['list'];
+
+		$page_content .= "<div class='entry-content'>";
 
 		if( count($properties) > 0 ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
-			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $properties,
-				array('notitle'=>'yes'));
+			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, array('0'=>array('list'=>$properties)),
+				array('notitle'=>'no'));
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
 			$page_content .= $rc['content'];
+		} elseif( $status == 20 ) {
+			$page_content .= "<p>I'm sorry, but there are currently no rented properties.</p>";
 		} else {
 			$page_content .= "<p>I'm sorry, but there are currently no available rentals.</p>";
 		}
@@ -381,7 +452,10 @@ function ciniki_web_generatePagePropertyRentals($ciniki, $settings) {
 					'url'=>$base_url . '/category/' . $category['permalink']);
 			}
 		}
-	} 
+	} elseif( $settings['page-propertyrentals-rented'] == 'yes' ) {
+		$submenu['available'] = array('name'=>'Available', 'url'=>$base_url);
+		$submenu['rented'] = array('name'=>'Rented', 'url'=>$base_url . '/rented');
+	}
 		
 
 	//
