@@ -228,9 +228,8 @@ function ciniki_web_generatePageRecipes($ciniki, $settings) {
 		} else {
 			$page_content .= "<p>Currently no recipes.</p>";
 		}
-		$page_content .= "</article>"
-			. "</div>"
-			. "";
+		$page_content .= "</div>";
+		$page_content .= "</article>";
 	}
 
 	//
@@ -281,6 +280,7 @@ function ciniki_web_generatePageRecipes($ciniki, $settings) {
 		} else {
 			$page_content .= "<p>Currently no recipes.</p>";
 		}
+		$page_content .= "</div>";
 		$page_content .= "</article>";
 	}
 
@@ -377,6 +377,7 @@ function ciniki_web_generatePageRecipes($ciniki, $settings) {
 			}
 			$page_content .= "</div>";
 		}
+		$page_content .= "</div>";
 		$page_content .= "</article>";
 	}
 
