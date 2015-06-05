@@ -530,7 +530,6 @@ function ciniki_web_generatePageRecipes($ciniki, $settings) {
 		}
 
 		$page_content .= "</article>";
-		$page_content .= "</div>";
 
 		//
 		// Display the additional images for the recipe

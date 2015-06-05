@@ -306,7 +306,24 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 				$page_content .= $rc['content'];
 			}
 		}
-		$page_content .= "</div></div>";
+		$page_content .= "</div>";
+		$page_content .= "</div>";
+		
+		//
+		// Check for products to be displayed
+		//
+		if( isset($img['products']) && count($img['products']) > 0 ) {
+			$page_content .= "<h2>Products</h2>";
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
+			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, 
+				array('0'=>array('name'=>'', 'noimage'=>'/ciniki-web-layouts/default/img/noimage_240.png', 'list'=>$img['products'])), 
+				array());
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= $rc['content'];
+		}
+
 	} 
 
 	//
