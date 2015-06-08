@@ -314,6 +314,26 @@ function ciniki_web_main() {
 		this.google.addClose('Cancel');
 
 		//
+		// The panel to allow the user to setup google analytics
+		//
+		this.meta = new M.panel('Meta Settings',
+			'ciniki_web_main', 'meta',
+			'mc', 'narrow', 'sectioned', 'ciniki.web.main.meta');
+		this.meta.data = {'site-google-analytics-account':'0'};
+		this.meta.sections = {
+			'_meta':{'label':'Meta Settings', 'fields':{
+				'site-meta-robots':{'label':'Robots', 'type':'text'},
+				}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'meta\');'},
+				}},
+		};
+		this.meta.fieldValue = this.fieldValue;
+		this.meta.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.meta.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'meta\');');
+		this.meta.addClose('Cancel');
+
+		//
 		// The panel to allow the user to setup custom css
 		//
 		this.css = new M.panel('Custom CSS',
@@ -1634,6 +1654,7 @@ function ciniki_web_main() {
 			this.menu.sections.pages.aside = 'yes';
 			this.menu.sections.adm = {'label':'Admin Options', 'list':{
 				'google':{'label':'Google Settings', 'fn':'M.ciniki_web_main.showSiteSettings(\'M.ciniki_web_main.showMenu();\',\'google\');' },
+				'meta':{'label':'Meta Settings', 'fn':'M.ciniki_web_main.showSiteSettings(\'M.ciniki_web_main.showMenu();\',\'meta\');' },
 				'ssl':{'label':'SSL', 'fn':'M.ciniki_web_main.showSiteSettings(\'M.ciniki_web_main.showMenu();\',\'ssl\');'},
 				'css':{'label':'Custom CSS', 'fn':'M.ciniki_web_main.showSiteSettings(\'M.ciniki_web_main.showMenu();\',\'css\');'},
 				'layout':{'label':'Layout', 'fn':'M.ciniki_web_main.showLayouts(\'M.ciniki_web_main.showMenu();\');'},

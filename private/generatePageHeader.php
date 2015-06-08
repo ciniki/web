@@ -172,6 +172,12 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		$content .= '<meta name="google-site-verification" content="' . $settings['site-google-site-verification'] . '"/>' . "\n";
 	}
 
+	if( isset($settings['site-meta-robots']) 
+		&& $settings['site-meta-robots'] != '' 
+		) {
+		$content .= '<meta name="robots" content="' . $settings['site-meta-robots'] . '"/>' . "\n";
+	}
+
 	//
 	// Check for header Open Graph (Facebook) object information, for better linking into facebook
 	//

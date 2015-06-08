@@ -379,6 +379,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'site-google-site-verification',
 		'site-featured',
 		'site-custom-css',
+		'site-meta-robots',
 		'site-social-facebook-header-active',
 		'site-social-facebook-footer-active',
 		'site-social-twitter-header-active',
