@@ -349,13 +349,13 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 			return $rc;
 		}
 		
+		$images = $rc['images'];
 		if( isset($rc['album']) ) {
 			$album = $rc['album'];
 			$page_title = $album['name'];
 			$article_title = $album['name'];
 		} else {
 			$album = array('name'=>'', 'description'=>'');
-			$images = $rc['images'];
 			if( isset($rc['album_name']) && $rc['album_name'] != '' ) {
 				$page_title = $rc['album_name'];
 				$article_title = $rc['album_name'];
@@ -364,16 +364,24 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 		}
 
 		if( isset($album['description']) && $album['description'] != '' ) {
-			$page_content .= "<p class='wide'>" . $album['description'] . "</p>";
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+			$rc = ciniki_web_processContent($ciniki, $album['description'], 'wide');
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content = $rc['content'];
+//			$page_content .= "<p class='wide'>" . $album['description'] . "</p>";
 		}
 
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
-		$img_base_url = $base_url . "/$category_uri_component/" . $ciniki['request']['uri_split'][1];
-		$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $rc['images'], 125);
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
+		if( isset($images) ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
+			$img_base_url = $base_url . "/$category_uri_component/" . $ciniki['request']['uri_split'][1];
+			$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $images, 125);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= "<div class='image-gallery'>" . $rc['content'] . "</div>";
 		}
-		$page_content .= "<div class='image-gallery'>" . $rc['content'] . "</div>";
 	} 
 
 	//
