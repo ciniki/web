@@ -89,6 +89,7 @@ function ciniki_web_generatePageDirectory($ciniki, $settings) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processGalleryImage');
 		$rc = ciniki_web_processGalleryImage($ciniki, $settings, $ciniki['request']['business_id'], array(
 			'item'=>$entry,
+			'gallery_url'=>"$base_url/$entry_permalink/gallery",
 			'article_title'=>$article_title,
 			'image_permalink'=>$image_permalink,
 			));

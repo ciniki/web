@@ -97,10 +97,10 @@ function ciniki_web_processGalleryImage(&$ciniki, $settings, $business_id, $args
 	$content .= "<div id='gallery-image' class='gallery-image'>";
 	$content .= "<div id='gallery-image-wrap' class='gallery-image-wrap'>";
 	if( $prev != null ) {
-		$content .= "<a id='gallery-image-prev' class='gallery-image-prev' href='" . $prev['permalink'] . "'><div id='gallery-image-prev-img'></div></a>";
+		$content .= "<a id='gallery-image-prev' class='gallery-image-prev' href='" . (isset($args['gallery_url'])?$args['gallery_url'].'/':'') . $prev['permalink'] . "'><div id='gallery-image-prev-img'></div></a>";
 	}
 	if( $next != null ) {
-		$content .= "<a id='gallery-image-next' class='gallery-image-next' href='" . $next['permalink'] . "'><div id='gallery-image-next-img'></div></a>";
+		$content .= "<a id='gallery-image-next' class='gallery-image-next' href='" . (isset($args['gallery_url'])?$args['gallery_url'].'/':'') . $next['permalink'] . "'><div id='gallery-image-next-img'></div></a>";
 	}
 	$content .= "<img id='gallery-image-img' title='" . $img['title'] . "' alt='" . $img['title'] . "' src='" . $img_url . "' onload='javascript: gallery_resize_arrows();' />";
 	$content .= "</div><br/>"

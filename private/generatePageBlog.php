@@ -208,19 +208,21 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 
 		$ciniki['request']['onresize'] = "gallery_resize_arrows();";
 		$ciniki['request']['onload'] = "scrollto_header();";
+		$base_url .= "/" . $post['permalink'];
 		$page_content .= "<article class='page'>\n"
 			. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>"
-			. "<a href='" . $ciniki['request']['base_url'] . "/$blogtype/" . $post['permalink'] . "'>$page_title</a>"
+//			. "<a href='" . $ciniki['request']['base_url'] . "/$blogtype/" . $post['permalink'] . "'>$page_title</a>"
+			. "<a href='$base_url/" . $post['permalink'] . "'>$page_title</a>"
 			. "</h1></header>\n"
 			. "<div class='entry-content'>\n"
 			. "";
 		$page_content .= "<div id='gallery-image' class='gallery-image'>";
 		$page_content .= "<div id='gallery-image-wrap' class='gallery-image-wrap'>";
 		if( $prev != null ) {
-			$page_content .= "<a id='gallery-image-prev' class='gallery-image-prev' href='" . $prev['permalink'] . "'><div id='gallery-image-prev-img'></div></a>";
+			$page_content .= "<a id='gallery-image-prev' class='gallery-image-prev' href='$base_url/gallery/" . $prev['permalink'] . "'><div id='gallery-image-prev-img'></div></a>";
 		}
 		if( $next != null ) {
-			$page_content .= "<a id='gallery-image-next' class='gallery-image-next' href='" . $next['permalink'] . "'><div id='gallery-image-next-img'></div></a>";
+			$page_content .= "<a id='gallery-image-next' class='gallery-image-next' href='$base_url/gallery/" . $next['permalink'] . "'><div id='gallery-image-next-img'></div></a>";
 		}
 		$page_content .= "<img id='gallery-image-img' title='" . $img['title'] . "' alt='" . $img['title'] . "' src='" . $img_url . "' onload='javascript: gallery_resize_arrows();' />";
 		$page_content .= "</div><br/>"

@@ -12,7 +12,7 @@
 // Returns
 // -------
 //
-function ciniki_web_generatePageProducts($ciniki, $settings) {
+function ciniki_web_generatePageProducts(&$ciniki, $settings) {
 
 	//
 	// Check if a file was specified to be downloaded
@@ -171,6 +171,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processGalleryImage');
 			$rc = ciniki_web_processGalleryImage($ciniki, $settings, $ciniki['request']['business_id'],
 				array('item'=>$product,
+					'gallery_url'=>$ciniki['request']['base_url'] . '/products/product/' . $product_permalink . '/gallery',
 					'article_title'=>"<a href='" . $ciniki['request']['base_url'] 
 						. "/products/product/" . $product_permalink . "'>" . $product['name'] . "</a>",
 					'image_permalink'=>$image_permalink,
@@ -276,6 +277,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processGalleryImage');
 			$rc = ciniki_web_processGalleryImage($ciniki, $settings, $ciniki['request']['business_id'],
 				array('item'=>$product,
+					'gallery_url'=>$ciniki['request']['base_url'] . "/products/category/$category_permalink/product/$product_permalink/gallery",
 					'article_title'=>$article_title .= " - <a href='" . $ciniki['request']['base_url'] 
 						. "/products/category/$category_permalink/product/$product_permalink'>" . $product['name'] . "</a>",
 					'image_permalink'=>$image_permalink,
@@ -394,6 +396,7 @@ function ciniki_web_generatePageProducts($ciniki, $settings) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processGalleryImage');
 			$rc = ciniki_web_processGalleryImage($ciniki, $settings, $ciniki['request']['business_id'],
 				array('item'=>$product,
+					'gallery_url'=>$ciniki['request']['base_url'] . "/products/category/$category_permalink/$subcategory_permalink/product/$product_permalink/gallery",
 					'article_title'=>$article_title .= " - <a href='" . $ciniki['request']['base_url'] 
 						. "/products/category/$category_permalink/$subcategory_permalink"
 						. "/product/$product_permalink'>" . $product['name'] . "</a>",
