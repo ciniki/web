@@ -48,6 +48,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 		) {
 		$class_permalink = $ciniki['request']['uri_split'][1];
 		$image_permalink = $ciniki['request']['uri_split'][3];
+		$gallery_url = $ciniki['request']['base_url'] . "/classes/class/" . $class_permalink . "/gallery";
 
 		//
 		// Load the class details.
@@ -137,10 +138,10 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 		$page_content .= "<div id='gallery-image' class='gallery-image'>";
 		$page_content .= "<div id='gallery-image-wrap' class='gallery-image-wrap'>";
 		if( $prev != null ) {
-			$page_content .= "<a id='gallery-image-prev' class='gallery-image-prev' href='" . $prev['permalink'] . "'><div id='gallery-image-prev-img'></div></a>";
+			$page_content .= "<a id='gallery-image-prev' class='gallery-image-prev' href='$gallery_url/" . $prev['permalink'] . "'><div id='gallery-image-prev-img'></div></a>";
 		}
 		if( $next != null ) {
-			$page_content .= "<a id='gallery-image-next' class='gallery-image-next' href='" . $next['permalink'] . "'><div id='gallery-image-next-img'></div></a>";
+			$page_content .= "<a id='gallery-image-next' class='gallery-image-next' href='$gallery_url/" . $next['permalink'] . "'><div id='gallery-image-next-img'></div></a>";
 		}
 		$page_content .= "<img id='gallery-image-img' title='" . $img['title'] . "' alt='" . $img['title'] . "' src='" . $img_url . "' onload='javascript: gallery_resize_arrows();' />";
 		$page_content .= "</div><br/>"

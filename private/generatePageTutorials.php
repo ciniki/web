@@ -281,6 +281,7 @@ function ciniki_web_generatePageTutorials($ciniki, $settings) {
 			&& isset($tutorial['steps']) 
 			) {
 			$step_permalink = $ciniki['request']['uri_split'][2];
+			$gallery_url = $base_url . '/gallery';
 			$first = NULL;
 			$last = NULL;
 			$cur_step = NULL;
