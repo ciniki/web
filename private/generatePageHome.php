@@ -756,6 +756,58 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 	}
 
 	//
+	// List any upcoming film schedule
+	//
+	if( isset($ciniki['business']['modules']['ciniki.filmschedule']) 
+		&& isset($settings['page-filmschedule-active']) && $settings['page-filmschedule-active'] == 'yes' 
+		&& (!isset($settings['page-home-upcoming-filmschedule']) || $settings['page-home-upcoming-filmschedule'] == 'yes') 
+		) {
+		$list_size = 2;
+		if( isset($settings['page-home-upcoming-filmschedule-number']) 
+			&& $settings['page-home-upcoming-filmschedule-number'] > 0 ) {
+			$list_size = $settings['page-home-upcoming-filmschedule-number'];
+		}
+		//
+		// Load and parse the filmschedule
+		//
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'filmschedule', 'web', 'eventList');
+		$rc = ciniki_filmschedule_web_eventList($ciniki, $settings, $ciniki['request']['business_id'], array('type'=>'upcoming', 'limit'=>$list_size+1));
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$number_of_events = count($rc['events']);
+		if( isset($rc['events']) && $number_of_events > 0 ) {
+			$events = $rc['events'];
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processFilmScheduleEvents');
+			$rc = ciniki_web_processFilmScheduleEvents($ciniki, $settings, $events, $list_size);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= "<article class='page page-home'>\n"
+				. "<header class='entry-title'><h1 class='entry-title'>";
+			if( isset($settings['page-home-upcoming-filmschedule-title']) && $settings['page-home-upcoming-filmschedule-title'] != '' ) {
+				$page_content .= $settings['page-home-upcoming-filmschedule-title'];
+			} else {
+				$page_content .= "Upcoming Films";
+			}
+			$page_content .= "</h1></header>\n"
+				. $rc['content']
+				. "";
+			if( $number_of_events > $list_size ) {
+				$page_content .= "<div class='cilist-more'><a href='" . $ciniki['request']['base_url'] . "/schedule'>";
+				if( isset($settings['page-home-upcoming-filmschedule-more']) && $settings['page-home-upcoming-filmschedule-more'] != '' ) {
+					$page_content .= $settings['page-home-upcoming-filmschedule-more'];
+				} else {
+					$page_content .= "... more films";
+				}
+				$page_content .= "</a></div>";
+			}
+			$page_content .= "</article>\n"
+				. "";
+		}
+	}
+
+	//
 	// List any upcoming events
 	//
 	if( isset($ciniki['business']['modules']['ciniki.events']) 
