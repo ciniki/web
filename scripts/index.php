@@ -567,6 +567,12 @@ elseif( $ciniki['request']['page'] == 'events'
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageEvents.php');
 	$rc = ciniki_web_generatePageEvents($ciniki, $settings);
 } 
+// Film Schedule
+elseif( $ciniki['request']['page'] == 'schedule' 
+	&& isset($settings['page-filmschedule-active']) && $settings['page-filmschedule-active'] == 'yes' ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageFilmSchedule.php');
+	$rc = ciniki_web_generatePageFilmSchedule($ciniki, $settings);
+} 
 // Workshops
 elseif( $ciniki['request']['page'] == 'workshops' 
 	&& isset($settings['page-workshops-active']) && $settings['page-workshops-active'] == 'yes' ) {

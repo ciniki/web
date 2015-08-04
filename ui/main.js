@@ -434,6 +434,12 @@ function ciniki_web_main() {
 				'page-home-upcoming-workshops-more':{'label':'More', 'active':'yes', 'type':'text', 'hint':'... more workshops'},
 				'page-home-upcoming-workshops-number':{'label':'Number of Upcoming', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
 				}},
+			'_filmschedule':{'label':'Schedule', 'aside':'yes', 'active':'no', 'fields':{
+				'page-home-upcoming-filmschedule':{'label':'Display Upcoming', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+				'page-home-upcoming-filmschedule-title':{'label':'Title', 'active':'yes', 'type':'text', 'hint':'Upcoming Films'},
+				'page-home-upcoming-filmschedule-more':{'label':'More', 'active':'yes', 'type':'text', 'hint':'... more films'},
+				'page-home-upcoming-filmschedule-number':{'label':'Number of Upcoming', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
+				}},
 			'_events':{'label':'Events', 'aside':'yes', 'active':'no', 'fields':{
 				'page-home-upcoming-events':{'label':'Display Upcoming', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-home-upcoming-events-title':{'label':'Title', 'active':'yes', 'type':'text', 'hint':'Upcoming Events'},
@@ -723,6 +729,34 @@ function ciniki_web_main() {
 		this.events.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'events\');');
 //		this.events.addLeftButton('website', 'Preview', 'M.showWebsite(\'/events\');');
 		this.events.addClose('Cancel');
+
+		//
+		// The options and information for the Events page
+		//
+		this.filmschedule = new M.panel('Schedule',
+			'ciniki_web_main', 'filmschedule',
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.filmschedule');
+		this.filmschedule.data = {};
+		this.filmschedule.sections = {
+			'options':{'label':'Options', 'fields':{
+				'page-filmschedule-active':{'label':'Show Schedule', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-filmschedule-title':{'label':'Title', 'hint':'Schedule', 'type':'text'},
+				'page-filmschedule-past':{'label':'Include past Films', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'filmschedule\');'},
+				}},
+		};
+		this.filmschedule.fieldValue = this.fieldValue;
+		this.filmschedule.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.filmschedule.addDropImage = function(iid) {
+			this.setFieldValue('page-filmschedule-image', iid);
+			return true;
+		};
+		this.filmschedule.deleteImage = this.deleteImage;
+		this.filmschedule.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'filmschedule\');');
+//		this.filmschedule.addLeftButton('website', 'Preview', 'M.showWebsite(\'/filmschedule\');');
+		this.filmschedule.addClose('Cancel');
 
 		//
 		// The options and information for the Tutorials page
@@ -1569,6 +1603,7 @@ function ciniki_web_main() {
 		this.home.sections._gallery.active=(M.curBusiness.modules['ciniki.gallery']!=null)?'yes':'no';
 		this.home.sections._recipes.active=(M.curBusiness.modules['ciniki.recipes']!=null)?'yes':'no';
 		this.home.sections._events.active=(M.curBusiness.modules['ciniki.events']!=null)?'yes':'no';
+		this.home.sections._filmschedule.active=(M.curBusiness.modules['ciniki.filmschedule']!=null)?'yes':'no';
 		this.home.sections._products.active=(M.curBusiness.modules['ciniki.products']!=null)?'yes':'no';
 		this.home.sections._workshops.active = (M.curBusiness.modules['ciniki.workshops']!=null)?'yes':'no';
 		this.home.sections._artgalleryexhibitions.active=(M.curBusiness.modules['ciniki.artgallery']!=null)?'yes':'no';

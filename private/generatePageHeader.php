@@ -670,6 +670,13 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	if( isset($settings['page-recipes-active']) && $settings['page-recipes-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='events'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/recipes'>Recipes</a></li>";
 	}
+	if( isset($settings['page-filmschedule-active']) && $settings['page-filmschedule-active'] == 'yes' ) {
+		if( isset($settings['page-filmschedule-title']) && $settings['page-filmschedule-title'] != '' ) {
+			$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='filmschedule'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/schedule'>" . $settings['page-filmschedule-title'] . "</a></li>";
+		} else {
+			$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='filmschedule'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/schedule'>Schedule</a></li>";
+		}
+	}
 	if( isset($settings['page-events-active']) && $settings['page-events-active'] == 'yes' ) {
 		if( isset($settings['page-events-title']) && $settings['page-events-title'] != '' ) {
 			$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='events'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/events'>" . $settings['page-events-title'] . "</a></li>";
