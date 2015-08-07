@@ -287,6 +287,9 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 				. "";
 			$prev_sections = NULL;
 			foreach($sections as $cnum => $c) {
+				if( !isset($c['links']) ) {
+					continue;
+				}
 				if( $prev_sections != NULL ) {
 					$page_content .= "</td></tr>\n";
 				}
