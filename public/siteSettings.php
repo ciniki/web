@@ -247,6 +247,18 @@ function ciniki_web_siteSettings($ciniki) {
 	if( isset($settings['page-home-active']) && $settings['page-home-active'] == 'yes' ) {
 		$pages['home']['active'] = 'yes';
 	}
+	//
+	// Allow any about page to trigger it to be active in website menu
+	//
+	if( isset($settings['page-about-active']) && $settings['page-about-active'] == 'yes' ) {
+		$pages['about']['active'] = 'yes';
+	} elseif( isset($settings['page-about-artiststatement-active']) && $settings['page-about-artiststatement-active'] == 'yes' ) {
+		$pages['about']['active'] = 'yes';
+	} elseif( isset($settings['page-about-cv-active']) && $settings['page-about-cv-active'] == 'yes' ) {
+		$pages['about']['active'] = 'yes';
+	} elseif( isset($settings['page-about-awards-active']) && $settings['page-about-awards-active'] == 'yes' ) {
+		$pages['about']['active'] = 'yes';
+	}
 	if( isset($settings['page-about-active']) && $settings['page-about-active'] == 'yes' ) {
 		$pages['about']['active'] = 'yes';
 	}

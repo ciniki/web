@@ -448,7 +448,6 @@ if( isset($ciniki['config']['ciniki.core']['packages'])
 //
 // Process the request
 //
-
 // Master Home page
 if( $ciniki['request']['page'] == 'masterindex' && $settings['page-home-active'] == 'yes' ) {
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generateMasterIndex.php');
@@ -473,7 +472,11 @@ elseif( $ciniki['request']['page'] == 'home'
 } 
 // About
 elseif( $ciniki['request']['page'] == 'about' 
-	&& isset($settings['page-about-active']) && $settings['page-about-active'] == 'yes' ) {
+	&& (isset($settings['page-about-active']) && $settings['page-about-active'] == 'yes')
+		|| ( isset($ciniki['request']['uri_split'][0])
+			&& isset($settings['page-about-' . $ciniki['request']['uri_split'][0] . '-active'])
+			&& $settings['page-about-' . $ciniki['request']['uri_split'][0] . '-active'] == 'yes'
+		)) {
 //	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageAbout.php');
 //	$rc = ciniki_web_generatePageAbout($ciniki, $settings);
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageInfo.php');

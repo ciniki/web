@@ -525,6 +525,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		$hide_menu_class = ' compact-hidden';
 	}
 //	print "<pre>" .  print_r($ciniki['request'], true) . "</pre>";
+//	print "<pre>" .  print_r($settings, true) . "</pre>";
 	if( isset($settings['page-about-active']) && $settings['page-about-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='about'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/about'>";
 		if( isset($settings['page-about-title']) && $settings['page-about-title'] != '' ) {
@@ -532,6 +533,18 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		} else {
 			$content .= "About";
 		}
+		$content .= "</a></li>";
+	} elseif( isset($settings['page-about-artiststatement-active']) && $settings['page-about-artiststatement-active'] == 'yes' ) {
+		$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='about'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/about/artiststatement'>";
+		$content .= "Artist Statement";
+		$content .= "</a></li>";
+	} elseif( isset($settings['page-about-cv-active']) && $settings['page-about-cv-active'] == 'yes' ) {
+		$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='about'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/about/cv'>";
+		$content .= "CV";
+		$content .= "</a></li>";
+	} elseif( isset($settings['page-about-awards-active']) && $settings['page-about-awards-active'] == 'yes' ) {
+		$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='about'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/about/awards'>";
+		$content .= "Awards";
 		$content .= "</a></li>";
 	}
 

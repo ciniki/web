@@ -108,6 +108,7 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
 //	print_r($info_pages);
 //	print "</pre>";
 
+	$content_type = 0;
 	if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
 		$page_permalink = $ciniki['request']['uri_split'][0];
 		$page_settings_name = $ciniki['request']['uri_split'][0];
@@ -313,7 +314,6 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
 		&& isset($settings["page-$pg-" . $page_settings_name . '-active'])
 		&& $settings["page-$pg-" . $page_settings_name . '-active'] == 'yes' 
 		) {
-	
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'pageDetails');
 		$rc = ciniki_info_web_pageDetails($ciniki, $settings, $ciniki['request']['business_id'], 
 			array('permalink'=>$page_permalink));
@@ -518,6 +518,13 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
 		) {
 		$submenu['sponsorship'] = array('name'=>$info_pages['23']['title'], 
 			'url'=>$ciniki['request']['base_url'] . "/$pg/" . $info_pages['23']['permalink']);
+	}
+
+	//
+	// Check if no about page and only 1 item in submenu
+	//
+	if( (!isset($settings["page-about-active"]) || $settings["page-about-active"] == 'no') && count($submenu) == 1 ) {
+		$submenu = array();
 	}
 
 	//
