@@ -412,7 +412,6 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
 	}
 	if( isset($settings["page-$pg-cv-active"]) 
 		&& $settings["page-$pg-cv-active"] == 'yes' ) {
-		print_r($info_pages);
 		$submenu['cv'] = array('name'=>'CV', 
 			'url'=>$ciniki['request']['base_url'] . "/$pg/cv");
 		if( isset($info_pages['3']['title']) && $info_pages['3']['title'] != '' ) {
