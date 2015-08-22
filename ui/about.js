@@ -27,6 +27,7 @@ function ciniki_web_about() {
 		'22':{'name':'Staff', 'ui':'staff', 'permalink':'staff', 'flags':0x200000},
 		'23':{'name':'Sponsorship', 'ui':'sponsorship', 'permalink':'sponsorship', 'flags':0x400000},
 		'24':{'name':'Jobs', 'ui':'jobs', 'permalink':'jobs', 'flags':0x800000},
+		'25':{'name':'Extended Bio', 'ui':'extendedbio', 'permalink':'extended-bio', 'flags':0x01000000},
 	};
 	
 	this.userFlags = {

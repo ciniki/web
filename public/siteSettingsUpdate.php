@@ -164,6 +164,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-about-staff-active',
 		'page-about-sponsorship-active',
 		'page-about-jobs-active',
+		'page-about-extended-bio-active',
 		'page-info-active',
 		'page-info-title',
 		'page-info-defaultcontenttype',

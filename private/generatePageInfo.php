@@ -160,6 +160,7 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
 			case 22: $page_settings_name = 'staff'; break;
 			case 23: $page_settings_name = 'sponsorship'; break;
 			case 24: $page_settings_name = 'jobs'; break;
+			case 25: $page_settings_name = 'extended-bio'; break;
 		}
 	}
 
@@ -403,10 +404,23 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
 		$submenu['artiststatement'] = array('name'=>'Artist Statement', 
 			'url'=>$ciniki['request']['base_url'] . "/$pg/artiststatement");
 	}
+	if( isset($settings["page-$pg-extended-bio-active"]) && $settings["page-$pg-extended-bio-active"] == 'yes' 
+		&& isset($info_pages['25'])
+		) {
+		$submenu['extended-bio'] = array('name'=>$info_pages['25']['title'], 
+			'url'=>$ciniki['request']['base_url'] . "/$pg/" . $info_pages['25']['permalink']);
+	}
 	if( isset($settings["page-$pg-cv-active"]) 
 		&& $settings["page-$pg-cv-active"] == 'yes' ) {
+		print_r($info_pages);
 		$submenu['cv'] = array('name'=>'CV', 
 			'url'=>$ciniki['request']['base_url'] . "/$pg/cv");
+		if( isset($info_pages['3']['title']) && $info_pages['3']['title'] != '' ) {
+			$submenu['cv']['name'] = $info_pages['3']['title'];
+		}
+		if( isset($info_pages['3']['permalink']) && $info_pages['3']['permalink'] != '' ) {
+			$submenu['cv']['url'] = $ciniki['request']['base_url'] . "/$pg/" . $info_pages['3']['permalink'];
+		}
 	}
 	if( isset($settings["page-$pg-awards-active"]) 
 		&& $settings["page-$pg-awards-active"] == 'yes' ) {
