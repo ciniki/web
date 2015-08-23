@@ -703,7 +703,8 @@ function ciniki_web_main() {
 			'options':{'label':'Options', 'fields':{
 				'page-events-active':{'label':'Show events', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-events-title':{'label':'Title', 'hint':'Events', 'type':'text'},
-				'page-events-past':{'label':'Include past events', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-events-past':{'label':'Include past events', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'onchange':'M.ciniki_web_main.events.updateVisible'},
+				'page-events-upcoming-empty-hide':{'label':'Hide empty upcoming', 'visible':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles, 'visible':function() {return M.ciniki_web_main.events.data['page-events-past']}},
 				'page-events-categories-display':{'label':'Display Categories', 'type':'toggle', 'default':'off', 'toggles':this.eventCategoryDisplay},
 				}},
 			'_image':{'label':'Image', 'active':'no', 'fields':{
@@ -718,6 +719,15 @@ function ciniki_web_main() {
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'events\');'},
 				}},
+		};
+		this.events.updateVisible = function(e, s, i) {
+			if( i == 'page-events-past' ) {
+				if( this.formFieldValue(this.sections[s].fields[i], i) == 'no' ) {
+					M.gE(this.panelUID + '_page-events-upcoming-empty-hide').parentNode.parentNode.style.display = 'none';
+				} else {
+					M.gE(this.panelUID + '_page-events-upcoming-empty-hide').parentNode.parentNode.style.display = '';
+				}
+			}
 		};
 		this.events.fieldValue = this.fieldValue;
 		this.events.fieldHistoryArgs = this.fieldHistoryArgs;

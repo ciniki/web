@@ -511,6 +511,24 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 		} else {
 			$upcoming_title = 'Upcoming ' . $page_name;
 			$past_title = 'Past '. $page_name;
+			//
+			// Get the events
+			//
+			$rc = ciniki_events_web_eventList($ciniki, $settings, $ciniki['request']['business_id'], 
+				array('type'=>'upcoming', 'tag_type'=>$tag_type, 'tag_permalink'=>$tag_permalink));
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$events = $rc['events'];
+			//
+			// Check if the upcoming event list should be hidden
+			//
+			$hide_upcoming = 'no';	
+			if( count($events) == 0 && isset($settings['page-events-upcoming-empty-hide']) && $settings['page-events-upcoming-empty-hide'] == 'yes' 
+				 && isset($settings['page-events-past']) && $settings['page-events-past'] == 'yes' ) {
+				 $hide_upcoming = 'yes';
+			}
+
 			if( $tag_permalink != '' ) {
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'tagDetails');
 				$rc = ciniki_events_web_tagDetails($ciniki, $settings, $ciniki['request']['business_id'], 
@@ -583,25 +601,22 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 				}
 			} else {
 				$ciniki['response']['head']['og']['description'] = strip_tags($upcoming_title);
-				$page_content .= "<article class='page'>\n"
-					. "<header class='entry-title'><h1 class='entry-title'>" . $upcoming_title . "</h1></header>\n"
-					. "<div class='entry-content'>\n"
-					. "";
+				$page_content .= "<article class='page'>\n";
+				//
+				// Check if upcoming should be hidden when past visible
+				//
+				if( $hide_upcoming == 'no' ) {
+					$page_content .= "<header class='entry-title'><h1 class='entry-title'>" . $upcoming_title . "</h1></header>\n";
+				}
 				$upcoming_title = '';
-			}
-
-			$rc = ciniki_events_web_eventList($ciniki, $settings, $ciniki['request']['business_id'], 
-				array('type'=>'upcoming', 'tag_type'=>$tag_type, 'tag_permalink'=>$tag_permalink));
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
-			}
-			$events = $rc['events'];
-
-			if( isset($upcoming_title) && $upcoming_title != '' ) {
-				$page_content .= "<h2>" . $upcoming_title . "</h2>";
+				$page_content .= "<div class='entry-content'>\n";
 			}
 
 			if( count($events) > 0 ) {
+				if( isset($upcoming_title) && $upcoming_title != '' ) {
+					$page_content .= "<h2>" . $upcoming_title . "</h2>";
+				}
+
 				//
 				// Check events to find an image if there isn't a logo
 				//
@@ -623,7 +638,12 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 					return $rc;
 				}
 				$page_content .= $rc['content'];
-			} else {
+			} elseif( !isset($hide_upcoming) || $hide_upcoming != 'yes' ) {
+//			!isset($settings['page-events-upcoming-empty-hide']) 
+//				|| ($settings['page-events-upcoming-empty-hide'] != 'yes' && isset($settings['page-events-past']) && $settings['page-events-past'] == 'yes') ) {
+				if( isset($upcoming_title) && $upcoming_title != '' ) {
+					$page_content .= "<h2>" . $upcoming_title . "</h2>";
+				}
 				$page_content .= "<p>Currently no events.</p>";
 			}
 
@@ -643,8 +663,12 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 				$events = $rc['events'];
 
 				if( isset($past_title) && $past_title != '' ) {
-					$page_content .= "<br style='clear:both;'/>\n";
-					$page_content .= "<h2>" . $past_title . "</h2>\n";
+					if( isset($hide_upcoming) && $hide_upcoming == 'yes' ) {
+						$page_content .= "<header class='entry-title'><h1 class='entry-title'>" . $past_title . "</h1></header>\n";
+					} else {
+						$page_content .= "<br style='clear:both;'/>\n";
+						$page_content .= "<h2>" . $past_title . "</h2>\n";
+					}
 				}
 
 				if( count($events) > 0 ) {
