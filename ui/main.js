@@ -704,7 +704,7 @@ function ciniki_web_main() {
 				'page-events-active':{'label':'Show events', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-events-title':{'label':'Title', 'hint':'Events', 'type':'text'},
 				'page-events-past':{'label':'Include past events', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'onchange':'M.ciniki_web_main.events.updateVisible'},
-				'page-events-upcoming-empty-hide':{'label':'Hide empty upcoming', 'visible':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles, 'visible':function() {return M.ciniki_web_main.events.data['page-events-past']}},
+				'page-events-upcoming-empty-hide':{'label':'Hide empty upcoming', 'visible':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'visible':function() {return M.ciniki_web_main.events.data['page-events-past']}},
 				'page-events-categories-display':{'label':'Display Categories', 'type':'toggle', 'default':'off', 'toggles':this.eventCategoryDisplay},
 				}},
 			'_image':{'label':'Image', 'active':'no', 'fields':{
@@ -1886,6 +1886,15 @@ function ciniki_web_main() {
 //				this.home.sections.options.fields['page-home-gallery-random-title'].active = 'no';
 //			}
 //			this.home.sections.options.fields['page-home-upcoming-artgalleryexhibitions'].active = (M.curBusiness.modules['ciniki.artgallery']!=null)?'yes':'no';
+			this[page].refresh();
+			this[page].show(cb);
+		} else if( page == 'events' ) {
+			console.log(this[page].data);
+			if( this[page].data['page-events-past'] == 'yes' ) {
+				this[page].sections.options.fields['page-events-upcoming-empty-hide'].visible = 'yes';
+			} else {
+				this[page].sections.options.fields['page-events-upcoming-empty-hide'].visible = 'no';
+			}
 			this[page].refresh();
 			this[page].show(cb);
 		} else if( page == 'gallery' ) {
