@@ -182,6 +182,7 @@ if( $ciniki['request']['business_id'] == 0 ) {
 		|| $ciniki['request']['uri_split'][0] == 'recipes'
 		|| $ciniki['request']['uri_split'][0] == 'blog'
 		|| $ciniki['request']['uri_split'][0] == 'gallery'
+		|| $ciniki['request']['uri_split'][0] == 'writings'
 		|| $ciniki['request']['uri_split'][0] == 'downloads'
 		|| $ciniki['request']['uri_split'][0] == 'faq'
 		|| $ciniki['request']['uri_split'][0] == 'directory'
@@ -387,6 +388,8 @@ if( isset($ciniki['request']['page']) && $ciniki['request']['page'] == 'home'
 		$ciniki['request']['page'] = 'blog';
 	} elseif( isset($settings['page-gallery-active']) && $settings['page-gallery-active'] == 'yes' ) {
 		$ciniki['request']['page'] = 'gallery';
+	} elseif( isset($settings['page-writings-active']) && $settings['page-writings-active'] == 'yes' ) {
+		$ciniki['request']['page'] = 'writings';
 	} elseif( isset($settings['page-contact-active']) && $settings['page-contact-active'] == 'yes' ) {
 		$ciniki['request']['page'] = 'contact';
 	} elseif( isset($settings['page-events-active']) && $settings['page-events-active'] == 'yes' ) {
@@ -563,6 +566,12 @@ elseif( $ciniki['request']['page'] == 'gallery'
 	&& isset($settings['page-gallery-active']) && $settings['page-gallery-active'] == 'yes' ) {
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageGallery.php');
 	$rc = ciniki_web_generatePageGallery($ciniki, $settings);
+}
+// Writings
+elseif( $ciniki['request']['page'] == 'writings' 
+	&& isset($settings['page-writings-active']) && $settings['page-writings-active'] == 'yes' ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageWritings.php');
+	$rc = ciniki_web_generatePageWritings($ciniki, $settings);
 }
 // Events
 elseif( $ciniki['request']['page'] == 'events' 

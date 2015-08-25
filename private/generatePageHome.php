@@ -68,7 +68,8 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 		&& isset($settings['page-gallery-active']) && $settings['page-gallery-active'] == 'yes' 
 		&& isset($settings['page-home-gallery-slider-type']) 
 		&& ($settings['page-home-gallery-slider-type'] == 'latest'
-			|| $settings['page-home-gallery-slider-type'] == 'random') 
+			|| $settings['page-home-gallery-slider-type'] == 'random' 
+			|| $settings['page-home-gallery-slider-type'] == 'forsale') 
 		) {
 
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'artcatalog', 'web', 'sliderImages');

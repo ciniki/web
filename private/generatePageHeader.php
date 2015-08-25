@@ -659,6 +659,33 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 			$content .= "</a></li>";
 		}
 	}
+	if( isset($settings['page-writings-active']) && $settings['page-writings-active'] == 'yes' ) {
+		if( isset($settings['page-writings-catalog-split']) && $settings['page-writings-catalog-split'] == 'yes' ) {
+			if( isset($settings['page-writings-catalog-books']) 
+				&& $settings['page-writings-catalog-books'] == 'yes' ) {
+				$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='writings'?' menu-item-selected':'') . "'>"
+					. "<a href='" . $ciniki['request']['base_url'] . "/writings/books'>Books</a></li>";
+			} 
+			if( isset($settings['page-writings-catalog-shortstories']) 
+				&& $settings['page-writings-catalog-shortstories'] == 'yes' ) {
+				$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='writings'?' menu-item-selected':'') . "'>"
+					. "<a href='" . $ciniki['request']['base_url'] . "/writings/shortstories'>Short Stories</a></li>";
+			} 
+			if( isset($settings['page-writings-catalog-articles']) 
+				&& $settings['page-writings-catalog-articles'] == 'yes' ) {
+				$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='writings'?' menu-item-selected':'') . "'>"
+					. "<a href='" . $ciniki['request']['base_url'] . "/writings/shortstories'>Articles</a></li>";
+			} 
+		} else {
+			$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='writings'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/writings'>";
+			if( isset($settings['page-writings-name']) && $settings['page-writings-name'] != '' ) {
+				$content .= $settings['page-writings-name'];
+			} else {
+				$content .= "Writings";
+			}
+			$content .= "</a></li>";
+		}
+	}
 	if( isset($settings['page-courses-active']) && $settings['page-courses-active'] == 'yes' ) {
 		$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='courses'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/courses'>";
 		if( isset($settings['page-courses-name']) && $settings['page-courses-name'] != '' ) {

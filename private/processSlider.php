@@ -132,6 +132,7 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 				. "</li>";
 		}
 
+		// FIXME: Issue with javascript onclick not working in iFrame on Chrome. Aug 24, 2015
 		$pager_list .= "<a rel='$count' class='" . ($count==0?'active':'') . "' onclick='javascript: sliders[0].goTo($count);'>" . ($count + 1) . "</a>";
 
 		$count++;

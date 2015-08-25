@@ -387,7 +387,7 @@ function ciniki_web_main() {
 				'page-home-active':{'label':'Display Home Page', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				}},
 			'_slideshow':{'label':'Slide Show', 'aside':'yes', 'fields':{
-				'page-home-gallery-slider-type':{'label':'Display Slide Show', 'type':'toggle', 'default':'no', 'toggles':{'no':'Off', 'random':'Random', 'latest':'Latest'}},
+				'page-home-gallery-slider-type':{'label':'Display Slide Show', 'type':'toggle', 'default':'no', 'toggles':{'no':'Off', 'random':'Random', 'latest':'Latest', 'forsale':'For Sale'}},
 				'page-home-gallery-slider-size':{'label':'Size', 'type':'select', 'default':'large', 'options':this.sliderSizeOptions},
 				}},
 			'_memberslideshow':{'label':'Members Slide Show', 'aside':'yes', 'fields':{
