@@ -94,9 +94,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 				'images'=>$rc['images']));
 			if( $rc['stat'] == 'ok' ) {
 				$slider_content = '';
-				print_r($settings);
 				if( isset($settings['page-home-gallery-slider-title']) && $settings['page-home-gallery-slider-title'] != '' ) {	
-					print_r('test');
 					$slider_content = "<header class='entry-title'><h1 class='entry-title'>" . $settings['page-home-gallery-slider-title'] . "</h1></header>";
 				}
 				$slider_content .= $rc['content'];
