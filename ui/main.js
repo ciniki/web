@@ -389,6 +389,7 @@ function ciniki_web_main() {
 			'_slideshow':{'label':'Slide Show', 'aside':'yes', 'fields':{
 				'page-home-gallery-slider-type':{'label':'Display Slide Show', 'type':'toggle', 'default':'no', 'toggles':{'no':'Off', 'random':'Random', 'latest':'Latest', 'forsale':'For Sale'}},
 				'page-home-gallery-slider-size':{'label':'Size', 'type':'select', 'default':'large', 'options':this.sliderSizeOptions},
+				'page-home-gallery-slider-title':{'label':'Title', 'type':'text'},
 				}},
 			'_memberslideshow':{'label':'Members Slide Show', 'aside':'yes', 'fields':{
 				'page-home-membergallery-slider-type':{'label':'Display Slide Show', 'type':'toggle', 'default':'no', 'toggles':{'no':'Off', 'random':'Random', 'latest':'Latest'}},
@@ -922,6 +923,36 @@ function ciniki_web_main() {
 		this.gallery.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'gallery\');');
 //		this.gallery.addLeftButton('website', 'Preview', 'M.showWebsite(\'/gallery\');');
 		this.gallery.addClose('Cancel');
+
+		//
+		// The options and information for the writings page
+		//
+		this.writings = new M.panel('Writings',
+			'ciniki_web_main', 'writings',
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.writings');
+		this.writings.data = {};
+		this.writings.sections = {
+			'options':{'label':'', 'fields':{
+				'page-writings-active':{'label':'Display Writings', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-writings-name':{'label':'Name', 'type':'text', 'hint':'default is Writings'},
+//				'page-writings-writingcatalog-split':{'label':'Split Menu', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+//				'page-writings-writingcatalog-format':{'label':'Format', 'active':'no', 'type':'multitoggle', 'default':'icons', 'toggles':{'icons':'Icons', 'list':'List'}},
+				}},
+//			'sort':{'label':'Sorting', 'active':'no', 'fields':{
+//				'page-writings-album-sort':{'label':'List albums by', 'type':'select', 'default':'name-asc', 'options':{}},
+//				}},
+			'social':{'label':'Social Media', 'visible':'no', 'fields':{
+				'page-writings-share-buttons':{'label':'Sharing', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+				}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'writings\');'},
+				}},
+		};
+		this.writings.fieldValue = this.fieldValue;
+		this.writings.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.writings.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'writings\');');
+//		this.writings.addLeftButton('website', 'Preview', 'M.showWebsite(\'/writings\');');
+		this.writings.addClose('Cancel');
 
 		//
 		// The options and information for the products page
