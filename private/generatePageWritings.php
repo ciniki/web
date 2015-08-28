@@ -51,7 +51,7 @@ function ciniki_web_generatePageWritings($ciniki, $settings) {
 		$article_title = "<a href='$base_url'>" . $page_title . "</a> - <a href='$base_url/$writing_permalink'>" . $item['title'] . "</a> - " . $item['sample']['title'];
 		$page_title .= ' - ' . $item['title'] . ' - ' . $item['sample']['title'];
 
-		$page_content .= "<article class='page page-features'>\n"
+		$page_content .= "<article class='page'>\n"
 			. "<header class='entry-title'><h1 class='entry-title'>$article_title</h1>";
 		if( isset($item['subtitle']) && $item['subtitle'] != '' ) {
 			$page_content .= "<div class='entry-meta'>" . $item['subtitle'] . "</div>";
@@ -88,6 +88,9 @@ function ciniki_web_generatePageWritings($ciniki, $settings) {
 		}
 		$page_content .= $rc['content'];
 
+		$page_content .= "</div>"
+			. "</article>"
+			. "";
 	}
 
 	//
@@ -109,7 +112,7 @@ function ciniki_web_generatePageWritings($ciniki, $settings) {
 		$article_title = "<a href='$base_url'>" . $page_title . "</a> - " . $item['title'];
 		$page_title .= ' - ' . $item['title'];
 
-		$page_content .= "<article class='page page-features'>\n"
+		$page_content .= "<article class='page'>\n"
 			. "<header class='entry-title'><h1 class='entry-title'>$article_title</h1>";
 		if( isset($item['subtitle']) && $item['subtitle'] != '' ) {
 			$page_content .= "<div class='entry-meta'>" . $item['subtitle'] . "</div>";
@@ -215,7 +218,7 @@ function ciniki_web_generatePageWritings($ciniki, $settings) {
 
 		$article_title = $page_title;
 
-		$page_content .= "<article class='page page-features'>\n"
+		$page_content .= "<article class='page'>\n"
 			. "<header class='entry-title'><h1 class='entry-title'>$article_title</h1></header>\n"
 			. "<div class='entry-content'>\n"
 			. "";
@@ -223,7 +226,7 @@ function ciniki_web_generatePageWritings($ciniki, $settings) {
 		if( count($categories) > 0 ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
 			$base_url = $ciniki['request']['base_url'] . "/writings";
-			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $categories, array());
+			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $categories, array('image_version'=>'original', 'image_width'=>'150'));
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}

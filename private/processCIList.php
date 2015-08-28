@@ -87,17 +87,21 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 				$content .= "<tr><td class='cilist-image' rowspan='3'>";
 			}
 			if( isset($item['image_id']) && $item['image_id'] > 0 ) {
-				$rc = ciniki_web_getScaledImageURL($ciniki, $item['image_id'], 'thumbnail', '150', 0);
+				$version = ((isset($args['image_version'])&&$args['image_version']!='')?$args['image_version']:'thumbnail');
+				$rc = ciniki_web_getScaledImageURL($ciniki, $item['image_id'], $version, 
+					((isset($args['image_width'])&&$args['image_width']!='')?$args['image_width']:'150'), 
+					((isset($args['image_height'])&&$args['image_height']!='')?$args['image_height']:'0') 
+					);
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
 				if( $url != '' ) {
-					$content .= "<div class='image-cilist-thumbnail'>"
+					$content .= "<div class='image-cilist-$version'>"
 						. "<a href='$url' target='$url_target' title='" . $item['title'] . "'>"
 						. "<img title='' alt='" . $item['title'] . "' src='" . $rc['url'] . "' /></a>"
 						. "</div>";
 				} else {
-					$content .= "<div class='image-cilist-thumbnail'>"
+					$content .= "<div class='image-cilist-$version'>"
 						. "<img title='' alt='" . $item['title'] . "' src='" . $rc['url'] . "' />"
 						. "</div>";
 				}

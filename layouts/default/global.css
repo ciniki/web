@@ -557,6 +557,12 @@ div.googlemap p.exhibitors-more,
 	height: 115px;
 }
 
+#content div.image-cilist-original,
+#content div.image-members-original,
+#content div.image-exhibitors-original {
+	max-height: 200px;
+}
+
 #content div.sponsor-gallery div.sponsor-gallery-thumbnail {
 }
 #content div.image-gallery div.image-gallery-thumbnail {
