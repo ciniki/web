@@ -194,6 +194,25 @@ function ciniki_web_generatePageWritings($ciniki, $settings) {
 					return $rc;
 				}
 				$page_content .= $rc['content'];
+				if( isset($orderinfo['paypal_business']) && $orderinfo['paypal_business'] != '' ) {
+					$page_content .= "<form style='display:inline-block;width:10em;' target='paypal' action='https://www.paypal.com/cgi-bin/webscr' method='post'>"
+						. "<input type='hidden' name='business' value='" . $orderinfo['paypal_business'] . "'>"
+						. "<input type='hidden' name='cmd' value='_cart'>"
+						. "<input type='hidden' name='add' value='1'>"
+						. "<input type='hidden' name='item_name' value='" . $item['title'] . "'>"
+						. "<input type='hidden' name='amount' value='" . $orderinfo['paypal_price'] . "'>"
+						. "<input type='hidden' name='currency_code' value='" . $orderinfo['paypal_currency'] . "'>"
+						. "<input type='image' name='submit' border='0' src='https://www.paypalobjects.com/en_US/i/btn/btn_cart_LG.gif' alt='PayPal - The safer, easier way to pay online'>"
+						. "<img alt='' border='0' width='1' height='1' src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif' >"
+						. "</form>";
+					$page_content .= "<form style='display:inline-block;width:10em;' target='paypal' action='https://www.paypal.com/cgi-bin/webscr' method='post'>"
+						. "<input type='hidden' name='business' value='" . $orderinfo['paypal_business'] . "'>"
+						. "<input type='hidden' name='cmd' value='_cart'>"
+						. "<input type='hidden' name='display' value='1'>"
+						. "<input type='image' name='submit' border='0' src='https://www.paypalobjects.com/en_US/i/btn/btn_viewcart_LG.gif' alt='PayPal - The safer, easier way to pay online'>"
+						. "<img alt='' border='0' width='1' height='1' src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif' >"
+						. "</form>";
+				}
 			}
 		}
 
