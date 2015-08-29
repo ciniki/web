@@ -133,7 +133,7 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 		}
 
 		// FIXME: Issue with javascript onclick not working in iFrame on Chrome. Aug 24, 2015
-		$pager_list .= "<a rel='$count' class='" . ($count==0?'active':'') . "' onclick='javascript: sliders[0].goTo($count);'>" . ($count + 1) . "</a>";
+		$pager_list .= "<a rel='$count' class='" . ($count==0?'active':'') . "' onclick='javascript: sliders[0].goTo($count,1);'>" . ($count + 1) . "</a>";
 
 		$count++;
 		$style = 'display:none;';
@@ -212,7 +212,7 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 	//	$javascript .= "		this.ul.style.maxHeight = this.li[0].clientHeight + 'px'\n";
 		$javascript .= "	},\n";
 	}
-	$javascript .= "	goTo: function(index) {\n";
+	$javascript .= "	goTo: function(index,reset) {\n";
 	// filter invalid indices
 	$javascript .= "		if( index >= this.li.length ) { index = 0; }\n";
 	$javascript .= "		if (index < 0 || index > this.li.length - 1)\n";
@@ -225,6 +225,7 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 	$javascript .= "			this.pager.children[index].className = 'active';\n";
 	$javascript .= "		}\n";
 	$javascript .= "		this.currentIndex = index\n";
+	$javascript .= "		if(reset!=null){clearInterval(slider_timer);slider_start_timer();}\n";
 	$javascript .= "	},\n";
 
 	$javascript .= "	goToPrev: function() {\n";
@@ -237,9 +238,13 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 
 	$javascript .= "}\n";
 	$javascript .= "var sliders = [];\n";
+	$javascript .= "var slider_timer;\n";
 	$javascript .= "function slider_setup() {\n";
 	$javascript .= "	sliders.push(new Slider(document.getElementById('slider-ctl'), document.getElementById('slider-pager')));\n";
-	$javascript .= "	setInterval(function() {sliders[0].goToNext()}, $slider_pause_time);\n";
+	$javascript .= "	slider_start_timer();\n";
+	$javascript .= "}\n";
+	$javascript .= "function slider_start_timer() {\n";
+	$javascript .= "	slider_timer = setInterval(function() {sliders[0].goToNext()}, $slider_pause_time);\n";
 	$javascript .= "}\n";
 	$javascript .= "function slider_resize(i) {\n";
 	$javascript .= "	if( sliders != null && sliders[i] != null ) { sliders[i].resize(); };\n";
