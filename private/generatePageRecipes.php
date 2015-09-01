@@ -14,6 +14,18 @@
 //
 function ciniki_web_generatePageRecipes($ciniki, $settings) {
 
+	$tag_types = array(
+		'meals'=>array('name'=>'Meals & Courses', 'tag_type'=>'10', 'visible'=>($ciniki['business']['modules']['ciniki.recipes']['flags']&0x01)>0?'yes':'no'),
+		'ingredients'=>array('name'=>'Main Ingredients', 'tag_type'=>'20', 'visible'=>($ciniki['business']['modules']['ciniki.recipes']['flags']&0x02)>0?'yes':'no'),
+		'cuisines'=>array('name'=>'Cuisines', 'tag_type'=>'30', 'visible'=>($ciniki['business']['modules']['ciniki.recipes']['flags']&0x04)>0?'yes':'no'),
+		'methods'=>array('name'=>'Methods', 'tag_type'=>'40', 'visible'=>($ciniki['business']['modules']['ciniki.recipes']['flags']&0x08)>0?'yes':'no'),
+		'occasions'=>array('name'=>'Occasions', 'tag_type'=>'50', 'visible'=>($ciniki['business']['modules']['ciniki.recipes']['flags']&0x10)>0?'yes':'no'),
+		'diets'=>array('name'=>'Diets', 'tag_type'=>'60', 'visible'=>($ciniki['business']['modules']['ciniki.recipes']['flags']&0x20)>0?'yes':'no'),
+		'seasons'=>array('name'=>'Seasons', 'tag_type'=>'70', 'visible'=>($ciniki['business']['modules']['ciniki.recipes']['flags']&0x40)>0?'yes':'no'),
+		'collections'=>array('name'=>'Collections', 'tag_type'=>'80', 'visible'=>($ciniki['business']['modules']['ciniki.recipes']['flags']&0x80)>0?'yes':'no'),
+		'products'=>array('name'=>'Products', 'tag_type'=>'90', 'visible'=>($ciniki['business']['modules']['ciniki.recipes']['flags']&0x0100)>0?'yes':'no'),
+		);
+
 	//
 	// Check if a file was specified to be downloaded
 	//
@@ -49,205 +61,194 @@ function ciniki_web_generatePageRecipes($ciniki, $settings) {
 	}
 
 	//
+	// Check the module is active
+	//
+	if( !isset($ciniki['business']['modules']['ciniki.recipes']) ) {
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1552', 'msg'=>'No recipe module enabled'));
+	}
+
+	//
 	// Store the content created by the page
 	//
 	$page_content = '';
 
-	//
-	// FIXME: Check if anything has changed, and if not load from cache
-	//
-		
-
 	$page_title = "Recipes";
-	if( isset($ciniki['business']['modules']['ciniki.recipes']) ) {
-		$pkg = 'ciniki';
-		$mod = 'recipes';
-	} else {
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1552', 'msg'=>'No recipe module enabled'));
-	}
-
-	$tags = array();
+	$article_title = "Recipes";
+	$display = '';
 	$ciniki['response']['head']['og']['url'] = $ciniki['request']['domain_base_url'] . '/recipes';
+	$base_url = $ciniki['request']['base_url'] . '/recipes';
+
+	
+	//
+	// Parse the request arguments
+	// ---------------------------
+	//
 
 	//
-	// Check if we are to display an image, from the gallery, or latest images
+	// Check if tag type specified
 	//
 	if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' 
-		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] == 'gallery' 
-		&& isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' 
+		&& isset($tag_types[$ciniki['request']['uri_split'][0]]) && $tag_types[$ciniki['request']['uri_split'][0]]['visible'] == 'yes'
 		) {
+		$type_permalink = $ciniki['request']['uri_split'][0];
+		$tag_type = $tag_types[$type_permalink]['tag_type'];
+		$tag_title = $tag_types[$type_permalink]['name'];
+		$display = 'type';
+		$ciniki['response']['head']['og']['url'] .= '/' . $type_permalink;
+		$base_url .= '/' . $type_permalink;
+
+		//
+		// Check if recipe was specified
+		//
+		if( isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' 
+			&& isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' ) {
+			$tag_permalink = $ciniki['request']['uri_split']['1'];
+			$recipe_permalink = $ciniki['request']['uri_split']['2'];
+			$display = 'recipe';
+			$ciniki['response']['head']['links'][] = array('rel'=>'canonical', 
+				'href'=>$ciniki['request']['domain_base_url'] . '/recipes/' . $recipe_permalink);
+			$ciniki['response']['head']['og']['url'] .= '/' . $tag_permalink . '/' . $recipe_permalink;
+			$base_url .= '/' . $tag_permalink . '/' . $recipe_permalink;
+			
+			//
+			// Check for gallery pic request
+			//
+			if( isset($ciniki['request']['uri_split'][3]) && $ciniki['request']['uri_split'][3] == 'gallery' 
+				&& isset($ciniki['request']['uri_split'][4]) && $ciniki['request']['uri_split'][4] != '' 
+				) {
+				$image_permalink = $ciniki['request']['uri_split'][4];
+				$display = 'recipepic';
+			}
+		} 
+
+		//
+		// Check if tag name was specified
+		//
+		elseif( isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' ) {
+			$tag_type = $tag_types[$ciniki['request']['uri_split'][0]]['tag_type'];
+			$tag_title = $tag_types[$ciniki['request']['uri_split'][0]]['name'];
+			$tag_permalink = $ciniki['request']['uri_split']['1'];
+			$display = 'tag';
+			$ciniki['response']['head']['og']['url'] .= '/' . $tag_permalink;
+			$base_url .= '/' . $tag_permalink;
+		}
+	}
+
+	//
+	// Check if recipe url request without tag path
+	//
+	elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
 		$recipe_permalink = $ciniki['request']['uri_split'][0];
-		$image_permalink = $ciniki['request']['uri_split'][2];
-		$gallery_url = $ciniki['request']['base_url'] . "/recipes/$recipe_permalink/gallery";
-
+		$display = 'recipe';
 		//
-		// Load the recipe to get all the details, and the list of images.
-		// It's one query, and we can find the requested image, and figure out next
-		// and prev from the list of images returned
+		// Check for gallery pic request
 		//
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'recipes', 'web', 'recipeDetails');
-		$rc = ciniki_recipes_web_recipeDetails($ciniki, $settings, 
-			$ciniki['request']['business_id'], $recipe_permalink);
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
+		if( isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] == 'gallery'
+			&& isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' 
+			) {
+			$image_permalink = $ciniki['request']['uri_split'][2];
+			$display = 'recipepic';
 		}
-		$recipe = $rc['recipe'];
-
 		$ciniki['response']['head']['og']['url'] .= '/' . $recipe_permalink;
-		$ciniki['response']['head']['og']['description'] = strip_tags($recipe['description']);
-
-		if( !isset($recipe['images']) || count($recipe['images']) < 1 ) {
-			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1553', 'msg'=>'Unable to find image'));
-		}
-
-		$first = NULL;
-		$last = NULL;
-		$img = NULL;
-		$next = NULL;
-		$prev = NULL;
-		foreach($recipe['images'] as $iid => $image) {
-			if( $first == NULL ) {
-				$first = $image;
-			}
-			if( $image['permalink'] == $image_permalink ) {
-				$img = $image;
-			} elseif( $next == NULL && $img != NULL ) {
-				$next = $image;
-			} elseif( $img == NULL ) {
-				$prev = $image;
-			}
-			$last = $image;
-		}
-
-		if( count($recipe['images']) == 1 ) {
-			$prev = NULL;
-			$next = NULL;
-		} elseif( $prev == NULL ) {
-			// The requested image was the first in the list, set previous to last
-			$prev = $last;
-		} elseif( $next == NULL ) {
-			// The requested image was the last in the list, set previous to last
-			$next = $first;
-		}
-	
-		if( $img['title'] != '' ) {
-			$page_title = $recipe['name'] . ' - ' . $img['title'];
-		} else {
-			$page_title = $recipe['name'];
-		}
-	
-		//
-		// Load the image
-		//
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-		$rc = ciniki_web_getScaledImageURL($ciniki, $img['image_id'], 'original', 0, 600);
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
-		}
-		$img_url = $rc['url'];
-		$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
-
-		//
-		// Set the page to wide if possible
-		//
-		$ciniki['request']['page-container-class'] = 'page-container-wide';
-
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateGalleryJavascript');
-		$rc = ciniki_web_generateGalleryJavascript($ciniki, $next, $prev);
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
-		}
-		$ciniki['request']['inline_javascript'] = $rc['javascript'];
-
-		$ciniki['request']['onresize'] = "gallery_resize_arrows();";
-		$ciniki['request']['onload'] = "scrollto_header();";
-		$page_content .= "<article class='page'>\n"
-			. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$page_title</h1></header>\n"
-			. "<div class='entry-content'>\n"
-			. "";
-		$page_content .= "<div id='gallery-image' class='gallery-image'>";
-		$page_content .= "<div id='gallery-image-wrap' class='gallery-image-wrap'>";
-		if( $prev != null ) {
-			$page_content .= "<a id='gallery-image-prev' class='gallery-image-prev' href='$gallery_url/" . $prev['permalink'] . "'><div id='gallery-image-prev-img'></div></a>";
-		}
-		if( $next != null ) {
-			$page_content .= "<a id='gallery-image-next' class='gallery-image-next' href='$gallery_url/" . $next['permalink'] . "'><div id='gallery-image-next-img'></div></a>";
-		}
-		$page_content .= "<img id='gallery-image-img' title='" . $img['title'] . "' alt='" . $img['title'] . "' src='" . $img_url . "' onload='javascript: gallery_resize_arrows();' />";
-		$page_content .= "</div><br/>"
-			. "<div id='gallery-image-details' class='gallery-image-details'>"
-			. "<span class='image-title'>" . $img['title'] . '</span>'
-			. "<span class='image-details'></span>";
-		if( $img['description'] != '' ) {
-			$page_content .= "<span class='image-description'>" . preg_replace('/\n/', '<br/>', $img['description']) . "</span>";
-		}
-		$page_content .= "</div></div>";
-		$page_content .= "</div></article>";
+		$base_url .= '/' . $recipe_permalink;
 	}
 
 	//
-	// Generate the category/cuisine listing page
+	// Nothing selected, default to first tag type
 	//
-	elseif( isset($ciniki['request']['uri_split'][0]) 
-		&& ($ciniki['request']['uri_split'][0] == 'category' 
-			|| $ciniki['request']['uri_split'][0] == 'cuisine' )
-		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' ) {
-		$page_title .= ' - ' . urldecode($ciniki['request']['uri_split'][1]);
-
-		ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'recipes');
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-
-		$page_content .= "<article class='page'>\n"
-			. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$page_title</h1></header>\n"
-			. "<div class='entry-content'>\n"
-			. "";
-
-		//
-		// Get the items for the specified category
-		//
-		$rc = ciniki_recipes_web_recipes($ciniki, $settings, $ciniki['request']['business_id'], 
-			array($ciniki['request']['uri_split'][0]=>urldecode($ciniki['request']['uri_split'][1])));
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
-		}
-		$recipes = $rc['recipes'];
-
-		//
-		// Generate list of recipes
-		//
-		$base_url = $ciniki['request']['base_url'] . "/recipes";
-		if( count($recipes) > 0 ) {
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
-			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, array('0'=>array(
-				'name'=>'', 'noimage'=>'/ciniki-web-layouts/default/img/noimage_240.png',
-				'list'=>$recipes)), array());
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
+	else {
+		$display = 'type';
+		foreach($tag_types as $permalink => $type) {
+			if( $type['visible'] == 'yes' ) {
+				$tag_type = $type['tag_type'];
+				$type_permalink = $permalink;
+				$tag_title = $type['name'];
+				$ciniki['response']['head']['og']['url'] .= '/' . $permalink;
+				break;
 			}
-			$page_content .= $rc['content'];
-		} else {
-			$page_content .= "<p>Currently no recipes.</p>";
 		}
-		$page_content .= "</div>";
-		$page_content .= "</article>";
 	}
 
 	//
-	// Generate the tag listing page
+	// Build the page content
+	// ----------------------
 	//
-	elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'tag' 
-		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' ) {
+	
+	//
+	// Display the tag type page
+	//
+	if( $display == 'type' ) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'recipes', 'web', 'tags');
+		$rc = ciniki_recipes_web_tags($ciniki, $settings, $ciniki['request']['business_id'], $tag_type);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		if( isset($rc['tags']) ) {
+			$tags = $rc['tags'];
+		} else {
+			$tags = array();
+		}
+	
+		$page_title = 'Recipes - ' . $tag_types[$type_permalink]['name'];
+		$article_title = '<a href="' . $ciniki['request']['base_url'] . '/recipes">Recipes</a> - ' . $tag_types[$type_permalink]['name'];
 
-		ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'recipes');
+		$page_content .= "<article class='page'>\n"
+			. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$article_title</h1></header>\n"
+			. "<div class='entry-content'>\n"
+			. "";
+
+		if( count($tags) > 25 || $tag_type == '20' ) {
+			//
+			// Process the tags
+			//
+			if( isset($rc['tags']) && count($rc['tags']) > 0 ) {
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processTagCloud');
+				$rc = ciniki_web_processTagCloud($ciniki, $settings, $base_url, $rc['tags']);
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				$page_content .= $rc['content'];
+			} else {
+				$page_content = "<p>I'm sorry, there are no tags.";
+			}
+
+		} elseif( count($tags) > 0 ) {
+			$page_content .= "<div class='image-categories'>";
+			foreach($rc['tags'] as $tid => $tag) {
+				$name = $tag['name'];
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+				$rc = ciniki_web_getScaledImageURL($ciniki, $tag['image_id'], 'thumbnail', '240', 0);
+				if( $rc['stat'] != 'ok' ) {
+					$img_url = '/ciniki-web-layouts/default/img/noimage_240.png';
+				} else {
+					$img_url = $rc['url'];
+				}
+				$page_content .= "<div class='image-categories-thumbnail-wrap'>"
+					. "<a href='" . $ciniki['request']['base_url'] . "/recipes/$type_permalink/" . $tag['permalink'] . "' " . "title='$name'>"
+					. "<div class='image-categories-thumbnail'>"
+					. "<img title='$name' alt='$name' src='$img_url' />"
+					. "</div>"
+					. "<span class='image-categories-name'>$name</span>"
+					. "</a></div>";
+			}
+			$page_content .= "</div>";
+		} else {
+			$page_content .= "<p>I'm sorry, but we don't have any recipes for that category.</p>";	
+		}
+	}
+
+
+	elseif( $display == 'tag' ) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'recipes', 'web', 'recipes');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 
 		//
 		// Get the items for the specified category
 		//
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'recipes', 'web', 'recipes');
 		$rc = ciniki_recipes_web_recipes($ciniki, $settings, $ciniki['request']['business_id'],
-			array('tag'=>$ciniki['request']['uri_split'][1]));
+			array('tag_type'=>$tag_type, 'tag_permalink'=>$tag_permalink));
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
@@ -258,10 +259,14 @@ function ciniki_web_generatePageRecipes($ciniki, $settings) {
 			$tag_name = $recipe['tag_name'];
 			break;
 		}
-		$page_title .= ' - ' . $tag_name;
+
+		$page_title = 'Recipes - ' . $tag_types[$type_permalink]['name'] . ' - ' . $tag_name;
+		$article_title = '<a href="' . $ciniki['request']['base_url'] . '/recipes">Recipes</a> - ' 
+			. '<a href="' . $ciniki['request']['base_url'] . '/recipes/' . $type_permalink . '">' . $tag_types[$type_permalink]['name'] . '</a>'
+			. ' - ' . $tag_name;
 
 		$page_content .= "<article class='page'>\n"
-			. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$page_title</h1></header>\n"
+			. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$article_title</h1></header>\n"
 			. "<div class='entry-content'>\n"
 			. "";
 
@@ -270,8 +275,12 @@ function ciniki_web_generatePageRecipes($ciniki, $settings) {
 		//
 		$base_url = $ciniki['request']['base_url'] . "/recipes";
 		if( count($recipes) > 0 ) {
+			$ci_base_url = $base_url;
+			if( isset($type_permalink) && isset($tag_permalink) && $tag_permalink != '' ) {
+				$ci_base_url .= "/$type_permalink/$tag_permalink";
+			}
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
-			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, array('0'=>array(
+			$rc = ciniki_web_processCIList($ciniki, $settings, $ci_base_url, array('0'=>array(
 				'name'=>'', 'noimage'=>'/ciniki-web-layouts/default/img/noimage_240.png',
 				'list'=>$recipes)), array());
 			if( $rc['stat'] != 'ok' ) {
@@ -281,304 +290,319 @@ function ciniki_web_generatePageRecipes($ciniki, $settings) {
 		} else {
 			$page_content .= "<p>Currently no recipes.</p>";
 		}
+
 		$page_content .= "</div>";
 		$page_content .= "</article>";
 	}
 
 	//
-	// Display the tag cloud for recipes
+	// Display the recipe or an image from the recipes additional images
 	//
-	elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'tags' ) {
-
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'recipes', 'web', 'tagCloud');
-		$page_title .= ' - Tags';
-		$base_url = $ciniki['request']['base_url'] . '/recipes/tag';
-		$rc = ciniki_recipes_web_tagCloud($ciniki, $settings, $ciniki['request']['business_id'], 20);
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
-		}
-
+	elseif( $display == 'recipe' || $display == 'recipepic' ) {
 		//
-		// Process the tags
+		// Load the recipe to get all the details, and the list of images.
+		// It's one query, and we can find the requested image, and figure out next
+		// and prev from the list of images returned
 		//
-		if( isset($rc['tags']) && count($rc['tags']) > 0 ) {
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processTagCloud');
-			$rc = ciniki_web_processTagCloud($ciniki, $settings, $base_url, $rc['tags']);
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
-			}
-			$page_content .= $rc['content'];
-		} else {
-			$page_content = "<p>I'm sorry, there are no tags.";
-		}
-	}
-
-	//
-	// Generate the main recipes page, showing the main categories
-	//
-	elseif( !isset($ciniki['request']['uri_split'][0]) || $ciniki['request']['uri_split'][0] == 'categories') {
-
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
-		$rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', 
-			$ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-recipes');
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
-		}
-
-		$page_content .= "<article class='page'>\n"
-			. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$page_title</h1></header>\n"
-			. "<div class='entry-content'>\n"
-			. "";
-
-		if( isset($rc['content']['page-recipes-content']) ) {
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $rc['content']['page-recipes-content']);	
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
-			}
-			$page_content .= $rc['content'];
-		}
-
-		//
-		// List the categories the user has created in the artcatalog, 
-		// OR just show all the thumbnails if they haven't created any categories
-		//
-		ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'categories');
-		$categories = $pkg . '_' . $mod . '_web_categories';
-		$rc = $categories($ciniki, $settings, $ciniki['request']['business_id']); 
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
-		}
-		if( isset($settings['page-recipes-name']) && $settings['page-recipes-name'] != '' ) {
-			$page_title = $settings['page-recipes-name'];
-		} else {
-			$page_title = 'Recipes';
-		}
-		if( !isset($rc['categories']) ) {
-			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1554', 'msg'=>'Internal error'));
-		} else {
-			$page_content .= "<div class='image-categories'>";
-			foreach($rc['categories'] as $cnum => $category) {
-				$name = $category['category']['name'];
-				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-				$rc = ciniki_web_getScaledImageURL($ciniki, $category['category']['image_id'], 'thumbnail', '240', 0);
-				if( $rc['stat'] != 'ok' ) {
-					$img_url = '/ciniki-web-layouts/default/img/noimage_240.png';
-				} else {
-					$img_url = $rc['url'];
-				}
-				$page_content .= "<div class='image-categories-thumbnail-wrap'>"
-					. "<a href='" . $ciniki['request']['base_url'] . "/recipes/category/" . urlencode($name) . "' "
-						. "title='" . $name . "'>"
-					. "<div class='image-categories-thumbnail'>"
-					. "<img title='$name' alt='$name' src='$img_url' />"
-					. "</div>"
-					. "<span class='image-categories-name'>$name</span>"
-					. "</a></div>";
-			}
-			$page_content .= "</div>";
-		}
-		$page_content .= "</div>";
-		$page_content .= "</article>";
-	}
-
-	//
-	// Display the page of the recipe details
-	//
-	elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
-
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'recipes', 'web', 'recipeDetails');
-		//
-		// Get the recipe information
-		//
-		$recipe_permalink = $ciniki['request']['uri_split'][0];
 		$rc = ciniki_recipes_web_recipeDetails($ciniki, $settings, 
-			$ciniki['request']['business_id'], $recipe_permalink);
+			$ciniki['request']['business_id'], $recipe_permalink, (isset($tag_permalink)?$tag_permalink:''));
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
 		$recipe = $rc['recipe'];
-		$page_title = $recipe['name'];
-		$page_content .= "<article class='page'>\n"
-			. "<header class='entry-title'><h1 class='entry-title'>" . $recipe['name'] . "</h1></header>\n"
-			. "";
-
-		$ciniki['response']['head']['og']['url'] .= '/' . $recipe_permalink;
+		if( isset($rc['tag_name']) ) {
+			$tag_name = $rc['tag_name'];
+		}
 		$ciniki['response']['head']['og']['description'] = strip_tags($recipe['description']);
 
-		//
-		// Add primary image
-		//
-		if( isset($recipe['image_id']) && $recipe['image_id'] > 0 ) {
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-			$rc = ciniki_web_getScaledImageURL($ciniki, $recipe['image_id'], 'original', '500', 0);
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
-			}
-			$page_content .= "<aside><div class='image-wrap'><div class='image'>"
-				. "<img title='' alt='" . $recipe['name'] . "' src='" . $rc['url'] . "' />"
-				. "</div></div></aside>";
-			$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
+		if( isset($tag_permalink) && $tag_permalink != '' ) {
+			$page_title = 'Recipes - ' . $tag_types[$type_permalink]['name'] . ' - ' . $tag_name . ' - ' . $recipe['name'];
+			$article_title = '<a href="' . $ciniki['request']['base_url'] . '/recipes">Recipes</a>' 
+				. ' - <a href="' . $ciniki['request']['base_url'] . '/recipes/' . $type_permalink . '">' . $tag_types[$type_permalink]['name'] . '</a>'
+				. ' - <a href="' . $ciniki['request']['base_url'] . '/recipes/' . $type_permalink . '/' . $tag_permalink . '">' . $tag_name . '</a>'
+				. '';
+		} else {
+			$page_title = 'Recipes - ' . $recipe['name'];
+			$article_title = '<a href="' . $ciniki['request']['base_url'] . '/recipes">Recipes</a>';
 		}
 		
-		//
-		// Add description
-		//
-		if( isset($recipe['description']) && $recipe['description'] != '' ) {
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $recipe['description']);	
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
+		if( $display == 'recipepic' ) {
+			if( !isset($recipe['images']) || count($recipe['images']) < 1 ) {
+				return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1553', 'msg'=>'Unable to find image'));
 			}
-			$page_content .= $rc['content'];
-		}
 
-		//
-		// Add technical details for recipe
-		//
-		$additional_info = '';
-		if( isset($recipe['num_servings']) && $recipe['num_servings'] != '' ) {
-			$additional_info .= "<b>Servings</b>: " . $recipe['num_servings'] . "<br/>";
-		}
-		if( isset($recipe['prep_time']) && $recipe['prep_time'] != '' ) {
-			$additional_info .= "<b>Prep Time</b>: " . $recipe['prep_time'] . " minutes<br/>";
-		}
-		if( isset($recipe['cook_time']) && $recipe['cook_time'] != '' ) {
-			$additional_info .= "<b>Cook Time</b>: " . $recipe['cook_time'] . " minutes<br/>";
-		}
-		if( $additional_info != '' ) {
-			$page_content .= "<p>$additional_info</p>";
-		}
+			$article_title .= ' - <a href="' . $ciniki['request']['base_url'] . '/recipes/' . $recipe_permalink . '">' . $recipe['name'] . '</a>';
 
-		//
-		// Add ingredients list
-		//
-		if( isset($recipe['ingredients']) && $recipe['ingredients'] != '' ) {
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $recipe['ingredients']);	
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
-			}
-			$page_content .= "<h2>Ingredients</h2>";
-			$page_content .= $rc['content'];
-		}
-
-		//
-		// Add instructions
-		//
-		if( isset($recipe['instructions']) && $recipe['instructions'] != '' ) {
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $recipe['instructions']);	
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
-			}
-			$page_content .= "<h2>Instructions</h2>";
-			$page_content .= $rc['content'];
-		}
-
-		//
-		// Display the categories and tags for the blog post
-		//
-		$meta_content = '';
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processTagList');
-//		if( isset($recipe['categories']) && count($recipe['categories']) > 0 ) {
-//			$rc = ciniki_web_processTagList($ciniki, $settings, 
-//				$ciniki['request']['base_url'] . '/recipe/category', ', ', $recipe['categories']);
-//			if( $rc['stat'] != 'ok' ) {
-//				return $rc;
-//			}
-//			if( isset($rc['content']) && $rc['content'] != '' ) {
-//				$meta_content .= 'Filed under: ' . $rc['content'];
-//			}
-//		}
-		if( isset($recipe['tags']) && count($recipe['tags']) > 0 ) {
-			$rc = ciniki_web_processTagList($ciniki, $settings,
-				$ciniki['request']['base_url'] . '/recipes/tag', $recipe['tags'], array('delimiter'=>', '));
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
-			}
-			if( isset($rc['content']) && $rc['content'] != '' ) {
-				$meta_content .= ($meta_content!=''?'<br/>':'') . 'Tags: ' . $rc['content'];
-			}
-		}
-		if( $meta_content != '' ) {
-			$page_content .= '<p class="entry-meta">' . $meta_content . '</p>';
-		}
-
-		if( !isset($settings['page-recipes-share-buttons']) 
-			|| $settings['page-recipes-share-buttons'] == 'yes' ) {
-			if( isset($recipe['category']) && $recipe['category'] != '' ) {
-				$tags[] = $recipe['category'];
-			}
-			if( isset($recipe['categories']) ) {
-				foreach($recipe['categories'] as $cat) {
-					$tags[] = $cat['name'];
+			$first = NULL;
+			$last = NULL;
+			$img = NULL;
+			$next = NULL;
+			$prev = NULL;
+			foreach($recipe['images'] as $iid => $image) {
+				if( $first == NULL ) {
+					$first = $image;
 				}
-			}
-			if( isset($recipe['tags']) ) {
-				foreach($recipe['tags'] as $tag) {
-					$tags[] = $tag['name'];
+				if( $image['permalink'] == $image_permalink ) {
+					$img = $image;
+				} elseif( $next == NULL && $img != NULL ) {
+					$next = $image;
+				} elseif( $img == NULL ) {
+					$prev = $image;
 				}
+				$last = $image;
 			}
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processShareButtons');
-			$rc = ciniki_web_processShareButtons($ciniki, $settings, array(
-				'title'=>$page_title,
-				'tags'=>$tags,
-				));
-			if( $rc['stat'] == 'ok' ) {
+
+			if( count($recipe['images']) == 1 ) {
+				$prev = NULL;
+				$next = NULL;
+			} elseif( $prev == NULL ) {
+				// The requested image was the first in the list, set previous to last
+				$prev = $last;
+			} elseif( $next == NULL ) {
+				// The requested image was the last in the list, set previous to last
+				$next = $first;
+			}
+		
+			if( $img['title'] != '' ) {
+				$page_title .= ' - ' . $img['title'];
+			}
+		
+			//
+			// Load the image
+			//
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+			$rc = ciniki_web_getScaledImageURL($ciniki, $img['image_id'], 'original', 0, 600);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$img_url = $rc['url'];
+			$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
+
+			//
+			// Set the page to wide if possible
+			//
+			$ciniki['request']['page-container-class'] = 'page-container-wide';
+
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateGalleryJavascript');
+			$rc = ciniki_web_generateGalleryJavascript($ciniki, $next, $prev);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$ciniki['request']['inline_javascript'] = $rc['javascript'];
+
+			$ciniki['request']['onresize'] = "gallery_resize_arrows();";
+			$ciniki['request']['onload'] = "scrollto_header();";
+			$page_content .= "<article class='page'>\n"
+				. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$article_title</h1></header>\n"
+				. "<div class='entry-content'>\n"
+				. "";
+			$page_content .= "<div id='gallery-image' class='gallery-image'>";
+			$page_content .= "<div id='gallery-image-wrap' class='gallery-image-wrap'>";
+			if( $prev != null ) {
+				$page_content .= "<a id='gallery-image-prev' class='gallery-image-prev' href='$base_url/gallery/" . $prev['permalink'] . "'><div id='gallery-image-prev-img'></div></a>";
+			}
+			if( $next != null ) {
+				$page_content .= "<a id='gallery-image-next' class='gallery-image-next' href='$base_url/gallery/" . $next['permalink'] . "'><div id='gallery-image-next-img'></div></a>";
+			}
+			$page_content .= "<img id='gallery-image-img' title='" . $img['title'] . "' alt='" . $img['title'] . "' src='" . $img_url . "' onload='javascript: gallery_resize_arrows();' />";
+			$page_content .= "</div><br/>"
+				. "<div id='gallery-image-details' class='gallery-image-details'>"
+				. "<span class='image-title'>" . $img['title'] . '</span>'
+				. "<span class='image-details'></span>";
+			if( $img['description'] != '' ) {
+				$page_content .= "<span class='image-description'>" . preg_replace('/\n/', '<br/>', $img['description']) . "</span>";
+			}
+			$page_content .= "</div></div>";
+			$page_content .= "</div></article>";
+		} 
+
+		//
+		// Display recipe
+		//
+		else {
+			$article_title .= ' - ' . $recipe['name'];
+			$page_content .= "<article class='page'>\n"
+				. "<header class='entry-title'><h1 class='entry-title'>" . $article_title . "</h1></header>\n"
+				. "";
+
+			//
+			// Add primary image
+			//
+			if( isset($recipe['image_id']) && $recipe['image_id'] > 0 ) {
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+				$rc = ciniki_web_getScaledImageURL($ciniki, $recipe['image_id'], 'original', '500', 0);
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				$page_content .= "<aside><div class='image-wrap'><div class='image'>"
+					. "<img title='' alt='" . $recipe['name'] . "' src='" . $rc['url'] . "' />"
+					. "</div></div></aside>";
+				$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
+			}
+			
+			//
+			// Add description
+			//
+			if( isset($recipe['description']) && $recipe['description'] != '' ) {
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+				$rc = ciniki_web_processContent($ciniki, $recipe['description']);	
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
 				$page_content .= $rc['content'];
 			}
-		}
 
-		$page_content .= "</article>";
-
-		//
-		// Display the additional images for the recipe
-		//
-		if( isset($recipe['images']) && count($recipe['images']) > 0 ) {
-			$page_content .= "<article class='page'>"	
-				. "<header class='entry-title'><h2 class='entry-title'>Gallery</h2></header>\n"
-				. "";
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
-			$img_base_url = $ciniki['request']['base_url'] . "/recipes/r/" . $recipe['permalink'] . "/gallery";
-			$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $recipe['images'], 125);
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
+			//
+			// Add technical details for recipe
+			//
+			$additional_info = '';
+			if( isset($recipe['num_servings']) && $recipe['num_servings'] != '' ) {
+				$additional_info .= "<b>Servings</b>: " . $recipe['num_servings'] . "<br/>";
 			}
-			$page_content .= "<div class='image-gallery'>" . $rc['content'] . "</div>";
-			$page_content .= "</article>";
-		}
-
-		//
-		// Display the similar recipes
-		//
-		if( isset($recipe['similar']) && count($recipe['similar']) > 0 ) {
-			$page_content .= "<article class='page'>"
-				. "<header class='entry-title'><h2 class='entry-title'>Similar Recipes</h2></header>\n"
-				. "";
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
-			$base_url = $ciniki['request']['base_url'] . "/recipes/r";
-			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, array('0'=>array(
-				'name'=>'', 'noimage'=>'/ciniki-web-layouts/default/img/noimage_240.png',
-				'list'=>$recipe['similar'])), array());
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
+			if( isset($recipe['prep_time']) && $recipe['prep_time'] != '' ) {
+				$additional_info .= "<b>Prep Time</b>: " . $recipe['prep_time'] . " minutes<br/>";
 			}
-			$page_content .= "<div class='entry-content'>" . $rc['content'] . "</div>";
-			$page_content .= "</article>";
+			if( isset($recipe['cook_time']) && $recipe['cook_time'] != '' ) {
+				$additional_info .= "<b>Cook Time</b>: " . $recipe['cook_time'] . " minutes<br/>";
+			}
+			if( $additional_info != '' ) {
+				$page_content .= "<p>$additional_info</p>";
+			}
+
+			//
+			// Add ingredients list
+			//
+			if( isset($recipe['ingredients']) && $recipe['ingredients'] != '' ) {
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+				$rc = ciniki_web_processContent($ciniki, $recipe['ingredients']);	
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				$page_content .= "<h2>Ingredients</h2>";
+				$page_content .= $rc['content'];
+			}
+
+			//
+			// Add instructions
+			//
+			if( isset($recipe['instructions']) && $recipe['instructions'] != '' ) {
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+				$rc = ciniki_web_processContent($ciniki, $recipe['instructions']);	
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				$page_content .= "<h2>Instructions</h2>";
+				$page_content .= $rc['content'];
+			}
+
+			//
+			// Display the categories and tags for the blog post
+			//
+			$meta_content = '';
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processTagList');
+	//		if( isset($recipe['categories']) && count($recipe['categories']) > 0 ) {
+	//			$rc = ciniki_web_processTagList($ciniki, $settings, 
+	//				$ciniki['request']['base_url'] . '/recipe/category', ', ', $recipe['categories']);
+	//			if( $rc['stat'] != 'ok' ) {
+	//				return $rc;
+	//			}
+	//			if( isset($rc['content']) && $rc['content'] != '' ) {
+	//				$meta_content .= 'Filed under: ' . $rc['content'];
+	//			}
+	//		}
+/*			if( isset($recipe['tags']) && count($recipe['tags']) > 0 ) {
+				$rc = ciniki_web_processTagList($ciniki, $settings,
+					$ciniki['request']['base_url'] . '/recipes/tag', $recipe['tags'], array('delimiter'=>', '));
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				if( isset($rc['content']) && $rc['content'] != '' ) {
+					$meta_content .= ($meta_content!=''?'<br/>':'') . 'Tags: ' . $rc['content'];
+				}
+			}
+			if( $meta_content != '' ) {
+				$page_content .= '<p class="entry-meta">' . $meta_content . '</p>';
+			}
+*/
+			if( !isset($settings['page-recipes-share-buttons']) 
+				|| $settings['page-recipes-share-buttons'] == 'yes' ) {
+				if( isset($recipe['category']) && $recipe['category'] != '' ) {
+					$tags[] = $recipe['category'];
+				}
+				if( isset($recipe['categories']) ) {
+					foreach($recipe['categories'] as $cat) {
+						$tags[] = $cat['name'];
+					}
+				}
+				if( isset($recipe['tags']) ) {
+					foreach($recipe['tags'] as $tag) {
+						$tags[] = $tag['name'];
+					}
+				}
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processShareButtons');
+				$rc = ciniki_web_processShareButtons($ciniki, $settings, array(
+					'title'=>$page_title,
+					'tags'=>$tags,
+					));
+				if( $rc['stat'] == 'ok' ) {
+					$page_content .= $rc['content'];
+				}
+			}
+
+			//
+			// Display the additional images for the recipe
+			//
+			if( isset($recipe['images']) && count($recipe['images']) > 0 ) {
+				$page_content .= "<br clear='both'/>";
+				$page_content .= "<h2 class='entry-title'>Gallery</h2>\n";
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
+				$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $base_url . '/gallery', $recipe['images'], 125);
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				$page_content .= "<div class='image-gallery'>" . $rc['content'] . "</div>";
+				$page_content .= "</article>";
+			}
+
+			//
+			// Display the similar recipes
+			//
+			if( isset($recipe['similar']) && count($recipe['similar']) > 0 ) {
+				$page_content .= "<br clear='both'/>";
+				$page_content .= "<h2 class='entry-title'>Similar Recipes</h2>\n"
+					. "";
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
+				$similar_base_url = $ciniki['request']['base_url'] . "/recipes/";
+				$rc = ciniki_web_processCIList($ciniki, $settings, $similar_base_url, array('0'=>array(
+					'name'=>'', 'noimage'=>'/ciniki-web-layouts/default/img/noimage_240.png',
+					'list'=>$recipe['similar'])), array());
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+				$page_content .= "<div class='entry-content'>" . $rc['content'] . "</div>";
+				$page_content .= "</article>";
+			}
 		}
 	}
 
-	$content = '';
 
 	//
 	// The submenu 
 	//
 	$submenu = array();
-	if( isset($settings['page-recipes-tags']) && $settings['page-recipes-tags'] == 'yes' ) {
-		$submenu['category'] = array('name'=>'Categories', 'url'=>$ciniki['request']['base_url'] . '/recipes');
-		$submenu['tag'] = array('name'=>'Tags', 'url'=>$ciniki['request']['base_url'] . '/recipes/tags');
+	foreach($tag_types as $tag_permalink => $tag) {
+		if( $tag['visible'] == 'yes' ) {
+			$submenu[$tag_permalink] = array('name'=>$tag['name'], 'url'=>$ciniki['request']['base_url'] . '/recipes/' . $tag_permalink);
+		}
 	}
+
+	
+	//
+	// Add the header and footer content
+	// ---------------------------------
+	//
+	$content = '';
 
 	//
 	// Add the header
