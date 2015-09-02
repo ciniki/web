@@ -84,12 +84,17 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
 		&& (!isset($ciniki['config']['ciniki.web']['cache']) 
 			|| $ciniki['config']['ciniki.web']['cache'] != 'off') 
 		) {
+		$pull_from_cache = 'yes';
 		$cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products/';
 		$depth = 2;
 		if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'product' ) {
 			$depth = 1;
 		}
 		foreach($ciniki['request']['uri_split'] as $uri_index => $uri_piece) {
+			// Ignore cache for gallery, it's missing javascript
+			if( $uri_piece == 'gallery' ) {
+				$pull_from_cache = 'no';
+			}
 			if( $uri_index < $depth ) {
 				$cache_file .= $uri_piece . '/';
 			} elseif( $uri_index == $depth ) {
@@ -102,7 +107,7 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
 			$cache_file .= '_index';
 		}
 		// Check if no changes have been made since last cache file write
-		if( file_exists($cache_file) && filemtime($cache_file) > $last_change ) {
+		if( $pull_from_cache == 'yes' && file_exists($cache_file) && filemtime($cache_file) > $last_change ) {
 			$page_content = file_get_contents($cache_file);
 			$cache_update = 'no';
 //			error_log("CACHE: $last_change - " . $cache_file);

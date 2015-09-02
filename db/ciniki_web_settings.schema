@@ -31,6 +31,10 @@
 # - site-header-image = image to use in the header of the page
 # - site-google-analytics-account = The account code for google analytics eg: UA-32107818-1
 #
+# Private theme settings
+# - site-privatetheme-updated 		= The last updated time the theme was updated in the database
+# - site-privatetheme-active 		= The permalink of the current active theme
+#
 # Featured on master business homepage
 # - site-featured = yes
 #

@@ -301,6 +301,10 @@ $ciniki['session']['business_id'] = $ciniki['request']['business_id'];
 if( isset($ciniki['business']['uuid']) && $ciniki['business']['uuid'] != '' ) {
 	$ciniki['business']['cache_dir'] = $ciniki['config']['ciniki.core']['cache_dir'] . '/'
 		. $ciniki['business']['uuid'][0] . '/' . $ciniki['business']['uuid'];
+	$ciniki['business']['web_cache_dir'] = $ciniki['request']['cache_dir'] . '/' 
+		. $ciniki['business']['uuid'][0] . $ciniki['business']['uuid'][1] . '/' . $ciniki['business']['uuid'];
+	$ciniki['business']['web_cache_url'] = $ciniki['request']['cache_url'] . '/'
+		. $ciniki['business']['uuid'][0] . $ciniki['business']['uuid'][1] . '/' . $ciniki['business']['uuid'];
 }
 
 //

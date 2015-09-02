@@ -143,6 +143,44 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	}
 
 	//
+	// Check for private theme files
+	//
+	if( isset($ciniki['business']['modules']['ciniki.web']['flags']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x0100) > 0 ) {
+		//
+		// Check if theme files in directory are up to date
+		//
+		if( !isset($settings['site-privatetheme-active'])
+			|| $settings['site-privatetheme-active'] == ''
+			|| !file_exists($theme_cache_dir . '/' . $settings['site-privatetheme-active']) 
+			|| !isset($settings['site-privatetheme-updated']) 
+			|| filemtime($theme_cache_dir . '/' . $settings['site-privatetheme-active']) < $settings['site-privatetheme-updated']
+			) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'updatePrivateTheme');
+			$rc = ciniki_web_updatePrivateTheme($ciniki, $ciniki['request']['business_id'], $settings);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+		}
+
+		if( isset($settings['site-privatetheme-active']) && $settings['site-privatetheme-active'] != '' ) {
+			$theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-active'];
+			$theme_cache_url = $ciniki['business']['web_cache_url'] . '/' . $settings['site-privatetheme-active'];
+			//
+			// Include the private theme files
+			//
+			if( file_exists($theme_cache_dir . '/style.css') ) {
+				$content .= "<link rel='stylesheet' type='text/css' media='all' href='$theme_cache_url/style.css' />\n";
+			}
+			if( file_exists($theme_cache_dir . '/print.css') ) {
+				$content .= "<link rel='stylesheet' type='text/css' media='print' href='$theme_cache_url/print.css' />\n";
+			}
+			if( file_exists($theme_cache_dir . '/code.js') ) {
+				$content .= "<script type='text/javascript' src='$theme_cache_url/code.js' />\n";
+			}
+		}
+	}
+
+	//
 	// Check head links
 	//
 	if( isset($ciniki['response']['head']['links']) ) {

@@ -1,0 +1,29 @@
+#
+# Description
+# -----------
+# This table contains any images that are used as part of the theme.
+#
+# Fields
+# ------
+# id:				The ID for the slider image.
+# uuid:				The Universal Unique ID.
+# business_id:		The business the domain is part of.
+#
+# theme_id:			The ID of the theme the image is attached to.
+# image_id:			The ID of the image attached to the theme.
+#
+# date_added:		The date and time the domain was added to the table.
+# last_updated:		The date and time the domain was last updated.
+#
+create table ciniki_web_theme_images (
+	id int not null auto_increment,
+	uuid char(36) not null,
+	business_id int not null,
+	theme_id int not null,
+	image_id int not null,	
+	date_added datetime not null,
+	last_updated datetime not null,
+	primary key (id),
+	unique index (uuid),
+	index sync (business_id, uuid, last_updated)
+) ENGINE='InnoDB', COMMENT='v1.01';

@@ -1,2 +1,8 @@
 The web module delivers the website for the business.  Information for the web
 pages may be from other modules.  
+
+The custom themes are stored in ciniki_web_themes and used for businesses who want a private theme.
+The custom themes are based on an existing theme as a starting point and add to it. This way any problems
+should be taken care of by the existing theme.
+All information is stored in the database so it's transferable and generates to web cache as required.
+
