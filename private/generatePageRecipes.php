@@ -31,12 +31,14 @@ function ciniki_web_generatePageRecipes($ciniki, $settings) {
 	//
 	$download_err = '';
 	if( isset($ciniki['business']['modules']['ciniki.recipes'])
-		&& isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != ''
-		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] == 'download'
-		&& isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' ) {
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'recipes', 'web', 'fileDownload');
-		$rc = ciniki_recipes_web_fileDownload($ciniki, $ciniki['request']['business_id'], 
-			$ciniki['request']['uri_split'][0], $ciniki['request']['uri_split'][2]);
+		&& isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'download'
+		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != ''
+		&& isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' 
+		&& preg_match("/^(.*)\.pdf$/", $ciniki['request']['uri_split'][2], $matches)
+		) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'recipes', 'web', 'downloadPDF');
+		$rc = ciniki_recipes_web_downloadPDF($ciniki, $settings, $ciniki['request']['business_id'], 
+			$matches[1], array('layout'=>$ciniki['request']['uri_split'][1]));
 		if( $rc['stat'] == 'ok' ) {
 			header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 			header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
@@ -495,6 +497,18 @@ function ciniki_web_generatePageRecipes($ciniki, $settings) {
 				$page_content .= "<h2>Instructions</h2>";
 				$page_content .= $rc['content'];
 			}
+
+			//
+			// Add print options
+			//
+//			$page_content .= "<p><b>Printing Options</b><br/>"
+//				. "You can download and print a PDF version of this recipe, formatted for 8.5\" x 11\" paper. "
+//				. "</p><p>"
+//				. "<a target='_blank' href='" . $ciniki['request']['base_url'] . '/recipes/download/single/' . $recipe['permalink'] . ".pdf'>Large</a><br/>"
+//				. "</p>";
+			$page_content .= "<p>"
+				. "<a target='_blank' href='" . $ciniki['request']['base_url'] . '/recipes/download/single/' . $recipe['permalink'] . ".pdf'>Print this recipe</a><br/>"
+				. "</p>";
 
 			//
 			// Display the categories and tags for the blog post
