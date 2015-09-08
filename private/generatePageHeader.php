@@ -98,6 +98,10 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	if( file_exists($ciniki['request']['theme_dir'] . '/' . $settings['site-theme'] . '/style.css') ) {
 		$content .= "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['theme_url'] 
 			. '/' . $settings['site-theme'] . "/style.css' />\n";
+		if( file_exists($ciniki['request']['theme_dir'] . '/' . $settings['site-theme'] . '/extras.css') ) {
+			$content .= "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['theme_url'] 
+				. '/' . $settings['site-theme'] . "/extras.css' />\n";
+		}
 		if( file_exists($ciniki['request']['theme_dir'] . '/' . $settings['site-theme'] . '/ie9.css') ) {
 			$content .= "<!--[if (IE 9) & (!IEMobile)]>\n"
 				. "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['theme_url'] 

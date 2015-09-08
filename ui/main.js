@@ -32,6 +32,7 @@ function ciniki_web_main() {
 		this.themesAvailable['field'] = 'Field - Green/White';
 		this.themesAvailable['redbrick'] = 'Red Brick';
 		this.themesAvailable['orangebrick'] = 'Orange Brick';
+		this.themesAvailable['splatter'] = 'Splatter';
 	}
 	this.headerImageSize = {'small':'Small', 'medium':'Medium', 'large':'Large', 'xlarge':'XLarge', 'xxlarge':'XXLarge'};
 	

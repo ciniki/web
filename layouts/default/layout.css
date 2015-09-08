@@ -36,6 +36,14 @@ header span.title {
 	border: 0px;
 }
 
+#sub-menu-container ul.menu li.menu-item a,
+#main-menu-container ul.menu li.menu-item a {
+	width: auto;
+	height: auto;
+	padding: 0px;
+	display: inline;
+}
+
 #sub-menu-container ul.menu li.compact-hidden, 
 #main-menu-container ul.menu li.compact-hidden {
 	display: inline-block;

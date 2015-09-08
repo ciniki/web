@@ -46,6 +46,13 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
 		$content .= $rc['content'];
 	}
 
+	//
+	// Check for theme copyrights
+	//
+	if( file_exists($ciniki['request']['theme_dir'] . '/' . $settings['site-theme'] . '/copyright.html') ) {
+		$content .= "<span class='poweredby'>" . file_get_contents($ciniki['request']['theme_dir'] . '/' . $settings['site-theme'] . '/copyright.html') . "</span><br/>";
+	}
+
 	if( $ciniki['config']['ciniki.web']['poweredby.url'] != '' && $ciniki['config']['ciniki.core']['master_business_id'] != $ciniki['request']['business_id'] ) {
 		$content .= "<span class='poweredby'>Powered by <a href='" . $ciniki['config']['ciniki.web']['poweredby.url'] . "'>" . $ciniki['config']['ciniki.web']['poweredby.name'] . "</a></span>"
 			. "";

@@ -273,7 +273,14 @@ nav {
 #sub-menu-container ul.menu li.menu-item,
 #main-menu-container ul.menu li.menu-item {
 	display: block;
-	padding: 0.5em;
+	padding: 0em;
+}
+
+#sub-menu-container ul.menu li.menu-item a,
+#main-menu-container ul.menu li.menu-item a {
+	display: inline-block;
+	width: 100%;
+	padding: 0.5em 0 0.5em 0;
 }
 
 #sub-menu-container ul.menu li.compact-hidden,
