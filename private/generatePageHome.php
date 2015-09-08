@@ -883,7 +883,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 		if( isset($rc['categories']) ) {
 			$page_content .= "<article class='page page-home'>\n"
 				. "<header class='entry-title'><h1 class='entry-title'>";
-			if( isset($settings['page-home-upcoming-events-title']) && $settings['page-home-upcoming-events-title'] != '' ) {
+			if( isset($settings['page-home-writings-covers-title']) && $settings['page-home-writings-covers-title'] != '' ) {
 				$page_content .= $settings['page-home-writings-covers-title'];
 			} else {
 				$page_content .= "Writings";
