@@ -113,6 +113,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-home-upcoming-artgalleryexhibitions-title',
 		'page-home-upcoming-artgalleryexhibitions-more',
 		'page-home-upcoming-artgalleryexhibitions-number',
+		'page-home-writings-covers',
+		'page-home-writings-covers-title',
 		'page-home-image',
 		'page-home-image-caption',
 		'page-home-image-url',

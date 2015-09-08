@@ -454,6 +454,10 @@ function ciniki_web_main() {
 				'page-home-products-latest-more':{'label':'More', 'active':'yes', 'type':'text', 'hint':'... more products'},
 				'page-home-products-latest-number':{'label':'Number of products', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
 				}},
+			'_writings':{'label':'Writings', 'aside':'yes', 'active':'no', 'fields':{
+				'page-home-writings-covers':{'label':'Display Book Covers', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+				'page-home-writings-covers-title':{'label':'Title', 'active':'yes', 'type':'text', 'hint':'Books'},
+				}},
 			'_slider':{'label':'Image Slider', 'aside':'yes', 'active':'no', 'fields':{
 				'page-home-slider':{'label':'Slider', 'active':'no', 'type':'select', 'options':{}},
 				}},
@@ -1647,6 +1651,7 @@ function ciniki_web_main() {
 		this.home.sections._events.active=(M.curBusiness.modules['ciniki.events']!=null)?'yes':'no';
 		this.home.sections._filmschedule.active=(M.curBusiness.modules['ciniki.filmschedule']!=null)?'yes':'no';
 		this.home.sections._products.active=(M.curBusiness.modules['ciniki.products']!=null)?'yes':'no';
+		this.home.sections._writings.active=(M.curBusiness.modules['ciniki.writingcatalog']!=null)?'yes':'no';
 		this.home.sections._workshops.active = (M.curBusiness.modules['ciniki.workshops']!=null)?'yes':'no';
 		this.home.sections._artgalleryexhibitions.active=(M.curBusiness.modules['ciniki.artgallery']!=null)?'yes':'no';
 

@@ -29,7 +29,6 @@ function ciniki_web_processSponsorImages($ciniki, $settings, $base_url, $sponsor
 	//
 	$content = '';
 
-
 	$maxlength = 125;
 	$size_class = 'small';
 	switch($size) {

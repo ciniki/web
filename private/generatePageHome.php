@@ -866,6 +866,47 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 	}
 
 	//
+	// Show Book Covers
+	//
+	if( isset($ciniki['business']['modules']['ciniki.writingcatalog']) 
+		&& isset($settings['page-writings-active']) && $settings['page-writings-active'] == 'yes' 
+		&& (!isset($settings['page-home-writings-covers']) || $settings['page-home-writings-covers'] == 'yes') 
+		) {
+		//
+		// Load and parse the writing catalog
+		//
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'writingcatalog', 'web', 'writingCovers');
+		$rc = ciniki_writingcatalog_web_writingCovers($ciniki, $settings, $ciniki['request']['business_id'], array());
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		if( isset($rc['categories']) ) {
+			$page_content .= "<article class='page page-home'>\n"
+				. "<header class='entry-title'><h1 class='entry-title'>";
+			if( isset($settings['page-home-upcoming-events-title']) && $settings['page-home-upcoming-events-title'] != '' ) {
+				$page_content .= $settings['page-home-writings-covers-title'];
+			} else {
+				$page_content .= "Writings";
+			}
+			$page_content .= "</h1></header>";
+			$page_content .= "<div class='sponsor-gallery'>";
+			$categories = $rc['categories'];
+			foreach($categories as $cat) {
+				if( isset($cat['list']) ) {
+					ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processSponsorImages');
+					$rc = ciniki_web_processSponsorImages($ciniki, $settings, $ciniki['request']['base_url'] . '/writings', $cat['list'], '40');
+					if( $rc['stat'] != 'ok' ) {
+						return $rc;
+					}
+					$page_content .= $rc['content'];
+				}
+			}
+			$page_content .= "</div>";
+			$page_content .= "</article>\n";
+		}
+	}
+
+	//
 	// Check if there are any sponsors
 	//
 	if( isset($ciniki['business']['modules']['ciniki.sponsors']) 
