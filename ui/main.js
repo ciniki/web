@@ -26,13 +26,14 @@ function ciniki_web_main() {
 		'black':'Midnight - Blue/Black',
 		'davinci':'Davinci - Brown/Beige',
 		'orangebrick':'Orange Brick - Brown/Beige',
+		'splatter':'Purple Splatter - Purple/White',
 //		'field':'Field - Green/White',
 		};
 	if( M.userPerms&0x01 == 0x01 ) {
 		this.themesAvailable['field'] = 'Field - Green/White';
 		this.themesAvailable['redbrick'] = 'Red Brick';
-		this.themesAvailable['orangebrick'] = 'Orange Brick';
-		this.themesAvailable['splatter'] = 'Splatter';
+//		this.themesAvailable['orangebrick'] = 'Orange Brick';
+//		this.themesAvailable['splatter'] = 'Splatter';
 	}
 	this.headerImageSize = {'small':'Small', 'medium':'Medium', 'large':'Large', 'xlarge':'XLarge', 'xxlarge':'XXLarge'};
 	
@@ -183,7 +184,7 @@ function ciniki_web_main() {
 		//
 		this.theme = new M.panel('Color Scheme',
 			'ciniki_web_main', 'theme',
-			'mc', 'narrow', 'sectioned', 'ciniki.web.main.theme');
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.theme');
 		this.theme.data = {'site-theme':'default'};
 		this.theme.sections = {
 			'_theme':{'label':'', 'fields':{
