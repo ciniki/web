@@ -190,6 +190,48 @@ function ciniki_web_objects($ciniki) {
 			),
 		'history_table'=>'ciniki_web_history',
 		);
+	$objects['theme'] = array(
+		'name'=>'Web Theme',
+		'o_name'=>'theme',
+		'o_container'=>'themes',
+		'sync'=>'yes',
+		'table'=>'ciniki_web_themes',
+		'fields'=>array(
+			'name'=>array(),
+			'permalink'=>array(),
+			'status'=>array('default'=>'10'),
+			),
+		'history_table'=>'ciniki_web_history',
+		);
+	$objects['theme_content'] = array(
+		'name'=>'Web Theme Content',
+		'o_name'=>'content',
+		'o_container'=>'content',
+		'sync'=>'yes',
+		'table'=>'ciniki_web_theme_content',
+		'fields'=>array(
+			'theme_id'=>array('ref'=>'ciniki.web.theme'),
+			'name'=>array('default'=>''),
+			'status'=>array('default'=>'10'),
+			'sequence'=>array('default'=>'1'),
+			'type'=>array('default'=>''),
+			'media'=>array('default'=>''),
+			'content'=>array('default'=>''),
+			),
+		'history_table'=>'ciniki_web_history',
+		);
+	$objects['theme_image'] = array(
+		'name'=>'Web Theme Image',
+		'o_name'=>'image',
+		'o_container'=>'images',
+		'sync'=>'yes',
+		'table'=>'ciniki_web_theme_images',
+		'fields'=>array(
+			'theme_id'=>array('ref'=>'ciniki.web.theme'),
+			'image_id'=>array('ref'=>'ciniki.images.image'),
+			),
+		'history_table'=>'ciniki_web_history',
+		);
 	
 	return array('stat'=>'ok', 'objects'=>$objects);
 }

@@ -91,6 +91,7 @@ function ciniki_web_main() {
 				'addFn':'M.startApp(\'ciniki.web.pages\',null,\'M.ciniki_web_main.showMenu();\',\'mc\',{\'page_id\':0,\'parent_id\':0});',
 				},
 			'advanced':{'label':'Advanced', 'list':{
+				'privatethemes':{'label':'Private Themes', 'visible':'no', 'fn':'M.startApp(\'ciniki.web.privatethemes\',null,\'M.ciniki_web_main.showMenu();\');'},
 				'header':{'label':'Header', 'fn':'M.ciniki_web_main.showHeader(\'M.ciniki_web_main.showMenu();\');'},
 				'social':{'label':'Social Media Links', 'fn':'M.startApp(\'ciniki.web.social\',null,\'M.ciniki_web_main.showMenu();\');'},
 				'collections':{'label':'Web Collections', 'visible':'no', 'fn':'M.startApp(\'ciniki.web.collections\',null,\'M.ciniki_web_main.showMenu();\');'},
@@ -303,9 +304,6 @@ function ciniki_web_main() {
 			'_analytics':{'label':'Google Analytics User Account', 'fields':{
 				'site-google-analytics-account':{'label':'', 'type':'text', 'hidelabel':'yes'},
 				}},
-			'_verification':{'label':'Google Meta Tag Verification', 'fields':{
-				'site-google-site-verification':{'label':'', 'type':'text', 'hidelabel':'yes'},
-				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'google\');'},
 				}},
@@ -320,11 +318,14 @@ function ciniki_web_main() {
 		//
 		this.meta = new M.panel('Meta Settings',
 			'ciniki_web_main', 'meta',
-			'mc', 'narrow', 'sectioned', 'ciniki.web.main.meta');
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.meta');
 		this.meta.data = {'site-google-analytics-account':'0'};
 		this.meta.sections = {
 			'_meta':{'label':'Meta Settings', 'fields':{
 				'site-meta-robots':{'label':'Robots', 'type':'text'},
+				}},
+			'_pinterest':{'label':'Pinterest Domain Verification', 'fields':{
+				'site-pinterest-site-verification':{'label':'content=', 'type':'text', 'hidelabel':'yes'},
 				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'meta\');'},
@@ -1642,6 +1643,11 @@ function ciniki_web_main() {
 				this.menu.sections.pages.addTxt = 'Add Page';
 			} else {
 				this.menu.sections.pages.addTxt = '';
+			}
+			if( (M.curBusiness.modules['ciniki.web'].flags&0x0100) > 0 ) {
+				this.menu.sections.advanced.list.privatethemes.visible = 'yes';
+			} else {
+				this.menu.sections.advanced.list.privatethemes.visible = 'no';
 			}
 		}
 		this.home.sections._slideshow.active=(M.curBusiness.modules['ciniki.artcatalog']!=null)?'yes':'no';

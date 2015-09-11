@@ -387,6 +387,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 //		'site-logo-display',
 		'site-google-analytics-account',
 		'site-google-site-verification',
+		'site-pinterest-site-verification',
 		'site-featured',
 		'site-custom-css',
 		'site-meta-robots',
