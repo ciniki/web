@@ -92,6 +92,7 @@ function ciniki_web_main() {
 				},
 			'advanced':{'label':'Advanced', 'list':{
 				'privatethemes':{'label':'Private Themes', 'visible':'no', 'fn':'M.startApp(\'ciniki.web.privatethemes\',null,\'M.ciniki_web_main.showMenu();\');'},
+				'metatags':{'label':'Meta Tags', 'fn':'M.ciniki_web_main.showSiteSettings(\'M.ciniki_web_main.showMenu();\',\'metatags\');'},
 				'header':{'label':'Header', 'fn':'M.ciniki_web_main.showHeader(\'M.ciniki_web_main.showMenu();\');'},
 				'social':{'label':'Social Media Links', 'fn':'M.startApp(\'ciniki.web.social\',null,\'M.ciniki_web_main.showMenu();\');'},
 				'collections':{'label':'Web Collections', 'visible':'no', 'fn':'M.startApp(\'ciniki.web.collections\',null,\'M.ciniki_web_main.showMenu();\');'},
@@ -304,6 +305,9 @@ function ciniki_web_main() {
 			'_analytics':{'label':'Google Analytics User Account', 'fields':{
 				'site-google-analytics-account':{'label':'', 'type':'text', 'hidelabel':'yes'},
 				}},
+			'_verification':{'label':'Google Site Verification', 'fields':{
+				'site-google-site-verification':{'label':'', 'type':'text', 'hidelabel':'yes'},
+				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'google\');'},
 				}},
@@ -312,6 +316,26 @@ function ciniki_web_main() {
 		this.google.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.google.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'google\');');
 		this.google.addClose('Cancel');
+
+		//
+		// The panel to allow the user to meta tags for your site
+		//
+		this.metatags = new M.panel('Meta Tags',
+			'ciniki_web_main', 'metatags',
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.metatags');
+		this.metatags.data = {'site-google-analytics-account':'0'};
+		this.metatags.sections = {
+			'_pinterest':{'label':'Pinterest Domain Verification', 'fields':{
+				'site-pinterest-site-verification':{'label':'content', 'type':'text'},
+				}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'metatags\');'},
+				}},
+		};
+		this.metatags.fieldValue = this.fieldValue;
+		this.metatags.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.metatags.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'metatags\');');
+		this.metatags.addClose('Cancel');
 
 		//
 		// The panel to allow the user to setup google analytics
@@ -323,9 +347,6 @@ function ciniki_web_main() {
 		this.meta.sections = {
 			'_meta':{'label':'Meta Settings', 'fields':{
 				'site-meta-robots':{'label':'Robots', 'type':'text'},
-				}},
-			'_pinterest':{'label':'Pinterest Domain Verification', 'fields':{
-				'site-pinterest-site-verification':{'label':'content=', 'type':'text', 'hidelabel':'yes'},
 				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'meta\');'},
