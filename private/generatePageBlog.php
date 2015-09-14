@@ -300,12 +300,11 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 		} else {
 			$page_content .= "<p>Currently no posts.</p>";
 		}
+		$page_content .= "</div>";
 		$page_content .= "</article>";
 		if( $nav_content != '' ) {
 			$page_content .= $nav_content;
 		}
-		$page_content .= "</div>"
-			. "";
 	}
 
 	//
@@ -352,14 +351,18 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 	// Display the archive of month posts
 	//
 	elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'archive'
-		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' ) {
+		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' 
+		&& preg_match("/^[0-9][0-9][0-9][0-9]$/", $ciniki['request']['uri_split'][1])
+		) {
 
 		ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'posts');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 
 		$year = $ciniki['request']['uri_split'][1];
-		if( isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' ) {
+		if( isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' 
+			&& preg_match("/^[0-9][0-9]$/", $ciniki['request']['uri_split'][2]) 
+			) {
 			$month = $ciniki['request']['uri_split'][2];
 			$page_title .= ' - ' . date_format(date_create($year . '-' . $month . '-01'), 'M Y');
 			$nav_base_url = $ciniki['request']['base_url'] . "/$blogtype/" . $ciniki['request']['uri_split'][0] 
@@ -403,12 +406,11 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 		} else {
 			$page_content .= "<p>Currently no posts.</p>";
 		}
+		$page_content .= "</div>";
 		$page_content .= "</article>";
 		if( isset($nav_content) && $nav_content != '' ) {
 			$page_content .= $nav_content;
 		}
-		$page_content .= "</div>"
-			. "";
 	}
 
 	//
@@ -454,9 +456,7 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 			$page_content .= "<p>Currently no posts.</p>";
 		}
 
-		$page_content .= "</article>"
-			. "</div>"
-			. "";
+		$page_content .= "</div></article>";
 	}
 
 	//
@@ -544,7 +544,7 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 			$page_content .= $rc['content'];
 			$nav_content = $rc['nav'];
 		}
-		$page_content .= "</article>";
+		$page_content .= "</div></article>";
 		if( isset($nav_content) && $nav_content != '' ) {
 			$page_content .= $nav_content;
 		}

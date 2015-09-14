@@ -129,6 +129,11 @@ header span.title {
 	max-width: 100%;
 }
 
+#content dl.wide {
+	width: auto;
+	max-width: 100%;
+}
+
 #content article.page form.wide {
 	width: 100%;
 	max-width: 100%;
