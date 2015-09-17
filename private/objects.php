@@ -214,7 +214,7 @@ function ciniki_web_objects($ciniki) {
 			'name'=>array('default'=>''),
 			'status'=>array('default'=>'10'),
 			'sequence'=>array('default'=>'1'),
-			'type'=>array('default'=>''),
+			'content_type'=>array('default'=>''),
 			'media'=>array('default'=>''),
 			'content'=>array('default'=>''),
 			),
@@ -229,6 +229,7 @@ function ciniki_web_objects($ciniki) {
 		'fields'=>array(
 			'theme_id'=>array('ref'=>'ciniki.web.theme'),
 			'image_id'=>array('ref'=>'ciniki.images.image'),
+			'name'=>array(),
 			),
 		'history_table'=>'ciniki_web_history',
 		);

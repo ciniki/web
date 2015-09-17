@@ -72,11 +72,14 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, &$settings) {
 	// Setup the cache directory
 	//
 	$theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-active'];
+	if( !file_exists($theme_cache_dir) ) {
+		mkdir($theme_cache_dir, 0755, true);
+	}
 
 	//
 	// Load the list of javascript and css content from the database
 	//
-	$strsql = "SELECT id, type, media, content "
+	$strsql = "SELECT id, content_type, media, content "
 		. "FROM ciniki_web_theme_content "
 		. "WHERE ciniki_web_theme_content.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
 		. "AND ciniki_web_theme_content.theme_id = '" . ciniki_core_dbQuote($ciniki, $theme_id) . "' "
@@ -84,8 +87,8 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, &$settings) {
 		. "ORDER BY media, sequence "
 		. "";
 	$rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.web', array(
-		array('container'=>'type', 'fname'=>'type',
-			'fields'=>array('type')),
+		array('container'=>'types', 'fname'=>'content_type',
+			'fields'=>array('content_type')),
 		array('container'=>'media', 'fname'=>'media',
 			'fields'=>array('media')),
 		array('container'=>'content', 'fname'=>'id',
@@ -107,11 +110,11 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, &$settings) {
 		foreach($rc['types'] as $type) {
 			if( isset($type['media']) ) {
 				foreach($type['media'] as $media) {
-					if( $type['type'] == 'css' && $media['media'] == 'all' ) {
+					if( $type['content_type'] == 'css' && $media['media'] == 'all' ) {
 						$setting = 'site-privatetheme-css-all';
-					} elseif( $type['type'] == 'css' && $media['media'] == 'print' ) {
+					} elseif( $type['content_type'] == 'css' && $media['media'] == 'print' ) {
 						$setting = 'site-privatetheme-css-print';
-					} elseif( $type['type'] == 'js' ) {
+					} elseif( $type['content_type'] == 'js' ) {
 						$setting = 'site-privatetheme-js';
 					} else {
 						// Ignore unknown content
@@ -119,7 +122,7 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, &$settings) {
 					}
 					if( isset($media['content']) ) {
 						foreach($media['content'] as $type_media_content) {
-							$allcontent[$setting]['content'] .= $type_media_content;
+							$allcontent[$setting]['content'] .= $type_media_content['content'];
 						}
 					}
 				}
@@ -137,24 +140,6 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, &$settings) {
 			//
 			if( !file_put_contents($theme_cache_dir . '/' . $content['filename'], $content['content']) ) {
 				error_log('WEB-ERR: Unable to write cache theme file: ' . $theme_cache_dir . '/' . $content['filename']);
-			} else {
-				//
-				// Save the setting
-				//
-/*				if( !isset($settings[$setting]) || $settings[$setting] != $content['filename'] ) {
-					$strsql = "UPDATE ciniki_web_settings "
-						. "SET detail_value = '', last_updated = UTC_TIMESTAMP() "
-						. "WHERE ciniki_web_settings.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
-						. "AND ciniki_web_settings.detail_key = '" . ciniki_core_dbQuote($ciniki, $setting) . "' "
-						. "";
-					$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.web');
-					if( $rc['stat'] != 'ok' ) {
-						error_log('WEB-ERR: Unable to remove web setting: ' . $setting);
-					} else {
-						ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $business_id,
-							2, 'ciniki_web_settings', $setting, 'detail_value', );
-					}
-				} */
 			}
 		} else {
 			//
@@ -165,23 +150,6 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, &$settings) {
 					error_log('WEB-ERR: Unable to remove cache theme file: ' . $theme_cache_dir . '/' . $settings['filename']);
 				}
 			}
-			//
-			// Remove the setting if it exists, not using settings after all
-			//
-/*			if( isset($settings[$setting]) && $settings[$setting] != '' ) {
-				$strsql = "UPDATE ciniki_web_settings "
-					. "SET detail_value = '', last_updated = UTC_TIMESTAMP() "
-					. "WHERE ciniki_web_settings.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
-					. "AND ciniki_web_settings.detail_key = '" . ciniki_core_dbQuote($ciniki, $setting) . "' "
-					. "";
-				$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.web');
-				if( $rc['stat'] != 'ok' ) {
-					error_log('WEB-ERR: Unable to remove web setting: ' . $setting);
-				} else {
-					ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $business_id,
-						2, 'ciniki_web_settings', $setting, 'detail_value', '');
-				}
-			} */
 		}
 	}
 
@@ -211,7 +179,7 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, &$settings) {
 				// Load the image from the database
 				//
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'loadImage');
-				$rc = ciniki_images_loadImage($ciniki, $ciniki['request']['business_id'], $img['id'], $version);
+				$rc = ciniki_images_loadImage($ciniki, $ciniki['request']['business_id'], $img['id'], 'original');
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
@@ -230,11 +198,6 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, &$settings) {
 			}
 		}
 	}
-
-	//
-	// Update the settings variable and settings in the database for this business
-	// with the cache file names if required
-	//
 
 	//
 	// Update the directory timestamp

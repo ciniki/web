@@ -169,6 +169,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		if( isset($settings['site-privatetheme-active']) && $settings['site-privatetheme-active'] != '' ) {
 			$theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-active'];
 			$theme_cache_url = $ciniki['business']['web_cache_url'] . '/' . $settings['site-privatetheme-active'];
+			error_log($theme_cache_dir);
 			//
 			// Include the private theme files
 			//

@@ -52,7 +52,7 @@ function ciniki_web_pageUpdate(&$ciniki) {
 	//
 	// Get the existing page details 
 	//
-	$strsql = "SELECT id, parent_id, uuid "
+	$strsql = "SELECT id, parent_id, uuid, sequence "
 		. "FROM ciniki_web_pages "
 		. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
 		. "AND id = '" . ciniki_core_dbQuote($ciniki, $args['page_id']) . "' "
@@ -65,6 +65,8 @@ function ciniki_web_pageUpdate(&$ciniki) {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2202', 'msg'=>'Page not found'));
 	}
 	$item = $rc['item'];
+	$old_sequence = $rc['item']['sequence'];
+	$parent_id = $rc['item']['parent_id'];
 
 	if( isset($args['title']) ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'makePermalink');
@@ -91,7 +93,7 @@ function ciniki_web_pageUpdate(&$ciniki) {
 	//
 	// Grab the old sequence
 	//
-	if( isset($args['sequence']) ) {
+/*	if( isset($args['sequence']) ) {
 		$strsql = "SELECT id, parent_id, sequence "
 			. "FROM ciniki_web_pages "
 			. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['page_id']) . "' "
@@ -104,9 +106,8 @@ function ciniki_web_pageUpdate(&$ciniki) {
 		if( !isset($rc['item']) ) {
 			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2204', 'msg'=>'Unable to find page'));
 		}
-		$old_sequence = $rc['item']['sequence'];
-		$parent_id = $rc['item']['parent_id'];
 	}
+*/
 
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionStart');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionRollback');

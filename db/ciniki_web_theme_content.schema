@@ -18,7 +18,7 @@
 #						50 - Inactive
 #
 # sequence:				The order the content should be added to the page.
-# type:					The type of content
+# content_type:			The type of content
 #
 #						css - The text/css content
 #						js - Javascription content
@@ -41,7 +41,7 @@ create table ciniki_web_theme_content (
 	name varchar(150) not null,
 	status tinyint unsigned not null,
 	sequence tinyint unsigned not null,
-	type varchar(50) not null,
+	content_type varchar(50) not null,
 	media varchar(50) not null,
 	content text not null,
 	date_added datetime not null,
