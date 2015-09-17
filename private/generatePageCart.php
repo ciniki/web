@@ -715,7 +715,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 				. "</script>\n"
 				. "";
 			
-			$content .= "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' class='wide' method='POST' onsubmit='check_cart()'>";
+			$content .= "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' class='wide' method='POST' >";
 			$content .= "<input type='hidden' name='action' value='update'/>";
 			if( $cart_err_msg != '' ) {
 				$content .= $cart_err_msg;
@@ -974,7 +974,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 						. "</span>";
 				} else {
 					$content .= "<span class='cart-submit'>"
-						. "<input class='cart-submit' type='submit' name='submitorder' value='Submit Order'/>"
+						. "<input class='cart-submit' type='submit' name='submitorder' value='Submit Order' onclick='return check_cart();'/>"
 						. "</span>";
 				}
 			} else {
