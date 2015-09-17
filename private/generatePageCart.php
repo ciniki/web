@@ -417,8 +417,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 			. "		}\n"
 			. "		return true;\n"
 			. "	}\n"
-			. "</script>"
-			. "";
+			. "</script>\n";
 //			$content .= "<div class='entry-content'>";
 		$content .= "<div id='signin-form' style='display:" . ($display_signup=='yes'?'block':'none') . ";'>\n";
 		$content .= "<h2>Existing Account</h2>";
@@ -702,7 +701,21 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		// Display cart items
 		//
 		if( $cart != NULL && isset($cart['items']) && count($cart['items']) > 0 ) {
-			$content .= "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' class='wide' method='POST'>";
+			$ciniki['request']['inline_javascript'] .= "<script type='text/javascript'>\n"
+				. " function check_cart() {\n";
+			if( isset($settings['page-cart-po-number']) && $settings['page-cart-po-number'] != 'no' ) {
+				$ciniki['request']['inline_javascript'] .= "		if(document.getElementById('po_number').value == '' ) {\n"
+					. "			alert('You need to enter a PO number before you can submit the order.');\n"
+					. "			return false;\n"
+					. "		}\n";
+			}
+			$ciniki['request']['inline_javascript'] .= ""
+				. "return true;\n"
+				. "}\n"
+				. "</script>\n"
+				. "";
+			
+			$content .= "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' class='wide' method='POST' onsubmit='check_cart()'>";
 			$content .= "<input type='hidden' name='action' value='update'/>";
 			if( $cart_err_msg != '' ) {
 				$content .= $cart_err_msg;
