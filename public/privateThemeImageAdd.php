@@ -41,7 +41,7 @@ function ciniki_web_privateThemeImageAdd(&$ciniki) {
 	//
 	if( !isset($args['name']) || $args['name'] == '' ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'hooks', 'imageDetails');
-		$rc = ciniki_images_hooks_imageDetails($ciniki, $args['business_id'], $args['image_id']);
+		$rc = ciniki_images_hooks_imageDetails($ciniki, $args['business_id'], array('image_id'=>$args['image_id']));
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
