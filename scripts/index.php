@@ -456,7 +456,7 @@ if( isset($ciniki['config']['ciniki.core']['packages'])
 // Process the request
 //
 // Master Home page
-if( $ciniki['request']['page'] == 'masterindex' && $settings['page-home-active'] == 'yes' ) {
+if( $ciniki['request']['page'] == 'masterindex' && isset($settings['page-home-active']) && $settings['page-home-active'] == 'yes' ) {
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generateMasterIndex.php');
 	$rc = ciniki_web_generateMasterIndex($ciniki, $settings);
 } 

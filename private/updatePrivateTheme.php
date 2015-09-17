@@ -145,9 +145,9 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, &$settings) {
 			//
 			// Remove the file if it exists
 			//
-			if( file_exists($theme_cache_dir . '/' . $setting['filename']) ) {
-				if( !unlink($theme_cache_dir . '/' . $setting['filename']) ) {
-					error_log('WEB-ERR: Unable to remove cache theme file: ' . $theme_cache_dir . '/' . $settings['filename']);
+			if( file_exists($theme_cache_dir . '/' . $content['filename']) ) {
+				if( !unlink($theme_cache_dir . '/' . $content['filename']) ) {
+					error_log('WEB-ERR: Unable to remove cache theme file: ' . $theme_cache_dir . '/' . $content['filename']);
 				}
 			}
 		}
