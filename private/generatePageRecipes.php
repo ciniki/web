@@ -465,6 +465,9 @@ function ciniki_web_generatePageRecipes($ciniki, $settings) {
 			if( isset($recipe['prep_time']) && $recipe['prep_time'] != '' ) {
 				$additional_info .= "<b>Prep Time</b>: " . $recipe['prep_time'] . " minutes<br/>";
 			}
+			if( isset($recipe['roast_time']) && $recipe['roast_time'] != '' ) {
+				$additional_info .= "<b>Roast Time</b>: " . $recipe['roast_time'] . " minutes<br/>";
+			}
 			if( isset($recipe['cook_time']) && $recipe['cook_time'] != '' ) {
 				$additional_info .= "<b>Cook Time</b>: " . $recipe['cook_time'] . " minutes<br/>";
 			}
