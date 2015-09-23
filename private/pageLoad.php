@@ -78,6 +78,9 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
 		. "ciniki_web_pages.title, "
 		. "ciniki_web_pages.permalink, "
 		. "ciniki_web_pages.sequence, "
+		. "ciniki_web_pages.page_type, "
+		. "ciniki_web_pages.page_redirect_url, "
+		. "ciniki_web_pages.page_module, "
 		. "ciniki_web_pages.flags, "
 		. "ciniki_web_pages.primary_image_id, "
 		. "ciniki_web_pages.primary_image_caption, "
@@ -114,7 +117,7 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
 	$rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.info', array(
 		array('container'=>'page', 'fname'=>'id',
 			'fields'=>array('id', 'parent_id', 
-				'title', 'permalink', 'sequence', 'flags',
+				'title', 'permalink', 'sequence', 'page_type', 'page_redirect_url', 'page_module', 'flags',
 				'image_id'=>'primary_image_id', 'image_caption'=>'primary_image_caption', 
 				'image_url'=>'primary_image_url', 'child_title', 'synopsis', 'content')),
 		array('container'=>'images', 'fname'=>'image_id', 

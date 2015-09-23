@@ -84,6 +84,9 @@ function ciniki_web_generateGalleryJavascript(&$ciniki, $next, $prev) {
 		. "}\n"
 		. "document.onkeydown = function(e) {"
 		. "";
+	//
+	// FIXME: Remove old code that uses permalink once transition to new web structure is completed (msg added sep 23, 2015)
+	//
 	if( $prev != null && isset($prev['permalink']) ) {
 		if( isset($prev['image_id']) && $prev['image_id'] > 0 ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
@@ -114,6 +117,36 @@ function ciniki_web_generateGalleryJavascript(&$ciniki, $next, $prev) {
 		$javascript .=  ""
 			. "if( e.keyCode == 39 || e.keyCode == 76 ) {"
 				. "document.location.href='" . $next['permalink'] . "';"
+			. "}";
+	}
+	if( $prev != null && isset($prev['url']) ) {
+		if( isset($prev['image_id']) && $prev['image_id'] > 0 ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+			$rc = ciniki_web_getScaledImageURL($ciniki, $prev['image_id'], 'original', 0, 600);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$img_url = $rc['url'];
+			$images .= "prev_pic = new Image(); prev_pic.src = '" . $img_url . "';";
+		}
+		$javascript .=  ""
+			. "if( e.keyCode == 37 || e.keyCode == 72 ) {"
+				. "document.location.href='" . $prev['url'] . "';"
+			. "}";
+	}
+	if( $next != null && isset($next['permalink']) ) {
+		if( isset($next['image_id']) && $next['image_id'] > 0 ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+			$rc = ciniki_web_getScaledImageURL($ciniki, $next['image_id'], 'original', 0, 600);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$img_url = $rc['url'];
+			$images .= "next_pic = new Image(); next_pic.src = '" . $img_url . "';";
+		}
+		$javascript .=  ""
+			. "if( e.keyCode == 39 || e.keyCode == 76 ) {"
+				. "document.location.href='" . $next['url'] . "';"
 			. "}";
 	}
 	$javascript .=  ""

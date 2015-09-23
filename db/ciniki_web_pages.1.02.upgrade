@@ -1,0 +1,7 @@
+#
+#
+ALTER TABLE ciniki_web_pages ADD COLUMN page_type tinyint unsigned not null AFTER sequence;
+UPDATE ciniki_web_pages SET page_type = 10;
+ALTER TABLE ciniki_web_pages ADD COLUMN page_redirect_url varchar(500) not null AFTER page_type;
+ALTER TABLE ciniki_web_pages ADD COLUMN page_module varchar(250) not null AFTER page_redirect_url;
+ALTER TABLE ciniki_web_pages COMMENT='v1.02';

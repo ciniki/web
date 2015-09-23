@@ -29,12 +29,27 @@ function ciniki_web_pages() {
 			//
 			this[pn] = new M.panel('Page',
 				'ciniki_web_pages', pn,
-				'mc', 'medium mediumaside', 'sectioned', 'ciniki.web.pages.edit');
+				'mc', 'medium', 'sectioned', 'ciniki.web.pages.edit');
 			this[pn].data = {};	
 			this[pn].stackedData = [];
 			this[pn].page_id = pid;
 			this[pn].sections = {
-				'_image':{'label':'', 'aside':'yes', 'fields':{
+				'details':{'label':'', 'aside':'yes', 'fields':{
+					'parent_id':{'label':'Parent Page', 'type':'select', 'options':{}},
+					'title':{'label':'Title', 'type':'text'},
+					'sequence':{'label':'Page Order', 'type':'text', 'size':'small'},
+					'_flags_1':{'label':'Visible', 'type':'flagtoggle', 'bit':0x01, 'field':'flags_1', 'default':'on'},
+				}},
+				'_page_type':{'label':'', 'visible':'no', 'fields':{
+					'page_type':{'label':'Page Type', 'type':'toggle', 'toggles':{}, 'onchange':'M.ciniki_web_pages[\'' + pn + '\'].setPageType();'},
+					}},
+				'_redirect':{'label':'Redirect', 'visible':'hidden', 'fields':{
+					'page_redirect_url':{'label':'URL', 'type':'text'},
+					}},
+				'_module':{'label':'Module', 'visible':'hidden', 'fields':{
+					'page_module':{'label':'Module', 'type':'select', 'options':{}},
+					}},
+				'_image':{'label':'', 'aside':'yes', 'visible':'hidden', 'fields':{
 					'primary_image_id':{'label':'', 'type':'image_id', 'hidelabel':'yes', 
 						'controls':'all', 'history':'no', 
 						'addDropImage':function(iid) {
@@ -45,49 +60,43 @@ function ciniki_web_pages() {
 						'deleteImage':'M.ciniki_web_pages.'+pn+'.deletePrimaryImage',
 						},
 				}},
-				'_image_caption':{'label':'', 'aside':'yes', 'fields':{
+				'_image_caption':{'label':'', 'aside':'yes', 'visible':'hidden', 'fields':{
 					'primary_image_caption':{'label':'Caption', 'type':'text'},
 	//				'primary_image_url':{'label':'URL', 'type':'text'},
 				}},
-				'details':{'label':'', 'aside':'yes', 'fields':{
-					'parent_id':{'label':'Parent Page', 'type':'select', 'options':{}},
-					'title':{'label':'Title', 'type':'text'},
-					'sequence':{'label':'Page Order', 'type':'text', 'size':'small'},
-					'_flags_1':{'label':'Visible', 'type':'flagtoggle', 'bit':0x01, 'field':'flags_1', 'default':'on'},
-				}},
-				'_synopsis':{'label':'Synopsis', 'fields':{
+				'_synopsis':{'label':'Synopsis', 'visible':'hidden', 'fields':{
 					'synopsis':{'label':'', 'type':'textarea', 'size':'small', 'hidelabel':'yes'},
 				}},
-				'_content':{'label':'Content', 'fields':{
+				'_content':{'label':'Content', 'visible':'hidden', 'fields':{
 					'content':{'label':'', 'type':'textarea', 'size':'large', 'hidelabel':'yes'},
 				}},
-				'files':{'label':'Files', 'aside':'yes',
+				'files':{'label':'Files', 'aside':'yes', 'visible':'hidden', 
 					'type':'simplegrid', 'num_cols':1,
 					'headerValues':null,
 					'cellClasses':[''],
 					'addTxt':'Add File',
 					'addFn':'M.ciniki_web_pages.'+pn+'.editComponent(\'ciniki.web.pagefiles\',\'M.ciniki_web_pages.'+pn+'.updateFiles();\',{\'file_id\':\'0\'});',
 					},
-				'images':{'label':'Gallery', 'aside':'yes', 'type':'simplethumbs'},
-				'_images':{'label':'', 'aside':'yes', 'type':'simplegrid', 'num_cols':1,
+				'images':{'label':'Gallery', 'aside':'yes', 'visible':'hidden', 'type':'simplethumbs'},
+				'_images':{'label':'', 'aside':'yes', 'visible':'hidden', 'type':'simplegrid', 'num_cols':1,
 					'addTxt':'Add Image',
 					'addFn':'M.ciniki_web_pages.'+pn+'.editComponent(\'ciniki.web.pageimages\',\'M.ciniki_web_pages.'+pn+'.addDropImageRefresh();\',{\'add\':\'yes\'});',
 					},
-				'_children':{'label':'Child Pages', 'fields':{
+				'_children':{'label':'Child Pages', 'visible':'hidden', 'fields':{
 					'child_title':{'label':'Heading', 'type':'text'},
 					'child_format':{'label':'Format', 'active':'yes', 'type':'flags', 'toggle':'yes', 'none':'no', 'join':'yes', 'flags':this.childFormat},
 				}},
-				'pages':{'label':'', 'type':'simplegrid', 'num_cols':1, 
+				'pages':{'label':'', 'type':'simplegrid', 'visible':'hidden', 'num_cols':1, 
 					'addTxt':'Add Child Page',
 					'addFn':'M.ciniki_web_pages.'+pn+'.childEdit(0);',
 					},
-				'sponsors':{'label':'Sponsors', 'type':'simplegrid', 'num_cols':1,
+				'sponsors':{'label':'Sponsors', 'type':'simplegrid', 'visible':'hidden', 'num_cols':1,
 					'addTxt':'Manage Sponsors',
 					'addFn':'M.ciniki_web_pages.'+pn+'.sponsorEdit(0);',
 					},
 				'_buttons':{'label':'', 'buttons':{
 					'save':{'label':'Save', 'fn':'M.ciniki_web_pages.'+pn+'.savePage();'},
-					'delete':{'label':'Delete', 'fn':'M.ciniki_web_pages.'+pn+'.deletePage();'},
+					'delete':{'label':'Delete', 'visible':(pid==0?'no':'yes'), 'fn':'M.ciniki_web_pages.'+pn+'.deletePage();'},
 				}},
 			};
 			this[pn].fieldHistoryArgs = function(s, i) {
@@ -111,7 +120,6 @@ function ciniki_web_pages() {
 			};
 			this[pn].rowFn = function(s, i, d) {
 				if( s == 'pages' ) {
-	//				return 'M.ciniki_web_pages.pageEdit(\'M.ciniki_web_pages.updateChildren();\',\'' + d.page.id + '\',0);';
 					return 'M.ciniki_web_pages.'+pn+'.childEdit(\'' + d.page.id + '\');';
 				} else if( s == 'files' ) {
 					return 'M.startApp(\'ciniki.web.pagefiles\',null,\'M.ciniki_web_pages.'+pn+'.updateFiles();\',\'mc\',{\'file_id\':\'' + d.file.id + '\'});';
@@ -268,6 +276,34 @@ function ciniki_web_pages() {
 					M.startApp('ciniki.sponsors.ref',null,this.panelRef+'.updateSponsors();','mc',{'object':'ciniki.web.page','object_id':this.page_id});
 				}
 			};
+			// 
+			// Add or remove sections based on page type
+			//
+			this[pn].setPageType = function() {
+				var pt = this.formValue('page_type');
+				this.sections._image.visible = (pt=='10'?'yes':'hidden');
+				this.sections._image_caption.visible = (pt=='10'?'yes':'hidden');
+				this.sections._synopsis.visible = (pt=='10'?'yes':'hidden');
+				this.sections._content.visible = (pt=='10'?'yes':'hidden');
+				this.sections.files.visible = (pt=='10'?'yes':'hidden');
+				this.sections.images.visible = (pt=='10'?'yes':'hidden');
+				this.sections._images.visible = (pt=='10'?'yes':'hidden');
+				this.sections._children.visible = (pt=='10'?'yes':'hidden');
+				this.sections.pages.visible = (pt=='10'?'yes':'hidden');
+				this.sections.sponsors.visible = (pt=='10'?'yes':'hidden');
+				this.sections._redirect.visible = (pt=='20'?'yes':'hidden');
+				this.sections._module.visible = (pt=='30'?'yes':'hidden');
+				for(i in this.sections) {
+					var e = M.gE(this.panelUID + '_section_' + i);
+					if( e != null && this.sections[i].visible != null && this.sections[i].visible != 'no' ) {
+						if( this.sections[i].visible == 'hidden' ) {
+							e.style.display = 'none';
+						} else if( this.sections[i].visible == 'yes' ) {
+							e.style.display = 'block';
+						}
+					}
+				}
+			};
 			this[pn].addButton('save', 'Save', 'M.ciniki_web_pages.'+pn+'.savePage();');
 			this[pn].addLeftButton('website', 'Preview', 'M.ciniki_web_pages.'+pn+'.previewPage();');
 			this[pn].addClose('Cancel');
@@ -363,20 +399,47 @@ function ciniki_web_pages() {
 				this[pn].data.title = '';
 			}
 		}
+		this[pn].sections._page_type.visible = 'no';
+		// Check if flags for page menu and page redirects
+		if( (M.curBusiness.modules['ciniki.web'].flags&0x0600) > 0 ) {
+			this[pn].sections._page_type.visible = 'yes';
+			this[pn].sections._page_type.fields.page_type.toggles = {
+				'10':'Custom',
+			};
+			if( (M.curBusiness.modules['ciniki.web'].flags&0x0400) > 0 ) {
+				this[pn].sections._page_type.fields.page_type.toggles['20'] = 'Redirect';
+			}
+			if( (M.curBusiness.modules['ciniki.web'].flags&0x0200) > 0 ) {
+				this[pn].sections._page_type.fields.page_type.toggles['30'] = 'Module';
+				this[pn].sections._module.fields.page_module.options = {};
+				if( rsp.modules != null ) {
+					for(i in rsp.modules) {
+						this[pn].sections._module.fields.page_module.options[rsp.modules[i].module.module_id] = rsp.modules[i].module.module;
+					}
+				}
+			}
+		} else {
+			this[pn].data.page_type = 10;
+		}
 		if( this[pn].data.parent_id == 0 ) {
+			// Give them the option of how to display sub pages
 			this[pn].sections._children.fields.child_format.flags = this.parentChildrenFormat;
 		} else {
 			this[pn].sections._children.fields.child_format.flags = this.childFormat;
 		}
+//		if( this[pn].data.page_type != null ) {
+//			this[pn].setPageType();
+//		}
 		if( M.curBusiness.modules['ciniki.sponsors'] != null 
 			&& (M.curBusiness.modules['ciniki.sponsors'].flags&0x02) ) {
-			this[pn].sections.sponsors.visible = 'yes';
+			this[pn].sections.sponsors.visible = 'hidden';
 		} else {
 			this[pn].sections.sponsors.visible = 'no';
 		}
 
 		this[pn].refresh();
 		this[pn].show(cb);
+		this[pn].setPageType();
 	}
 
 	//

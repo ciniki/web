@@ -57,6 +57,9 @@ function ciniki_web_pageGet($ciniki) {
 			. "ciniki_web_pages.category, "
 			. "ciniki_web_pages.sequence, "
 			. "ciniki_web_pages.flags, "
+			. "ciniki_web_pages.page_type, "
+			. "ciniki_web_pages.page_redirect_url, "
+			. "ciniki_web_pages.page_module, "
 			. "ciniki_web_pages.primary_image_id, "
 			. "ciniki_web_pages.primary_image_caption, "
 			. "ciniki_web_pages.primary_image_url, "
@@ -71,7 +74,7 @@ function ciniki_web_pageGet($ciniki) {
 		$rc = ciniki_core_dbHashQueryTree($ciniki, $strsql, 'ciniki.web', array(
 			array('container'=>'pages', 'fname'=>'id', 'name'=>'page',
 				'fields'=>array('id', 'parent_id',
-					'title', 'permalink', 'category', 'sequence', 'flags', 
+					'title', 'permalink', 'category', 'sequence', 'page_type', 'page_redirect_url', 'page_module', 'flags', 
 					'primary_image_id', 'primary_image_caption', 'primary_image_url', 
 					'child_title', 'synopsis', 'content')),
 			));
@@ -263,6 +266,20 @@ function ciniki_web_pageGet($ciniki) {
 		}
 	}
 
-	return array('stat'=>'ok', 'page'=>$page, 'parentlist'=>$parentlist);
+	//
+	// Check if a list of module available to the business should be returned
+	//
+	$modules = array();
+	foreach($ciniki['business']['modules'] as $mod_name => $module) {
+		//
+		// Check if the module is a none core module and the processRequest.php file exists in the modules web directory
+		//
+		if( $module['module_status'] == 1 
+			&& file_exists($ciniki['config']['ciniki.core']['root_dir'] . '/' . $module['package'] . '-mods/' . $module['module'] . '/web/processRequest.php') ) {
+			$modules[] = array('module'=>$module);
+		}
+	}
+
+	return array('stat'=>'ok', 'page'=>$page, 'parentlist'=>$parentlist, 'modules'=>$modules);
 }
 ?>

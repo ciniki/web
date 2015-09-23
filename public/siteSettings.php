@@ -78,99 +78,102 @@ function ciniki_web_siteSettings($ciniki) {
 	if( isset($modules['ciniki.info']) ) {
 		$pages['about'] = array('display_name'=>'About', 'active'=>'no');
 	}
-	if( isset($modules['ciniki.marketing']) && ($modules['ciniki.marketing']['flags']&0x01) == 0x01 ) {
-		$pages['features'] = array('display_name'=>'Features', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.web']) && ($modules['ciniki.web']['flags']&0x01) == 1) {
-		$pages['custom-001'] = array('display_name'=>'Custom Page', 'active'=>'no');
-		$pages['custom-002'] = array('display_name'=>'Custom Page', 'active'=>'no');
-		$pages['custom-003'] = array('display_name'=>'Custom Page', 'active'=>'no');
-		$pages['custom-004'] = array('display_name'=>'Custom Page', 'active'=>'no');
-		$pages['custom-005'] = array('display_name'=>'Custom Page', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.propertyrentals']) ) {
-		$pages['propertyrentals'] = array('display_name'=>'Properties', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.products']) ) {
-		$pages['products'] = array('display_name'=>'Products', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.filmschedule']) ) {
-		$pages['filmschedule'] = array('display_name'=>'Schedule', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.workshops']) ) {
-		$pages['workshops'] = array('display_name'=>'Workshops', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.events']) ) {
-		$pages['events'] = array('display_name'=>'Events', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.exhibitions']) ) {
-		$pages['exhibitions'] = array('display_name'=>'Exhibitions', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.courses']) ) {
-		$pages['courses'] = array('display_name'=>'Courses', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.classes']) ) {
-		$pages['classes'] = array('display_name'=>'Classes', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.artcatalog']) || isset($modules['ciniki.gallery']) ) {
-		$pages['gallery'] = array('display_name'=>'Gallery', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.writingcatalog']) ) {
-		$pages['writings'] = array('display_name'=>'Writings', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.customers']) && ($modules['ciniki.customers']['flags']&0x02) == 0x02 ) {
-		$pages['members'] = array('display_name'=>'Members', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.customers']) && ($modules['ciniki.customers']['flags']&0x10) == 0x10 ) {
-		$pages['dealers'] = array('display_name'=>'Dealers', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.customers']) && ($modules['ciniki.customers']['flags']&0x0100) == 0x0100 ) {
-		$pages['distributors'] = array('display_name'=>'Distributors', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.artclub']) ) {
-		$pages['members'] = array('display_name'=>'Members', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.sponsors']) ) {
-		$pages['sponsors'] = array('display_name'=>'Sponsors', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.artgallery']) ) {
-		$pages['artgalleryexhibitions'] = array('display_name'=>'Exhibitions', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.directory']) ) {
-		$pages['directory'] = array('display_name'=>'Directory', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.links']) ) {
-		$pages['links'] = array('display_name'=>'Links', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.newsletters']) ) {
-		$pages['newsletters'] = array('display_name'=>'Newsletters', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.filedepot']) ) {
-		$pages['downloads'] = array('display_name'=>'Downloads', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.blog']) ) {
-		if( ($modules['ciniki.blog']['flags']&0x01) > 0 ) {
-			$pages['blog'] = array('display_name'=>'Blog', 'active'=>'no');
+
+	if( !isset($modules['ciniki.web']) || !isset($modules['ciniki.web']['flags']) || ($modules['ciniki.web']['flags']&0x0200) == 0 ) {
+		if( isset($modules['ciniki.marketing']) && ($modules['ciniki.marketing']['flags']&0x01) == 0x01 ) {
+			$pages['features'] = array('display_name'=>'Features', 'active'=>'no');
 		}
-		if( ($modules['ciniki.blog']['flags']&0x0100) > 0 ) {
+		if( isset($modules['ciniki.web']) && ($modules['ciniki.web']['flags']&0x01) == 1) {
+			$pages['custom-001'] = array('display_name'=>'Custom Page', 'active'=>'no');
+			$pages['custom-002'] = array('display_name'=>'Custom Page', 'active'=>'no');
+			$pages['custom-003'] = array('display_name'=>'Custom Page', 'active'=>'no');
+			$pages['custom-004'] = array('display_name'=>'Custom Page', 'active'=>'no');
+			$pages['custom-005'] = array('display_name'=>'Custom Page', 'active'=>'no');
+		}
+		if( isset($modules['ciniki.propertyrentals']) ) {
+			$pages['propertyrentals'] = array('display_name'=>'Properties', 'active'=>'no');
+		}
+		if( isset($modules['ciniki.products']) ) {
+			$pages['products'] = array('display_name'=>'Products', 'active'=>'no');
+		}
+		if( isset($modules['ciniki.filmschedule']) ) {
+			$pages['filmschedule'] = array('display_name'=>'Schedule', 'active'=>'no');
+		}
+		if( isset($modules['ciniki.workshops']) ) {
+			$pages['workshops'] = array('display_name'=>'Workshops', 'active'=>'no');
+		}
+		if( isset($modules['ciniki.events']) ) {
+			$pages['events'] = array('display_name'=>'Events', 'active'=>'no');
+		}
+		if( isset($modules['ciniki.exhibitions']) ) {
+			$pages['exhibitions'] = array('display_name'=>'Exhibitions', 'active'=>'no');
+		}
+		if( isset($modules['ciniki.courses']) ) {
+			$pages['courses'] = array('display_name'=>'Courses', 'active'=>'no');
+		}
+		if( isset($modules['ciniki.classes']) ) {
+			$pages['classes'] = array('display_name'=>'Classes', 'active'=>'no');
+		}
+		if( isset($modules['ciniki.artcatalog']) || isset($modules['ciniki.gallery']) ) {
+			$pages['gallery'] = array('display_name'=>'Gallery', 'active'=>'no');
+		}
+		if( isset($modules['ciniki.writingcatalog']) ) {
+			$pages['writings'] = array('display_name'=>'Writings', 'active'=>'no');
+		}
+		if( isset($modules['ciniki.customers']) && ($modules['ciniki.customers']['flags']&0x02) == 0x02 ) {
+			$pages['members'] = array('display_name'=>'Members', 'active'=>'no');
+		}
+		if( isset($modules['ciniki.customers']) && ($modules['ciniki.customers']['flags']&0x10) == 0x10 ) {
+			$pages['dealers'] = array('display_name'=>'Dealers', 'active'=>'no');
+		}
+		if( isset($modules['ciniki.customers']) && ($modules['ciniki.customers']['flags']&0x0100) == 0x0100 ) {
+			$pages['distributors'] = array('display_name'=>'Distributors', 'active'=>'no');
+		}
+		if( isset($modules['ciniki.artclub']) ) {
+			$pages['members'] = array('display_name'=>'Members', 'active'=>'no');
+		}
+		if( isset($modules['ciniki.sponsors']) ) {
+			$pages['sponsors'] = array('display_name'=>'Sponsors', 'active'=>'no');
+		}
+		if( isset($modules['ciniki.artgallery']) ) {
+			$pages['artgalleryexhibitions'] = array('display_name'=>'Exhibitions', 'active'=>'no');
+		}
+		if( isset($modules['ciniki.directory']) ) {
+			$pages['directory'] = array('display_name'=>'Directory', 'active'=>'no');
+		}
+		if( isset($modules['ciniki.links']) ) {
+			$pages['links'] = array('display_name'=>'Links', 'active'=>'no');
+		}
+		if( isset($modules['ciniki.newsletters']) ) {
+			$pages['newsletters'] = array('display_name'=>'Newsletters', 'active'=>'no');
+		}
+		if( isset($modules['ciniki.filedepot']) ) {
+			$pages['downloads'] = array('display_name'=>'Downloads', 'active'=>'no');
+		}
+		if( isset($modules['ciniki.blog']) ) {
+			if( ($modules['ciniki.blog']['flags']&0x01) > 0 ) {
+				$pages['blog'] = array('display_name'=>'Blog', 'active'=>'no');
+			}
+			if( ($modules['ciniki.blog']['flags']&0x0100) > 0 ) {
+				$pages['account'] = array('display_name'=>'Account', 'active'=>'no');
+				$pages['memberblog'] = array('display_name'=>'Member News', 'active'=>'no');
+			}
+		}
+		if( isset($modules['ciniki.sapos']) && ($modules['ciniki.sapos']['flags']&0x08) > 0 ) {
+			$pages['cart'] = array('display_name'=>'Shopping Cart', 'active'=>'no');
+		}
+		if( isset($modules['ciniki.recipes']) ) {
+			$pages['recipes'] = array('display_name'=>'Recipes', 'active'=>'no');
+		}
+		if( isset($modules['ciniki.surveys']) ) {
+			$pages['surveys'] = array('display_name'=>'Surveys', 'active'=>'no');
+		}
+		if( isset($modules['ciniki.filedepot']) || isset($modules['ciniki.products']) ) {
 			$pages['account'] = array('display_name'=>'Account', 'active'=>'no');
-			$pages['memberblog'] = array('display_name'=>'Member News', 'active'=>'no');
 		}
-	}
-	if( isset($modules['ciniki.sapos']) && ($modules['ciniki.sapos']['flags']&0x08) > 0 ) {
-		$pages['cart'] = array('display_name'=>'Shopping Cart', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.recipes']) ) {
-		$pages['recipes'] = array('display_name'=>'Recipes', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.surveys']) ) {
-		$pages['surveys'] = array('display_name'=>'Surveys', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.filedepot']) || isset($modules['ciniki.products']) ) {
-		$pages['account'] = array('display_name'=>'Account', 'active'=>'no');
-	}
-	if( isset($modules['ciniki.membersonly']) ) {
-		$pages['membersonly'] = array('display_name'=>'Members Only', 'active'=>'no');
+		if( isset($modules['ciniki.membersonly']) ) {
+			$pages['membersonly'] = array('display_name'=>'Members Only', 'active'=>'no');
+		}
 	}
 
 	//

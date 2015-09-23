@@ -24,11 +24,11 @@ function ciniki_web_flags($ciniki, $modules) {
 		array('flag'=>array('bit'=>'8', 'name'=>'FAQ')),		// Enable FAQ on website
 		// 0x0100
 		array('flag'=>array('bit'=>'9', 'name'=>'Private Themes')),
-//		array('flag'=>array('bit'=>'10', 'name'=>'Sliders')),
-//		array('flag'=>array('bit'=>'11', 'name'=>'Contact Form')),
+		array('flag'=>array('bit'=>'10', 'name'=>'Pages Menu')),
+		array('flag'=>array('bit'=>'11', 'name'=>'Page Redirects')),
 //		array('flag'=>array('bit'=>'12', 'name'=>'Collections')),
 		// 0x1000
-//		array('flag'=>array('bit'=>'13', 'name'=>'Quick Links')),
+//		array('flag'=>array('bit'=>'13', 'name'=>'Pages')),
 //		array('flag'=>array('bit'=>'14', 'name'=>'Info Pages')),
 //		array('flag'=>array('bit'=>'15', 'name'=>'Pages')),	
 //		array('flag'=>array('bit'=>'16', 'name'=>'FAQ')),

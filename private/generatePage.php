@@ -19,6 +19,8 @@ function ciniki_web_generatePage($ciniki, $settings) {
 //	print_r($ciniki['request']);
 //	print_r($request_pages);
 
+	$breadcrumbs = array();
+
 	$prev_parent_id = 0;
 	$uri_depth = 0;
 	$prev_page = NULL;
@@ -88,104 +90,143 @@ function ciniki_web_generatePage($ciniki, $settings) {
 	$page_content = '';
 	$submenu = array();
 
-	//
-	// Check if children should be submenu
-	//
-	if( ($top_page['flags']&0x20) == 0x20 && isset($top_page['children']) ) {
-		foreach($top_page['children'] as $child) {
-			$submenu[$child['permalink']] = array('name'=>$child['name'],
-				'url'=>$ciniki['request']['base_url'] . '/' . $top_page['permalink'] . '/' . $child['permalink']);
-		}
-		if( $top_page['id'] == $page['id'] ) {
-			unset($page['children']);
-		}
-	}
+	if( $page['page_type'] == '30' ) {
+		$base_url .= '/' . $rc['page']['permalink'];
+		$domain_base_url = $ciniki['request']['domain_base_url'] . '/' . $ciniki['request']['page'];
+		$ciniki['request']['page-container-class'] = str_replace('.', '-', $page['page_module']);
 
-	//
-	// Check if a file was specified to be downloaded
-	//
-	$download_err = '';
-	if( isset($ciniki['request']['uri_split'][$uri_depth+1]) 
-		&& $ciniki['request']['uri_split'][$uri_depth+1] == 'download' 
-		&& isset($ciniki['request']['uri_split'][$uri_depth+2]) 
-		&& $ciniki['request']['uri_split'][$uri_depth+2] != '' 
-		&& isset($page['files'])
-		) {
-		$file_permalink = $ciniki['request']['uri_split'][$uri_depth+2];
+		$breadcrumbs[] = array('name'=>$page['title'], 'url'=>$base_url . '/' . $ciniki['request']['page']);
 
 		//
-		// Get the file details
+		// Process the module request
 		//
-		$strsql = "SELECT ciniki_web_page_files.id, "
-			. "ciniki_web_page_files.name, "
-			. "ciniki_web_page_files.permalink, "
-			. "ciniki_web_page_files.extension, "
-			. "ciniki_web_page_files.binary_content "
-			. "FROM ciniki_web_pages, ciniki_web_page_files "
-			. "WHERE ciniki_web_pages.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
-			. "AND ciniki_web_pages.permalink = '" . ciniki_core_dbQuote($ciniki, $page['permalink']) . "' "
-			. "AND ciniki_web_pages.id = ciniki_web_page_files.page_id "
-			. "AND ciniki_web_page_files.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
-			. "AND CONCAT_WS('.', ciniki_web_page_files.permalink, ciniki_web_page_files.extension) = '" . ciniki_core_dbQuote($ciniki, $file_permalink) . "' "
-			. "";
-		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'file');
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
-		}
-		if( !isset($rc['file']) ) {
-			return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2201', 'msg'=>"I'm sorry, but the file you requested does not exist."));
-		}
-		$filename = $rc['file']['name'] . '.' . $rc['file']['extension'];
-
-		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-		header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
-		header('Cache-Control: no-cache, must-revalidate');
-		header('Pragma: no-cache');
-		$file = $rc['file'];
-		if( $file['extension'] == 'pdf' ) {
-			header('Content-Type: application/pdf');
-		}
-//		header('Content-Disposition: attachment;filename="' . $filename . '"');
-		header('Content-Length: ' . strlen($rc['file']['binary_content']));
-		header('Cache-Control: max-age=0');
-
-		print $rc['file']['binary_content'];
-		exit;
-	}
-
-	if( isset($ciniki['request']['uri_split'][$uri_depth+1]) 
-		&& $ciniki['request']['uri_split'][$uri_depth+1] == 'gallery' 
-		&& isset($ciniki['request']['uri_split'][$uri_depth+2]) 
-		&& $ciniki['request']['uri_split'][$uri_depth+2] != '' 
-		&& isset($page['images'])
-		) {
-		$image_permalink = $ciniki['request']['uri_split'][$uri_depth+2];
-
-		$base_url .= '/' . $page['permalink'];
-		$article_title .= ($article_title!=''?' - ':'') . "<a href='$base_url'>" . $page['title'] . "</a>";
-		
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processGalleryImage');
-		$rc = ciniki_web_processGalleryImage($ciniki, $settings, $ciniki['request']['business_id'], array(
-			'item'=>$page,
-			'gallery_url'=>$base_url . '/gallery',
-			'article_title'=>$article_title,
-			'image_permalink'=>$image_permalink
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processModuleRequest');
+		$rc = ciniki_web_processModuleRequest($ciniki, $settings, $ciniki['request']['business_id'], $page['page_module'],
+			array(
+				'uri_split'=>$ciniki['request']['uri_split'],
+				'base_url'=>$base_url,
+				'domain_base_url'=>$domain_base_url,
+				'page_title'=>$top_page['title'],
+				'breadcrumbs'=>$breadcrumbs,
 			));
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
-		$page_content .= $rc['content'];
+		if( isset($rc['content']) ) {
+			$page_content .= $rc['content'];
+		}
+		if( isset($rc['page_title']) ) {
+			$page_title = $rc['page_title'];
+		}
+		if( isset($rc['submenu']) ) {
+			$submenu = $rc['submenu'];
+		}
 
 	} else {
-		if( isset($sponsors) && is_array($sponsors) && count($sponsors) > 0 ) {
-			$page['sponsors'] = $sponsors;
+		//
+		// Check if children should be submenu
+		//
+		if( ($top_page['flags']&0x20) == 0x20 && isset($top_page['children']) ) {
+			foreach($top_page['children'] as $child) {
+				$submenu[$child['permalink']] = array('name'=>$child['name'],
+					'url'=>$ciniki['request']['base_url'] . '/' . $top_page['permalink'] . '/' . $child['permalink']);
+			}
+			if( $top_page['id'] == $page['id'] ) {
+				unset($page['children']);
+			}
 		}
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processPage');
-		$rc =  ciniki_web_processPage($ciniki, 0, $base_url, $page, array('article_title'=>$article_title));
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
+
+		//
+		// Set the page class
+		//
+		$ciniki['request']['page-container-class'] = 'page-' . $ciniki['request']['page'];
+
+		//
+		// Check if a file was specified to be downloaded
+		//
+		$download_err = '';
+		if( isset($ciniki['request']['uri_split'][$uri_depth+1]) 
+			&& $ciniki['request']['uri_split'][$uri_depth+1] == 'download' 
+			&& isset($ciniki['request']['uri_split'][$uri_depth+2]) 
+			&& $ciniki['request']['uri_split'][$uri_depth+2] != '' 
+			&& isset($page['files'])
+			) {
+			$file_permalink = $ciniki['request']['uri_split'][$uri_depth+2];
+
+			//
+			// Get the file details
+			//
+			$strsql = "SELECT ciniki_web_page_files.id, "
+				. "ciniki_web_page_files.name, "
+				. "ciniki_web_page_files.permalink, "
+				. "ciniki_web_page_files.extension, "
+				. "ciniki_web_page_files.binary_content "
+				. "FROM ciniki_web_pages, ciniki_web_page_files "
+				. "WHERE ciniki_web_pages.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+				. "AND ciniki_web_pages.permalink = '" . ciniki_core_dbQuote($ciniki, $page['permalink']) . "' "
+				. "AND ciniki_web_pages.id = ciniki_web_page_files.page_id "
+				. "AND ciniki_web_page_files.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+				. "AND CONCAT_WS('.', ciniki_web_page_files.permalink, ciniki_web_page_files.extension) = '" . ciniki_core_dbQuote($ciniki, $file_permalink) . "' "
+				. "";
+			$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'file');
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			if( !isset($rc['file']) ) {
+				return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2201', 'msg'=>"I'm sorry, but the file you requested does not exist."));
+			}
+			$filename = $rc['file']['name'] . '.' . $rc['file']['extension'];
+
+			header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+			header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+			header('Cache-Control: no-cache, must-revalidate');
+			header('Pragma: no-cache');
+			$file = $rc['file'];
+			if( $file['extension'] == 'pdf' ) {
+				header('Content-Type: application/pdf');
+			}
+	//		header('Content-Disposition: attachment;filename="' . $filename . '"');
+			header('Content-Length: ' . strlen($rc['file']['binary_content']));
+			header('Cache-Control: max-age=0');
+
+			print $rc['file']['binary_content'];
+			exit;
 		}
-		$page_content .= $rc['content'];
+
+		if( isset($ciniki['request']['uri_split'][$uri_depth+1]) 
+			&& $ciniki['request']['uri_split'][$uri_depth+1] == 'gallery' 
+			&& isset($ciniki['request']['uri_split'][$uri_depth+2]) 
+			&& $ciniki['request']['uri_split'][$uri_depth+2] != '' 
+			&& isset($page['images'])
+			) {
+			$image_permalink = $ciniki['request']['uri_split'][$uri_depth+2];
+
+			$base_url .= '/' . $page['permalink'];
+			$article_title .= ($article_title!=''?' - ':'') . "<a href='$base_url'>" . $page['title'] . "</a>";
+			
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processGalleryImage');
+			$rc = ciniki_web_processGalleryImage($ciniki, $settings, $ciniki['request']['business_id'], array(
+				'item'=>$page,
+				'gallery_url'=>$base_url . '/gallery',
+				'article_title'=>$article_title,
+				'image_permalink'=>$image_permalink
+				));
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= $rc['content'];
+
+		} else {
+			if( isset($sponsors) && is_array($sponsors) && count($sponsors) > 0 ) {
+				$page['sponsors'] = $sponsors;
+			}
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processPage');
+			$rc =  ciniki_web_processPage($ciniki, 0, $base_url, $page, array('article_title'=>$article_title));
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= $rc['content'];
+		}
 	}
 
 	//
