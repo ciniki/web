@@ -40,7 +40,7 @@ function ciniki_web_pages() {
 					'sequence':{'label':'Page Order', 'type':'text', 'size':'small'},
 					'_flags_1':{'label':'Visible', 'type':'flagtoggle', 'bit':0x01, 'field':'flags_1', 'default':'on'},
 				}},
-				'_page_type':{'label':'', 'visible':'no', 'fields':{
+				'_page_type':{'label':'', 'aside':'yes', 'visible':'hidden', 'fields':{
 					'page_type':{'label':'Page Type', 'type':'toggle', 'toggles':{}, 'onchange':'M.ciniki_web_pages[\'' + pn + '\'].setPageType();'},
 					}},
 				'_redirect':{'label':'Redirect', 'visible':'hidden', 'fields':{
@@ -281,6 +281,12 @@ function ciniki_web_pages() {
 			//
 			this[pn].setPageType = function() {
 				var pt = this.formValue('page_type');
+				var p = M.gE(this.panelUID);
+				if( pt == '10' ) {
+					p.children[0].className = 'medium mediumaside';
+				} else {
+					p.children[0].className = 'medium';
+				}
 				this.sections._image.visible = (pt=='10'?'yes':'hidden');
 				this.sections._image_caption.visible = (pt=='10'?'yes':'hidden');
 				this.sections._synopsis.visible = (pt=='10'?'yes':'hidden');
@@ -399,13 +405,11 @@ function ciniki_web_pages() {
 				this[pn].data.title = '';
 			}
 		}
-		this[pn].sections._page_type.visible = 'no';
+		this[pn].sections._page_type.visible = 'hidden';
+		this[pn].sections._page_type.fields.page_type.toggles = {'10':'Custom'};
 		// Check if flags for page menu and page redirects
 		if( (M.curBusiness.modules['ciniki.web'].flags&0x0600) > 0 ) {
 			this[pn].sections._page_type.visible = 'yes';
-			this[pn].sections._page_type.fields.page_type.toggles = {
-				'10':'Custom',
-			};
 			if( (M.curBusiness.modules['ciniki.web'].flags&0x0400) > 0 ) {
 				this[pn].sections._page_type.fields.page_type.toggles['20'] = 'Redirect';
 			}
@@ -427,9 +431,6 @@ function ciniki_web_pages() {
 		} else {
 			this[pn].sections._children.fields.child_format.flags = this.childFormat;
 		}
-//		if( this[pn].data.page_type != null ) {
-//			this[pn].setPageType();
-//		}
 		if( M.curBusiness.modules['ciniki.sponsors'] != null 
 			&& (M.curBusiness.modules['ciniki.sponsors'].flags&0x02) ) {
 			this[pn].sections.sponsors.visible = 'hidden';
