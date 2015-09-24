@@ -172,7 +172,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 		}
 		$home_page_welcome = '';
 		if( isset($settings['page-home-title']) && $settings['page-home-title'] != '' ) {
-			$home_page_welcome = '<h1>' . $settings['page-home-title'] . '</h1>';
+			$home_page_welcome = '<h1 class="entry-title">' . $settings['page-home-title'] . '</h1>';
 		}
 		$home_page_welcome .= $rc['content'];
 	} else {
