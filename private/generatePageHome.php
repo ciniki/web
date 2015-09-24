@@ -27,13 +27,13 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 	//
 	$ciniki['response']['head']['og']['title'] = $ciniki['business']['details']['name'] . '';
 	$ciniki['response']['head']['og']['url'] = $ciniki['request']['domain_base_url'];
+	$ciniki['request']['page-container-class'] = 'page-home';
 
 //	$content = "<pre>" . print_r($ciniki, true) . "</pre>";
 
 	//
 	// FIXME: Check if anything has changed, and if not load from cache
 	//
-
 
 	//
 	// Check if there is a slider to display

@@ -19,6 +19,8 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
 	// Make sure everything gets generated ok before returning the content
 	//
 	$content = '';
+	$ciniki['request']['page-container-class'] = 'page-contact';
+
 	//
 	// FIXME: Check if anything has changed, and if not load from cache
 	//
