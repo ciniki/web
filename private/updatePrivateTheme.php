@@ -156,7 +156,7 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, &$settings) {
 	//
 	// Load the list of images from the database
 	//
-	$strsql = "SELECT ciniki_images.id, ciniki_images.original_filename, ciniki_images.type, "
+	$strsql = "SELECT ciniki_images.id, ciniki_web_theme_images.filename, ciniki_images.original_filename, ciniki_images.type, "
 		. "ciniki_images.image, "
 		. "UNIX_TIMESTAMP(ciniki_images.last_updated) AS last_updated "
 		. "FROM ciniki_web_theme_images, ciniki_images "
@@ -171,7 +171,7 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, &$settings) {
 	}
 	if( isset($rc['rows']) ) {
 		foreach($rc['rows'] as $img) {
-			$img_file = $theme_cache_dir . '/' . $img['original_filename'];
+			$img_file = $theme_cache_dir . '/' . $img['filename'];
 			if( !file_exists($img_file)
 				|| filemtime($img_file) < $img['last_updated']
 				) {
