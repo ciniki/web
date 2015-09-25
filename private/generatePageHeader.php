@@ -571,10 +571,11 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	if( $ciniki['request']['page'] != 'home' && $ciniki['request']['page'] != 'masterindex' ) {
 		$hide_menu_class = ' compact-hidden';
 	}
+
 	//
-	// Check if pages flags and pages menu flag is set for web module
+	// Check if pages flags and pages menu flag is NOT set for web module
 	//
-	if( ($ciniki['business']['modules']['ciniki.web']['flags']&0x0400) == 0 ) {
+	if( isset($ciniki['business']['modules']['ciniki.web']['flags']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x0400) == 0 ) {
 	//	print "<pre>" .  print_r($ciniki['request'], true) . "</pre>";
 	//	print "<pre>" .  print_r($settings, true) . "</pre>";
 		if( isset($settings['page-about-active']) && $settings['page-about-active'] == 'yes' ) {
@@ -876,7 +877,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		}
 	}
 
-	if( ($ciniki['business']['modules']['ciniki.web']['flags']&0x0400) == 0 ) {
+	if( isset($ciniki['business']['modules']['ciniki.web']['flags']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x0400) == 0 ) {
 		//
 		// Check if membersonly area is enabled, and the member has logged in
 		//

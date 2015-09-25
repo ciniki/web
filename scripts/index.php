@@ -456,7 +456,7 @@ if( isset($ciniki['config']['ciniki.core']['packages'])
 // Check if website menu is set by pages menu
 //
 $pages_menu = 'no';
-if( ($ciniki['business']['modules']['ciniki.web']['flags']&0x0200) > 0 ) {
+if( isset($ciniki['business']['modules']['ciniki.web']['flags']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x0200) > 0 ) {
 	$pages_menu = 'yes';
 }
 
