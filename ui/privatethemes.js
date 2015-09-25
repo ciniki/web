@@ -176,12 +176,12 @@ function ciniki_web_privatethemes() {
 		//
 		this.content = new M.panel('Theme Content',
 			'ciniki_web_privatethemes', 'content',
-			'mc', 'medium mediumaside', 'sectioned', 'ciniki.web.privatethemes.content');
+			'mc', 'xlarge', 'sectioned', 'ciniki.web.privatethemes.content');
 		this.content.content_id = 0;
 		this.content.theme_id = 0;
 		this.content.data = {};
 		this.content.sections = {
-			'info':{'label':'', 'aside':'yes', 'fields':{
+			'info':{'label':'', 'fields':{
 				'name':{'label':'Name', 'type':'text'},
 				'status':{'label':'Status', 'type':'toggle', 'toggles':{'10':'Active', '50':'Inactive'}},
 				'sequence':{'label':'Sequence', 'type':'text', 'size':'small'},
@@ -193,6 +193,7 @@ function ciniki_web_privatethemes() {
 				}},
 			'_buttons':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_privatethemes.contentSave();'},
+				'saveexit':{'label':'Save & Back', 'fn':'M.ciniki_web_privatethemes.contentSave(\'yes\');'},
 				'delete':{'label':'Delete', 'fn':'M.ciniki_web_privatethemes.contentDelete();'},
 				}},
 		};
@@ -397,7 +398,7 @@ function ciniki_web_privatethemes() {
 		});
 	};
 
-	this.contentSave = function() {
+	this.contentSave = function(ef) {
 		if( this.content.content_id > 0 ) {
 			var c = this.content.serializeForm('no');
 			if( c != '' ) {
@@ -407,9 +408,11 @@ function ciniki_web_privatethemes() {
 							M.api.err(rsp);
 							return false;
 						} 
-						M.ciniki_web_privatethemes.content.close();
+						if( ef != null && ef == 'yes' ) {
+							M.ciniki_web_privatethemes.content.close();
+						}
 					});
-			} else {
+			} else if( ef != null && ef == 'yes' ) {
 				this.content.close();
 			}
 		} else {
