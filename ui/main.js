@@ -1504,6 +1504,7 @@ function ciniki_web_main() {
 				'page-account-header-buttons':{'label':'Header Buttons', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-account-password-change':{'label':'Change Password', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-account-invoices-list':{'label':'View Orders', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-account-invoices-view-details':{'label':'View Order Details', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-account-invoices-view-pdf':{'label':'Download Invoice', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				}},
 			'redirect':{'label':'On login', 'fields':{
@@ -1989,11 +1990,13 @@ function ciniki_web_main() {
 			}
 			if( M.curBusiness.modules['ciniki.sapos'] != null ) {
 				this.account.sections.options.fields['page-account-invoices-list'].active = 'yes';
+				this.account.sections.options.fields['page-account-invoices-view-details'].active = 'yes';
 				this.account.sections.options.fields['page-account-invoices-view-pdf'].active = 'yes';
 				this.account.sections.options.fields['page-account-password-change'].active = 'no';
 				this.account.sections.options.fields['page-account-header-buttons'].active = 'no';
 			} else {
 				this.account.sections.options.fields['page-account-invoices-list'].active = 'no';
+				this.account.sections.options.fields['page-account-invoices-view-details'].active = 'no';
 				this.account.sections.options.fields['page-account-invoices-view-pdf'].active = 'no';
 				this.account.sections.options.fields['page-account-password-change'].active = 'yes';
 				this.account.sections.options.fields['page-account-header-buttons'].active = 'yes';
