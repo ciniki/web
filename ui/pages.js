@@ -284,13 +284,15 @@ function ciniki_web_pages() {
 				var p = M.gE(this.panelUID);
 				if( pt == '10' ) {
 					p.children[0].className = 'medium mediumaside';
+				} else if( pt == '11' ) {
+					p.children[0].className = 'xlarge';
 				} else {
 					p.children[0].className = 'medium';
 				}
 				this.sections._image.visible = (pt=='10'?'yes':'hidden');
 				this.sections._image_caption.visible = (pt=='10'?'yes':'hidden');
 				this.sections._synopsis.visible = (pt=='10'?'yes':'hidden');
-				this.sections._content.visible = (pt=='10'?'yes':'hidden');
+				this.sections._content.visible = ((pt=='10'||pt==11)?'yes':'hidden');
 				this.sections.files.visible = (pt=='10'?'yes':'hidden');
 				this.sections.images.visible = (pt=='10'?'yes':'hidden');
 				this.sections._images.visible = (pt=='10'?'yes':'hidden');
@@ -410,6 +412,9 @@ function ciniki_web_pages() {
 		// Check if flags for page menu and page redirects
 		if( (M.curBusiness.modules['ciniki.web'].flags&0x0600) > 0 ) {
 			this[pn].sections._page_type.visible = 'yes';
+			if( (M.curBusiness.modules['ciniki.web'].flags&0x0800) > 0 ) {
+				this[pn].sections._page_type.fields.page_type.toggles['11'] = 'Manual';
+			}
 			if( (M.curBusiness.modules['ciniki.web'].flags&0x0400) > 0 ) {
 				this[pn].sections._page_type.fields.page_type.toggles['20'] = 'Redirect';
 			}

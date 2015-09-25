@@ -122,6 +122,18 @@ function ciniki_web_generatePage($ciniki, $settings) {
 			$submenu = $rc['submenu'];
 		}
 
+	} elseif( $page['page_type'] == '11' ) {
+		//
+		// No processing, no auto images, just output raw HTML from description field
+		//
+
+		//
+		// Set the page class
+		//
+		$ciniki['request']['page-container-class'] = 'page-' . $ciniki['request']['page'];
+
+		$page_content .= $page['content'];
+
 	} else {
 		//
 		// Check if children should be submenu

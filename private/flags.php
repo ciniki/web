@@ -26,7 +26,7 @@ function ciniki_web_flags($ciniki, $modules) {
 		array('flag'=>array('bit'=>'9', 'name'=>'Private Themes')),
 		array('flag'=>array('bit'=>'10', 'name'=>'Pages Menu')),
 		array('flag'=>array('bit'=>'11', 'name'=>'Page Redirects')),
-//		array('flag'=>array('bit'=>'12', 'name'=>'Collections')),
+		array('flag'=>array('bit'=>'12', 'name'=>'Pages Manual Layout')),
 		// 0x1000
 //		array('flag'=>array('bit'=>'13', 'name'=>'Pages')),
 //		array('flag'=>array('bit'=>'14', 'name'=>'Info Pages')),

@@ -21,9 +21,10 @@
 #
 # page_type:		The type of page.
 #
-#					0 - Custom
-#					10 - Redirect (notes below)
-#					20 - Module (existing module page)
+#					10 - Custom
+#					11 - Manual, no auto processing (no processContent)
+#					20 - Redirect (notes below)
+#					30 - Module (existing module page)
 #
 # page_redirect_url:	The redirect url for the page_type = 10.
 #						This field is used to redirect the menu item to another server,
