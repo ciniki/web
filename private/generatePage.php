@@ -132,7 +132,15 @@ function ciniki_web_generatePage($ciniki, $settings) {
 		//
 		$ciniki['request']['page-container-class'] = 'page-' . $ciniki['request']['page'];
 
+		$page_content .= "<article class='page'>\n";
+		if( isset($page['title']) ) {
+			$page_content .= "<header class='entry-title'><h1 class='entry-title'>" . $page['title'] . "</h1></header>";
+		}
+		$page_content .= "<div class='entry-content'>";
 		$page_content .= $page['content'];
+		
+		$page_content .= "</div>";
+		$page_content .= "</article>";
 
 	} else {
 		//

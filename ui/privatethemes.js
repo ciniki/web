@@ -189,7 +189,7 @@ function ciniki_web_privatethemes() {
 				'media':{'label':'Media', 'type':'toggle', 'toggles':{'all':'All', 'print':'Print'}},
 				}},
 			'_content':{'label':'Content', 'fields':{
-				'content':{'label':'', 'type':'textarea', 'size':'large', 'hidelabel':'yes'},
+				'content':{'label':'', 'type':'textarea', 'size':'xlarge', 'hidelabel':'yes'},
 				}},
 			'_buttons':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_privatethemes.contentSave();'},

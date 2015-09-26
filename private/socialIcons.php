@@ -18,20 +18,60 @@ function ciniki_web_socialIcons($ciniki, $settings, $location) {
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
 	// Check for social media icons
 	$social = '';
+	$social_icons = array(
+		'facebook'=>'&#xe227;',
+		'twitter'=>'&#xe286;',
+		'etsy'=>'&#xe226;',
+		'pinterest'=>'&#xe264;',
+		'tumblr'=>'&#xe285;',
+		'flickr'=>'&#xe229;',
+		'youtube'=>'&#xe299;',
+		'vimeo'=>'&#xe289;',
+		'instagram'=>'&#xe300;',
+		'email'=>'&#xe224;',
+		);
+//
+// Settings for regular social font without circle
+//
+/*	if( isset($settings['site-layout']) && $settings['site-layout'] == 'trendy' ) {
+		$social_icons['facebook'] = '&#xe027;';
+		$social_icons['twitter'] = '&#xe086;';
+		$social_icons['etsy'] = '&#xe026;';
+		$social_icons['pinterest'] = '&#xe064;';
+		$social_icons['tumblr'] = '&#xe085;';
+		$social_icons['flickr'] = '&#xe029;';
+		$social_icons['youtube'] = '&#xe099;';
+		$social_icons['vimeo'] = '&#xe089;';
+		$social_icons['instagram'] = '&#xe100;';
+		$social_icons['email'] = '&#xe024;';
+	}*/
+	// FontAwesome settings
+	if( isset($settings['site-layout']) && $settings['site-layout'] == 'trendy' ) {
+		$social_icons['facebook'] = '&#xf09a;';
+		$social_icons['twitter'] = '&#xf099;';
+//		$social_icons['etsy'] = '&#xe026;';
+		$social_icons['pinterest'] = '&#xf231;';
+		$social_icons['tumblr'] = '&#xf173;';
+//		$social_icons['flickr'] = '&#xe029;';
+		$social_icons['youtube'] = '&#xf167;';
+		$social_icons['vimeo'] = '&#xf27d;';
+		$social_icons['instagram'] = '&#xf16d;';
+		$social_icons['email'] = '&#xf0e0;';
+	}
 	// Facebook
 	if( (!isset($settings["site-social-facebook-$location-active"]) || $settings["site-social-facebook-$location-active"] == 'yes' )
 		&& isset($ciniki['business']['social']['social-facebook-url']) && $ciniki['business']['social']['social-facebook-url'] != ''
 		) {
 		$rc = ciniki_web_processURL($ciniki, $ciniki['business']['social']['social-facebook-url']);
 		$social .= "<a href='" . $rc['url'] . "' target='_blank' class='socialsymbol'>"
-			. "<span title='Facebook' class='socialsymbol social-facebook'>&#xe227;</span></a>";
+			. "<span title='Facebook' class='socialsymbol social-facebook'>" . $social_icons['facebook'] . "</span></a>";
 	}
 	// Twitter
 	if( (!isset($settings["site-social-twitter-$location-active"]) || $settings["site-social-twitter-$location-active"] == 'yes' )
 		&& isset($ciniki['business']['social']['social-twitter-username']) && $ciniki['business']['social']['social-twitter-username'] != ''
 		) {
 		$social .= "<a href='http://twitter.com/" . $ciniki['business']['social']['social-twitter-username'] . "' target='_blank' class='socialsymbol'>"
-			. "<span title='Twitter' class='socialsymbol social-twitter'>&#xe286;</span></a>";
+			. "<span title='Twitter' class='socialsymbol social-twitter'>" . $social_icons['twitter'] . "</span></a>";
 	}
 	// Etsy
 	if( (!isset($settings["site-social-etsy-$location-active"]) || $settings["site-social-etsy-$location-active"] == 'yes' )
@@ -39,21 +79,21 @@ function ciniki_web_socialIcons($ciniki, $settings, $location) {
 		) {
 		$rc = ciniki_web_processURL($ciniki, $ciniki['business']['social']['social-etsy-url']);
 		$social .= "<a href='" . $rc['url'] . "' target='_blank' class='socialsymbol'>"
-			. "<span title='Etsy' class='socialsymbol social-etsy'>&#xe226;</span></a>";
+			. "<span title='Etsy' class='socialsymbol social-etsy'>" . $social_icons['etsy'] . "</span></a>";
 	}
 	// Pinterest
 	if( (!isset($settings["site-social-pinterest-$location-active"]) || $settings["site-social-pinterest-$location-active"] == 'yes' )
 		&& isset($ciniki['business']['social']['social-pinterest-username']) && $ciniki['business']['social']['social-pinterest-username'] != ''
 		) {
 		$social .= "<a href='http://pinterest.com/" . $ciniki['business']['social']['social-pinterest-username'] . "' target='_blank' class='socialsymbol'>"
-			. "<span title='Pinterest' class='socialsymbol social-pinterest'>&#xe264;</span></a>";
+			. "<span title='Pinterest' class='socialsymbol social-pinterest'>" . $social_icons['pinterest'] . "</span></a>";
 	}
 	// Tumblr
 	if( (!isset($settings["site-social-tumblr-$location-active"]) || $settings["site-social-tumblr-$location-active"] == 'yes' )
 		&& isset($ciniki['business']['social']['social-tumblr-username']) && $ciniki['business']['social']['social-tumblr-username'] != ''
 		) {
 		$social .= "<a href='http://" . $ciniki['business']['social']['social-tumblr-username'] . ".tumblr.com/' target='_blank' class='socialsymbol'>"
-			. "<span title='Tumblr' class='socialsymbol social-tumblr'>&#xe285;</span></a>";
+			. "<span title='Tumblr' class='socialsymbol social-tumblr'>" . $social_icons['tumblr'] . "</span></a>";
 	}
 	// Flickr
 	if( (!isset($settings["site-social-flickr-$location-active"]) || $settings["site-social-flickr-$location-active"] == 'yes' )
@@ -61,14 +101,14 @@ function ciniki_web_socialIcons($ciniki, $settings, $location) {
 		) {
 		$rc = ciniki_web_processURL($ciniki, $ciniki['business']['social']['social-flickr-url']);
 		$social .= "<a href='" . $rc['url'] . "' target='_blank' class='socialsymbol'>"
-			. "<span title='Flickr' class='socialsymbol social-flickr'>&#xe229;</span></a>";
+			. "<span title='Flickr' class='socialsymbol social-flickr'>" . $social_icons['flickr'] . "</span></a>";
 	}
 	// YouTube
 	if( (!isset($settings["site-social-youtube-$location-active"]) || $settings["site-social-youtube-$location-active"] == 'yes' )
 		&& isset($ciniki['business']['social']['social-youtube-username']) && $ciniki['business']['social']['social-youtube-username'] != ''
 		) {
 		$social .= "<a href='http://youtube.com/user/" . $ciniki['business']['social']['social-youtube-username'] . "' target='_blank' class='socialsymbol'>"
-			. "<span title='YouTube' class='socialsymbol social-youtube'>&#xe299;</span></a>";
+			. "<span title='YouTube' class='socialsymbol social-youtube'>" . $social_icons['youtube'] . "</span></a>";
 	}
 	// Vimeo
 	if( (!isset($settings["site-social-vimeo-$location-active"]) || $settings["site-social-vimeo-$location-active"] == 'yes' )
@@ -76,21 +116,21 @@ function ciniki_web_socialIcons($ciniki, $settings, $location) {
 		) {
 		$rc = ciniki_web_processURL($ciniki, $ciniki['business']['social']['social-vimeo-url']);
 		$social .= "<a href='" . $rc['url'] . "' target='_blank' class='socialsymbol'>"
-			. "<span title='Vimeo' class='socialsymbol social-vimeo'>&#xe289;</span></a>";
+			. "<span title='Vimeo' class='socialsymbol social-vimeo'>" . $social_icons['vimeo'] . "</span></a>";
 	}
 	// Instagram
 	if( (!isset($settings["site-social-instagram-$location-active"]) || $settings["site-social-instagram-$location-active"] == 'yes' )
 		&& isset($ciniki['business']['social']['social-instagram-username']) && $ciniki['business']['social']['social-instagram-username'] != ''
 		) {
 		$social .= "<a href='http://instagram.com/" . $ciniki['business']['social']['social-instagram-username'] . "' target='_blank' class='socialsymbol'>"
-			. "<span title='Instagram' class='socialsymbol social-instagram'>&#xe300;</span></a>";
+			. "<span title='Instagram' class='socialsymbol social-instagram'>" . $social_icons['instagram'] . "</span></a>";
 	}
 	// Email
 	if( (!isset($settings["site-social-email-$location-active"]) || $settings["site-social-email-$location-active"] == 'yes' )
 		&& isset($ciniki['business']['social']['social-email-username']) && $ciniki['business']['social']['social-email-username'] != ''
 		) {
 //		$social .= "<a href='mailto:" . $ciniki['business']['social']['social-email-username'] . "' target='_blank' class='socialsymbol'>"
-//	. "<span title='Email' class='socialsymbol social-email'>&#xe224;</span></a>";
+//	. "<span title='Email' class='socialsymbol social-email'>" . $social_icons['email'] . "</span></a>";
 	}
 
 	return array('stat'=>'ok', 'social'=>$social);

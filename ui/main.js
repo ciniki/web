@@ -40,6 +40,7 @@ function ciniki_web_main() {
 	
 	this.layoutsAvailable = {
 		'default':'Default',
+		'trendy':'Trendy',
 //		'aspen':'Aspen',
 		'private':'Private',
 		};

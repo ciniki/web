@@ -1,0 +1,33 @@
+#content div.gallery-image-wrap {
+	max-height: 100%;
+}
+
+#content aside img {
+	display: block;
+	width: auto;
+}
+#content aside {
+	text-align: left;
+	padding-right: 20px;
+}
+#content div.gallery-image-wrap img {
+	display: block;
+	max-height: 600px;
+	width: auto;
+	max-width: 60em;
+}
+
+#main-menu-container ul.menu li.menu-item {
+	border-right: 0px none;
+}
+
+#main-menu-container {
+	margin-top: 10px;
+}
+
+@font-face {
+	font-family: 'MonoSocialIconsFont';
+	src: url('fonts/MonoSocial/MonoSocialIconsFont.eot');
+	font-weight: normal;
+	font-style: normal;
+}

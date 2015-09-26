@@ -1,0 +1,1040 @@
+/*
+Goldilocks Approach to Responsive Web Design Boilerplate
+
+Author: Design by Front - @designbyfront
+Version: 0.1
+URL: http://www.goldilocksapproach.com
+----------------------------------------------------------------------------------------
+
+CONTENTS - GLOBAL.CSS
+-----------------------------------------
+1. RESET
+2. ROOT
+3. CORE TYPOGRAPHY
+4. LINKS
+5. GLOBAL LAYOUT & GLOBAL CUSTOM TYPOGRAPHY
+6. CUSTOM LAYOUT & TYPOGRAPHY (Baby bear)
+7. BROWSER AND NON-SEMANTIC STYLING
+
+CONTENTS - LAYOUT.CSS
+-----------------------------------------
+8. CUSTOM LAYOUT & TYPOGRAPHY (Daddy bear)
+9. CUSTOM LAYOUT & TYPOGRAPHY (Mummy bear)
+
+*/
+
+
+/* 1. RESET
+----------------------------------------------------------------------------------------*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size:100%;
+  font: inherit;
+  vertical-align: baseline;
+  box-sizing: border-box;
+  }
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+  display: block;
+  }
+  
+  
+/* 2. ROOT
+----------------------------------------------------------------------------------------*/
+html { 
+  overflow-y: scroll;
+  background: #FFF; 
+  }
+
+/* /ht Ethan Marcotte - http://front.ie/l8rJaA */
+img, embed, object, video { max-width: 100%; }
+.ie6 img.full, .ie6 object.full, .ie6 embed, .ie6 video { width: 100%; }
+
+
+/* 3. CORE TYPOGRAPHY
+----------------------------------------------------------------------------------------*/
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1em;
+  line-height: 1.618em;
+  color: #333;
+  }
+
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: 0.809em;
+  line-height: 1em;
+  }
+
+div.cart-pricelist,
+p, ul, ol, dl, blockquote {
+    font-size: 1em;
+    line-height: 1.618em;
+    margin-bottom: 1.618em; 
+    max-width: 30em; /* Optimal width for long-form text */
+  }
+
+.evensplit p, 
+.evensplit ul, 
+.evensplit ol, 
+.evensplit dl, 
+.evensplit blockquote {
+	max-width: 100%;
+}
+
+#content div.gallery-image-details p {
+	max-width: 100%;
+}
+    
+ul { list-style-type: disc; margin-left: 1.618em; margin-right: 1.618em; }
+ol { list-style-type: decimal; margin-left: 1.618em; }
+nav ul, nav ol { list-style: none; margin: 0; padding: 0;}
+
+b, strong { font-weight: bold; }
+i, em { font-style: italic; }
+small { font-size: 80%; }
+
+.assistive-text { display: none; }
+
+@font-face {
+    font-family: 'MonoSocialIconsFont';
+    src: url('fonts/MonoSocial/MonoSocialIconsFont.eot');
+    src: url('fonts/MonoSocial/MonoSocialIconsFont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/MonoSocial/MonoSocialIconsFont.woff') format('woff'),
+         url('fonts/MonoSocial/MonoSocialIconsFont.ttf') format('truetype'),
+         url('fonts/MonoSocial/MonoSocialIconsFont.svg#MonoSocialIconsFont') format('svg');
+    src: url('fonts/MonoSocial/MonoSocialIconsFont.ttf') format('truetype'); 
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'FontAwesome';
+    src: url('fonts/FontAwesome/fontawesome-webfont.eot');
+    src: url('fonts/FontAwesome/fontawesome-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/FontAwesome/fontawesome-webfont.woff') format('woff'),
+         url('fonts/FontAwesome/fontawesome-webfont.ttf') format('truetype'),
+         url('fonts/FontAwesome/fontawesome-webfont.svg#MonoSocialIconsFont') format('svg');
+    src: url('fonts/FontAwesome/fontawesome-webfont.ttf') format('truetype'); 
+    font-weight: normal;
+    font-style: normal;
+}
+
+span.socialsymbol {
+	font-family: 'MonoSocial';
+}
+
+footer span.socialsymbol,
+header span.socialsymbol {
+	font-family: 'FontAwesome';
+}
+
+
+.socialsymbol, a.socialsymbol:before {
+    font-family: 'MonoSocialIconsFont';
+    -webkit-text-rendering: optimizeLegibility;
+    -moz-text-rendering: optimizeLegibility; 
+    -ms-text-rendering: optimizeLegibility;
+    -o-text-rendering: optimizeLegibility;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased; 
+	-moz-osx-font-smoothing: grayscale;
+    -ms-font-smoothing: antialiased;
+    -o-font-smoothing: antialiased;
+    font-smoothing: antialiased;
+}
+
+a.socialsymbol:before {
+    content: attr(title);
+    margin-right: 0.0em;
+    margin-left: 0.0em;
+    font-size: 130%;
+}
+
+a.socialsymbol {
+	font-family: 'MonoSocialIconsFont';
+	margin-right: 0.1em;
+	margin-left: 0.1em;
+	line-height: 1.0em;
+}
+
+/* 4. LINKS
+----------------------------------------------------------------------------------------*/
+a, a:visited { outline: none; color: #439BBD; text-decoration: underline; }  
+a:hover { outline: none; text-decoration:none; }  
+a:active, a:focus { outline: none; }
+
+
+/* 5. GLOBAL LAYOUT & GLOBAL CUSTOM TYPOGRAPHY
+----------------------------------------------------------------------------------------*/
+div.sponsor-gallery-thumbnail,
+div.image-gallery-thumbnail {
+	line-height: 0.5em;
+	vertical-align: middle;
+}
+
+
+/* 6. CUSTOM LAYOUT & TYPOGRAPHY (Baby bear)
+----------------------------------------------------------------------------------------*/
+.clickable {
+	cursor: pointer;
+}
+
+
+
+#page-container {
+    padding: 0.809em;
+    max-width: 30em;
+    margin: 0 auto;
+    }
+
+#page-container.signin {
+	padding-top: 0em;
+}
+
+header div.signin {
+	display: inline-block;
+	margin-bottom: 1.0em;
+	top: 0px;
+	right: 20px;
+	padding-right: 20px;
+	text-align: right;
+	width: 100%;
+	white-space: nowrap;
+}
+
+header div.signin-wrapper {
+	display: block;
+	white-space: nowrap;
+	text-align: center;
+	vertical-align: center;
+	box-sizing: border-box;
+}
+
+header span.social-icons {
+	display: inline-block;
+}
+
+header div.title-logo {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+header div.title-block {
+	display: inline-block;
+}
+
+header span.title {
+	display: block;
+}
+
+#page-container.logo header div.signin {
+	margin-bottom: 0em;
+}
+
+#site-title {
+	font-size: 2.5em;
+	margin-bottom: 0px;
+}
+
+header a { text-decoration: none; }
+
+hgroup {
+	margin-bottom: 0.5em;
+}
+
+hgroup.header-image {
+	margin-bottom: 0em;
+	display: inline-block;
+	vertical-align: top;
+}
+
+nav {
+	text-align: center;
+	display: inline-block;
+	vertical-align: top;
+}
+
+#main-menu-container {
+	padding-left: 0px;
+	padding-right: 0px;
+	text-align: left;
+}
+
+#sub-menu-container {
+	margin-top: 1em;
+	display: block;
+	text-align: center;
+}
+
+#sub-menu-container ul,
+#main-menu-container ul {
+	display: block;	
+	height: 100%;
+	min-height: 114px;
+	list-style-type: none;
+	padding: 0px;
+	margin: 0px;
+}
+	
+#sub-menu-container ul.menu li.menu-item,
+#main-menu-container ul.menu li.menu-item {
+	display: inline-block;
+	padding: 0em;
+	min-height: 114px;
+	vertical-align: middle;
+	margin-left: 9px;
+}
+
+#sub-menu-container ul.menu li.menu-item a,
+#main-menu-container ul.menu li.menu-item a {
+	display: inline-block;
+	width: 100%;
+	padding: 0.5em 0 0.5em 0;
+	vertical-align: middle;
+	line-height: 114px;
+}
+
+#sub-menu-container ul.menu li.compact-hidden,
+#main-menu-container ul.menu li.compact-hidden {
+	display: none;
+}
+
+article {
+	margin-bottom: 0em;
+}
+
+#content b.entry-title,
+#content h1 {
+	font-weight: normal;
+	font-size: 1.5em;
+}
+
+#content header h1 {
+	margin-bottom: 0.2em;
+}
+
+#content p.entry-meta,
+#content header div.entry-meta {
+	font-size: 0.9em;
+}
+
+#content header {
+	margin-bottom: 1em;
+}
+
+#content h2 {
+	padding-top: 1.2em;
+	font-size: 1.3em;
+}
+
+#content div.quote {
+	padding-bottom: 0.5em;
+	margin-bottom: 1.5em;
+}
+
+#content blockquote.quote-text,
+#content blockquote.quote-text p,
+#content cite.quote-author {
+	margin-bottom: 0;
+	padding: 0px;
+	width: 100%;
+}
+
+#content cite.quote-author {
+	display: block;
+}
+
+#content dl dd {
+	margin-bottom: 1em;
+}
+
+#content table.blist,
+#content table.clist,
+#content table.cilist,
+#content table.members-list,
+#content table.sponsors-list,
+#content table.exhibitors-list,
+#content table.downloads-list,
+#content table.event-list {
+	width: 100%;
+	table-layout: fixed;
+}
+
+#content table.blist > tbody > tr > th,
+#content table.clist > tbody > tr > th,
+#content table.cilist > tbody > tr > th,
+#content table.members-list > tbody > tr > th,
+#content table.sponsors-list > tbody > tr > th,
+#content table.exhibitors-list > tbody > tr > th,
+#content table.downloads-list th,
+#content table.event-list th {
+	display: block;
+	text-align: left;
+	vertical-align: top;
+}
+
+#content table.cilist > tbody > tr > th,
+#content table.members-list > tbody > tr > th,
+#content table.sponsors-list > tbody > tr > th,
+#content table.exhibitors-list > tbody > tr > th {
+	min-width: 15em;
+}
+
+#content table.cilist > tbody > tr.cilist-category-start th,
+#content table.cilist > tbody > tr.cilist-category-start td {
+	border-top: 1px solid;
+}
+#content table.cilist > tbody > tr > td {
+	display: block;
+	padding-left: 1em;
+	margin-left: 0px;
+	border-top: 0px;
+	padding-bottom: 1em;
+	padding-top: 0.25em;
+	vertical-align: top;
+}
+
+#content table.clist > tbody > tr > td,
+#content table.cilist > tbody > tr > td,
+#content table.members-list > tbody > tr > td,
+#content table.sponsors-list > tbody > tr > td,
+#content table.exhibitors-list > tbody > tr > td,
+#content table.downloads-list td,
+#content table.event-list td {
+	display: block;
+	padding-left: 1em;
+	margin-left: 0px;
+	padding-bottom: 1em;
+	border-top: 1px solid;
+	padding-top: 0.25em;
+	vertical-align: top;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+#content table.blist > tbody > tr > td {
+	display: block;
+	border-top: 1px solid;
+	margin-left: 0em;
+	padding-left: 0em;
+	padding-right: 0em;
+}
+
+#content table.cilist > tbody > tr > td,
+#content table.members-list > tbody > tr > td,
+#content table.sponsors-list > tbody > tr > td,
+#content table.exhibitors-list > tbody > tr > td {
+	padding-left: 0em;
+}
+
+#content table.cilist p {
+	max-width: 100%;
+	width: 100%;
+}
+
+#content table.blist,
+#content table.clist,
+#content table.cilist-categories,
+#content table.members-category-list,
+#content table.sponsors-category-list,
+#content table.exhibitors-category-list {
+	width: 100%;
+}
+
+#content span.exhibitors-category {
+	display: inline-block;
+	padding-right: 1em;
+}
+
+#content span.cilist-subcategory,
+#content span.exhibitors-subcategory {
+	display: block;
+	text-align: left;
+}
+
+#content table.cilist-categories > tbody > tr > td,
+#content table.members-category-list > tbody > tr > td,
+#content table.sponsors-category-list > tbody > tr > td,
+#content table.exhibitors-category-list > tbody > tr > td {
+	vertical-align: top;
+}
+
+#content table.sponsors-list table.sponsors-category-list td.sponsors-image {
+	padding-right: 0.1em;
+	padding-left: 0;
+	display: block;
+/*	min-width: 9.0em; */
+}
+
+#content table.sponsors-list table.sponsors-category-list td.sponsors-details {
+	display: block;
+}
+
+#content table.sponsors-list table.sponsors-category-list td.sponsors-description {
+	height: 100%;
+}
+
+#content table.sponsors-list table.sponsors-category-list td.sponsors-description p {
+	margin-bottom: 1.0em;
+}
+
+#content table.sponsors-list table.sponsors-category-list td.sponsors-description p:last-child {
+	margin-bottom: 0.5em;
+}
+
+#content table.cilist td.cilist-image,
+#content table.members-list table.members-category-list td.members-image,
+#content table.exhibitors-list table.exhibitors-category-list td.exhibitors-image {
+	padding-right: 0.1em;
+	padding-left: 0;
+	min-width: 9.0em;
+}
+
+div.googlemap p.exhibitors-more,
+#content table.clist p.clist-more,
+#content table.cilist td.cilist-more,
+#content table.members-list td.members-more,
+#content table.sponsors-list td.sponsors-more,
+#content table.exhibitors-list td.exhibitors-more {
+	text-align: right;
+	vertical-align: bottom;
+	width: 100%;
+	max-width: 100%;
+	padding-bottom: 1.5em;
+}
+
+#content table span.oneline {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+#content p.exhibitors-application {
+	width: 100%;
+	max-width: 100%;
+	text-align: right;
+}
+
+#content div.cilist-more,
+#content div.events-more {
+	text-align: right;
+	padding-bottom: 1.5em;
+}
+
+#content div.sponsor-gallery,
+#content div.image-gallery {
+	padding-bottom: 1em;
+}
+
+#content div.image-categories,
+#content div.additional-image-gallery,
+#content div.sponsor-gallery,
+#content div.image-gallery {
+	margin: 0 auto;
+	text-align: center;
+}
+
+/* #content div.image-categories div.image-categories-thumbnail-wrap {
+	width: 260px;
+} */
+
+#content div.image-categories-thumbnail-wrap {
+	margin: 5px;
+}
+
+#content span.image-categories-name {
+	width: 260px;
+}
+
+#content div.image-categories-thumbnail img {
+	width: 260px;
+	height: 260px;
+}
+
+#content div.image-categories-thumbnail-small span.image-categories-name {
+	width: 115px;
+}
+
+#content div.image-categories-thumbnail-small div.image-categories-thumbnail img {
+	width: 115px;
+	height: 115px;
+}
+
+#content div.image-categories-thumbnail-medium span.image-categories-name {
+	width: 110px;
+}
+
+#content div.image-categories-thumbnail-medium div.image-categories-thumbnail img {
+	width: 110px;
+	height: 110px;
+}
+
+#content div.image-cilist-thumbnail,
+#content div.image-members-thumbnail,
+#content div.image-exhibitors-thumbnail {
+	height: 115px;
+}
+
+#content div.image-cilist-original,
+#content div.image-members-original,
+#content div.image-exhibitors-original {
+	max-height: 200px;
+}
+
+#content div.sponsor-gallery div.sponsor-gallery-thumbnail {
+}
+#content div.image-gallery div.image-gallery-thumbnail {
+	width: 115px; 
+	height: 115px;
+}
+
+#content div.additional-image-gallery div.image-gallery-thumbnail {
+	width: 70px; 
+	height: 70px;
+}
+
+#content div.image-sponsors-thumbnail img {
+/* 	height: 115px; */
+	max-width: 100%;
+}
+
+#content div.image-cilist-thumbnail img,
+#content div.image-members-thumbnail img,
+#content div.image-exhibitors-thumbnail img {
+	height: 115px;
+	max-width: none;
+}
+
+#content div.sponsor-gallery-thumbnail img {
+}
+#content div.image-gallery-thumbnail img {
+	width: 115px; 
+	height: 115px;
+}
+
+#content div.additional-image-gallery div.image-gallery-thumbnail img {
+	width: 70px; 
+	height: 70px;
+}
+
+#content div.gallery-image {
+	text-align: center;
+	max-width: 100%;
+	padding: 0px;
+	margin: 0 auto;
+}
+
+#content div.gallery-image div.gallery-image-container {
+	display: block;
+	margin: 0px;
+	text-align: left;
+	width: auto;
+}
+
+#content div.gallery-image-wrap {
+	margin: 0px;
+	display: inline-block;
+}
+
+#content div.gallery-image-wrap img {
+	display: block;
+}
+
+#content div.gallery-image-wrap a.gallery-image-prev {
+	position: absolute;
+	float: left;
+	margin: 0px;
+	left: 0px;
+	display: block;
+	vertical-align: center;
+	z-index: 2;
+	cursor: pointer;
+}
+#content div.gallery-image-wrap a.gallery-image-next {
+	position: absolute;
+	float: right;
+	margin: 0px;
+	right: 0px;
+	text-align: right;
+	display: block;
+	vertical-align: center;
+	z-index: 2;
+	cursor: pointer;
+}
+#content div.gallery-image-wrap a.gallery-image-prev,
+#content div.gallery-image-wrap a.gallery-image-next {
+	display: block;
+	height: 100%;
+	vertical-align: center;
+	z-index: 3;
+}
+
+#content div.gallery-image-wrap a.gallery-image-prev div,
+#content div.gallery-image-wrap a.gallery-image-next div {
+	position: absolute;
+	height: 40px;
+	width: 20px;
+	display: block;
+	visibility: visible;
+	vertical-align: middle;
+	z-index: 0;
+}
+
+#content div.gallery-image-wrap a.gallery-image-prev div {
+	background: #ccc url(img/prev.png);
+}
+
+#content div.gallery-image-wrap a.gallery-image-next {
+	margin-left: -100px;
+}
+#content div.gallery-image-wrap a.gallery-image-next div {
+	background: #ccc url(img/next.png);
+	margin-left: 100px;
+}
+
+#content div.gallery-image-wrap img {
+	margin: 0px;
+	padding: 0px;
+	z-index: 5;
+}
+
+#content div.gallery-image div.gallery-image-details {
+	min-width: 18em;
+	max-width: 100%;
+}
+
+#content div.largebutton-list, 
+#content div.button-list {
+	width: 100%;
+	text-align: center;
+}
+
+#content div.largebutton-list div.button-list-wrap,
+#content div.button-list div.button-list-wrap {
+/*	width: 100%; */
+	text-align: center;
+/*	display: block; */
+}
+
+#content div.largebutton-list div.button-list-wrap a,
+#content div.button-list div.button-list-wrap a {
+	display: block;
+}
+
+/* blist buttons */
+#content table.blist div.button-list div.button-list-wrap {
+	width: 100%;
+	padding-top: 0.25em;
+	padding-bottom: 2.0em;
+}
+
+#content table.blist div.button-list-wrap a {
+	margin: 0.2em 0em 0.2em 0em;
+	padding-right: 0em;
+	padding-left: 0em;
+	text-align: left;
+}
+
+#content table.blist div.button-list-wrap a span {
+	padding-left: 0.75em;
+	display: inline-block;
+}
+
+#content form {
+	width: 100%;
+}
+
+#content form label {
+	margin-top: 0em;
+	width: 100%;
+	display: block;
+}
+
+#content form label.checkbox {
+	margin-top: 0em;
+	display: inline-block;
+	width: auto;
+}
+
+#content form textarea {
+	width: 95%;
+	height: 3em;
+}
+#content form textarea.medium {
+	width: 95%;
+	height: 9em;
+}
+#content form input.text {
+	width: 95%;
+}
+
+#content form table.cart-details input {
+	width: 100%;
+	max-width: 100%;
+}
+
+#content form input.submit,
+#content form input.bigsubmit,
+#content form input.bigsubmit2 {
+	margin-top: 1em;
+	cursor: pointer;
+}
+
+#content form p.formhelp {
+	width: 100%;
+}
+
+#content article {
+	clear: both;
+}
+
+/* #content.evensplit article.page {
+	width: 30em;
+	margin: 0 auto;
+} */
+
+aside { width: 100%; }
+
+#content div.entry-content div.googlemap {
+	height: 22em;
+}
+
+#content div.googlemap img {
+	max-width: inherit;
+}
+
+aside div.googlemap {
+	height: 22em;
+}
+
+aside div.googlemap img {
+	max-width: inherit;
+}
+
+#content div.word-cloud-wrap {
+	padding-top: 2.0em;
+	padding-bottom: 1.5em;
+	margin: 0 auto;
+	text-align: center;
+}
+
+#content div.word-cloud {
+	margin: 0 auto;
+	max-width: 40em;
+	text-align: center;
+}
+
+#content div.word-cloud-large {
+	max-width: 100%;
+}
+
+#content div.word-cloud span { 
+	padding: 0.2em; 
+	padding-left: 0.6em; 
+	padding-right: 0.6em; 
+	white-space:nowrap;
+	vertical-align: middle;
+	}
+#content div.word-cloud span.size-0 { font-size: 1em; line-height: 1.5em;}
+#content div.word-cloud span.size-1 { font-size: 1.1em; line-height: 1.5em;}
+#content div.word-cloud span.size-2 { font-size: 1.2em; line-height: 1.5em;}
+#content div.word-cloud span.size-3 { font-size: 1.3em; line-height: 1.5em;}
+#content div.word-cloud span.size-4 { font-size: 1.4em; line-height: 1.5em;}
+#content div.word-cloud span.size-5 { font-size: 1.5em; line-height: 1.5em;}
+#content div.word-cloud span.size-6 { font-size: 1.6em; line-height: 1.5em;}
+#content div.word-cloud span.size-7 { font-size: 1.7em; line-height: 1.5em;}
+#content div.word-cloud span.size-8 { font-size: 1.8em; line-height: 1.5em;}
+#content div.word-cloud span.size-9 { font-size: 1.9em; line-height: 1.5em;}
+
+#content nav.content-nav {
+	padding-top: 0em;
+	padding-bottom: 0em;
+}
+
+#content nav.content-nav span.prev,
+#content nav.content-nav span.next {
+	display: inline-block;
+	padding-left: 0em;
+	padding-right: 0em;
+	margin: 0;
+	width: 50%;
+}
+
+#content nav.content-nav span.prev {
+	text-align: left;
+}
+
+#content nav.content-nav span.next {
+	text-align: right;
+}
+
+#content nav.content-nav span a {
+	padding-top: 1em;
+	padding-bottom: 1em;
+	display: inline-block;
+	width: 100%;
+}
+
+hr.footer-section-divider {
+	margin-top: 5em;
+	clear: both;
+}
+
+footer {
+	font-size: 0.8em;
+	text-align: center;
+}
+
+footer p {
+	max-width: 100%;
+	width: 100%;
+}
+
+header div.signin .hide-babybear, 
+div.hide-babybear {
+	display: none;
+}
+
+span.exhibitors-description {
+	display: none;
+}
+
+#content table.cilist td.cilist-image {
+	display: none;
+}
+
+/* Social share buttons */
+#content .share-buttons-wrap {
+	text-align: left;
+	display: block;
+}
+
+#content article.page form {
+	width: 100%;
+	max-width: 100%;
+}
+
+#content div.cart-search-input {
+	text-align: right;
+}
+
+#content div.cart-search-input input {
+	margin-top: 0.5em;
+	width: 100%;
+}
+
+#content table.cart-buttons,
+#content table.cart-items,
+#content table.cart-details {
+	width: 100%;
+}
+
+#content table .alignleft {
+	text-align: left;
+}
+#content table .alignright {
+	text-align: right;
+}
+#content table .aligncenter {
+	text-align: center;
+}
+#content table td.alignbottom {
+	vertical-align: bottom;
+}
+
+#content .alignright {
+	text-align: right;
+}
+
+#content div.clearboth {
+	clear: both;
+}
+
+#content .aligncenter {
+	text-align: center;
+}
+
+#content div.slider {
+	width: 100%;
+	padding-bottom: 1em;
+}
+
+#content div.slider-image {
+	width: 100%;
+	overflow: hidden;
+}
+
+#content div.slider-image {
+	max-width: 100%;
+}
+
+#content div.slider ul {
+	display: inline-block;
+	position: relative;
+	left: 0;
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+	-webkit-transition: 0.75s left;
+    -moz-transition: 0.75s left;
+    -ms-transition: 0.75s left;
+    -o-transition: 0.75s left;
+}
+
+#content div.slider ul li {
+	display: inline-block;
+	text-align: center;
+	float: left; 
+	margin: 0px;
+	padding: 0px;
+	list-style-type: none;
+	vertical-align: middle;
+}
+
+#content div.slider ul li img {
+	padding: 0px;
+	margin: 0px;
+	vertical-align: middle;
+}
+
+#content div.slider-pager-wrap {
+	text-align: center;
+}
+
+#content div.slider-scaled li {
+	height: 100%;
+	vertical-align: bottom;
+	line-height: 400px;
+	list-style-type: none;
+}
+
+#content h2.entry-subtitle {
+	clear: both;
+	padding-top: 1em;
+}
+
+#content audio {
+	vertical-align: bottom;
+}
+
+/* 7. BROWSER AND NON-SEMANTIC STYLING
+----------------------------------------------------------------------------------------*/
+.cf:before, .cf:after { content: ""; display: block; }
+.cf:after { clear: both; }
+.ie6 .cf { zoom: 1 }
+
