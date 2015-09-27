@@ -285,7 +285,6 @@ nav {
 #main-menu-container ul {
 	display: block;	
 	height: 100%;
-	min-height: 114px;
 	list-style-type: none;
 	padding: 0px;
 	margin: 0px;
@@ -295,7 +294,6 @@ nav {
 #main-menu-container ul.menu li.menu-item {
 	display: inline-block;
 	padding: 0em;
-	min-height: 114px;
 	vertical-align: middle;
 	margin-left: 9px;
 }
