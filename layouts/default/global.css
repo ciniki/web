@@ -256,6 +256,10 @@ nav {
 	text-align: left;
 }
 
+nav div.menu-divider {
+	display: none;
+}
+
 #sub-menu-container {
 	margin-top: 1em;
 	display: block;

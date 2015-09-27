@@ -118,14 +118,14 @@ a img {
 }
 
 #sub-menu-container {
-	width: auto;
+	width: 95%;
 	margin: 0px auto;
 	background-color: transparent;
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#53ABCD', endColorstr='#136B8D');
 }
 #main-menu-container {
 	width: 95%;
-	margin: 0px auto;
+	margin: 10px auto;
 	background-color: transparent;
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#888888', endColorstr='#555555');
 }
@@ -149,7 +149,7 @@ a img {
 }
 
 #sub-menu-container li.menu-item {
-	border: 0px solid #422213;
+	border: 2px solid #422213;
 	margin-bottom: 5px;
 	background-color: #136B8D;
 	border-radius: 10px;
@@ -1030,7 +1030,17 @@ aside div.borderless {
 	border-bottom: 1px dashed #bbb;
 }
 
+nav div.menu-divider {
+	display: block;
+	height: 1px;
+	padding: 0px;
+	margin: 0px;
+	background: transparent;
+}
+
 #sub-menu-container {
+	display: inline-block;
+	width: auto;
 	background-color: #136B8D;
 	border: 2px solid #422213;
 	border-radius: 10px;
@@ -1039,6 +1049,8 @@ aside div.borderless {
 	background: -webkit-gradient(linear, left top, left bottom, from(#53ABCD), to(#136B8D));
 	background: -moz-linear-gradient(top,  #53ABCD,  #136B8D);
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#53ABCD', endColorstr='#136B8D');
+	padding-left: 10px;
+	padding-right: 10px;
 }
 #main-menu-container {
 	display: inline-block;
