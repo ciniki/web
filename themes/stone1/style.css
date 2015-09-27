@@ -45,9 +45,10 @@ body {
 
 #page-container > header > hgroup {
 	text-align: center;
-	padding: 1em 1em 0.5em 1em;
+	padding: 1em 1em 1.5em 1em;
 	border-radius: 0px;
-	margin-bottom: 0.5em;
+	margin-bottom: 0.0em;
+	border-bottom: 1px solid #000;
 }
 
 #page-container > header {
@@ -992,12 +993,12 @@ hr.footer-section-divider {
 }
 
 #page-container > footer {
+	border-top: 1px solid #000;
 	color: #cbaf7e;
 	margin-top: 0px;
 	padding-top: 1em;
 	padding-bottom: 1em;
 	border-radius: 0px;
-	border: 0px solid #422213;
 	background: #736565;
 	width: 100%;
 }
