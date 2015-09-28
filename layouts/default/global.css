@@ -256,6 +256,10 @@ nav {
 	text-align: left;
 }
 
+#main-menu-container > ul > li > ul.sub-menu {
+	display: none;
+}
+
 nav div.menu-divider {
 	display: none;
 }

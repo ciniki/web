@@ -29,7 +29,7 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
 	list($pkg, $mod) = explode('.', $module);
 	$rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'processRequest');
 	if( $rc['stat'] != 'ok' ) {
-		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2561', 'msg'=>"I'm sorry, but the page you requested does not exist."));
+		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2577', 'msg'=>"I'm sorry, but the page you requested does not exist."));
 	}
 	$fn = $rc['function_call'];
 	$rc = $fn($ciniki, $settings, $ciniki['request']['business_id'], $args);
@@ -93,7 +93,17 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
 		$article_title = $page['title'];
 	}
 	$rsp['content'] .= "<article class='page'>\n"
-		. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$article_title</h1></header>\n"
+		. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$article_title</h1>";
+	if( isset($page['article_meta']) && count($page['article_meta']) > 0 ) {
+		$rsp['content'] .= "<div class='entry-meta'>";
+		$count = 0;
+		foreach($page['article_meta'] as $meta) {
+			$rsp['content'] .= ($count>0?'<br/>':'') . $meta;
+			$count++;
+		}
+		$rsp['content'] .= "</div>";
+	}
+	$rsp['content'] .= "</header>\n"
 		. "<div class='entry-content'>\n"
 		. "";
 
@@ -118,6 +128,10 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
 				case 'message': $processor = 'processBlockMessage'; break;
 				case 'printoptions': $processor = 'processBlockPrintOptions'; break;
 				case 'sharebuttons': $processor = 'processBlockShareButtons'; break;
+				case 'prices': $processor = 'processBlockPrices'; break;
+				case 'links': $processor = 'processBlockLinks'; break;
+				case 'files': $processor = 'processBlockFiles'; break;
+				case 'sponsors': $processor = 'processBlockSponsors'; break;
 			}
 			if( $processor != '' ) {
 				$rc = ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', $processor);

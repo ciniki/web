@@ -31,6 +31,7 @@ function ciniki_web_pages() {
 				'ciniki_web_pages', pn,
 				'mc', 'medium', 'sectioned', 'ciniki.web.pages.edit');
 			this[pn].data = {};	
+			this[pn].modules = {};
 			this[pn].stackedData = [];
 			this[pn].page_id = pid;
 			this[pn].sections = {
@@ -47,7 +48,9 @@ function ciniki_web_pages() {
 					'page_redirect_url':{'label':'URL', 'type':'text'},
 					}},
 				'_module':{'label':'Module', 'visible':'hidden', 'fields':{
-					'page_module':{'label':'Module', 'type':'select', 'options':{}},
+					'page_module':{'label':'Module', 'type':'select', 'options':{}, 'onchangeFn':'M.ciniki_web_pages[\'' + pn + '\'].setModuleOptions();'},
+					}},
+				'_module_options':{'label':'Options', 'visible':'hidden', 'fields':{
 					}},
 				'_image':{'label':'', 'aside':'yes', 'visible':'hidden', 'fields':{
 					'primary_image_id':{'label':'', 'type':'image_id', 'hidelabel':'yes', 
@@ -289,6 +292,7 @@ function ciniki_web_pages() {
 				} else {
 					p.children[0].className = 'medium';
 				}
+				this.sections._module_options.visible = 'hidden';
 				this.sections._image.visible = (pt=='10'?'yes':'hidden');
 				this.sections._image_caption.visible = (pt=='10'?'yes':'hidden');
 				this.sections._synopsis.visible = (pt=='10'?'yes':'hidden');
@@ -301,6 +305,7 @@ function ciniki_web_pages() {
 				this.sections.sponsors.visible = (pt=='10'?'yes':'hidden');
 				this.sections._redirect.visible = (pt=='20'?'yes':'hidden');
 				this.sections._module.visible = (pt=='30'?'yes':'hidden');
+				this.setModuleOptions();
 				for(i in this.sections) {
 					var e = M.gE(this.panelUID + '_section_' + i);
 					if( e != null && this.sections[i].visible != null && this.sections[i].visible != 'no' ) {
@@ -311,6 +316,41 @@ function ciniki_web_pages() {
 						}
 					}
 				}
+			};
+			this[pn].setModuleOptions = function() {
+				this.sections._module_options.visible = 'hidden';
+				var mod = this.formValue('page_module');
+				this.sections._module_options.fields = {};
+				for(var i in this.modules) {
+					if( this.modules[i].module.module_id == mod ) {
+						if( this.modules[i].module.options != null ) {
+							for(var j in this.modules[i].module.options) {
+								this.sections._module_options.visible = 'yes';
+								this.setModuleOptionsField(this.modules[i].module.options[j].option);
+							}
+						}
+						break;
+					}
+				}
+				if( this.sections._module.visible == 'yes' ) {
+					var e = M.gE(this.panelUID + '_section__module_options');
+					if( e != null && this.sections._module_options.visible == 'yes' ) {
+						e.style.display = 'block';
+						this.refreshSection('_module_options');
+					} else {
+						e.style.display = 'none';
+					}
+				}
+			};
+			this[pn].setModuleOptionsField = function(option) {
+				this.sections._module_options.fields[option.setting] = {'label':option.label, 'type':option.type};
+				if( option.type == 'toggle' ) {
+					this.sections._module_options.fields[option.setting].toggles = {};
+					for(var i in option.toggles) {
+						this.sections._module_options.fields[option.setting].toggles[option.toggles[i].toggle.value] = option.toggles[i].toggle.label;
+					}
+				}
+				this.data[option.setting] = option.value;
 			};
 			this[pn].addButton('save', 'Save', 'M.ciniki_web_pages.'+pn+'.savePage();');
 			this[pn].addLeftButton('website', 'Preview', 'M.ciniki_web_pages.'+pn+'.previewPage();');
@@ -397,6 +437,7 @@ function ciniki_web_pages() {
 			this[pn].sections.details.fields.parent_id.active = 'no';
 		}
 		this[pn].data = rsp.page;
+		this[pn].modules = rsp.modules;
 		// Remove child_format flags
 		this[pn].data.flags_1 = (rsp.page.flags&0xFFFFFF0F);
 		this[pn].data.child_format = (rsp.page.flags&0x000000F0);

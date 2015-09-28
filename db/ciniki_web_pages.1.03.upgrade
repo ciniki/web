@@ -1,0 +1,4 @@
+#
+#
+ALTER TABLE ciniki_web_pages ADD COLUMN article_title varchar(250) not null AFTER permalink;
+ALTER TABLE ciniki_web_pages COMMENT='v1.03';

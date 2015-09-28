@@ -55,7 +55,7 @@ function ciniki_web_pageUpdate(&$ciniki) {
 	//
 	// Get the existing page details 
 	//
-	$strsql = "SELECT id, parent_id, uuid, sequence "
+	$strsql = "SELECT id, parent_id, uuid, sequence, page_type, page_module "
 		. "FROM ciniki_web_pages "
 		. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
 		. "AND id = '" . ciniki_core_dbQuote($ciniki, $args['page_id']) . "' "
@@ -141,6 +141,50 @@ function ciniki_web_pageUpdate(&$ciniki) {
 		if( $rc['stat'] != 'ok' ) {
 			ciniki_core_dbTransactionRollback($ciniki, 'ciniki.web');
 			return $rc;
+		}
+	}
+
+	//
+	// Update any page settings for modules
+	//
+	if( (isset($args['page_type']) && $args['page_type'] == '30') || (!isset($args['page_type']) && $item['page_type'] == '30') ) {
+		list($pkg, $mod) = explode('.', isset($args['page_module'])?$args['page_module']:$item['page_module']);
+		//
+		// Get any module options
+		//
+		$rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'hooks', 'webOptions');
+		if( $rc['stat'] == 'ok' ) {
+			$fn = $rc['function_call'];
+			$rc = $fn($ciniki, $args['business_id'], array());
+			if( $rc['stat'] == 'ok' && isset($rc['options']) ) {
+				//
+				// Check for options that need updating
+				//
+				$options = $rc['options'];
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbInsert');
+				foreach($options as $oid => $option) {
+					$option = $option['option'];
+					if( isset($ciniki['request']['args'][$option['setting']]) ) {
+						$strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) "
+							. "VALUES ('" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['business_id']) . "'"
+							. ", '" . ciniki_core_dbQuote($ciniki, $option['setting']) . "' "
+							. ", '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args'][$option['setting']]) . "'"
+							. ", UTC_TIMESTAMP(), UTC_TIMESTAMP()) "
+							. "ON DUPLICATE KEY UPDATE detail_value = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args'][$option['setting']]) . "' "
+							. ", last_updated = UTC_TIMESTAMP() "
+							. "";
+						$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
+						if( $rc['stat'] != 'ok' ) {
+							ciniki_core_dbTransactionRollback($ciniki, 'ciniki.web');
+							return $rc;
+						}
+						ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $args['business_id'], 
+							2, 'ciniki_web_settings', $option['setting'], 'detail_value', $ciniki['request']['args'][$option['setting']]);
+						$ciniki['syncqueue'][] = array('push'=>'ciniki.web.setting',
+							'args'=>array('id'=>$option['setting']));
+					}
+				}
+			}
 		}
 	}
 

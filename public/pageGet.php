@@ -276,8 +276,22 @@ function ciniki_web_pageGet($ciniki) {
 		//
 		if( $module['module_status'] == 1 
 			&& file_exists($ciniki['config']['ciniki.core']['root_dir'] . '/' . $module['package'] . '-mods/' . $module['module'] . '/web/processRequest.php') ) {
+
+			//
+			// Get any module options
+			//
+			$rc = ciniki_core_loadMethod($ciniki, $module['package'], $module['module'], 'hooks', 'webOptions');
+			if( $rc['stat'] == 'ok' ) {
+				$fn = $rc['function_call'];
+				$rc = $fn($ciniki, $args['business_id'], array());
+				if( $rc['stat'] == 'ok' && isset($rc['options']) ) {
+					$module['options'] = $rc['options'];
+				}
+			}
+
 			$modules[] = array('module'=>$module);
 		}
+
 	}
 
 	return array('stat'=>'ok', 'page'=>$page, 'parentlist'=>$parentlist, 'modules'=>$modules);

@@ -640,7 +640,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 				$page_content .= $rc['content'];
 			} elseif( !isset($hide_upcoming) || $hide_upcoming != 'yes' ) {
 //			!isset($settings['page-events-upcoming-empty-hide']) 
-//				|| ($settings['page-events-upcoming-empty-hide'] != 'yes' && isset($settings['page-events-past']) && $settings['page-events-past'] == 'yes') ) {
+//				|| ($settings['page-events-upcoming-empty-hide'] != 'yes' && isset($settings['page-events-past']) && $settings['page-events-past'] == 'yes') 
 				if( isset($upcoming_title) && $upcoming_title != '' ) {
 					$page_content .= "<h2>" . $upcoming_title . "</h2>";
 				}

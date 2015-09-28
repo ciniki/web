@@ -2,19 +2,16 @@
 //
 // Description
 // -----------
-// This function will process a list of events, and format the html.
 //
 // Arguments
 // ---------
 // ciniki:
 // settings:		The web settings structure, similar to ciniki variable but only web specific information.
-// events:			The array of events as returned by ciniki_events_web_list.
-// limit:			The number of events to show.  Only 2 events are shown on the homepage.
 //
 // Returns
 // -------
 //
-function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $args) {
+function ciniki_web_processBlockCIList(&$ciniki, $settings, $business_id, $block) {
 
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
@@ -31,10 +28,10 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 
 	$content = "<table class='cilist'><tbody>";
 	$count = 0;
-	foreach($categories as $cid => $category) {
+	foreach($block['categories'] as $cid => $category) {
 		if( $page_limit > 0 && $count >= $page_limit ) { $count++; break; }
 		// If no titles, then highlight the title in the category
-		if( isset($args['notitle']) && $args['notitle'] == 'yes' ) {
+		if( isset($block['notitle']) && $block['notitle'] == 'yes' ) {
 			$title_url = '';
 			if( count($category['list']) == 1 ) {
 				// Check if category should be linked
@@ -50,8 +47,13 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 				. ($title_url!=''?'</a>':'')
 				. "</span></th><td>\n";
 		} else {
-			$content .= "\n<tr><th><span class='cilist-category'>" . (isset($category['name'])?$category['name']:'') . "</span></th><td>\n";
+			$content .= "\n<tr><th><span class='cilist-category'>" . (isset($category['name'])?$category['name']:'') . "</span>";
+			if( isset($category['subname']) && $category['subname'] != '' ) {
+				$content .= "<span class='cilist-subcategory'>" . $category['subname'] . "</span>";
+			}
+			$content .= "</th><td>\n";
 		}
+		// Start the inner table for the item list
 		$content .= "<table class='cilist-categories'><tbody>\n";
 
 		foreach($category['list'] as $iid => $item) {
@@ -62,7 +64,7 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 			$javascript_onclick = '';
 			if( isset($item['is_details']) && $item['is_details'] == 'yes' 
 				&& isset($item['permalink']) && $item['permalink'] != '' ) {
-				$url = $base_url . "/" . $item['permalink'];
+				$url = $block['base_url'] . "/" . $item['permalink'];
 				$javascript_onclick = " onclick='javascript:location.href=\"$url\";' ";
 			} elseif( isset($item['url']) && $item['url'] != '' ) {
 				$rc = ciniki_web_processURL($ciniki, $item['url']);
@@ -75,18 +77,18 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 			}
 
 			// Setup the item image
-			if( isset($args['notitle']) 
-				&& ($args['notitle'] == 'yes' || $args['notitle'] == 'hide')
+			if( isset($block['notitle']) 
+				&& ($block['notitle'] == 'yes' || $block['notitle'] == 'hide')
 				) {
 				$content .= "<tr><td class='cilist-image' rowspan='2'>";
 			} else {
 				$content .= "<tr><td class='cilist-image' rowspan='3'>";
 			}
 			if( isset($item['image_id']) && $item['image_id'] > 0 ) {
-				$version = ((isset($args['image_version'])&&$args['image_version']!='')?$args['image_version']:'thumbnail');
+				$version = ((isset($block['image_version'])&&$block['image_version']!='')?$block['image_version']:'thumbnail');
 				$rc = ciniki_web_getScaledImageURL($ciniki, $item['image_id'], $version, 
-					((isset($args['image_width'])&&$args['image_width']!='')?$args['image_width']:'150'), 
-					((isset($args['image_height'])&&$args['image_height']!='')?$args['image_height']:'0') 
+					((isset($block['image_width'])&&$block['image_width']!='')?$block['image_width']:'150'), 
+					((isset($block['image_height'])&&$block['image_height']!='')?$block['image_height']:'0') 
 					);
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
@@ -101,22 +103,33 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 						. "<img title='' alt='" . $item['title'] . "' src='" . $rc['url'] . "' />"
 						. "</div>";
 				}
-			} elseif( isset($category['noimage']) && $category['noimage'] != '' ) {
+			} elseif( isset($block['noimage']) && $block['noimage'] == 'yes' ) {
 				if( $url != '' ) {
 					$content .= "<div class='image-cilist-thumbnail'>"
 						. "<a href='$url' target='$url_target' title='" . $item['title'] . "'>"
-						. "<img title='' alt='" . $item['title'] . "' src='" . $category['noimage'] . "' /></a>"
+						. "<img title='' alt='" . $item['title'] . "' src='/ciniki-web-layouts/default/img/noimage_240.png' /></a>"
 						. "</div></aside>";
 				} else {
 					$content .= "<div class='image-cilist-thumbnail'>"
-						. "<img title='' alt='" . $item['title'] . "' src='" . $category['noimage'] . "' />"
+						. "<img title='' alt='" . $item['title'] . "' src='/ciniki-web-layouts/default/img/noimage_240.png' />"
+						. "</div></aside>";
+				}
+			} elseif( isset($block['noimage']) && $block['noimage'] != '' ) {
+				if( $url != '' ) {
+					$content .= "<div class='image-cilist-thumbnail'>"
+						. "<a href='$url' target='$url_target' title='" . $item['title'] . "'>"
+						. "<img title='' alt='" . $item['title'] . "' src='" . $block['noimage'] . "' /></a>"
+						. "</div></aside>";
+				} else {
+					$content .= "<div class='image-cilist-thumbnail'>"
+						. "<img title='' alt='" . $item['title'] . "' src='" . $block['noimage'] . "' />"
 						. "</div></aside>";
 				}
 			}
 			$content .= "</td>";
 			
 			// Setup the details
-			if( isset($args['notitle']) && $args['notitle'] == 'yes' ) {
+			if( isset($block['notitle']) && $block['notitle'] == 'yes' ) {
 				$content .= "";
 			} else {
 				$content .= "<td class='cilist-title'>";
@@ -142,7 +155,7 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 				//
 				if( isset($args['child_files'][$iid]['files']) ) {
 					foreach($args['child_files'][$iid]['files'] as $file_id => $file) {
-						$file_url = $base_url . '/' . $item['permalink'] . '/download/' . $file['permalink'] . '.' . $file['extension'];
+						$file_url = $block['base_url'] . '/' . $item['permalink'] . '/download/' . $file['permalink'] . '.' . $file['extension'];
 						$content .= "<p><a target='_blank' href='" . $file_url . "' title='" . $file['name'] . "'>" . $file['name'] . "</a></p>";
 					}
 				}
@@ -156,7 +169,7 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 				//
 				if( isset($args['child_files'][$iid]['files']) ) {
 					foreach($args['child_files'][$iid]['files'] as $file_id => $file) {
-						$file_url = $base_url . '/' . $item['permalink'] . '/download/' . $file['permalink'] . '.' . $file['extension'];
+						$file_url = $block['base_url'] . '/' . $item['permalink'] . '/download/' . $file['permalink'] . '.' . $file['extension'];
 						$content .= "<p><a target='_blank' href='" . $file_url . "' title='" . $file['name'] . "'>" . $file['name'] . "</a></p>";
 					}
 				}
@@ -204,46 +217,8 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 	}
 	$content .= "</tbody></table>\n";
 
-	//
-	// Check if we need prev and next buttons
-	//
-	$nav_content = '';
-	if( $page_limit > 0 && isset($args['base_url']) && $args['base_url'] != '' ) {
-		$prev = '';
-		if( isset($args['page']) && $args['page'] > 1 ) {
-			if( isset($args['base_url']) ) {
-				$prev .= "<a href='" . $args['base_url'] . "?page=" . ($args['page']-1) . "'>";
-				array_push($ciniki['response']['head']['links'], array('rel'=>'prev', 'href'=>$args['base_url'] . "?page=" . ($args['page']-1)));
-				if( isset($args['prev']) && $args['prev'] != '' ) {
-					$prev .= $args['prev'];
-				} else {
-					$prev .= 'Prev';
-				}
-				$prev .= "</a>";
-			}
-		}
-		$next = '';
-		if( isset($args['page']) && $count > $page_limit ) {
-			if( isset($args['base_url']) ) {
-				$next .= "<a href='" . $args['base_url'] . "?page=" . ($args['page']+1) . "'>";
-				array_push($ciniki['response']['head']['links'], array('rel'=>'next', 'href'=>$args['base_url'] . "?page=" . ($args['page']+1)));
-				if( isset($args['prev']) && $args['prev'] != '' ) {
-					$next .= $args['next'];
-				} else {
-					$next .= 'Next';
-				}
-				$next .= "</a>";
-			}
-		}
-		if( $next != '' || $prev != '' ) {
-			$nav_content = "<nav class='content-nav'>"
-				. "<span class='prev'>$next</span>"
-				. "<span class='next'>$prev</span>"
-				. "</nav>"
-				. "";
-		}
-	}
+//	$content .= "<pre>" . print_r($block, true) . "</pre>";
 
-	return array('stat'=>'ok', 'content'=>$content, 'nav'=>$nav_content, 'count'=>$count);
+	return array('stat'=>'ok', 'content'=>$content);
 }
 ?>
