@@ -20,13 +20,13 @@ function ciniki_web_processBlockContent(&$ciniki, $settings, $business_id, $bloc
 	//
 	if( $block['content'] != '' ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-		$rc = ciniki_web_processContent($ciniki, $block['content']);
+		$rc = ciniki_web_processContent($ciniki, $block['content'], ((isset($block['wide'])&&$block['wide']=='yes')?'wide':''));
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
 		if( $rc['content'] != '' ) {
 			if( isset($block['title']) && $block['title'] != '' ) {
-				$content .= "<h2>" . $block['title'] . "</h2>";
+				$content .= "<h2" . ((isset($block['wide'])&&$block['wide']=='yes')?" class='wide'":'') . ">" . $block['title'] . "</h2>";
 			}
 			$content .= $rc['content'];
 		}

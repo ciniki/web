@@ -87,6 +87,10 @@ p, ul, ol, dl, blockquote {
     max-width: 30em; /* Optimal width for long-form text */
   }
 
+h2 {
+	max-width: 23em;
+}
+
 .evensplit p, 
 .evensplit ul, 
 .evensplit ol, 

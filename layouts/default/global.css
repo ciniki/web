@@ -78,13 +78,17 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1em;
   }
 
-div.cart-pricelist,
+div.cart-pricelist, 
 p, ul, ol, dl, blockquote {
     font-size: 1em;
     line-height: 1.618em;
     margin-bottom: 1.618em; 
     max-width: 30em; /* Optimal width for long-form text */
   }
+
+h2 {
+	max-width: 23em;
+}
 
 .evensplit p, 
 .evensplit ul, 

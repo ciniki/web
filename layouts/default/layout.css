@@ -117,6 +117,12 @@ header span.title {
 	width: 30em;
 }
 
+#content div.wide h2, 
+#content div.wide h3, 
+#content div.wide h4, 
+#content h2.wide, 
+#content h3.wide, 
+#content h4.wide, 
 #content cite.wide, 
 #content blockquote.wide, 
 #content form.wide, 
