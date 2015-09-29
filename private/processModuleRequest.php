@@ -75,7 +75,9 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
 	// Setup the article
 	//
 	$article_title = '';
-	if( isset($page['breadcrumbs']) && count($page['breadcrumbs']) > 0 ) {
+	if( (!isset($settings['site-layout']) || $settings['site-layout'] == 'default')
+		&& isset($page['breadcrumbs']) && count($page['breadcrumbs']) > 0 
+		) {
 		$num_crumbs = count($page['breadcrumbs']);	
 		$i = 1;
 		foreach($page['breadcrumbs'] as $breadcrumb) {

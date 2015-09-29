@@ -22,11 +22,17 @@ function ciniki_web_processBlockCIList(&$ciniki, $settings, $business_id, $block
 		$page_limit = $args['limit'];
 	}
 
+	$content = '';
+
+	if( isset($block['title']) && $block['title'] != '' ) {
+		$content .= "<h2>" . $block['title'] . "</h2>";
+	}
+
 //	print "<pre>";
 //	print_r($categories);
 //	print "</pre>";
 
-	$content = "<table class='cilist'><tbody>";
+	$content .= "<table class='cilist'><tbody>";
 	$count = 0;
 	foreach($block['categories'] as $cid => $category) {
 		if( $page_limit > 0 && $count >= $page_limit ) { $count++; break; }

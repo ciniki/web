@@ -148,6 +148,7 @@ function ciniki_web_objects($ciniki) {
 			'parent_id'=>array('ref'=>'ciniki.web.page'),
 			'title'=>array(),
 			'permalink'=>array(),
+			'article_title'=>array('default'=>''),
 			'category'=>array('default'=>''),
 			'sequence'=>array('default'=>'1'),
 			'page_type'=>array('default'=>'10'),

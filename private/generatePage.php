@@ -95,7 +95,7 @@ function ciniki_web_generatePage($ciniki, $settings) {
 		$domain_base_url = $ciniki['request']['domain_base_url'] . '/' . $ciniki['request']['page'];
 		$ciniki['request']['page-container-class'] = str_replace('.', '-', $page['page_module']);
 
-		$breadcrumbs[] = array('name'=>$page['title'], 'url'=>$base_url . '/' . $ciniki['request']['page']);
+//		$breadcrumbs[] = array('name'=>$page['title'], 'url'=>$base_url . '/' . $ciniki['request']['page']);
 
 		//
 		// Process the module request

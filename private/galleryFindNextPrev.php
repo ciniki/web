@@ -22,28 +22,28 @@ function ciniki_web_galleryFindNextPrev(&$ciniki, $images, $image_permalink) {
 		);
 
 	foreach($images as $iid => $image) {
-		if( $first == NULL ) {
-			$first = $image;
+		if( $rsp['first'] == NULL ) {
+			$rsp['first'] = $image;
 		}
 		if( $image['permalink'] == $image_permalink ) {
-			$img = $image;
-		} elseif( $next == NULL && $img != NULL ) {
-			$next = $image;
-		} elseif( $img == NULL ) {
-			$prev = $image;
+			$rsp['img'] = $image;
+		} elseif( $rsp['next'] == NULL && $rsp['img'] != NULL ) {
+			$rsp['next'] = $image;
+		} elseif( $rsp['img'] == NULL ) {
+			$rsp['prev'] = $image;
 		}
-		$last = $image;
+		$rsp['last'] = $image;
 	}
 
 	if( count($images) == 1 ) {
-		$prev = NULL;
-		$next = NULL;
-	} elseif( $prev == NULL ) {
+		$rsp['prev'] = NULL;
+		$rsp['next'] = NULL;
+	} elseif( $rsp['prev'] == NULL ) {
 		// The requested image was the first in the list, set previous to last
-		$prev = $last;
-	} elseif( $next == NULL ) {
+		$rsp['prev'] = $rsp['last'];
+	} elseif( $rsp['next'] == NULL ) {
 		// The requested image was the last in the list, set previous to last
-		$next = $first;
+		$rsp['next'] = $rsp['first'];
 	}
 
 	return $rsp;

@@ -18,8 +18,9 @@ function ciniki_web_pageAdd(&$ciniki) {
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
         'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
         'parent_id'=>array('required'=>'no', 'blank'=>'yes', 'default'=>'0', 'name'=>'Parent'), 
-        'title'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Title'), 
+        'title'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Menu Title'), 
         'permalink'=>array('required'=>'no', 'default'=>'', 'blank'=>'yes', 'name'=>'Permalink'), 
+        'article_title'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Page Title'), 
 		'category'=>array('required'=>'no', 'default'=>'', 'blank'=>'yes', 'name'=>'Category'),
 		'sequence'=>array('required'=>'no', 'default'=>'0', 'blank'=>'yes', 'name'=>'Sequence'),
 		'page_type'=>array('required'=>'no', 'default'=>'10', 'blank'=>'yes', 'name'=>'Type'),

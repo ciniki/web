@@ -54,6 +54,7 @@ function ciniki_web_pageGet($ciniki) {
 			. "ciniki_web_pages.parent_id, "
 			. "ciniki_web_pages.title, "
 			. "ciniki_web_pages.permalink, "
+			. "ciniki_web_pages.article_title, "
 			. "ciniki_web_pages.category, "
 			. "ciniki_web_pages.sequence, "
 			. "ciniki_web_pages.flags, "
@@ -74,7 +75,7 @@ function ciniki_web_pageGet($ciniki) {
 		$rc = ciniki_core_dbHashQueryTree($ciniki, $strsql, 'ciniki.web', array(
 			array('container'=>'pages', 'fname'=>'id', 'name'=>'page',
 				'fields'=>array('id', 'parent_id',
-					'title', 'permalink', 'category', 'sequence', 'page_type', 'page_redirect_url', 'page_module', 'flags', 
+					'title', 'permalink', 'article_title', 'category', 'sequence', 'page_type', 'page_redirect_url', 'page_module', 'flags', 
 					'primary_image_id', 'primary_image_caption', 'primary_image_url', 
 					'child_title', 'synopsis', 'content')),
 			));

@@ -34,8 +34,8 @@ function ciniki_web_processBlockPrices(&$ciniki, $settings, $business_id, $block
 		//
 		// Process the price list
 		//
-		if( count($block['prices']) > 1 ) {
-			$content .= "<h2>Price</h2>";
+		if( isset($block['title']) && $block['title'] != '' ) {
+			$content .= "<h3>" . $block['title'] . "</h3>";
 		}
 		$content .= "<div class='cart-pricelist'>";
 		foreach($block['prices'] as $pid => $price) {

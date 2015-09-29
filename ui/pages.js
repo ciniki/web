@@ -37,7 +37,8 @@ function ciniki_web_pages() {
 			this[pn].sections = {
 				'details':{'label':'', 'aside':'yes', 'fields':{
 					'parent_id':{'label':'Parent Page', 'type':'select', 'options':{}},
-					'title':{'label':'Title', 'type':'text'},
+					'title':{'label':'Menu Title', 'type':'text'},
+					'article_title':{'label':'Page Title', 'visible':'no', 'type':'text'},
 					'sequence':{'label':'Page Order', 'type':'text', 'size':'small'},
 					'_flags_1':{'label':'Visible', 'type':'flagtoggle', 'bit':0x01, 'field':'flags_1', 'default':'on'},
 				}},
@@ -305,7 +306,10 @@ function ciniki_web_pages() {
 				this.sections.sponsors.visible = (pt=='10'?'yes':'hidden');
 				this.sections._redirect.visible = (pt=='20'?'yes':'hidden');
 				this.sections._module.visible = (pt=='30'?'yes':'hidden');
-				this.setModuleOptions();
+				this.sections._module_options.visible = (pt=='30'?'yes':'hidden');
+				if( pt == '30' ) { 
+					this.setModuleOptions();
+				}
 				for(i in this.sections) {
 					var e = M.gE(this.panelUID + '_section_' + i);
 					if( e != null && this.sections[i].visible != null && this.sections[i].visible != 'no' ) {
@@ -315,6 +319,14 @@ function ciniki_web_pages() {
 							e.style.display = 'block';
 						}
 					}
+				}
+				var e = M.gE(this.panelUID + '_article_title');
+				if( pt == 10 || pt == 11 ) {
+					this.sections.details.fields.article_title.visible = 'yes';
+					e.parentNode.parentNode.style.display = '';
+				} else {
+					this.sections.details.fields.article_title.visible = 'no';
+					e.parentNode.parentNode.style.display = 'none';
 				}
 			};
 			this[pn].setModuleOptions = function() {
@@ -332,14 +344,12 @@ function ciniki_web_pages() {
 						break;
 					}
 				}
-				if( this.sections._module.visible == 'yes' ) {
-					var e = M.gE(this.panelUID + '_section__module_options');
-					if( e != null && this.sections._module_options.visible == 'yes' ) {
-						e.style.display = 'block';
-						this.refreshSection('_module_options');
-					} else {
-						e.style.display = 'none';
-					}
+				var e = M.gE(this.panelUID + '_section__module_options');
+				if( e != null && this.sections._module_options.visible == 'yes' && this.sections._module.visible == 'yes' ) {
+					e.style.display = 'block';
+					this.refreshSection('_module_options');
+				} else {
+					e.style.display = 'none';
 				}
 			};
 			this[pn].setModuleOptionsField = function(option) {
