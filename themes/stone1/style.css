@@ -52,7 +52,7 @@ body {
 }
 
 #page-container > header {
-	background: #736565;
+	background: #594a42;
 }
 
 header h1,
@@ -102,7 +102,7 @@ header div.signin span.social-icons a,
 header div.signin span.social-icons a:visited,
 header div.signin span.social-icons a:hover,
 header div.signin span.social-icons a:active {
-	color: #444;
+	color: #B9A296;
 }
 
 a img {
@@ -994,12 +994,12 @@ hr.footer-section-divider {
 
 #page-container > footer {
 	border-top: 1px solid #000;
-	color: #cbaf7e;
+	color: #B9A296;
 	margin-top: 0px;
 	padding-top: 1em;
 	padding-bottom: 1em;
 	border-radius: 0px;
-	background: #736565;
+	background: #594a42;
 	width: 100%;
 }
 
@@ -1008,7 +1008,7 @@ footer a:visited,
 footer a:hover,
 footer a:active {
 	text-decoration: none;
-	color: #cbaf7e;
+	color: #B9A296;
 }
 
 footer div.social-icons {
