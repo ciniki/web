@@ -546,6 +546,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 			. "AND (flags&0x01) = 1 "	// Active pages
 			. "ORDER BY sequence, title "
 			. "";
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
 		$rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.web', array(
 			array('container'=>'pages', 'fname'=>'id', 
 				'fields'=>array('id', 'title', 'permalink', 'page_type', 'page_redirect_url', 'page_module')),
