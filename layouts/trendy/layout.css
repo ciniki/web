@@ -117,6 +117,12 @@ header span.title {
 	width: 30em;
 }
 
+#content div.wide h2, 
+#content div.wide h3, 
+#content div.wide h4, 
+#content h2.wide, 
+#content h3.wide, 
+#content h4.wide, 
 #content cite.wide, 
 #content blockquote.wide, 
 #content form.wide, 
@@ -486,15 +492,12 @@ span.exhibitors-description {
 		width: 100%;
 	}
 	#content form div.input { width: 100%; }
-	#content form {
-		width: 100%;
-		max-width: 100%;
-	}
-	#content dl {
-		width: 100%;
-		max-width: 100%;
-	}
-	#content form input.text {
+	#content form input.text,
+	#content form,
+	#content dl,
+	#content h2,
+	#content h3,
+	#content h4 {
 		width: 100%;
 		max-width: 100%;
 	}

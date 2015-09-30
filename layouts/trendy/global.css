@@ -279,6 +279,10 @@ nav {
 	text-align: left;
 }
 
+#main-menu-container > ul > li > ul.sub-menu {
+	display: none;
+}
+
 #sub-menu-container {
 	margin-top: 1em;
 	display: block;
