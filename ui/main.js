@@ -530,7 +530,7 @@ function ciniki_web_main() {
 				'page-home-quicklinks-009-name':{'label':'9) Name', 'type':'text'},
 				'page-home-quicklinks-009-url':{'label':'9) URL', 'type':'text', 'hint':'Enter the http:// address for the website'},
 				}},
-			'_seo':{'label':'Search Engine Optimization', 'fields':{
+			'_seo':{'label':'Search Engine Optimization', 'active':'no', 'fields':{
 				'page-home-seo-title':{'label':'Title', 'hidelabel':'yes', 'hint':'', 'type':'text'},
 				}},
 			'redirects':{'label':'Redirect Home', 'active':'no', 'fields':{
@@ -1690,6 +1690,7 @@ function ciniki_web_main() {
 		this.home.sections._writings.active=(M.curBusiness.modules['ciniki.writingcatalog']!=null)?'yes':'no';
 		this.home.sections._workshops.active = (M.curBusiness.modules['ciniki.workshops']!=null)?'yes':'no';
 		this.home.sections._artgalleryexhibitions.active=(M.curBusiness.modules['ciniki.artgallery']!=null)?'yes':'no';
+		this.home.sections._seo.active=((M.curBusiness.modules['ciniki.web'].flags&0x8000)>0)?'yes':'no';
 
 		if( M.curBusiness.modules['ciniki.blog'] != null ) {
 			if( (M.curBusiness.modules['ciniki.blog'].flags&0x01) > 0 ) {
