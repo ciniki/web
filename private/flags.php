@@ -31,7 +31,7 @@ function ciniki_web_flags($ciniki, $modules) {
 //		array('flag'=>array('bit'=>'13', 'name'=>'Pages')),
 //		array('flag'=>array('bit'=>'14', 'name'=>'Info Pages')),
 //		array('flag'=>array('bit'=>'15', 'name'=>'Pages')),	
-//		array('flag'=>array('bit'=>'16', 'name'=>'FAQ')),
+		array('flag'=>array('bit'=>'16', 'name'=>'SEO')),
 		);
 
 	return array('stat'=>'ok', 'flags'=>$flags);

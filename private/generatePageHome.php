@@ -940,7 +940,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Home', array());
+	$rc = ciniki_web_generatePageHeader($ciniki, $settings, (isset($settings['page-home-seo-title'])&&$settings['page-home-seo-title']!=''?$settings['page-home-seo-title']:'Home'), array());
 	if( $rc['stat'] != 'ok' ) {	
 		return $rc;
 	}

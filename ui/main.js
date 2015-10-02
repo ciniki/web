@@ -530,6 +530,9 @@ function ciniki_web_main() {
 				'page-home-quicklinks-009-name':{'label':'9) Name', 'type':'text'},
 				'page-home-quicklinks-009-url':{'label':'9) URL', 'type':'text', 'hint':'Enter the http:// address for the website'},
 				}},
+			'_seo':{'label':'Search Engine Optimization', 'fields':{
+				'page-home-seo-title':{'label':'Title', 'hidelabel':'yes', 'hint':'', 'type':'text'},
+				}},
 			'redirects':{'label':'Redirect Home', 'active':'no', 'fields':{
 				'page-home-url':{'label':'URL', 'type':'text'},
 				}},
