@@ -33,7 +33,7 @@ body {
 	padding-top: 1.0em;
 }
 
-#page-container > header > hgroup {
+#page-container > header hgroup {
 	text-align: center;
 	padding: 1em 1em 0.5em 1em;
 	border-radius: 10px;

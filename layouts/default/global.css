@@ -209,6 +209,10 @@ header div.signin-wrapper {
 	vertical-align: center;
 }
 
+header button.menu-toggle {
+	display: none;
+}
+
 header span.social-icons {
 	display: inline-block;
 }

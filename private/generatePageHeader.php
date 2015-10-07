@@ -437,6 +437,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	$content .= ">\n";
 
 	$content .= "<header>\n";
+	$content .= "<div class='header-wrapper'>\n";
 
 	// Add signin button if any.
 	$content .= $signin_content;
@@ -468,6 +469,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	//
 	// Decide if there is a header image to be displayed, or display an h1 title
 	//
+	$content .= "<div class='logo-nav-wrapper'>\n";
 	if( !isset($settings['site-header-title']) || $settings['site-header-title'] == 'yes' ) {
 		$content .= "<hgroup>\n";
 //		if( $social_icons != '' ) {
@@ -609,6 +611,9 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	//
 	// Generate menu
 	//
+	if( isset($settings['site-layout']) && $settings['site-layout'] == 'trendy' ) {
+		$content .= "<button type='button' class='menu-toggle'><i class='fa fa-bars'></i></button>";
+	}
 	$content .= "<nav id='access' role='navigation'>\n"
 		. "<h3 class='assistive-text'>Main menu</h3>\n"
 		. "";
@@ -1020,6 +1025,8 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	}
 
 	$content .= "</nav>\n";
+	$content .= "</div>\n";
+	$content .= "</div>\n";
 	$content .= "</header>\n"
 		. "";
 	$content .= "<hr class='section-divider header-section-divider' />\n";
