@@ -38,6 +38,9 @@ function ciniki_web_main() {
 //		this.themesAvailable['splatter'] = 'Splatter';
 	}
 	this.headerImageSize = {'small':'Small', 'medium':'Medium', 'large':'Large', 'xlarge':'XLarge', 'xxlarge':'XXLarge'};
+	if( M.userPerms&0x01 == 0x01 ) {
+		this.headerImageSize['original'] = 'Original';
+	}
 	
 	this.layoutsAvailable = {
 		'default':'Default',
@@ -237,7 +240,7 @@ function ciniki_web_main() {
 				'site-header-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
 				}},
 			'options':{'label':'Options', 'fields':{
-				'site-header-image-size':{'label':'Image Size', 'type':'multitoggle', 'default':'medium', 'toggles':this.headerImageSize},
+				'site-header-image-size':{'label':'Image Size', 'type':'select', 'default':'medium', 'options':this.headerImageSize},
 				'site-header-title':{'label':'Display Business Name', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles, 'editFn':'M.startApp(\'ciniki.businesses.info\',null,\'M.ciniki_web_main.header.show();\');'},
 				}},
 			'_save':{'label':'', 'buttons':{

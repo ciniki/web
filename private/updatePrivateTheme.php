@@ -84,6 +84,7 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, &$settings) {
 		. "WHERE ciniki_web_theme_content.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
 		. "AND ciniki_web_theme_content.theme_id = '" . ciniki_core_dbQuote($ciniki, $theme_id) . "' "
 		. "AND ciniki_web_theme_content.status = 10 "
+		. "AND (content_type = 'css' OR content_type = 'js') "
 		. "ORDER BY media, sequence "
 		. "";
 	$rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.web', array(

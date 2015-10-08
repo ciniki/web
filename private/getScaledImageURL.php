@@ -46,7 +46,11 @@ function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $
 	} else {
 		$extension = 'jpg';
 	}
-	if( $maxwidth == 0 ) {
+	if( $maxwidth == 0 && $maxheight == 0 ) {
+		$filename = '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/'
+			. sprintf('%07d', $ciniki['request']['business_id'])
+			. '/o/' . sprintf('%010d', $img['id']) . '.' . $extension;
+	} elseif( $maxwidth == 0 ) {
 		$filename = '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/'
 			. sprintf('%07d', $ciniki['request']['business_id'])
 			. '/h' . $maxheight . '/' . sprintf('%010d', $img['id']) . '.' . $extension;
@@ -79,7 +83,9 @@ function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $
 		//
 		// Scale image
 		//
-		$image->scaleImage($maxwidth, $maxheight);
+		if( $maxwidth > 0 && $maxheight > 0 ) {
+			$image->scaleImage($maxwidth, $maxheight);
+		}
 
 		//
 		// Apply a border

@@ -54,6 +54,10 @@ function ciniki_web_privatethemes() {
 				'name':{'label':'Name', 'type':'text'},
 				'status':{'label':'Status', 'type':'toggle', 'toggles':{'10':'Active', '50':'Inactive'}},
 				}},
+			'csshref':{'label':'Remote CSS', 'aside':'yes', 'type':'simplegrid', 'num_cols':2,
+				'addTxt':'Add CSS',
+				'addFn':'M.ciniki_web_privatethemes.contentEdit(\'M.ciniki_web_privatethemes.edit.updateCSSHREF();\',0,M.ciniki_web_privatethemes.edit.theme_id,\'csshref\');',
+				},
 			'css':{'label':'CSS', 'aside':'yes', 'type':'simplegrid', 'num_cols':2,
 				'addTxt':'Add CSS',
 				'addFn':'M.ciniki_web_privatethemes.contentEdit(\'M.ciniki_web_privatethemes.edit.updateCSS();\',0,M.ciniki_web_privatethemes.edit.theme_id,\'css\');',
@@ -87,7 +91,9 @@ function ciniki_web_privatethemes() {
 			}
 		};
 		this.edit.rowFn = function(s, i, d) {
-			if( s == 'css' ) {
+			if( s == 'csshref' ) {
+				return 'M.ciniki_web_privatethemes.contentEdit(\'M.ciniki_web_privatethemes.edit.updateCSSHREF();\',\'' + d.content.id + '\');';
+			} else if( s == 'css' ) {
 				return 'M.ciniki_web_privatethemes.contentEdit(\'M.ciniki_web_privatethemes.edit.updateCSS();\',\'' + d.content.id + '\');';
 			} else if( s == 'js' ) {
 				return 'M.ciniki_web_privatethemes.contentEdit(\'M.ciniki_web_privatethemes.edit.updateJS();\',\'' + d.content.id + '\');';
@@ -140,6 +146,18 @@ function ciniki_web_privatethemes() {
 			}
 			return true;
 		};
+		this.edit.updateCSSHREF = function() {
+			M.api.getJSONCb('ciniki.web.privateThemeGet', {'business_id':M.curBusinessID, 'theme_id':this.theme_id, 'content':'yes'}, function(rsp) {
+				if( rsp.stat != 'ok' ) {
+					M.api.err(rsp);
+					return false;
+				}
+				var p = M.ciniki_web_privatethemes.edit;
+				p.data.csshref = (rsp.theme.csshref!=null?rsp.theme.csshref:[]);
+				p.refreshSection('csshref');
+				p.show();
+			});
+		};
 		this.edit.updateCSS = function() {
 			M.api.getJSONCb('ciniki.web.privateThemeGet', {'business_id':M.curBusinessID, 'theme_id':this.theme_id, 'content':'yes'}, function(rsp) {
 				if( rsp.stat != 'ok' ) {
@@ -185,7 +203,7 @@ function ciniki_web_privatethemes() {
 				'name':{'label':'Name', 'type':'text'},
 				'status':{'label':'Status', 'type':'toggle', 'toggles':{'10':'Active', '50':'Inactive'}},
 				'sequence':{'label':'Sequence', 'type':'text', 'size':'small'},
-				'content_type':{'label':'Type', 'type':'toggle', 'toggles':{'css':'CSS', 'js':'Javascript'}},
+				'content_type':{'label':'Type', 'type':'toggle', 'toggles':{'css':'CSS', 'csshref':'Remote CSS', 'js':'Javascript'}},
 				'media':{'label':'Media', 'type':'toggle', 'toggles':{'all':'All', 'print':'Print'}},
 				}},
 			'_content':{'label':'Content', 'fields':{

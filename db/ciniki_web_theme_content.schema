@@ -20,6 +20,8 @@
 # sequence:				The order the content should be added to the page.
 # content_type:			The type of content
 #
+#						csshref - The text/css content is on another server specified by content. This
+#								  is used to retrieve google fonts, etc.
 #						css - The text/css content
 #						js - Javascription content
 #

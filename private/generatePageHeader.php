@@ -167,6 +167,31 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		}
 
 		if( isset($settings['site-privatetheme-active']) && $settings['site-privatetheme-active'] != '' ) {
+			//
+			// Check for remote CSS files
+			//
+			$strsql = "SELECT ciniki_web_theme_content.id, "
+				. "ciniki_web_theme_content.content_type, "
+				. "ciniki_web_theme_content.media, "
+				. "ciniki_web_theme_content.content "
+				. "FROM ciniki_web_themes, ciniki_web_theme_content "
+				. "WHERE ciniki_web_themes.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+				. "AND ciniki_web_themes.permalink = '" . ciniki_core_dbQuote($ciniki, $settings['site-privatetheme-active']) . "' "
+				. "AND ciniki_web_themes.id = ciniki_web_theme_content.theme_id "
+				. "AND ciniki_web_theme_content.content_type = 'csshref' "
+				. "AND ciniki_web_theme_content.status = 10 "
+				. "ORDER BY ciniki_web_theme_content.media, ciniki_web_theme_content.sequence "
+				. "";
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
+			$rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.web', array(
+				array('container'=>'links', 'fname'=>'id', 
+					'fields'=>array('id', 'media', 'content')),
+				));
+			if( $rc['stat'] == 'ok' && isset($rc['links']) ) {
+				foreach($rc['links'] as $link_id => $link) {
+					$content .= "<link type='text/css' rel='stylesheet' href='" . $link['content'] . "' media='" . $link['media'] . "' />\n";
+				}
+			}
 			$theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-active'];
 			$theme_cache_url = $ciniki['business']['web_cache_url'] . '/' . $settings['site-privatetheme-active'];
 			//
@@ -454,15 +479,22 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 		if( !isset($settings['site-header-image-size']) || $settings['site-header-image-size'] == 'medium' ) {
-			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '125', '85');
+//			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '125', '85');
+			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 175, 125, 90);
 		} elseif( $settings['site-header-image-size'] == 'small' ) {
-			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '100', '75');
+//			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '100', '75');
+			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 150, 100, 90);
 		} elseif( $settings['site-header-image-size'] == 'large' ) {
-			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '150', '100');
+//			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '150', '100');
+			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 225, 150, 90);
 		} elseif( $settings['site-header-image-size'] == 'xlarge' ) {
-			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '200', '150');
+//			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '200', '150');
+			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 300, 200);
 		} elseif( $settings['site-header-image-size'] == 'xxlarge' ) {
-			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '300', '225');
+//			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '300', '225');
+			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 400, 300, 90);
+		} elseif( $settings['site-header-image-size'] == 'original' ) {
+			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, 0, 90);
 		}
 	}
 
