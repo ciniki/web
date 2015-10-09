@@ -130,7 +130,7 @@ small { font-size: 80%; }
     src: url('fonts/FontAwesome/fontawesome-webfont.eot?#iefix') format('embedded-opentype'),
          url('fonts/FontAwesome/fontawesome-webfont.woff') format('woff'),
          url('fonts/FontAwesome/fontawesome-webfont.ttf') format('truetype'),
-         url('fonts/FontAwesome/fontawesome-webfont.svg#MonoSocialIconsFont') format('svg');
+         url('fonts/FontAwesome/fontawesome-webfont.svg#FontAwesome') format('svg');
     src: url('fonts/FontAwesome/fontawesome-webfont.ttf') format('truetype'); 
     font-weight: normal;
     font-style: normal;
