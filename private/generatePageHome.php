@@ -895,6 +895,11 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 			$categories = $rc['categories'];
 			foreach($categories as $cat) {
 				if( isset($cat['list']) ) {
+//					foreach($cat['list'] as $lid => $writing) {
+//						if( !isset($writing['url']) ) {
+//							$cat['list'][$lid]['url'] = $ciniki['request']['base_url'] . '/writings/' . $writing['permalink'];
+//						}
+//					}
 					ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processSponsorImages');
 					$rc = ciniki_web_processSponsorImages($ciniki, $settings, $ciniki['request']['base_url'] . '/writings', $cat['list'], '40');
 					if( $rc['stat'] != 'ok' ) {

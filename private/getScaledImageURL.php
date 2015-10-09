@@ -83,7 +83,7 @@ function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $
 		//
 		// Scale image
 		//
-		if( $maxwidth > 0 && $maxheight > 0 ) {
+		if( $maxwidth > 0 || $maxheight > 0 ) {
 			$image->scaleImage($maxwidth, $maxheight);
 		}
 

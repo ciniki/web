@@ -97,7 +97,6 @@ function ciniki_web_processSponsorImages($ciniki, $settings, $base_url, $sponsor
 			}
 		}
 
-		
 		$content .= "<div class='sponsor-gallery-thumbnail sponsor-gallery-thumbnail-$size_class'>";
 		if( isset($sponsor['url']) ) {
 			$rc = ciniki_web_processURL($ciniki, $sponsor['url']);
@@ -106,12 +105,18 @@ function ciniki_web_processSponsorImages($ciniki, $settings, $base_url, $sponsor
 			}
 			$url = $rc['url'];
 			$display_url = $rc['display'];
+		} else if( isset($sponsor['permalink']) ) {
+			$url = $base_url . '/' . $sponsor['permalink'];
 		} else {
 			$url = '';
 		}
 
 		if( isset($url) && $url != '' ) {
-			$content .= "<a target='_blank' href='" . $url . "'>";
+			if( isset($display_url) ) {
+				$content .= "<a target='_blank' href='" . $url . "'>";
+			} else {
+				$content .= "<a href='" . $url . "'>";
+			}
 		}
 		$content .= "<img title='" . htmlspecialchars(strip_tags($sponsor['title'])) . "' "
 			. "alt='" . htmlspecialchars(strip_tags($sponsor['title'])) . "' src='$img_url' />";
