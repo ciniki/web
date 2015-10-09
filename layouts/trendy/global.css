@@ -146,7 +146,6 @@ header span.socialsymbol {
 	font-family: 'FontAwesome';
 }
 
-
 .socialsymbol, a.socialsymbol:before {
     font-family: 'MonoSocialIconsFont';
     -webkit-text-rendering: optimizeLegibility;

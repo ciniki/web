@@ -20,6 +20,7 @@ function ciniki_web_privateThemeGet($ciniki) {
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
         'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
 		'theme_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Theme'),
+		'settings'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Settings'),
 		'content'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Content'),
 		'images'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Images'),
         )); 
@@ -79,6 +80,29 @@ function ciniki_web_privateThemeGet($ciniki) {
 			return $rc;
 		}
 		$theme = $rc['themes'][0]['theme'];
+
+		//
+		// Get the theme settings
+		//
+		if( isset($args['settings']) && $args['settings'] == 'yes' ) {
+			$strsql = "SELECT id, detail_key, detail_value "
+				. "FROM ciniki_web_theme_settings "
+				. "WHERE theme_id = '" . ciniki_core_dbQuote($ciniki, $args['theme_id']) . "' "
+				. "AND business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+				. "";
+			$rc = ciniki_core_dbHashQueryTree($ciniki, $strsql, 'ciniki.web', array(
+				array('container'=>'settings', 'fname'=>'id', 'name'=>'setting',
+					'fields'=>array('id', 'detail_key', 'detail_value')),
+				));
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			if( isset($rc['settings']) ) {
+				foreach($rc['settings'] as $setting) {
+					$theme[$setting['setting']['detail_key']] = $setting['setting']['detail_value'];
+				}
+			}
+		}
 
 		//
 		// Get the theme images

@@ -14,14 +14,22 @@
 function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, &$settings) {
 
 	//
+	// The theme id must be specified in settings
+	//
+	if( !isset($settings['site-privatetheme-id']) || $settings['site-privatetheme-id'] == '' || $settings['site-privatetheme-id'] < 1 ) {
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2599', 'msg'=>'No theme specified'));
+	}
+
+	//
 	// Lookup the current theme id based on the permalink
 	//
+/* TAKEN CARE OF IN settings.php
 	$theme_id = 0;
-	if( isset($settings['site-privatetheme-active']) ) {
+	if( isset($settings['site-privatetheme-permalink']) ) {
 		$strsql = "SELECT id "
 			. "FROM ciniki_web_themes "
 			. "WHERE ciniki_web_themes.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
-			. "AND ciniki_web_themes.permalink = '" . ciniki_core_dbQuote($ciniki, $settings['site-privatetheme-active']) . "' "
+			. "AND ciniki_web_themes.permalink = '" . ciniki_core_dbQuote($ciniki, $settings['site-privatetheme-permalink']) . "' "
 			. "AND ciniki_web_themes.status = 10 "
 			. "ORDER BY date_added DESC "
 			. "LIMIT 1 "
@@ -55,7 +63,7 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, &$settings) {
 		}
 		if( isset($rc['theme']['id']) ) {
 			$theme_id = $rc['theme']['id'];
-			$settings['site-privatetheme-active'] = $rc['theme']['permalink'];
+			$settings['site-privatetheme-permalink'] = $rc['theme']['permalink'];
 		} else {
 			//
 			// No private themes active
@@ -63,7 +71,7 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, &$settings) {
 			return array('stat'=>'ok');
 		}
 	}
-
+*/
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbUpdate');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbAddModuleHistory');
@@ -71,7 +79,7 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, &$settings) {
 	//
 	// Setup the cache directory
 	//
-	$theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-active'];
+	$theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-permalink'];
 	if( !file_exists($theme_cache_dir) ) {
 		mkdir($theme_cache_dir, 0755, true);
 	}
@@ -82,7 +90,7 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, &$settings) {
 	$strsql = "SELECT id, content_type, media, content "
 		. "FROM ciniki_web_theme_content "
 		. "WHERE ciniki_web_theme_content.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
-		. "AND ciniki_web_theme_content.theme_id = '" . ciniki_core_dbQuote($ciniki, $theme_id) . "' "
+		. "AND ciniki_web_theme_content.theme_id = '" . ciniki_core_dbQuote($ciniki, $settings['site-privatetheme-id']) . "' "
 		. "AND ciniki_web_theme_content.status = 10 "
 		. "AND (content_type = 'css' OR content_type = 'js') "
 		. "ORDER BY media, sequence "
@@ -162,7 +170,7 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, &$settings) {
 		. "UNIX_TIMESTAMP(ciniki_images.last_updated) AS last_updated "
 		. "FROM ciniki_web_theme_images, ciniki_images "
 		. "WHERE ciniki_web_theme_images.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
-		. "AND ciniki_web_theme_images.theme_id = '" . ciniki_core_dbQuote($ciniki, $theme_id) . "' "
+		. "AND ciniki_web_theme_images.theme_id = '" . ciniki_core_dbQuote($ciniki, $settings['site-privatetheme-id']) . "' "
 		. "AND ciniki_web_theme_images.image_id = ciniki_images.id "
 		. "AND ciniki_images.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
 		. "";

@@ -124,6 +124,18 @@ small { font-size: 80%; }
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'FontAwesome';
+    src: url('fonts/FontAwesome/fontawesome-webfont.eot');
+    src: url('fonts/FontAwesome/fontawesome-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/FontAwesome/fontawesome-webfont.woff') format('woff'),
+         url('fonts/FontAwesome/fontawesome-webfont.ttf') format('truetype'),
+         url('fonts/FontAwesome/fontawesome-webfont.svg#MonoSocialIconsFont') format('svg');
+    src: url('fonts/FontAwesome/fontawesome-webfont.ttf') format('truetype'); 
+    font-weight: normal;
+    font-style: normal;
+}
+
 span.socialsymbol {
 	font-family: 'MonoSocialIconsFont';
 }

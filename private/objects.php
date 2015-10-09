@@ -207,6 +207,19 @@ function ciniki_web_objects($ciniki) {
 			),
 		'history_table'=>'ciniki_web_history',
 		);
+	$objects['theme_setting'] = array(
+		'name'=>'Web Theme Setting',
+		'o_name'=>'setting',
+		'o_container'=>'settings',
+		'sync'=>'yes',
+		'table'=>'ciniki_web_theme_settings',
+		'fields'=>array(
+			'theme_id'=>array('ref'=>'ciniki.web.theme'),
+			'detail_key'=>array(),
+			'detail_value'=>array(),
+			),
+		'history_table'=>'ciniki_web_history',
+		);
 	$objects['theme_content'] = array(
 		'name'=>'Web Theme Content',
 		'o_name'=>'content',

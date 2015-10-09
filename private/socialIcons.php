@@ -18,6 +18,10 @@ function ciniki_web_socialIcons($ciniki, $settings, $location) {
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
 	// Check for social media icons
 	$social = '';
+
+	//
+	// Default the social icons to the MonoSocial font
+	//
 	$social_icons = array(
 		'facebook'=>'&#xe227;',
 		'twitter'=>'&#xe286;',
@@ -33,31 +37,22 @@ function ciniki_web_socialIcons($ciniki, $settings, $location) {
 //
 // Settings for regular social font without circle
 //
-/*	if( isset($settings['site-layout']) && $settings['site-layout'] == 'trendy' ) {
-		$social_icons['facebook'] = '&#xe027;';
-		$social_icons['twitter'] = '&#xe086;';
-		$social_icons['etsy'] = '&#xe026;';
-		$social_icons['pinterest'] = '&#xe064;';
-		$social_icons['tumblr'] = '&#xe085;';
-		$social_icons['flickr'] = '&#xe029;';
-		$social_icons['youtube'] = '&#xe099;';
-		$social_icons['vimeo'] = '&#xe089;';
-		$social_icons['instagram'] = '&#xe100;';
-		$social_icons['email'] = '&#xe024;';
-	}*/
 	// FontAwesome settings
-	if( isset($settings['site-layout']) && $settings['site-layout'] == 'trendy' ) {
+	if( isset($settings['theme'][$location . '-social-icons']) && $settings['theme'][$location . '-social-icons'] == 'FontAwesome' ) {
 		$social_icons['facebook'] = '&#xf09a;';
 		$social_icons['twitter'] = '&#xf099;';
-//		$social_icons['etsy'] = '&#xe026;';
+//		$social_icons['etsy'] = '&#xe026;';		// Missing etsy logo
 		$social_icons['pinterest'] = '&#xf231;';
 		$social_icons['tumblr'] = '&#xf173;';
-//		$social_icons['flickr'] = '&#xe029;';
+		$social_icons['flickr'] = '&#xf16e;';
 		$social_icons['youtube'] = '&#xf167;';
 		$social_icons['vimeo'] = '&#xf27d;';
 		$social_icons['instagram'] = '&#xf16d;';
 		$social_icons['email'] = '&#xf0e0;';
 	}
+
+
+
 	// Facebook
 	if( (!isset($settings["site-social-facebook-$location-active"]) || $settings["site-social-facebook-$location-active"] == 'yes' )
 		&& isset($ciniki['business']['social']['social-facebook-url']) && $ciniki['business']['social']['social-facebook-url'] != ''

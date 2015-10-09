@@ -28,10 +28,20 @@ function ciniki_web_flags($ciniki, $modules) {
 		array('flag'=>array('bit'=>'11', 'name'=>'Page Redirects')),
 		array('flag'=>array('bit'=>'12', 'name'=>'Pages Manual Layout')),
 		// 0x1000
-//		array('flag'=>array('bit'=>'13', 'name'=>'Pages')),
-//		array('flag'=>array('bit'=>'14', 'name'=>'Info Pages')),
-//		array('flag'=>array('bit'=>'15', 'name'=>'Pages')),	
+//		array('flag'=>array('bit'=>'13', 'name'=>'')),
+//		array('flag'=>array('bit'=>'14', 'name'=>'')),
+//		array('flag'=>array('bit'=>'15', 'name'=>'')),	
 		array('flag'=>array('bit'=>'16', 'name'=>'SEO')),
+		// 0x010000
+		array('flag'=>array('bit'=>'17', 'name'=>'Subscription Agreement')),
+		array('flag'=>array('bit'=>'18', 'name'=>'Privacy Policy')),
+//		array('flag'=>array('bit'=>'19', 'name'=>'')),	
+//		array('flag'=>array('bit'=>'20', 'name'=>'')),
+		// 0x100000
+//		array('flag'=>array('bit'=>'21', 'name'=>'')),
+//		array('flag'=>array('bit'=>'22', 'name'=>'')),
+//		array('flag'=>array('bit'=>'23', 'name'=>'')),	
+//		array('flag'=>array('bit'=>'24', 'name'=>'')),
 		);
 
 	return array('stat'=>'ok', 'flags'=>$flags);

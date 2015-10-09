@@ -54,6 +54,17 @@ function ciniki_web_privatethemes() {
 				'name':{'label':'Name', 'type':'text'},
 				'status':{'label':'Status', 'type':'toggle', 'toggles':{'10':'Active', '50':'Inactive'}},
 				}},
+			'header':{'label':'Header', 'aside':'yes', 'fields':{
+				'header-social-icons':{'label':'Social Icon Font', 'type':'toggle', 'toggles':{'MonoSocial':'Mono Social', 'FontAwesome':'Font Awesome'}},
+				}},
+			'footer':{'label':'Footer', 'aside':'yes', 'fields':{
+				'footer-layout':{'label':'Layout', 'type':'select', 'options':{
+					'social-links-copyright':'Social - Links - Copyright', 
+					'copyright-links-social':'Copyright - Links - Social',
+					}},
+				'footer-social-icons':{'label':'Social Icon Font', 'type':'toggle', 'toggles':{'MonoSocial':'Mono Social', 'FontAwesome':'Font Awesome'}},
+				'footer-copyright-message':{'label':'Copyright Text', 'type':'text'},
+				}},
 			'csshref':{'label':'Remote CSS', 'aside':'yes', 'type':'simplegrid', 'num_cols':2,
 				'addTxt':'Add CSS',
 				'addFn':'M.ciniki_web_privatethemes.contentEdit(\'M.ciniki_web_privatethemes.edit.updateCSSHREF();\',0,M.ciniki_web_privatethemes.edit.theme_id,\'csshref\');',
@@ -304,7 +315,7 @@ function ciniki_web_privatethemes() {
 		if( this.edit.theme_id > 0 ) {
 			this.edit.sections._buttons.buttons.delete.visible = 'yes';
 			M.api.getJSONCb('ciniki.web.privateThemeGet', {'business_id':M.curBusinessID, 
-				'theme_id':this.edit.theme_id, 'content':'yes', 'images':'yes'}, function(rsp) {
+				'theme_id':this.edit.theme_id, 'content':'yes', 'images':'yes', 'settings':'yes'}, function(rsp) {
 					if( rsp.stat != 'ok' ) {
 						M.api.err(rsp);
 						return false;
@@ -318,7 +329,12 @@ function ciniki_web_privatethemes() {
 			this.edit.theme_id = 0;
 			this.edit.sections._buttons.buttons.delete.visible = 'no';
 			this.edit.reset();
-			this.edit.data = {'status':'10'};
+			this.edit.data = {
+				'status':'10', 
+				'header-social-font':'MonoSocial', 
+				'footer-layout':'social-links-copyright',
+				'footer-social-font':'MonoSocial',
+				};
 			this.edit.additional_images = [];
 			this.edit.refresh();
 			this.edit.show(cb);

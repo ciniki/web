@@ -383,6 +383,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-faq-active',
 		'site-theme',
 		'site-layout',
+//		'site-subscription-agreement',
+//		'site-privacy-policy',
 		'site-header-image',
 		'site-header-image-size',
 		'site-header-title',
@@ -418,6 +420,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'site-ssl-force-account',
 		'site-footer-copyright-name',
 		'site-footer-copyright-message',
+		'site-footer-subscription-agreement',
+		'site-footer-privacy-policy',
 		);
 
 	//
@@ -441,6 +445,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-account-content',
 		'page-account-content-subscriptions',
 		'page-artgalleryexhibitions-content',
+		'site-subscription-agreement',
+		'site-privacy-policy',
 		);
 
 	//

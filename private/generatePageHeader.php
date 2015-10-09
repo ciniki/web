@@ -153,11 +153,11 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		//
 		// Check if theme files in directory are up to date
 		//
-		if( !isset($settings['site-privatetheme-active'])
-			|| $settings['site-privatetheme-active'] == ''
-			|| !file_exists($theme_cache_dir . '/' . $settings['site-privatetheme-active']) 
+		if( !isset($settings['site-privatetheme-permalink'])
+			|| $settings['site-privatetheme-permalink'] == ''
+			|| !file_exists($ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-permalink']) 
 			|| !isset($settings['site-privatetheme-updated']) 
-			|| filemtime($theme_cache_dir . '/' . $settings['site-privatetheme-active']) < $settings['site-privatetheme-updated']
+			|| filemtime($ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-permalink']) < $settings['site-privatetheme-updated']
 			) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'updatePrivateTheme');
 			$rc = ciniki_web_updatePrivateTheme($ciniki, $ciniki['request']['business_id'], $settings);
@@ -166,18 +166,17 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 			}
 		}
 
-		if( isset($settings['site-privatetheme-active']) && $settings['site-privatetheme-active'] != '' ) {
+		if( isset($settings['site-privatetheme-id']) && $settings['site-privatetheme-id'] > 0 ) {
 			//
-			// Check for remote CSS files
+			// Check for remote CSS files FIXME: Move into theme_settings
 			//
 			$strsql = "SELECT ciniki_web_theme_content.id, "
 				. "ciniki_web_theme_content.content_type, "
 				. "ciniki_web_theme_content.media, "
 				. "ciniki_web_theme_content.content "
-				. "FROM ciniki_web_themes, ciniki_web_theme_content "
-				. "WHERE ciniki_web_themes.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
-				. "AND ciniki_web_themes.permalink = '" . ciniki_core_dbQuote($ciniki, $settings['site-privatetheme-active']) . "' "
-				. "AND ciniki_web_themes.id = ciniki_web_theme_content.theme_id "
+				. "FROM ciniki_web_theme_content "
+				. "WHERE ciniki_web_theme_content.theme_id = '" . ciniki_core_dbQuote($ciniki, $settings['site-privatetheme-id']) . "' "
+				. "AND ciniki_web_theme_content.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
 				. "AND ciniki_web_theme_content.content_type = 'csshref' "
 				. "AND ciniki_web_theme_content.status = 10 "
 				. "ORDER BY ciniki_web_theme_content.media, ciniki_web_theme_content.sequence "
@@ -192,8 +191,10 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 					$content .= "<link type='text/css' rel='stylesheet' href='" . $link['content'] . "' media='" . $link['media'] . "' />\n";
 				}
 			}
-			$theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-active'];
-			$theme_cache_url = $ciniki['business']['web_cache_url'] . '/' . $settings['site-privatetheme-active'];
+		}
+		if( isset($settings['site-privatetheme-permalink']) && $settings['site-privatetheme-permalink'] != '' ) {
+			$theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-permalink'];
+			$theme_cache_url = $ciniki['business']['web_cache_url'] . '/' . $settings['site-privatetheme-permalink'];
 			//
 			// Include the private theme files
 			//
@@ -480,19 +481,19 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 		if( !isset($settings['site-header-image-size']) || $settings['site-header-image-size'] == 'medium' ) {
 //			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '125', '85');
-			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 175, 125, 90);
+			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, 125, 90);
 		} elseif( $settings['site-header-image-size'] == 'small' ) {
 //			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '100', '75');
-			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 150, 100, 90);
+			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, 100, 90);
 		} elseif( $settings['site-header-image-size'] == 'large' ) {
 //			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '150', '100');
-			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 225, 150, 90);
+			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, 150, 90);
 		} elseif( $settings['site-header-image-size'] == 'xlarge' ) {
 //			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '200', '150');
-			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 300, 200);
+			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, 200, 90);
 		} elseif( $settings['site-header-image-size'] == 'xxlarge' ) {
 //			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, '300', '225');
-			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 400, 300, 90);
+			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, 300, 90);
 		} elseif( $settings['site-header-image-size'] == 'original' ) {
 			$page_home_image = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', 0, 0, 90);
 		}
@@ -643,9 +644,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	//
 	// Generate menu
 	//
-	if( isset($settings['site-layout']) && $settings['site-layout'] == 'trendy' ) {
-		$content .= "<button type='button' class='menu-toggle'><i class='fa fa-bars'></i></button>";
-	}
+	$content .= "<button type='button' class='menu-toggle'><i class='fa fa-bars'></i></button>";
 	$content .= "<nav id='access' role='navigation'>\n"
 		. "<h3 class='assistive-text'>Main menu</h3>\n"
 		. "";

@@ -7,6 +7,8 @@
 # Examples:
 # - site-custom-css
 # - page.about.content = The about content to display on the content page.
+# - site-subscription-agreement
+# - site-privacy-policy
 #
 # Fields
 # ------

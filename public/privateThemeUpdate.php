@@ -64,10 +64,33 @@ function ciniki_web_privateThemeUpdate(&$ciniki) {
 		}
 	}
 
+	//
+	// Get the list of current settings
+	//
+	$strsql = "SELECT id, uuid, detail_key, detail_value "
+		. "FROM ciniki_web_theme_settings "
+		. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+		. "AND theme_id = '" . ciniki_core_dbQuote($ciniki, $args['theme_id']) . "' "
+		. "";
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
+	$rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.web', array(
+		array('container'=>'settings', 'fname'=>'detail_key',
+			'fields'=>array('id', 'uuid', 'detail_key', 'detail_value')),
+		));
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+	$settings = array();
+	if( isset($rc['settings']) ) {
+		$settings = $rc['settings'];
+	}
+
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionStart');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionRollback');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionCommit');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbAddModuleHistory');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectAdd');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectUpdate');
 	$rc = ciniki_core_dbTransactionStart($ciniki, 'ciniki.web');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -76,11 +99,43 @@ function ciniki_web_privateThemeUpdate(&$ciniki) {
 	//
 	// Update the theme in the database
 	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectUpdate');
 	$rc = ciniki_core_objectUpdate($ciniki, $args['business_id'], 'ciniki.web.theme', $args['theme_id'], $args);
 	if( $rc['stat'] != 'ok' ) {
 		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.web');
 		return $rc;
+	}
+
+	//
+	// Check for any settings and add/update
+	//
+	$valid_settings = array(
+		'header-social-icons',
+		'footer-layout',
+		'footer-social-icons',
+		'footer-copyright-message',
+		);
+	foreach($valid_settings as $field) {
+		if( isset($ciniki['request']['args'][$field]) ) {
+			if( isset($settings[$field]['detail_value']) && $settings[$field]['detail_value'] != $ciniki['request']['args'][$field] ) {
+				//
+				// Update the setting
+				//
+				$rc = ciniki_core_objectUpdate($ciniki, $args['business_id'], 'ciniki.web.theme_setting', $settings[$field]['id'],
+					array('detail_value'=>$ciniki['request']['args'][$field]), 0x04);
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+			} else if( !isset($settings[$field]) ) {
+				//
+				// Add the setting
+				//
+				$rc = ciniki_core_objectAdd($ciniki, $args['business_id'], 'ciniki.web.theme_setting', 
+					array('theme_id'=>$args['theme_id'], 'detail_key'=>$field, 'detail_value'=>$ciniki['request']['args'][$field]), 0x04);
+				if( $rc['stat'] != 'ok' ) {
+					return $rc;
+				}
+			}
+		}
 	}
 
 	//
