@@ -43,6 +43,7 @@ function ciniki_web_generatePage($ciniki, $settings) {
 			$page = $rc['page'];
 //			$base_url .= '/' . $rc['page']['permalink'];
 			if( $top_page == NULL ) { $top_page = $rc['page']; }
+			$breadcrumbs[] = array('name'=>$rc['page']['title'], 'url'=>$base_url . '/' . $rc['page']['permalink']);
 			if( isset($rc['page']['sponsors']) && count($rc['page']['sponsors']) > 0 ) {
 				$sponsors = $rc['page']['sponsors'];
 			}
@@ -54,6 +55,8 @@ function ciniki_web_generatePage($ciniki, $settings) {
 				return $rc;
 			}
 			if( $top_page == NULL ) { $top_page = $rc['page']; }
+			$breadcrumbs[] = array('name'=>$rc['page']['title'], 'url'=>$base_url . '/' . $rc['page']['permalink']);
+
 			if( isset($rc['page']['sponsors']) && count($rc['page']['sponsors']) > 0 ) {
 				$sponsors = $rc['page']['sponsors'];
 			}
@@ -134,7 +137,15 @@ function ciniki_web_generatePage($ciniki, $settings) {
 
 		$page_content .= "<article class='page'>\n";
 		if( isset($page['title']) ) {
-			$page_content .= "<header class='entry-title'><h1 class='entry-title'>" . $page['title'] . "</h1></header>";
+			$page_content .= "<header class='entry-title'><h1 class='entry-title'>" . $page['title'] . "</h1>";
+			if( isset($breadcrumbs) ) {
+				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBreadcrumbs');
+				$rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $ciniki['request']['business_id'], $breadcrumbs);
+				if( $rc['stat'] == 'ok' ) {
+					$page_content .= $rc['content'];
+				}
+			}
+			$page_content .= "</header>";
 		}
 		$page_content .= "<div class='entry-content'>";
 		$page_content .= $page['content'];

@@ -96,6 +96,13 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
 	}
 	$rsp['content'] .= "<article class='page'>\n"
 		. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$article_title</h1>";
+	if( isset($page['breadcrumbs']) ) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBreadcrumbs');
+		$rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $business_id, $page['breadcrumbs']);
+		if( $rc['stat'] == 'ok' ) {
+			$rsp['content'] .= $rc['content'];
+		}
+	}
 	if( isset($page['article_meta']) && count($page['article_meta']) > 0 ) {
 		$rsp['content'] .= "<div class='entry-meta'>";
 		$count = 0;

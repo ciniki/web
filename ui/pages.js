@@ -302,7 +302,7 @@ function ciniki_web_pages() {
 				this.sections.images.visible = (pt=='10'?'yes':'hidden');
 				this.sections._images.visible = (pt=='10'?'yes':'hidden');
 				this.sections._children.visible = (pt=='10'?'yes':'hidden');
-				this.sections.pages.visible = (pt=='10'?'yes':'hidden');
+				this.sections.pages.visible = (pt=='10'||pt=='11'?'yes':'hidden');
 				this.sections.sponsors.visible = (pt=='10'?'yes':'hidden');
 				this.sections._redirect.visible = (pt=='20'?'yes':'hidden');
 				this.sections._module.visible = (pt=='30'?'yes':'hidden');
