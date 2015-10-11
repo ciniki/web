@@ -113,6 +113,8 @@ function ciniki_web_privateThemeUpdate(&$ciniki) {
 		'footer-layout',
 		'footer-social-icons',
 		'footer-copyright-message',
+		'footer-subscription-agreement',
+		'footer-privacy-policy',
 		);
 	foreach($valid_settings as $field) {
 		if( isset($ciniki['request']['args'][$field]) ) {

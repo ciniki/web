@@ -335,6 +335,10 @@ article {
 	font-size: 0.9em;
 }
 
+#content header div.breadcrumbs {
+	display: none;
+}
+
 #content header {
 	margin-bottom: 1em;
 }
@@ -1032,6 +1036,44 @@ span.exhibitors-description {
 
 #content audio {
 	vertical-align: bottom;
+}
+
+/* Popup modal boxes */
+div.popup-container {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1000;
+	box-sizing: border-box;
+	overflow-y: hidden;
+	height: 100%;
+	max-height: 100%;
+}
+
+div.popup-wrapper {
+	margin: 10px;
+	width: auto;
+	position: relative;
+	max-width: 60em;
+	overflow: hidden;
+}
+
+div.popup-header button {
+	float: right;
+}
+
+div.popup-content {
+	overflow-y: auto;
+	height: 100px;
+}
+
+div.popup-content p,
+div.popup-content ol,
+div.popup-content ul {
+	width: auto;
+	max-width: 100%;
 }
 
 /* 7. BROWSER AND NON-SEMANTIC STYLING

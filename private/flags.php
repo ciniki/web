@@ -33,8 +33,8 @@ function ciniki_web_flags($ciniki, $modules) {
 //		array('flag'=>array('bit'=>'15', 'name'=>'')),	
 		array('flag'=>array('bit'=>'16', 'name'=>'SEO')),
 		// 0x010000
-		array('flag'=>array('bit'=>'17', 'name'=>'Subscription Agreement')),
-		array('flag'=>array('bit'=>'18', 'name'=>'Privacy Policy')),
+//		array('flag'=>array('bit'=>'17', 'name'=>'')),
+//		array('flag'=>array('bit'=>'18', 'name'=>'')),
 //		array('flag'=>array('bit'=>'19', 'name'=>'')),	
 //		array('flag'=>array('bit'=>'20', 'name'=>'')),
 		// 0x100000

@@ -591,6 +591,10 @@ span.exhibitors-description {
 	#content div.cart-search-input input {
 		width: 90%;
 	}
+	div.popup-wrapper {
+		margin: 30px auto;
+		max-width: 95%;
+	}
 }
 
 /* 12. Anything over 50 em

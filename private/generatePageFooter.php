@@ -20,6 +20,8 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
 	// Store the content
 	//
 	$content = '';
+	$popup_box_content = '';
+	$javascript = '';
 
 	// Generate the footer content
 	$content .= "<hr class='section-divider footer-section-divider' />\n";
@@ -72,12 +74,95 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
 	// Check if any links should be added to the footer
 	//
 	$links = '';
-	if( isset($settings['site-footer-subscription-agreement']) && $settings['site-footer-subscription-agreement'] == 'yes' ) {
-		$links .= "<a href='/'>Subscription Agreement</a>";
+	$content_types = array();
+	if( isset($settings['theme']['footer-subscription-agreement']) && $settings['theme']['footer-subscription-agreement'] == 'popup' 
+		&& isset($ciniki['business']['modules']['ciniki.info']['flags']) && ($ciniki['business']['modules']['ciniki.info']['flags']&0x02000000) > 0
+		) {
+		$content_types[] = '26';
 	}
-	if( isset($settings['site-footer-privacy-policy']) && $settings['site-footer-privacy-policy'] == 'yes' ) {
-		$links .= ($links!=''?' | ':'') . "<a href='/'>Privacy Policy</a>";
+	if( isset($settings['theme']['footer-privacy-policy']) && $settings['theme']['footer-privacy-policy'] == 'popup' 
+		&& isset($ciniki['business']['modules']['ciniki.info']['flags']) && ($ciniki['business']['modules']['ciniki.info']['flags']&0x8000) > 0 
+		) {
+		$content_types[] = '16';
 	}
+
+	//
+	// Get the information for the links
+	//
+	if( count($content_types) > 0 ) {
+		//
+		// Setup the javascript for the popups
+		//
+		$javascript = ""
+			. "var curPopup = '';"
+			. "function popupShow(p) {"
+			. "var e = document.getElementById(p);"
+			. "e.style.display='block';"
+			. "curPopup = p;"
+			. "popupResize();"
+			. "window.addEventListener('resize', popupResize);"
+			. "};"
+			. "function popupHide(p) {"
+			. "var e = document.getElementById(p);"
+			. "e.style.display='none';"
+			. "curPopup = '';"
+			. "window.removeEventListener('resize', popupResize);"
+			. "};"
+			. "function popupResize() {"
+			. "var e = document.getElementById(curPopup);"
+			. "var h = document.getElementById(curPopup+'-header');"
+			. "var c = document.getElementById(curPopup+'-content');"
+			. "var f = document.getElementById(curPopup+'-footer');"
+			. "if(h!=null&&c!=null&&f!=null){"
+				. "var s=h.parentNode.parentNode.currentStyle||window.getComputedStyle(h.parentNode.parentNode);"
+				. "c.style.height=(window.innerHeight-h.clientHeight-f.clientHeight-(parseInt(s.marginTop)*2))+'px';"
+			. "}"
+			. "};"
+			. "";
+		//
+		// Load the content to be setup for popups
+		//
+		$strsql = "SELECT content_type, title, permalink, content "
+			. "FROM ciniki_info_content "
+			. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+			. "AND content_type IN (" . ciniki_core_dbQuoteIDs($ciniki, $content_types) . ") "
+			. "";
+		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.info', 'info');
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		if( isset($rc['rows']) ) {
+			foreach($rc['rows'] as $row) {
+				if( $row['content'] == '' ) {
+					continue;
+				}
+				$links .= ($links!=''?' | ':'') . "<a href='javascript: popupShow(\"" . $row['permalink'] . "\");'>" . $row['title'] . "</a>";
+				$popup_box_content .= "<div id='" . $row['permalink'] . "' class='popup-container' style='display:none;'>\n"
+					. "<div class='popup-wrapper'>\n"
+						. "<div class='popup-body'>"
+						. "<div id='" . $row['permalink'] . "-header' class='popup-header'>"
+							. "<button type='button' class='popup-button' onclick='popupHide(\"" . $row['permalink'] . "\");'>&times;</button>"
+							. "<h4 class='popup-title'>" . $row['title'] . "</h4>"
+						. "</div>"
+						. "<div id='" . $row['permalink'] . "-content' class='popup-content'>"
+						. $row['content']
+						. "</div>"
+						. "<div id='" . $row['permalink'] . "-footer' class='popup-footer'>"
+							. "<button type='button' class='popup-button' onclick='popupHide(\"" . $row['permalink'] . "\");'>Close</button>"
+						. "</div>"
+						. "</div>"
+					. "</div>"
+					. "</div>";
+			}
+		}
+	}
+
+//	if( isset($settings['site-footer-subscription-agreement']) && $settings['site-footer-subscription-agreement'] == 'yes' ) {
+//		$links .= "<a href='/'>Subscription Agreement</a>";
+//	}
+//	if( isset($settings['site-footer-privacy-policy']) && $settings['site-footer-privacy-policy'] == 'yes' ) {
+//		$links .= ($links!=''?' | ':'') . "<a href='/'>Privacy Policy</a>";
+//	}
 
 	//
 	// Decide how the footer should be laid out
@@ -125,6 +210,16 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
 
 	// Close page-container
 	$content .= "</div>\n";
+
+	//
+	// Include any modal boxes
+	//
+	if( $popup_box_content != '' ) {
+		$content .= $popup_box_content;
+	}
+	if( $javascript != '' ) {
+		$content .= "<script type='text/javascript'>$javascript</script>";
+	}
 
 	$content .= "</body>"
 		. "</html>"

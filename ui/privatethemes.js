@@ -64,16 +64,20 @@ function ciniki_web_privatethemes() {
 					}},
 				'footer-social-icons':{'label':'Social Icon Font', 'type':'toggle', 'toggles':{'MonoSocial':'Mono Social', 'FontAwesome':'Font Awesome'}},
 				'footer-copyright-message':{'label':'Copyright Text', 'type':'text'},
+				// FIXME: Add ability to link to info page
+//				'footer-privacy-policy':{'label':'Privacy Policy', 'type':'toggle', 'toggles':{'no':'No', 'link':'Link', 'popup':'Popup'}},
+				'footer-privacy-policy':{'label':'Privacy Policy', 'active':'no', 'type':'toggle', 'toggles':{'no':'No', 'popup':'Popup'}},
+				'footer-subscription-agreement':{'label':'Subscription Agreement', 'active':'no', 'type':'toggle', 'toggles':{'no':'No', 'popup':'Popup'}},
 				}},
 			'csshref':{'label':'Remote CSS', 'aside':'yes', 'type':'simplegrid', 'num_cols':2,
 				'addTxt':'Add CSS',
 				'addFn':'M.ciniki_web_privatethemes.contentEdit(\'M.ciniki_web_privatethemes.edit.updateCSSHREF();\',0,M.ciniki_web_privatethemes.edit.theme_id,\'csshref\');',
 				},
-			'css':{'label':'CSS', 'aside':'yes', 'type':'simplegrid', 'num_cols':2,
+			'css':{'label':'CSS', 'type':'simplegrid', 'num_cols':2,
 				'addTxt':'Add CSS',
 				'addFn':'M.ciniki_web_privatethemes.contentEdit(\'M.ciniki_web_privatethemes.edit.updateCSS();\',0,M.ciniki_web_privatethemes.edit.theme_id,\'css\');',
 				},
-			'js':{'label':'Javascript', 'aside':'yes', 'type':'simplegrid', 'num_cols':2,
+			'js':{'label':'Javascript', 'type':'simplegrid', 'num_cols':2,
 				'addTxt':'Add Javascript',
 				'addFn':'M.ciniki_web_privatethemes.contentEdit(\'M.ciniki_web_privatethemes.edit.updateJS();\',0,M.ciniki_web_privatethemes.edit.theme_id,\'js\');',
 				},
@@ -282,6 +286,10 @@ function ciniki_web_privatethemes() {
 		args = {};
 		if( aG != null ) { args = eval(aG); }
 
+		
+		this.edit.sections.footer.fields['footer-privacy-policy'].active = M.modFlagSet('ciniki.info', 0x8000);
+		this.edit.sections.footer.fields['footer-subscription-agreement'].active = M.modFlagSet('ciniki.info', 0x02000000);
+
 		//
 		// Create the app container if it doesn't exist, and clear it out
 		// if it does exist.
@@ -334,6 +342,8 @@ function ciniki_web_privatethemes() {
 				'header-social-font':'MonoSocial', 
 				'footer-layout':'social-links-copyright',
 				'footer-social-font':'MonoSocial',
+				'footer-privacy-policy':'no',
+				'footer-subscription-agreement':'no',
 				};
 			this.edit.additional_images = [];
 			this.edit.refresh();
