@@ -93,7 +93,7 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, &$settings) {
 		. "AND ciniki_web_theme_content.theme_id = '" . ciniki_core_dbQuote($ciniki, $settings['site-privatetheme-id']) . "' "
 		. "AND ciniki_web_theme_content.status = 10 "
 		. "AND (content_type = 'css' OR content_type = 'js') "
-		. "ORDER BY media, sequence "
+		. "ORDER BY content_type, media, sequence "
 		. "";
 	$rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.web', array(
 		array('container'=>'types', 'fname'=>'content_type',
