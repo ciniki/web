@@ -505,6 +505,9 @@ function ciniki_web_main() {
 			'_title':{'label':'Title', 'fields':{
 				'page-home-title':{'label':'', 'hidelabel':'yes', 'hint':'', 'type':'text'},
 				}},
+			'_content_layout':{'label':'', 'active':'no', 'fields':{
+				'page-home-content-layout':{'label':'Page Type', 'type':'toggle', 'default':'custom', 'toggles':{'custom':'Custom', 'manual':'Manual'}},
+				}},
 			'_content':{'label':'Welcome Message (optional)', 'fields':{
 				'page-home-content':{'label':'', 'hidelabel':'yes', 'hint':'', 'type':'textarea', 'size':'large'},
 				}},
@@ -1681,6 +1684,7 @@ function ciniki_web_main() {
 			} else {
 				this.menu.sections.advanced.list.privatethemes.visible = 'no';
 			}
+			this.home.sections._content_layout.active = ((M.curBusiness.modules['ciniki.web'].flags&0x0800)>0?'yes':'no');
 		}
 		this.home.sections._slideshow.active=(M.curBusiness.modules['ciniki.artcatalog']!=null)?'yes':'no';
 		this.home.sections._memberslideshow.active=(M.curBusiness.modules['ciniki.customers']!=null&&(M.curBusiness.modules['ciniki.customers'].flags&0x02)>0)?'yes':'no';
