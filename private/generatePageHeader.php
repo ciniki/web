@@ -968,6 +968,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 						$content .= "</li>";
 					}
 					$content .= "</ul>";
+					$content .= "<span class='dropdown-button'><i class='navicon'></i></span>";
 				}
 				$content .= "</li>";
 			} elseif( $page['title'] != '' && $page['permalink'] != '' ) {
@@ -983,6 +984,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 						$content .= "</li>";
 					}
 					$content .= "</ul>";
+					$content .= "<span class='dropdown-button'><i class='navicon'></i></span>";
 				}
 				$content .= "</li>";
 			}

@@ -126,6 +126,7 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
 			. "FROM ciniki_info_content "
 			. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
 			. "AND content_type IN (" . ciniki_core_dbQuoteIDs($ciniki, $content_types) . ") "
+			. "ORDER BY content_type DESC "
 			. "";
 		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.info', 'info');
 		if( $rc['stat'] != 'ok' ) {

@@ -304,6 +304,10 @@ nav div.menu-divider {
 	padding: 0em;
 }
 
+#main-menu-container ul.menu li.menu-item .dropdown-button {
+	display: none;
+}
+
 #sub-menu-container ul.menu li.menu-item a,
 #main-menu-container ul.menu li.menu-item a {
 	display: inline-block;
