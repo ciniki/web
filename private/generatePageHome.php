@@ -158,10 +158,13 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 		return $rc;
 	}
 
-	if( isset($rc['content']['page-home-og-description']) && $rc['content']['page-home-og-description'] != '' ) {
-		$ciniki['response']['head']['og']['description'] = strip_tags($rc['content']['page-home-og-description']);
-	} elseif( isset($rc['content']['page-home-content']) ) {
-		$ciniki['response']['head']['og']['description'] = strip_tags($rc['content']['page-home-content']);
+	
+	if( !isset($settings['page-home-content-layout']) || $settings['page-home-content-layout'] != 'manual' ) {
+		if( isset($rc['content']['page-home-og-description']) && $rc['content']['page-home-og-description'] != '' ) {
+			$ciniki['response']['head']['og']['description'] = strip_tags($rc['content']['page-home-og-description']);
+		} elseif( isset($rc['content']['page-home-content']) ) {
+			$ciniki['response']['head']['og']['description'] = strip_tags($rc['content']['page-home-content']);
+		}
 	}
 
 	if( isset($rc['content']['page-home-content']) && $rc['content']['page-home-content'] != '' ) {

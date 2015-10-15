@@ -205,7 +205,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 				$content .= "<link rel='stylesheet' type='text/css' media='print' href='$theme_cache_url/print.css' />\n";
 			}
 			if( file_exists($theme_cache_dir . '/code.js') ) {
-//				$content .= "<script type='text/javascript' src='$theme_cache_url/code.js'></script>\n";
+				$content .= "<script type='text/javascript' src='$theme_cache_url/code.js'></script>\n";
 			}
 		}
 	}
