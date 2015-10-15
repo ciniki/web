@@ -644,7 +644,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	//
 	// Generate menu
 	//
-	$content .= "<button type='button' class='menu-toggle'><i class='fa fa-bars'></i></button>";
+	$content .= "<button type='button' id='main-menu-toggle' class='menu-toggle'><i class='fa fa-bars'></i></button>";
 	$content .= "<nav id='access' role='navigation'>\n"
 		. "<h3 class='assistive-text'>Main menu</h3>\n"
 		. "";
