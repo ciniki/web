@@ -17,7 +17,7 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, &$settings) {
 	// The theme id must be specified in settings
 	//
 	if( !isset($settings['site-privatetheme-id']) || $settings['site-privatetheme-id'] == '' || $settings['site-privatetheme-id'] < 1 ) {
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2599', 'msg'=>'No theme specified'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2603', 'msg'=>'No theme specified'));
 	}
 
 	//
