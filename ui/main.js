@@ -97,6 +97,11 @@ function ciniki_web_main() {
 				'addTxt':'',
 				'addFn':'M.startApp(\'ciniki.web.pages\',null,\'M.ciniki_web_main.showMenu();\',\'mc\',{\'page_id\':0,\'parent_id\':0});',
 				},
+			'module_pages':{'label':'Other Pages', 'aside':'no', 'type':'simplegrid', 'num_cols':1, 'sortable':'yes',
+				'headerValues':null,
+				'addTxt':'',
+				'addFn':'M.startApp(\'ciniki.web.pages\',null,\'M.ciniki_web_main.showMenu();\',\'mc\',{\'page_id\':0,\'parent_id\':0});',
+				},
 			'advanced':{'label':'Advanced', 'list':{
 				'privatethemes':{'label':'Private Themes', 'visible':'no', 'fn':'M.startApp(\'ciniki.web.privatethemes\',null,\'M.ciniki_web_main.showMenu();\');'},
 				'metatags':{'label':'Meta Tags', 'fn':'M.ciniki_web_main.showSiteSettings(\'M.ciniki_web_main.showMenu();\',\'metatags\');'},
@@ -146,7 +151,7 @@ function ciniki_web_main() {
 					case 0: return d.setting.display_name;
 					case 1: return d.setting.value;
 				}
-			} else if( s == 'pages' ) {
+			} else if( s == 'pages' || s == 'module_pages' ) {
 				if( d.page.active == 'yes' ) {
 					return d.page.display_name;
 				}
@@ -157,7 +162,7 @@ function ciniki_web_main() {
 			if( s == 'settings' && d.setting.name == 'theme') { 
 				return 'M.ciniki_web_main.showThemes(\'M.ciniki_web_main.showMenu();\',\'' + d.setting.value + '\');'; 
 			}
-			if( s == 'pages' ) { 
+			if( s == 'pages' || s == 'module_pages' ) { 
 				if( d.page.id != null && d.page.id > 0 ) {
 					return 'M.startApp(\'ciniki.web.pages\',null,\'M.ciniki_web_main.showMenu();\',\'mc\',{\'page_id\':\'' + d.page.id + '\',\'parent_id\':0});';
 				}
@@ -1778,6 +1783,7 @@ function ciniki_web_main() {
 			this.menu.sections._url.aside = 'yes';
 			this.menu.sections.settings.aside = 'yes';
 			this.menu.sections.pages.aside = 'yes';
+			this.menu.sections.module_pages.aside = 'yes';
 			this.menu.sections.adm = {'label':'Admin Options', 'list':{
 				'google':{'label':'Google Settings', 'fn':'M.ciniki_web_main.showSiteSettings(\'M.ciniki_web_main.showMenu();\',\'google\');' },
 				'meta':{'label':'Meta Settings', 'fn':'M.ciniki_web_main.showSiteSettings(\'M.ciniki_web_main.showMenu();\',\'meta\');' },
@@ -1795,6 +1801,7 @@ function ciniki_web_main() {
 			this.menu.sections._url.aside = 'no';
 			this.menu.sections.settings.aside = 'no';
 			this.menu.sections.pages.aside = 'no';
+			this.menu.sections.module_pages.aside = 'no';
 			this.home.sections.redirects.active = 'no';
 		}
 		
@@ -1808,6 +1815,12 @@ function ciniki_web_main() {
 			}
 			var p = M.ciniki_web_main.menu;
 			p.data.pages = rsp.pages;
+			if( rsp.module_pages != null && rsp.module_pages.length > 0 ) {
+				p.sections.module_pages.active = 'yes';
+				p.data.module_pages = rsp.module_pages;
+			} else {
+				p.sections.module_pages.active = 'no';
+			}
 
 			p.data.settings = [];
 			for(i in rsp.settings) {
@@ -1970,7 +1983,6 @@ function ciniki_web_main() {
 			this[page].refresh();
 			this[page].show(cb);
 		} else if( page == 'events' ) {
-			console.log(this[page].data);
 			if( this[page].data['page-events-past'] == 'yes' ) {
 				this[page].sections.options.fields['page-events-upcoming-empty-hide'].visible = 'yes';
 			} else {

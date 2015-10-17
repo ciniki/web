@@ -383,7 +383,9 @@ if( isset($ciniki['request']['page']) && $ciniki['request']['page'] == 'home'
 // If home page is not active, search for the next page to call home
 //
 if( isset($ciniki['request']['page']) && $ciniki['request']['page'] == 'home' 
-	&& (!isset($settings['page-home-active']) || $settings['page-home-active'] != 'yes') ) {
+	&& (!isset($settings['page-home-active']) || $settings['page-home-active'] != 'yes') 
+	&& (!isset($ciniki['business']['modules']['ciniki.web']['flags']) || ($ciniki['business']['modules']['ciniki.web']['flags']&0x0240) == 0)
+	) {
 	if( isset($settings['page-about-active']) && $settings['page-about-active'] == 'yes' ) {
 		$ciniki['request']['page'] = 'about';
 	} elseif( isset($settings['page-features-active']) && $settings['page-features-active'] == 'yes' ) {
@@ -408,6 +410,7 @@ if( isset($ciniki['request']['page']) && $ciniki['request']['page'] == 'home'
 		$ciniki['request']['page'] = 'links';
 	} else {
 		// Generate the master business 404 page
+			error_log('test2353');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateMaster404');
 		$rc = ciniki_web_generateMaster404($ciniki, null);
 		if( isset($rc['content']) ) {
@@ -459,7 +462,6 @@ $pages_menu = 'no';
 if( isset($ciniki['business']['modules']['ciniki.web']['flags']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x0200) > 0 ) {
 	$pages_menu = 'yes';
 }
-
 //
 // Process the request
 //
