@@ -26,11 +26,25 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
 	//
 	$contact_form_submitted = 'no';
 	$contact_form_errors = '';
+	$contact_form_success = '';
 
 	if( isset($ciniki['business']['modules']['ciniki.web']['flags'])
 		&& ($ciniki['business']['modules']['ciniki.web']['flags']&0x04) > 0 
-		&& isset($_POST['contact-form-name']) ) {
-		if( !isset($_POST['contact-form-name']) || $_POST['contact-form-name'] == '' ) {
+		&& isset($_POST['contact-form-name']) 
+		) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContactForm');
+		$rc = ciniki_web_processContactForm($ciniki, $settings, $ciniki['request']['business_id']);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		if( isset($rc['error_message']) && $rc['error_message'] != '' ) {
+			$contact_form_errors = $rc['error_message'];
+		} else {
+			$contact_form_submitted = 'yes';
+			$contact_form_success = $rc['success_message'];
+		}
+		
+/*		if( !isset($_POST['contact-form-name']) || $_POST['contact-form-name'] == '' ) {
 			$contact_form_errors = "You must enter your name.<br/>";
 		}
 		if( !isset($_POST['contact-form-email']) || $_POST['contact-form-email'] == '' ) {
@@ -90,6 +104,7 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
 			}
 			$contact_form_submitted = 'yes';
 		}
+		*/
 	}
 
 	//
@@ -292,12 +307,13 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
 				. "</div>";
 			$content .= "</form>";
 		} elseif( $contact_form_submitted == 'yes' ) {
-			if( isset($settings['page-contact-form-submitted-message']) 
+			$content .= "<p>" . $contact_form_success . "</p>";
+/*			if( isset($settings['page-contact-form-submitted-message']) 
 				&& $settings['page-contact-form-submitted-message'] != '' ) {
 				$content .= "<p>" . $settings['page-contact-form-submitted-message'] . "</p>";
 			} else {
 				$content .= "<p>Your message has been sent.</p>";
-			}
+			} */
 		}
 	}
 

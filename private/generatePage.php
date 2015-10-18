@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_web_generatePage($ciniki, $settings) {
+function ciniki_web_generatePage(&$ciniki, $settings) {
 
 	$request_pages = array_merge(array($ciniki['request']['page']), $ciniki['request']['uri_split']);
 
@@ -87,12 +87,12 @@ function ciniki_web_generatePage($ciniki, $settings) {
 //	print_r($page);
 //	print "</pre>";
 
-	//
-	// The member is logged in, proceed to show the membersonly content
-	//
 	$page_content = '';
 	$submenu = array();
 
+	//
+	// Process a module page
+	//
 	if( $page['page_type'] == '30' ) {
 		$base_url .= '/' . $rc['page']['permalink'];
 		$domain_base_url = $ciniki['request']['domain_base_url'] . '/' . $ciniki['request']['page'];
@@ -125,11 +125,12 @@ function ciniki_web_generatePage($ciniki, $settings) {
 			$submenu = $rc['submenu'];
 		}
 
-	} elseif( $page['page_type'] == '11' ) {
-		//
-		// No processing, no auto images, just output raw HTML from description field
-		//
+	} 
 
+	//
+	// Process a manual page, no processing of content, output raw HTML
+	//
+	elseif( $page['page_type'] == '11' ) {
 		//
 		// Set the page class
 		//
@@ -147,13 +148,41 @@ function ciniki_web_generatePage($ciniki, $settings) {
 			}
 			$page_content .= "</header>";
 		}
+		
+		//
+		// Process any form submissions
+		//
+		$result_content = '';
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processPageForms');
+		$rc = ciniki_web_processPageForms($ciniki, $settings, $ciniki['request']['business_id']);
+		if( $rc['stat'] != 'ok' ) {
+			$result_content .= "<div class='form-result-message form-error-message'><div class='form-message-wrapper'><p>Error processing request</p></div></div>";
+		}
+		if( isset($rc['error_message']) && $rc['error_message'] != '' ) {
+			$result_content .= "<div class='form-result-message form-error-message'><div class='form-message-wrapper'><p>" . $rc['error_message'] . "</p></div></div>";
+		}
+		if( isset($rc['success_message']) && $rc['success_message'] != '' ) {
+			$result_content .= "<div class='form-result-message form-success-message'><div class='form-message-wrapper'><p>" . $rc['success_message'] . "</p></div></div>";
+		}
+
+		if( $result_content != '' ) {
+			$page_content .= "<div class='form-message-content'>"
+				. $result_content
+				. "</div>";
+		}
+
 		$page_content .= "<div class='entry-content'>";
 		$page_content .= $page['content'];
 		
 		$page_content .= "</div>";
 		$page_content .= "</article>";
 
-	} else {
+	} 
+	
+	//
+	// Process a custom page
+	//
+	else {		// $page['page_type'] == '30'
 		//
 		// Check if children should be submenu
 		//
