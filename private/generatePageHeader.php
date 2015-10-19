@@ -946,7 +946,9 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		&& ($ciniki['business']['modules']['ciniki.web']['flags']&0x40) == 0x40 && isset($pages) ) {
 		$i = 0;
 	
-		if( isset($settings['page-home-active']) && $settings['page-home-active'] == 'yes' ) {
+		if( isset($settings['page-home-active']) && $settings['page-home-active'] == 'yes' 
+			&& ($ciniki['business']['modules']['ciniki.web']['flags']&0x0200) == 0 
+			) {
 			$content .= "<li class='menu-item" . ($ciniki['request']['page']=='home'?' menu-item-selected':'') . "'><a href='" . $page_home_url . "'>Home</a></li>";
 		}
 	//	print "<pre>" .  print_r($ciniki['request'], true) . "</pre>";
