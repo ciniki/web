@@ -947,7 +947,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		$i = 0;
 	
 		if( isset($settings['page-home-active']) && $settings['page-home-active'] == 'yes' 
-			&& ($ciniki['business']['modules']['ciniki.web']['flags']&0x0200) == 0 
+			&& ($ciniki['business']['modules']['ciniki.web']['flags']&0x0200) > 0 
 			) {
 			$content .= "<li class='menu-item" . ($ciniki['request']['page']=='home'?' menu-item-selected':'') . "'><a href='" . $page_home_url . "'>Home</a></li>";
 		}
