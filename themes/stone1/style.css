@@ -22,8 +22,8 @@ body {
 #site-title a:hover,
 #site-title a:active {
 	text-decoration: none;
-	color: #fff;
-	text-shadow: 2px 2px 10px #000;
+	color: #f9af4b;
+	text-shadow: 0px 1px 1px #000; 
 }
 
 #site-description {
