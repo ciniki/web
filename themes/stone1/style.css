@@ -1044,6 +1044,27 @@ aside div.borderless {
 		border-bottom: 1px dashed #999;
 	}
 
+	#content {
+		padding-left: 2.5em;
+		padding-right: 2.5em;
+	}
+
+	aside {
+		max-width: 370px;
+	}
+
+	#content h1.entry-title {
+		padding-bottom: 15px;
+	}
+
+	#content h2 {
+		padding-bottom: 15px;
+	}
+
+	#content header {
+		margin-bottom: 1.5em;
+	}
+
 	nav div.menu-divider {
 		display: block;
 		height: 1px;
