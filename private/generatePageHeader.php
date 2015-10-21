@@ -39,6 +39,50 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		. "<link rel='icon' href='/ciniki-mods/core/ui/themes/default/img/favicon.png' type='image/png' />\n"
 		. "";
 
+	if( isset($ciniki['business']['modules']['ciniki.web']['flags']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x0100) > 0 ) {
+		//
+		// Check if theme files in directory are up to date
+		//
+		if( !isset($settings['site-privatetheme-permalink'])
+			|| $settings['site-privatetheme-permalink'] == ''
+			|| !file_exists($ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-permalink']) 
+			|| !isset($settings['site-privatetheme-updated']) 
+			|| filemtime($ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-permalink']) < $settings['site-privatetheme-updated']
+			) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'updatePrivateTheme');
+			$rc = ciniki_web_updatePrivateTheme($ciniki, $ciniki['request']['business_id'], $settings);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+		}
+
+		if( isset($settings['site-privatetheme-id']) && $settings['site-privatetheme-id'] > 0 ) {
+			//
+			// Check for remote CSS files FIXME: Move into theme_settings
+			//
+			$strsql = "SELECT ciniki_web_theme_content.id, "
+				. "ciniki_web_theme_content.content_type, "
+				. "ciniki_web_theme_content.media, "
+				. "ciniki_web_theme_content.content "
+				. "FROM ciniki_web_theme_content "
+				. "WHERE ciniki_web_theme_content.theme_id = '" . ciniki_core_dbQuote($ciniki, $settings['site-privatetheme-id']) . "' "
+				. "AND ciniki_web_theme_content.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+				. "AND ciniki_web_theme_content.content_type = 'csshref' "
+				. "AND ciniki_web_theme_content.status = 10 "
+				. "ORDER BY ciniki_web_theme_content.media, ciniki_web_theme_content.sequence "
+				. "";
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
+			$rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.web', array(
+				array('container'=>'links', 'fname'=>'id', 
+					'fields'=>array('id', 'media', 'content')),
+				));
+			if( $rc['stat'] == 'ok' && isset($rc['links']) ) {
+				foreach($rc['links'] as $link_id => $link) {
+					$content .= "<link type='text/css' rel='stylesheet' href='" . $link['content'] . "' media='" . $link['media'] . "' />\n";
+				}
+			}
+		}
+	}
 	//
 	// Add required layout css files
 	//
@@ -149,64 +193,22 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	//
 	// Check for private theme files
 	//
-	if( isset($ciniki['business']['modules']['ciniki.web']['flags']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x0100) > 0 ) {
+	if( isset($ciniki['business']['modules']['ciniki.web']['flags']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x0100) > 0 
+		&& isset($settings['site-privatetheme-permalink']) && $settings['site-privatetheme-permalink'] != '' 
+		) {
+		$theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-permalink'];
+		$theme_cache_url = $ciniki['business']['web_cache_url'] . '/' . $settings['site-privatetheme-permalink'];
 		//
-		// Check if theme files in directory are up to date
+		// Include the private theme files
 		//
-		if( !isset($settings['site-privatetheme-permalink'])
-			|| $settings['site-privatetheme-permalink'] == ''
-			|| !file_exists($ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-permalink']) 
-			|| !isset($settings['site-privatetheme-updated']) 
-			|| filemtime($ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-permalink']) < $settings['site-privatetheme-updated']
-			) {
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'updatePrivateTheme');
-			$rc = ciniki_web_updatePrivateTheme($ciniki, $ciniki['request']['business_id'], $settings);
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
-			}
+		if( file_exists($theme_cache_dir . '/style.css') ) {
+			$content .= "<link rel='stylesheet' type='text/css' media='all' href='$theme_cache_url/style.css' />\n";
 		}
-
-		if( isset($settings['site-privatetheme-id']) && $settings['site-privatetheme-id'] > 0 ) {
-			//
-			// Check for remote CSS files FIXME: Move into theme_settings
-			//
-			$strsql = "SELECT ciniki_web_theme_content.id, "
-				. "ciniki_web_theme_content.content_type, "
-				. "ciniki_web_theme_content.media, "
-				. "ciniki_web_theme_content.content "
-				. "FROM ciniki_web_theme_content "
-				. "WHERE ciniki_web_theme_content.theme_id = '" . ciniki_core_dbQuote($ciniki, $settings['site-privatetheme-id']) . "' "
-				. "AND ciniki_web_theme_content.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
-				. "AND ciniki_web_theme_content.content_type = 'csshref' "
-				. "AND ciniki_web_theme_content.status = 10 "
-				. "ORDER BY ciniki_web_theme_content.media, ciniki_web_theme_content.sequence "
-				. "";
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
-			$rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.web', array(
-				array('container'=>'links', 'fname'=>'id', 
-					'fields'=>array('id', 'media', 'content')),
-				));
-			if( $rc['stat'] == 'ok' && isset($rc['links']) ) {
-				foreach($rc['links'] as $link_id => $link) {
-					$content .= "<link type='text/css' rel='stylesheet' href='" . $link['content'] . "' media='" . $link['media'] . "' />\n";
-				}
-			}
+		if( file_exists($theme_cache_dir . '/print.css') ) {
+			$content .= "<link rel='stylesheet' type='text/css' media='print' href='$theme_cache_url/print.css' />\n";
 		}
-		if( isset($settings['site-privatetheme-permalink']) && $settings['site-privatetheme-permalink'] != '' ) {
-			$theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-permalink'];
-			$theme_cache_url = $ciniki['business']['web_cache_url'] . '/' . $settings['site-privatetheme-permalink'];
-			//
-			// Include the private theme files
-			//
-			if( file_exists($theme_cache_dir . '/style.css') ) {
-				$content .= "<link rel='stylesheet' type='text/css' media='all' href='$theme_cache_url/style.css' />\n";
-			}
-			if( file_exists($theme_cache_dir . '/print.css') ) {
-				$content .= "<link rel='stylesheet' type='text/css' media='print' href='$theme_cache_url/print.css' />\n";
-			}
-			if( file_exists($theme_cache_dir . '/code.js') ) {
-				$content .= "<script type='text/javascript' src='$theme_cache_url/code.js'></script>\n";
-			}
+		if( file_exists($theme_cache_dir . '/code.js') ) {
+			$content .= "<script type='text/javascript' src='$theme_cache_url/code.js'></script>\n";
 		}
 	}
 
