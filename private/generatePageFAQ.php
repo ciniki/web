@@ -22,6 +22,8 @@ function ciniki_web_generatePageFAQ($ciniki, $settings) {
 	$page_content = '';
 	$page_title = 'FAQ';
 
+	$ciniki['request']['page-container-class'] = 'page-faq';
+
 	//
 	// FIXME: Check if anything has changed, and if not load from cache
 	//

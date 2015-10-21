@@ -706,7 +706,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		for($i=1;$i<6;$i++) {
 			$pname = 'page-custom-' . sprintf("%03d", $i);
 			if( isset($settings[$pname . '-active']) && $settings[$pname . '-active'] == 'yes' ) {
-				$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']==$pname?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/" . $settings[$pname . '-permalink'] . "'>" . $settings[$pname . '-name'] . "</a></li>";
+				$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']==$settings[$pname . '-permalink']?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/" . $settings[$pname . '-permalink'] . "'>" . $settings[$pname . '-name'] . "</a></li>";
 			}
 		}
 		if( isset($settings['page-signup-active']) && $settings['page-signup-active'] == 'yes' 
