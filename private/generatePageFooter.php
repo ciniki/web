@@ -196,13 +196,13 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
 	//
 	// Extra information for the bottom of the page, error messages, debug info, etc
 	//
-	$content .= "<div class='x-info'>";
+	$content .= "<div id='x-info' class='x-info' style='display: block;'>";
 	// If there was an error page generated, see if we should put the error code in the footer for debug purposes.
 	// This keeps it out of the way, but easy to tell people what to look for.
 	if( isset($ciniki['request']['error_codes_msg']) && $ciniki['request']['error_codes_msg'] != '' ) {
 		$content .= "<br/><span class='error_msg'>" . $ciniki['request']['error_codes_msg'] . "</span>";
 	}
-	$content .= "<span class='x-stats' style='display:none;'>Execution: " . sprintf("%.4f", ((microtime(true)-$start_time)/60)) . "seconds</span>";
+	$content .= "<span id='x-stats' class='x-stats' style='display:none;'>Execution: " . sprintf("%.4f", ((microtime(true)-$start_time)/60)) . "seconds</span>";
 	$content .= "</div>";
 	$content .= "</div>";
 

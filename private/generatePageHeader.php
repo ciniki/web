@@ -168,7 +168,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 //		if( file_exists($ciniki['request']['theme_dir'] . '/' . $settings['site-theme'] . '/print.css') ) {
 //			$content .= "<link rel='stylesheet' type='text/css' media='print' href='" . $ciniki['request']['theme_url'] . '/' . $settings['site-theme'] . "/print.css' />\n";
 //		}
-	} else if( $settings['site-layout'] != 'private' && file_exists($ciniki['request']['theme_dir'] . '/default/style.css') ) {
+	} else if( $settings['site-theme'] != 'private' && file_exists($ciniki['request']['theme_dir'] . '/default/style.css') ) {
 		$content .= "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['theme_url'] 
 			. "/default/style.css' />\n";
 		if( file_exists($ciniki['request']['theme_dir'] . '/default/ie9.css') ) {
