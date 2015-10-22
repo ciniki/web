@@ -78,7 +78,8 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 				));
 			if( $rc['stat'] == 'ok' && isset($rc['links']) ) {
 				foreach($rc['links'] as $link_id => $link) {
-					$content .= "<link type='text/css' rel='stylesheet' href='" . $link['content'] . "' media='" . $link['media'] . "' />\n";
+//					$content .= "<link type='text/css' rel='stylesheet' href='" . $link['content'] . "' media='" . $link['media'] . "' />\n";
+					$content .= "<style type='text/css' media='" . $link['media'] . "'>@import url(" . $link['content'] . ");</style>\n";
 				}
 			}
 		}
