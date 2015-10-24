@@ -1040,7 +1040,7 @@ aside div.borderless {
 /* Styles for larger screens */
 @media screen and (min-width: 33em) {
 	#main-menu-container li.menu-item-selected a {
-		border-bottom: 1px dashed #555;
+		border-bottom: 1px dashed #777;
 	}
 
 	#sub-menu-container {

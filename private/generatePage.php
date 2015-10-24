@@ -182,7 +182,7 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
 	//
 	// Process a custom page
 	//
-	else {		// $page['page_type'] == '30'
+	else {		// $page['page_type'] == '10'
 		//
 		// Check if children should be submenu
 		//

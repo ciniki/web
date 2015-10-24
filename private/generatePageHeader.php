@@ -694,7 +694,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		if( isset($ciniki['business']['pages']) && count($ciniki['business']['pages']) > 0 ) {
 			foreach($ciniki['business']['pages'] as $permalink => $page) {
 				if( $page['active'] == 'yes' ) {
-					$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']==$permalink?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/$permalink'>" . $page['title'] . "</a>";
+					$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']==$page['permalink']?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/" . $page['permalink'] . "'>" . $page['title'] . "</a>";
 					$content .= "</li>";
 				}
 			}
@@ -968,7 +968,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 				//
 				// Module page
 				//
-				$content .= "<li id='menu-item-$i' class='menu-item$hide_menu_class" . ($ciniki['request']['page']==$page['permalink']?' menu-item-select':'') 
+				$content .= "<li id='menu-item-$i' class='menu-item$hide_menu_class" . ($ciniki['request']['page']==$page['permalink']?' menu-item-selected':'') 
 					. ((isset($page['subpages'])&&count($page['subpages'])>0)?' menu-item-dropdown':'') 
 					. "'><a href='" . $ciniki['request']['base_url'] . "/" . $page['permalink'] . "'>" . $page['title'] . "</a>";
 				if( isset($page['subpages']) && count($page['subpages']) > 0 ) {
