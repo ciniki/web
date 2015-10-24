@@ -144,10 +144,12 @@ function ciniki_web_generateGalleryJavascript(&$ciniki, $next, $prev) {
 			$img_url = $rc['url'];
 			$images .= "next_pic = new Image(); next_pic.src = '" . $img_url . "';";
 		}
-		$javascript .=  ""
-			. "if( e.keyCode == 39 || e.keyCode == 76 ) {"
-				. "document.location.href='" . $next['url'] . "';"
-			. "}";
+		if( isset($next['url']) ) {
+			$javascript .=  ""
+				. "if( e.keyCode == 39 || e.keyCode == 76 ) {"
+					. "document.location.href='" . $next['url'] . "';"
+				. "}";
+		}
 	}
 	$javascript .=  ""
 		. "}\n";

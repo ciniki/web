@@ -26,6 +26,7 @@ function ciniki_web_main() {
 		'black':'Midnight - Blue/Black',
 		'davinci':'Davinci - Brown/Beige',
 		'orangebrick':'Orange Brick - Brown/Beige',
+		'orangebrick2':'Brick - Brown/Beige',
 		'stone1':'Stone - Brown/Orange',
 		'splatter':'Purple Splatter - Purple/White',
 //		'field':'Field - Green/White',
