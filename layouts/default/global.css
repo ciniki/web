@@ -567,11 +567,14 @@ div.googlemap p.exhibitors-more,
 #content div.image-categories-thumbnail-wrap {	
 	margin: 5px;
 	box-sizing: border-box;
- 	max-width: 280px; 
+ 	max-width: 100%;
 	vertical-align: top;
+	margin-left: 0px;
+	margin-right: 0px;
 }
 #content div.image-categories-thumbnail-small {
 	max-width: 140px;
+	margin: 5px;
 }
 #content div.image-categories-thumbnail-medium {
 	max-width: 200px;
