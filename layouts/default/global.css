@@ -557,42 +557,54 @@ div.googlemap p.exhibitors-more,
 #content div.image-gallery {
 	margin: 0 auto;
 	text-align: center;
+	vertical-align: top;
 }
 
 /* #content div.image-categories div.image-categories-thumbnail-wrap {
 	width: 260px;
 } */
 
-#content div.image-categories-thumbnail-wrap {
+#content div.image-categories-thumbnail-wrap {	
 	margin: 5px;
+	box-sizing: border-box;
+ 	max-width: 280px; 
+	vertical-align: top;
+}
+#content div.image-categories-thumbnail-small {
+	max-width: 140px;
+}
+#content div.image-categories-thumbnail-medium {
+	max-width: 200px;
 }
 
+/*
 #content span.image-categories-name {
-	width: 260px;
+	width: 100%;
+	box-sizing: border-box;
 }
 
 #content div.image-categories-thumbnail img {
 	width: 260px;
-	height: 260px;
+	height: 260px; 
 }
 
 #content div.image-categories-thumbnail-small span.image-categories-name {
-	width: 115px;
+	width: 100%;
 }
-
 #content div.image-categories-thumbnail-small div.image-categories-thumbnail img {
 	width: 115px;
-	height: 115px;
+	height: 115px; 
 }
 
 #content div.image-categories-thumbnail-medium span.image-categories-name {
 	width: 110px;
-}
+} 
 
 #content div.image-categories-thumbnail-medium div.image-categories-thumbnail img {
 	width: 110px;
-	height: 110px;
+	height: 110px; 
 }
+*/
 
 #content div.image-cilist-thumbnail,
 #content div.image-members-thumbnail,
