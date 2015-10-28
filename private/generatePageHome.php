@@ -433,8 +433,8 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 		//
 		// Load and parse the blog entries
 		//
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'blog', 'web', 'posts');
-		$rc = ciniki_blog_web_posts($ciniki, $settings, $ciniki['request']['business_id'], 
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'blog', 'web', 'ciListPosts');
+		$rc = ciniki_blog_web_ciListPosts($ciniki, $settings, $ciniki['request']['business_id'], 
 			array('latest'=>'yes', 'limit'=>$list_size+1), '');
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;

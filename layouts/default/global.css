@@ -373,6 +373,74 @@ article {
 	margin-bottom: 1em;
 }
 
+/* Image list */
+#content div.image-list {
+	width: 100%;
+	box-sizing: border-box;
+	vertical-align: top;
+}
+#content div.image-list-entry {
+	margin-bottom: 10px;
+	box-sizing: border-box;
+	text-align: right;
+}
+#content div.image-list-image {
+	display: inline-block;
+	padding: 0px;
+	width: 30%;
+	max-width: 30%;
+	line-height: 1px;
+	vertical-align: top;
+	box-sizing: border-box;
+}
+#content div.image-list-wrap {
+	margin: 0px;
+	max-width: 100%;
+	box-sizing: border-box;
+}
+#content div.image-list-wrap a {
+	display: inline-block;
+	max-width: 100%;
+	box-sizing: border-box;
+}
+#content div.image-list-wrap img {
+	line-height: 1px;
+	max-width: 100%;
+	box-sizing: border-box;
+}
+#content div.image-list-details {
+	display: inline-block;
+	width: 70%;
+	max-width: 70%;
+	padding-left: 15px;
+	box-sizing: border-box;
+	vertical-align: top;
+	text-align: left;
+}
+#content div.image-list-details h2 {
+	padding-top: 0px;
+	margin-bottom: 2px;
+}
+#content div.image-list-meta {
+	font-size: 0.85em;
+}
+#content div.image-list-content {
+	margin-top: 15px;
+}
+#content div.image-list div.image-list-more {
+	text-align: right;
+	vertical-align: bottom;
+	width: 100%;
+	max-width: 100%;
+}
+#content div.image-list-more {
+	text-align: right;
+	padding-bottom: 1.5em;
+}
+
+
+
+
 #content table.blist,
 #content table.clist,
 #content table.cilist,
@@ -507,7 +575,7 @@ article {
 	margin-bottom: 0.5em;
 }
 
-#content table.cilist td.cilist-image,
+#content td.cilist-image,
 #content table.members-list table.members-category-list td.members-image,
 #content table.exhibitors-list table.exhibitors-category-list td.exhibitors-image {
 	padding-right: 0.1em;

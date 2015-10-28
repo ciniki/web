@@ -56,6 +56,11 @@ function ciniki_web_privatethemes() {
 				}},
 			'header':{'label':'Header', 'aside':'yes', 'fields':{
 				'header-social-icons':{'label':'Social Icon Font', 'type':'toggle', 'toggles':{'MonoSocial':'Mono Social', 'FontAwesome':'Font Awesome'}},
+				'header-article-title':{'label':'Article Title', 'type':'toggle', 'toggles':{'no':'No', 'yes':'Yes'}},
+				'header-breadcrumbs':{'label':'Breadcrumbs', 'type':'toggle', 'toggles':{'no':'No', 'yes':'Yes'}},
+				}},
+			'body':{'label':'Content', 'aside':'yes', 'fields':{
+				'share-social-icons':{'label':'Social Icon Font', 'type':'toggle', 'toggles':{'MonoSocial':'Mono Social', 'FontAwesome':'Font Awesome'}},
 				}},
 			'footer':{'label':'Footer', 'aside':'yes', 'fields':{
 				'footer-layout':{'label':'Layout', 'type':'select', 'options':{

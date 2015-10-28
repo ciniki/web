@@ -628,8 +628,10 @@ elseif( $pages_menu == 'no' && $ciniki['request']['page'] == 'workshops'
 // Blog
 elseif( $pages_menu == 'no' && $ciniki['request']['page'] == 'blog' 
 	&& isset($settings['page-blog-active']) && $settings['page-blog-active'] == 'yes' ) {
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageBlog.php');
-	$rc = ciniki_web_generatePageBlog($ciniki, $settings);
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
+	$rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['business_id'], 'ciniki.blog');
+//	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageBlog.php');
+//	$rc = ciniki_web_generatePageBlog($ciniki, $settings);
 } 
 // Member Blog
 elseif( $pages_menu == 'no' && $ciniki['request']['page'] == 'memberblog' 

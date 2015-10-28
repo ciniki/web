@@ -223,6 +223,7 @@ div.image-sponsors-thumbnail {
 	padding: 7px;
 }
 
+div.image-list-thumbnail,
 div.image-cilist-thumbnail,
 div.image-members-thumbnail,
 div.image-exhibitors-thumbnail,
@@ -238,6 +239,7 @@ div.additional-image-gallery div.image-gallery-thumbnail {
 	margin: 6px;
 }
 
+div.image-list-thumbnail img,
 div.image-cilist-thumbnail img,
 div.image-members-thumbnail img,
 div.image-sponsors-thumbnail img,
@@ -341,6 +343,7 @@ div.gallery-image-details span.image-awards {
 	max-width: 100%;
 }
 
+#content p.image-list-title,
 #content p.clist-title,
 #content p.cilist-title,
 #content span.clist-title,
@@ -408,6 +411,10 @@ div.gallery-image-details span.image-awards {
 	font-size: 1.0em;
 }
 
+#content p.image-list-title a,
+#content p.image-list-title a:visited,
+#content p.image-list-title a:hover,
+#content p.image-list-title a:active,
 #content p.clist-title a,
 #content p.clist-title a:visited,
 #content p.clist-title a:hover,

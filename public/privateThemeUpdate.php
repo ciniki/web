@@ -110,6 +110,9 @@ function ciniki_web_privateThemeUpdate(&$ciniki) {
 	//
 	$valid_settings = array(
 		'header-social-icons',
+		'header-article-title',
+		'header-breadcrumbs',
+		'share-social-icons',
 		'footer-layout',
 		'footer-social-icons',
 		'footer-copyright-message',

@@ -166,6 +166,19 @@ header span.title {
 	margin-left: 1.8em;
 }
 
+/* Image List */
+#content div.image-list-entry {
+	margin-bottom: 25px;
+}
+#content div.image-list-image {
+	text-align: right;
+}
+#content div.image-list-wrap {
+	text-align: right;
+}
+
+
+
 #content table.blist {
 	border-collapse: collapse;
 	table-layout: auto;
@@ -215,7 +228,7 @@ header span.title {
 	padding-bottom: 1em;
 }
 
-#content table.cilist table.cilist-categories td.cilist-image,
+#content table.cilist-categories td.cilist-image,
 #content table.members-list table.members-category-list td.members-image,
 #content table.exhibitors-list table.exhibitors-category-list td.exhibitors-image {
 	padding-left: 0.5em;
@@ -429,7 +442,7 @@ span.exhibitors-description {
 ----------------------------------------------------------------------------------------*/
 @media screen and (min-width: 30em) and (max-width: 63.236em) {
 	body { width: 100%; }
-	#page-container { width: auto; max-width: 45em; }
+	#page-container { width: auto; max-width: 90%; }
 	#sub-menu-container { text-align: left; }
 	#content dl dd { margin-left: 3em; }
 	#content span.exhibitors-category {
@@ -483,10 +496,10 @@ span.exhibitors-description {
 	#content table.event-list td {
 		display: block;
 	}
-	#content table.cilist >tbody > tr > td,
-	#content table.members-list >tbody > tr > td,
-	#content table.sponsors-list >tbody > tr > td,
-	#content table.exhibitors-list >tbody > tr > td {
+	#content table.cilist > tbody > tr > td,
+	#content table.members-list > tbody > tr > td,
+	#content table.sponsors-list > tbody > tr > td,
+	#content table.exhibitors-list > tbody > tr > td {
 		padding-left: 0em;
 		margin-left: 0px;
 	}
@@ -565,6 +578,12 @@ span.exhibitors-description {
 /* 11. Anything over 40 em
 ------------------------------------------------------------------------------*/
 @media screen and (min-width: 40em) {
+	#content div.image-list-image {
+		width: 35%;
+	}
+	#content div.image-list-details {
+		width: 65%;
+	}
 	#content table.sponsors-list table.sponsors-category-list td.sponsors-image {
 		padding-left: 0.0em;
 		padding-right: 0.5em;
@@ -610,6 +629,15 @@ span.exhibitors-description {
 /* 12. Anything over 50 em
 ------------------------------------------------------------------------------*/
 @media screen and (min-width: 50em) {
+	#content div.image-list-image {
+		width: 40%;
+	}
+	#content div.image-list-wrap {
+		max-width: 200px;
+	}
+	#content div.image-list-details {
+		width: 60%;
+	}
 	#content div.quote {
 		margin: 0em 5em 1.5em 5em;
 		padding-bottom: 0.5em;
@@ -621,6 +649,7 @@ span.exhibitors-description {
 @media print {
 	header div.signin {display: none; }
 	header nav { display: none; }
+	.image-list-more { display: none; }
 	.cilist-more { display: none; }
 	#content h2,
 	#content p {
@@ -685,10 +714,10 @@ span.exhibitors-description {
 	#content table.event-list td {
 		display: block;
 	}
-	#content table.cilist >tbody > tr > td,
-	#content table.members-list >tbody > tr > td,
-	#content table.sponsors-list >tbody > tr > td,
-	#content table.exhibitors-list >tbody > tr > td {
+	#content table.cilist > tbody > tr > td,
+	#content table.members-list > tbody > tr > td,
+	#content table.sponsors-list > tbody > tr > td,
+	#content table.exhibitors-list > tbody > tr > td {
 		padding-left: 0em;
 		margin-left: 0px;
 	}

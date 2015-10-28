@@ -62,13 +62,20 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
 		exit;
 	}
 
-	$rsp = array('stat'=>'ok', 'page_title'=>$page['title'], 'content'=>'');
+	$rsp = array('stat'=>'ok', 'page_title'=>$page['title'], 'content'=>'', 'breadcrumbs'=>$page['breadcrumbs']);
 
 	//
 	// Check if submenu returned
 	//
 	if( isset($page['submenu']) ) {
 		$rsp['submenu'] = $page['submenu'];
+	}
+	if( isset($page['container_class']) && $page['container_class'] != '' ) {
+		if( !isset($ciniki['request']['page-container-class']) ) { 
+			$ciniki['request']['page-container-class'] = $page['container_class'];
+		} else {
+			$ciniki['request']['page-container-class'] .= ' ' . $page['container_class'];
+		}
 	}
 
 	//
@@ -94,8 +101,14 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
 	} else {
 		$article_title = $page['title'];
 	}
+	if( isset($page['sidebar']) && count($page['sidebar']) > 0 ) {
+		$rsp['content'] .= "<div class='col-left-wide'>";
+	}
 	$rsp['content'] .= "<article class='page'>\n"
 		. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$article_title</h1>";
+	if( isset($page['subtitle']) && $page['subtitle'] != '' ) {
+		$rsp['content'] .= "<h2>" . $page['subtitle'] . "</h2>";
+	}
 	if( isset($page['breadcrumbs']) ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBreadcrumbs');
 		$rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $business_id, $page['breadcrumbs']);
@@ -103,7 +116,18 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
 			$rsp['content'] .= $rc['content'];
 		}
 	}
-	if( isset($page['article_meta']) && count($page['article_meta']) > 0 ) {
+	//
+	// Setup the meta information
+	//
+	if( isset($page['meta']) && count($page['meta']) > 0 ) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processMeta');
+		$rc = ciniki_web_processMeta($ciniki, $settings, $page);
+		if( isset($rc['content']) && $rc['content'] != '' ) {
+			$rsp['content'] .= "<div class='entry-meta'>" . $rc['content'] . "</div>";
+		}
+	}
+
+	elseif( isset($page['article_meta']) && count($page['article_meta']) > 0 ) {
 		$rsp['content'] .= "<div class='entry-meta'>";
 		$count = 0;
 		foreach($page['article_meta'] as $meta) {
@@ -119,56 +143,34 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
 	//
 	// Process the blocks of content
 	//
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlocks');
 	if( isset($page['blocks']) ) {
-		foreach($page['blocks'] as $block) {
-			$processor = '';
-			switch($block['type']) {
-				case 'cilist': $processor = 'processBlockCIList'; break;
-				case 'clist': $processor = 'processBlockCList'; break;
-				case 'imagelist': $processor = 'processBlockImageList'; break;
-				case 'gallery': $processor = 'processBlockGallery'; break;
-				case 'primaryimage': $processor = 'processBlockImage'; break;
-				case 'image': $processor = 'processBlockImage'; break;
-				case 'tagcloud': $processor = 'processBlockTagCloud'; break;
-				case 'tagimages': $processor = 'processBlockTagImages'; break;
-				case 'asideimage': $processor = 'processBlockAsideImage'; break;
-				case 'details': $processor = 'processBlockDetails'; break;
-				case 'content': $processor = 'processBlockContent'; break;
-				case 'message': $processor = 'processBlockMessage'; break;
-				case 'printoptions': $processor = 'processBlockPrintOptions'; break;
-				case 'sharebuttons': $processor = 'processBlockShareButtons'; break;
-				case 'prices': $processor = 'processBlockPrices'; break;
-				case 'links': $processor = 'processBlockLinks'; break;
-				case 'files': $processor = 'processBlockFiles'; break;
-				case 'sponsors': $processor = 'processBlockSponsors'; break;
-			}
-			if( $processor != '' ) {
-				$rc = ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', $processor);
-				if( $rc['stat'] == 'ok' ) {
-					$fn = "ciniki_web_$processor";
-					$rc = $fn($ciniki, $settings, $business_id, $block);
-					if( $rc['stat'] != 'ok' ) {
-						return $rc;
-					}
-					if( isset($rc['content']) ) {
-						$rsp['content'] .= $rc['content'];
-					}
-				}
-			}
+		$rc = ciniki_web_processBlocks($ciniki, $settings, $business_id, $page['blocks']);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
 		}
-	}
-
-	//
-	// Check if we need previous next buttons for long lists
-	//
-	if( isset($page['pagination']) ) {
-		
+		$rsp['content'] .= $rc['content'];
 	}
 
 	//
 	// close the article
 	//
 	$rsp['content'] .= "</div></article>";
+
+	//
+	// Add the sidebar content
+	//
+	if( isset($page['sidebar']) && count($page['sidebar']) > 0 ) {
+		$rsp['content'] .= "</div>";
+		$rsp['content'] .= "<div class='col-right-narrow'>";
+		ciniki_web_processBlocks($ciniki, $settings, $business_id, $page['sidebar']);
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		$rsp['content'] .= $rc['content'];
+		$rsp['content'] .= "</div>";
+	}
+
 	
 	//
 	// Return the content

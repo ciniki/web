@@ -353,7 +353,7 @@ function ciniki_web_pages() {
 				}
 			};
 			this[pn].setModuleOptionsField = function(option) {
-				this.sections._module_options.fields[option.setting] = {'label':option.label, 'type':option.type};
+				this.sections._module_options.fields[option.setting] = {'label':option.label, 'type':option.type, 'hint':(option.hint!=null?option.hint:'')};
 				if( option.type == 'toggle' ) {
 					this.sections._module_options.fields[option.setting].toggles = {};
 					for(var i in option.toggles) {

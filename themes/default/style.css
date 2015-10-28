@@ -193,6 +193,8 @@ div.image-sponsors-thumbnail {
 	padding: 7px;
 }
 
+div.image-list-thumbnail,
+div.image-list-original,
 div.image-cilist-thumbnail,
 div.image-cilist-original,
 div.image-members-thumbnail,
@@ -210,6 +212,8 @@ div.additional-image-gallery div.image-gallery-thumbnail {
 	margin: 6px;
 }
 
+div.image-list-thumbnail img,
+div.image-list-original img,
 div.image-cilist-thumbnail img,
 div.image-cilist-original img,
 div.image-members-thumbnail img,
@@ -309,12 +313,14 @@ div.gallery-image-details span.image-awards {
 	color: #439BBD;
 }
 
+#content table.image-list td p,
 #content table.clist td p,
 #content table.cilist td p {
 	margin-bottom: 0.6em;
 	max-width: 100%;
 }
 
+#content p.image-list-title,
 #content p.clist-title,
 #content p.cilist-title,
 #content span.blist-title,
@@ -366,6 +372,10 @@ div.gallery-image-details span.image-awards {
 #content p.clist-title a:visited,
 #content p.clist-title a:hover,
 #content p.clist-title a:active,
+#content span.image-list-title a,
+#content span.image-list-title a:visited,
+#content span.image-list-title a:hover,
+#content span.image-list-title a:active,
 #content span.cilist-title a,
 #content span.cilist-title a:visited,
 #content span.cilist-title a:hover,

@@ -18,6 +18,41 @@ function ciniki_web_processBlockShareButtons(&$ciniki, $settings, $business_id, 
 	//
 	$content = '';
 
+	//
+	// Default the social icons to the MonoSocial font
+	//
+	$social_icons = array(
+		'facebook'=>'&#xe227;',
+		'twitter'=>'&#xe286;',
+		'etsy'=>'&#xe226;',
+		'pinterest'=>'&#xe264;',
+		'tumblr'=>'&#xe285;',
+		'flickr'=>'&#xe229;',
+		'youtube'=>'&#xe299;',
+		'vimeo'=>'&#xe289;',
+		'instagram'=>'&#xe300;',
+		'googleplus'=>'&#xe239;',
+		'email'=>'&#xe224;',
+		);
+//
+// Settings for regular social font without circle
+//
+	// FontAwesome settings
+	if( isset($settings['theme']['share-social-icons']) && $settings['theme']['share-social-icons'] == 'FontAwesome' ) {
+		$social_icons['facebook'] = '&#xf09a;';
+		$social_icons['twitter'] = '&#xf099;';
+//		$social_icons['etsy'] = '&#xe026;';		// Missing etsy logo
+		$social_icons['pinterest'] = '&#xf231;';
+		$social_icons['tumblr'] = '&#xf173;';
+		$social_icons['flickr'] = '&#xf16e;';
+		$social_icons['youtube'] = '&#xf167;';
+		$social_icons['vimeo'] = '&#xf27d;';
+		$social_icons['instagram'] = '&#xf16d;';
+		$social_icons['googleplus'] = '&#xf0d5;';
+		$social_icons['email'] = '&#xf0e0;';
+	}
+
+
 	$url = $ciniki['response']['head']['og']['url'];
 
 	$content .= "<p class='share-buttons-wrap'><span class='share-buttons'>"
@@ -27,7 +62,7 @@ function ciniki_web_processBlockShareButtons(&$ciniki, $settings, $business_id, 
 	// Setup facebook button
 	//
 	$content .= "<a href='https://www.facebook.com/sharer.php?u=" . urlencode($ciniki['response']['head']['og']['url']) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
-		. "<span title='Share on Facebook' class='socialsymbol social-facebook'>&#xe227;</span>"
+		. "<span title='Share on Facebook' class='socialsymbol social-facebook'>" . $social_icons['facebook'] . "</span>"
 		. "</a>";
 
 	//
@@ -57,21 +92,21 @@ function ciniki_web_processBlockShareButtons(&$ciniki, $settings, $business_id, 
 		}
 	}
 	$content .= "<a href='https://twitter.com/share?url=" . urlencode($url) . "&text=" . urlencode($msg) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
-		. "<span title='Share on Twitter' class='socialsymbol social-twitter'>&#xe286;</span>"
+		. "<span title='Share on Twitter' class='socialsymbol social-twitter'>" . $social_icons['twitter'] . "</span>"
 		. "</a>";
 
 	//
 	// Setup pinterest button
 	//
 	$content .= "<a href='http://www.pinterest.com/pin/create/button?url=" . urlencode($ciniki['response']['head']['og']['url']) . "&media=" . urlencode($ciniki['response']['head']['og']['image']) . "&description=" . urlencode($ciniki['business']['details']['name'] . (isset($block['title'])?' - ' . $block['title']:'')) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
-		. "<span title='Share on Pinterest' class='socialsymbol social-pinterest'>&#xe264;</span>"
+		. "<span title='Share on Pinterest' class='socialsymbol social-pinterest'>" . $social_icons['pinterest'] . "</span>"
 		. "</a>";
 
 	//
 	// Setup google+ button
 	//
 	$content .= "<a href='https://plus.google.com/share?url=" . urlencode($ciniki['response']['head']['og']['url']) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
-		. "<span title='Share on Google+' class='socialsymbol social-googleplus'>&#xe239;</span>"
+		. "<span title='Share on Google+' class='socialsymbol social-googleplus'>" . $social_icons['googleplus'] . "</span>"
 		. "</a>";
 
 	//

@@ -243,7 +243,7 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 		&& ($ciniki['request']['uri_split'][0] == 'category' || $ciniki['request']['uri_split'][0] == 'tag')
 		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' ) {
 
-		ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'posts');
+		ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'ciListPosts');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 
@@ -251,11 +251,11 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 		// Get the items for the specified category
 		//
 		if( $ciniki['request']['uri_split'][0] == 'category' ) {
-			$rc = ciniki_blog_web_posts($ciniki, $settings, $ciniki['request']['business_id'], 
+			$rc = ciniki_blog_web_ciListPosts($ciniki, $settings, $ciniki['request']['business_id'], 
 				array('category'=>urldecode($ciniki['request']['uri_split'][1]), 
 					'offset'=>(($page_post_cur-1)*$page_post_limit), 'limit'=>$page_post_limit+1), $blogtype);
 		} else {
-			$rc = ciniki_blog_web_posts($ciniki, $settings, $ciniki['request']['business_id'], 
+			$rc = ciniki_blog_web_ciListPosts($ciniki, $settings, $ciniki['request']['business_id'], 
 				array('tag'=>urldecode($ciniki['request']['uri_split'][1]), 
 					'offset'=>(($page_post_cur-1)*$page_post_limit), 'limit'=>$page_post_limit+1), $blogtype);
 		}
@@ -355,7 +355,7 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 		&& preg_match("/^[0-9][0-9][0-9][0-9]$/", $ciniki['request']['uri_split'][1])
 		) {
 
-		ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'posts');
+		ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'ciListPosts');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 
@@ -374,7 +374,7 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 				. '/' . $ciniki['request']['uri_split'][1];
 		}
 
-		$rc = ciniki_blog_web_posts($ciniki, $settings, $ciniki['request']['business_id'], 
+		$rc = ciniki_blog_web_ciListPosts($ciniki, $settings, $ciniki['request']['business_id'], 
 			array('year'=>$year, 'month'=>$month, 
 				'offset'=>(($page_post_cur-1)*$page_post_limit), 'limit'=>$page_post_limit+1), $blogtype);
 		if( $rc['stat'] != 'ok' ) {
@@ -515,8 +515,8 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 		// List the categories the user has created in the artcatalog, 
 		// OR just show all the thumbnails if they haven't created any categories
 		//
-		ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'posts');
-		$rc = ciniki_blog_web_posts($ciniki, $settings, $ciniki['request']['business_id'], 
+		ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'ciListPosts');
+		$rc = ciniki_blog_web_ciListPosts($ciniki, $settings, $ciniki['request']['business_id'], 
 			array('offset'=>(($page_post_cur-1)*$page_post_limit), 'limit'=>$page_post_limit+1), $blogtype);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;

@@ -175,6 +175,7 @@ div.image-categories-thumbnail {
 }
 
 
+div.image-list-thumbnail img,
 div.image-cilist-thumbnail img,
 div.image-exhibitors-thumbnail img,
 div.image-sponsors-thumbnail img,
@@ -217,6 +218,7 @@ span.image-categories-name {
 	color: inherit;
 }
 
+div.image-list-thumbnail,
 div.image-cilist-thumbnail,
 div.image-members-thumbnail,
 div.image-sponsors-thumbnail,
@@ -290,6 +292,7 @@ div.gallery-image-details span.image-awards {
 	margin-bottom: 0.6em;
 }
 
+#content p.image-list-title,
 #content p.clist-title,
 #content p.cilist-title,
 #content span.clist-title,
@@ -317,6 +320,10 @@ div.gallery-image-details span.image-awards {
 	font-style: italic;
 }
 
+#content span.image-list-title a,
+#content span.image-list-title a:visited,
+#content span.image-list-title a:hover,
+#content span.image-list-title a:active,
 #content span.clist-title a,
 #content span.clist-title a:visited,
 #content span.clist-title a:hover,
@@ -969,16 +976,4 @@ footer div.social-icons a:active {
 		padding-left: 0.7em;
 		padding-right: 0.7em;
 	}
-}
-
-@media print {
-	/* Elements not to print */
-	header div.signin { display: none; }
-	header nav { display: none; }
-	.cilist-more { display: none; }
-	hr.header-section-divider { display: none; }
-	body { color: #000; }
-	#content p { max-width: 100%; }
-	aside { width: 50%; }
-	aside div.image-wrap { padding-left: 1em; }
 }
