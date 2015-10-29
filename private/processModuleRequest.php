@@ -101,11 +101,15 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
 	} else {
 		$article_title = $page['title'];
 	}
+//	if( isset($page['sidebar']) && count($page['sidebar']) > 0 ) {
+//		$rsp['content'] .= "<div class='col-left-wide'>";
+//	}
 	if( isset($page['sidebar']) && count($page['sidebar']) > 0 ) {
-		$rsp['content'] .= "<div class='col-left-wide'>";
+		$rsp['content'] .= "<article class='page col-left-wide'>\n";
+	} else {
+		$rsp['content'] .= "<article class='page'>\n";
 	}
-	$rsp['content'] .= "<article class='page'>\n"
-		. "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$article_title</h1>";
+	$rsp['content'] .= "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$article_title</h1>";
 	if( isset($page['subtitle']) && $page['subtitle'] != '' ) {
 		$rsp['content'] .= "<h2>" . $page['subtitle'] . "</h2>";
 	}
@@ -161,14 +165,15 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
 	// Add the sidebar content
 	//
 	if( isset($page['sidebar']) && count($page['sidebar']) > 0 ) {
-		$rsp['content'] .= "</div>";
-		$rsp['content'] .= "<div class='col-right-narrow'>";
-		ciniki_web_processBlocks($ciniki, $settings, $business_id, $page['sidebar']);
+		$rsp['content'] .= "<aside class='col-right-narrow'>";
+		$rsp['content'] .= "<div class='aside-content'>";
+		$rc = ciniki_web_processBlocks($ciniki, $settings, $business_id, $page['sidebar']);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
 		$rsp['content'] .= $rc['content'];
 		$rsp['content'] .= "</div>";
+		$rsp['content'] .= "</aside>";
 	}
 
 	

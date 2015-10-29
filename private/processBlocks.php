@@ -41,6 +41,7 @@ function ciniki_web_processBlocks(&$ciniki, $settings, $business_id, $blocks) {
 			case 'sponsors': $processor = 'processBlockSponsors'; break;
 			case 'tagcloud': $processor = 'processBlockTagCloud'; break;
 			case 'tagimages': $processor = 'processBlockTagImages'; break;
+			case 'taglist': $processor = 'processBlockTagList'; break;
 		}
 		if( $processor != '' ) {
 			$rc = ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', $processor);
