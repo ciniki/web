@@ -634,7 +634,7 @@ div.googlemap p.exhibitors-more,
 #content div.image-categories-thumbnail-wrap {	
 	margin: 5px;
 	box-sizing: border-box;
- 	max-width: 100%;
+	max-width: 260px;
 	vertical-align: top;
 	margin-left: 0px;
 	margin-right: 0px;
