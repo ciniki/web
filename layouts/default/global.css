@@ -639,12 +639,21 @@ div.googlemap p.exhibitors-more,
 	margin-left: 0px;
 	margin-right: 0px;
 }
+#content div.image-categories-thumbnail {
+	max-width: 100%;
+	box-sizing: border-box;
+}
 #content div.image-categories-thumbnail-small {
 	max-width: 140px;
 	margin: 5px;
 }
 #content div.image-categories-thumbnail-medium {
 	max-width: 200px;
+}
+#content span.image-categories-name {
+	width: 100%;
+	max-width: 100%;
+	box-sizing: border-box;
 }
 
 /*

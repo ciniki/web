@@ -55,7 +55,8 @@ header span.title {
 }
 #content div.image-categories div.image-categories-thumbnail-wrap {
 	margin: 5px;
-	max-width: 45%;
+	max-width: 280px;
+	max-width: 100%;
 }
 #content div.image-categories div.image-categories-thumbnail-small {
 	max-width: 140px;
