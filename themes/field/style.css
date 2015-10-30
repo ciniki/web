@@ -824,6 +824,18 @@ div.word-cloud {
 	text-decoration: bold; color: #307950; 
 }
 
+#content div.multipage-nav {
+	border-top: 1px dotted #bbb;
+	border-bottom: 1px dotted #bbb;
+}
+
+#content div.multipage-nav a {
+	color: #237B9D;
+	color: #5AC2E4; 
+	color: #439BBD;
+	font-size: 1.0em;
+}
+
 #content nav.content-nav {
 	border-top: 1px dotted #bbb;
 	border-bottom: 1px dotted #bbb;

@@ -131,7 +131,7 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, &$settings) {
 					}
 					if( isset($media['content']) ) {
 						foreach($media['content'] as $type_media_content) {
-							$allcontent[$setting]['content'] .= $type_media_content['content'];
+							$allcontent[$setting]['content'] .= $type_media_content['content'] . "\n";
 						}
 					}
 				}

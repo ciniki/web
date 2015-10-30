@@ -140,6 +140,18 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
 		}
 		$rsp['content'] .= "</div>";
 	}
+	
+	//
+	// Check if share buttons should be included in header
+	//
+	if( isset($page['article_header_share_buttons']) && $page['article_header_share_buttons'] == 'yes' ) {
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockShareButtons');
+		$rc = ciniki_web_processBlockShareButtons($ciniki, $settings, $business_id, array('pagetitle'=>$page['title']));
+		if( $rc['content'] != '' ) {
+			$rsp['content'] .= $rc['content'];
+		}
+	}
+
 	$rsp['content'] .= "</header>\n"
 		. "<div class='entry-content'>\n"
 		. "";

@@ -334,8 +334,7 @@ article {
 	margin-bottom: 0.2em;
 }
 
-#content p.entry-meta,
-#content header div.entry-meta {
+#content div.entry-meta {
 	font-size: 0.9em;
 }
 
@@ -954,6 +953,16 @@ aside div.googlemap img {
 #content div.word-cloud span.size-8 { font-size: 1.8em; line-height: 1.5em;}
 #content div.word-cloud span.size-9 { font-size: 1.9em; line-height: 1.5em;}
 
+#content div.multipage-nav {
+	text-align: center;
+}
+
+#content div.multipage-nav a {
+	padding: 1em;
+	display: inline-block;
+}
+
+
 #content nav.content-nav {
 	padding-top: 0em;
 	padding-bottom: 0em;
@@ -981,7 +990,8 @@ aside div.googlemap img {
 	padding-bottom: 1em;
 	display: inline-block;
 	width: 100%;
-}
+} 
+
 
 hr.footer-section-divider {
 	margin-top: 5em;
