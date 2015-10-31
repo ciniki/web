@@ -1371,6 +1371,33 @@ function ciniki_web_main() {
 		this.artgalleryexhibitions.addClose('Cancel');
 
 		//
+		// The options and information for the first aid pages
+		//
+		this.fatt = new M.panel('First Aid Courses',
+			'ciniki_web_main', 'fatt',
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.fatt');
+		this.fatt.data = {};
+		this.fatt.sections = {
+			'options':{'label':'Courses', 'aside':'yes', 'fields':{
+				'page-fatt-active':{'label':'Display Courses', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-fatt-menu-categories':{'label':'Split Menu', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'fatt\');'},
+				}},
+		};
+		this.fatt.fieldValue = this.fieldValue;
+		this.fatt.fieldHistoryArgs = this.fieldHistoryArgs;
+//		this.fatt.addDropImage = function(iid) {
+//			this.setFieldValue('page-firstaid-image', iid);
+//			return true;
+//		};
+		this.fatt.deleteImage = this.deleteImage;
+		this.fatt.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'fatt\');');
+//		this.fatt.addLeftButton('website', 'Preview', 'M.showWebsite(\'/courses\');');
+		this.fatt.addClose('Cancel');
+
+		//
 		// The options and information for the exhibitions pages
 		//
 		this.courses = new M.panel('Courses',

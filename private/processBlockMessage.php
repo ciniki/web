@@ -16,8 +16,13 @@ function ciniki_web_processBlockMessage($ciniki, $settings, $business_id, $block
 	if( !isset($block['content']) ) {
 		return array('stat'=>'ok', 'content'=>'');
 	}
+	$content = '';
 
-	$content = '<p class="wide">' . $block['content'] . '</p>';
+	if( isset($block['title']) && $block['title'] != '' ) {
+		$content .= '<h2>' . $block['title'] . "</h2>";
+	}
+
+	$content .= '<p class="wide">' . $block['content'] . '</p>';
 
 	return array('stat'=>'ok', 'content'=>$content);
 }

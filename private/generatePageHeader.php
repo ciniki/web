@@ -825,6 +825,18 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 				$content .= "</a></li>";
 			}
 		}
+		if( isset($settings['page-fatt-active']) && $settings['page-fatt-active'] == 'yes' ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'fatt', 'web', 'menuItems');
+			$rc = ciniki_fatt_web_menuItems($ciniki, $settings, $ciniki['request']['business_id'], array());
+			if( $rc['stat'] == 'ok' ) {
+				foreach($rc['menu'] as $item) {
+					$content .= "<li class='menu-item$hide_menu_class" . ((isset($item['selected'])&&$item['selected']=='yes')?' menu-item-selected':'') . "'>"
+						. "<a href='" . $ciniki['request']['base_url'] . '/' . $item['permalink'] . "'>"
+						. $item['title']
+						. "</a></li>";
+				}
+			}
+		}
 		if( isset($settings['page-courses-active']) && $settings['page-courses-active'] == 'yes' ) {
 			$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='courses'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/courses'>";
 			if( isset($settings['page-courses-name']) && $settings['page-courses-name'] != '' ) {

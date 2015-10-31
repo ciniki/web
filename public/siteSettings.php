@@ -107,6 +107,9 @@ function ciniki_web_siteSettings($ciniki) {
 	if( isset($modules['ciniki.exhibitions']) ) {
 		$pages['exhibitions'] = array('display_name'=>'Exhibitions', 'active'=>'no');
 	}
+	if( isset($modules['ciniki.fatt']) ) {
+		$pages['fatt'] = array('display_name'=>'First Aid', 'active'=>'no');
+	}
 	if( isset($modules['ciniki.courses']) ) {
 		$pages['courses'] = array('display_name'=>'Courses', 'active'=>'no');
 	}
@@ -332,6 +335,9 @@ function ciniki_web_siteSettings($ciniki) {
 	}
 	if( isset($settings['page-surveys-active']) && $settings['page-surveys-active'] == 'yes' ) {
 		$pages['surveys']['active'] = 'yes';
+	}
+	if( isset($settings['page-fatt-active']) && $settings['page-fatt-active'] == 'yes' ) {
+		$pages['fatt']['active'] = 'yes';
 	}
 	if( isset($settings['page-courses-active']) && $settings['page-courses-active'] == 'yes' ) {
 		$pages['courses']['active'] = 'yes';

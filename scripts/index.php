@@ -551,6 +551,12 @@ elseif( $pages_menu == 'no' && $ciniki['request']['page'] == 'tour'
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageTourExhibitors.php');
 	$rc = ciniki_web_generatePageTourExhibitors($ciniki, $settings);
 }
+// First Aid
+elseif( $pages_menu == 'no' && $ciniki['request']['page'] == 'firstaid' 
+	&& isset($settings['page-fatt-active']) && $settings['page-fatt-active'] == 'yes' ) {
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
+	$rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['business_id'], 'ciniki.fatt');
+}
 // Courses
 elseif( $pages_menu == 'no' && $ciniki['request']['page'] == 'courses' 
 	&& isset($settings['page-courses-active']) && $settings['page-courses-active'] == 'yes' ) {
