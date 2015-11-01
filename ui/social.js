@@ -20,6 +20,7 @@ function ciniki_web_social() {
 			'header':{'label':'Header Links', 'visible':'no', 'fields':{
 				'site-social-facebook-header-active':{'label':'Facebook', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'site-social-twitter-header-active':{'label':'Twitter', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+				'site-social-linkedin-header-active':{'label':'Linked In', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'site-social-etsy-header-active':{'label':'Etsy', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'site-social-pinterest-header-active':{'label':'Pinterest', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'site-social-tumblr-header-active':{'label':'Tumblr', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
@@ -31,6 +32,7 @@ function ciniki_web_social() {
 			'footer':{'label':'Footer Links', 'fields':{
 				'site-social-facebook-footer-active':{'label':'Facebook', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'site-social-twitter-footer-active':{'label':'Twitter', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+				'site-social-linkedin-footer-active':{'label':'Linked In', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'site-social-etsy-footer-active':{'label':'Etsy', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'site-social-pinterest-footer-active':{'label':'Pinterest', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'site-social-tumblr-footer-active':{'label':'Tumblr', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
@@ -189,6 +191,17 @@ function ciniki_web_social() {
 				} else {
 					p.sections.header.fields['site-social-instagram-header-active'].active = 'no';
 					p.sections.footer.fields['site-social-instagram-footer-active'].active = 'no';
+				}
+
+				// Linkedin
+				if( rsp.details['social-linkedin-url'] != null && rsp.details['social-linkedin-url'] != '' ) {
+					p.sections.header.fields['site-social-linkedin-header-active'].active = 'yes';
+					p.sections.footer.fields['site-social-linkedin-footer-active'].active = 'yes';
+					header = 'yes';
+					footer = 'yes';
+				} else {
+					p.sections.header.fields['site-social-linkedin-header-active'].active = 'no';
+					p.sections.footer.fields['site-social-linkedin-footer-active'].active = 'no';
 				}
 
 				p.sections.header.visible = header;

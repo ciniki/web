@@ -32,6 +32,7 @@ function ciniki_web_socialIcons($ciniki, $settings, $location) {
 		'youtube'=>'&#xe299;',
 		'vimeo'=>'&#xe289;',
 		'instagram'=>'&#xe300;',
+		'linkedin'=>'&#xe252;',
 		'email'=>'&#xe224;',
 		);
 //
@@ -48,6 +49,7 @@ function ciniki_web_socialIcons($ciniki, $settings, $location) {
 		$social_icons['youtube'] = '&#xf167;';
 		$social_icons['vimeo'] = '&#xf27d;';
 		$social_icons['instagram'] = '&#xf16d;';
+		$social_icons['linkedin'] = '&#xf0e1;';
 		$social_icons['email'] = '&#xf0e0;';
 	}
 
@@ -67,6 +69,13 @@ function ciniki_web_socialIcons($ciniki, $settings, $location) {
 		) {
 		$social .= "<a href='http://twitter.com/" . $ciniki['business']['social']['social-twitter-username'] . "' target='_blank' class='socialsymbol'>"
 			. "<span title='Twitter' class='socialsymbol social-twitter'>" . $social_icons['twitter'] . "</span></a>";
+	}
+	// Linkedin
+	if( (!isset($settings["site-social-linkedin-$location-active"]) || $settings["site-social-linkedin-$location-active"] == 'yes' )
+		&& isset($ciniki['business']['social']['social-linkedin-url']) && $ciniki['business']['social']['social-linkedin-url'] != ''
+		) {
+		$social .= "<a href='" . $ciniki['business']['social']['social-linkedin-url'] . "' target='_blank' class='socialsymbol'>"
+			. "<span title='Instagram' class='socialsymbol social-linkedin'>" . $social_icons['linkedin'] . "</span></a>";
 	}
 	// Etsy
 	if( (!isset($settings["site-social-etsy-$location-active"]) || $settings["site-social-etsy-$location-active"] == 'yes' )
