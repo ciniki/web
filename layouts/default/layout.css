@@ -530,8 +530,13 @@ span.exhibitors-description {
 	#content ul { max-width: 45em; }
 	#content p,
 	#content dl.wide,
+	#content ol.wide,
 	#content ul.wide {
 		max-width: 45em;
+		margin: 0 auto 1.618em;
+	}
+	#content div.embed-video {
+		margin: 0 auto 1.618em;
 	}
 	aside {
 		float: none;

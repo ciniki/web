@@ -943,15 +943,6 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 			$content .= "</a></li>";
 		}
 
-		if( isset($settings['page-blog-active']) && $settings['page-blog-active'] == 'yes' ) {
-			$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='blog'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/blog'>";
-			if( isset($settings['page-blog-name']) && $settings['page-blog-name'] != '' ) {
-				$content .= $settings['page-blog-name'];
-			} else {
-				$content .= "Blog";
-			}
-			$content .= "</a></li>";
-		}
 	}
 
 	//
@@ -1020,6 +1011,15 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	}
 
 	if( !isset($ciniki['business']['modules']['ciniki.web']['flags']) || ($ciniki['business']['modules']['ciniki.web']['flags']&0x0200) == 0 ) {
+		if( isset($settings['page-blog-active']) && $settings['page-blog-active'] == 'yes' ) {
+			$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='blog'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/blog'>";
+			if( isset($settings['page-blog-name']) && $settings['page-blog-name'] != '' ) {
+				$content .= $settings['page-blog-name'];
+			} else {
+				$content .= "Blog";
+			}
+			$content .= "</a></li>";
+		}
 		//
 		// Check if membersonly area is enabled, and the member has logged in
 		//

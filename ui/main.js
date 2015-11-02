@@ -28,6 +28,7 @@ function ciniki_web_main() {
 		'orangebrick':'Orange Brick - Brown/Beige',
 		'orangebrick2':'Brick - Brown/Beige',
 		'stone1':'Stone - Brown/Orange',
+		'stone2':'Stone - Black/White',
 		'splatter':'Purple Splatter - Purple/White',
 //		'field':'Field - Green/White',
 		};

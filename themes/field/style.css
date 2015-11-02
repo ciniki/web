@@ -719,6 +719,12 @@ aside div.image {
 	max-width: 100%;
 }
 
+#content div.embed-video {
+	border: 2px solid #ccc;
+	padding: 9px;
+	background: #fff;
+}
+
 #content div.image {
 	display: inline-block;
 	border: 2px solid #ccc;

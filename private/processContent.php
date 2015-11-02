@@ -33,6 +33,7 @@ function ciniki_web_processContent($ciniki, $unprocessed_content, $pclass='') {
 //	$pattern1 = '#(www\.[a-zA-Z0-9\-\.]+)#m';
 //	$pattern1 = '#\n([^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#m';
 //	$pattern = '#\b(((?<!(href=(\"|\')|.....>))https?://?|(?<!(://|..>))www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';
+
 	//
 	// 	Similar code to mail/private/emailProcessContent
 	//
@@ -59,6 +60,17 @@ function ciniki_web_processContent($ciniki, $unprocessed_content, $pclass='') {
 	// Remove empty paragraphs that are followed by a <h tag
 	$processed_content = preg_replace('/<p class=\'[A-Za-z\- ]*\'>(<h[1-6][^\>]*>[^<]+<\/h[1-6]>)<\/p>/', '$1', $processed_content);
 	$processed_content = preg_replace('/\n/m', "<br/>", $processed_content);
+
+	//
+	// Check for iframe embeded videos
+	//
+	$youtube_callback = create_function('$matches', '
+		$content = preg_replace("/ (width|height)=(\'|\")[0-9]+(\'|\")/", "", $matches[1]);
+		return "<div class=\'embed-video\'><div class=\'embed-video-wrap\'>" . $content . "</div></div>";
+		');
+	$processed_content = preg_replace_callback('/(<iframe[^>]+youtube.com[^>]+><\/iframe>)/', $youtube_callback, $processed_content);
+
+//	<iframe width="420" height="250" src="https://www.youtube.com/embed/u5kiz7GhJt0?list=PLKRqAE_6bwWsOl0ev4mr2SpqFtxSEhR1M" frameborder="0" allowfullscreen></iframe>
 
 	return array('stat'=>'ok', 'content'=>$processed_content);
 }

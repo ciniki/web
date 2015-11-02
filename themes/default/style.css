@@ -593,6 +593,12 @@ div.gallery-image-details span.image-awards {
 }
 
 
+#content div.embed-video {
+	border: 2px solid #ccc;
+	padding: 9px;
+	background: #fff;
+}
+
 aside div.image-wrap {
 	margin-bottom: 1em;
 }

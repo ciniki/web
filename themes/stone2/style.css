@@ -14,7 +14,7 @@ body {
 }
 
 #site-title {
-	color: #439BBD;
+	color: #000;
 }
 
 #site-title a,
@@ -22,8 +22,8 @@ body {
 #site-title a:hover,
 #site-title a:active {
 	text-decoration: none;
-	color: #f9af4b;
-	text-shadow: 0px 1px 1px #000; 
+	color: #000;
+	text-shadow: 0px 1px 1px #aaa; 
 }
 
 #site-description {
@@ -45,14 +45,13 @@ body {
 
 #page-container > header hgroup {
 	text-align: center;
-	padding: 1em 1em 1.5em 1em;
+	padding: 1.5em 1em 1.5em 1em;
 	border-radius: 0px;
 	margin-bottom: 0.0em;
-	border-bottom: 1px solid #000;
 }
 
 #page-container > header {
-	background: #594a42;
+	background: #fff;
 }
 
 header h1,
@@ -1034,13 +1033,13 @@ hr.footer-section-divider {
 }
 
 #page-container > footer {
-	border-top: 1px solid #000;
-	color: #B9A296;
+	border-top: 1px solid #777;
+	color: #555;
 	margin-top: 0px;
 	padding-top: 1em;
 	padding-bottom: 1em;
 	border-radius: 0px;
-	background: #594a42;
+	background: #ddd;
 	width: 100%;
 }
 
@@ -1049,7 +1048,7 @@ footer a:visited,
 footer a:hover,
 footer a:active {
 	text-decoration: none;
-	color: #B9A296;
+	color: #555;
 }
 
 footer div.social-icons {
