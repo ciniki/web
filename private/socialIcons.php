@@ -111,7 +111,7 @@ function ciniki_web_socialIcons($ciniki, $settings, $location) {
 	if( (!isset($settings["site-social-youtube-$location-active"]) || $settings["site-social-youtube-$location-active"] == 'yes' )
 		&& isset($ciniki['business']['social']['social-youtube-username']) && $ciniki['business']['social']['social-youtube-username'] != ''
 		) {
-		$social .= "<a href='http://youtube.com/user/" . $ciniki['business']['social']['social-youtube-username'] . "' target='_blank' class='socialsymbol'>"
+		$social .= "<a href='http://youtube.com/channel/" . $ciniki['business']['social']['social-youtube-username'] . "' target='_blank' class='socialsymbol'>"
 			. "<span title='YouTube' class='socialsymbol social-youtube'>" . $social_icons['youtube'] . "</span></a>";
 	}
 	// Vimeo
