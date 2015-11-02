@@ -108,8 +108,21 @@ div.embed-video div.embed-video-wrap iframe {
 	box-sizing: border-box;
 }
 
+#content div.cart-pricetable {
+	box-sizing: border-box;
+}
 #content table.cart-pricetable {
 	width: 100%;
+	box-sizing: border-box;
+}
+#content table.cart-pricetable tr th {
+	display: none;
+}
+#content table.cart-pricetable tr {
+	display: block;
+}
+#content table.cart-pricetable tr td {
+	display: block;
 }
 
 h2 {

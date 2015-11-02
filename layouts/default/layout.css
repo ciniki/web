@@ -376,10 +376,23 @@ header span.title {
 #content article.page form input.text {
 	max-width: 28em;
 }
+#content div.cart-pricetable {
+	margin: 0 auto;
+}
 #content div.cart-pricetable-small {
 	max-width: 45em;
 	margin: 0 auto;
 }
+#content table.cart-pricetable tr th {
+	display: table-cell;
+}
+#content table.cart-pricetable tr {
+	display: table-row;
+}
+#content table.cart-pricetable tr td {
+	display: table-cell;
+}
+
 #content form table.cart-details input.text {
 	width: 95%;
 	max-width: 95%;
