@@ -35,9 +35,9 @@ function ciniki_web_processBlockPriceTable(&$ciniki, $settings, $business_id, $b
 		// Process the price list
 		//
 		if( isset($block['title']) && $block['title'] != '' ) {
-			$content .= "<h2>" . $block['title'] . "</h2>";
+			$content .= "<h2 class='wide'>" . $block['title'] . "</h2>";
 		}
-		$content .= "<div class='cart-pricetable'>";
+		$content .= "<div class='cart-pricetable" . ((isset($block['size'])&&$block['size']!='')?' cart-pricetable-'.$block['size']:'') . "'>";
 		$content .= "<table class='cart-pricetable'>";
 		if( isset($block['headers']) && count($block['headers']) > 0 ) {
 			$content .= "<thead><tr>";

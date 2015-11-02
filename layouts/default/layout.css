@@ -143,6 +143,7 @@ header span.title {
 #content dl.wide {
 /* 	width: 100%; */
 	max-width: 100%;
+	clear: both;
 }
 
 #content dl.wide {
@@ -317,6 +318,10 @@ header span.title {
 	display: inline-block;
 }
 
+#content .clearaside {
+	clear: both;
+}
+
 #content aside div.largebutton-list div.button-list-wrap {
 	width: 100%;
 	display: block;
@@ -370,6 +375,10 @@ header span.title {
 #content form input.text,
 #content article.page form input.text {
 	max-width: 28em;
+}
+#content div.cart-pricetable-small {
+	max-width: 45em;
+	margin: 0 auto;
 }
 #content form table.cart-details input.text {
 	width: 95%;

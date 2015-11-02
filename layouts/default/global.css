@@ -108,6 +108,10 @@ div.embed-video div.embed-video-wrap iframe {
 	box-sizing: border-box;
 }
 
+#content table.cart-pricetable {
+	width: 100%;
+}
+
 h2 {
 	max-width: 23em;
 }

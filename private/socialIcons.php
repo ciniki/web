@@ -109,9 +109,9 @@ function ciniki_web_socialIcons($ciniki, $settings, $location) {
 	}
 	// YouTube
 	if( (!isset($settings["site-social-youtube-$location-active"]) || $settings["site-social-youtube-$location-active"] == 'yes' )
-		&& isset($ciniki['business']['social']['social-youtube-username']) && $ciniki['business']['social']['social-youtube-username'] != ''
+		&& isset($ciniki['business']['social']['social-youtube-url']) && $ciniki['business']['social']['social-youtube-url'] != ''
 		) {
-		$social .= "<a href='http://youtube.com/channel/" . $ciniki['business']['social']['social-youtube-username'] . "' target='_blank' class='socialsymbol'>"
+		$social .= "<a href='" . $ciniki['business']['social']['social-youtube-url'] . "' target='_blank' class='socialsymbol'>"
 			. "<span title='YouTube' class='socialsymbol social-youtube'>" . $social_icons['youtube'] . "</span></a>";
 	}
 	// Vimeo

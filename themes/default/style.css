@@ -869,6 +869,27 @@ aside div.borderless {
 }
 
 /****** Shopping Cart Styles *****/
+#content div.cart-pricetable {
+	font-size: 1.0em;
+	border: 2px solid #aaa;
+}
+#content table.cart-pricetable {
+	border-collapse: collapse;
+}
+#content div.cart-pricetable th {
+	background: #ddd;
+	font-weight: bold;
+	color: #555;
+	padding: 5px;
+	text-align: left;
+}
+#content div.cart-pricetable td {
+	background: #e8e8e8;
+	padding: 5px;
+}
+#content div.cart-pricetable tr:nth-child(odd) td {
+	background: #f8f8f8;
+}
 #content div.cart-pricelist {
 	font-size: 1.0em;
 }
@@ -1115,6 +1136,11 @@ aside div.borderless {
 }
 
 @media screen and (min-width: 40em) {
+	#content div.cart-pricetable-small th,
+	#content div.cart-pricetable-small td {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
 	#content div.image-categories-thumbnail-small {
 		margin: 10px;
 	} 

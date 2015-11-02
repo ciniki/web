@@ -19,7 +19,7 @@ function ciniki_web_processBlockMessage($ciniki, $settings, $business_id, $block
 	$content = '';
 
 	if( isset($block['title']) && $block['title'] != '' ) {
-		$content .= '<h2>' . $block['title'] . "</h2>";
+		$content .= '<h2 class="wide">' . $block['title'] . "</h2>";
 	}
 
 	$content .= '<p class="wide">' . $block['content'] . '</p>';
