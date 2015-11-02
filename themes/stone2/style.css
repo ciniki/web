@@ -54,10 +54,10 @@ body {
 	background: #fff;
 }
 
-header h1,
-header h1 a:visited,
-header h1 a:hover,
-header h1 a:active {
+#content header h1,
+#content header h1 a:visited,
+#content header h1 a:hover,
+#content header h1 a:active {
 	color: #333;
 }
 
@@ -324,9 +324,6 @@ div.gallery-image-details span.image-awards {
 	margin-bottom: 0.5em;
 	padding-bottom: 0px;
 }
-/* #content h2 {
-	color: #333;
-} */
 
 #content a,
 #content a:visited,
@@ -361,6 +358,10 @@ div.gallery-image-details span.image-awards {
 
 #content article.page-features span.cilist-title {
 	color: #000;
+}
+
+#content div.image-list div.image-list-title h2 {
+	border-bottom: 0px;
 }
 
 #content table.clist td p.clist-title,
@@ -410,18 +411,18 @@ div.gallery-image-details span.image-awards {
 	font-size: 1.0em;
 }
 
-#content p.image-list-title a,
-#content p.image-list-title a:visited,
-#content p.image-list-title a:hover,
-#content p.image-list-title a:active,
+#content div.image-list-title a,
+#content div.image-list-title a:visited,
+#content div.image-list-title a:hover,
+#content div.image-list-title a:active,
 #content p.clist-title a,
 #content p.clist-title a:visited,
 #content p.clist-title a:hover,
 #content p.clist-title a:active,
-#content span.cilist-title a,
-#content span.cilist-title a:visited,
-#content span.cilist-title a:hover,
-#content span.cilist-title a:active,
+#content p.cilist-title a,
+#content p.cilist-title a:visited,
+#content p.cilist-title a:hover,
+#content p.cilist-title a:active,
 #content span.members-title a,
 #content span.members-title a:visited,
 #content span.members-title a:hover,
@@ -442,7 +443,7 @@ div.gallery-image-details span.image-awards {
 #content span.links-title a:visited,
 #content span.links-title a:hover,
 #content span.links-title a:active {
-	color: inherit;
+	color: #000;
 }
 
 
@@ -1062,6 +1063,9 @@ aside div.borderless {
 
 /* Styles for larger screens */
 @media screen and (min-width: 33em) {
+	#page-container {
+		max-width: 62em;
+	}
 	#main-menu-container li.menu-item-selected a {
 		border-bottom: 1px dashed #f9af4b;
 		border-bottom: 1px dashed #999;
@@ -1080,7 +1084,7 @@ aside div.borderless {
 		padding-bottom: 15px;
 	}
 
-	#content h2 {
+	#content div.entry-content > h2 {
 		padding-bottom: 15px;
 	}
 

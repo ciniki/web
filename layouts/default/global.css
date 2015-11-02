@@ -440,7 +440,9 @@ article {
 }
 #content div.image-list-details h2 {
 	padding-top: 0px;
-	margin-bottom: 2px;
+	margin-bottom: 0px;
+	max-width: 100%;
+	line-height: 1.1em;
 }
 #content div.image-list-meta {
 	font-size: 0.85em;

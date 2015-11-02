@@ -406,7 +406,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 		//
 		if( isset($event['images']) && count($event['images']) > 0 ) {
 			$page_content .= "<br style='clear: right;'/>";
-			$page_content .= "<h2>Gallery</h2>";
+			$page_content .= "<h2 class='wide'>Gallery</h2>";
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
 			$img_base_url = $ciniki['request']['base_url'] . "/events/" . $event['permalink'] . "/gallery";
 			$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $event['images'], 125);
@@ -614,7 +614,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 
 			if( count($events) > 0 ) {
 				if( isset($upcoming_title) && $upcoming_title != '' ) {
-					$page_content .= "<h2>" . $upcoming_title . "</h2>";
+					$page_content .= "<h2 class='wide'>" . $upcoming_title . "</h2>";
 				}
 
 				//
@@ -642,7 +642,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 //			!isset($settings['page-events-upcoming-empty-hide']) 
 //				|| ($settings['page-events-upcoming-empty-hide'] != 'yes' && isset($settings['page-events-past']) && $settings['page-events-past'] == 'yes') 
 				if( isset($upcoming_title) && $upcoming_title != '' ) {
-					$page_content .= "<h2>" . $upcoming_title . "</h2>";
+					$page_content .= "<h2 class='wide'>" . $upcoming_title . "</h2>";
 				}
 				$page_content .= "<p>Currently no events.</p>";
 			}
@@ -667,7 +667,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 						$page_content .= "<header class='entry-title'><h1 class='entry-title'>" . $past_title . "</h1></header>\n";
 					} else {
 						$page_content .= "<br style='clear:both;'/>\n";
-						$page_content .= "<h2>" . $past_title . "</h2>\n";
+						$page_content .= "<h2 class='wide'>" . $past_title . "</h2>\n";
 					}
 				}
 

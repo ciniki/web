@@ -706,7 +706,7 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
 				$subcategories = $type['categories'];
 //				$base_url = $ciniki['request']['base_url'] . "/products/category/" . $category_permalink . "/category";
 				if( $num_types > 1 ) {
-					$page_content .= "<h2>" . $type['name'] . "</h2>";
+					$page_content .= "<h2 class='wide'>" . $type['name'] . "</h2>";
 				}
 				$page_content .= "<div class='image-categories'>";
 				foreach($subcategories AS $cnum => $category) {
