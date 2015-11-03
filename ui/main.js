@@ -243,7 +243,7 @@ function ciniki_web_main() {
 			'mc', 'medium', 'sectioned', 'ciniki.web.main.header');
 		this.header.data = {'site-header-image':'0'};
 		this.header.sections = {
-			'_image':{'label':'Image', 'fields':{
+			'_image':{'label':'Image', 'type':'imageform', 'fields':{
 				'site-header-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
 				}},
 			'options':{'label':'Options', 'fields':{
@@ -502,7 +502,7 @@ function ciniki_web_main() {
 				'addTxt':'Manage Sliders',
 				'addFn':'M.startApp(\'ciniki.web.sliders\',null,\'M.ciniki_web_main.showPage(null,"home");\');',
 				},
-			'_image':{'label':'Image', 'fields':{
+			'_image':{'label':'Image', 'type':'imageform', 'fields':{
 				'page-home-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
 				}},
 			'_image_caption':{'label':'', 'fields':{
@@ -589,7 +589,7 @@ function ciniki_web_main() {
 //				'page-custom-001-name':{'label':'Name', 'type':'text', 'hint':''},
 //				'page-custom-001-permalink':{'label':'URL', 'type':'text', 'hint':''},
 //				}},
-//			'_image':{'label':'Image', 'fields':{
+//			'_image':{'label':'Image', 'type':'imageform', 'fields':{
 //				'page-custom-001-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
 //				}},
 //			'_image_caption':{'label':'', 'fields':{
@@ -756,7 +756,7 @@ function ciniki_web_main() {
 				'page-events-upcoming-empty-hide':{'label':'Hide empty upcoming', 'visible':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'visible':function() {return M.ciniki_web_main.events.data['page-events-past']}},
 				'page-events-categories-display':{'label':'Display Categories', 'type':'toggle', 'default':'off', 'toggles':this.eventCategoryDisplay},
 				}},
-			'_image':{'label':'Image', 'active':'no', 'fields':{
+			'_image':{'label':'Image', 'active':'no', 'type':'imageform', 'fields':{
 				'page-events-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
 				}},
 			'_image_caption':{'label':'', 'active':'no', 'fields':{
@@ -828,7 +828,7 @@ function ciniki_web_main() {
 			'options':{'label':'Options', 'fields':{
 				'page-tutorials-active':{'label':'Show tutorials', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				}},
-			'_image':{'label':'Image', 'fields':{
+			'_image':{'label':'Image', 'type':'imageform', 'fields':{
 				'page-tutorials-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
 				}},
 			'_image_caption':{'label':'', 'fields':{
@@ -1347,7 +1347,7 @@ function ciniki_web_main() {
 				'page-artgalleryexhibitions-archive-number':{'label':'Archive Exhibitions/page', 'active':'yes', 'type':'text', 'size':'small', 'hint':'10'},
 				'page-artgalleryexhibitions-application-details':{'label':'Display Application Information', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				}},
-			'_image':{'label':'Image', 'fields':{
+			'_image':{'label':'Image', 'type':'imageform', 'fields':{
 				'page-artgalleryexhibitions-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
 				}},
 			'_image_caption':{'label':'', 'fields':{
@@ -1418,7 +1418,7 @@ function ciniki_web_main() {
 				'page-courses-level-display':{'label':'Display course level', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 //				'page-courses-past-name':{'label':'Name', 'type':'text', 'hint':'Past Courses'},
 				}},
-			'_image':{'label':'Image', 'fields':{
+			'_image':{'label':'Image', 'type':'imageform', 'fields':{
 				'page-courses-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
 				}},
 			'_image_caption':{'label':'', 'fields':{
@@ -1494,7 +1494,7 @@ function ciniki_web_main() {
 			'registration':{'label':'Registration', 'fields':{
 				'page-courses-registration-active':{'label':'Display Registration Info', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				}},
-			'_image':{'label':'Registration Image', 'fields':{
+			'_image':{'label':'Registration Image', 'type':'imageform', 'fields':{
 				'page-courses-registration-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
 				}},
 			'_image_caption':{'label':'', 'fields':{
@@ -2089,7 +2089,7 @@ function ciniki_web_main() {
 			this[page].title = unescape(subpagetitle);
 			this[page].sections = {
 				'_content':{'label':'Content', 'fields':{}},
-				'_image':{'label':'Image', 'fields':{}},
+				'_image':{'label':'Image', 'type':'imageform', 'fields':{}},
 				'_image_caption':{'label':'', 'fields':{}},
 				'_save':{'label':'', 'buttons':{
 					'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'coursestype\');'},
@@ -2136,7 +2136,7 @@ function ciniki_web_main() {
 		this.custom.number = parseInt(page.match(/-([0-9][0-9][0-9])/));
 		this.custom.sections = {
 			'options':{'label':'', 'fields':{}},
-			'_image':{'label':'Image', 'fields':{}},
+			'_image':{'label':'Image', 'type':'imageform', 'fields':{}},
 			'_image_caption':{'label':'', 'fields':{}},
 			'_content':{'label':'Content', 'fields':{}},
 			'_save':{'label':'', 'buttons':{

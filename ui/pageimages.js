@@ -16,7 +16,7 @@ function ciniki_web_pageimages() {
 		this.edit.data = {};
 		this.edit.page_id = 0;
 		this.edit.sections = {
-			'_image':{'label':'Photo', 'fields':{
+			'_image':{'label':'Photo', 'type':'imageform', 'fields':{
 				'image_id':{'label':'', 'type':'image_id', 'hidelabel':'yes', 'controls':'all', 'history':'no'},
 			}},
 			'info':{'label':'Information', 'type':'simpleform', 'fields':{

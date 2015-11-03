@@ -53,7 +53,7 @@ function ciniki_web_pages() {
 					}},
 				'_module_options':{'label':'Options', 'visible':'hidden', 'fields':{
 					}},
-				'_image':{'label':'', 'aside':'yes', 'visible':'hidden', 'fields':{
+				'_image':{'label':'', 'aside':'yes', 'visible':'hidden', 'type':'imageform', 'fields':{
 					'primary_image_id':{'label':'', 'type':'image_id', 'hidelabel':'yes', 
 						'controls':'all', 'history':'no', 
 						'addDropImage':function(iid) {

@@ -258,7 +258,7 @@ function ciniki_web_privatethemes() {
 		this.image.theme_id = 0;
 		this.image.theme_image_id = 0;
 		this.image.sections = {
-			'_image':{'label':'Photo', 'fields':{
+			'_image':{'label':'Photo', 'type':'imageform', 'fields':{
 				'image_id':{'label':'', 'type':'image_id', 'hidelabel':'yes', 'controls':'all', 'history':'no'},
 			}},
 			'info':{'label':'', 'type':'simpleform', 'fields':{

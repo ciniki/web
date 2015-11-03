@@ -55,7 +55,7 @@ function ciniki_web_collections() {
 		this.edit.collection_id = 0;
 		this.edit.data = {};
 		this.edit.sections = {
-			'_image':{'label':'', 'aside':'yes', 'fields':{
+			'_image':{'label':'', 'aside':'yes', 'type':'imageform', 'fields':{
 				'image_id':{'label':'', 'type':'image_id', 'hidelabel':'yes', 'controls':'all', 'history':'no'},
 			}},
 			'_image_caption':{'label':'', 'aside':'yes', 'fields':{
