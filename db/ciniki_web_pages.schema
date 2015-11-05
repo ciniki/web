@@ -28,11 +28,11 @@
 #					20 - Redirect (notes below)
 #					30 - Module (existing module page)
 #
-# page_redirect_url:	The redirect url for the page_type = 10.
+# page_redirect_url:	The redirect url for the page_type = 20.
 #						This field is used to redirect the menu item to another server,
 #						typically to match the menu items between other services and ciniki.
 #
-# page_module:			The module page when page_type = 20.
+# page_module:			The module page when page_type = 30.
 #
 # flags:			The options for this page.
 #
