@@ -181,8 +181,8 @@ function ciniki_web_main() {
 				return 'M.ciniki_web_main.showPage(\'M.ciniki_web_main.showMenu();\',\'' + d.page.name + '\');'; 
 			}
 		};
-		this.menu.addLeftButton('website', 'Preview', 'M.showWebsite(\'/\');');
 		this.menu.addClose('Back');
+		this.menu.addLeftButton('website', 'Preview', 'M.showWebsite(\'/\');');
 
 		//
 		// Global functions for history and field value

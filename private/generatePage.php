@@ -13,6 +13,19 @@
 //
 function ciniki_web_generatePage(&$ciniki, $settings) {
 
+	//
+	// Check if module has generatePage.php override
+	//
+	if( isset($ciniki['business']['modules']['ciniki.landingpages']) && $ciniki['request']['page'] == 'landingpage' ) {
+		$rc = ciniki_core_loadMethod($ciniki, 'ciniki', 'landingpages', 'web', 'generatePage');
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		if( $rc['stat'] == 'ok' ) {
+			return ciniki_landingpages_web_generatePage($ciniki, $settings);
+		}
+	}
+
 	$request_pages = array_merge(array($ciniki['request']['page']), $ciniki['request']['uri_split']);
 
 //	print "<pre>";

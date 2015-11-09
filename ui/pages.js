@@ -363,8 +363,8 @@ function ciniki_web_pages() {
 				this.data[option.setting] = option.value;
 			};
 			this[pn].addButton('save', 'Save', 'M.ciniki_web_pages.'+pn+'.savePage();');
-			this[pn].addLeftButton('website', 'Preview', 'M.ciniki_web_pages.'+pn+'.previewPage();');
 			this[pn].addClose('Cancel');
+			this[pn].addLeftButton('website', 'Preview', 'M.ciniki_web_pages.'+pn+'.previewPage();');
 			this[pn].savePage = function(preview) {
 				var p = this;
 				var flags = this.formValue('child_format');
