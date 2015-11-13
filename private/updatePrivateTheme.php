@@ -14,7 +14,6 @@
 function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, $settings, $theme_id) {
 
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
-    error_log('test01');
 	//
 	// Setup the cache directory
 	//
