@@ -11,75 +11,33 @@
 // Returns
 // -------
 //
-function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, &$settings) {
+function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, $settings, $theme_id) {
 
-	//
-	// The theme id must be specified in settings
-	//
-	if( !isset($settings['site-privatetheme-id']) || $settings['site-privatetheme-id'] == '' || $settings['site-privatetheme-id'] < 1 ) {
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2603', 'msg'=>'No theme specified'));
-	}
-
-	//
-	// Lookup the current theme id based on the permalink
-	//
-/* TAKEN CARE OF IN settings.php
-	$theme_id = 0;
-	if( isset($settings['site-privatetheme-permalink']) ) {
-		$strsql = "SELECT id "
-			. "FROM ciniki_web_themes "
-			. "WHERE ciniki_web_themes.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
-			. "AND ciniki_web_themes.permalink = '" . ciniki_core_dbQuote($ciniki, $settings['site-privatetheme-permalink']) . "' "
-			. "AND ciniki_web_themes.status = 10 "
-			. "ORDER BY date_added DESC "
-			. "LIMIT 1 "
-			. "";
-		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'theme');
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
-		}
-		if( isset($rc['theme']['id']) ) {
-			$theme_id = $rc['theme']['id'];
-		}
-	}
-
-	//
-	// Get the current theme
-	//
-	if( $theme_id == 0 ) {
-		//
-		// If the current theme is not specified, get the last active theme added
-		//
-		$strsql = "SELECT id, permalink "
-			. "FROM ciniki_web_themes "
-			. "WHERE ciniki_web_themes.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
-			. "AND ciniki_web_themes.status = 10 "
-			. "ORDER BY date_added DESC "
-			. "LIMIT 1 "
-			. "";
-		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'theme');
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
-		}
-		if( isset($rc['theme']['id']) ) {
-			$theme_id = $rc['theme']['id'];
-			$settings['site-privatetheme-permalink'] = $rc['theme']['permalink'];
-		} else {
-			//
-			// No private themes active
-			//
-			return array('stat'=>'ok');
-		}
-	}
-*/
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbUpdate');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbAddModuleHistory');
-
+    error_log('test01');
 	//
 	// Setup the cache directory
 	//
-	$theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-permalink'];
+	if( !isset($settings['site-privatetheme-permalink']) || $settings['site-privatetheme-permalink'] == '' ) {
+		$strsql = "SELECT id, permalink "
+			. "FROM ciniki_web_themes "
+			. "WHERE ciniki_web_themes.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+			. "AND ciniki_web_themes.id = '" . ciniki_core_dbQuote($ciniki, $theme_id) . "' "
+			. "ORDER BY date_added DESC "
+			. "LIMIT 1 "
+			. "";
+		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'theme');
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		if( isset($rc['theme']) ) {
+			$theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/' . $rc['theme']['permalink'];
+		} else {
+			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2674', 'msg'=>'No theme specified'));
+		}
+	} else {
+			$theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-permalink'];
+	}
 	if( !file_exists($theme_cache_dir) ) {
 		mkdir($theme_cache_dir, 0755, true);
 	}
@@ -90,7 +48,7 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, &$settings) {
 	$strsql = "SELECT id, content_type, media, content "
 		. "FROM ciniki_web_theme_content "
 		. "WHERE ciniki_web_theme_content.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
-		. "AND ciniki_web_theme_content.theme_id = '" . ciniki_core_dbQuote($ciniki, $settings['site-privatetheme-id']) . "' "
+		. "AND ciniki_web_theme_content.theme_id = '" . ciniki_core_dbQuote($ciniki, $theme_id) . "' "
 		. "AND ciniki_web_theme_content.status = 10 "
 		. "AND (content_type = 'css' OR content_type = 'js') "
 		. "ORDER BY content_type, media, sequence "
@@ -170,7 +128,7 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, &$settings) {
 		. "UNIX_TIMESTAMP(ciniki_images.last_updated) AS last_updated "
 		. "FROM ciniki_web_theme_images, ciniki_images "
 		. "WHERE ciniki_web_theme_images.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
-		. "AND ciniki_web_theme_images.theme_id = '" . ciniki_core_dbQuote($ciniki, $settings['site-privatetheme-id']) . "' "
+		. "AND ciniki_web_theme_images.theme_id = '" . ciniki_core_dbQuote($ciniki, $theme_id) . "' "
 		. "AND ciniki_web_theme_images.image_id = ciniki_images.id "
 		. "AND ciniki_images.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
 		. "";
@@ -211,7 +169,9 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, &$settings) {
 	//
 	// Update the directory timestamp
 	//
-	touch($theme_cache_dir);
+    // Set the filemtime to the proper UTC timestamp, don't rely on the filesystem to be correct
+    $dt = new DateTime('now', new DateTimeZone('UTC'));
+	touch($theme_cache_dir, $dt->getTimestamp());
 
 	return array('stat'=>'ok');
 }

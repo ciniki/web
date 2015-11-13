@@ -66,6 +66,7 @@ function ciniki_web_privatethemes() {
 				'footer-layout':{'label':'Layout', 'type':'select', 'options':{
 					'social-links-copyright':'Social - Links - Copyright', 
 					'copyright-links-social':'Copyright - Links - Social',
+					'copyright-links':'Copyright - Links',
 					}},
 				'footer-social-icons':{'label':'Social Icon Font', 'type':'toggle', 'toggles':{'MonoSocial':'Mono Social', 'FontAwesome':'Font Awesome'}},
 				'footer-copyright-message':{'label':'Copyright Text', 'type':'text'},

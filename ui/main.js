@@ -21,6 +21,9 @@ function ciniki_web_main() {
 		'50':'Suspended',
 		'60':'Deleted',
 		};
+	// 
+	// Theme and Layouts also listed in landingpages/ui/main
+	//
 	this.themesAvailable = {
 		'default':'Simple - Black/White',
 		'black':'Midnight - Blue/Black',
@@ -39,17 +42,16 @@ function ciniki_web_main() {
 //		this.themesAvailable['orangebrick'] = 'Orange Brick';
 //		this.themesAvailable['splatter'] = 'Splatter';
 	}
+	this.layoutsAvailable = {
+		'default':'Default',
+		'private':'Private',
+		};
+
 	this.headerImageSize = {'small':'Small', 'medium':'Medium', 'large':'Large', 'xlarge':'XLarge', 'xxlarge':'XXLarge'};
 	if( M.userPerms&0x01 == 0x01 ) {
 		this.headerImageSize['original'] = 'Original';
 	}
 	
-	this.layoutsAvailable = {
-		'default':'Default',
-		'trendy':'Trendy',
-//		'aspen':'Aspen',
-		'private':'Private',
-		};
 	this.directoryLayouts = {
 		'list':'List',
 		'categories':'Categories',

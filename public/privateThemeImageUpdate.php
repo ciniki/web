@@ -84,6 +84,23 @@ function ciniki_web_privateThemeImageUpdate(&$ciniki) {
 	// Update the image in the database
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectUpdate');
-	return ciniki_core_objectUpdate($ciniki, $args['business_id'], 'ciniki.web.theme_image', $args['theme_image_id'], $args);
+	$rc = ciniki_core_objectUpdate($ciniki, $args['business_id'], 'ciniki.web.theme_image', $args['theme_image_id'], $args);
+    if( $rc['stat'] != 'ok' ) {
+        return $rc;
+    }
+
+    //
+    // Update theme last_updated
+    //
+    $strsql = "UPDATE ciniki_web_themes SET last_updated = UTC_TIMESTAMP() "
+        . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $item['theme_id']) . "' "
+        . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+        . "";
+    $rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.web');
+    if( $rc['stat'] != 'ok' ) {
+        return $rc;
+    }
+
+    return $rsp;
 }
 ?>

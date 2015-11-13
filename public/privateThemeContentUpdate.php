@@ -94,6 +94,18 @@ function ciniki_web_privateThemeContentUpdate(&$ciniki) {
 		}
 	}
 
+    //
+    // Update theme last_updated
+    //
+    $strsql = "UPDATE ciniki_web_themes SET last_updated = UTC_TIMESTAMP() "
+        . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $item['theme_id']) . "' "
+        . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+        . "";
+    $rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.web');
+    if( $rc['stat'] != 'ok' ) {
+        return $rc;
+    }
+
 	//
 	// Commit the changes to the database
 	//

@@ -46,11 +46,11 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		if( !isset($settings['site-privatetheme-permalink'])
 			|| $settings['site-privatetheme-permalink'] == ''
 			|| !file_exists($ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-permalink']) 
-			|| !isset($settings['site-privatetheme-updated']) 
-			|| filemtime($ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-permalink']) < $settings['site-privatetheme-updated']
+			|| !isset($settings['site-privatetheme-last-updated']) 
+			|| filemtime($ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-permalink']) < $settings['site-privatetheme-last-updated']
 			) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'updatePrivateTheme');
-			$rc = ciniki_web_updatePrivateTheme($ciniki, $ciniki['request']['business_id'], $settings);
+			$rc = ciniki_web_updatePrivateTheme($ciniki, $ciniki['request']['business_id'], $settings, $settings['site-privatetheme-id']);
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}

@@ -46,7 +46,7 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
 	//
 	$copyright = '';
 	if( isset($settings['theme']['footer-copyright-message']) && $settings['theme']['footer-copyright-message'] != '' ) {
-		$copyright .= "<span class='copyright'>" . $settings['theme']['footer-copyright-message'] . "</span><br/>";
+		$copyright .= "<span class='copyright'>" . preg_replace('/{_year_}/', date('Y'), $settings['theme']['footer-copyright-message']) . "</span><br/>";
 	} else {
 		$copyright .= "<span class='copyright'>All content &copy; Copyright " . date('Y') . " by " . ((isset($settings['site-footer-copyright-name']) && $settings['site-footer-copyright-name'] != '')?$settings['site-footer-copyright-name']:$ciniki['business']['details']['name']) . ".</span><br/>";
 	}
