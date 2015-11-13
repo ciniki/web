@@ -150,6 +150,7 @@ function ciniki_web_privateThemeUpdate(&$ciniki) {
         . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['theme_id']) . "' "
         . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
         . "";
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbUpdate');
     $rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.web');
     if( $rc['stat'] != 'ok' ) {
         return $rc;
