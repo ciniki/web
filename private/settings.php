@@ -74,8 +74,6 @@ function ciniki_web_settings($ciniki, $business_id) {
 			$settings['site-privatetheme-permalink'] = $rc['theme']['permalink'];
 			$dt = new DateTime($rc['theme']['last_updated'], new DateTimeZone('UTC'));
 			$settings['site-privatetheme-last-updated'] = $dt->format('U');
-		} else {
-			return array('stat'=>'ok');
 		}
 
 		//

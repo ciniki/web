@@ -416,6 +416,7 @@ article {
 	width: 100%;
 	box-sizing: border-box;
 	vertical-align: top;
+    clear: both;
 }
 #content div.image-list-entry {
 	margin-bottom: 10px;
