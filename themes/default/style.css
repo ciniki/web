@@ -882,9 +882,6 @@ aside div.borderless {
 	padding: 5px;
 	text-align: left;
 }
-#content div.cart-pricetable tr:first-child {
-	display: none;
-}
 #content div.cart-pricetable tr {
 	margin-bottom: 15px;
 	border: 1px solid #aaa;
