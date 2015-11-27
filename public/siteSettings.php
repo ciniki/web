@@ -170,7 +170,7 @@ function ciniki_web_siteSettings($ciniki) {
 	if( isset($modules['ciniki.surveys']) ) {
 		$pages['surveys'] = array('display_name'=>'Surveys', 'active'=>'no');
 	}
-	if( isset($modules['ciniki.filedepot']) || isset($modules['ciniki.products']) ) {
+	if( isset($modules['ciniki.filedepot']) || isset($modules['ciniki.products']) || isset($modules['ciniki.subscriptions']) ) {
 		$pages['account'] = array('display_name'=>'Account', 'active'=>'no');
 	}
 	if( isset($modules['ciniki.membersonly']) ) {
