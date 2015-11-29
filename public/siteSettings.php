@@ -413,6 +413,11 @@ function ciniki_web_siteSettings($ciniki) {
 	} else {
 		array_push($rc_header, array('setting'=>array('name'=>'site-header-title', 'display_name'=>'Header Title', 'value'=>'yes')));
 	}
+	if( isset($settings['site-header-address']) && $settings['site-header-address'] != '' ) {
+		array_push($rc_header, array('setting'=>array('name'=>'site-header-address', 'display_name'=>'Header Title', 'value'=>$settings['site-header-address'])));
+	} else {
+		array_push($rc_header, array('setting'=>array('name'=>'site-header-address', 'display_name'=>'Header Title', 'value'=>'yes')));
+	}
 	// Footer settings
 	if( isset($settings['site-footer-copyright-name']) && $settings['site-footer-copyright-name'] != '' ) {
 		array_push($rc_footer, array('setting'=>array('name'=>'site-footer-copyright-name', 'display_name'=>'Copyright Title', 'value'=>$settings['site-footer-copyright-name'])));

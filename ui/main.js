@@ -252,6 +252,9 @@ function ciniki_web_main() {
 				'site-header-image-size':{'label':'Image Size', 'type':'select', 'default':'medium', 'options':this.headerImageSize},
 				'site-header-title':{'label':'Display Business Name', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles, 'editFn':'M.startApp(\'ciniki.businesses.info\',null,\'M.ciniki_web_main.header.show();\');'},
 				}},
+			'_content':{'label':'Header Address', 'fields':{
+				'site-header-address':{'label':'', 'hidelabel':'yes', 'hint':'', 'type':'textarea', 'size':'medium'},
+				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'header\');'},
 				}},

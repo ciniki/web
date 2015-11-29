@@ -396,6 +396,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'site-header-image',
 		'site-header-image-size',
 		'site-header-title',
+        'site-header-address',
 //		'site-logo-display',
 		'site-google-analytics-account',
 		'site-google-site-verification',

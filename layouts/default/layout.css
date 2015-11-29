@@ -605,6 +605,26 @@ span.exhibitors-description {
 /* 11. Anything over 40 em
 ------------------------------------------------------------------------------*/
 @media screen and (min-width: 40em) {
+    header div.logo-title-address-nav-wrapper div.title-logo {
+        width: 30%;
+        box-sizing: border-box;
+        display: inline-block;
+    }
+    header div.logo-title-address-nav-wrapper div.title-block {
+        width: 40%;
+        box-sizing: border-box;
+        display: inline-block;
+    }
+    header div.logo-title-address-nav-wrapper div.title-address-single-line {
+        display: none;
+    }
+    header div.logo-title-address-nav-wrapper div.title-address-multi-line {
+        display: inline-block;
+        width: 30%;
+        text-align: right;
+        box-sizing: border-box;
+        display: inline-block;
+    }
 	#content div.image-list-image {
 		width: 35%;
 	}

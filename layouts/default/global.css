@@ -240,6 +240,10 @@ div.image-gallery-thumbnail {
 	padding-top: 0em;
 }
 
+header {
+    box-sizing: border-box;
+}
+
 header div.signin {
 	display: inline-block;
 	float: right;
@@ -270,11 +274,23 @@ header span.social-icons {
 
 header div.title-logo {
 	display: inline-block;
-	margin-right: 1em;
+	padding-right: 1em;
+    box-sizing: border-box;
 }
 
 header div.title-block {
 	display: inline-block;
+    box-sizing: border-box;
+}
+
+header div.title-address-single-line {
+    display: block;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+header div.title-address-multi-line {
+    display: none;
 }
 
 header span.title {
