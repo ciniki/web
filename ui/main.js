@@ -160,7 +160,8 @@ function ciniki_web_main() {
 					case 1: return d.setting.value;
 				}
 			} else if( s == 'pages' || s == 'module_pages' ) {
-				if( d.page.active == 'yes' ) {
+                console.log(d);
+				if( d.page != null && d.page.active == 'yes' ) {
 					return d.page.display_name;
 				}
 				return d.page.display_name + ' (disabled)';

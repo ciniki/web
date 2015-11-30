@@ -503,7 +503,7 @@ function ciniki_web_siteSettings($ciniki) {
         $rsp['module_pages'] = $ciniki_pages;
 //		$rsp = array('stat'=>'ok', 'featured'=>$featured, 'pages'=>$pages, 'module_pages'=>$ciniki_pages, 'settings'=>$rc_settings, 'header'=>$rc_header, 'footer'=>$rc_footer, 'advanced'=>$rc_advanced, 'url'=>$url);
 	} else {
-        $rsp['pages'] = $pages;
+        $rsp['pages'] = $ciniki_pages;
  //       $rsp = array('stat'=>'ok', 'featured'=>$featured, 'pages'=>$ciniki_pages, 'settings'=>$rc_settings, 'header'=>$rc_header, 'footer'=>$rc_footer, 'advanced'=>$rc_advanced, 'url'=>$url);
     }
 
