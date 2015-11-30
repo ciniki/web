@@ -217,7 +217,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 		if( $next != null ) {
 			$page_content .= "<a id='gallery-image-next' class='gallery-image-next' href='$gallery_url/" . $next['permalink'] . "'><div id='gallery-image-next-img'></div></a>";
 		}
-		$page_content .= "<img id='gallery-image-img' title='" . preg_replace("/\'/", "\\'", $img['title']) . "' alt='" . preg_replace("/\'/", "\\'", $img['title']) . "' src='" . $img_url . "' onload='javascript: gallery_resize_arrows();' />";
+		$page_content .= "<img id='gallery-image-img' title='" . preg_replace("/\'/", "\\'", strip_tags($img['title'])) . "' alt='" . preg_replace("/\'/", "\\'", strip_tags($img['title'])) . "' src='" . $img_url . "' onload='javascript: gallery_resize_arrows();' />";
 		$page_content .= "</div><br/>"
 			. "<div id='gallery-image-details' class='gallery-image-details'>"
 			. "<span class='image-title'>" . $img['title'] . '</span>'
