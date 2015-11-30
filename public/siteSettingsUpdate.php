@@ -397,6 +397,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'site-header-image-size',
 		'site-header-title',
         'site-header-address',
+        'site-header-landingpage1-title',
+        'site-header-landingpage1-permalink',
 //		'site-logo-display',
 		'site-google-analytics-account',
 		'site-google-site-verification',
@@ -431,6 +433,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'site-footer-copyright-message',
 		'site-footer-subscription-agreement',
 		'site-footer-privacy-policy',
+        'site-footer-landingpage1-title',
+        'site-footer-landingpage1-permalink',
 		);
 
 	//

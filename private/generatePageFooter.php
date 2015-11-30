@@ -70,6 +70,21 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
 		$copyright .= "<span class='poweredby'>Powered by <a href='" . $ciniki['config']['ciniki.web']['poweredby.url'] . "'>" . $ciniki['config']['ciniki.web']['poweredby.name'] . "</a></span>";
 	}
 
+    //
+    // Check for footer landingpages
+    //
+    $footer_buttons = '';
+    if( isset($settings['site-footer-landingpage1-permalink']) && $settings['site-footer-landingpage1-permalink'] != '' 
+        && isset($settings['site-footer-landingpage1-title']) && $settings['site-footer-landingpage1-title'] != '' 
+        && (!isset($ciniki['session']['customer']['id']) || isset($ciniki['session']['customer']['id']) > 0)
+        ) {
+        $social = "<span class='button'>"
+            . "<a href='" . $ciniki['request']['domain_base_url'] . '/landingpage/' . $settings['site-footer-landingpage1-permalink'] . "'>"
+            . $settings['site-footer-landingpage1-title']
+            . "</a>"
+            . "</span>"
+            . $social;
+    }
 	//
 	// Check if any links should be added to the footer
 	//

@@ -78,6 +78,10 @@ function ciniki_web_main() {
 		'order':'Default',
 		};
 
+    this.landingpages = {
+        '':'None',
+        };
+
 	this.deleteImage = function(fid) {
 		this.setFieldValue(fid, 0);
 		return true;
@@ -252,7 +256,11 @@ function ciniki_web_main() {
 				'site-header-image-size':{'label':'Image Size', 'type':'select', 'default':'medium', 'options':this.headerImageSize},
 				'site-header-title':{'label':'Display Business Name', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles, 'editFn':'M.startApp(\'ciniki.businesses.info\',null,\'M.ciniki_web_main.header.show();\');'},
 				}},
-			'_content':{'label':'Header Address', 'fields':{
+			'_landingpage1':{'label':'Landing Page', 'visible':function() {return (M.curBusiness.modules['ciniki.landingpages']!=null?'yes':'no');}, 'fields':{
+                'site-header-landingpage1-title':{'label':'Title', 'type':'text'},
+                'site-header-landingpage1-permalink':{'label':'Landing Page', 'type':'select', 'options':this.landingpages},
+                }},
+			'_content':{'label':'Header Address', 'active':function() {return (M.curBusiness.modules['ciniki.web'].flags&0x10000)>0?'yes':'no';}, 'fields':{
 				'site-header-address':{'label':'', 'hidelabel':'yes', 'hint':'', 'type':'textarea', 'size':'medium'},
 				}},
 			'_save':{'label':'', 'buttons':{
@@ -283,6 +291,10 @@ function ciniki_web_main() {
 			'_copyright':{'label':'Copyright Message', 'fields':{
 				'site-footer-copyright-message':{'label':'', 'type':'textarea', 'size':'medium', 'hidelabel':'yes'},
 				}},
+			'_landingpage1':{'label':'Landing Page', 'visible':function() {return (M.curBusiness.modules['ciniki.landingpages']!=null?'yes':'no');}, 'fields':{
+                'site-footer-landingpage1-title':{'label':'Title', 'type':'text'},
+                'site-footer-landingpage1-permalink':{'label':'Landing Page', 'type':'select', 'options':this.landingpages},
+                }},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'footer\');'},
 				}},
@@ -1872,6 +1884,14 @@ function ciniki_web_main() {
 			for(i in rsp.header) {
 				M.ciniki_web_main.header.data[rsp.header[i].setting.name] = rsp.header[i].setting.value;
 			}
+            if( rsp.landingpages != null ) {
+                this.landingpages = {'':'None'};
+                for(i in rsp.landingpages) {
+                    this.landingpages[rsp.landingpages[i].permalink] = rsp.landingpages[i].short_title;
+                }
+                M.ciniki_web_main.header.sections._landingpage1.fields['site-header-landingpage1-permalink'].options = this.landingpages;
+                M.ciniki_web_main.footer.sections._landingpage1.fields['site-footer-landingpage1-permalink'].options = this.landingpages;
+            }
 			M.ciniki_web_main.footer.data = {};
 			for(i in rsp.footer) {
 				M.ciniki_web_main.footer.data[rsp.footer[i].setting.name] = rsp.footer[i].setting.value;
@@ -1910,6 +1930,7 @@ function ciniki_web_main() {
 	};
 
 	this.showHeader = function(cb) {
+        
 		this.header.refresh();
 		this.header.show(cb);
 	};

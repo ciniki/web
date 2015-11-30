@@ -382,21 +382,17 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	// Check if we are to display a sign in button
 	//
 	$signin_content = '';
-	if( !isset($settings['page-account-header-buttons']) 
-		|| $settings['page-account-header-buttons'] == 'yes' 
-		) {
+	if( !isset($settings['page-account-header-buttons']) || $settings['page-account-header-buttons'] == 'yes' ) {
 		if( $ciniki['request']['business_id'] == $ciniki['config']['ciniki.core']['master_business_id'] 
 			&& isset($ciniki['config']['ciniki.core']['manage.url']) 
 			&& $ciniki['config']['ciniki.core']['manage.url'] != '' 
 			) {
-			$signin_content .= "<div class='signin'><div class='signin-wrapper'>";
-			if( $social_icons != '' ) {
-				$signin_content .= "<span class='social-icons hide-babybear'>$social_icons</span><span class='social-divider hide-babybear'>|</span>";
-			}
+            // Master business signin
+//			$signin_content .= "<div class='signin'><div class='signin-wrapper'>";
 			$signin_content .= "<span><a rel='nofollow' "
 				. "href='" . $ciniki['config']['ciniki.core']['manage.url'] . "'>"
 				. "Sign in</a></span>";
-			$signin_content .= "</div></div>\n";
+//			$signin_content .= "</div></div>\n";
 		} 
 		// Display a cart and/or customer signin for regular businesses
 		elseif( $ciniki['request']['business_id'] != $ciniki['config']['ciniki.core']['master_business_id']
@@ -407,10 +403,8 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 				|| (isset($settings['page-subscriptions-public']) && $settings['page-subscriptions-public'] == 'yes')
 				|| (isset($ciniki['business']['modules']['ciniki.blog']) && ($ciniki['business']['modules']['ciniki.blog']['flags']&0x0100) > 0) // Used if there are other pages that allow customer only content
 			)) {
-			$signin_content .= "<div class='signin'><div class='signin-wrapper'>";
-			if( $social_icons != '' ) {
-				$signin_content .= "<span class='social-icons hide-babybear'>$social_icons</span><span class='social-divider hide-babybear'>|</span>";
-			}
+            // Regular business signin
+//			$signin_content .= "<div class='signin'><div class='signin-wrapper'>";
 			// Check for a cart
 			if( $shopping_cart != '' ) {
 				$signin_content .= $shopping_cart . " | ";
@@ -421,16 +415,20 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 			} else {
 				$signin_content .= "<span><a rel='nofollow' href='" . $ciniki['request']['ssl_domain_base_url'] . "/account'>Sign In</a></span>";
 			}
-			$signin_content .= "</div></div>\n";
+//			if( $social_icons != '' ) {
+//				$signin_content .= "<span class='social-icons hide-babybear'>$social_icons</span><span class='social-divider hide-babybear'>|</span>";
+//			}
+//			$signin_content .= "</div></div>\n";
 		} elseif( $shopping_cart != '' ) {
-			$signin_content .= "<div class='signin'><div class='signin-wrapper'>";
-			if( $social_icons != '' ) {
-				$signin_content .= "<span class='social-icons hide-babybear'>$social_icons</span><span class='social-divider hide-babybear'>|</span>";
-			}
+//			$signin_content .= "<div class='signin'><div class='signin-wrapper'>";
 			$signin_content .= $shopping_cart;
-			$signin_content .= "</div></div>\n";
-		} elseif( $social_icons != '' ) {
-			$signin_content .= "<div class='signin'><div class='signin-wrapper hide-babybear'><span class='social-icons'>$social_icons</span></div></div>";
+//			if( $social_icons != '' ) {
+//				$signin_content .= "<span class='social-icons hide-babybear'>$social_icons</span><span class='social-divider hide-babybear'>|</span>";
+//			}
+//			$signin_content .= "</div></div>\n";
+//		} elseif( $social_icons != '' ) {
+//			$signin_content .= "<div class='signin'><div class='signin-wrapper hide-babybear'><span class='social-icons'>$social_icons</span></div></div>";
+//			$signin_content .= "<span class='social-icons'>$social_icons</span>";
 		}
 	} 
 	//
@@ -441,6 +439,25 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 		$signin_content .= "<span><a rel='nofollow' href='" . $ciniki['request']['domain_base_url'] . "/membersonly?logout'>Logout</a></span>";
 		$signin_content .= "</div></div>\n";
 	}
+    //
+    // Check if customer not logged in and there are landing page buttons
+    //
+    if( isset($settings['site-header-landingpage1-permalink']) && $settings['site-header-landingpage1-permalink'] != '' 
+        && isset($settings['site-header-landingpage1-title']) && $settings['site-header-landingpage1-title'] != '' 
+        && (!isset($ciniki['session']['customer']['id']) || isset($ciniki['session']['customer']['id']) > 0)
+        ) {
+        $signin_content .= "<span class='button'>"
+            . "<a href='" . $ciniki['request']['domain_base_url'] . '/landingpage/' . $settings['site-header-landingpage1-permalink'] . "'>"
+            . $settings['site-header-landingpage1-title']
+            . "</a>"
+            . "</span>";
+    }
+    if( $social_icons != '' ) {
+        if( $signin_content != '' ) {
+            $signin_content .= "<span class='social-divider hide-babybear'>|</span>";
+        }
+        $signin_content .= "<span class='social-icons hide-babybear'>$social_icons</span>";
+    }
 
 	//
 	// Setup the page-container
@@ -468,7 +485,11 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	$content .= "<div class='header-wrapper'>\n";
 
 	// Add signin button if any.
-	$content .= $signin_content;
+    if( $signin_content != '' ) {
+        $content .= "<div class='signin'><div class='signin-wrapper'>";
+        $content .= $signin_content;
+        $content .= "</div></div>\n";
+    }
 
 //	if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
 //		$content .= "<hgroup>\n";
