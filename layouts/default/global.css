@@ -1059,6 +1059,12 @@ aside div.googlemap img {
 	width: 100%;
 } 
 
+div.footer-message p {
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+    margin: 0px;
+}
 
 hr.footer-section-divider {
 	margin-top: 5em;

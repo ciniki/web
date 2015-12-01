@@ -16,6 +16,7 @@
 function ciniki_web_generatePageFooter($ciniki, $settings) {
 	global $start_time;
 
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 	//
 	// Store the content
 	//
@@ -27,6 +28,17 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
 	$content .= "<hr class='section-divider footer-section-divider' />\n";
 	$content .= "<footer>";
 	$content .= "<div class='footer-wrapper'>";
+
+    //
+    // Check if there is a pre footer message
+    //
+    if( ($ciniki['business']['modules']['ciniki.web']['flags']&0x100000) > 0 && isset($settings['site-footer-message']) && $settings['site-footer-message'] != '' ) {
+		$rc = ciniki_web_processContent($ciniki, $settings['site-footer-message']);	
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+        $content .= "<div class='footer-message-wrapper'><div class='footer-message'><p>" . $rc['content'] . "</p></div></div>";
+    }
 
 	//
 	// Check for social media icons
@@ -51,7 +63,6 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
 		$copyright .= "<span class='copyright'>All content &copy; Copyright " . date('Y') . " by " . ((isset($settings['site-footer-copyright-name']) && $settings['site-footer-copyright-name'] != '')?$settings['site-footer-copyright-name']:$ciniki['business']['details']['name']) . ".</span><br/>";
 	}
 	if( isset($settings['site-footer-copyright-message']) && $settings['site-footer-copyright-message'] != '' ) {
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 		$rc = ciniki_web_processContent($ciniki, $settings['site-footer-copyright-message'], 'copyright');	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;

@@ -435,6 +435,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'site-footer-privacy-policy',
         'site-footer-landingpage1-title',
         'site-footer-landingpage1-permalink',
+        'site-footer-message',
 		);
 
 	//

@@ -285,13 +285,16 @@ function ciniki_web_main() {
 			'mc', 'medium', 'sectioned', 'ciniki.web.main.footer');
 		this.footer.data = {};
 		this.footer.sections = {
+			'_message':{'label':'Message', 'active':function() {console.log('test'); return ((M.curBusiness.modules['ciniki.web'].flags&0x100000)>0?'yes':'no');}, 'fields':{
+				'site-footer-message':{'label':'', 'type':'textarea', 'size':'medium', 'hidelabel':'yes'},
+				}},
 			'options':{'label':'Options', 'fields':{
 				'site-footer-copyright-name':{'label':'Copyright Name', 'type':'text', 'hint':M.curBusiness.name},
 				}},
 			'_copyright':{'label':'Copyright Message', 'fields':{
 				'site-footer-copyright-message':{'label':'', 'type':'textarea', 'size':'medium', 'hidelabel':'yes'},
 				}},
-			'_landingpage1':{'label':'Landing Page', 'visible':function() {return (M.curBusiness.modules['ciniki.landingpages']!=null?'yes':'no');}, 'fields':{
+			'_landingpage1':{'label':'Landing Page', 'active':function() {return (M.curBusiness.modules['ciniki.landingpages']!=null?'yes':'no');}, 'fields':{
                 'site-footer-landingpage1-title':{'label':'Title', 'type':'text'},
                 'site-footer-landingpage1-permalink':{'label':'Landing Page', 'type':'select', 'options':this.landingpages},
                 }},

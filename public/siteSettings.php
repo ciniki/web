@@ -434,7 +434,7 @@ function ciniki_web_siteSettings($ciniki) {
     $footer_keys = array(
         'site-footer-landingpage1-title',
         'site-footer-landingpage1-permalink',
-        'site-footer-address',
+        'site-footer-message',
         );
     foreach($footer_keys as $footer_key) {
         if( isset($settings[$footer_key]) && $settings[$footer_key] != '' ) {

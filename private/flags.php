@@ -34,11 +34,11 @@ function ciniki_web_flags($ciniki, $modules) {
 		array('flag'=>array('bit'=>'16', 'name'=>'SEO')),
 		// 0x010000
 		array('flag'=>array('bit'=>'17', 'name'=>'Header Address')),
-//		array('flag'=>array('bit'=>'18', 'name'=>'Header/Footer Buttons')),
+//		array('flag'=>array('bit'=>'18', 'name'=>'')),
 //		array('flag'=>array('bit'=>'19', 'name'=>'')),	
 //		array('flag'=>array('bit'=>'20', 'name'=>'')),
 		// 0x100000
-//		array('flag'=>array('bit'=>'21', 'name'=>'')),
+		array('flag'=>array('bit'=>'21', 'name'=>'Footer Message')),
 //		array('flag'=>array('bit'=>'22', 'name'=>'')),
 //		array('flag'=>array('bit'=>'23', 'name'=>'')),	
 //		array('flag'=>array('bit'=>'24', 'name'=>'')),
