@@ -34,10 +34,9 @@ function ciniki_web_processBlockShareButtons(&$ciniki, $settings, $business_id, 
 		'googleplus'=>'&#xe239;',
 		'email'=>'&#xe224;',
 		);
-//
-// Settings for regular social font without circle
-//
+    //
 	// FontAwesome settings
+    //
 	if( isset($settings['theme']['share-social-icons']) && $settings['theme']['share-social-icons'] == 'FontAwesome' ) {
 		$social_icons['facebook'] = '&#xf09a;';
 		$social_icons['twitter'] = '&#xf099;';

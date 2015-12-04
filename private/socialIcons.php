@@ -54,7 +54,6 @@ function ciniki_web_socialIcons($ciniki, $settings, $location) {
 	}
 
 
-
 	// Facebook
 	if( (!isset($settings["site-social-facebook-$location-active"]) || $settings["site-social-facebook-$location-active"] == 'yes' )
 		&& isset($ciniki['business']['social']['social-facebook-url']) && $ciniki['business']['social']['social-facebook-url'] != ''
