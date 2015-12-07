@@ -244,9 +244,29 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
 	if( $popup_box_content != '' ) {
 		$content .= $popup_box_content;
 	}
+    //
+    // Check if My Live Chat is enabled
+    //
+    if( isset($settings['site-mylivechat-enable']) && $settings['site-mylivechat-enable'] == 'yes' 
+        && isset($settings['site-mylivechat-userid']) && $settings['site-mylivechat-userid'] != '' 
+        ) {
+        $javascript .= ""
+            . "function setupMyLiveChat() {"
+                . "var e=document.createElement('script');"
+                . "e.src='https://mylivechat.com/chatwidget.aspx?hccid=" . $settings['site-mylivechat-userid'] . "';"
+                . "document.body.appendChild(e);"
+            . "}"
+            . "if(window.addEventListener){"
+                . "window.addEventListener('load', setupMyLiveChat, false);"
+            . "}else{"
+                . "window.attachEvent('onload',setupMyLiveChat);"
+            . "};";
+    }
+
 	if( $javascript != '' ) {
 		$content .= "<script type='text/javascript'>$javascript</script>";
 	}
+
 
 	$content .= "</body>"
 		. "</html>"

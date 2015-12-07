@@ -436,6 +436,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'site-footer-landingpage1-title',
         'site-footer-landingpage1-permalink',
         'site-footer-message',
+        'site-mylivechat-enable',
+        'site-mylivechat-userid',
 		);
 
 	//

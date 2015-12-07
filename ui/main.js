@@ -117,6 +117,10 @@ function ciniki_web_main() {
 				'social':{'label':'Social Media Links', 'fn':'M.startApp(\'ciniki.web.social\',null,\'M.ciniki_web_main.showMenu();\');'},
 				'collections':{'label':'Web Collections', 'visible':'no', 'fn':'M.startApp(\'ciniki.web.collections\',null,\'M.ciniki_web_main.showMenu();\');'},
 				'footer':{'label':'Footer', 'fn':'M.ciniki_web_main.showFooter(\'M.ciniki_web_main.showMenu();\');'},
+				'mylivechat':{'label':'My Live Chat', 
+                    'visible':function() { return (M.curBusiness.modules['ciniki.web'].flags&0x02000000)>0?'yes':'no';}, 
+                    'fn':'M.ciniki_web_main.showMyLiveChat(\'M.ciniki_web_main.showMenu();\');',
+                    },
 				}},
 //			'advanced':{'label':'Advanced', 'type':'simplegrid', 'num_cols':1, 'sortable':'no',
 //				'headerValues':null,
@@ -370,6 +374,27 @@ function ciniki_web_main() {
 		this.metatags.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.metatags.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'metatags\');');
 		this.metatags.addClose('Cancel');
+
+        //
+        // This panel is for My Live Chat
+        //
+		this.mylivechat = new M.panel('My Live Chat Settings',
+			'ciniki_web_main', 'mylivechat',
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.mylivechat');
+		this.mylivechat.data = {'site-mylivechat-enable':'no'};
+		this.mylivechat.sections = {
+			'_mylivechat':{'label':'Meta Settings', 'fields':{
+				'site-mylivechat-enable':{'label':'Enable', 'type':'toggle', 'default':'no', 'toggles':this.activeToggles},
+				'site-mylivechat-userid':{'label':'ID', 'type':'text'},
+				}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'mylivechat\');'},
+				}},
+		};
+		this.mylivechat.fieldValue = this.fieldValue;
+		this.mylivechat.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.mylivechat.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'mylivechat\');');
+		this.mylivechat.addClose('Cancel');
 
 		//
 		// The panel to allow the user to setup google analytics
@@ -677,9 +702,11 @@ function ciniki_web_main() {
 			'_contact_form_submitted_message':{'label':'Contact Form Thank You', 'active':'no', 'fields':{
 				'page-contact-form-submitted-message':{'label':'Thank you message', 'hidelabel':'yes', 'type':'textarea', 'size':'small'},
 				}},
-			'_mailchimp':{'label':'Mailchimp', 'fields':{
-				'page-contact-mailchimp-signup':{'label':'Enable Mailchimp', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':''},
-				'page-contact-mailchimp-submit-url':{'label':'Submit URL', 'type':'text'},
+			'_mailchimp':{'label':'Mailchimp', 
+                'active':function() {return (M.curBusiness.modules['ciniki.web'].flags&0x01000000)>0?'yes':'no';}, 
+                'fields':{
+                    'page-contact-mailchimp-signup':{'label':'Enable Mailchimp', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':''},
+                    'page-contact-mailchimp-submit-url':{'label':'Submit URL', 'type':'text'},
 				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'contact\');'},
@@ -1933,7 +1960,6 @@ function ciniki_web_main() {
 	};
 
 	this.showHeader = function(cb) {
-        
 		this.header.refresh();
 		this.header.show(cb);
 	};
@@ -1942,6 +1968,21 @@ function ciniki_web_main() {
 		this.footer.refresh();
 		this.footer.show(cb);
 	};
+
+	this.showMyLiveChat = function(cb) {
+        M.api.getJSONCb('ciniki.web.siteSettingsGet', {'business_id':M.curBusinessID}, function(rsp) {
+            if( rsp.stat != 'ok' ) {
+                M.api.err(rsp);
+                return false;
+            }
+            var p = M.ciniki_web_main.mylivechat;
+            p.data = rsp.settings;
+            p.refresh();
+            p.show(cb);
+        });
+	};
+
+
 
 	this.showPage = function(cb, page, subpage, subpagetitle) {
 		if( page.match(/^custom-/) ) {
