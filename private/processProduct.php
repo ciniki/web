@@ -125,7 +125,7 @@ function ciniki_web_processProduct(&$ciniki, $settings, $business_id, $base_url,
 	// Display the additional images for the product
 	//
 	if( isset($product['images']) && count($product['images']) > 0 ) {
-		$content .= "<h2 class='entry-subtitle'>Additional Images</h2>\n";
+		$content .= "<h2 class='entry-subtitle wide'>Additional Images</h2>\n";
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
 		$img_base_url = $base_url . "/gallery";
 		$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, 
