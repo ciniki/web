@@ -22,7 +22,7 @@ function ciniki_web_processBlockGallery(&$ciniki, $settings, $business_id, $bloc
 	$content = '<br clear="both"/>';
 
 	if( isset($block['title']) && $block['title'] != '' ) {
-		$content .= "<h2 class='entry-title'>" . $block['title'] . "</h2>\n";
+		$content .= "<h2 class='entry-title wide'>" . $block['title'] . "</h2>\n";
 	}
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
 	$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $block['base_url'], $block['images'], 125);
