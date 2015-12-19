@@ -294,6 +294,12 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
 				. "<label for='contact-form-name'>Email</label>"
 				. "<input type='email' class='text' value='' name='contact-form-email' id='contact-form-email'/>"
 				. "</div>";
+            if( isset($settings['page-contact-form-phone']) && $settings['page-contact-form-phone'] == 'yes' ) {
+                $content .= "<div class='input'>"
+                    . "<label for='contact-form-phone'>Phone Number</label>"
+                    . "<input type='text' class='text' value='' name='contact-form-phone' id='contact-form-phone'/>"
+                    . "</div>";
+            }
 			$content .= "<div class='input'>"
 				. "<label for='contact-form-subject'>Subject</label>"
 				. "<input type='text' class='text' value='' name='contact-form-subject' id='contact-form-subject'/>"

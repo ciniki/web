@@ -38,6 +38,29 @@ function ciniki_web_generatePage404($ciniki, $settings, $errors) {
 	}
 	$content .= $rc['content'];
 
+	//
+	// Check if article title and breadcrumbs should be displayed above content
+	//
+	if( (isset($settings['theme']['header-article-title']) && $settings['theme']['header-article-title'] == 'yes')
+		|| (isset($settings['theme']['header-breadcrumbs']) && $settings['theme']['header-breadcrumbs'] == 'yes')
+		) {
+		$content .= "<div class='page-header'>";
+		if( isset($settings['theme']['header-article-title']) && $settings['theme']['header-article-title'] == 'yes' ) {
+			$content .= "<h1 class='page-header-title'>404</h1>";
+		}
+		if( isset($settings['theme']['header-breadcrumbs']) && $settings['theme']['header-breadcrumbs'] == 'yes' && isset($breadcrumbs) ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBreadcrumbs');
+			$rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $ciniki['request']['business_id'], $breadcrumbs);
+			if( $rc['stat'] == 'ok' ) {
+				$content .= $rc['content'];
+			}
+		}
+		$content .= "</div>";
+	}
+
+    //
+    // Generate page content
+    //
 	$content .= "<div id='content'>\n";
 	$content .= "<article class='page'>\n";
 	$content .= "<div class='entry-content'>\n";

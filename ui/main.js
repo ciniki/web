@@ -694,6 +694,7 @@ function ciniki_web_main() {
 				}},
 			'_contact_form':{'label':'Contact Form', 'active':'no', 'fields':{
 				'page-contact-form-display':{'label':'Display Form', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-contact-form-phone':{'label':'Phone #', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-contact-form-emails':{'label':'Emails', 'type':'text'},
 				}},
 			'_contact_form_intro_message':{'label':'Contact Form Introduction', 'active':'no', 'fields':{
@@ -1596,6 +1597,7 @@ function ciniki_web_main() {
 			'options':{'label':'', 'fields':{
 				'page-account-active':{'label':'Customer Logins', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-account-header-buttons':{'label':'Header Buttons', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+				'page-account-header-signin-text':{'label':'Signin Text', 'type':'text', 'size':'small'},
 				'page-account-password-change':{'label':'Change Password', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-account-invoices-list':{'label':'View Orders', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-account-invoices-view-details':{'label':'View Order Details', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},

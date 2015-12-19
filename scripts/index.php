@@ -493,6 +493,18 @@ elseif( $ciniki['request']['page'] == 'contact'
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageContact.php');
 	$rc = ciniki_web_generatePageContact($ciniki, $settings);
 } 
+// Account
+elseif( $ciniki['request']['page'] == 'account' 
+	&& isset($settings['page-account-active']) && $settings['page-account-active'] == 'yes' ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageAccount.php');
+	$rc = ciniki_web_generatePageAccount($ciniki, $settings);
+} 
+// Cart
+elseif( $ciniki['request']['page'] == 'cart' 
+	&& isset($settings['page-cart-active']) && $settings['page-cart-active'] == 'yes' ) {
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageCart.php');
+	$rc = ciniki_web_generatePageCart($ciniki, $settings);
+} 
 
 // 
 // If Page is enabled and pages menu is used, then search the pages first before checking module pages.
@@ -687,18 +699,6 @@ elseif( $pages_menu == 'no' && $ciniki['request']['page'] == 'surveys'
 	&& isset($settings['page-surveys-active']) && $settings['page-surveys-active'] == 'yes' ) {
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageSurveys.php');
 	$rc = ciniki_web_generatePageSurveys($ciniki, $settings);
-} 
-// Account
-elseif( $ciniki['request']['page'] == 'account' 
-	&& isset($settings['page-account-active']) && $settings['page-account-active'] == 'yes' ) {
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageAccount.php');
-	$rc = ciniki_web_generatePageAccount($ciniki, $settings);
-} 
-// Cart
-elseif( $ciniki['request']['page'] == 'cart' 
-	&& isset($settings['page-cart-active']) && $settings['page-cart-active'] == 'yes' ) {
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageCart.php');
-	$rc = ciniki_web_generatePageCart($ciniki, $settings);
 } 
 // Plans
 elseif( $ciniki['request']['page'] == 'plans' 

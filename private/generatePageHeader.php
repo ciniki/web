@@ -410,10 +410,16 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 				$signin_content .= $shopping_cart . " | ";
 			}
 			if( isset($ciniki['session']['customer']['id']) > 0 ) {
-				$signin_content .= "<span><a rel='nofollow' href='" . $ciniki['request']['ssl_domain_base_url'] . "/account'>Account</a></span>";
-				$signin_content .= " | <span><a rel='nofollow' href='" . $ciniki['request']['ssl_domain_base_url'] . "/account/logout'>Logout</a></span>";
+				$signin_content .= "<span class='account'><a rel='nofollow' href='" . $ciniki['request']['ssl_domain_base_url'] . "/account'>Account</a></span>";
+				$signin_content .= " | <span class='logout'><a rel='nofollow' href='" . $ciniki['request']['ssl_domain_base_url'] . "/account/logout'>Logout</a></span>";
 			} else {
-				$signin_content .= "<span><a rel='nofollow' href='" . $ciniki['request']['ssl_domain_base_url'] . "/account'>Sign In</a></span>";
+				$signin_content .= "<span class='signin'><a rel='nofollow' href='" . $ciniki['request']['ssl_domain_base_url'] . "/account'>";
+                if( isset($settings['page-account-header-signin-text']) && $settings['page-account-header-signin-text'] != '' ) {
+                    $signin_content .= $settings['page-account-header-signin-text'];
+                } else {
+                    $signin_content .= "Sign In";
+                }
+                $signin_content .= "</a></span>";
 			}
 //			if( $social_icons != '' ) {
 //				$signin_content .= "<span class='social-icons hide-babybear'>$social_icons</span><span class='social-divider hide-babybear'>|</span>";
@@ -444,6 +450,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
     //
     if( isset($settings['site-header-landingpage1-permalink']) && $settings['site-header-landingpage1-permalink'] != '' 
         && isset($settings['site-header-landingpage1-title']) && $settings['site-header-landingpage1-title'] != '' 
+        // Make sure customer is not logged in
         && (!isset($ciniki['session']['customer']['id']) || isset($ciniki['session']['customer']['id']) > 0)
         ) {
         $signin_content .= "<span class='button'>"

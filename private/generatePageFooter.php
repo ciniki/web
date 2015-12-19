@@ -32,7 +32,9 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
     //
     // Check if there is a pre footer message
     //
-    if( ($ciniki['business']['modules']['ciniki.web']['flags']&0x100000) > 0 && isset($settings['site-footer-message']) && $settings['site-footer-message'] != '' ) {
+    if( isset($ciniki['business']['modules']['ciniki.web']['flags']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x100000) > 0 
+        && isset($settings['site-footer-message']) && $settings['site-footer-message'] != '' 
+        ) {
 		$rc = ciniki_web_processContent($ciniki, $settings['site-footer-message']);	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;

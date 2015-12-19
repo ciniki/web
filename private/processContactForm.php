@@ -46,6 +46,12 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $business_id) {
 	//
 	// No error, send the message
 	//
+    $phone = '';
+    if( isset($settings['page-contact-form-phone']) && $settings['page-contact-form-phone'] == 'yes' 
+        && isset($_POST['contact-form-phone']) && $_POST['contact-form-phone'] != ''
+        ) {
+        $phone .= $_POST['contact-form-phone'];
+    }
 	if( $error_message == '' ) {
 		//
 		// If the mail inbox flag has been sent, put the message into the inbox
@@ -56,7 +62,7 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $business_id) {
 				'from_name'=>$_POST['contact-form-name'],
 				'from_email'=>$_POST['contact-form-email'],
 				'subject'=>$subject,
-				'text_content'=>$msg,
+				'text_content'=>$msg . ($phone!=''?"\n\n" . $phone:''),
 				'notification'=>'yes',
 				'notification_emails'=>(isset($settings['page-contact-form-emails'])?$settings['page-contact-form-emails']:''),
 				));
@@ -70,8 +76,9 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $business_id) {
 		// No inbox, email the message to specified email addresses or the business owners
 		//
 		else {
-			$msg = "New message from " . $_POST['contact-form-name'] . " (" . $_POST['contact-form-email'] . ")\n"
-				. "\n"
+			$msg = "New message from " . $_POST['contact-form-name'] . " (" . $_POST['contact-form-email'] . ")"
+                . ($phone!=''?" - " . $phone:'')
+                . "\n\n"
 				. "Message: \n\n"
 				. $msg
 				. "";
