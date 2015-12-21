@@ -1598,7 +1598,7 @@ function ciniki_web_main() {
 				'page-account-active':{'label':'Customer Logins', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-account-header-buttons':{'label':'Header Buttons', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-account-sidebar':{'label':'Sidebar', 'visible':function() {return (M.curBusiness.modules['ciniki.web'].flags&0x0100)?'yes':'no';},
-                    'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                    'type':'multitoggle', 'default':'no', 'toggles':{'no':'No', 'left':'Left', 'right':'Right'}},
 				'page-account-header-signin-text':{'label':'Signin Text', 'type':'text', 'size':'small'},
 				'page-account-password-change':{'label':'Change Password', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				'page-account-phone-update':{'label':'Phone Update', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
@@ -1615,9 +1615,9 @@ function ciniki_web_main() {
 				'page-account-content':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'medium', 
 					'hint':'This appears when the customer signs into your website'},
 				}},
-			'subscriptions':{'label':'Subscription Message', 'active':'no', 'fields':{
-				'page-account-content-subscriptions':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'medium', 'hint':''},
-				}},
+//			'subscriptions':{'label':'Subscription Message', 'active':'no', 'fields':{
+//				'page-account-content-subscriptions':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'medium', 'hint':''},
+//				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'account\');'},
 				}},
@@ -2116,11 +2116,11 @@ function ciniki_web_main() {
 			this[page].refresh();
 			this[page].show(cb);
 		} else if( page == 'account' ) {
-			if( M.curBusiness.modules['ciniki.subscriptions'] != null ) {
-				this.account.sections.subscriptions.active = 'yes';
-			} else {
-				this.account.sections.subscriptions.active = 'no';
-			}
+//			if( M.curBusiness.modules['ciniki.subscriptions'] != null ) {
+//				this.account.sections.subscriptions.active = 'yes';
+//			} else {
+//				this.account.sections.subscriptions.active = 'no';
+//			}
 			if( M.curBusiness.modules['ciniki.sapos'] != null ) {
 				this.account.sections.options.fields['page-account-invoices-list'].active = 'yes';
 				this.account.sections.options.fields['page-account-invoices-view-details'].active = 'yes';

@@ -496,7 +496,7 @@ elseif( $ciniki['request']['page'] == 'contact'
 // Account
 elseif( $ciniki['request']['page'] == 'account' 
 	&& isset($settings['page-account-active']) && $settings['page-account-active'] == 'yes' ) {
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageAccount.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageAccount2.php');
 	$rc = ciniki_web_generatePageAccount($ciniki, $settings);
 } 
 // Cart
@@ -504,6 +504,11 @@ elseif( $ciniki['request']['page'] == 'cart'
 	&& isset($settings['page-cart-active']) && $settings['page-cart-active'] == 'yes' ) {
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageCart.php');
 	$rc = ciniki_web_generatePageCart($ciniki, $settings);
+} 
+// Process links embedded in emails
+elseif( $ciniki['request']['page'] == 'mail' && isset($ciniki['business']['modules']['ciniki.mail']) ) {
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
+	$rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['business_id'], 'ciniki.mail');
 } 
 
 // 

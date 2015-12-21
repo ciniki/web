@@ -29,6 +29,7 @@ function ciniki_web_processBlocks(&$ciniki, $settings, $business_id, $blocks) {
 			case 'content': $processor = 'processBlockContent'; break;
 			case 'details': $processor = 'processBlockDetails'; break;
 			case 'files': $processor = 'processBlockFiles'; break;
+			case 'formmessage': $processor = 'processBlockFormMessage'; break;
 			case 'image': $processor = 'processBlockImage'; break;
 			case 'imagelist': $processor = 'processBlockImageList'; break;
 			case 'gallery': $processor = 'processBlockGallery'; break;

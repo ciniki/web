@@ -366,6 +366,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-downloads-name',
 		'page-account-active',
 		'page-account-header-buttons',
+		'page-account-sidebar',
 		'page-account-password-change',
         'page-account-phone-update',
         'page-account-email-update',
