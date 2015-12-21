@@ -26,8 +26,10 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
     //
     // Check if the login form was submitted
     //
+    $article_title = 'Account';
     $display_form = 'login';
-    if( $_POST['action'] == 'signin' ) {
+    $err_msg = '';
+    if( isset($_POST['action']) && $_POST['action'] == 'signin' ) {
         //
         // Check the referrer and that cookies are enabled
         //
@@ -102,7 +104,7 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
     //
     // Check for a forgot password form submit
     //
-    elseif( $_POST['action'] == 'forgot' ) {
+    elseif( isset($_POST['action']) && $_POST['action'] == 'forgot' ) {
         // Set the forgot password notification
         if( isset($_POST['email']) && $_POST['email'] != '' ) {
             $url = $ciniki['request']['ssl_domain_base_url'] . '/account/reset';
@@ -132,7 +134,7 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
     //
     // Check if a reset password was submitted, from a forgot password link
     //
-    elseif( $_POST['action'] == 'reset' ) {
+    elseif( isset($_POST['action']) && $_POST['action'] == 'reset' ) {
         if( !isset($_POST['newpassword']) || strlen($_POST['newpassword']) < 8 ) {
             $err_msg = 'Your new password must be at least 8 characters long.';
             $display_form = 'reset';
@@ -156,6 +158,7 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
         }
     }
 
+    $content = '';
     if( $display_form == 'login' || $display_form == 'forgot' ) {
         //
         // Set a session variable, to test for cookies being turned on

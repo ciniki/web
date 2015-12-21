@@ -51,6 +51,18 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 	}
 
 	//
+	// Get business/user settings
+	//
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'intlSettings');
+	$rc = ciniki_businesses_intlSettings($ciniki, $ciniki['request']['business_id']);
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+	$intl_timezone = $rc['settings']['intl-default-timezone'];
+	$intl_currency_fmt = numfmt_create($rc['settings']['intl-default-locale'], NumberFormatter::CURRENCY);
+	$intl_currency = $rc['settings']['intl-default-currency'];
+
+	//
 	// Pull in subscription list
 	//
 	if( isset($modules['ciniki.subscriptions']) ) {
@@ -66,7 +78,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 	// Pull in order stats
 	//
 	if( isset($modules['ciniki.sapos']) && isset($ciniki['session']['customer']['id']) ) {
-		$open_orders = -1;
+		$open_orders = 0;
 		$past_orders = -1;
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'customerStats');
 		$rc = ciniki_sapos_web_customerStats($ciniki, $settings, $ciniki['request']['business_id'], $ciniki['session']['customer']['id']);

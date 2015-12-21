@@ -21,7 +21,7 @@ function ciniki_web_processAudio(&$ciniki, $settings, $business_id, $audio, $arg
 	//
 	foreach($audio as $aid => $track) {
 //		print "<pre>" . print_r($track, true) . "</pre>";
-		$sources = '';
+		$sources = array();
 		$formats = array('mp3'=>'audio/mpeg', 'wav'=>'audio/wav', 'ogg'=>'audio/ogg');
 		if( isset($track['formats']) ) {
 			//
@@ -48,21 +48,31 @@ function ciniki_web_processAudio(&$ciniki, $settings, $business_id, $audio, $arg
 				$audio_url = $ciniki['request']['cache_url'] . $cache_filename;
 				$audio_domain_url = 'http://' . $ciniki['request']['domain'] . $ciniki['request']['cache_url'] . $cache_filename;
 				if( $format['type'] == '20' ) {
-					$sources .= '<source src="' . $audio_url . '" type="audio/ogg" />';
+					$sources['ogg'] = '<source src="' . $audio_url . '" type="audio/ogg" />';
 				} elseif( $format['type'] == '30' ) {
-					$sources .= '<source src="' . $audio_url . '" type="audio/wav" />';
+					$sources['wav'] = '<source src="' . $audio_url . '" type="audio/wav" />';
 				} elseif( $format['type'] == '40' ) {
-					$sources .= '<source src="' . $audio_url . '" type="audio/mpeg" />';
+					$sources['mp3'] = '<source src="' . $audio_url . '" type="audio/mpeg" />';
 				}
 			}
 		}
 
-		if( $sources != '' ) {
+		if( count($sources) > 0 ) {
 			$content .= ($content!=''?'<br/>':'');
 			if( isset($track['name']) && $track['name'] != '' ) {
 				$content .= $track['name'] . ' ';
 			}
-			$content .= '<audio controls>' . $sources . '</audio>';
+			$content .= '<audio controls>';
+            if( isset($sources['wav']) ) {
+                $content .= $sources['wav'];
+            }
+            if( isset($sources['mp3']) ) {
+                $content .= $sources['mp3'];
+            }
+            if( isset($sources['ogg']) ) {
+                $content .= $sources['ogg'];
+            }
+            $content .= '</audio>';
 		}
 	}
 

@@ -411,7 +411,8 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 			}
 			if( isset($ciniki['session']['customer']['id']) > 0 ) {
 				$signin_content .= "<span class='account'><a rel='nofollow' href='" . $ciniki['request']['ssl_domain_base_url'] . "/account'>Account</a></span>";
-				$signin_content .= " | <span class='logout'><a rel='nofollow' href='" . $ciniki['request']['ssl_domain_base_url'] . "/account/logout'>Logout</a></span>";
+                $signin_content .= "<span class='account-divider'> | </span>";
+				$signin_content .= "<span class='logout'><a rel='nofollow' href='" . $ciniki['request']['ssl_domain_base_url'] . "/account/logout'>Logout</a></span>";
 			} else {
 				$signin_content .= "<span class='signin'><a rel='nofollow' href='" . $ciniki['request']['ssl_domain_base_url'] . "/account'>";
                 if( isset($settings['page-account-header-signin-text']) && $settings['page-account-header-signin-text'] != '' ) {
@@ -451,7 +452,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
     if( isset($settings['site-header-landingpage1-permalink']) && $settings['site-header-landingpage1-permalink'] != '' 
         && isset($settings['site-header-landingpage1-title']) && $settings['site-header-landingpage1-title'] != '' 
         // Make sure customer is not logged in
-        && (!isset($ciniki['session']['customer']['id']) || isset($ciniki['session']['customer']['id']) > 0)
+        && (!isset($ciniki['session']['customer']['id']) || isset($ciniki['session']['customer']['id']) == 0)
         ) {
         $signin_content .= "<span class='button'>"
             . "<a href='" . $ciniki['request']['domain_base_url'] . '/landingpage/' . $settings['site-header-landingpage1-permalink'] . "'>"
@@ -1081,6 +1082,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	// Check if there is a submenu to display
 	//
 	if( is_array($submenu) && count($submenu) > 0 ) {
+        error_log('submenu');
 		$content .= "<div class='menu-divider'></div>";
 		$content .= "<h3 class='assistive-text'>Sub menu</h3>\n"
 			. "";

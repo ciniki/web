@@ -1597,8 +1597,13 @@ function ciniki_web_main() {
 			'options':{'label':'', 'fields':{
 				'page-account-active':{'label':'Customer Logins', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-account-header-buttons':{'label':'Header Buttons', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+				'page-account-sidebar':{'label':'Sidebar', 'visible':function() {return (M.curBusiness.modules['ciniki.web'].flags&0x0100)?'yes':'no';},
+                    'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-account-header-signin-text':{'label':'Signin Text', 'type':'text', 'size':'small'},
 				'page-account-password-change':{'label':'Change Password', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+				'page-account-phone-update':{'label':'Phone Update', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-account-email-update':{'label':'Email Update', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-account-address-update':{'label':'Address Update', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-account-invoices-list':{'label':'View Orders', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-account-invoices-view-details':{'label':'View Order Details', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-account-invoices-view-pdf':{'label':'Download Invoice', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
