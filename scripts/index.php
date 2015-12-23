@@ -496,7 +496,7 @@ elseif( $ciniki['request']['page'] == 'contact'
 // Account
 elseif( $ciniki['request']['page'] == 'account' 
 	&& isset($settings['page-account-active']) && $settings['page-account-active'] == 'yes' ) {
-	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageAccount2.php');
+	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageAccount.php');
 	$rc = ciniki_web_generatePageAccount($ciniki, $settings);
 } 
 // Cart

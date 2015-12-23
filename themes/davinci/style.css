@@ -1004,6 +1004,37 @@ hr.header-section-divider {
 	display: none;
 }
 
+#content div.form-result-message {
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+#content div.form-result-message {
+  border-radius: 2px;
+  position: relative;
+}
+
+#content div.form-success-message {
+  border: 1px solid #bfe3bf;
+  background: #e4fbe4;
+  color: #55b155;
+}
+
+#content div.form-error-message {
+  border: 1px solid #f8e6e6;
+  background: #fff5f5;
+  color: #bb3737;
+}
+
+#content div.form-result-message div.form-message-wrapper {
+  padding: 15px 22px;
+  font-family: 'Muli', sans-serif;
+}
+
+#content div.form-result-message p:last-child {
+  margin-bottom: 0px;
+}
+
 /* Social sharing buttons */
 .share-buttons-wrap {
 	margin-top: 1.5em;

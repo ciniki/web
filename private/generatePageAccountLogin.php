@@ -23,21 +23,30 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
         return array('stat'=>'ok');
     }
 
+
     //
     // Check if the login form was submitted
     //
     $article_title = 'Account';
     $display_form = 'login';
-    $err_msg = '';
+    $blocks = array();
+
+    //
+    // Check if reset request
+    //
+    if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'passwordreset' ) {
+        $display_form = 'reset';
+    }
+
     if( isset($_POST['action']) && $_POST['action'] == 'signin' ) {
         //
         // Check the referrer and that cookies are enabled
         //
         if( !isset($_SESSION['loginform']) ) {
-            $err_msg = "It appears that you do not have cookies enabled in your browser.  They are "
+            $blocks[] = array('type'=>'formmessage', 'level'=>'error', 'message'=>"It appears that you do not have cookies enabled in your browser.  They are "
                 . "required for you to login.  Please check your browser settings and try again.  <br/><br/>Here is a link to help: "
                 . "<a target='_blank' href='http://support.google.com/accounts/bin/answer.py?hl=en&answer=61416'>How to enable cookies</a>."
-                . "";
+                );
             $display_form = 'login';
         }
 
@@ -50,7 +59,8 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
             ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'auth');
             $rc = ciniki_customers_web_auth($ciniki, $business_id, $_POST['email'], $_POST['password']);
             if( $rc['stat'] != 'ok' ) {
-                $err_msg = "Unable to authenticate, please try again or click Forgot your password to get a new one";
+                $blocks[] = array('type'=>'formmessage', 'level'=>'error', 
+                    'message'=>"Unable to authenticate, please try again or click Forgot your password to get a new one");
                 $display_form = 'login';
             } else {
                 $display_form = 'no';
@@ -97,6 +107,8 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
                         exit;
                     }
                 }
+                // No redirects, return ok for default page to show
+                return array('stat'=>'ok');
             }
         }
     }
@@ -107,26 +119,19 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
     elseif( isset($_POST['action']) && $_POST['action'] == 'forgot' ) {
         // Set the forgot password notification
         if( isset($_POST['email']) && $_POST['email'] != '' ) {
-            $url = $ciniki['request']['ssl_domain_base_url'] . '/account/reset';
+            $url = $ciniki['request']['ssl_domain_base_url'] . '/account/passwordreset';
             ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'passwordRequestReset');
-            $rc = ciniki_customers_web_passwordRequestReset($ciniki, $ciniki['request']['business_id'], $_POST['email'], $url);
+            $rc = ciniki_customers_web_passwordRequestReset($ciniki, $business_id, $_POST['email'], $url);
             if( $rc['stat'] != 'ok' ) {
-                $err_msg = 'You must enter a valid email address to get a new password.';
+                $blocks[] = array('type'=>'formmessage', 'level'=>'error', 'message'=>"You must enter a valid email address to get a new password.");
                 $display_form = 'forgot';
             } else {
+                $blocks[] = array('type'=>'formmessage', 'level'=>'success', 'message'=>"A link has been sent to your email to get a new password.");
                 $display_form = 'no';
-
-                $content .= "<div id='content'>\n"
-                    . "<article class='page'>\n"
-                    . "<header class='entry-title'><h1 class='entry-title'>Account</h1></header>\n";
-                $content .= "<div class='entry-content'>"
-                    . "<p>A link has been sent to your email to get a new password.</p>\n"
-                    . "</div>";
-                $content .= "</article>\n"
-                    . "</div>\n";
             }
         } else {
-            $err_msg = 'You must enter a valid email address to get a new password.';
+            $blocks[] = array('type'=>'formmessage', 'level'=>'error', 
+                'message'=>"You must enter a valid email address to get a new password.");
             $display_form = 'forgot';
         }
     }
@@ -134,25 +139,25 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
     //
     // Check if a reset password was submitted, from a forgot password link
     //
-    elseif( isset($_POST['action']) && $_POST['action'] == 'reset' ) {
+    elseif( isset($_POST['action']) && $_POST['action'] == 'passwordreset' ) {
         if( !isset($_POST['newpassword']) || strlen($_POST['newpassword']) < 8 ) {
-            $err_msg = 'Your new password must be at least 8 characters long.';
+            $blocks[] = array('type'=>'formmessage', 'level'=>'error', 'message'=>"Your new password must be at least 8 characters long.");
             $display_form = 'reset';
         } elseif( !isset($_POST['email']) || $_POST['email'] == '' ) {
-            $err_msg = 'Invalid email address.';
+            $blocks[] = array('type'=>'formmessage', 'level'=>'error', 'message'=>"Invalid email address.");
             $display_form = 'reset';
         } elseif( !isset($_POST['temppassword']) || $_POST['temppassword'] == '' ) {
-            $err_msg = 'Invalid link.';
+            $blocks[] = array('type'=>'formmessage', 'level'=>'error', 'message'=>"Invalid link.");
             $display_form = 'reset';
         } else {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'changeTempPassword');
-            $rc = ciniki_customers_web_changeTempPassword($ciniki, $ciniki['request']['business_id'], 
+            $rc = ciniki_customers_web_changeTempPassword($ciniki, $business_id, 
                 $_POST['email'], $_POST['temppassword'], $_POST['newpassword']);
             if( $rc['stat'] != 'ok' ) {
-                $err_msg = "Unable to set your new password, please try again.";
+                $blocks[] = array('type'=>'formmessage', 'level'=>'error', 'message'=>"Unable to set your new password, please try again.");
                 $display_form = 'reset';
             } else {
-                $err_msg = "Your password has been set, you may now sign in.";
+                $blocks[] = array('type'=>'formmessage', 'level'=>'success', 'message'=>"Your password has been set, you may now sign in.");
                 $display_form = 'login';
             }
         }
@@ -195,10 +200,6 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
             . "	}\n"
             . "</script>"
             . "";
-        $content .= "<div id='content'>\n"
-            . "<article class='page'>\n"
-            . "<header class='entry-title'><h1 class='entry-title'>Account</h1></header>\n";
-        $content .= "<div class='entry-content'>";
 
         //
         // Signin form
@@ -207,9 +208,6 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
         if( $display_form == 'login' ) { $content .= "block;"; } else { $content .= "none;"; }
         $content .= "'>\n"
             . "<form method='POST' action=''>";
-        if( $err_msg != '' ) {
-            $content .= "<p class='formerror'>$err_msg</p>\n";
-        }
         $content .="<input type='hidden' name='action' value='signin'>\n"
             . "<div class='input'><label for='email'>Email</label><input id='email' type='email' class='text' maxlength='250' name='email' value='$post_email' /></div>\n" 
             . "<div class='input'><label for='password'>Password</label><input id='password' type='password' class='text' maxlength='100' name='password' value='' /></div>\n"
@@ -231,9 +229,6 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
         $content .= "'>\n"
             . "<p>Please enter your email address and you will receive a link to create a new password.</p>"
             . "<form method='POST' action=''>";
-        if( $err_msg != '' ) {
-            $content .= "<p class='formerror'>$err_msg</p>\n";
-        }
         $content .= "<input type='hidden' name='action' value='forgot'>\n"
             . "<div class='input'><label for='forgotemail'>Email </label><input id='forgotemail' type='email' class='text' maxlength='250' name='email' value='$post_email' /></div>\n" 
             . "<div class='submit'><input type='submit' class='submit' value='Get New Password' /></div>\n"
@@ -242,9 +237,7 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
             . "<div id='forgot-link'><p><a class='color' href='javascript:void();' onclick='swapLoginForm(\"signin\"); return false;'>Sign In</a></p></div>\n"
             . "</div>\n";
 
-        $content .= "</div>"
-            . "</article>"
-            . "</div>\n";
+        $blocks[] = array('type'=>'content', 'html'=>$content);
     }
 
 	//
@@ -252,23 +245,17 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
 	// The second argument should be the customer uuid
 	// The third argument should be the temp_password
 	//
-	elseif( (isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'reset' 
+	elseif( (isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'passwordreset' 
 		&& isset($_GET['email']) && $_GET['email'] != ''
 		&& isset($_GET['pwd']) && $_GET['pwd'] != '' )
 		|| $display_form == 'reset'
 		) {
 
-		$content .= "<div id='content'>\n"
-			. "<article class='page account'>\n"
-			. "<header class='entry-title'><h1 class='entry-title'>Account</h1></header>\n";
-		$content .= "<div class='entry-content'>";
-		$content .= "<p>Please enter a new password.  It must be at least 8 characters long.</p>";
+        $blocks[] = array('type'=>'content', 'content'=>"Please enter a new password.  It must be at least 8 characters long.");
+
 		$content .= "<div id='reset-form'>\n"
 			. "<form method='POST' action='" . $ciniki['request']['ssl_domain_base_url'] . "/account'>";
-		if( $err_msg != '' ) {
-			$content .= "<p class='formerror'>$err_msg</p>\n";
-		}
-		$content .="<input type='hidden' name='action' value='reset'>\n";
+		$content .="<input type='hidden' name='action' value='passwordreset'>\n";
 		if( isset($_GET['email']) ) {
 			$content .= "<input type='hidden' name='email' value='" . $_GET['email'] . "'>\n";
 		} else {
@@ -282,10 +269,8 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
 		$content .= "<div class='input'><label for='password'>New Password</label><input id='password' type='password' class='text' maxlength='100' name='newpassword' value='' /></div>\n"
 			. "<div class='submit'><input type='submit' class='submit' value='Set Password' /></div>\n"
 			. "</form>"
-			. "</div>\n"
-			. "</div>";
-		$content .= "</article>\n"
 			. "</div>\n";
+        $blocks[] = array('type'=>'content', 'html'=>$content);
 		$display_form = 'no';
 	}
 
@@ -312,7 +297,7 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
         }
         if( isset($settings['theme']['header-breadcrumbs']) && $settings['theme']['header-breadcrumbs'] == 'yes' && isset($breadcrumbs) ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBreadcrumbs');
-            $rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $ciniki['request']['business_id'], $breadcrumbs);
+            $rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $business_id, $breadcrumbs);
             if( $rc['stat'] == 'ok' ) {
                 $page_content .= $rc['content'];
             }
@@ -320,9 +305,21 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
         $page_content .= "</div>";
     }
 
-    if( $content != '' ) {
-        $page_content .= $content;
+    $page_content .= "<div id='content'>\n"
+        . "<article class='page'>\n"
+        . "<header class='entry-title'><h1 class='entry-title'>$article_title</h1></header>\n";
+	//
+	// Process the blocks of content
+	//
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlocks');
+    $rc = ciniki_web_processBlocks($ciniki, $settings, $business_id, $blocks);
+    if( $rc['stat'] != 'ok' ) {
+        return $rc;
     }
+    $page_content .= $rc['content'];
+
+    $page_content .= "</article>";
+    $page_content .= "</div>";
 
     //
     // Add the footer
@@ -332,6 +329,7 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
     if( $rc['stat'] != 'ok' ) {	
         return $rc;
     }
+    $page_content .= $rc['content'];
     
     return array('stat'=>'ok', 'content'=>$page_content);
 }

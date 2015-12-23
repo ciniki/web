@@ -11,13 +11,14 @@
 // Returns
 // -------
 //
-function ciniki_web_processBlockContent(&$ciniki, $settings, $business_id, $block) {
+function ciniki_web_processBlockAsideContent($ciniki, $settings, $business_id, $block) {
 
 	$content = '';
 
 	//
 	// Make sure there is content to edit
 	//
+    $content = '<aside>';
 	if( isset($block['content']) && $block['content'] != '' ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 		$rc = ciniki_web_processContent($ciniki, $block['content'], ((isset($block['wide'])&&$block['wide']=='yes')?'wide':''));
@@ -32,9 +33,12 @@ function ciniki_web_processBlockContent(&$ciniki, $settings, $business_id, $bloc
 		}
 	}
     elseif( isset($block['html']) && $block['html'] != '' ) {
+        if( isset($block['title']) && $block['title'] != '' ) {
+            $content .= "<h2" . ((isset($block['wide'])&&$block['wide']=='yes')?" class='wide'":'') . ">" . $block['title'] . "</h2>";
+        }
         $content .= $block['html'];
     }
-
+    $content .= "</aside>";
 	
 	return array('stat'=>'ok', 'content'=>$content);
 }

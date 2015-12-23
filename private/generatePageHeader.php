@@ -1082,7 +1082,6 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	// Check if there is a submenu to display
 	//
 	if( is_array($submenu) && count($submenu) > 0 ) {
-        error_log('submenu');
 		$content .= "<div class='menu-divider'></div>";
 		$content .= "<h3 class='assistive-text'>Sub menu</h3>\n"
 			. "";

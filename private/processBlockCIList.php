@@ -114,22 +114,22 @@ function ciniki_web_processBlockCIList(&$ciniki, $settings, $business_id, $block
 					$content .= "<div class='image-cilist-thumbnail'>"
 						. "<a href='$url' target='$url_target' title='" . $item['title'] . "'>"
 						. "<img title='' alt='" . $item['title'] . "' src='/ciniki-web-layouts/default/img/noimage_240.png' /></a>"
-						. "</div></aside>";
+						. "</div>";
 				} else {
 					$content .= "<div class='image-cilist-thumbnail'>"
 						. "<img title='' alt='" . $item['title'] . "' src='/ciniki-web-layouts/default/img/noimage_240.png' />"
-						. "</div></aside>";
+						. "</div>";
 				}
 			} elseif( isset($block['noimage']) && $block['noimage'] != '' ) {
 				if( $url != '' ) {
 					$content .= "<div class='image-cilist-thumbnail'>"
 						. "<a href='$url' target='$url_target' title='" . $item['title'] . "'>"
 						. "<img title='' alt='" . $item['title'] . "' src='" . $block['noimage'] . "' /></a>"
-						. "</div></aside>";
+						. "</div>";
 				} else {
 					$content .= "<div class='image-cilist-thumbnail'>"
 						. "<img title='' alt='" . $item['title'] . "' src='" . $block['noimage'] . "' />"
-						. "</div></aside>";
+						. "</div>";
 				}
 			}
 			$content .= "</td>";
