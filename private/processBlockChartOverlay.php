@@ -30,16 +30,6 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
     //
     $colours = array(
         '1'=>''
-            . 'fillColor: "rgba(228,108,10,0.5)",'
-            . 'pointColor: "rgba(228,108,10,0.5)",'
-            . 'strokeColor: "rgba(233,94,0,0.5)",'
-            . 'pointStrokeColor: "rgba(233,94,0,0.5)",'
-            . 'highlightFill: "rgba(228,108,10,1.0)",'
-            . 'highlightStroke: "rgba(233,94,0,1.0)",'
-            . 'pointHighlightFill: "rgba(228,108,10,1.0)",'
-            . 'pointHighlightStroke: "rgba(233,94,0,1.0)",'
-            . '',
-        '2'=>''
             . 'fillColor: "rgba(85,123,126,0.5)",'
             . 'pointColor: "rgba(85,123,126,0.5)",'
             . 'strokeColor: "rgba(73,91,103,0.5)",'
@@ -48,6 +38,16 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
             . 'highlightStroke: "rgba(73,91,103,1.0)",'
             . 'pointHighlightFill: "rgba(85,123,126,1.0)",'
             . 'pointHighlightStroke: "rgba(73,91,103,1.0)",'
+            . '',
+        '2'=>''
+            . 'fillColor: "rgba(228,108,10,0.5)",'
+            . 'pointColor: "rgba(228,108,10,0.5)",'
+            . 'strokeColor: "rgba(233,94,0,0.5)",'
+            . 'pointStrokeColor: "rgba(233,94,0,0.5)",'
+            . 'highlightFill: "rgba(228,108,10,1.0)",'
+            . 'highlightStroke: "rgba(233,94,0,1.0)",'
+            . 'pointHighlightFill: "rgba(228,108,10,1.0)",'
+            . 'pointHighlightStroke: "rgba(233,94,0,1.0)",'
             . '',
         );
     //
