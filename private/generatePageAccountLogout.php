@@ -24,6 +24,15 @@ function ciniki_web_generatePageAccountLogout(&$ciniki, $settings) {
     unset($_SESSION['customer']);
     unset($_SESSION['cart']);
 
+    foreach($ciniki['business']['modules'] as $module => $m) {
+        if( isset($ciniki['session'][$module]) ) {
+            unset($ciniki['session'][$module]);
+        }
+        if( isset($_SESSION[$module]) ) {
+            unset($_SESSION[$module]);
+        }
+    }
+
     //
     // Redirect them back to the home page
     //

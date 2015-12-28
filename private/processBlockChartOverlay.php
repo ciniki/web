@@ -17,6 +17,12 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
         return array('stat'=>'ok', 'content'=>'');
     }
 
+    if( isset($block['options']) ) {
+        $options = $block['options'];
+    } else {
+        $options = array();
+    }
+
 	$content = '<div class="chart chart-overlay"><div class="chart-wrapper"><canvas id="canvas"></canvas></div></div>';
 
     //
@@ -70,11 +76,12 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
     $js .= ']};';
     $js .= "\n";
     $js .= 'var myOverlayChart = new Chart(document.getElementById("canvas").getContext("2d")).Overlay(overlayData, {'  
-        . 'scaleBeginAtZero: false,'
+        . 'scaleBeginAtZero: ' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
         . 'populateSparseData: true,'
         . 'scaleLabel: "<%=value%>%",'
         . 'tooltipTemplate: "<%=value%>%",'
         . 'multiTooltipTemplate: "<%=value%>%",'
+        . 'responsive: true,'
         . 'datasetFill : false,'
         . '});';
    

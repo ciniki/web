@@ -282,6 +282,16 @@ if( isset($_SESSION['business_id']) && $_SESSION['business_id'] == $ciniki['requ
 	if( isset($_SESSION['cart']) ) {
 		$ciniki['session']['cart'] = $_SESSION['cart'];
 	}
+    //
+    // Load each modules session information
+    //
+    foreach($ciniki['business']['modules'] as $module => $m) {
+        if( isset($_SESSION[$module]) ) {
+            error_log('load');
+            error_log(print_r($_SESSION[$module], true));
+            $ciniki['session'][$module] = $_SESSION[$module];
+        }
+    }
 } else {
 	if( isset($_SESSION['login']) ) { unset($_SESSION['login']); };
 	if( isset($_SESSION['customer']) ) { unset($_SESSION['customer']); };
@@ -291,6 +301,17 @@ if( isset($_SESSION['business_id']) && $_SESSION['business_id'] == $ciniki['requ
 	if( isset($ciniki['session']['customer']) ) { unset($ciniki['session']['customer']); };
 	if( isset($ciniki['session']['customers']) ) { unset($ciniki['session']['customers']); };
 	if( isset($ciniki['session']['cart']) ) { unset($ciniki['session']['cart']); };
+    //
+    // Unload each sessions information
+    //
+    foreach($ciniki['business']['modules'] as $module => $m) {
+        if( isset($ciniki['session'][$module]) ) {
+            unset($ciniki['session'][$module]);
+        }
+        if( isset($_SESSION[$module]) ) {
+            unset($_SESSION[$module]);
+        }
+    }
 }
 $_SESSION['business_id'] = $ciniki['request']['business_id'];
 $ciniki['session']['business_id'] = $ciniki['request']['business_id'];
@@ -813,6 +834,18 @@ if( $rc['stat'] != 'ok' ) {
 	$rc = ciniki_web_generatePage500($ciniki, $settings, $rc);
 //	print_error($rc, 'Unable to generate page.');
 //	exit;
+}
+
+//
+// Save module session information
+//
+error_log('test');
+foreach($ciniki['business']['modules'] as $module => $m) {
+    if( isset($ciniki['session'][$module]) ) {
+        error_log('save');
+        error_log(print_r($ciniki['session'][$module], true));
+        $_SESSION[$module] = $ciniki['session'][$module];
+    }
 }
 
 

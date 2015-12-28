@@ -42,6 +42,12 @@ function ciniki_web_generatePageAccountSwitch(&$ciniki, $settings, $business_id,
                 return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2903', 'msg'=>'Unable to unload account information', 'err'=>$rc['err']));
             }
         }
+        if( isset($ciniki['session'][$module]) ) {
+            unset($ciniki['session'][$module]);
+        }
+        if( isset($_SESSION[$module]) ) {
+            unset($_SESSION[$module]);
+        }
     }
 
     //

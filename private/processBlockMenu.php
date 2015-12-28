@@ -20,7 +20,9 @@ function ciniki_web_processBlockMenu(&$ciniki, $settings, $business_id, $block) 
 	//
 	if( isset($block['menu']) ) {
 		foreach($block['menu'] as $menu_item) {
-            $content .= "<li class='menu-item'>"
+            $content .= "<li class='menu-item"
+                . ((isset($menu_item['selected']) && $menu_item['selected'] == 'yes')?' menu-item-selected':'')
+                . "'>"
                 . "<a href='" . $menu_item['url'] . "'>"
                 . $menu_item['name']
                 . "</a></li>";
