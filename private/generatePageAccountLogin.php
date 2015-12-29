@@ -15,14 +15,12 @@
 //
 function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, $breadcrumbs) {
 
-
     //
     // Check if the customer is logged in
     //
     if( isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 ) {
         return array('stat'=>'ok');
     }
-
 
     //
     // Check if the login form was submitted
@@ -273,7 +271,6 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
         $blocks[] = array('type'=>'content', 'html'=>$content);
 		$display_form = 'no';
 	}
-
 
     //
     // Add the header

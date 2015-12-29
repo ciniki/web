@@ -287,8 +287,6 @@ if( isset($_SESSION['business_id']) && $_SESSION['business_id'] == $ciniki['requ
     //
     foreach($ciniki['business']['modules'] as $module => $m) {
         if( isset($_SESSION[$module]) ) {
-            error_log('load');
-            error_log(print_r($_SESSION[$module], true));
             $ciniki['session'][$module] = $_SESSION[$module];
         }
     }
@@ -431,7 +429,6 @@ if( isset($ciniki['request']['page']) && $ciniki['request']['page'] == 'home'
 		$ciniki['request']['page'] = 'links';
 	} else {
 		// Generate the master business 404 page
-			error_log('test2353');
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateMaster404');
 		$rc = ciniki_web_generateMaster404($ciniki, null);
 		if( isset($rc['content']) ) {
@@ -839,11 +836,8 @@ if( $rc['stat'] != 'ok' ) {
 //
 // Save module session information
 //
-error_log('test');
 foreach($ciniki['business']['modules'] as $module => $m) {
     if( isset($ciniki['session'][$module]) ) {
-        error_log('save');
-        error_log(print_r($ciniki['session'][$module], true));
         $_SESSION[$module] = $ciniki['session'][$module];
     }
 }
