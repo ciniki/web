@@ -58,6 +58,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
     //
     // NOTE: At this point the customer is considered logged in
     //
+    $ciniki['request']['page-container-class'] = 'page-account';
 
     //
     // Check if there was a switch of customer (parent switching between child accounts)
@@ -181,7 +182,6 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 	//
 	// Add the header
 	//
-    $ciniki['request']['page-container-class'] = 'page-account';
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
 	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Account', $submenu);
 	if( $rc['stat'] != 'ok' ) {	
