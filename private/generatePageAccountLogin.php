@@ -202,7 +202,9 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
         //
         // Signin form
         //
-        $content .= "<div id='signin-form' style='display:";
+        $article_title = "Login";
+        $breadcrumbs[] = array('name'=>'Login', 'url'=>$ciniki['request']['base_url'] . '/account');
+        $content .= "<div id='signin-form' class='signin-form' style='display:";
         if( $display_form == 'login' ) { $content .= "block;"; } else { $content .= "none;"; }
         $content .= "'>\n"
             . "<form method='POST' action=''>";
@@ -222,7 +224,7 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
         //
         // Forgot password form
         //
-        $content .= "<div id='forgotpassword-form' style='display:";
+        $content .= "<div id='forgotpassword-form' class='forgotpassword-form' style='display:";
         if( $display_form == 'forgot' ) { $content .= "block;"; } else { $content .= "none;"; }
         $content .= "'>\n"
             . "<p>Please enter your email address and you will receive a link to create a new password.</p>"
@@ -249,9 +251,11 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
 		|| $display_form == 'reset'
 		) {
 
-        $blocks[] = array('type'=>'content', 'content'=>"Please enter a new password.  It must be at least 8 characters long.");
+        $article_title = "Reset Password";
+        $breadcrumbs[] = array('name'=>'Reset Password', 'url'=>$ciniki['request']['base_url'] . '/account');
 
-		$content .= "<div id='reset-form'>\n"
+		$content .= "<div id='reset-form' class='reset-form'>\n"
+            . "<p>Please enter a new password.  It must be at least 8 characters long.</p>"
 			. "<form method='POST' action='" . $ciniki['request']['ssl_domain_base_url'] . "/account'>";
 		$content .="<input type='hidden' name='action' value='passwordreset'>\n";
 		if( isset($_GET['email']) ) {
@@ -275,6 +279,7 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
     //
     // Add the header
     //
+    $ciniki['request']['page-container-class'] = 'page-account';
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
     $rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Account', array());
     if( $rc['stat'] != 'ok' ) {	
