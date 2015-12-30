@@ -250,6 +250,18 @@ function ciniki_web_objects($ciniki) {
 			),
 		'history_table'=>'ciniki_web_history',
 		);
+    $objects['redirect'] = array(
+        'name'=>'Web Redirect',
+        'o_name'=>'redirect',
+        'o_container'=>'redirects',
+        'sync'=>'yes',
+        'table'=>'ciniki_web_redirects',
+        'fields'=>array(
+            'oldurl'=>array('name'=>'Old URL'),
+            'newurl'=>array('name'=>'New URL'),
+            ),
+		'history_table'=>'ciniki_web_history',
+        );
 	
 	return array('stat'=>'ok', 'objects'=>$objects);
 }

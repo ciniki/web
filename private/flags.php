@@ -45,7 +45,7 @@ function ciniki_web_flags($ciniki, $modules) {
 		// 0x01000000
 		array('flag'=>array('bit'=>'25', 'name'=>'Mail Chimp')),
 		array('flag'=>array('bit'=>'26', 'name'=>'My Live Chat')),
-//		array('flag'=>array('bit'=>'27', 'name'=>'')),	
+		array('flag'=>array('bit'=>'27', 'name'=>'Redirects')),	
 //		array('flag'=>array('bit'=>'28', 'name'=>'')),
 		);
 

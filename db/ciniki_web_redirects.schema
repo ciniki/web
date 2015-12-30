@@ -1,0 +1,30 @@
+#
+# Description
+# -----------
+# This table stores redirects from an old website to a new website.
+#
+# Fields
+# ------
+# id:				The ID for the theme.
+# uuid:				The Universal Unique ID.
+# business_id:		The business the theme is part of.
+#
+# oldurl:           The old url that needs redirection.
+# newurl:           The new url to redirect to.
+#
+# date_added:		The date and time the domain was added to the table.
+# last_updated:		The date and time the domain was last updated.
+#
+create table ciniki_web_redirects (
+	id int not null auto_increment,
+	uuid char(36) not null,
+	business_id int not null,
+    oldurl varchar(250) not null,
+    newurl varchar(250) not null,
+	date_added datetime not null,
+	last_updated datetime not null,
+	primary key (id),
+	unique index (uuid),
+    index (business_id, oldurl),
+	index sync (business_id, uuid, last_updated)
+) ENGINE='InnoDB', COMMENT='v1.01';
