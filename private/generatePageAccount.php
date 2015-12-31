@@ -215,8 +215,11 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
         //
         // Add the sidebar content
         //
-        $page_content .= "<aside class='col-left-narrow'>";
-        $page_content .= "<div class='aside-content'>";
+        $page_content .= "<div class='sidebar-menu-toggle'>"
+            . "<button type='button' id='sidebar-menu-toggle' class='sidebar-menu-toggle'><i class='fa fa-bars'></i></button>"
+            . "</div>";
+        $page_content .= "<aside id='sidebar-menu' class='col-left-narrow sidebar-menu'>";
+        $page_content .= "<div class='aside-content sidebar-menu'>";
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockMenu');
         $rc = ciniki_web_processBlockMenu($ciniki, $settings, $ciniki['request']['business_id'], array('title'=>'', 'menu'=>$sidebar_menu));
         if( $rc['stat'] != 'ok' ) {
@@ -241,8 +244,11 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
         //
         // Add the sidebar content
         //
-        $page_content .= "<aside class='col-right-narrow'>";
-        $page_content .= "<div class='aside-content'>";
+        $page_content .= "<div class='sidebar-menu-toggle'>"
+            . "<button type='button' id='sidebar-menu-toggle' class='sidebar-menu-toggle'><i class='fa fa-bars'></i></button>"
+            . "</div>";
+        $page_content .= "<aside id='sidebar-menu' class='col-right-narrow sidebar-menu'>";
+        $page_content .= "<div class='aside-content sidebar-menu'>";
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockMenu');
         $rc = ciniki_web_processBlockMenu($ciniki, $settings, $ciniki['request']['business_id'], array('title'=>'', 'menu'=>$sidebar_menu));
         if( $rc['stat'] != 'ok' ) {
