@@ -52,6 +52,27 @@ function ciniki_web_generateModulePage($ciniki, $settings, $business_id, $module
 	$content .= $rc['content'];
 
 	//
+	// Check if article title and breadcrumbs should be displayed above content
+	//
+	if( (isset($settings['theme']['header-article-title']) && $settings['theme']['header-article-title'] == 'yes')
+		|| (isset($settings['theme']['header-breadcrumbs']) && $settings['theme']['header-breadcrumbs'] == 'yes')
+		) {
+		$content .= "<div class='page-header'>";
+		if( isset($settings['theme']['header-article-title']) && $settings['theme']['header-article-title'] == 'yes' ) {
+			$content .= "<h1 class='page-header-title'>" . $pg['page_title'] . "</h1>";
+		}
+		if( isset($settings['theme']['header-breadcrumbs']) && $settings['theme']['header-breadcrumbs'] == 'yes' && isset($pg['breadcrumbs']) ) {
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBreadcrumbs');
+			$rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $ciniki['request']['business_id'], $pg['breadcrumbs']);
+			if( $rc['stat'] == 'ok' ) {
+				$content .= $rc['content'];
+			}
+		}
+		$content .= "</div>";
+	}
+
+
+	//
 	// Build the page content
 	//
 	$content .= "<div id='content'>\n";

@@ -95,7 +95,6 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
 			}
 		}
 	}
-
 //	print "Showing page: \n";
 //	print_r($page);
 //	print "</pre>";
