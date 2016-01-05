@@ -82,7 +82,7 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
                 // If multiple accounts, setup the redirect upon choosing an account
                 //
                 if( isset($ciniki['session']['customers']) && count($ciniki['session']['customers']) > 1 ) {
-                    if( ($settings['page-account-signin-redirect']) 
+                    if( isset($settings['page-account-signin-redirect']) && ($settings['page-account-signin-redirect']) 
                         ) {
                         $_SESSION['account_chooser_redirect'] = $settings['page-account-signin-redirect'];
                     } else {
