@@ -877,7 +877,7 @@ if( isset($ciniki['response']['format']) && $ciniki['response']['format'] == 'js
 	ciniki_core_printHashToJSON($rc);
 }
 
-if( $rc['stat'] != 'ok' ) {
+if( $rc['stat'] != 'ok' && $rc['stat'] != 'exit' ) {
 	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePage500.php');
 	$rc = ciniki_web_generatePage500($ciniki, $settings, $rc);
 //	print_error($rc, 'Unable to generate page.');
