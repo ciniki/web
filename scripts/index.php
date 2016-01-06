@@ -515,7 +515,7 @@ if( $pages_menu == 'yes' && $ciniki['request']['page'] != ''
 	&& ($ciniki['business']['modules']['ciniki.web']['flags']&0x40) > 0 ) {
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePage');
 	$rc = ciniki_web_generatePage($ciniki, $settings);
-    if( $rc['stat'] == 'ok' ) {
+    if( $rc['stat'] == 'ok' || $rc['stat'] == 'exit' ) {
         $found = 'yes';
     }
 }

@@ -42,7 +42,7 @@ function ciniki_web_lookupBusinessURL(&$ciniki, $business_id) {
 		return $rc;
 	}
 	if( isset($rc['business']) ) {
-        if( $ssl_settings['site-ssl-active'] == 'yes' ) {
+        if( isset($ssl_settings['site-ssl-active']) && $ssl_settings['site-ssl-active'] == 'yes' ) {
             return array('stat'=>'ok', 'url'=>"http://" . $rc['business']['domain'], 'secure_url'=>"https://" . $rc['business']['domain']);
         } else {
             return array('stat'=>'ok', 'url'=>"http://" . $rc['business']['domain'], 'secure_url'=>"http://" . $rc['business']['domain']);
