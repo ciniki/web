@@ -264,7 +264,7 @@ function ciniki_web_main() {
 				'site-header-image-size':{'label':'Image Size', 'type':'select', 'default':'medium', 'options':this.headerImageSize},
 				'site-header-title':{'label':'Display Business Name', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles, 'editFn':'M.startApp(\'ciniki.businesses.info\',null,\'M.ciniki_web_main.header.show();\');'},
 				}},
-			'_landingpage1':{'label':'Landing Page', 'visible':function() {return (M.curBusiness.modules['ciniki.landingpages']!=null?'yes':'no');}, 'fields':{
+			'_landingpage1':{'label':'Landing Page', 'active':function() {return (M.curBusiness.modules['ciniki.landingpages']!=null?'yes':'no');}, 'fields':{
                 'site-header-landingpage1-title':{'label':'Title', 'type':'text'},
                 'site-header-landingpage1-permalink':{'label':'Landing Page', 'type':'select', 'options':this.landingpages},
                 }},
