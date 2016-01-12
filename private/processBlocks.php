@@ -49,6 +49,7 @@ function ciniki_web_processBlocks(&$ciniki, $settings, $business_id, $blocks) {
 			case 'tagimagelist': $processor = 'processBlockTagImageList'; break;
 			case 'tagimages': $processor = 'processBlockTagImages'; break;
 			case 'taglist': $processor = 'processBlockTagList'; break;
+			case 'videolinks': $processor = 'processBlockVideoLinks'; break;
 		}
 		if( $processor != '' ) {
 			$rc = ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', $processor);
@@ -59,7 +60,13 @@ function ciniki_web_processBlocks(&$ciniki, $settings, $business_id, $blocks) {
 					return $rc;
 				}
 				if( isset($rc['content']) ) {
-					$rsp['content'] .= $rc['content'];
+                    if( isset($block['section']) && $block['section'] != '' ) {
+                        $rsp['content'] .= "<div class='block block-" . $block['section'] . "'>"
+                            . $rc['content']
+                            . "</div>";
+                    } else {
+                        $rsp['content'] .= $rc['content'];
+                    }
 				}
 			}
 		}

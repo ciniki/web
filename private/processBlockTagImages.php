@@ -25,7 +25,13 @@ function ciniki_web_processBlockTagImages($ciniki, $settings, $business_id, $blo
 
 	$content .= "<div class='image-categories'>";
 	foreach($block['tags'] as $tid => $tag) {
-		$name = $tag['name'];
+        if( isset($tag['name']) ) {
+            $name = $tag['name'];
+        } elseif( isset($tag['title']) ) {
+            $name = $tag['title'];
+        } else {
+            $name = '';
+        }
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 		$rc = ciniki_web_getScaledImageURL($ciniki, $tag['image_id'], 'thumbnail', '240', 0);
 		if( $rc['stat'] != 'ok' ) {

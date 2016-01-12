@@ -15,6 +15,10 @@ function ciniki_web_processBlockLinks(&$ciniki, $settings, $business_id, $block)
 
 	$content = '';
 
+	if( isset($block['title']) && $block['title'] != '' ) {
+		$content .= "<h2>" . $block['title'] . "</h2>";
+	}
+
 	//
 	// Make sure there is content to edit
 	//
@@ -37,10 +41,6 @@ function ciniki_web_processBlockLinks(&$ciniki, $settings, $business_id, $block)
 				$content .= "<br/><span class='downloads-description'>" . $link['description'] . "</span>";
 			}
 			$content .= "<br/>";
-		}
-
-		if( $content != '' ) {
-			$content = "<p>" . $content . "</p>";
 		}
 	}
 	

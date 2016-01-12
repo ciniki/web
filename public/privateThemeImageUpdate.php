@@ -102,6 +102,6 @@ function ciniki_web_privateThemeImageUpdate(&$ciniki) {
         return $rc;
     }
 
-    return $rsp;
+    return array('stat'=>'ok');
 }
 ?>

@@ -109,6 +109,7 @@ function ciniki_web_privateThemeUpdate(&$ciniki) {
 	// Check for any settings and add/update
 	//
 	$valid_settings = array(
+		'header-signin-button',
 		'header-social-icons',
 		'header-article-title',
 		'header-breadcrumbs',

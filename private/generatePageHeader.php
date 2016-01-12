@@ -370,7 +370,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 			|| (isset($ciniki['session']['cart']['num_items']) && $ciniki['session']['cart']['num_items'] > 0)
 			)
 		) {
-		$shopping_cart .= "<span><a rel='nofollow' href='" . $ciniki['request']['ssl_domain_base_url'] . "/cart'>"
+		$shopping_cart .= "<span class='cart'><a rel='nofollow' href='" . $ciniki['request']['ssl_domain_base_url'] . "/cart'>"
 			. "Cart";
 		if( isset($ciniki['session']['cart']['num_items']) && $ciniki['session']['cart']['num_items'] > 0 ) {
 			$shopping_cart .= ' (' . $ciniki['session']['cart']['num_items'] . ')';
@@ -407,7 +407,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 //			$signin_content .= "<div class='signin'><div class='signin-wrapper'>";
 			// Check for a cart
 			if( $shopping_cart != '' ) {
-				$signin_content .= $shopping_cart . " | ";
+				$signin_content .= $shopping_cart . "<span class='account-divider'> | </span>";
 			}
 			if( isset($ciniki['session']['customer']['id']) > 0 ) {
 				$signin_content .= "<span class='account'><a rel='nofollow' href='" . $ciniki['request']['ssl_domain_base_url'] . "/account'>Account</a></span>";
@@ -657,6 +657,13 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	// Generate menu
 	//
 	$content .= "<button type='button' id='main-menu-toggle' class='menu-toggle'><i class='fa fa-bars'></i></button>";
+    if( isset($settings['theme']['header-signin-button']) && $settings['theme']['header-signin-button'] == 'yes' ) {
+        if( isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 ) {
+            $content .= "<button type='button' id='account-menu-toggle' class='menu-toggle'><i class='fa fa-user'></i></button>";
+        } else {
+            $content .= "<button type='button' id='signin-menu-toggle' class='menu-toggle'><i class='fa fa-user'></i></button>";
+        }
+    }
 	$content .= "<nav id='access' role='navigation'>\n"
 		. "<h3 class='assistive-text'>Main menu</h3>\n"
 		. "";

@@ -55,7 +55,7 @@ function ciniki_web_processBlockShareButtons(&$ciniki, $settings, $business_id, 
 	$url = $ciniki['response']['head']['og']['url'];
 
 	$content .= "<div class='share-buttons-wrap'><span class='share-buttons'>"
-		. "<span class='socialtext'>Share: </span>";
+		. "<span class='socialtext'>Share</span>";
 
 	//
 	// Setup email button

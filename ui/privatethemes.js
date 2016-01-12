@@ -56,8 +56,9 @@ function ciniki_web_privatethemes() {
 				}},
 			'header':{'label':'Header', 'aside':'yes', 'fields':{
 				'header-social-icons':{'label':'Social Icon Font', 'type':'toggle', 'toggles':{'MonoSocial':'Mono Social', 'FontAwesome':'Font Awesome'}},
-				'header-article-title':{'label':'Article Title', 'type':'toggle', 'toggles':{'no':'No', 'yes':'Yes'}},
-				'header-breadcrumbs':{'label':'Breadcrumbs', 'type':'toggle', 'toggles':{'no':'No', 'yes':'Yes'}},
+				'header-signin-button':{'label':'Signin Button', 'type':'toggle', 'default':'no', 'toggles':{'no':'No', 'yes':'Yes'}},
+				'header-article-title':{'label':'Article Title', 'type':'toggle', 'default':'no', 'toggles':{'no':'No', 'yes':'Yes'}},
+				'header-breadcrumbs':{'label':'Breadcrumbs', 'type':'toggle', 'default':'no', 'toggles':{'no':'No', 'yes':'Yes'}},
 				}},
 			'body':{'label':'Content', 'aside':'yes', 'fields':{
 				'share-social-icons':{'label':'Social Icon Font', 'type':'toggle', 'toggles':{'MonoSocial':'Mono Social', 'FontAwesome':'Font Awesome'}},
@@ -90,7 +91,7 @@ function ciniki_web_privatethemes() {
 			'images':{'label':'Images', 'type':'simplethumbs'},
 			'_images':{'label':'', 'type':'simplegrid', 'num_cols':1,
 				'addTxt':'Add Image',
-				'addFn':'M.ciniki_web_privatethemes.imageEdit(0,M.ciniki_web_privatethemes.edit.theme_id);',
+				'addFn':'M.ciniki_web_privatethemes.imageEdit(\'M.ciniki_web_privatethemes.edit.addDropImageRefresh();\',0,M.ciniki_web_privatethemes.edit.theme_id);',
 				},
 			'_buttons':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_privatethemes.themeSave();'},
@@ -205,7 +206,7 @@ function ciniki_web_privatethemes() {
 		};
 
 		this.edit.thumbFn = function(s, i, d) {
-			return 'M.ciniki_web_privatethemes.imageEdit(\''+ d.image.id + '\',\'' + d.image.image_id + '\');';
+			return 'M.ciniki_web_privatethemes.imageEdit(\'M.ciniki_web_privatethemes.edit.addDropImageRefresh();\',\''+ d.image.id + '\',\'' + d.image.image_id + '\');';
 		};
 		this.edit.addButton('save', 'Save', 'M.ciniki_web_privatethemes.themeSave();');
 		this.edit.addClose('Cancel');
@@ -496,7 +497,7 @@ function ciniki_web_privatethemes() {
 		}
 	};
 
-	this.imageEdit = function(iid, tid) {
+	this.imageEdit = function(cb, iid, tid) {
 		if( iid != null ) { this.image.theme_image_id = iid; }
 		if( tid != null ) { this.image.theme_id = tid; }
 		if( this.image.theme_image_id > 0 ) {
@@ -509,13 +510,15 @@ function ciniki_web_privatethemes() {
 					var p = M.ciniki_web_privatethemes.image;
 					p.data = rsp.image;
 					p.refresh();
-					p.show('M.ciniki_web_privatethemes.edit.addDropImageRefresh();');
+                    p.show(cb);
+//					p.show('M.ciniki_web_privatethemes.edit.addDropImageRefresh();');
 				});
 		} else {
 			this.image.reset();
 			this.image.data = {};
 			this.image.refresh();
-			this.image.show('M.ciniki_web_privatethemes.edit.addDropImageRefresh();');
+            this.image.show(cb);
+//			this.image.show('M.ciniki_web_privatethemes.edit.addDropImageRefresh();');
 		}
 	};
 
