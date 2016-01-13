@@ -164,6 +164,17 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
         $submenu = array();
     }
 
+    //
+    // Check if a container class was set
+    //
+	if( isset($page['container-class']) && $page['container-class'] != '' ) {
+		if( !isset($ciniki['request']['page-container-class']) ) { 
+			$ciniki['request']['page-container-class'] = $page['container-class'];
+		} else {
+			$ciniki['request']['page-container-class'] .= ' ' . $page['container-class'];
+		}
+	}
+
 	//
 	// Process the blocks of content before header incase require includes in header
 	//

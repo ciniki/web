@@ -77,6 +77,13 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
 			$ciniki['request']['page-container-class'] .= ' ' . $page['container_class'];
 		}
 	}
+	if( isset($page['container-class']) && $page['container-class'] != '' ) {
+		if( !isset($ciniki['request']['page-container-class']) ) { 
+			$ciniki['request']['page-container-class'] = $page['container-class'];
+		} else {
+			$ciniki['request']['page-container-class'] .= ' ' . $page['container-class'];
+		}
+	}
 
 	//
 	// Setup the article
