@@ -989,6 +989,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 				//
 				$content .= "<li id='menu-item-$i' class='menu-item$hide_menu_class" . ($ciniki['request']['page']==$page['permalink']?' menu-item-selected':'') 
 					. ((isset($page['subpages'])&&count($page['subpages'])>0)?' menu-item-dropdown':'') 
+                    . " menu-item-" . $page['permalink']
 					. "'><a href='" . $ciniki['request']['base_url'] . "/" . $page['permalink'] . "'>" . $page['title'] . "</a>";
 				if( isset($page['subpages']) && count($page['subpages']) > 0 ) {
 					$content .= "<ul id='menu-item-$i-sub' class='sub-menu sub-menu-hidden'>";
