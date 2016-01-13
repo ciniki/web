@@ -49,6 +49,7 @@ function ciniki_web_processBlocks(&$ciniki, $settings, $business_id, $blocks) {
 			case 'tagimagelist': $processor = 'processBlockTagImageList'; break;
 			case 'tagimages': $processor = 'processBlockTagImages'; break;
 			case 'taglist': $processor = 'processBlockTagList'; break;
+			case 'tradingcards': $processor = 'processBlockTradingCards'; break;
 			case 'videolinks': $processor = 'processBlockVideoLinks'; break;
 		}
 		if( $processor != '' ) {
