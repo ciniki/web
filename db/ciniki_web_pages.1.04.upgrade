@@ -1,0 +1,5 @@
+#
+#
+ALTER TABLE ciniki_web_pages ADD COLUMN menu_flags tinyint unsigned not null AFTER page_module;
+UPDATE ciniki_web_pages SET menu_flags = 1;
+ALTER TABLE ciniki_web_pages COMMENT='v1.04';

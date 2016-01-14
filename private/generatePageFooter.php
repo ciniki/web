@@ -42,6 +42,17 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
         $content .= "<div class='footer-message-wrapper'><div class='footer-message'><p>" . $rc['content'] . "</p></div></div>";
     }
 
+    //
+    // Check if there is a footer menu
+    //
+    if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.web', 0x0200) 
+        && isset($settings['theme']['footer-menu']) && $settings['theme']['footer-menu'] == 'yes' 
+        ) {
+        //
+        // Get the pages for the footer
+        //
+    }
+
 	//
 	// Check for social media icons
 	//

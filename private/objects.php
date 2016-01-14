@@ -154,6 +154,7 @@ function ciniki_web_objects($ciniki) {
 			'page_type'=>array('default'=>'10'),
 			'page_redirect_url'=>array('default'=>''),
 			'page_module'=>array('default'=>''),
+			'menu_flags'=>array('default'=>'1'),
 			'flags'=>array('default'=>'1'),
 			'primary_image_id'=>array('default'=>'0'),
 			'primary_image_caption'=>array('default'=>''),

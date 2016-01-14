@@ -26,6 +26,7 @@ function ciniki_web_pageAdd(&$ciniki) {
 		'page_type'=>array('required'=>'no', 'default'=>'10', 'blank'=>'yes', 'name'=>'Type'),
 		'page_redirect_url'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Redirect'),
 		'page_module'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Module'),
+		'menu_flags'=>array('required'=>'no', 'default'=>'1', 'blank'=>'yes', 'name'=>'Menu Options'),
 		'flags'=>array('required'=>'no', 'default'=>'1', 'blank'=>'yes', 'name'=>'Options'),
 		'primary_image_id'=>array('required'=>'yes', 'blank'=>'yes', 'name'=>'Image'),
 		'primary_image_caption'=>array('required'=>'no', 'default'=>'', 'blank'=>'yes', 'name'=>'Image Caption'),

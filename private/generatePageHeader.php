@@ -297,6 +297,14 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	if( isset($ciniki['request']['inline_javascript']) && $ciniki['request']['inline_javascript'] != '' ) {
 		$content .= $ciniki['request']['inline_javascript'];
 	}
+    if( isset($settings['theme']['header-menu-button']) && $settings['theme']['header-menu-button'] == 'yes' ) {
+        $content .= "<script type='text/javascript'>"
+            . "cinikiMainMenuToggle(){"
+                . "var e=document.getElementById('main-menu');"
+                . "console.log('togglemenu');"
+            . "}"
+            . "</script>";
+    }
 
 	//
 	// Include google analytics
@@ -586,17 +594,17 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	// Get any pages if enables
 	//
 	if( isset($ciniki['business']['modules']['ciniki.web']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x40) == 0x40) {
-		$strsql = "SELECT id, title, permalink, page_type, page_redirect_url, page_module "
+		$strsql = "SELECT id, title, permalink, page_type, page_redirect_url, page_module, menu_flags "
 			. "FROM ciniki_web_pages "
 			. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
 			. "AND parent_id = 0 "
 			. "AND (flags&0x01) = 1 "	// Active pages
-			. "ORDER BY sequence, title "
+			. "ORDER BY sequence, (menu_flags&0x02), title "
 			. "";
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
 		$rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.web', array(
 			array('container'=>'pages', 'fname'=>'id', 
-				'fields'=>array('id', 'title', 'permalink', 'page_type', 'page_redirect_url', 'page_module')),
+				'fields'=>array('id', 'title', 'permalink', 'page_type', 'page_redirect_url', 'page_module', 'menu_flags')),
 			));
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
@@ -608,7 +616,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 			//
 			if( count($pages) > 0 ) {
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuoteIDs');
-				$strsql = "SELECT id, parent_id, title, permalink, page_type, page_redirect_url, page_module "
+				$strsql = "SELECT id, parent_id, title, permalink, page_type, page_redirect_url, page_module, menu_flags "
 					. "FROM ciniki_web_pages "
 					. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
 					. "AND parent_id IN (" . ciniki_core_dbQuoteIDs($ciniki, array_keys($pages)) . ") "
@@ -619,7 +627,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 					array('container'=>'parents', 'fname'=>'parent_id', 
 						'fields'=>array('parent_id')),
 					array('container'=>'subpages', 'fname'=>'id', 
-						'fields'=>array('id', 'title', 'permalink', 'page_type', 'page_redirect_url', 'page_module')),
+						'fields'=>array('id', 'title', 'permalink', 'page_type', 'page_redirect_url', 'page_module', 'menu_flags')),
 					));
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
@@ -656,7 +664,15 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	//
 	// Generate menu
 	//
-	$content .= "<button type='button' id='main-menu-toggle' class='menu-toggle'><i class='fa fa-bars'></i></button>";
+
+    //
+    // If the theme specifies a header menu button, then setup the javascript for it as well.
+    //
+    if( isset($settings['theme']['header-menu-button']) && $settings['theme']['header-menu-button'] == 'yes' ) {
+        $content .= "<button type='button' id='main-menu-toggle' onclick='cinikiMainMenuToggle()' class='menu-toggle'><i class='fa fa-bars'></i></button>";
+    } else {
+        $content .= "<button type='button' id='main-menu-toggle' class='menu-toggle'><i class='fa fa-bars'></i></button>";
+    }
     if( isset($settings['theme']['header-signin-button']) && $settings['theme']['header-signin-button'] == 'yes' ) {
         if( isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 ) {
             $content .= "<button type='button' id='account-menu-toggle' class='menu-toggle'><i class='fa fa-user'></i></button>";
@@ -664,7 +680,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
             $content .= "<button type='button' id='signin-menu-toggle' class='menu-toggle'><i class='fa fa-user'></i></button>";
         }
     }
-	$content .= "<nav id='access' role='navigation'>\n"
+	$content .= "<nav id='main-menu' role='navigation'>\n"
 		. "<h3 class='assistive-text'>Main menu</h3>\n"
 		. "";
 	$content .= "<div id='main-menu-container'>"
@@ -981,7 +997,10 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 				//
 				// Redirect to another url
 				//
-				$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']==$page['permalink']?' menu-item-select':'') . "'><a href='" . $page['page_redirect_url'] . "'>" . $page['title'] . "</a></li>";
+				$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']==$page['permalink']?' menu-item-select':'') 
+                    . (($page['menu_flags']&0x01)==0x01?' menu-item-header':'')
+                    . (($page['menu_flags']&0x02)==0x02?' menu-item-footer':'')
+                    . "'><a href='" . $page['page_redirect_url'] . "'>" . $page['title'] . "</a></li>";
 			} 
 			elseif( $page['page_type'] == '30' || ($page['title'] != '' && $page['permalink'] != '') ) {
 				//
@@ -990,6 +1009,8 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 				$content .= "<li id='menu-item-$i' class='menu-item$hide_menu_class" . ($ciniki['request']['page']==$page['permalink']?' menu-item-selected':'') 
 					. ((isset($page['subpages'])&&count($page['subpages'])>0)?' menu-item-dropdown':'') 
                     . " menu-item-" . $page['permalink']
+                    . (($page['menu_flags']&0x01)==0x01?' menu-item-header':'')
+                    . (($page['menu_flags']&0x02)==0x02?' menu-item-footer':'')
 					. "'><a href='" . $ciniki['request']['base_url'] . "/" . $page['permalink'] . "'>" . $page['title'] . "</a>";
 				if( isset($page['subpages']) && count($page['subpages']) > 0 ) {
 					$content .= "<ul id='menu-item-$i-sub' class='sub-menu sub-menu-hidden'>";

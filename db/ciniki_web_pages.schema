@@ -34,6 +34,13 @@
 #
 # page_module:			The module page when page_type = 30.
 #
+# menu_flags:       The options of where to display the page.
+#                   
+#                   0x01 - Header Menu
+#                   0x02 - Footer Menu
+#                   0x04 - 
+#                   0x08 - 
+#
 # flags:			The options for this page.
 #
 #					0x01 - Visible
@@ -72,6 +79,7 @@ create table ciniki_web_pages (
 	page_type tinyint unsigned not null,
 	page_redirect_url varchar(500) not null,
 	page_module varchar(250) not null,
+	menu_flags tinyint unsigned not null,
 	flags int unsigned not null,
 	primary_image_id int not null,
 	primary_image_caption varchar(250) not null,
@@ -83,4 +91,4 @@ create table ciniki_web_pages (
 	last_updated datetime not null,
 	primary key (id),
 	index sync (business_id, uuid, last_updated)
-) ENGINE='InnoDB', COMMENT='v1.03';
+) ENGINE='InnoDB', COMMENT='v1.04';

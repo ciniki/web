@@ -114,6 +114,7 @@ function ciniki_web_privateThemeUpdate(&$ciniki) {
 		'header-article-title',
 		'header-breadcrumbs',
 		'share-social-icons',
+		'footer-menu',
 		'footer-layout',
 		'footer-social-icons',
 		'footer-copyright-message',

@@ -64,6 +64,10 @@ function ciniki_web_privatethemes() {
 				'share-social-icons':{'label':'Social Icon Font', 'type':'toggle', 'toggles':{'MonoSocial':'Mono Social', 'FontAwesome':'Font Awesome'}},
 				}},
 			'footer':{'label':'Footer', 'aside':'yes', 'fields':{
+                'footer-menu':{'label':'Menu', 'type':'toggle', 
+                    'visible':function() {return (M.curBusiness.modules['ciniki.web'].flags&0x0200)>0?'yes':'no';},
+                    'default':'no', 'toggles':{'no':'No', 'yes':'Yes'}
+                    },
 				'footer-layout':{'label':'Layout', 'type':'select', 'options':{
 					'social-links-copyright':'Social - Links - Copyright', 
 					'copyright-links-social':'Copyright - Links - Social',
