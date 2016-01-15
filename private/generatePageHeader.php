@@ -14,7 +14,7 @@
 // Returns
 // -------
 //
-function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
+function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
 
 	//
 	// Store the header content
@@ -641,7 +641,7 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 					. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
 					. "AND parent_id IN (" . ciniki_core_dbQuoteIDs($ciniki, array_keys($pages)) . ") "
 					. "AND (flags&0x01) = 1 "	// Active pages
-					. "ORDER BY sequence, title "
+					. "ORDER BY parent_id, sequence, title "
 					. "";
 				$rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.web', array(
 					array('container'=>'parents', 'fname'=>'parent_id', 
@@ -676,6 +676,72 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 					}
 				}
 			}
+            //
+            // Check for footer signin/account details
+            //
+            if( isset($settings['theme']['footer-menu-signin']) && $settings['theme']['footer-menu-signin'] == 'yes' ) {
+                $account_page = array(
+                    'id'=>'account',
+                    'title'=>(isset($settings['theme']['footer-menu-signin-text']) && $settings['theme']['footer-menu-signin-text'] != ''
+                        ? $settings['theme']['footer-menu-signin-text'] : 'Sign In'),
+                    'permalink'=>'account',
+                    'url'=>$ciniki['request']['ssl_domain_base_url'] . '/account',
+                    'page_type'=>0,
+                    'page_module'=>'ciniki.customers',
+                    'menu_flags'=>0x02,
+                    'subpages'=>array(),
+                    );
+                //
+                // Shopping Cart link
+                //
+                if( isset($settings['page-cart-active']) && $settings['page-cart-active'] == 'yes' 
+                    && ( 
+                        (isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0)
+                        || (isset($ciniki['session']['cart']['num_items']) && $ciniki['session']['cart']['num_items'] > 0)
+                        )
+                    ) {
+                    $account_page['subpages'][] = array(
+                        'id'=>'cart',
+                        'title'=>'Cart' . ((isset($ciniki['session']['cart']['num_items'])&&$ciniki['session']['cart']['num_items'] > 0) 
+                            ? '(' . $ciniki['session']['cart']['num_items'] . ')' : ''),
+                        'url'=>$ciniki['request']['ssl_domain_base_url'] . '/cart',
+                        'page_type'=>0,
+                        'page_module'=>'ciniki.sapos',
+                        );
+                }
+                if( isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 ) {
+                    $account_page['title'] = 'Account';
+            
+                    $account_submenu = array();
+                    foreach($ciniki['business']['modules'] as $module => $m) {
+                        list($pkg, $mod) = explode('.', $module);
+                        $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'accountSubMenuItems');
+                        if( $rc['stat'] == 'ok' ) {
+                            $fn = $rc['function_call'];
+                            $rc = $fn($ciniki, $settings, $ciniki['request']['business_id']);
+                            if( $rc['stat'] == 'ok' && isset($rc['submenu']) ) {
+                                $account_submenu = array_merge($account_submenu, $rc['submenu']);
+                            }
+                        }
+                    }
+
+                    //
+                    // Sort the menu items by priority
+                    //
+                    usort($account_submenu, function($a, $b) {
+                        if( $a['priority'] == $b['priority'] ) {
+                            return 0;
+                        }
+                        // Sort so largest priority is top of list or first menu item
+                        return ($a['priority'] < $b['priority'])?1:-1;
+                    });
+
+                    $account_page['subpages'] = array_merge($account_page['subpages'], $account_submenu);
+                }
+                $pages[] = $account_page;
+            }
+
+            $ciniki['response']['pages'] = $pages;
 		} else {
 			$pages = array();
 		}
@@ -1009,8 +1075,10 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 			) {
 			$content .= "<li class='menu-item" . ($ciniki['request']['page']=='home'?' menu-item-selected':'') . "'><a href='" . $page_home_url . "'>Home</a></li>";
 		}
-	//	print "<pre>" .  print_r($ciniki['request'], true) . "</pre>";
-	//	print "<pre>" .  print_r($settings, true) . "</pre>";
+//		print "<pre>" .  print_r($ciniki['request'], true) . "</pre>";
+//		print "<pre>" .  print_r($ciniki['response'], true) . "</pre>";
+//		print "<pre>" .  print_r($settings, true) . "</pre>";
+//		print "<pre>" .  print_r($pages, true) . "</pre>";
 
 		foreach($pages as $page) {
 			if( $page['page_type'] == '20' ) {
@@ -1031,13 +1099,20 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
                     . " menu-item-" . $page['permalink']
                     . (($page['menu_flags']&0x01)==0x01?' menu-item-header':'')
                     . (($page['menu_flags']&0x02)==0x02?' menu-item-footer':'')
-					. "'><a href='" . $ciniki['request']['base_url'] . "/" . $page['permalink'] . "'>" . $page['title'] . "</a>";
+					. "'>";
+                if( isset($page['url']) && $page['url'] != '' ) {
+                    $content .= "<a href='" . $page['url'] . "'>" . $page['title'] . "</a>";
+                } else {
+                    $content .= "<a href='" . $ciniki['request']['base_url'] . "/" . $page['permalink'] . "'>" . $page['title'] . "</a>";
+                }
 				if( isset($page['subpages']) && count($page['subpages']) > 0 ) {
 					$content .= "<ul id='menu-item-$i-sub' class='sub-menu sub-menu-hidden'>";
 					foreach($page['subpages'] as $subpage ) {
 						$content .= "<li class='sub-menu-item'>";
 						if( isset($subpage['page_type']) && $subpage['page_type'] == '20' ) {
 							$content .= "<a href='" . $subpage['page_redirect_url'] . "'>" . $subpage['title'] . "</a>";
+						} elseif( isset($subpage['url']) && $subpage['url'] != '' ) {
+							$content .= "<a href='" . $subpage['url'] . "'>" . (isset($subpage['name'])?$subpage['name']:$subpage['title']) . "</a>";
 						} else {
 							$content .= "<a href='" . $ciniki['request']['base_url'] . "/" . $page['permalink'] . "/" . $subpage['permalink'] . "'>" . $subpage['title'] . "</a>";
 						}

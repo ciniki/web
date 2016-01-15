@@ -47,10 +47,68 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
     //
     if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.web', 0x0200) 
         && isset($settings['theme']['footer-menu']) && $settings['theme']['footer-menu'] == 'yes' 
+        && isset($ciniki['response']['pages'])
         ) {
         //
         // Get the pages for the footer
         //
+        $content .= "<nav id='footer-menu'>";
+        $content .= "<div class='footer-menu-container'>";
+        $content .= "<h3 class='assistive-text'>Footer Menu</h3>";
+        $content .= "<ul class='menu'>";
+        foreach($ciniki['response']['pages'] as $page) {
+            if( ($page['menu_flags']&0x02) == 0 ) {
+                continue;   // Skip non footer pages
+            }
+            $content .= "<li class='menu-item" . ($ciniki['request']['page']==$page['permalink']?' menu-item-selected':'') 
+                . ((isset($page['subpages'])&&count($page['subpages'])>0)?' menu-item-dropdown':'') 
+                . " menu-item-" . $page['permalink']
+                . (($page['menu_flags']&0x01)==0x01?' menu-item-header':'')
+                . (($page['menu_flags']&0x02)==0x02?' menu-item-footer':'')
+                . "'><a href='" . $ciniki['request']['base_url'] . "/" . $page['permalink'] . "'>" . $page['title'] . "</a>";
+            if( isset($page['subpages']) && count($page['subpages']) > 0 ) {
+                $content .= "<ul class='sub-menu sub-menu-hidden'>";
+                foreach($page['subpages'] as $subpage ) {
+                    $content .= "<li class='sub-menu-item'>";
+                    if( isset($subpage['page_type']) && $subpage['page_type'] == '20' ) {
+                        $content .= "<a href='" . $subpage['page_redirect_url'] . "'>" . $subpage['title'] . "</a>";
+                    } elseif( isset($subpage['url']) && $subpage['url'] != '' ) {
+                        $content .= "<a href='" . $subpage['url'] . "'>" . (isset($subpage['name'])?$subpage['name']:$subpage['title']) . "</a>";
+                    } else {
+                        $content .= "<a href='" . $ciniki['request']['base_url'] . "/" . $page['permalink'] . "/" . $subpage['permalink'] . "'>" . $subpage['title'] . "</a>";
+                    }
+                    $content .= "</li>";
+                }
+                $content .= "</ul>";
+            }
+            //
+            // If the footer menu item is the account page and the customer is not logged in, display the login form
+            //
+            if( isset($page['id']) && $page['id'] == 'account' 
+                && (!isset($ciniki['session']['customer']['id']) || $ciniki['session']['customer']['id'] < 1) 
+                ) {
+                $content .= "<div class='signin-form'>"
+                    . "<form action='" . $ciniki['request']['ssl_domain_base_url'] . "/account' method='post'>"
+                    . "<input type='hidden' name='action' value='signin'>"
+                    . "<div class='input'>"
+                        . "<label for='email'>Email</label>"
+                        . "<input id='email' type='email' class='text' maxlength='250' name='email' />"
+                    . "</div>"
+                    . "<div class='input'>"
+                        . "<label for='password'>Password</label>"
+                        . "<input id='password' type='password' class='text' maxlength='100' name='password' />"
+                    . "</div>"
+                    . "<div class='submit'>"
+                        . "<input type='submit' class='submit' value='Sign In'/>"
+                    . "</div>"
+                    . "</form>"
+                    . "</div>";
+            }
+            $content .= "</li>";
+        }
+        $content .= "</ul>";
+        $content .= "</div>";
+        $content .= "</nav>";
     }
 
 	//

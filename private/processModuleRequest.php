@@ -108,6 +108,7 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
 	} else {
 		$article_title = $page['title'];
 	}
+
 //	if( isset($page['sidebar']) && count($page['sidebar']) > 0 ) {
 //		$rsp['content'] .= "<div class='col-left-wide'>";
 //	}
@@ -127,6 +128,7 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
 			$rsp['content'] .= $rc['content'];
 		}
 	}
+
 	//
 	// Setup the meta information
 	//
@@ -195,7 +197,6 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
 		$rsp['content'] .= "</aside>";
 	}
 
-	
 	//
 	// Return the content
 	//
