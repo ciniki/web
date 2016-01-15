@@ -299,9 +299,29 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 	}
     if( isset($settings['theme']['header-menu-button']) && $settings['theme']['header-menu-button'] == 'yes' ) {
         $content .= "<script type='text/javascript'>"
-            . "cinikiMainMenuToggle(){"
+            . "function cinikiMainMenuToggle(){"
                 . "var e=document.getElementById('main-menu');"
-                . "console.log('togglemenu');"
+                . "if(!e.classList.contains('main-menu-visible')){"
+                    . "e.classList.add('main-menu-visible');"
+                . "}else{"
+                    . "e.classList.remove('main-menu-visible');"
+                . "}"
+            . "};"
+            . "function cinikiSubMenuToggle(b,i){"  // Button, Sub Menu ID
+                . "var e=document.getElementById(i);"
+                . "if(!e.classList.contains('sub-menu-visible')){"
+                    . "e.classList.add('sub-menu-visible');"
+                    . "e.classList.remove('sub-menu-hidden');"
+                    . "if(!b.classList.contains('active')){"
+                        . "b.classList.add('active');"
+                    . "}"
+                . "}else{"
+                    . "e.classList.add('sub-menu-hidden');"
+                    . "e.classList.remove('sub-menu-visible');"
+                    . "if(b.classList.contains('active')){"
+                        . "b.classList.remove('active');"
+                    . "}"
+                . "}"
             . "}"
             . "</script>";
     }
@@ -1024,7 +1044,11 @@ function ciniki_web_generatePageHeader($ciniki, $settings, $title, $submenu) {
 						$content .= "</li>";
 					}
 					$content .= "</ul>";
-					$content .= "<span class='dropdown-button'><i class='navicon'></i></span>";
+                    if( isset($settings['theme']['header-menu-button']) && $settings['theme']['header-menu-button'] == 'yes' ) {
+                        $content .= "<span class='dropdown-button' onclick='cinikiSubMenuToggle(this,\"menu-item-$i-sub\");'><i class='navicon'></i></span>";
+                    } else {
+                        $content .= "<span class='dropdown-button'><i class='navicon'></i></span>";
+                    }
 				}
 				$content .= "</li>";
 /*			} elseif( $page['title'] != '' && $page['permalink'] != '' ) {

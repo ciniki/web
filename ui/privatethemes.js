@@ -57,6 +57,7 @@ function ciniki_web_privatethemes() {
 			'header':{'label':'Header', 'aside':'yes', 'fields':{
 				'header-social-icons':{'label':'Social Icon Font', 'type':'toggle', 'toggles':{'MonoSocial':'Mono Social', 'FontAwesome':'Font Awesome'}},
 				'header-signin-button':{'label':'Signin Button', 'type':'toggle', 'default':'no', 'toggles':{'no':'No', 'yes':'Yes'}},
+				'header-menu-button':{'label':'Menu Button', 'type':'toggle', 'default':'no', 'toggles':{'no':'No', 'yes':'Yes'}},
 				'header-article-title':{'label':'Article Title', 'type':'toggle', 'default':'no', 'toggles':{'no':'No', 'yes':'Yes'}},
 				'header-breadcrumbs':{'label':'Breadcrumbs', 'type':'toggle', 'default':'no', 'toggles':{'no':'No', 'yes':'Yes'}},
 				}},
