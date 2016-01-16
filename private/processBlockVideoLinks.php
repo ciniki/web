@@ -29,7 +29,7 @@ function ciniki_web_processBlockVideoLinks(&$ciniki, $settings, $business_id, $b
             // Setup youtube or vimeo video embed
             //
             if( $link['link_type'] == '2000' ) {
-                $url = preg_replace('/watch\?v=/', 'embed\/', $link['url']);
+                $url = preg_replace('/watch\?v=/', 'embed/', $link['url']);
                 $content .= "<div class='embed-video'>"
                     . "<div class='embed-video-wrap'>"
                         . "<iframe src='" . $url . "' frameborder='0' allowfullscreen></iframe>"
