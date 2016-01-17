@@ -116,6 +116,7 @@ function ciniki_web_pages() {
 				return this.data[s];
 			};
 			this[pn].fieldValue = function(s, i, j, d) {
+                if( i == 'parent_id' ) { return ' ' + this.data[i]; }
 				return this.data[i];
 			};
 			this[pn].cellValue = function(s, i, j, d) {
@@ -449,7 +450,6 @@ function ciniki_web_pages() {
 					this[pn].sections.details.fields.parent_id.options[' ' + rsp.parentlist[i].page.id] = rsp.parentlist[i].page.title;
 				}
 			}
-            console.log(this[pn].sections.details.fields.parent_id.options);
 		} else {
 			this[pn].sections.details.fields.parent_id.active = 'no';
 		}

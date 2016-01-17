@@ -99,7 +99,7 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
                         . "<input id='password' type='password' class='text' maxlength='100' name='password' />"
                     . "</div>"
                     . "<div class='submit'>"
-                        . "<input type='submit' class='submit' value='Sign In'/>"
+                        . "<input type='submit' class='submit button' value='Sign In'/>"
                     . "</div>"
                     . "</form>"
                     . "</div>";

@@ -91,7 +91,9 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
 				$prev_parent_id = $rc['page']['id'];
 				$prev_page = $rc['page'];
 				$base_url .= '/' . $rc['page']['permalink'];
-				$article_title .= ($article_title!=''?' - ':'') . "<a href='$base_url'>" . $rc['page']['title'] . "</a>";
+                if( !isset($settings['theme']['header-breadcrumbs']) || $settings['theme']['header-breadcrumbs'] == 'no' ) {
+                    $article_title .= ($article_title!=''?' - ':'') . "<a href='$base_url'>" . $rc['page']['title'] . "</a>";
+                }
 			}
 		}
 	}
@@ -277,6 +279,7 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
 			$image_permalink = $ciniki['request']['uri_split'][$uri_depth+2];
 
 			$base_url .= '/' . $page['permalink'];
+			// $article_title = "<a href='$base_url'>" . $page['title'] . "</a>";
 			$article_title .= ($article_title!=''?' - ':'') . "<a href='$base_url'>" . $page['title'] . "</a>";
 			
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processGalleryImage');
