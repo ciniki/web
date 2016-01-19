@@ -44,10 +44,12 @@ function ciniki_web_processBlockTagImages($ciniki, $settings, $business_id, $blo
 			. "<div class='image-categories-thumbnail'>"
 			. "<img title='$name' alt='$name' src='$img_url' />"
 			. "</div>"
+            . "<div class='image-categories-text'>"
 			. "<span class='image-categories-name'>$name</span>";
         if( isset($tag['subname']) && $tag['subname'] != '' ) {
             $content .= "<span class='image-categories-subname'>" . $tag['subname'] . "</span>";
         }
+        $content .= "</div>";
 		$content .= "</a></div>";
 	}
 	$content .= "</div>";
