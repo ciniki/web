@@ -23,6 +23,8 @@ function ciniki_web_processBlockAudioPriceList(&$ciniki, $settings, $business_id
         return array('stat'=>'ok', 'content'=>$content);
     }
 
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'cartSetupPrices');
+
     //
     // Check for a title
     //
@@ -31,15 +33,20 @@ function ciniki_web_processBlockAudioPriceList(&$ciniki, $settings, $business_id
     }
    
     $audiosamples = '';
-    $content .= "<div class='price-list'>";
+    $list_content = '';
+    $found_prices = 'no';
     foreach($block['list'] as $iid => $item) {
-        $content .= "<div class='price-list-item'>";
-        $content .= "<div class='item-name'>";
-        $content .= "<span class='item-name'>" . $item['title'] . "</span>";
+        $list_content .= "<div class='price-list-item'>";
+        $list_content .= "<div class='item-name'>";
+        if( isset($block['base_url']) && $block['base_url'] != '' && isset($item['permalink']) && $item['permalink'] != '' ) {
+            $list_content .= "<span class='item-name'><a href='" . $block['base_url'] . '/' . $item['permalink'] . "'>" . $item['title'] . "</a></span>";
+        } else {
+            $list_content .= "<span class='item-name'>" . $item['title'] . "</span>";
+        }
 
         if( isset($item['audio']) && count($item['audio']) > 0 ) {
-            $content .= "<a id='item-{$iid}-play' class='play' onclick='cBAPLplay(\"item-$iid\");'></a>";
-            $content .= "</div>";
+            $list_content .= "<a id='item-{$iid}-play' class='play' onclick='cBAPLplay(\"item-$iid\");'></a>";
+            $list_content .= "</div>";
             
             $track = array_shift($item['audio']);
             $sources = array();
@@ -83,7 +90,7 @@ function ciniki_web_processBlockAudioPriceList(&$ciniki, $settings, $business_id
 //                if( isset($track['name']) && $track['name'] != '' ) {
 //                    $audiosamples .= '<span class="audiolabel">' . $track['name'] . '</span>';
 //                }
-                $audiosamples .= "<audio id='item-{$iid}-audio' preload='none' controls>";
+                $audiosamples .= "<audio id='item-{$iid}-audio' preload='none' onplay='cBAPLstart(\"item-{$iid}\");' onpause='cBAPLstop(\"item-{$iid}\");' controls>";
                 if( isset($sources['wav']) ) {
                     $audiosamples .= $sources['wav'];
                 }
@@ -97,17 +104,21 @@ function ciniki_web_processBlockAudioPriceList(&$ciniki, $settings, $business_id
                 $audiosamples .= "</div>";
             }
         } else {
-            $content .= "</div>";
+            $list_content .= "</div>";
         }
         
         if( isset($item['prices']) ) {
-            foreach($item['prices'] as $pid => $price) {
-                
+            $rc = ciniki_web_cartSetupPrices($ciniki, $settings, $business_id, $item['prices']);
+            if( $rc['stat'] == 'ok' && $rc['content'] != '' ) {
+                $found_prices = 'yes';
+                $list_content .= $rc['content'];
             }
         }
-        $content .= "</div>";
+        $list_content .= "</div>";
     }
-    $content .= "</div>";
+    if( $list_content != '' ) {
+        $content .= "<div class='price-list" . ($found_prices=='yes'?' price-list-prices':'') . "'>" . $list_content . "</div>";
+    }
 
     if( $audiosamples != '' ) {
         $content .= "<div id='cBAPLaudio' class='audiosamples'>" . $audiosamples . "</div>";
@@ -123,19 +134,21 @@ function ciniki_web_processBlockAudioPriceList(&$ciniki, $settings, $business_id
                 . "var c=e.children[i];"
                 . "if(!c.classList.contains('hidden')){"
                     . "c.classList.add('hidden');"
-                    . "c.children[0].pause();"
-                    . "document.getElementById(c.id+'-play').className='play';"
+                    . "document.getElementById(c.id+'-audio').pause();"
                 . "}else if(c.id==id&&c.classList.contains('hidden')){"
                     . "c.classList.remove('hidden');"
-                    . "c.children[0].currentTime=0;"
-                    . "c.children[0].play();"
-                    . "document.getElementById(c.id+'-play').className='pause';"
+                    . "var a=document.getElementById(c.id+'-audio');"
+                    . "if(a!=null){if(a.currentTime>0){a.currentTime=0;}a.play();}"
                 . "}"
             . "}"
         . "}"
+        . "function cBAPLstart(id){"
+            . "document.getElementById(id+'-play').className='pause';"
+        . "}"
+        . "function cBAPLstop(id){"
+            . "document.getElementById(id+'-play').className='play';"
+        . "}"
         . "</script>";
-
-    
 
 	return array('stat'=>'ok', 'content'=>$content);
 }

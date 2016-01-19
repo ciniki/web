@@ -17,6 +17,7 @@ function ciniki_web_processBlockImageList(&$ciniki, $settings, $business_id, $bl
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processMeta');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'cartSetupPrices');
 
 	$page_limit = 0;
 	if( isset($block['limit']) ) {
@@ -62,7 +63,7 @@ function ciniki_web_processBlockImageList(&$ciniki, $settings, $business_id, $bl
 			$url_display = $rc['display'];
 		}
 
-		$content .= "<div class='image-list-entry'>";
+		$content .= "<div class='image-list-entry-wrap'><div class='image-list-entry'>";
 
 		//
 		// Setup the image
@@ -187,6 +188,14 @@ function ciniki_web_processBlockImageList(&$ciniki, $settings, $business_id, $bl
 			}
 		}
 
+        if( isset($block['prices']) && $block['prices'] == 'yes' && isset($item['prices']) && count($item['prices']) > 0 ) {
+            $rc = ciniki_web_cartSetupPrices($ciniki, $settings, $business_id, $item['prices']);
+            if( $rc['stat'] == 'ok' && $rc['content'] != '' ) {
+                $content .= "<div class='image-list-item-prices'>" . $rc['content'] . "</div>";
+            }
+        }
+
+		$content .= "</div>";
 		if( $url != '' ) {
 			$content .= "<div class='image-list-more'>";
 			$content .= "<a href='$url' target='$url_target'>$url_display</a>";

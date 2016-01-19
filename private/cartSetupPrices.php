@@ -36,7 +36,6 @@ function ciniki_web_cartSetupPrices($ciniki, $settings, $business_id, $prices) {
 	if( count($prices) > 1 ) {
 		$content .= "<h2>Price</h2>";
 	}
-	$content .= "<div class='cart-pricelist'>";
 	foreach($prices as $pid => $price) {
 		$content .= "<div class='price'>";
 		if( isset($price['name']) && $price['name'] != '' ) {
@@ -46,19 +45,18 @@ function ciniki_web_cartSetupPrices($ciniki, $settings, $business_id, $prices) {
 		$final_price = $price['unit_amount'];
 		$discount = '';
 		if( isset($price['unit_discount_amount']) && $price['unit_discount_amount'] > 0 ) {
-			$discount .= " - " . numfmt_format_currency($intl_currency_fmt,
-				$price['unit_discount_amount'], $intl_currency);
+			$discount .= " - " . numfmt_format_currency($intl_currency_fmt, $price['unit_discount_amount'], $intl_currency);
 			$final_price = bcsub($price['unit_amount'], $price['unit_discount_amount'], 4);
 		}
 		if( isset($price['unit_discount_percentage']) && $price['unit_discount_percentage'] > 0 ) {
+			$discount .= " - " .  sprintf('%0.2f', $price['unit_discount_percentage']) . "%";
 			$percentage = bcdiv($price['unit_discount_percentage'], 100, 4);
-			$discount .= " - " .  $price['unit_discount_amount'] . "%";
 			$final_price = bcsub($final_price, bcmul($final_price, $percentage, 4), 4);
 		}
 
 		// Apply the discounts
 		if( $final_price != $price['unit_amount'] ) {
-			$content .= '<del>' . $price['unit_amount'] . '</del>' . $discount . ' ';
+			$content .= '<del>' . numfmt_format_currency($intl_currency_fmt, $price['unit_amount'], $intl_currency) . '</del>' . $discount . ' ';
 			$content .= numfmt_format_currency($intl_currency_fmt, $final_price, $intl_currency);
 			$content .= ' ' . $intl_currency;
 		} else {
@@ -163,7 +161,9 @@ function ciniki_web_cartSetupPrices($ciniki, $settings, $business_id, $prices) {
 
 		$content .= "</div>";
 	}
-	$content .= "</div>";
+    if( $content != '' ) {
+        $content = "<div class='cart-pricelist'>" . $content . "</div>";
+    }
 
 	return array('stat'=>'ok', 'content'=>$content);
 }
