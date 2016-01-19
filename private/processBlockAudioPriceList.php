@@ -12,14 +12,14 @@
 // Returns
 // -------
 //
-function ciniki_web_processBlockAudioList(&$ciniki, $settings, $business_id, $block) {
+function ciniki_web_processBlockAudioPriceList(&$ciniki, $settings, $business_id, $block) {
 
 	$content = '';
 
 	//
 	// Display any audio sample
 	//
-    if( !isset($block['audio']) ) {
+    if( !isset($block['list']) ) {
         return array('stat'=>'ok', 'content'=>$content);
     }
 
@@ -30,7 +30,7 @@ function ciniki_web_processBlockAudioList(&$ciniki, $settings, $business_id, $bl
         $content .= "<h2>" . $block['title'] . "</h2>";
     }
 
-	foreach($block['audio'] as $aid => $track) {
+	foreach($block['list'] as $aid => $track) {
 		$sources = array();
 		$formats = array('mp3'=>'audio/mpeg', 'wav'=>'audio/wav', 'ogg'=>'audio/ogg');
 		if( isset($track['formats']) ) {
