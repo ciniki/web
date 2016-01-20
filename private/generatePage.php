@@ -193,7 +193,6 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
 		
 		$page_content .= "</div>";
 		$page_content .= "</article>";
-
 	} 
 	
 	//
@@ -217,6 +216,9 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
 		// Set the page class
 		//
 		$ciniki['request']['page-container-class'] = 'page-' . $ciniki['request']['page'];
+        if( $page['permalink'] != $ciniki['request']['page'] ) {
+            $ciniki['request']['page-container-class'] .= ' page-' . $ciniki['request']['page'] . '-' . $page['permalink'];
+        }
 
 		//
 		// Check if a file was specified to be downloaded
@@ -298,6 +300,7 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
 			if( isset($sponsors) && is_array($sponsors) && count($sponsors) > 0 ) {
 				$page['sponsors'] = $sponsors;
 			}
+            error_log(print_r($page, true));
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processPage');
 			$rc =  ciniki_web_processPage($ciniki, 0, $base_url, $page, array('article_title'=>$article_title));
 			if( $rc['stat'] != 'ok' ) {
