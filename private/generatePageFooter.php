@@ -87,6 +87,15 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
             if( isset($page['id']) && $page['id'] == 'account' 
                 && (!isset($ciniki['session']['customer']['id']) || $ciniki['session']['customer']['id'] < 1) 
                 ) {
+                if( isset($settings['page-account-signin-redirect']) 
+                    && $settings['page-account-signin-redirect'] == 'back' 
+                    ) {
+                    if( (!isset($_SESSION['login_referer']) || $_SESSION['login_referer'] == '') 
+                        && isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != '' 
+                        ) {
+                            $_SESSION['login_referer'] = $_SERVER['HTTP_REFERER'];
+                    }
+                }
                 $content .= "<div class='signin-form'>"
                     . "<form action='" . $ciniki['request']['ssl_domain_base_url'] . "/account' method='post'>"
                     . "<input type='hidden' name='action' value='signin'>"
