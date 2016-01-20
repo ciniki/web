@@ -269,10 +269,28 @@ function ciniki_web_pageGet($ciniki) {
 		}
 	}
 
+    //
+    // Get the list of module pages available to embed into pages. These are used for custom pages
+    // to get their content from the module instead of their own content. Each module may only have one
+    // page or multiple pages.
+    //
+    $modules_pages = array();
+	foreach($ciniki['business']['modules'] as $module => $m) {
+		list($pkg, $mod) = explode('.', $module);
+		$rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'hooks', 'webOptions');
+		if( $rc['stat'] == 'ok' ) {
+			$fn = $rc['function_call'];
+			$rc = $fn($ciniki, $args['business_id'], array());
+			if( $rc['stat'] == 'ok' && isset($rc['pages']) ) {
+                $modules_pages = array_merge($modules_pages, $rc['pages']);
+			}
+		}
+	}
+
 	//
 	// Check if a list of module available to the business should be returned
 	//
-	$modules = array();
+/*	$modules = array();
 	foreach($ciniki['business']['modules'] as $mod_name => $module) {
 		//
 		// Check if the module is a none core module and the processRequest.php file exists in the modules web directory
@@ -295,8 +313,8 @@ function ciniki_web_pageGet($ciniki) {
 			$modules[] = array('module'=>$module);
 		}
 
-	}
+	} */
 
-	return array('stat'=>'ok', 'page'=>$page, 'parentlist'=>$parentlist, 'modules'=>$modules);
+	return array('stat'=>'ok', 'page'=>$page, 'parentlist'=>$parentlist, 'modules_pages'=>$modules_pages);
 }
 ?>

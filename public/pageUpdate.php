@@ -150,7 +150,8 @@ function ciniki_web_pageUpdate(&$ciniki) {
 	// Update any page settings for modules
 	//
 	if( (isset($args['page_type']) && $args['page_type'] == '30') || (!isset($args['page_type']) && $item['page_type'] == '30') ) {
-		list($pkg, $mod) = explode('.', isset($args['page_module'])?$args['page_module']:$item['page_module']);
+		$page_module = isset($args['page_module']) ? $args['page_module'] : $item['page_module'];
+		list($pkg, $mod) = explode('.', $page_module);
 		//
 		// Get any module options
 		//
@@ -158,14 +159,13 @@ function ciniki_web_pageUpdate(&$ciniki) {
 		if( $rc['stat'] == 'ok' ) {
 			$fn = $rc['function_call'];
 			$rc = $fn($ciniki, $args['business_id'], array());
-			if( $rc['stat'] == 'ok' && isset($rc['options']) ) {
+			if( $rc['stat'] == 'ok' && isset($rc['pages'][$page_module]['options']) ) {
 				//
 				// Check for options that need updating
 				//
-				$options = $rc['options'];
+				$options = $rc['pages'][$page_module]['options'];
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbInsert');
 				foreach($options as $oid => $option) {
-					$option = $option['option'];
 					if( isset($ciniki['request']['args'][$option['setting']]) ) {
 						$strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) "
 							. "VALUES ('" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['business_id']) . "'"

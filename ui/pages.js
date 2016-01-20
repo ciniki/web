@@ -35,7 +35,7 @@ function ciniki_web_pages() {
 				'ciniki_web_pages', pn,
 				'mc', 'medium', 'sectioned', 'ciniki.web.pages.edit');
 			this[pn].data = {};	
-			this[pn].modules = {};
+			this[pn].modules_pages = {};
 			this[pn].stackedData = [];
 			this[pn].page_id = pid;
 			this[pn].sections = {
@@ -339,12 +339,12 @@ function ciniki_web_pages() {
 				this.sections._module_options.visible = 'hidden';
 				var mod = this.formValue('page_module');
 				this.sections._module_options.fields = {};
-				for(var i in this.modules) {
-					if( this.modules[i].module.module_id == mod ) {
-						if( this.modules[i].module.options != null ) {
-							for(var j in this.modules[i].module.options) {
+				for(var i in this.modules_pages) {
+					if( i == mod ) {
+						if( this.modules_pages[i].options != null ) {
+							for(var j in this.modules_pages[i].options) {
 								this.sections._module_options.visible = 'yes';
-								this.setModuleOptionsField(this.modules[i].module.options[j].option);
+								this.setModuleOptionsField(this.modules_pages[i].options[j]);
 							}
 						}
 						break;
@@ -363,7 +363,13 @@ function ciniki_web_pages() {
 				if( option.type == 'toggle' ) {
 					this.sections._module_options.fields[option.setting].toggles = {};
 					for(var i in option.toggles) {
-						this.sections._module_options.fields[option.setting].toggles[option.toggles[i].toggle.value] = option.toggles[i].toggle.label;
+						this.sections._module_options.fields[option.setting].toggles[option.toggles[i].value] = option.toggles[i].label;
+					}
+				}
+				else if( option.type == 'select' ) {
+					this.sections._module_options.fields[option.setting].options = {};
+					for(var i in option.options) {
+						this.sections._module_options.fields[option.setting].options[option.options[i].value] = option.options[i].label;
 					}
 				}
 				this.data[option.setting] = option.value;
@@ -454,7 +460,7 @@ function ciniki_web_pages() {
 			this[pn].sections.details.fields.parent_id.active = 'no';
 		}
 		this[pn].data = rsp.page;
-		this[pn].modules = rsp.modules;
+		this[pn].modules_pages = rsp.modules_pages;
 		// Remove child_format flags
 		this[pn].data.flags_1 = (rsp.page.flags&0xFFFFFF0F);
 		this[pn].data.child_format = (rsp.page.flags&0x000000F0);
@@ -479,9 +485,9 @@ function ciniki_web_pages() {
 			if( (M.curBusiness.modules['ciniki.web'].flags&0x0200) > 0 ) {
 				this[pn].sections._page_type.fields.page_type.toggles['30'] = 'Module';
 				this[pn].sections._module.fields.page_module.options = {};
-				if( rsp.modules != null ) {
-					for(i in rsp.modules) {
-						this[pn].sections._module.fields.page_module.options[rsp.modules[i].module.module_id] = rsp.modules[i].module.module;
+				if( rsp.modules_pages != null ) {
+					for(i in rsp.modules_pages) {
+						this[pn].sections._module.fields.page_module.options[i] = rsp.modules_pages[i].name;
 					}
 				}
 			}

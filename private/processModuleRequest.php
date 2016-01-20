@@ -13,8 +13,16 @@
 // Returns
 // -------
 //
-function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $module, $args) {
+function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $module_page, $args) {
 
+    //
+    // Split the module into pieces
+    //
+    $m_pieces = explode('.', $module_page);
+    $module = $m_pieces[0] . '.' . $m_pieces[1];
+    $pkg = $m_pieces[0];
+    $mod = $m_pieces[1];
+    $args['module_page'] = $module_page;
 
 	//
 	// Check the module is enabled for the business
@@ -26,7 +34,6 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
 	//
 	// call the modules processRequest to get page content
 	//
-	list($pkg, $mod) = explode('.', $module);
 	$rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'processRequest');
 	if( $rc['stat'] != 'ok' ) {
 		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2577', 'msg'=>"I'm sorry, but the page you requested does not exist."));
