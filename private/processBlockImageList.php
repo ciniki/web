@@ -32,11 +32,12 @@ function ciniki_web_processBlockImageList(&$ciniki, $settings, $business_id, $bl
 	$count = 0;
 //	$content .= "<tr><th><span class='cilist-category'></span></th><td>";
 
+    $content = '';
 	// Start the inner table for the item list
-	$content = "<div class='image-list'>\n";
 	if( isset($block['title']) && $block['title'] != '' ) {
 		$content .= "<h2><span>" . $block['title'] . "</span></h2>";
 	}
+	$content .= "<div class='image-list'>\n";
 
 	foreach($block['list'] as $iid => $item) {
 		if( $page_limit > 0 && $count >= $page_limit ) { $count++; break; }

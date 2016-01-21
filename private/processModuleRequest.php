@@ -168,6 +168,14 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
 		}
 	}
 
+    if( isset($args['page_menu']) && count($args['page_menu']) > 0 ) {
+        $rsp['content'] .= "<div class='page-menu-container'><ul class='page-menu'>";
+        foreach($args['page_menu'] as $item) {  
+            $rsp['content'] .= "<li class='page-menu-item'><a href='" . $item['url'] . "'>" . $item['name'] . "</a></li>";
+        }
+        $rsp['content'] .= "</ul></div>";
+    }
+
 	$rsp['content'] .= "</header>\n"
 		. "<div class='entry-content'>\n"
 		. "";

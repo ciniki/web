@@ -24,8 +24,17 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
 	$content .= "<article class='page'>\n"
 		. "<header class='entry-title'><h1 class='entry-title'>" 
 		. (isset($args['article_title'])&&$args['article_title']!=''?$args['article_title'] . ' - ':'')
-		. $page['title'] . "</h1></header>\n"
+		. $page['title'] . "</h1>"
 		. "";
+    if( isset($args['page_menu']) && count($args['page_menu']) > 0 ) {
+        $content .= "<div class='page-menu-container'><ul class='page-menu'>";
+        foreach($args['page_menu'] as $item) {  
+            $content .= "<li class='page-menu-item'><a href='" . $item['url'] . "'>" . $item['name'] . "</a></li>";
+        }
+        $content .= "</ul></div>";
+    }
+    $content .= "</div>";
+
 	$content .= "<div class='entry-content'>";
 	if( isset($page['image_id']) && $page['image_id'] != '' && $page['image_id'] != 0 ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');

@@ -13,6 +13,7 @@ function ciniki_web_pages() {
 	this.parentChildrenFormat = {
 		'5':{'name':'List'},
 		'6':{'name':'Menu'},
+		'7':{'name':'Page Menu'},
 //		'32':{'name':'List'},
 		};
     this.menuFlags = {
