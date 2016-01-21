@@ -18,6 +18,7 @@ function ciniki_web_processBlockFormMessage($ciniki, $settings, $business_id, $b
 	}
 	$content = '';
 
+    $content .= "<div class='form-message-content'>";
     if( $block['level'] == 'error' ) {
         $content .= "<div class='form-result-message form-error-message'><div class='form-message-wrapper'><p>" . $block['message'] . "</p></div></div>";
     } elseif( $block['level'] == 'warning' ) {
@@ -25,6 +26,7 @@ function ciniki_web_processBlockFormMessage($ciniki, $settings, $business_id, $b
     } else {
         $content .= "<div class='form-result-message form-success-message'><div class='form-message-wrapper'><p>" . $block['message'] . "</p></div></div>";
     }
+    $content .= "</div>";
 
 	return array('stat'=>'ok', 'content'=>$content);
 }

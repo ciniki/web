@@ -13,7 +13,7 @@
 // Returns
 // -------
 //
-function ciniki_web_generatePageFooter($ciniki, $settings) {
+function ciniki_web_generatePageFooter(&$ciniki, $settings) {
 	global $start_time;
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
@@ -96,12 +96,12 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
                             $_SESSION['login_referer'] = $_SERVER['HTTP_REFERER'];
                     }
                 }
-                $content .= "<div class='signin-form'>"
+                $content .= "<div id='footer-signin' class='signin-form'>"
                     . "<form action='" . $ciniki['request']['ssl_domain_base_url'] . "/account' method='post'>"
                     . "<input type='hidden' name='action' value='signin'>"
                     . "<div class='input'>"
-                        . "<label for='email'>Email</label>"
-                        . "<input id='email' type='email' class='text' maxlength='250' name='email' />"
+                        . "<label for='footeremail'>Email</label>"
+                        . "<input id='footeremail' type='email' class='text' maxlength='250' name='email' />"
                     . "</div>"
                     . "<div class='input'>"
                         . "<label for='password'>Password</label>"
@@ -111,7 +111,38 @@ function ciniki_web_generatePageFooter($ciniki, $settings) {
                         . "<input type='submit' class='submit button' value='Sign In'/>"
                     . "</div>"
                     . "</form>"
+                    . "<a class='color' href='javscript:void(0);' onclick='swapFooterLoginForm(\"forgotpassword\");return false;'>Forgot your password?</a>"
                     . "</div>";
+                $content .= "<div id='footer-forgot' class='signin-form' style='display: none;'>"
+                    . "<form action='" . $ciniki['request']['ssl_domain_base_url'] . "/account' method='post'>"
+                    . "<input type='hidden' name='action' value='forgot'>"
+                    . "<div class='input'>"
+                        . "<label for='footerforgotemail'>Email</label>"
+                        . "<input id='footerforgotemail' type='email' class='text' maxlength='250' name='email' />"
+                    . "</div>"
+                    . "<div class='submit'>"
+                        . "<input type='submit' class='submit button' value='Get New Password'/>"
+                    . "</div>"
+                    . "<a class='color' href='javascript:void();' onclick='swapFooterLoginForm(\"signin\"); return false;'>Sign In</a>"
+                    . "</form>"
+                    . "</div>";
+
+                //
+                // Javascript to switch login/forgot password forms
+                //
+                $javascript .= ""
+                    . "function swapFooterLoginForm(l) {"
+                        . "if( l == 'forgotpassword' ) {"
+                            . "document.getElementById('footer-signin').style.display = 'none';"
+                            . "document.getElementById('footer-forgot').style.display = 'block';"
+                            . "document.getElementById('footerforgotemail').value = document.getElementById('footeremail').value;"
+                        . "} else {"
+                            . "document.getElementById('footer-signin').style.display = 'block';"
+                            . "document.getElementById('footer-forgot').style.display = 'none';"
+                        . "}\n"
+                        . "return true;\n"
+                    . "}\n"
+                    . "";
             }
             $content .= "</li>";
         }
