@@ -70,8 +70,6 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
             $content .= "<div class='block block-files'>" . $files . "</div>";
         }
 	}
-	$content .= "</div>";
-	$content .= "<br style='clear:both;'/>";
 
 	//
 	// Display the additional images for the content
@@ -98,25 +96,40 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
 	//
 	if( isset($page['children']) && count($page['children']) > 0 ) {
         $content .= "<div class='block block-children'>";
-		$content .= "<br/>";
 		if( isset($page['child_title']) && $page['child_title'] != '' ) {
 			$content .= "<h2>" . $page['child_title'] . "</h2>";
 		}
 		if( count($page['children']) > 0 ) {
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
-			$child_base_url = $base_url;
-			if( $page['permalink'] != '' ) {
-				$child_base_url .= '/' . $page['permalink'];
-			}
-			$list_args = array('notitle'=>'yes');
-			if( isset($page['child_files']) ) {
-				$list_args['child_files'] = $page['child_files'];
-			}
-			$rc = ciniki_web_processCIList($ciniki, $settings, $child_base_url, $page['children'], $list_args);
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
-			}
-			$content .= $rc['content'];
+            if( ($page['flags']&0x80) > 0 ) {
+                foreach($page['children'] as $cid => $child) {
+                    $page['children'][$cid]['title'] = $child['name'];
+                    $page['children'][$cid]['image_id'] = $child['list'][$child['id']]['image_id'];
+                    $page['children'][$cid]['is_details'] = 'yes';
+                }
+                ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockImageList');
+                $rc = ciniki_web_processBlockImageList($ciniki, $settings, $ciniki['request']['business_id'], array(
+                    'base_url'=>$base_url . '/' . $page['permalink'],
+                    'list'=>$page['children'],
+                    ));
+                if( $rc['stat'] == 'ok' ) {
+                    $content .= $rc['content'];
+                }
+            } else {
+                ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
+                $child_base_url = $base_url;
+                if( $page['permalink'] != '' ) {
+                    $child_base_url .= '/' . $page['permalink'];
+                }
+                $list_args = array('notitle'=>'yes');
+                if( isset($page['child_files']) ) {
+                    $list_args['child_files'] = $page['child_files'];
+                }
+                $rc = ciniki_web_processCIList($ciniki, $settings, $child_base_url, $page['children'], $list_args);
+                if( $rc['stat'] != 'ok' ) {
+                    return $rc;
+                }
+                $content .= $rc['content'];
+            }
 		} else {
 			$content .= "";
 		}
@@ -168,6 +181,7 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
         }
 	}
 
+	$content .= "</div>";
 	$content .= "</article>\n";
 
 	return array('stat'=>'ok', 'content'=>$content);

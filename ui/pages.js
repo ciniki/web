@@ -7,6 +7,7 @@ function ciniki_web_pages() {
 	//
 	this.childFormat = {
 		'5':{'name':'List'},
+		'8':{'name':'Image List'},
 //		'6':{'name':'Menu'},
 //		'32':{'name':'List'},
 		};
@@ -14,6 +15,7 @@ function ciniki_web_pages() {
 		'5':{'name':'List'},
 		'6':{'name':'Menu'},
 		'7':{'name':'Page Menu'},
+		'8':{'name':'Image List'},
 //		'32':{'name':'List'},
 		};
     this.menuFlags = {
