@@ -33,7 +33,7 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
         }
         $content .= "</ul></div>";
     }
-    $content .= "</div>";
+    $content .= "</header>";
 
 	$content .= "<div class='entry-content'>";
 	if( isset($page['image_id']) && $page['image_id'] != '' && $page['image_id'] != 0 ) {
