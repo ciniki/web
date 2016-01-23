@@ -140,7 +140,7 @@ function ciniki_web_privateThemeGet($ciniki) {
 		// Get the theme css and js content
 		//
 		if( isset($args['content']) && $args['content'] == 'yes' ) {
-			$strsql = "SELECT id, content_type, name, status, status AS status_text, sequence "
+			$strsql = "SELECT id, content_type, name, status, status AS status_text, sequence, last_updated "
 				. "FROM ciniki_web_theme_content "
 				. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
 				. "AND ciniki_web_theme_content.theme_id = '" . ciniki_core_dbQuote($ciniki, $args['theme_id']) . "' "
@@ -150,8 +150,9 @@ function ciniki_web_privateThemeGet($ciniki) {
 				array('container'=>'types', 'fname'=>'content_type', 'name'=>'type',
 					'fields'=>array('content_type')),
 				array('container'=>'content', 'fname'=>'id', 'name'=>'content',
-					'fields'=>array('id', 'content_type', 'name', 'status', 'status_text', 'sequence'),
+					'fields'=>array('id', 'content_type', 'name', 'status', 'status_text', 'sequence', 'last_updated'),
 					'maps'=>array('status_text'=>$maps['theme_content']['status']),
+                    'utctotz'=>array('last_updated'=>array('timezone'=>'UTC', 'format'=>'M d, y H:i:s')),
 					),
 			));
 			if( $rc['stat'] != 'ok' ) {

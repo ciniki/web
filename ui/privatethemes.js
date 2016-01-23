@@ -92,7 +92,7 @@ function ciniki_web_privatethemes() {
 				'addTxt':'Add CSS',
 				'addFn':'M.ciniki_web_privatethemes.contentEdit(\'M.ciniki_web_privatethemes.edit.updateCSSHREF();\',0,M.ciniki_web_privatethemes.edit.theme_id,\'csshref\');',
 				},
-			'css':{'label':'CSS', 'type':'simplegrid', 'num_cols':2,
+			'css':{'label':'CSS', 'type':'simplegrid', 'num_cols':3,
 				'addTxt':'Add CSS',
 				'addFn':'M.ciniki_web_privatethemes.contentEdit(\'M.ciniki_web_privatethemes.edit.updateCSS();\',0,M.ciniki_web_privatethemes.edit.theme_id,\'css\');',
 				},
@@ -122,6 +122,7 @@ function ciniki_web_privatethemes() {
 			switch(j) {
 				case 0: return d.content.name;
 				case 1: return d.content.status_text;
+				case 2: return d.content.last_updated;
 			}
 		};
 		this.edit.rowFn = function(s, i, d) {

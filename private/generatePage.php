@@ -67,7 +67,7 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
             //
             // Check if last page, empty with children and page_menu
             //
-            if( $i == 0 && $page['image_id'] == 0 && $page['content'] == '' && count($page['children']) > 0 ) {
+            if( $i == 0 && $page['image_id'] == 0 && $page['content'] == '' && isset($page['children']) && count($page['children']) > 0 ) {
                 $depth++;
                 $child = array_shift($page['children']);
                 reset($page['children']);
