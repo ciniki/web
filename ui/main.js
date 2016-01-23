@@ -254,10 +254,10 @@ function ciniki_web_main() {
 		//
 		this.header = new M.panel('Header',
 			'ciniki_web_main', 'header',
-			'mc', 'medium', 'sectioned', 'ciniki.web.main.header');
+			'mc', 'medium mediumaside', 'sectioned', 'ciniki.web.main.header');
 		this.header.data = {'site-header-image':'0'};
 		this.header.sections = {
-			'_image':{'label':'Image', 'type':'imageform', 'fields':{
+			'_image':{'label':'Image', 'aside':'yes', 'type':'imageform', 'fields':{
 				'site-header-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
 				}},
 			'options':{'label':'Options', 'fields':{
@@ -364,7 +364,7 @@ function ciniki_web_main() {
 		//
 		this.metatags = new M.panel('Meta Tags',
 			'ciniki_web_main', 'metatags',
-			'mc', 'medium', 'sectioned', 'ciniki.web.main.metatags');
+			'mc', 'medium mediumaside', 'sectioned', 'ciniki.web.main.metatags');
 		this.metatags.data = {'site-google-analytics-account':'0'};
 		this.metatags.sections = {
 			'_pinterest':{'label':'Pinterest Domain Verification', 'fields':{

@@ -401,6 +401,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 //		'site-privacy-policy',
 		'site-header-image',
 		'site-header-image-size',
+        'site-header-og-image',
 		'site-header-title',
         'site-header-address',
         'site-header-landingpage1-title',

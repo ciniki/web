@@ -368,7 +368,13 @@ if( $rc['stat'] != 'ok' ) {
 }
 $settings = $rc['settings'];
 
-if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
+if( isset($settings['site-header-og-image']) && $settings['site-header-og-image'] > 0 ) {
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+	$rc = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-og-image'], 'original', '0', '300', '85');
+	if( $rc['stat'] == 'ok' ) {
+		$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
+	}
+} elseif( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 	$rc = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-image'], 'original', '0', '300', '85');
 	if( $rc['stat'] == 'ok' ) {

@@ -11,9 +11,12 @@ function ciniki_web_social() {
 		//
 		this.main = new M.panel('FAQ',
 			'ciniki_web_social', 'main',
-			'mc', 'medium', 'sectioned', 'ciniki.web.faq.faq');
+			'mc', 'medium mediumaside', 'sectioned', 'ciniki.web.faq.faq');
 		this.main.data = {};
 		this.main.sections = {
+			'_og_image':{'label':'Default Social Image', 'aside':'yes', 'type':'imageform', 'fields':{
+				'site-header-og-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
+				}},
 			'setup':{'label':'', 'list':{
 				'settings':{'label':'Social Media Accounts', 'fn':'M.ciniki_web_social.showSocialAccounts();'},
 			}},
@@ -52,6 +55,11 @@ function ciniki_web_social() {
 		this.main.fieldHistoryArgs = function(s, i) {
 			return {'method':'ciniki.web.pageSettingsHistory', 'args':{'business_id':M.curBusinessID, 'field':i}};
 		}
+		this.main.addDropImage = function(iid) {
+			this.setFieldValue('site-header-og-image', iid);
+			return true;
+		};
+		this.main.deleteImage = this.deleteImage;
 		this.main.addButton('save', 'Save', 'M.ciniki_web_faq.save(\'M.ciniki_web_social.main.close();\');');
 		this.main.addClose('Cancel');
 	}
