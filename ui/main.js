@@ -364,7 +364,7 @@ function ciniki_web_main() {
 		//
 		this.metatags = new M.panel('Meta Tags',
 			'ciniki_web_main', 'metatags',
-			'mc', 'medium mediumaside', 'sectioned', 'ciniki.web.main.metatags');
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.metatags');
 		this.metatags.data = {'site-google-analytics-account':'0'};
 		this.metatags.sections = {
 			'_pinterest':{'label':'Pinterest Domain Verification', 'fields':{
