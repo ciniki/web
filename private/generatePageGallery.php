@@ -36,7 +36,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 					case 'jewelry': $artcatalog_type = 3; break;
 					case 'sculptures': $artcatalog_type = 4; break;
 					case 'fibrearts': $artcatalog_type = 5; break;
-					case 'crafts': $artcatalog_type = 6; break;
+					case 'printmaking': $artcatalog_type = 6; break;
 					case 'pottery': $artcatalog_type = 8; break;
 				}
 				if( $artcatalog_type > 0 ) {
@@ -140,10 +140,13 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 					$tags[] = 'sculpture';
 					break;
 				case 5:
-					$tags[] = 'craft';
+					$tags[] = 'fibreart';
 					break;
 				case 6:
-					$tags[] = 'fibreart';
+					$tags[] = 'printmaking';
+					break;
+				case 8:
+					$tags[] = 'pottery';
 					break;
 			}
 		}

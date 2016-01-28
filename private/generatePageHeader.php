@@ -901,6 +901,11 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
 					$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='gallery'?' menu-item-selected':'') . "'>"
 						. "<a href='" . $ciniki['request']['base_url'] . "/gallery/fibrearts'>Fibre Arts</a></li>";
 				} 
+				if( isset($settings['page-gallery-artcatalog-printmaking']) 
+					&& $settings['page-gallery-artcatalog-printmaking'] == 'yes' ) {
+					$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='gallery'?' menu-item-selected':'') . "'>"
+						. "<a href='" . $ciniki['request']['base_url'] . "/gallery/printmaking'>Printmaking</a></li>";
+				} 
 				if( isset($settings['page-gallery-artcatalog-pottery']) 
 					&& $settings['page-gallery-artcatalog-pottery'] == 'yes' ) {
 					$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='gallery'?' menu-item-selected':'') . "'>"

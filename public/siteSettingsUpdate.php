@@ -271,6 +271,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-gallery-artcatalog-photographs',			// Split the menu into types
 		'page-gallery-artcatalog-jewelry',			// Split the menu into types
 		'page-gallery-artcatalog-sculptures',			// Split the menu into types
+		'page-gallery-artcatalog-printmaking',			// Split the menu into types
 		'page-gallery-album-sort',			// How the albums should be sorted for website
 		'page-gallery-share-buttons',			// Share buttons for facebook, twitter, etc
 		'page-writings-active',
