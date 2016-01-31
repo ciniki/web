@@ -64,12 +64,34 @@ function ciniki_web_checkAccess(&$ciniki, $business_id, $method) {
 		|| $method == 'ciniki.web.pageImageUpdate'
 		|| $method == 'ciniki.web.pageList'
 		|| $method == 'ciniki.web.pageUpdate'
+		|| $method == 'ciniki.web.privateThemeAdd'
+		|| $method == 'ciniki.web.privateThemeContentAdd'
+		|| $method == 'ciniki.web.privateThemeContentGet'
+		|| $method == 'ciniki.web.privateThemeContentHistory'
+		|| $method == 'ciniki.web.privateThemeContentUpdate'
+		|| $method == 'ciniki.web.privateThemeGet'
+		|| $method == 'ciniki.web.privateThemeHistory'
+		|| $method == 'ciniki.web.privateThemeImageAdd'
+		|| $method == 'ciniki.web.privateThemeImageDelete'
+		|| $method == 'ciniki.web.privateThemeImageGet'
+		|| $method == 'ciniki.web.privateThemeImageHistory'
+		|| $method == 'ciniki.web.privateThemeImageUpdate'
+		|| $method == 'ciniki.web.privateThemeImages'
+		|| $method == 'ciniki.web.privateThemeList'
+		|| $method == 'ciniki.web.privateThemeUpdate'
 		|| $method == 'ciniki.web.faqAdd'
 		|| $method == 'ciniki.web.faqDelete'
 		|| $method == 'ciniki.web.faqGet'
 		|| $method == 'ciniki.web.faqHistory'
 		|| $method == 'ciniki.web.faqList'
+		|| $method == 'ciniki.web.faqSearchCategory'
 		|| $method == 'ciniki.web.faqUpdate'
+		|| $method == 'ciniki.web.redirectAdd'
+		|| $method == 'ciniki.web.redirectDelete'
+		|| $method == 'ciniki.web.redirectGet'
+		|| $method == 'ciniki.web.redirectHistory'
+		|| $method == 'ciniki.web.redirectList'
+		|| $method == 'ciniki.web.redirectUpdate'
 		|| $method == 'ciniki.web.sliderAdd'
 		|| $method == 'ciniki.web.sliderDelete'
 		|| $method == 'ciniki.web.sliderGet'
@@ -94,7 +116,7 @@ function ciniki_web_checkAccess(&$ciniki, $business_id, $method) {
 			. "AND user_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['session']['user']['id']) . "' "
 			. "AND package = 'ciniki' "
 			. "AND status = 10 "
-			. "AND (permission_group = 'owners' OR permission_group = 'employees') "
+            . "AND (permission_group = 'owners' OR permission_group = 'employees' OR permission_group = 'resellers' ) "
 			. "";
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
 		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'user');
@@ -110,6 +132,32 @@ function ciniki_web_checkAccess(&$ciniki, $business_id, $method) {
 		}
 	}
 
+ 	//
+	// Some methods are available to resellers by not owners
+	// 
+	if( $method == 'ciniki.web.clearContentCache' 
+		|| $method == 'ciniki.web.clearImageCache'
+		) {
+		$strsql = "SELECT business_id, user_id FROM ciniki_business_users "
+			. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+			. "AND user_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['session']['user']['id']) . "' "
+			. "AND package = 'ciniki' "
+			. "AND status = 10 "
+            . "AND (permission_group = 'resellers' ) "
+			. "";
+		ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
+		$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'user');
+		if( $rc['stat'] != 'ok' ) {
+			return $rc;
+		}
+		//
+		// If the user has permission, return ok
+		//
+		if( isset($rc['rows']) && isset($rc['rows'][0]) 
+			&& $rc['rows'][0]['user_id'] > 0 && $rc['rows'][0]['user_id'] == $ciniki['session']['user']['id'] ) {
+			return array('stat'=>'ok', 'modules'=>$modules);
+		}
+	}
 	//
 	// By default, fail
 	//

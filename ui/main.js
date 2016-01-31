@@ -1865,7 +1865,7 @@ function ciniki_web_main() {
 		// If the user is a sysadmin, then add the clear web cache button
 		// This may become available to users, but might be too complicated
 		//
-		if( M.userPerms&0x01 == 0x01 ) {
+		if( M.userPerms&0x01 == 0x01 || M.curBusiness.permissions.resellers != null ) {
 			this.menu.size = 'medium mediumaside';
 			this.menu.sections._url.aside = 'yes';
 			this.menu.sections.settings.aside = 'yes';
