@@ -61,7 +61,7 @@ function ciniki_web_lookupBusinessURL(&$ciniki, $business_id) {
 		return $rc;
 	}
 	if( isset($rc['business']) ) {
-        if( $ssl_settings['site-ssl-active'] == 'yes' ) {
+        if( isset($ssl_settings['site-ssl-active']) && $ssl_settings['site-ssl-active'] == 'yes' ) {
             return array('stat'=>'ok', 
                 'url'=>"http://" . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $rc['business']['sitename'],
                 'secure_url'=>"https://" . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $rc['business']['sitename'],
