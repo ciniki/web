@@ -27,7 +27,11 @@ function ciniki_web_processBlockAsideImage($ciniki, $settings, $business_id, $bl
 	}
 	$content = "<aside><div class='image-wrap'><div class='image'>"
 		. "<img title='' alt='" . (isset($block['title'])?$block['title']:'') . "' src='" . $rc['url'] . "' />"
-		. "</div></div></aside>";
+		. "</div>";
+    if( isset($block['caption']) && $block['caption'] != '' ) {
+        $content .= "<div class='image-caption'>" . $block['caption'] . "</div>";
+    }
+    $content .= "</div></aside>";
 
 	//
 	// Check if this image should be used as the primary when linked from other sites eg: facebook

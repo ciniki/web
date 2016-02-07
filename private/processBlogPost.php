@@ -51,7 +51,11 @@ function ciniki_web_processBlogPost(&$ciniki, $settings, $post, $args) {
 		$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
 		$content .= "<aside><div class='image-wrap'><div class='image'>"
 			. "<img title='' alt='" . $post['title'] . "' src='" . $rc['url'] . "' />"
-			. "</div></div></aside>";
+			. "</div>";
+        if( isset($post['image_caption']) && $post['image_caption'] != '' ) {
+            $content .= "<div class='image-caption'>" . $post['image_caption'] . "</div>";
+        }
+        $content .= "</div></aside>";
 	}
 
 	if( isset($post['excerpt']) && $post['excerpt'] != '' ) {
