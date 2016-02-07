@@ -140,7 +140,7 @@ function ciniki_web_generatePageWritings($ciniki, $settings) {
 		}
 
 		//
-		// Add the content
+		// Add the description
 		//
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 		$rc = ciniki_web_processContent($ciniki, (isset($item['description'])&&$item['description']!='')?$item['description']:$item['synopsis']);	
@@ -148,6 +148,17 @@ function ciniki_web_generatePageWritings($ciniki, $settings) {
 			return $rc;
 		}
 		$page_content .= $rc['content'];
+
+		//
+		// Add the content
+		//
+        if( isset($item['content']) && $item['content'] != '' ) {
+            $rc = ciniki_web_processContent($ciniki, $item['content']);
+            if( $rc['stat'] != 'ok' ) {
+                return $rc;
+            }
+            $page_content .= $rc['content'];
+        }
 
 		//
 		// Check if there are reviews
