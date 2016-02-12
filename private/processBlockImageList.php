@@ -165,7 +165,6 @@ function ciniki_web_processBlockImageList(&$ciniki, $settings, $business_id, $bl
 		} else {
 			$content .= "<br/>";
 		}
-		$content .= "</div>";
 		if( isset($item['urls']) && count($item['urls']) > 0 ) {
 			$urls = '';
 			foreach($item['urls'] as $url) {
@@ -202,6 +201,7 @@ function ciniki_web_processBlockImageList(&$ciniki, $settings, $business_id, $bl
 			$content .= "<a href='$url' target='$url_target'>$url_display</a>";
 			$content .= "</div>";
 		} 
+		$content .= "</div>";
 		
 		$content .= "</div>";
 		$content .= "</div>";
