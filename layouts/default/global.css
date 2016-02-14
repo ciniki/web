@@ -1107,6 +1107,7 @@ span.exhibitors-description {
 #content .share-buttons-wrap {
 	text-align: left;
 	display: block;
+    margin-bottom: 0.5em;
 }
 
 #content article.page form {
