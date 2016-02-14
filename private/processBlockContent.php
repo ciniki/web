@@ -18,9 +18,6 @@ function ciniki_web_processBlockContent(&$ciniki, $settings, $business_id, $bloc
     //
     // Check for a title
     //
-    if( isset($block['title']) && $block['title'] != '' ) {
-        $content .= "<h2>" . $block['title'] . "</h2>";
-    }
 
 	//
 	// Make sure there is content to edit
@@ -39,6 +36,9 @@ function ciniki_web_processBlockContent(&$ciniki, $settings, $business_id, $bloc
 		}
 	}
     elseif( isset($block['html']) && $block['html'] != '' ) {
+        if( isset($block['title']) && $block['title'] != '' ) {
+            $content .= "<h2>" . $block['title'] . "</h2>";
+        }
         $content .= $block['html'];
     }
 
