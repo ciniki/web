@@ -504,7 +504,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 
 		if( isset($rc['products']) && count($rc['products']) > 0 ) {
 			$products = $rc['products'];
-			$base_url = $ciniki['request']['base_url'] . "/products/product";
+			$base_url = $ciniki['request']['base_url'] . "/products";
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
 			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, array('0'=>array(
 				'name'=>'', 'noimage'=>'/ciniki-web-layouts/default/img/noimage_240.png',
