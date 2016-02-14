@@ -23,6 +23,10 @@ function ciniki_web_processBlockTagImages($ciniki, $settings, $business_id, $blo
 
 	$content = "";
 
+    if( isset($block['title']) && $block['title'] != '' ) {
+        $content .= "<h2 class='wide'>" . $block['title'] . "</h2>";
+    }
+
 	$content .= "<div class='image-categories'>";
 	foreach($block['tags'] as $tid => $tag) {
         if( isset($tag['name']) ) {
@@ -39,7 +43,7 @@ function ciniki_web_processBlockTagImages($ciniki, $settings, $business_id, $blo
 		} else {
 			$img_url = $rc['url'];
 		}
-		$content .= "<div class='image-categories-thumbnail-wrap'>"
+		$content .= "<div class='image-categories-thumbnail-wrap" . (isset($block['size']) && $block['size'] != '' ? ' image-categories-thumbnail-' . $block['size'] : '') . "'>"
 			. "<a href='" . $block['base_url'] . '/' . $tag['permalink'] . "' " . "title='$name'>"
 			. "<div class='image-categories-thumbnail'>"
 			. "<img title='$name' alt='$name' src='$img_url' />"

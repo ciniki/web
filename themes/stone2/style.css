@@ -296,7 +296,7 @@ div.gallery-image-details span.image-awards {
 }
 
 #content {
-	background: rgba(255,255,255,0.9);
+/*	background: rgba(255,255,255,0.9); */
 	border: 0px solid #422213;
 	padding: 1em;
 	border-radius: 0px;
@@ -784,10 +784,12 @@ div.gallery-image-details span.image-awards {
 	background: #fff;
 }
 
+div.block-primary-image div.image-wrap,
 aside div.image-wrap {
 	margin-bottom: 1em;
 }
 
+div.block-primary-image div.image,
 aside div.image {
 	max-width: 100%;
 }
@@ -800,6 +802,7 @@ aside div.image {
 	line-height: 0em;
 }
 
+div.block-primary-image div.image img,
 aside div.image img {
 	line-height: 1px;
 	width: 100%;
@@ -807,6 +810,7 @@ aside div.image img {
 	margin: 0px;
 }
 
+div.block-primary-image div.image-wrap div.image-caption,
 aside div.image-wrap div.image-caption {
 	text-align: center;
 	font-style: italic;
@@ -1069,6 +1073,7 @@ hr.footer-section-divider {
 	border-top: 1px solid #777;
 	color: #555;
 	margin-top: 0px;
+    margin-top: 1em;
 	padding-top: 1em;
 	padding-bottom: 1em;
 	border-radius: 0px;
@@ -1108,6 +1113,7 @@ aside div.borderless {
 		padding-right: 2.5em;
 	}
 
+	div.block-primary-image,
 	aside {
 		max-width: 370px;
 	}
@@ -1170,4 +1176,27 @@ aside div.borderless {
 		padding-left: 0.7em;
 		padding-right: 0.7em;
 	}
+}
+/* Display image list as 2 column */
+@media (min-width: 50em) {
+/*  #content div.image-list-wrap {
+    max-width: 100%;
+  }
+  #content div.image-list-entry-wrap {
+    width: 50%;
+    display: inline-block;
+    vertical-align: top;
+  }
+  #content div.image-list-entry {
+    text-align: left;
+  }
+  #content div.image-list-entry-wrap:nth-child(even) div.image-list-entry {
+    text-align: right;
+  }
+  #content div.image-list-image {
+    width: 30%;
+  }
+  #content div.image-list-details {
+    width: 65%;
+  } */
 }

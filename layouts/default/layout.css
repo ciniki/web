@@ -409,6 +409,7 @@ header span.title {
 	max-width: 30em;
 }
 
+div.block-primary-image,
 aside {
 	float: right;
 	clear: right;
@@ -560,6 +561,7 @@ span.exhibitors-description {
 	#content div.embed-video {
 		margin: 0 auto 1.618em;
 	}
+	div.block-primary-image,
 	aside {
 		float: none;
 		width: auto; 
@@ -567,6 +569,7 @@ span.exhibitors-description {
 		height: auto;
 		margin: 0 auto 2.2em;
 	}
+	div.block-primary-image div.image-wrap { max-width: 30em; margin: 0 auto; }
 	aside div.image-wrap { max-width: 30em; margin: 0 auto; }
 	#content article.page {
 		width: 100%; 
@@ -589,6 +592,7 @@ span.exhibitors-description {
 	#page-container.page-container-wide { width: auto; max-width: 100% }
 	#content article.page { width: 36em; width: 100%; }
 	#content.evensplit aside,
+	div.block-primary-image { max-width: 100%; width: 36em; width: 100%; } 
 	aside { max-width: 100%; width: 36em; width: 100%; } 
 	#content div.largebutton-list { text-align: center; }
 	#content div.button-list { text-align: center; }
@@ -676,15 +680,35 @@ span.exhibitors-description {
 /* 12. Anything over 50 em
 ------------------------------------------------------------------------------*/
 @media screen and (min-width: 50em) {
-	#content div.image-list-image {
+/*	#content div.image-list-image {
 		width: 40%;
 	}
 	#content div.image-list-wrap {
 		max-width: 200px;
-	}
+	} 
 	#content div.image-list-details {
 		width: 60%;
-	}
+	} */
+    #content div.image-list-wrap {
+        max-width: 100%;
+    }
+    #content div.image-list-entry-wrap {
+        width: 50%;
+        display: inline-block;
+        vertical-align: top;
+    }
+    #content div.image-list-entry {
+        text-align: left;
+    }
+    #content div.image-list-entry-wrap:nth-child(even) div.image-list-entry {
+        text-align: right;
+    }
+    #content div.image-list-image {
+        width: 30%;
+    }
+    #content div.image-list-details {
+        width: 65%;
+    }
 	#content div.quote {
 		margin: 0em 5em 1.5em 5em;
 		padding-bottom: 0.5em;
@@ -702,9 +726,11 @@ span.exhibitors-description {
 	#content p {
 		max-width: 100%; 
 	}
+	div.block-primary-image {width: 50%; }
 	aside {width: 50%; }
 	body { width: 100%; }
 	#content .share-buttons-wrap { display: none; }
+	div.primary-block-image div.image-wrap { padding-left: 0px; }
 	aside div.image-wrap { padding-left: 0px; }
 	#content div.slider { display: none; }
 	#page-container { width: auto; max-width: 45em; }
@@ -801,6 +827,7 @@ span.exhibitors-description {
 	#content ul.wide {
 		max-width: 45em;
 	}
+	div.block-primary-image,
 	aside {
 		float: none;
 		width: auto; 

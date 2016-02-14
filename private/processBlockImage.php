@@ -35,8 +35,8 @@ function ciniki_web_processBlockImage(&$ciniki, $settings, $business_id, $block)
 		$ciniki['response']['head']['og']['image'] = $rc['domain_url'];
 	}
 
-	$content .= "<div id='image' class='image'>";
 	$content .= "<div id='image-wrap' class='image-wrap'>";
+	$content .= "<div id='image' class='image'>";
 	$content .= "<img title='" . $block['title'] . "' alt='" . $block['title'] . "' src='" . $img_url . "' />";
 	$content .= "</div>";
 	$content .= "</div>";

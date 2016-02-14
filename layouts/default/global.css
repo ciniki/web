@@ -385,6 +385,7 @@ nav div.menu-divider {
 
 article {
 	margin-bottom: 0em;
+    overflow: auto;
 }
 
 #content b.entry-title,
