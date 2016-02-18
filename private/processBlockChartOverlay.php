@@ -24,7 +24,13 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
     }
     $name = preg_replace('/[^a-zA-Z0-9]/', '', $block['canvas']);
 
-	$content = '<div class="chart chart-overlay"><div class="chart-wrapper"><canvas id="' . $block['canvas'] . '"></canvas></div></div>';
+    $content = '';
+
+	if( isset($block['title']) && $block['title'] != '' ) {
+		$content .= '<h2 class="wide">' . $block['title'] . "</h2>";
+	}
+
+	$content .= '<div class="chart chart-overlay"><div class="chart-wrapper"><canvas id="' . $block['canvas'] . '"></canvas></div></div>';
 
     //
     // Setup colours FIXME: This should be set via the business settings
