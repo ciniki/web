@@ -20,12 +20,24 @@ function ciniki_web_processBlockMultiPageNav(&$ciniki, $settings, $business_id, 
 
 	if( isset($block['total_pages']) && isset($block['cur_page']) ) {
 		if( $block['cur_page'] > 1 ) {
-			$content .= "<span class='multipage-nav-button multipage-nav-button-first'>"
-				. "<a href='" . $block['base_url'] . "'><span class='multipage-nav-button-text'>First</span></a>"
-				. "</span>";
-			$content .= "<span class='multipage-nav-button multipage-nav-button-prev'>"
-				. "<a href='" . $block['base_url'] . ($block['cur_page']>2?"?page=".($block['cur_page']-1):'') . "'><span class='multipage-nav-button-text'>Prev</span></a>"
-				. "</span>";
+            //
+            // Reverse lets the multipage nav start at the highest page
+            //
+            if( isset($block['reverse']) && $block['reverse'] == 'yes' ) {
+                $content .= "<span class='multipage-nav-button multipage-nav-button-first'>"
+                    . "<a href='" . $block['base_url'] . "?page=1'><span class='multipage-nav-button-text'>First</span></a>"
+                    . "</span>";
+                $content .= "<span class='multipage-nav-button multipage-nav-button-prev'>"
+                    . "<a href='" . $block['base_url'] . ($block['cur_page']>2?"?page=".($block['cur_page']-1):'?page=1') . "'><span class='multipage-nav-button-text'>Prev</span></a>"
+                    . "</span>";
+            } else {
+                $content .= "<span class='multipage-nav-button multipage-nav-button-first'>"
+                    . "<a href='" . $block['base_url'] . "'><span class='multipage-nav-button-text'>First</span></a>"
+                    . "</span>";
+                $content .= "<span class='multipage-nav-button multipage-nav-button-prev'>"
+                    . "<a href='" . $block['base_url'] . ($block['cur_page']>2?"?page=".($block['cur_page']-1):'') . "'><span class='multipage-nav-button-text'>Prev</span></a>"
+                    . "</span>";
+            }
 		}
 		$start = 1;
 		$end = $block['total_pages'];
@@ -41,8 +53,13 @@ function ciniki_web_processBlockMultiPageNav(&$ciniki, $settings, $business_id, 
 			}
 		}
 		for($i = $start; $i <= $end; $i++) {
-			$content .= "<span class='multipage-nav-button" . ($i==$block['cur_page']?' multipage-nav-button-selected':'') . "'><a href='" . $block['base_url'] . ($i>1?"?page=$i":'') . "'>"
-				. "<span class='multipage-nav-button-text'>" . $i . "</span></a></span>";
+            if( isset($block['reverse']) && $block['reverse'] == 'yes' ) {
+                $content .= "<span class='multipage-nav-button" . ($i==$block['cur_page']?' multipage-nav-button-selected':'') . "'><a href='" . $block['base_url'] . "?page=$i" . "'>"
+                    . "<span class='multipage-nav-button-text'>" . $i . "</span></a></span>";
+            } else {
+                $content .= "<span class='multipage-nav-button" . ($i==$block['cur_page']?' multipage-nav-button-selected':'') . "'><a href='" . $block['base_url'] . ($i>1?"?page=$i":'') . "'>"
+                    . "<span class='multipage-nav-button-text'>" . $i . "</span></a></span>";
+            }
 		}
 		if( $block['cur_page'] < $block['total_pages'] ) {
 			$content .= "<span class='multipage-nav-button multipage-nav-button-next'>"

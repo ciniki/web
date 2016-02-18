@@ -22,8 +22,9 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
     } else {
         $options = array();
     }
+    $name = preg_replace('/[^a-zA-Z0-9]/', '', $block['canvas']);
 
-	$content = '<div class="chart chart-overlay"><div class="chart-wrapper"><canvas id="canvas"></canvas></div></div>';
+	$content = '<div class="chart chart-overlay"><div class="chart-wrapper"><canvas id="' . $block['canvas'] . '"></canvas></div></div>';
 
     //
     // Setup colours FIXME: This should be set via the business settings
@@ -51,41 +52,155 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
             . '',
         );
     //
-    // Build the javascript to display the graph
+    // Build the javascript to display the graph when it should be displayed multiple graphs
     //
-    $js = 'var overlayData = {'
-        . 'labels: [';
-    foreach($block['labels'] as $label) {
-        $js .= '"' . $label . '",';
-    }
-    $js .= '],'
-        . 'datasets: [';
-    foreach($block['datasets'] as $dataset) {
-        $js .= '{'
-            . 'label: "' . $dataset['label'] . '",'
-            . 'type: "' . $dataset['type'] . '",'
-            . '';
-        $js .= $colours[$dataset['colour']];
-        $js .= 'data: [';
-        foreach($dataset['data'] as $data_point) {
-            $js .= $data_point . ',';
+    if( isset($block['page_limit']) && count($block['labels']) > $block['page_limit'] ) {
+        $js_labels = array();
+        $i = 0;
+        foreach($block['labels'] as $label) {
+            $k = floor($i/$block['page_limit']);
+            if( !isset($js_labels[$k]) ) {
+                $js_labels[$k] = '';
+            }
+            $js_labels[$k] .= '"' . $label . '",';
+            $i++;
         }
-        $js .= '], '
-            . '},';
+//        print "<pre>" . print_r($js_labels, true) . "</pre>";
+        $i = 0;
+        $js_datasets = array();
+        foreach($block['datasets'] as $dataset) {
+            $i = 0;
+            foreach($dataset['data'] as $data_point) {
+                // Check if new page dataset starting
+                if( $i == 0 || ($i%$block['page_limit']) == 0 ) {
+                    // Check if old page dataset needs closing
+                    if( $i > 0 ) {
+                        $js_datasets[$k] .= '], '
+                            . '},';
+                    }
+                    $k = floor($i/$block['page_limit']);
+                    if( !isset($js_datasets[$k]) ) {
+                        $js_datasets[$k] = '';
+                    }
+                    $js_datasets[$k] .= '{'
+                        . 'label: "' . $dataset['label'] . '",'
+                        . 'type: "' . $dataset['type'] . '",'
+                        . '';
+                    $js_datasets[$k] .= $colours[$dataset['colour']];
+                    $js_datasets[$k] .= 'data: [';
+                }
+                $js_datasets[$k] .= $data_point . ',';
+                $i++;
+            }
+            $js_datasets[$k] .= '], '
+                . '},';
+        }
+//        print "<pre>" . print_r($js_datasets, true) . "</pre>";
+        $js = "var overlayData_$name = [];";
+        for($i=0;$i<ceil(count($block['labels'])/$block['page_limit']);$i++) {
+            $js .= "overlayData_" . $name . "[$i] = {"
+                . 'labels: [';
+            $js .= $js_labels[$i];
+            $js .= '],'
+                . 'datasets: [';
+            $js .= $js_datasets[$i];
+            $js .= ']};';
+            $js .= "\n";
+        }
+        //
+        // Include multipage nav
+        //
+        $content .= "<div class='multipage-nav'><div class='multipage-nav-content'>";
+        $content .= "<span class='multipage-nav-button multipage-nav-button-first'>"
+            . "<a onclick='switchOverlayChart_$name(0);'><span class='multipage-nav-button-text'>First</span></a>"
+            . "</span>";
+        $content .= "<span class='multipage-nav-button multipage-nav-button-prev'>"
+            . "<a onclick='switchOverlayChart_$name(0);'><span class='multipage-nav-button-text'>Prev</span></a>"
+            . "</span>";
+        for($i=0;$i<ceil(count($block['labels'])/$block['page_limit']);$i++) {
+            $content .= "<span id='multipage-nav-button-$name-$i' class='multipage-nav-button" . ($i==$k?' multipage-nav-button-selected':'') . "'><a onclick='switchOverlayChart_$name($i);'>"
+                . "<span class='multipage-nav-button-text'>" . ($i+1) . "</span></a></span>";
+        }
+        $content .= "<span class='multipage-nav-button multipage-nav-button-next'>"
+            . "<a onclick='switchOverlayChart_$name($k);'><span class='multipage-nav-button-text'>Next</span></a>"
+            . "</span>";
+        $content .= "<span class='multipage-nav-button multipage-nav-button-last'>"
+            . "<a onclick='switchOverlayChart_$name($k);'><span class='multipage-nav-button-text'>Last</span></a>"
+            . "</span>";
+        $content .= "</div></div>";
+
+        $js .= 'var myOverlayChart_' . $name . ' = new Chart(document.getElementById("' . $block['canvas'] . '").getContext("2d")).Overlay(overlayData_' . $name . '[' . $k . '], {'  
+            . 'scaleBeginAtZero: ' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
+            . 'populateSparseData: true,'
+            . 'scaleLabel: "<%=value%>%",'
+            . 'tooltipTemplate: "<%=value%>%",'
+            . 'multiTooltipTemplate: "<%=value%>%",'
+            . 'responsive: true,'
+            . 'datasetFill : false,'
+            . '});';
+        $js .= 'function switchOverlayChart_' . $name . '(n){'
+            // Setup the new chart with new dataset
+            . 'myOverlayChart_' . $name . ' = new Chart(document.getElementById("' . $block['canvas'] . '").getContext("2d")).Overlay(overlayData_' . $name . '[n], {'  
+            . 'scaleBeginAtZero: ' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
+            . 'populateSparseData: true,'
+            . 'scaleLabel: "<%=value%>%",'
+            . 'tooltipTemplate: "<%=value%>%",'
+            . 'multiTooltipTemplate: "<%=value%>%",'
+            . 'responsive: true,'
+            . 'datasetFill : false,'
+            . '});'
+            // Set the highlight button
+            . 'for(var i=0;i<' . ceil(count($block['labels'])/$block['page_limit']) . ';i++){'
+                . "var e=document.getElementById('multipage-nav-button-$name-' + i);"
+                . "if(i==n){"
+                    . "if(!e.classList.contains('multipage-nav-button-selected')){e.classList.add('multipage-nav-button-selected');}"
+                . "}else{"
+                    . "if(e.classList.contains('multipage-nav-button-selected')){e.classList.remove('multipage-nav-button-selected');}"
+                . "}"
+            . '}'
+            . '};';
+       
+        $content .= '<script type="text/javascript">' . $js . '</script>';
+    } 
+    
+    //
+    // Display a single graph with no paging
+    //
+    else {
+        $js = 'var overlayData = {'
+            . 'labels: [';
+        foreach($block['labels'] as $label) {
+            $js .= '"' . $label . '",';
+        }
+        $js .= '],'
+            . 'datasets: [';
+        foreach($block['datasets'] as $dataset) {
+            $js .= '{'
+                . 'label: "' . $dataset['label'] . '",'
+                . 'type: "' . $dataset['type'] . '",'
+                . '';
+            $js .= $colours[$dataset['colour']];
+            $js .= 'data: [';
+            foreach($dataset['data'] as $data_point) {
+                $js .= $data_point . ',';
+            }
+            $js .= '], '
+                . '},';
+        }
+        $js .= ']};';
+        $js .= "\n";
+        $js .= 'var myOverlayChart = new Chart(document.getElementById("' . $block['canvas'] . '").getContext("2d")).Overlay(overlayData, {'  
+            . 'scaleBeginAtZero: ' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
+            . 'populateSparseData: true,'
+            . 'scaleLabel: "<%=value%>%",'
+            . 'tooltipTemplate: "<%=value%>%",'
+            . 'multiTooltipTemplate: "<%=value%>%",'
+            . 'responsive: true,'
+            . 'datasetFill : false,'
+            . '});';
+       
+        $content .= '<script type="text/javascript">' . $js . '</script>';
     }
-    $js .= ']};';
-    $js .= "\n";
-    $js .= 'var myOverlayChart = new Chart(document.getElementById("canvas").getContext("2d")).Overlay(overlayData, {'  
-        . 'scaleBeginAtZero: ' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
-        . 'populateSparseData: true,'
-        . 'scaleLabel: "<%=value%>%",'
-        . 'tooltipTemplate: "<%=value%>%",'
-        . 'multiTooltipTemplate: "<%=value%>%",'
-        . 'responsive: true,'
-        . 'datasetFill : false,'
-        . '});';
-   
-    $content .= '<script type="text/javascript">' . $js . '</script>';
 
     if( !isset($ciniki['response']['head']['scripts']) ) {
         $ciniki['response']['head']['scripts'] = array();
