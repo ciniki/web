@@ -57,8 +57,13 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
     if( isset($block['page_limit']) && count($block['labels']) > $block['page_limit'] ) {
         $js_labels = array();
         $i = 0;
+        $num_labels = count($block['labels']);
         foreach($block['labels'] as $label) {
-            $k = floor($i/$block['page_limit']);
+            if( isset($block['start']) && $block['start'] == 'end' ) {
+                $k = floor(($num_labels-1)/$block['page_limit']) - floor(($num_labels-$i-1)/$block['page_limit']);
+            } else {
+                $k = floor($i/$block['page_limit']);
+            }
             if( !isset($js_labels[$k]) ) {
                 $js_labels[$k] = '';
             }
@@ -70,15 +75,21 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
         $js_datasets = array();
         foreach($block['datasets'] as $dataset) {
             $i = 0;
+            $num_data = count($dataset['data']);
+            $last_k = 0;
             foreach($dataset['data'] as $data_point) {
+                if( isset($block['start']) && $block['start'] == 'end' ) {
+                    $k = floor(($num_data-1)/$block['page_limit']) - floor(($num_data-$i-1)/$block['page_limit']);
+                } else {
+                    $k = floor($i/$block['page_limit']);
+                }
                 // Check if new page dataset starting
-                if( $i == 0 || ($i%$block['page_limit']) == 0 ) {
+                if( $i == 0 || $k != $last_k ) {
                     // Check if old page dataset needs closing
                     if( $i > 0 ) {
-                        $js_datasets[$k] .= '], '
+                        $js_datasets[$last_k] .= '], '
                             . '},';
                     }
-                    $k = floor($i/$block['page_limit']);
                     if( !isset($js_datasets[$k]) ) {
                         $js_datasets[$k] = '';
                     }
@@ -90,6 +101,7 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
                     $js_datasets[$k] .= 'data: [';
                 }
                 $js_datasets[$k] .= $data_point . ',';
+                $last_k = $k;
                 $i++;
             }
             $js_datasets[$k] .= '], '
@@ -139,6 +151,7 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
             . 'datasetFill : false,'
             . '});';
         $js .= 'function switchOverlayChart_' . $name . '(n){'
+            . 'myOverlayChart_' . $name . '.destroy();'
             // Setup the new chart with new dataset
             . 'myOverlayChart_' . $name . ' = new Chart(document.getElementById("' . $block['canvas'] . '").getContext("2d")).Overlay(overlayData_' . $name . '[n], {'  
             . 'scaleBeginAtZero: ' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
