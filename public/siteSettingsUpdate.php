@@ -262,6 +262,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-products-subcategories-size',
         'page-products-thumbnail-format',
         'page-products-thumbnail-padding-color',
+        'page-products-path',
 		'page-recipes-active',
 		'page-recipes-name',
 		'page-recipes-tags',

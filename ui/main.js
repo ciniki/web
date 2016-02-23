@@ -1070,6 +1070,7 @@ function ciniki_web_main() {
 				'page-products-subcategories-size':{'label':'Sub-Category Thumbnail Size', 'type':'toggle', 'default':'auto', 'toggles':this.productThumbnailToggles},
 				'page-products-thumbnail-format':{'label':'Thumbnail Format', 'type':'toggle', 'default':'square-cropped', 'toggles':{'square-cropped':'Cropped', 'square-padded':'Padded'}},
 				'page-products-thumbnail-padding-color':{'label':'Padding Color', 'type':'colour'},
+				'page-products-path':{'label':'Path', 'type':'toggle', 'default':'yes', 'toggles':this.activeToggles},
 				}},
 			'social':{'label':'Social Media', 'visible':'yes', 'fields':{
 				'page-products-share-buttons':{'label':'Sharing', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
