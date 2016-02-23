@@ -31,10 +31,10 @@ error_log('paddedimageurl');
 		. "";
 	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.images', 'image');
 	if( $rc['stat'] != 'ok' ) {	
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'644', 'msg'=>'Unable to load image', 'err'=>$rc['err']));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'3135', 'msg'=>'Unable to load image', 'err'=>$rc['err']));
 	}
 	if( !isset($rc['image']) ) {
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'645', 'msg'=>'Unable to load image'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'3136', 'msg'=>'Unable to load image'));
 	}
 	$img = $rc['image'];
 
@@ -122,7 +122,7 @@ error_log('paddedimageurl');
 			fwrite($h, $image->getImageBlob());
 			fclose($h);
 		} else {
-			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'643', 'msg'=>'Unable to load image'));
+			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'3134', 'msg'=>'Unable to load image'));
 		}
 	}
 
