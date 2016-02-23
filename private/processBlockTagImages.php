@@ -42,7 +42,7 @@ function ciniki_web_processBlockTagImages($ciniki, $settings, $business_id, $blo
         if( isset($block['thumbnail_format']) && $block['thumbnail_format'] == 'square-padded' ) {
             $version = ((isset($block['image_version'])&&$block['image_version']!='')?$block['image_version']:'thumbnail');
             $rc = ciniki_web_getPaddedImageURL($ciniki, $tag['image_id'], 'original', 
-                ((isset($block['image_width'])&&$block['image_width']!='')?$block['image_width']:'150'), 
+                ((isset($block['image_width'])&&$block['image_width']!='')?$block['image_width']:'240'), 
                 ((isset($block['image_height'])&&$block['image_height']!='')?$block['image_height']:'0'),
                 ((isset($block['thumbnail_padding_color'])&&$block['thumbnail_padding_color']!='')?$block['thumbnail_padding_color']:'#ffffff') 
                 );
