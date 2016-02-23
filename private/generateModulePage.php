@@ -12,7 +12,7 @@
 // Returns
 // -------
 //
-function ciniki_web_generateModulePage($ciniki, $settings, $business_id, $module) {
+function ciniki_web_generateModulePage(&$ciniki, $settings, $business_id, $module) {
 
 	//
 	// Process the module request

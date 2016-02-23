@@ -92,6 +92,16 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
 		}
 	}
 
+    //
+    // Make sure module class is set
+    //
+    $container_class = preg_replace("/\./", '-', $module_page);
+    if( !isset($ciniki['request']['page-container-class']) ) {
+        $ciniki['request']['page-container-class'] = $container_class;
+    } elseif( !preg_match("/" . $container_class . "/", $ciniki['request']['page-container-class']) ) {
+        $ciniki['request']['page-container-class'] .= ' ' . $container_class;
+    }
+
 	//
 	// Setup the article
 	//
