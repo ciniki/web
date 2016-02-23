@@ -16,6 +16,7 @@ function ciniki_web_processBlockCIList(&$ciniki, $settings, $business_id, $block
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getPaddedImageURL');
 
 	$page_limit = 0;
 	if( isset($args['limit']) ) {
@@ -91,11 +92,20 @@ function ciniki_web_processBlockCIList(&$ciniki, $settings, $business_id, $block
 				$content .= "<tr><td class='cilist-image' rowspan='3'>";
 			}
 			if( isset($item['image_id']) && $item['image_id'] > 0 ) {
-				$version = ((isset($block['image_version'])&&$block['image_version']!='')?$block['image_version']:'thumbnail');
-				$rc = ciniki_web_getScaledImageURL($ciniki, $item['image_id'], $version, 
-					((isset($block['image_width'])&&$block['image_width']!='')?$block['image_width']:'150'), 
-					((isset($block['image_height'])&&$block['image_height']!='')?$block['image_height']:'0') 
-					);
+                if( isset($block['thumbnail_format']) && $block['thumbnail_format'] == 'square-padded' ) {
+                    $version = ((isset($block['image_version'])&&$block['image_version']!='')?$block['image_version']:'thumbnail');
+                    $rc = ciniki_web_getPaddedImageURL($ciniki, $item['image_id'], 'original', 
+                        ((isset($block['image_width'])&&$block['image_width']!='')?$block['image_width']:'150'), 
+                        ((isset($block['image_height'])&&$block['image_height']!='')?$block['image_height']:'0'),
+                        ((isset($block['thumbnail_padding_color'])&&$block['thumbnail_padding_color']!='')?$block['thumbnail_padding_color']:'#ffffff') 
+                        );
+                } else {
+                    $version = ((isset($block['image_version'])&&$block['image_version']!='')?$block['image_version']:'thumbnail');
+                    $rc = ciniki_web_getScaledImageURL($ciniki, $item['image_id'], $version, 
+                        ((isset($block['image_width'])&&$block['image_width']!='')?$block['image_width']:'150'), 
+                        ((isset($block['image_height'])&&$block['image_height']!='')?$block['image_height']:'0') 
+                        );
+                }
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}

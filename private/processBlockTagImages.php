@@ -13,6 +13,9 @@
 //
 function ciniki_web_processBlockTagImages($ciniki, $settings, $business_id, $block) {
 
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getPaddedImageURL');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+
 	if( !isset($block['tags']) ) {
 		return array('stat'=>'ok', 'content'=>'');
 	}
@@ -36,8 +39,16 @@ function ciniki_web_processBlockTagImages($ciniki, $settings, $business_id, $blo
         } else {
             $name = '';
         }
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-		$rc = ciniki_web_getScaledImageURL($ciniki, $tag['image_id'], 'thumbnail', '240', 0);
+        if( isset($block['thumbnail_format']) && $block['thumbnail_format'] == 'square-padded' ) {
+            $version = ((isset($block['image_version'])&&$block['image_version']!='')?$block['image_version']:'thumbnail');
+            $rc = ciniki_web_getPaddedImageURL($ciniki, $tag['image_id'], 'original', 
+                ((isset($block['image_width'])&&$block['image_width']!='')?$block['image_width']:'150'), 
+                ((isset($block['image_height'])&&$block['image_height']!='')?$block['image_height']:'0'),
+                ((isset($block['thumbnail_padding_color'])&&$block['thumbnail_padding_color']!='')?$block['thumbnail_padding_color']:'#ffffff') 
+                );
+        } else {
+            $rc = ciniki_web_getScaledImageURL($ciniki, $tag['image_id'], 'thumbnail', '240', 0);
+        }
 		if( $rc['stat'] != 'ok' ) {
 			$img_url = '/ciniki-web-layouts/default/img/noimage_240.png';
 		} else {
