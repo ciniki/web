@@ -20,7 +20,6 @@
 // -------
 //
 function ciniki_web_getPaddedImageURL($ciniki, $image_id, $version, $maxwidth, $maxheight, $padding_color, $quality='60') {
-error_log('paddedimageurl');
 	//
 	// Load last_updated date to check against the cache
 	//
@@ -83,7 +82,6 @@ error_log('paddedimageurl');
         //
         // Padded to square image
         //
-        error_log('test009311');
         if( $image->getImageWidth() > $image->getImageHeight() ) {
             $image->borderImage($padding_color, 0, ($image->getImageWidth() - $image->getImageHeight())/2);
         } elseif( $image->getImageHeight() > $image->getImageWidth() ) {
