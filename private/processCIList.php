@@ -19,6 +19,7 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getPaddedImageURL');
 
 	$page_limit = 0;
 	if( isset($args['limit']) ) {
@@ -84,10 +85,18 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 			}
 			if( isset($item['image_id']) && $item['image_id'] > 0 ) {
 				$version = ((isset($args['image_version'])&&$args['image_version']!='')?$args['image_version']:'thumbnail');
-				$rc = ciniki_web_getScaledImageURL($ciniki, $item['image_id'], $version, 
-					((isset($args['image_width'])&&$args['image_width']!='')?$args['image_width']:'150'), 
-					((isset($args['image_height'])&&$args['image_height']!='')?$args['image_height']:'0') 
-					);
+                if( isset($args['thumbnail_format']) && $args['thumbnail_format'] == 'square-padded' ) {
+                    $rc = ciniki_web_getPaddedImageURL($ciniki, $item['image_id'], 'original', 
+                        ((isset($args['image_width'])&&$args['image_width']!='')?$args['image_width']:'150'), 
+                        ((isset($args['image_height'])&&$args['image_height']!='')?$args['image_height']:'0'),
+                        ((isset($args['thumbnail_padding_color'])&&$args['thumbnail_padding_color']!='')?$args['thumbnail_padding_color']:'#ffffff') 
+                        );
+                } else {
+                    $rc = ciniki_web_getScaledImageURL($ciniki, $item['image_id'], $version, 
+                        ((isset($args['image_width'])&&$args['image_width']!='')?$args['image_width']:'150'), 
+                        ((isset($args['image_height'])&&$args['image_height']!='')?$args['image_height']:'0') 
+                        );
+                }
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}

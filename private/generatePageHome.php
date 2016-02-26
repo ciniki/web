@@ -448,6 +448,8 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 //					'prev'=>'&larr; Newer Posts',
 //					'next'=>'Older Posts &rarr;',
 					'base_url'=>$ciniki['request']['base_url'] . "/blog",
+                    'thumbnail_format'=>(isset($settings['page-blog-thumbnail-format'])&&$settings['page-blog-thumbnail-format']!=''?$settings['page-blog-thumbnail-format']:'square-cropped'),
+                    'thumbnail_padding_color'=>(isset($settings['page-blog-thumbnail-padding-color'])&&$settings['page-blog-thumbnail-padding-color']!=''?$settings['page-blog-thumbnail-padding-color']:'#ffffff'),
 				));
 //			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, array('0'=>array(
 //				'name'=>'', 'noimage'=>'/ciniki-web-layouts/default/img/noimage_240.png',
