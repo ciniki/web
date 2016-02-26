@@ -245,6 +245,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-blog-sidebar',
 		'page-blog-list-image-version',
 		'page-blog-more-button-text',
+        'page-blog-thumbnail-format',
+        'page-blog-thumbnail-padding-color',
 		'page-memberblog-active',
 		'page-memberblog-menu-active',
 		'page-memberblog-name',
