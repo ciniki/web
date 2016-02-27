@@ -268,6 +268,9 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-recipes-active',
 		'page-recipes-name',
 		'page-recipes-tags',
+		'page-patents-active',
+		'page-patents-name',
+		'page-patents-share-buttons',
 		'page-gallery-active',
 		'page-gallery-name',
 		'page-gallery-artcatalog-format',			// Split the menu into types

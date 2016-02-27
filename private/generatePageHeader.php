@@ -948,6 +948,15 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
 				$content .= "</a></li>";
 			}
 		}
+		if( isset($settings['page-patents-active']) && $settings['page-patents-active'] == 'yes' ) {
+            $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='patents'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/patents'>";
+            if( isset($settings['page-patents-name']) && $settings['page-patents-name'] != '' ) {
+                $content .= $settings['page-patents-name'];
+            } else {
+                $content .= "Patents";
+            }
+            $content .= "</a></li>";
+		}
 		if( isset($settings['page-fatt-active']) && $settings['page-fatt-active'] == 'yes' ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'fatt', 'web', 'menuItems');
 			$rc = ciniki_fatt_web_menuItems($ciniki, $settings, $ciniki['request']['business_id'], array());

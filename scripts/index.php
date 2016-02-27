@@ -725,13 +725,17 @@ if( $found == 'no' ) {
         require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageWorkshops.php');
         $rc = ciniki_web_generatePageWorkshops($ciniki, $settings);
     } 
+    // Patents
+    elseif( $ciniki['request']['page'] == 'patents' 
+        && isset($settings['page-patents-active']) && $settings['page-patents-active'] == 'yes' ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
+        $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['business_id'], 'ciniki.patents');
+    } 
     // Blog
     elseif( $ciniki['request']['page'] == 'blog' 
         && isset($settings['page-blog-active']) && $settings['page-blog-active'] == 'yes' ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
         $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['business_id'], 'ciniki.blog');
-    //	require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageBlog.php');
-    //	$rc = ciniki_web_generatePageBlog($ciniki, $settings);
     } 
     // Member Blog
     elseif( $ciniki['request']['page'] == 'memberblog' 

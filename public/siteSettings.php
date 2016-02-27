@@ -169,6 +169,9 @@ function ciniki_web_siteSettings($ciniki) {
 	if( isset($ciniki['business']['modules']['ciniki.recipes']) ) {
 		$pages['recipes'] = array('display_name'=>'Recipes', 'active'=>'no');
 	}
+	if( isset($ciniki['business']['modules']['ciniki.patents']) ) {
+		$pages['patents'] = array('display_name'=>'Patents', 'active'=>'no');
+	}
 	if( isset($ciniki['business']['modules']['ciniki.surveys']) ) {
 		$pages['surveys'] = array('display_name'=>'Surveys', 'active'=>'no');
 	}
@@ -280,6 +283,9 @@ function ciniki_web_siteSettings($ciniki) {
 	}
 	if( isset($settings['page-recipes-active']) && $settings['page-recipes-active'] == 'yes' ) {
 		$pages['recipes']['active'] = 'yes';
+	}
+	if( isset($settings['page-patents-active']) && $settings['page-patents-active'] == 'yes' ) {
+		$pages['patents']['active'] = 'yes';
 	}
 	if( isset($settings['page-blog-active']) && $settings['page-blog-active'] == 'yes' ) {
 		$pages['blog']['active'] = 'yes';

@@ -28,7 +28,9 @@ function ciniki_web_processBlockGallery(&$ciniki, $settings, $business_id, $bloc
 	}
 
 	foreach($block['images'] as $inum => $img) {
-        
+        if( !isset($img['title']) && isset($img['name']) ) {
+            $img['title'] = $img['name'];
+        }
 		// 
 		// Check if image is not specified
 		//

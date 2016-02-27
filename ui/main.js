@@ -1129,9 +1129,31 @@ function ciniki_web_main() {
 		};
 		this.blog.fieldValue = this.fieldValue;
 		this.blog.fieldHistoryArgs = this.fieldHistoryArgs;
-		this.blog.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'recipes\');');
+		this.blog.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'blog\');');
 //		this.blog.addLeftButton('website', 'Preview', 'M.showWebsite(\'/blog\');');
 		this.blog.addClose('Cancel');
+
+		//
+		// The options and information for the patents page
+		//
+		this.patents = new M.panel('Patents',
+			'ciniki_web_main', 'patents',
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.patents');
+		this.patents.data = {};
+		this.patents.sections = {
+			'options':{'label':'', 'fields':{
+				'page-patents-active':{'label':'Display Patents', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-patents-name':{'label':'Name', 'type':'text', 'hint':'default is Patents'},
+				'page-patents-share-buttons':{'label':'Sharing', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+				}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'patents\');'},
+				}},
+		};
+		this.patents.fieldValue = this.fieldValue;
+		this.patents.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.patents.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'patents\');');
+		this.patents.addClose('Cancel');
 
 		//
 		// The options and information for the members page
