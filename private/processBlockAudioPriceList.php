@@ -33,9 +33,11 @@ function ciniki_web_processBlockAudioPriceList(&$ciniki, $settings, $business_id
     }
    
     $audiosamples = '';
+    $javascript_samples = '';
     $list_content = '';
     $found_prices = 'no';
     foreach($block['list'] as $iid => $item) {
+        $audiosample = '';
         $list_content .= "<div class='price-list-item'>";
         $list_content .= "<div class='item-name'>";
         if( isset($block['base_url']) && $block['base_url'] != '' && isset($item['permalink']) && $item['permalink'] != '' ) {
@@ -86,22 +88,25 @@ function ciniki_web_processBlockAudioPriceList(&$ciniki, $settings, $business_id
             }
 
             if( count($sources) > 0 ) {
-                $audiosamples .= "<div id='item-{$iid}' class='audio hidden'>";
+                $audiosample .= "<div id='item-{$iid}' class='audio hidden'>";
 //                if( isset($track['name']) && $track['name'] != '' ) {
 //                    $audiosamples .= '<span class="audiolabel">' . $track['name'] . '</span>';
 //                }
-                $audiosamples .= "<audio id='item-{$iid}-audio' preload='none' onplay='cBAPLstart(\"item-{$iid}\");' onpause='cBAPLstop(\"item-{$iid}\");' controls>";
+                $audiosample .= "<audio id='item-{$iid}-audio' preload='none' onplay='cBAPLstart(\"item-{$iid}\");' onpause='cBAPLstop(\"item-{$iid}\");' controls>";
                 if( isset($sources['wav']) ) {
-                    $audiosamples .= $sources['wav'];
+                    $audiosample .= $sources['wav'];
                 }
                 if( isset($sources['mp3']) ) {
-                    $audiosamples .= $sources['mp3'];
+                    $audiosample .= $sources['mp3'];
                 }
                 if( isset($sources['ogg']) ) {
-                    $audiosamples .= $sources['ogg'];
+                    $audiosample .= $sources['ogg'];
                 }
-                $audiosamples .= '</audio>';
-                $audiosamples .= "</div>";
+                $audiosample .= '</audio>';
+                $audiosample .= "</div>";
+                $javascript_samples .= ($javascript_samples != '' ? ',':'') . $iid;
+                
+                $list_content .= $audiosample;
             }
         } else {
             $list_content .= "</div>";
@@ -117,7 +122,11 @@ function ciniki_web_processBlockAudioPriceList(&$ciniki, $settings, $business_id
         $list_content .= "</div>";
     }
     if( $list_content != '' ) {
-        $content .= "<div class='price-list" . ($found_prices=='yes'?' price-list-prices':'') . "'>" . $list_content . "</div>";
+        if( $audiosamples == '' ) {
+            $content .= "<div id='cBAPLplay' class='price-list" . ($found_prices=='yes'?' price-list-prices':'') . "'>" . $list_content . "</div>";
+        } else {
+            $content .= "<div class='price-list" . ($found_prices=='yes'?' price-list-prices':'') . "'>" . $list_content . "</div>";
+        }
     }
 
     if( $audiosamples != '' ) {
@@ -127,22 +136,41 @@ function ciniki_web_processBlockAudioPriceList(&$ciniki, $settings, $business_id
     if( !isset($ciniki['request']['inline_javascript']) ) {
         $ciniki['request']['inline_javascript'] = '';
     }
-    $ciniki['request']['inline_javascript'] .= "<script type='text/javascript'>"
-        . "function cBAPLplay(id){"
-            . "var e=document.getElementById('cBAPLaudio');"
-            . "for(var i=0;i<e.children.length;i++){"
-                . "var c=e.children[i];"
-                . "if(!c.classList.contains('hidden')){"
-                    . "c.classList.add('hidden');"
-                    . "document.getElementById(c.id+'-audio').pause();"
-                . "}else if(c.id==id&&c.classList.contains('hidden')){"
-                    . "c.classList.remove('hidden');"
-                    . "var a=document.getElementById(c.id+'-audio');"
-                    . "if(a!=null){if(a.currentTime>0){a.currentTime=0;}a.play();}"
+    if( $javascript_samples != '' ) {
+        $javascript_samples = 'var iids=[' . $javascript_samples . '];';
+        $ciniki['request']['inline_javascript'] .= "<script type='text/javascript'>"
+            . "function cBAPLplay(id){"
+                . $javascript_samples
+                . "for(i in iids){"
+                    . "var c=document.getElementById('item-'+iids[i]);"
+                    . "if(!c.classList.contains('hidden')){"
+                        . "c.classList.add('hidden');"
+                        . "document.getElementById(c.id+'-audio').pause();"
+                    . "}else if(c.id==id&&c.classList.contains('hidden')){"
+                        . "c.classList.remove('hidden');"
+                        . "var a=document.getElementById(c.id+'-audio');"
+                        . "if(a!=null){if(a.currentTime>0){a.currentTime=0;}a.play();}"
+                    . "}"
                 . "}"
-            . "}"
-        . "}"
-        . "function cBAPLstart(id){"
+            . "}";
+    } else {
+        $ciniki['request']['inline_javascript'] .= "<script type='text/javascript'>"
+            . "function cBAPLplay(id){"
+                . "var e=document.getElementById('cBAPLaudio');"
+                . "for(var i=0;i<iids;i++){"
+                    . "var c=e.children[i];"
+                    . "if(!c.classList.contains('hidden')){"
+                        . "c.classList.add('hidden');"
+                        . "document.getElementById(c.id+'-audio').pause();"
+                    . "}else if(c.id==id&&c.classList.contains('hidden')){"
+                        . "c.classList.remove('hidden');"
+                        . "var a=document.getElementById(c.id+'-audio');"
+                        . "if(a!=null){if(a.currentTime>0){a.currentTime=0;}a.play();}"
+                    . "}"
+                . "}"
+            . "}";
+    }
+    $ciniki['request']['inline_javascript'] .= "function cBAPLstart(id){"
             . "document.getElementById(id+'-play').className='pause';"
         . "}"
         . "function cBAPLstop(id){"
