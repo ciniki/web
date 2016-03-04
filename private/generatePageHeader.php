@@ -1100,6 +1100,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
 				// Redirect to another url
 				//
 				$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']==$page['permalink']?' menu-item-select':'') 
+                    . " menu-item-" . $page['permalink']
                     . (($page['menu_flags']&0x01)==0x01?' menu-item-header':'')
                     . (($page['menu_flags']&0x02)==0x02?' menu-item-footer':'')
                     . "'><a href='" . $page['page_redirect_url'] . "'>" . $page['title'] . "</a></li>";
