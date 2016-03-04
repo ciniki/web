@@ -69,7 +69,7 @@ function ciniki_web_processBlockAudioList(&$ciniki, $settings, $business_id, $bl
 
 		if( count($sources) > 0 ) {
             $content .= "<div class='audio'>";
-			if( isset($track['name']) && $track['name'] != '' ) {
+			if( (!isset($block['titles']) || $block['titles'] != 'no') && isset($track['name']) && $track['name'] != '' ) {
 				$content .= '<span class="audiolabel">' . $track['name'] . '</span>';
 			}
 			$content .= '<audio preload="none" controls>';
