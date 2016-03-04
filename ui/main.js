@@ -1220,6 +1220,7 @@ function ciniki_web_main() {
 					'shortbio':'Short Bio',
 					'shortbio-blank-addressesnl-phones-emails-links':'Short Bio, Addresses, Phones, Emails, Links',
 					'addressesnl-blank-shortbio-phones-emails-links':'Addresses, Short Bio, Phones, Emails, Links',
+					'shortbio-blank-addressesnl-phones-links':'Short Bio, Addresses, Phones, Links',
 					}},
 			}},
 			'_save':{'label':'', 'buttons':{
@@ -1258,6 +1259,7 @@ function ciniki_web_main() {
 					'shortbio':'Short Bio',
 					'shortbio-blank-addressesnl-phones-emails-links':'Short Bio, Addresses, Phones, Emails, Links',
 					'addressesnl-blank-shortbio-phones-emails-links':'Addresses, Short Bio, Phones, Emails, Links',
+					'shortbio-blank-addressesnl-phones-links':'Short Bio, Addresses, Phones, Links',
 					}},
 			}},
 			'_save':{'label':'', 'buttons':{
