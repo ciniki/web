@@ -40,6 +40,11 @@ function ciniki_web_processBlockAudioPriceList(&$ciniki, $settings, $business_id
         $audiosample = '';
         $list_content .= "<div class='price-list-item'>";
         $list_content .= "<div class='item-name'>";
+        if( isset($block['codes']) && $block['codes'] == 'yes' && isset($item['code']) && $item['code'] != '' 
+            && !preg_match('/' . preg_replace('/\//', "\\\/", $item['code']) . '/', $item['title']) 
+            ) {
+            $item['title'] = $item['code'] . ' - ' . $item['title'];
+        }
         if( isset($block['base_url']) && $block['base_url'] != '' && isset($item['permalink']) && $item['permalink'] != '' ) {
             $list_content .= "<span class='item-name'><a href='" . $block['base_url'] . '/' . $item['permalink'] . "'>" . $item['title'] . "</a></span>";
         } else {

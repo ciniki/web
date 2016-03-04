@@ -44,6 +44,11 @@ function ciniki_web_processBlockImageList(&$ciniki, $settings, $business_id, $bl
         if( !isset($item['title']) && isset($item['name']) ) {
             $item['title'] = $item['name'];
         }
+        if( isset($block['codes']) && $block['codes'] == 'yes' && isset($item['code']) && $item['code'] != '' 
+            && !preg_match('/' . preg_replace('/\//', "\\\/", $item['code']) . '/', $item['title']) 
+            ) {
+            $item['title'] = $item['code'] . ' - ' . $item['title'];
+        }
 		if( $page_limit > 0 && $count >= $page_limit ) { $count++; break; }
 		$url = '';
 		if( isset($block['more_button_text']) && $block['more_button_text'] != '' ) {

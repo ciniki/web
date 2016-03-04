@@ -36,6 +36,11 @@ function ciniki_web_processBlockPriceList(&$ciniki, $settings, $business_id, $bl
     $list_content = '';
     $found_prices = 'no';
     foreach($block['list'] as $iid => $item) {
+        if( isset($block['codes']) && $block['codes'] == 'yes' && isset($item['code']) && $item['code'] != '' 
+            && !preg_match('/' . preg_replace('/\//', "\\\/", $item['code']) . '/', $item['title']) 
+            ) {
+            $item['title'] = $item['code'] . ' - ' . $item['title'];
+        }
         $list_content .= "<div class='price-list-item'>";
         $list_content .= "<div class='item-name'>";
         $list_content .= "<span class='item-name'>" . $item['title'] . "</span>";
