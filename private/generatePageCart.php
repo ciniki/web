@@ -138,7 +138,9 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 				foreach($cart['items'] as $item) {
 					$item = $item['item'];
 					if( $item['object'] == $_POST['object']
-						&& $item['object_id'] == $_POST['object_id'] ) {
+						&& $item['object_id'] == $_POST['object_id'] 
+						&& $item['price_id'] == $_POST['price_id'] 
+                        ) {
 						$item_exists = 'yes';
 						//
 						// Update the quantity
@@ -477,7 +479,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 			$content .= "</div>";
 		}
 
-		$content .= "<div class='submit'><input type='submit' name='continue' class='submit' value='Continue Shopping' />";
+		$content .= "<div class='submit'><input type='submit' name='continue' class='submit' value='Back' />";
 		$content .= " <input type='submit' name='next' class='submit' value='Next' /></div>\n";
 //		$content .= "<div class='cart-buttons'>";
 //		$content .= "<span class='cart-submit'>"
@@ -956,9 +958,9 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 //				. "<tfoot>";
 //			$content .= "<tr><td class='aligncenter'>";
 			$content .= "<div class='cart-buttons'>";
-			$content .= "<span class='cart-submit'>"
-				. "<input class='cart-submit' type='submit' name='continue' value='Continue Shopping'/>"
-				. "</span>";
+//			$content .= "<span class='cart-submit'>"
+//				. "<input class='cart-submit' type='submit' name='continue' value='Continue Shopping'/>"
+//				. "</span>";
 			if( $cart_edit == 'yes' ) {
 				$content .= "<span class='cart-submit'>"
 					. "<input class='cart-submit' type='submit' name='update' value='Update'/>"

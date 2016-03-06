@@ -313,7 +313,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 		}
 
 		//
-		// List the prices for the course
+		// List the prices for the event
 		//
 		if( isset($event['prices']) && count($event['prices']) > 0 ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'cartSetupPrices');
