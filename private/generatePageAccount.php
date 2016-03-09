@@ -39,6 +39,9 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
     //
     if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'logout' ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageAccountLogout');
+        if( isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] == 'timeout' ) {
+            return ciniki_web_generatePageAccountLogout($ciniki, $settings, $ciniki['request']['business_id'], 'yes');
+        }
         return ciniki_web_generatePageAccountLogout($ciniki, $settings, $ciniki['request']['business_id'], 'no');
     }
 

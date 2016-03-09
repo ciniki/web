@@ -36,7 +36,7 @@ function ciniki_web_generatePageAccountLogout(&$ciniki, $settings, $business_id,
     //
     // Redirect them back to the home page
     //
-    if( !isset($_SESSION['account_timeout']) || $_SESSION['account_timeout'] != 'yes' ) {
+    if( !isset($timeout) || $timeout != 'yes' ) {
         header('Location: ' . ($ciniki['request']['ssl_domain_base_url']!=''?$ciniki['request']['ssl_domain_base_url']:'/'));
         return array('stat'=>'ok');
     }
