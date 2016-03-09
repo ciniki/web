@@ -114,7 +114,6 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 	//
 	// Check if a item is being added to the cart
 	//
-//	print "<pre>" . print_r($_POST, true) . "</pre>";
 	if( isset($_POST['action']) && $_POST['action'] == 'add' ) {
 		$item_exists = 'no';
 		if( $cart == NULL ) {
@@ -140,6 +139,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 					if( $item['object'] == $_POST['object']
 						&& $item['object_id'] == $_POST['object_id'] 
 						&& $item['price_id'] == $_POST['price_id'] 
+                        && ($item['flags']&0x08) == 0
                         ) {
 						$item_exists = 'yes';
 						//
@@ -247,7 +247,6 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		//
 		// Redirect to avoid form duplicate submission
 		//
-//		$content .= print_r($_POST, true);
 		if( !isset($_POST['submitorder']) ) {
 			header("Location: " . $ciniki['request']['ssl_domain_base_url'] . "/cart");
 			exit;
@@ -387,6 +386,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		if( isset($cart['customer_id']) && $cart['customer_id'] > 0 ) {
 			$display_cart = 'review';
 			$cart_edit = 'no';
+            $page_title = 'Checkout - Review';
 		} else {
 			$display_signup = 'yes';
 			$display_cart = 'no';
@@ -409,16 +409,169 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
             'returnurl'=>$ciniki['request']['ssl_domain_base_url'] . '/cart/pesuccess',
             'cancelurl'=>$ciniki['request']['ssl_domain_base_url'] . '/cart/pecancel',
             'currency'=>$intl_currency,
+            'shipping'=>($cart['shipping_status'] > 0 ? 'yes' : 'no'),
             ));
         if( $rc['stat'] != 'ok' ) {
-            return $rc;
+            $carterrors = $rc['err']['msg'];
         }
 
         $display_cart = 'review';
+        $page_title = 'Checkout - Review';
 	}
 
+    //
+    // Check if checkout was paypal express success
+    //
+    elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'pesuccess'
+        && isset($_GET['token']) && $_GET['token'] != '' 
+        ) {
+
+        //
+        // Get the paypal payment information
+        //
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'paypalExpressCheckoutGet');
+        $rc = ciniki_sapos_web_paypalExpressCheckoutGet($ciniki, $ciniki['request']['business_id'], array(
+            'token'=>$_GET['token'],
+            ));
+        if( $rc['stat'] != 'ok' ) {
+            $carterrors = "Oops, we seem to have a problem with your payment. Please try again or contact us for help.";
+            error_log('ERR-CART: Paypal DoExpressCheckout: [' . $rc['err']['code'] . '] ' . $rc['err']['msg']);
+            return $rc;
+        }
+
+        $display_cart = 'paypalexpresscheckoutconfirm';
+        $cart_edit = 'no';
+        $page_title = 'Checkout - Confirm Payment';
+    }
+
+    //
+    // Check if checkout was paypal express success
+    //
+    elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'pecancel'
+        ) {
+        $carterrors = "You cancelled the transaction at Paypal, your purchase was not completed.";
+    }
+
+	elseif( isset($_POST['paypalexpresscheckoutdo']) && $_POST['paypalexpresscheckoutdo'] != '' && $cart != NULL ) {
+        //
+        // Get the paypal payment information
+        //
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'paypalExpressCheckoutDo');
+        $rc = ciniki_sapos_web_paypalExpressCheckoutDo($ciniki, $ciniki['request']['business_id'], array(
+            'type'=>'Sale',
+            'amount'=>$cart['total_amount'],
+            'currency'=>$intl_currency,
+            ));
+        if( $rc['stat'] != 'ok' ) {
+            $carterrors = "Oops, we seem to have a problem with your payment. Please try again or contact us for help.";
+            error_log('ERR-CART: Paypal DoExpressCheckout: [' . $rc['err']['code'] . '] ' . $rc['err']['msg']);
+        }
+
+        //
+        // FIXME: Update any modules with items paid for
+        //
+    
+
+        //
+        // Change the cart into an invoice or order
+        //
+        if( !isset($carterrors) || $carterrors == '' ) {
+            $cart['payment_status'] = 50;
+            if( $cart['shipping_status'] > 0 ) {
+                $cart['status'] = 30;
+                ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'submitOrder');
+                $rc = ciniki_sapos_web_submitOrder($ciniki, $settings, $ciniki['request']['business_id'], $cart);
+            } else {
+                $cart['status'] = 50;
+                ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'submitInvoice');
+                $rc = ciniki_sapos_web_submitInvoice($ciniki, $settings, $ciniki['request']['business_id'], $cart);
+            }
+            if( $rc['stat'] != 'ok' ) {
+                $carterrors = "Oops, we seem to have had a problem with your order.";
+                return $rc;
+            } else {
+                //
+                // Email the receipt to the dealer
+                //
+                if( isset($cart['customer']['emails'][0]['email']['address'])) {
+                    //
+                    // Load business details
+                    //
+                    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'businessDetails');
+                    $rc = ciniki_businesses_businessDetails($ciniki, $ciniki['request']['business_id']);
+                    if( $rc['stat'] != 'ok' ) {
+                        return $rc;
+                    }
+                    $business_details = array();
+                    if( isset($rc['details']) && is_array($rc['details']) ) {	
+                        $business_details = $rc['details'];
+                    }
+
+                    //
+                    // Load the invoice settings
+                    //
+                    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
+                    $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_sapos_settings', 'business_id', $ciniki['request']['business_id'],
+                        'ciniki.sapos', 'settings', 'invoice');
+                    if( $rc['stat'] != 'ok' ) {
+                        return $rc;
+                    }
+                    $sapos_settings = array();
+                    if( isset($rc['settings']) ) {
+                        $sapos_settings = $rc['settings'];
+                    }
+                    
+                    //
+                    // Create the pdf
+                    //
+                    $rc = ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'templates', 'default');
+                    if( $rc['stat'] != 'ok' ) {
+                        return $rc;
+                    }
+                    $fn = $rc['function_call'];
+                    $rc = $fn($ciniki, $ciniki['request']['business_id'], $cart['id'], $business_details, $sapos_settings, 'email');
+                    if( $rc['stat'] != 'ok' ) {
+                        return $rc;
+                    }
+
+                    //
+                    // Email the pdf to the customer
+                    //
+                    $filename = $rc['filename'];
+                    $invoice = $rc['invoice'];
+                    $pdf = $rc['pdf'];
+
+                    $subject = "Invoice #" . $invoice['invoice_number'];
+                    $textmsg = "Thank you for your order, please find the receipt attached.";
+//                    if( isset($settings['page-cart-dealersubmit-email-textmsg']) 
+//                        && $settings['page-cart-dealersubmit-email-textmsg'] != '' 
+//                        ) {
+//                        $textmsg = $settings['page-cart-dealersubmit-email-textmsg'];
+//                    }	
+                    $ciniki['emailqueue'][] = array('to'=>$invoice['customer']['emails'][0]['email']['address'],
+                        'to_name'=>(isset($invoice['customer']['display_name'])?$invoice['customer']['display_name']:''),
+                        'business_id'=>$ciniki['request']['business_id'],
+                        'subject'=>$subject,
+                        'textmsg'=>$textmsg,
+                        'attachments'=>array(array('string'=>$pdf->Output('invoice', 'S'), 'filename'=>$filename)),
+                        );
+                }
+            }
 
 
+            
+            $display_cart = 'no';
+            $cart_edit = 'no';
+            $cart = NULL;
+            unset($_SESSION['cart']);
+            unset($ciniki['session']['cart']);
+            $display_cart = 'checkout_success';
+        }
+    }
+
+    //
+    // Display the signup/login form
+    //
 	if( $display_signup == 'yes' || $display_signup == 'forgot' ) {
 		$content .= "<article class='page cart'>\n";
 		$post_email = '';
@@ -513,11 +666,12 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 	//
 	// Display the contents of the shopping cart
 	//
-	if( $display_cart == 'yes' || $display_cart == 'confirm' || $display_cart == 'review' ) {
+	if( $display_cart == 'yes' || $display_cart == 'confirm' || $display_cart == 'review' || $display_cart == 'paypalexpresscheckoutconfirm' ) {
 		$content .= "<article class='page cart'>\n"
 //			. "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' method='POST'>"
 			. "<header class='entry-title'>"
 			. "<h1 id='entry-title' class='entry-title'>$page_title</h1>";
+        
 		if( isset($settings['page-cart-product-search']) 
 			&& $settings['page-cart-product-search'] == 'yes' 
 			) {
@@ -666,10 +820,17 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		//
 		// Check if there is a review message
 		//
-		elseif( $display_cart == 'review' ) {
+		elseif( $display_cart == 'review' && (!isset($carterrors) || $carterrors == '') ) {
+            $content .= "<div class='form-message-content'><div class='form-result-message form-success-message'><div class='form-message-wrapper'>";
 			$content .= "<p>Please review your order.</p>";
+            $content .= "</div></div></div>";
 		}
 
+        if( isset($carterrors) && $carterrors != '' ) {
+            $content .= "<div class='form-message-content'><div class='form-result-message form-error-message'><div class='form-message-wrapper'>";
+            $content .= "<p class='formerror'>" . $carterrors . "</p>";
+            $content .= "</div></div></div>";
+        }
 
 		if( $inv == 'yes' ) {
 			$item_objects = array();
@@ -773,10 +934,15 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 				$content .= "</td>";
 				$content .= "<td class='alignright'>";
 				if( $cart_edit == 'yes' ) {
-					$content .= "<span class='cart-quantity'>"
-						. "<input class='quantity' id='quantity_" . $item['id'] . "' name='quantity_" . $item['id'] . "' type='text' value='" 
-							. $item['quantity'] . "' size='2'/>"
-						. "</span>";
+                    if( ($item['flags']&0x08) == 0 ) {
+                        $content .= "<span class='cart-quantity'>"
+                            . "<input class='quantity' id='quantity_" . $item['id'] . "' name='quantity_" . $item['id'] . "' type='text' value='" 
+                                . $item['quantity'] . "' size='2'/>"
+                            . "</span>";
+                     } else {
+                        $content .= $item['quantity'];
+                        $content .= "<input id='quantity_" . $item['id'] . "' name='quantity_" . $item['id'] . "' type='hidden' value='" . $item['quantity'] . "'/>";
+                     }
 				} else {
 					$content .= $item['quantity'];
 				}
@@ -942,7 +1108,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 			if( isset($cart['shipping_country']) && $cart['shipping_country'] != '' ) {
 				$saddr .= ($saddr!=''?'<br/>':'') . $cart['shipping_country'];
 			}
-			if( $saddr != '' ) {
+			if( $saddr != '' && $cart['shipping_status'] > 0 ) {
 				$cart_details .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
 				$cart_details .= "<th>Ship To:</th><td>";
 				$cart_details .= $saddr;
@@ -1005,6 +1171,10 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                         . "<input class='cart-submit' type='submit' name='continue' value='Back'/>"
 						. "<input class='cart-submit' type='submit' name='paypalexpresscheckout' value='Checkout via Paypal'/>"
 						. "</span>";
+				} elseif( $display_cart == 'paypalexpresscheckoutconfirm' ) {
+					$content .= "<span class='cart-submit'>"
+						. "<input class='cart-submit' type='submit' name='paypalexpresscheckoutdo' value='Pay Now'/>"
+						. "</span>";
 				} else {
 					$content .= "<span class='cart-submit'>"
 						. "<input class='cart-submit' type='submit' name='checkout' value='Checkout'/>"
@@ -1026,6 +1196,13 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 
 		$content .= "</div></article>\n";
 	}
+
+    if( $display_cart == 'checkout_success' ) {
+        $page_title = 'Checkout - Complete';
+        $content .= "<div class='form-message-content'><div class='form-result-message form-success-message'><div class='form-message-wrapper'>";
+        $content .= "<p class='formerror'>Thank you for your order.</p>";
+        $content .= "</div></div></div>";
+    }
 
 
 	//

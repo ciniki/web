@@ -1637,6 +1637,7 @@ function ciniki_web_main() {
 				'page-account-phone-update':{'label':'Phone Update', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-account-email-update':{'label':'Email Update', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-account-address-update':{'label':'Address Update', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-account-timeout':{'label':'Page Timeout', 'type':'text', 'size':'small'},
 				'page-account-invoices-list':{'label':'View Orders', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-account-invoices-view-details':{'label':'View Order Details', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-account-invoices-view-pdf':{'label':'Download Invoice', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},

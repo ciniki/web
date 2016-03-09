@@ -908,7 +908,7 @@ foreach($ciniki['business']['modules'] as $module => $m) {
 
 
 //
-// FIXME: Check for emailqueue
+// Check for emailqueue
 //
 if( isset($ciniki['emailqueue']) && count($ciniki['emailqueue']) > 0 ) {
 	ob_start();

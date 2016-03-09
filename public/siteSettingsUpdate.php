@@ -382,6 +382,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-account-address-update',
 		'page-account-signin-redirect',
         'page-account-header-signin-text',
+        'page-account-timeout',
 		'page-account-invoices-list',
 		'page-account-invoices-view-details',
 		'page-account-invoices-view-pdf',

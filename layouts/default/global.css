@@ -87,6 +87,10 @@ p, ul, ol, dl, blockquote {
     max-width: 30em; /* Optimal width for long-form text */
   }
 
+div.form-result-message {   
+    box-sizing: border-box;
+}
+
 div.form-result-message p {
     max-width: 100%;
 }

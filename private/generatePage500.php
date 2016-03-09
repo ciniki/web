@@ -67,11 +67,13 @@ function ciniki_web_generatePage500(&$ciniki, $settings, $errors) {
 	//
 	// Email sysadmins there was a problem with a web request
 	//
-	$ciniki['emailqueue'][] = array('to'=>$ciniki['config']['ciniki.core']['alerts.notify'],
-		'subject'=>'Web ERR 500',
-		'textmsg'=>$_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "\n"
-			. print_r($errors, true),
-		);
+    if( !isset($ciniki['config']['ciniki.web']['email.500.errors']) || $ciniki['config']['ciniki.web']['email.500.errors'] == 'yes' ) {
+        $ciniki['emailqueue'][] = array('to'=>$ciniki['config']['ciniki.core']['alerts.notify'],
+            'subject'=>'Web ERR 500',
+            'textmsg'=>$_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "\n"
+                . print_r($errors, true),
+            );
+    }
 
 	//
 	// Add the footer

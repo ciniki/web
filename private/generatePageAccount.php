@@ -39,7 +39,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
     //
     if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'logout' ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageAccountLogout');
-        return ciniki_web_generatePageAccountLogout($ciniki, $settings, $ciniki['request']['business_id']);
+        return ciniki_web_generatePageAccountLogout($ciniki, $settings, $ciniki['request']['business_id'], 'no');
     }
 
     //
@@ -59,6 +59,13 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
     // NOTE: At this point the customer is considered logged in
     //
     $ciniki['request']['page-container-class'] = 'page-account';
+
+    //
+    // Check if a timeout is specified
+    //
+    if( isset($settings['page-account-timeout']) && $settings['page-account-timeout'] > 0 ) {   
+        $ciniki['request']['inline_javascript'] .= '<script type="text/javascript">setInterval(function(){window.location.href="' . $ciniki['request']['ssl_domain_base_url'] . '/account/logout/timeout";},' . ($settings['page-account-timeout']*60000) . ');</script>';
+    }
 
     //
     // Check if there was a switch of customer (parent switching between child accounts)
