@@ -147,10 +147,8 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 						//
 //						if( $item['quantity'] != $_POST['quantity'] ) {
 						ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartItemUpdate');
-						$rc = ciniki_sapos_web_cartItemUpdate($ciniki, $settings, 
-							$ciniki['request']['business_id'],
-							array('item_id'=>$item['id'],
-								'quantity'=>$item['quantity'] + $_POST['quantity']));
+						$rc = ciniki_sapos_web_cartItemUpdate($ciniki, $settings, $ciniki['request']['business_id'],
+							array('item_id'=>$item['id'], 'quantity'=>$item['quantity'] + $_POST['quantity']));
 						if( $rc['stat'] != 'ok' ) {
 							return $rc;
 						}
@@ -232,10 +230,8 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 						}
 					} else {
 						ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartItemUpdate');
-						$rc = ciniki_sapos_web_cartItemUpdate($ciniki, $settings, 
-							$ciniki['request']['business_id'],
-							array('item_id'=>$item['id'],
-								'quantity'=>$new_quantity));
+						$rc = ciniki_sapos_web_cartItemUpdate($ciniki, $settings, $ciniki['request']['business_id'],
+							array('item_id'=>$item['id'], 'quantity'=>$new_quantity));
 						if( $rc['stat'] != 'ok' ) {
 							return $rc;
 						}
@@ -465,107 +461,23 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         if( $rc['stat'] != 'ok' ) {
             $carterrors = "Oops, we seem to have a problem with your payment. Please try again or contact us for help.";
             error_log('ERR-CART: Paypal DoExpressCheckout: [' . $rc['err']['code'] . '] ' . $rc['err']['msg']);
+            $display_cart = 'paypalexpresscheckoutconfirm';
+            $cart_edit = 'no';
         }
 
-        //
-        // FIXME: Update any modules with items paid for
-        //
-    
-
-        //
-        // Change the cart into an invoice or order
-        //
         if( !isset($carterrors) || $carterrors == '' ) {
-            $cart['payment_status'] = 50;
-            if( $cart['shipping_status'] > 0 ) {
-                $cart['status'] = 30;
-                ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'submitOrder');
-                $rc = ciniki_sapos_web_submitOrder($ciniki, $settings, $ciniki['request']['business_id'], $cart);
-            } else {
-                $cart['status'] = 50;
-                ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'submitInvoice');
-                $rc = ciniki_sapos_web_submitInvoice($ciniki, $settings, $ciniki['request']['business_id'], $cart);
-            }
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartPaymentReceived');
+            $rc = ciniki_sapos_web_cartPaymentReceived($ciniki, $settings, $ciniki['request']['business_id'], $cart);
             if( $rc['stat'] != 'ok' ) {
-                $carterrors = "Oops, we seem to have had a problem with your order.";
-                return $rc;
-            } else {
-                //
-                // Email the receipt to the dealer
-                //
-                if( isset($cart['customer']['emails'][0]['email']['address'])) {
-                    //
-                    // Load business details
-                    //
-                    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'businessDetails');
-                    $rc = ciniki_businesses_businessDetails($ciniki, $ciniki['request']['business_id']);
-                    if( $rc['stat'] != 'ok' ) {
-                        return $rc;
-                    }
-                    $business_details = array();
-                    if( isset($rc['details']) && is_array($rc['details']) ) {	
-                        $business_details = $rc['details'];
-                    }
-
-                    //
-                    // Load the invoice settings
-                    //
-                    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
-                    $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_sapos_settings', 'business_id', $ciniki['request']['business_id'],
-                        'ciniki.sapos', 'settings', 'invoice');
-                    if( $rc['stat'] != 'ok' ) {
-                        return $rc;
-                    }
-                    $sapos_settings = array();
-                    if( isset($rc['settings']) ) {
-                        $sapos_settings = $rc['settings'];
-                    }
-                    
-                    //
-                    // Create the pdf
-                    //
-                    $rc = ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'templates', 'default');
-                    if( $rc['stat'] != 'ok' ) {
-                        return $rc;
-                    }
-                    $fn = $rc['function_call'];
-                    $rc = $fn($ciniki, $ciniki['request']['business_id'], $cart['id'], $business_details, $sapos_settings, 'email');
-                    if( $rc['stat'] != 'ok' ) {
-                        return $rc;
-                    }
-
-                    //
-                    // Email the pdf to the customer
-                    //
-                    $filename = $rc['filename'];
-                    $invoice = $rc['invoice'];
-                    $pdf = $rc['pdf'];
-
-                    $subject = "Invoice #" . $invoice['invoice_number'];
-                    $textmsg = "Thank you for your order, please find the receipt attached.";
-//                    if( isset($settings['page-cart-dealersubmit-email-textmsg']) 
-//                        && $settings['page-cart-dealersubmit-email-textmsg'] != '' 
-//                        ) {
-//                        $textmsg = $settings['page-cart-dealersubmit-email-textmsg'];
-//                    }	
-                    $ciniki['emailqueue'][] = array('to'=>$invoice['customer']['emails'][0]['email']['address'],
-                        'to_name'=>(isset($invoice['customer']['display_name'])?$invoice['customer']['display_name']:''),
-                        'business_id'=>$ciniki['request']['business_id'],
-                        'subject'=>$subject,
-                        'textmsg'=>$textmsg,
-                        'attachments'=>array(array('string'=>$pdf->Output('invoice', 'S'), 'filename'=>$filename)),
-                        );
-                }
+                $carterrors = "We have received your payment, thank you. There was a problem processing your order, so have notified the approriate people to look into it.";
+                error_log('ERR-CART: ' . print_r($rc['err']));
+                $ciniki['emailqueue'][] = array('to'=>$ciniki['config']['ciniki.core']['alerts.notify'],
+                    'subject'=>'Web Cart ERR 500',
+                    'textmsg'=>$_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "\n"
+                        . print_r($errors, true),
+                    );
             }
-
-
-            
             $display_cart = 'no';
-            $cart_edit = 'no';
-            $cart = NULL;
-            unset($_SESSION['cart']);
-            unset($ciniki['session']['cart']);
-            $display_cart = 'checkout_success';
         }
     }
 

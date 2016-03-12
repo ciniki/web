@@ -219,7 +219,9 @@ span.image-categories-name {
 }
 
 div.image-list-thumbnail,
+div.image-list-original,
 div.image-cilist-thumbnail,
+div.image-cilist-original,
 div.image-members-thumbnail,
 div.image-sponsors-thumbnail,
 div.image-exhibitors-thumbnail,
@@ -230,6 +232,7 @@ div.image-gallery-thumbnail {
 	margin: 5px;
 	padding: 0px;
 	background: #fff;
+    line-height: 1px;
 }
 
 div.additional-image-gallery div.image-gallery-thumbnail {

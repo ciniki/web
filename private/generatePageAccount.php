@@ -66,7 +66,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
     //
     // Check if a timeout is specified
     //
-    if( isset($settings['page-account-timeout']) && $settings['page-account-timeout'] > 0 ) {   
+    if( isset($settings['page-account-timeout']) && $settings['page-account-timeout'] > 0 ) {
         $ciniki['request']['inline_javascript'] .= '<script type="text/javascript">setInterval(function(){window.location.href="' . $ciniki['request']['ssl_domain_base_url'] . '/account/logout/timeout";},' . ($settings['page-account-timeout']*60000) . ');</script>';
     }
 

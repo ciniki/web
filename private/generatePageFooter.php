@@ -378,6 +378,14 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
 		$content .= "<script type='text/javascript'>$javascript</script>";
 	}
 
+    //
+    // Check if a timeout is specified and the user is logged in
+    //
+/*    if( isset($settings['page-account-timeout']) && $settings['page-account-timeout'] > 0 
+        && isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 
+        ) {   
+        $ciniki['request']['inline_javascript'] .= '<script type="text/javascript">setInterval(function(){window.location.href="' . $ciniki['request']['ssl_domain_base_url'] . '/account/logout/timeout";},' . ($settings['page-account-timeout']*60000) . ');</script>';
+    } */
 
 	$content .= "</body>"
 		. "</html>"

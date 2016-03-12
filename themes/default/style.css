@@ -205,6 +205,7 @@ div.image-gallery-thumbnail {
 	display: inline-block;
 	margin: 4px;
 	padding: 7px;
+    line-height: 1px;
 }
 
 div.additional-image-gallery div.image-gallery-thumbnail {
@@ -287,6 +288,17 @@ div.gallery-image-details span.image-awards {
 #content b.entry-title,
 #content h2 {
 	color: #439BBD;
+}
+
+#content article header h2 {
+    color: #aaa;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+    padding-top: 0.05em;
+    width: 100%;
+    max-width: 100%;
+    margin: 0px;
+    line-height: 1.2em;
 }
 
 #content p.entry-meta,

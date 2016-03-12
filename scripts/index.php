@@ -704,8 +704,10 @@ if( $found == 'no' ) {
     // Writings
     elseif( $ciniki['request']['page'] == 'writings' 
         && isset($settings['page-writings-active']) && $settings['page-writings-active'] == 'yes' ) {
-        require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageWritings.php');
-        $rc = ciniki_web_generatePageWritings($ciniki, $settings);
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
+        $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['business_id'], 'ciniki.writingcatalog');
+//        require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageWritings.php');
+//        $rc = ciniki_web_generatePageWritings($ciniki, $settings);
     }
     // Events
     elseif( $ciniki['request']['page'] == 'events' 
