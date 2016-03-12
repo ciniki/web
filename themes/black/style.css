@@ -148,7 +148,9 @@ a img {
 	color: #63BBDD;
 }
 
+div.image-cilist-original-wrap, 
 div.image-cilist-thumbnail-wrap, 
+div.image-categories-original-wrap,
 div.image-categories-thumbnail-wrap {
 	display: inline-block;
 	margin: 6px;
@@ -165,18 +167,15 @@ div.image-categories-thumbnail {
 	border: 0px;
 }
 
-#content div.image-categories-thumbnail-small span.image-categories-thumbnail {
-	border-radius: 8px;
-	border: 6px solid #fff;
-}
+#content div.image-categories-thumbnail-small span.image-categories-thumbnail,
 #content div.image-categories-thumbnail-medium span.image-categories-thumbnail {
 	border-radius: 8px;
 	border: 6px solid #fff;
 }
 
-
 div.image-list-thumbnail img,
 div.image-cilist-thumbnail img,
+div.image-cilist-original img,
 div.image-exhibitors-thumbnail img,
 div.image-sponsors-thumbnail img,
 div.image-members-thumbnail img,
