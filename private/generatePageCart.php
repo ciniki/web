@@ -37,6 +37,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 	$content = '';
 	$display_cart = 'yes';
 	$display_signup = 'no';
+	$display_passwordreset = 'no';
 	$cart_err_msg = '';
 	$signup_err_msg = '';
 	$cart = NULL;
@@ -70,6 +71,65 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 	if( $rc['stat'] == 'ok' ) {
 		$modules = $rc['modules'];
 	}
+
+    //
+    // Check if a login occured before loading the cart
+    //
+    if( isset($_POST['action']) && $_POST['action'] == 'signin' ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'auth');
+        $rc = ciniki_customers_web_auth($ciniki, $settings, $ciniki['request']['business_id'], $_POST['email'], $_POST['password']);
+        if( $rc['stat'] != 'ok' ) {
+            $signinerrors = "Unable to authenticate, please try again or click Forgot your password to get a new one.";
+            $display_signup = 'yes';
+            $display_cart = 'no';
+        } else {
+            $display_signup = 'no';
+            $display_cart = 'review';
+            $cart_edit = 'no';
+            
+            //
+            // Check for any module information that should be loaded into the session
+            //
+            foreach($ciniki['business']['modules'] as $module => $m) {
+                list($pkg, $mod) = explode('.', $module);
+                $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'accountSessionLoad');
+                if( $rc['stat'] == 'ok' ) {
+                    $fn = $rc['function_call'];
+                    $rc = $fn($ciniki, $settings, $ciniki['request']['business_id']);
+                    if( $rc['stat'] != 'ok' ) {
+                        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2900', 'msg'=>'Unable to load account information', 'err'=>$rc['err']));
+                    }
+                }
+            }
+        }
+    }
+    elseif( isset($_POST['action']) && $_POST['action'] == 'passwordreset' ) {
+        if( !isset($_POST['newpassword']) || strlen($_POST['newpassword']) < 8 ) {
+            $passwordreseterrors = "Your new password must be at least 8 characters long.";
+            $display_passwordreset = 'yes';
+            $display_cart = 'no';
+        } elseif( !isset($_POST['email']) || $_POST['email'] == '' ) {
+            $passworderrors = "You need to enter an email address to reset your password.";
+            $display_passwordreset = 'yes';
+            $display_cart = 'no';
+        } elseif( !isset($_POST['temppassword']) || $_POST['temppassword'] == '' ) {
+            $signuperrors = "Sorry, but the link was invalid.  Please try again.";
+            $display_signup = 'yes';
+            $display_cart = 'no';
+        } else {
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'changeTempPassword');
+            $rc = ciniki_customers_web_changeTempPassword($ciniki, $ciniki['request']['business_id'], $_POST['email'], $_POST['temppassword'], $_POST['newpassword']);
+            if( $rc['stat'] != 'ok' ) {
+                $signinerrors = "Sorry, we were unable to set your new password.  Please try again or call us for help.";
+                $display_signup = 'yes';
+                $display_cart = 'no';
+            } else {
+                $signinmsg = "Your password has been reset, please login to continue.";
+                $display_signup = 'yes';
+                $display_cart = 'no';
+            }
+        }
+    }
 
 	//
 	// Check if a cart already exists
@@ -375,6 +435,32 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		}
 	}
 
+    //
+    // Check if action is forgot
+    //
+    elseif( isset($_POST['action']) && $_POST['action'] == 'forgot' ) {
+        $url = $ciniki['request']['ssl_domain_base_url'] . '/cart/passwordreset';
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'passwordRequestReset');
+        $rc = ciniki_customers_web_passwordRequestReset($ciniki, $ciniki['request']['business_id'], $_POST['email'], $url);
+        if( $rc['stat'] != 'ok' ) {
+            $signinerrors = "You must enter a valid email address to get a new password.";
+        } else {
+            $signinmsg = "A link has been sent to your email to get a new password.";
+        }
+        $_SESSION['passwordreset_referer'] = $ciniki['request']['ssl_domain_base_url'] . "/cart";
+        $display_signup = 'yes';
+        $display_cart = 'no';
+    }
+
+    //
+    // Check if action is forgot
+    //
+    elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'passwordreset' ) {
+        $display_signup = 'no';
+        $display_cart = 'no';
+        $display_passwordreset = 'yes';
+    }
+
 	//
 	// Check if checkout
 	//
@@ -482,6 +568,38 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
     }
 
     //
+    // Display the forgot password link
+    //
+        
+	if( $display_passwordreset == 'yes' ) {
+		$content .= "<article class='page cart'>\n";
+        if( isset($passwordreseterrors) && $passwordreseterrors != '' ) {
+            $content .= "<div class='form-message-content'><div class='form-result-message form-error-message'><div class='form-message-wrapper'>";
+            $content .= "<p class='formerror'>" . $passwordreseterrors . "</p>";
+            $content .= "</div></div></div>";
+        }
+		$content .= "<div id='reset-form' class='reset-form'>\n"
+            . "<p>Please enter a new password.  It must be at least 8 characters long.</p>"
+			. "<form method='POST' action='" . $ciniki['request']['ssl_domain_base_url'] . "/cart'>";
+		$content .="<input type='hidden' name='action' value='passwordreset'>\n";
+		if( isset($_GET['email']) ) {
+			$content .= "<input type='hidden' name='email' value='" . $_GET['email'] . "'>\n";
+		} else {
+			$content .= "<input type='hidden' name='email' value='" . $_POST['email'] . "'>\n";
+		}
+		if( isset($_GET['email']) ) {
+			$content .= "<input type='hidden' name='temppassword' value='" . $_GET['pwd'] . "'>\n";
+		} else {
+			$content .= "<input type='hidden' name='temppassword' value='" . $_POST['temppassword'] . "'>\n";
+		}
+		$content .= "<div class='input'><label for='password'>New Password</label><input id='password' type='password' class='text' maxlength='100' name='newpassword' value='' /></div>\n"
+			. "<div class='submit'><input type='submit' class='submit' value='Set Password' /></div>\n"
+			. "</form>"
+			. "</div>\n";
+        $content .= "</article>";
+    }
+
+    //
     // Display the signup/login form
     //
 	if( $display_signup == 'yes' || $display_signup == 'forgot' ) {
@@ -490,6 +608,16 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		if( isset($_POST['email']) ) {
 			$post_email = $_POST['email'];
 		}
+        if( isset($signinmsg) && $signinmsg != '' ) {
+            $content .= "<div class='form-message-content'><div class='form-result-message form-success-message'><div class='form-message-wrapper'>";
+            $content .= "<p class='formerror'>" . $signinmsg . "</p>";
+            $content .= "</div></div></div>";
+        }
+        if( isset($signinerrors) && $signinerrors != '' ) {
+            $content .= "<div class='form-message-content'><div class='form-result-message form-error-message'><div class='form-message-wrapper'>";
+            $content .= "<p class='formerror'>" . $signinerrors . "</p>";
+            $content .= "</div></div></div>";
+        }
 		$content .= "<aside>";
 		// Javascript to switch forms	
 		$ciniki['request']['inline_javascript'] = "<script type='text/javascript'>\n"
@@ -509,7 +637,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		$content .= "<div id='signin-form' style='display:" . ($display_signup=='yes'?'block':'none') . ";'>\n";
 		$content .= "<h2>Existing Account</h2>";
 		$content .= "<p>Bought something here before? Please sign in to your account:</p>";
-		$content .= "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/account' method='POST'>";
+		$content .= "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' method='POST'>";
 		if( $signup_err_msg != '' ) {
 			$content .= "<p class='formerror'>$signup_err_msg</p>\n";
 		}
@@ -530,11 +658,12 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		$content .= "<div id='forgotpassword-form' style='display:" . ($display_signup=='forgot'?'block':'none') . ";'>\n";
 		$content .= "<h2>Forgot Password</h2>";
 		$content .= "<p>Please enter your email address and you will receive a link to create a new password.</p>";
-		$content .= "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/account' method='POST'>";
+		$content .= "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' method='POST'>";
 		if( $signup_err_msg != '' ) {
 			$content .= "<p class='formerror'>$signup_err_msg</p>\n";
 		}
 		$content .= "<input type='hidden' name='action' value='forgot'>\n"
+            . "<input type='hidden' name='redirect' value='" . $ciniki['request']['ssl_domain_base_url'] . "/cart' />"
 			. "<div class='input'><label for='forgotemail'>Email </label><input id='forgotemail' type='email' class='text' maxlength='250' name='email' value='$post_email' /></div>\n" 
 			. "<div class='submit'><input type='submit' class='submit' value='Get New Password' /></div>\n"
 			. "</form>"

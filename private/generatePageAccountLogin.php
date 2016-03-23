@@ -55,7 +55,7 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
             && isset($_POST['password']) && $_POST['password'] != '' 
             ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'auth');
-            $rc = ciniki_customers_web_auth($ciniki, $business_id, $_POST['email'], $_POST['password']);
+            $rc = ciniki_customers_web_auth($ciniki, $settings, $business_id, $_POST['email'], $_POST['password']);
             if( $rc['stat'] != 'ok' ) {
                 $blocks[] = array('type'=>'formmessage', 'level'=>'error', 
                     'message'=>"Unable to authenticate, please try again or click Forgot your password to get a new one");
@@ -81,9 +81,10 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
                 //
                 // If multiple accounts, setup the redirect upon choosing an account
                 //
-                if( isset($ciniki['session']['customers']) && count($ciniki['session']['customers']) > 1 ) {
-                    if( isset($settings['page-account-signin-redirect']) && ($settings['page-account-signin-redirect']) 
-                        ) {
+                if( isset($ciniki['session']['customers']) && count($ciniki['session']['customers']) > 1 
+                    && (!isset($settings['page-account-child-logins']) || $settings['page-account-child-logins'] == 'yes')
+                    ) {
+                    if( isset($settings['page-account-signin-redirect']) && ($settings['page-account-signin-redirect']) ) {
                         $_SESSION['account_chooser_redirect'] = $settings['page-account-signin-redirect'];
                     } else {
                         $_SESSION['account_chooser_redirect'] = '';
@@ -95,7 +96,8 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
                 //
                 elseif( isset($settings['page-account-signin-redirect']) ) {
                     if( $settings['page-account-signin-redirect'] == 'back' 
-                        && isset($_SESSION['login_referer']) && $_SESSION['login_referer'] != '' ) {
+                        && isset($_SESSION['login_referer']) && $_SESSION['login_referer'] != '' 
+                        ) {
                         header('Location: ' . $_SESSION['login_referer']);
                         $_SESSION['login_referer'] = '';
                         exit;
@@ -172,7 +174,7 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
             if( (!isset($_SESSION['login_referer']) || $_SESSION['login_referer'] == '') 
                 && isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != '' 
                 ) {
-                    $_SESSION['login_referer'] = $_SERVER['HTTP_REFERER'];
+                $_SESSION['login_referer'] = $_SERVER['HTTP_REFERER'];
             }
         }
         $_SESSION['loginform'] = 'yes';
