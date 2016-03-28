@@ -267,7 +267,7 @@ if( $ciniki['request']['business_id'] == 0 ) {
 //
 session_start();
 $ciniki['session'] = array();
-$ciniki['session']['change_log_id'] = 'web.' . date('Ymd.HMS');
+$ciniki['session']['change_log_id'] = 'web.' . date('Ymd.His');
 $ciniki['session']['user'] = array('id'=>'-2');
 // If the session is for the current business
 if( isset($_SESSION['business_id']) && $_SESSION['business_id'] == $ciniki['request']['business_id'] ) {
