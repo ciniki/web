@@ -1048,6 +1048,11 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 			$content .= "<p>Please review your order.</p>";
             $content .= "</div></div></div>";
 		}
+		elseif( $display_cart == 'paypalexpresscheckoutconfirm' && (!isset($carterrors) || $carterrors == '') ) {
+            $content .= "<div class='form-message-content'><div class='form-result-message form-success-message'><div class='form-message-wrapper'>";
+			$content .= "<p>To complete your order, please click on Pay Now below.</p>";
+            $content .= "</div></div></div>";
+		}
 
         if( isset($carterrors) && $carterrors != '' ) {
             $content .= "<div class='form-message-content'><div class='form-result-message form-error-message'><div class='form-message-wrapper'>";
@@ -1393,6 +1398,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 					$content .= "<span class='cart-submit'>"
                         . "<input class='cart-submit' type='submit' name='continue' value='Back'/>"
 						. "<input class='cart-submit' type='submit' name='paypalexpresscheckout' value='Checkout via Paypal'/>"
+//						. "<input class='paypal-checkout' type='image' name='paypalexpresscheckout' src='/ciniki-web-layouts/default/img/paypal_checkout_large.png' value='Checkout via Paypal'/>"
 						. "</span>";
 				} elseif( $display_cart == 'paypalexpresscheckoutconfirm' ) {
 					$content .= "<span class='cart-submit'>"
