@@ -147,6 +147,19 @@ h2 {
 
 #content div.gallery-image-details p {
 	max-width: 100%;
+    margin-bottom: 0.5em;
+}
+
+#content div.gallery-image-details span.image-title {
+    margin-bottom: 0.25em;
+    display: block;
+}
+
+#content div.gallery-image-details span.image-details,
+#content div.gallery-image-details span.image-description {
+    display: block;
+    margin: 0px;
+    padding-top: 0px;
 }
     
 ul { list-style-type: disc; margin-left: 1.618em; margin-right: 1.618em; }

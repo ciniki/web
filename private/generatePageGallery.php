@@ -254,7 +254,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 		$page_content .= "<div id='gallery-image-details' class='gallery-image-details'>";
 
 		$page_content .= "<span class='image-title'>" . $img['title'] . '</span>'
-			. "<span class='image-details'>" . $img['details'] . '</span>';
+			. "<span class='image-details'><p>" . $img['details'] . '</p></span>';
 		if( $img['description'] != '' && (!isset($img['webflags']) || ($img['webflags']&0x0100) > 0) ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 			$rc = ciniki_web_processContent($ciniki, $img['description']);
