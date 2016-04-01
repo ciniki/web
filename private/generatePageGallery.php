@@ -429,127 +429,110 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 			$page_content = $rc['content'];
 		}
 
-		if( $mod == 'artcatalog' && isset($settings['page-gallery-artcatalog-format']) 
-			&& $settings['page-gallery-artcatalog-format'] == 'list'
-			) {
-			ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'categoryList');
-			$categories = $pkg . '_' . $mod . '_web_categoryList';
-			$rc = $categories($ciniki, $settings, $ciniki['request']['business_id'], 
-				array('artcatalog_type'=>$artcatalog_type)); 
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
-			}
-            $list = array();
-            foreach($rc['categories'] as $cat) {
-                $list[] = array_pop($cat['list']);
+        //
+        // List the categories the user has created in the artcatalog, 
+        // OR just show all the thumbnails if they haven't created any categories
+        //
+        ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'categories');
+        $categories = $pkg . '_' . $mod . '_web_categories';
+        $rc = $categories($ciniki, $settings, $ciniki['request']['business_id'], 
+            array('artcatalog_type'=>$artcatalog_type)); 
+        if( $rc['stat'] != 'ok' ) {
+            return $rc;
+        }
+        if( !isset($rc['categories']) ) {
+            //
+            // No categories specified, just show thumbnails of all artwork
+            //
+            if( isset($settings['page-gallery-name']) && $settings['page-gallery-name'] != '' ) {
+                $page_title = $settings['page-gallery-name'];
+            } else {
+                $page_title = 'Gallery';
             }
-//			$list = $rc['categories'];
+            ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'categoryImages');
+            $categoryImages = $pkg . '_' . $mod . '_web_categoryImages';
+            $rc = $categoryImages($ciniki, $settings, $ciniki['request']['business_id'], array(
+                'type'=>$category_uri_component, 'type_name'=>'', 
+                'artcatalog_type'=>$artcatalog_type));
+            if( $rc['stat'] != 'ok' ) {
+                return $rc;
+            }
+            if( !isset($rc['images']) || count($rc['images']) < 1 ) {
+                $page_content .= "<p>Sorry, there doesn't seem to be anything in this gallery yet.  Please try again later.</p>";
+            } else {
+                $images = $rc['images'];
+                
+                ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
+                $img_base_url = $base_url . "/image";
+                $rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $rc['images'], 150, 0);
+                if( $rc['stat'] != 'ok' ) {
+                    return $rc;
+                }
+                $page_content .= "<div class='image-gallery'>" . $rc['content'] . "</div>";
+            }
+        } elseif( count($rc['categories']) == 1 ) {
+            // If only one album, then open album
+            $category = array_pop($rc['categories']);
+            if( isset($category['permalink']) && $category['permalink'] != '' ) {
+                header('Location: ' . $base_url . '/' . $category_uri_component . '/' . $category['permalink']);
+            } else {
+                header('Location: ' . $base_url . '/' . $category_uri_component . '/' . urlencode($category['name']));
+            }
+            exit;
+        } else {
+            if( isset($settings['page-gallery-name']) && $settings['page-gallery-name'] != '' ) {
+                $page_title = $settings['page-gallery-name'];
+            } else {
+                $page_title = 'Galleries';
+            }
+            if( $mod == 'artcatalog' && isset($settings['page-gallery-artcatalog-format']) 
+                && $settings['page-gallery-artcatalog-format'] == 'list'
+                ) {
+                $base_url .= '/category';
 
-			$base_url .= '/category';
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockImageList');
-			$rc = ciniki_web_processBlockImageList($ciniki, $settings, $ciniki['request']['business_id'], array(
-                'type'=>'imagelist',
-                'base_url'=>$base_url,
-                'notitle'=>'yes',
-                'list'=>$list,
-                ));
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
-			}
+                ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockImageList');
+                $rc = ciniki_web_processBlockImageList($ciniki, $settings, $ciniki['request']['business_id'], array(
+                    'type'=>'imagelist',
+                    'base_url'=>$base_url,
+                    'notitle'=>'yes',
+                    'list'=>$rc['categories'],
+                    ));
+                if( $rc['stat'] != 'ok' ) {
+                    return $rc;
+                }
+                $page_content .= $rc['content'];
 
-//			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
-//			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $list, array('notitle'=>'yes'));
-//			if( $rc['stat'] != 'ok' ) {
-//				return $rc;
-//			}
-			$page_content = $rc['content'];
-		} else {
-			//
-			// List the categories the user has created in the artcatalog, 
-			// OR just show all the thumbnails if they haven't created any categories
-			//
-			ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'categories');
-			$categories = $pkg . '_' . $mod . '_web_categories';
-			$rc = $categories($ciniki, $settings, $ciniki['request']['business_id'], 
-				array('artcatalog_type'=>$artcatalog_type)); 
-			if( $rc['stat'] != 'ok' ) {
-				return $rc;
-			}
-			if( !isset($rc['categories']) ) {
-				//
-				// No categories specified, just show thumbnails of all artwork
-				//
-				if( isset($settings['page-gallery-name']) && $settings['page-gallery-name'] != '' ) {
-					$page_title = $settings['page-gallery-name'];
-				} else {
-					$page_title = 'Gallery';
-				}
-				ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'categoryImages');
-				$categoryImages = $pkg . '_' . $mod . '_web_categoryImages';
-				$rc = $categoryImages($ciniki, $settings, $ciniki['request']['business_id'], array(
-					'type'=>$category_uri_component, 'type_name'=>'', 
-					'artcatalog_type'=>$artcatalog_type));
-				if( $rc['stat'] != 'ok' ) {
-					return $rc;
-				}
-				if( !isset($rc['images']) || count($rc['images']) < 1 ) {
-					$page_content .= "<p>Sorry, there doesn't seem to be anything in this gallery yet.  Please try again later.</p>";
-				} else {
-					$images = $rc['images'];
-					
-					ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
-					$img_base_url = $base_url . "/image";
-					$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $rc['images'], 150, 0);
-					if( $rc['stat'] != 'ok' ) {
-						return $rc;
-					}
-					$page_content .= "<div class='image-gallery'>" . $rc['content'] . "</div>";
-				}
-			} elseif( count($rc['categories']) == 1 ) {
-				// If only one album, then open album
-				$category = array_pop($rc['categories']);
-				if( isset($category['category']['permalink']) && $category['category']['permalink'] != '' ) {
-					header('Location: ' . $base_url . '/' . $category_uri_component . '/' . $category['category']['permalink']);
-				} else {
-					header('Location: ' . $base_url . '/' . $category_uri_component . '/' . urlencode($category['category']['name']));
-				}
-				exit;
-			} else {
-				if( isset($settings['page-gallery-name']) && $settings['page-gallery-name'] != '' ) {
-					$page_title = $settings['page-gallery-name'];
-				} else {
-					$page_title = 'Galleries';
-				}
-				$page_content .= "<div class='image-categories'>";
-				foreach($rc['categories'] AS $cnum => $category) {
-					$name = $category['category']['name'];
-					ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-					if( isset($category['category']['image_id']) ) {
-						$rc = ciniki_web_getScaledImageURL($ciniki, $category['category']['image_id'], 'thumbnail', '240', 0);
-						if( $rc['stat'] != 'ok' ) {
-							return $rc;
-						}
-						$img_url = $rc['url'];
-					} else {
-						$img_url = '/ciniki-web-layouts/default/img/noimage_240.png';
-					}
-					$page_content .= "<div class='image-categories-thumbnail-wrap'>"
-						. "<a href='" . $base_url . "/$category_uri_component/";
-					if( isset($category['category']['permalink']) && $category['category']['permalink'] != '' ) {
-						$page_content .= $category['category']['permalink'];
-					} else {
-						$page_content .= urlencode($name);
-					}
-					$page_content .= "' title='" . $name . "'>"
-						. "<div class='image-categories-thumbnail'>"
-						. "<img title='$name' alt='$name' src='" . $img_url . "' />"
-						. "</div>"
-						. "<span class='image-categories-name'>$name</span>"
-						. "</a></div>";
-				}
-				$page_content .= "</div>";
-			}
-		}
+            } else {
+                $page_content .= "<div class='image-categories'>";
+                foreach($rc['categories'] AS $cnum => $category) {
+                    $name = $category['name'];
+                    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+                    if( isset($category['image_id']) ) {
+                        $rc = ciniki_web_getScaledImageURL($ciniki, $category['image_id'], 'thumbnail', '240', 0);
+                        if( $rc['stat'] != 'ok' ) {
+                            return $rc;
+                        }
+                        $img_url = $rc['url'];
+                    } else {
+                        $img_url = '/ciniki-web-layouts/default/img/noimage_240.png';
+                    }
+                    $page_content .= "<div class='image-categories-thumbnail-wrap'>"
+                        . "<a href='" . $base_url . "/$category_uri_component/";
+                    if( isset($category['permalink']) && $category['permalink'] != '' ) {
+                        $page_content .= $category['permalink'];
+                    } else {
+                        $page_content .= urlencode($name);
+                    }
+                    $page_content .= "' title='" . $name . "'>"
+                        . "<div class='image-categories-thumbnail'>"
+                        . "<img title='$name' alt='$name' src='" . $img_url . "' />"
+                        . "</div>"
+                        . "<span class='image-categories-name'>$name</span>"
+                        . "</a></div>";
+                }
+                $page_content .= "</div>";
+            }
+        }
 	}
 
 	$content = '';
