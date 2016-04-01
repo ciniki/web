@@ -439,14 +439,29 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
-			$list = $rc['categories'];
+            $list = array();
+            foreach($rc['categories'] as $cat) {
+                $list[] = array_pop($cat['list']);
+            }
+//			$list = $rc['categories'];
 
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
 			$base_url .= '/category';
-			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $list, array('notitle'=>'yes'));
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockImageList');
+			$rc = ciniki_web_processBlockImageList($ciniki, $settings, $ciniki['request']['business_id'], array(
+                'type'=>'imagelist',
+                'base_url'=>$base_url,
+                'notitle'=>'yes',
+                'list'=>$list,
+                ));
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
+
+//			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
+//			$rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $list, array('notitle'=>'yes'));
+//			if( $rc['stat'] != 'ok' ) {
+//				return $rc;
+//			}
 			$page_content = $rc['content'];
 		} else {
 			//
