@@ -94,13 +94,13 @@ function ciniki_web_processWorkshops($ciniki, $settings, $workshops, $limit) {
 		$content .= "</td></tr>";
 		$content .= "<tr><td $javascript_onclick class='cilist-details'>";
 		if( isset($workshop['description']) && $workshop['description'] != '' ) {
-			$rc = ciniki_web_processContent($ciniki, $workshop['description'], 'cilist-description');
+			$rc = ciniki_web_processContent($ciniki, $settings, $workshop['description'], 'cilist-description');
 			if( $rc['stat'] == 'ok' ) {
 				$content .= $rc['content'];
 			}
 			// $content .= "<p class='cilist-description'>" . $workshop['description'] . "</p>";
 		} elseif( isset($workshop['short_description']) && $workshop['short_description'] != '' ) {
-			$rc = ciniki_web_processContent($ciniki, $workshop['short_description'], 'cilist-description');
+			$rc = ciniki_web_processContent($ciniki, $settings, $workshop['short_description'], 'cilist-description');
 			if( $rc['stat'] == 'ok' ) {
 				$content .= $rc['content'];
 			}

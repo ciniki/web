@@ -521,7 +521,7 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
 			// Content
 			if( isset($details['content']) ) {
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-				$rc = ciniki_web_processContent($ciniki, $details['content']);	
+				$rc = ciniki_web_processContent($ciniki, $settings, $details['content']);	
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
@@ -629,7 +629,7 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
 			// Content
 			if( isset($details['content']) ) {
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-				$rc = ciniki_web_processContent($ciniki, $details['content']);	
+				$rc = ciniki_web_processContent($ciniki, $settings, $details['content']);	
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
@@ -781,7 +781,7 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
 
 		if( isset($rc['content']['page-products-content']) ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $rc['content']['page-products-content']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $rc['content']['page-products-content']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}

@@ -229,7 +229,7 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 		//
 		if( isset($participant['description']) ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $participant['description']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $participant['description']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -417,7 +417,7 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
 					$page_content .= "<tr><td class='exhibitors-description'>";
 					if( isset($participant['description']) && $participant['description'] != '' ) {
 						ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-						$rc = ciniki_web_processContent($ciniki, $participant['description']);	
+						$rc = ciniki_web_processContent($ciniki, $settings, $participant['description']);	
 						if( $rc['stat'] != 'ok' ) {
 							return $rc;
 						}

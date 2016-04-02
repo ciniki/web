@@ -69,7 +69,7 @@ function ciniki_web_generatePageFAQ($ciniki, $settings) {
 				$faq = $faq['faq'];
 				$page_content .= "<p class='clist-title'>" . $faq['question'] . "</p>";
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-				$rc = ciniki_web_processContent($ciniki, $faq['answer'], 'clist-description');	
+				$rc = ciniki_web_processContent($ciniki, $settings, $faq['answer'], 'clist-description');	
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}

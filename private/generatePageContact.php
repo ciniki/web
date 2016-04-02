@@ -192,7 +192,7 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
 
 	if( isset($rc['content']['page-contact-content']) ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-		$rc = ciniki_web_processContent($ciniki, $rc['content']['page-contact-content']);	
+		$rc = ciniki_web_processContent($ciniki, $settings, $rc['content']['page-contact-content']);	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}

@@ -83,7 +83,7 @@ function ciniki_web_generatePageSurveys($ciniki, $settings) {
 			$page_content .= "<form action='" . $ciniki['request']['base_url'] . "/surveys/submit/$survey_permalink' method='post'>\n";
 			if( isset($survey['instructions']) && $survey['instructions'] != '' ) {
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-				$rc = ciniki_web_processContent($ciniki, $survey['instructions']);	
+				$rc = ciniki_web_processContent($ciniki, $settings, $survey['instructions']);	
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}

@@ -21,6 +21,8 @@ function ciniki_web_processBlockTagImageList($ciniki, $settings, $business_id, $
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2591', 'msg'=>'Unable to process request'));
 	}
 
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+
 	$content = "";
 
 	$content .= "<div class='image-list image-list-tags'>";
@@ -92,7 +94,7 @@ function ciniki_web_processBlockTagImageList($ciniki, $settings, $business_id, $
 
 		$content .= "<div class='image-list-content'>";
 		if( isset($tag['synopsis']) && $tag['synopsis'] != '' ) {
-			$rc = ciniki_web_processContent($ciniki, $tag['synopsis'], 'image-list-description');
+			$rc = ciniki_web_processContent($ciniki, $settings, $tag['synopsis'], 'image-list-description');
 			if( $rc['stat'] == 'ok' ) {
 				$content .= $rc['content'];
 			}
@@ -106,7 +108,7 @@ function ciniki_web_processBlockTagImageList($ciniki, $settings, $business_id, $
 				}
 			}
 		} elseif( isset($tag['description']) && $tag['description'] != '' ) {
-			$rc = ciniki_web_processContent($ciniki, $tag['description'], 'image-list-description');
+			$rc = ciniki_web_processContent($ciniki, $settings, $tag['description'], 'image-list-description');
 			if( $rc['stat'] == 'ok' ) {
 				$content .= $rc['content'];
 			}
@@ -120,7 +122,7 @@ function ciniki_web_processBlockTagImageList($ciniki, $settings, $business_id, $
 				}
 			}
 		} elseif( isset($tag['short_description']) && $tag['short_description'] != '' ) {
-			$rc = ciniki_web_processContent($ciniki, $tag['short_description'], 'image-list-description');
+			$rc = ciniki_web_processContent($ciniki, $settings, $tag['short_description'], 'image-list-description');
 			if( $rc['stat'] == 'ok' ) {
 				$content .= $rc['content'];
 			}

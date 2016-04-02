@@ -24,7 +24,7 @@ function ciniki_web_processBlockSponsors(&$ciniki, $settings, $business_id, $blo
 			. "</h2>";
 		if( isset($block['sponsors']['content']) && $block['sponsors']['content'] != '' ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $block['sponsors']['content'], 'wide');	
+			$rc = ciniki_web_processContent($ciniki, $settings, $block['sponsors']['content'], 'wide');	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}

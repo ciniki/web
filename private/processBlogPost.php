@@ -69,7 +69,7 @@ function ciniki_web_processBlogPost(&$ciniki, $settings, $post, $args) {
 	//
 	if( isset($post['content']) && $post['content'] != '' ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-		$rc = ciniki_web_processContent($ciniki, $post['content']);	
+		$rc = ciniki_web_processContent($ciniki, $settings, $post['content']);	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}

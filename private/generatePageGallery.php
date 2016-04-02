@@ -257,13 +257,13 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 			. "<span class='image-details'><p>" . $img['details'] . '</p></span>';
 		if( $img['description'] != '' && (!isset($img['webflags']) || ($img['webflags']&0x0100) > 0) ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $img['description']);
+			$rc = ciniki_web_processContent($ciniki, $settings, $img['description']);
 			$page_content .= "<span class='image-description'>" . $rc['content'] . "</span>";
 			$ciniki['response']['head']['og']['description'] = strip_tags($img['description']);
 		}
 		if( isset($img['inspiration']) && $img['inspiration'] != '' && isset($img['webflags']) && ($img['webflags']&0x0200) > 0 ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $img['inspiration']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $img['inspiration']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -273,7 +273,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 		}
 		if( isset($img['awards']) && $img['awards'] != '' && isset($img['webflags']) && ($img['webflags']&0x0400) > 0 ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $img['awards']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $img['awards']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -371,7 +371,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 
 		if( isset($album['description']) && $album['description'] != '' ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $album['description'], 'wide');
+			$rc = ciniki_web_processContent($ciniki, $settings, $album['description'], 'wide');
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -422,7 +422,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 
 		if( isset($rc['content']['page-gallery-content']) ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $rc['content']['page-gallery-content']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $rc['content']['page-gallery-content']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}

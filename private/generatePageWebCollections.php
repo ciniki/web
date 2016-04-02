@@ -320,7 +320,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
 		$description = '';
 		if( isset($collection['description']) && $collection['description'] != '' ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $collection['description']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $collection['description']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}

@@ -239,14 +239,14 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
 		//
 		if( isset($workshop['description']) && $workshop['description'] != '' ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $workshop['description']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $workshop['description']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
 			$page_content .= $rc['content'];
 		} elseif( isset($workshop['short_description']) ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $workshop['short_description']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $workshop['short_description']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}

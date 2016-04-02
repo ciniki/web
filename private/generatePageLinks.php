@@ -202,7 +202,7 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 		$page_content = '';
 		if( isset($rc['content']) && isset($rc['content']['page-links-content']) ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $rc['content']['page-links-content']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $rc['content']['page-links-content']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}

@@ -201,7 +201,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 		//
 		$page_content .= "<div class='entry-content'>";
 		if( isset($class['description']) ) {
-			$rc = ciniki_web_processContent($ciniki, $class['description']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $class['description']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -266,7 +266,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 		$page_content .= "<div class='entry-content'>";
 		if( isset($info['content']) ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $info['content']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $info['content']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -368,7 +368,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
 		$page_content .= "<div class='entry-content'>";
 		if( isset($info['content']) && $info['content'] != '' ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $info['content']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $info['content']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}

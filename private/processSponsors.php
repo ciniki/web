@@ -88,7 +88,7 @@ function ciniki_web_processSponsors($ciniki, $settings, $level, $categories) {
 				$content .= "<tr><td class='sponsors-description'>";
 				if( isset($sponsor['description']) && $sponsor['description'] != '' ) {
 					ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-					$rc = ciniki_web_processContent($ciniki, $sponsor['description']);	
+					$rc = ciniki_web_processContent($ciniki, $settings, $sponsor['description']);	
 					if( $rc['stat'] != 'ok' ) {
 						return $rc;
 					}

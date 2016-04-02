@@ -448,7 +448,7 @@ function ciniki_web_generatePageRecipes($ciniki, $settings) {
 			//
 			if( isset($recipe['description']) && $recipe['description'] != '' ) {
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-				$rc = ciniki_web_processContent($ciniki, $recipe['description']);	
+				$rc = ciniki_web_processContent($ciniki, $settings, $recipe['description']);	
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
@@ -480,7 +480,7 @@ function ciniki_web_generatePageRecipes($ciniki, $settings) {
 			//
 			if( isset($recipe['ingredients']) && $recipe['ingredients'] != '' ) {
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-				$rc = ciniki_web_processContent($ciniki, $recipe['ingredients']);	
+				$rc = ciniki_web_processContent($ciniki, $settings, $recipe['ingredients']);	
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
@@ -493,7 +493,7 @@ function ciniki_web_generatePageRecipes($ciniki, $settings) {
 			//
 			if( isset($recipe['instructions']) && $recipe['instructions'] != '' ) {
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-				$rc = ciniki_web_processContent($ciniki, $recipe['instructions']);	
+				$rc = ciniki_web_processContent($ciniki, $settings, $recipe['instructions']);	
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}

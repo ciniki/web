@@ -170,7 +170,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 	if( isset($rc['content']['page-home-content']) && $rc['content']['page-home-content'] != '' ) {
 		if( !isset($settings['page-home-content-layout']) || $settings['page-home-content-layout'] != 'manual' ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $rc['content']['page-home-content']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $rc['content']['page-home-content']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}

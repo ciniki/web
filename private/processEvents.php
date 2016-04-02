@@ -97,13 +97,13 @@ function ciniki_web_processEvents($ciniki, $settings, $events, $limit) {
 		$content .= "</td></tr>";
 		$content .= "<tr><td $javascript_onclick class='cilist-details" . ($javascript_onclick!=''?' clickable':'') . "'>";
 		if( isset($event['description']) && $event['description'] != '' ) {
-			$rc = ciniki_web_processContent($ciniki, $event['description'], 'cilist-description');
+			$rc = ciniki_web_processContent($ciniki, $settings, $event['description'], 'cilist-description');
 			if( $rc['stat'] == 'ok' ) {
 				$content .= $rc['content'];
 			}
 			// $content .= "<p class='cilist-description'>" . $event['description'] . "</p>";
 		} elseif( isset($event['short_description']) && $event['short_description'] != '' ) {
-			$rc = ciniki_web_processContent($ciniki, $event['short_description'], 'cilist-description');
+			$rc = ciniki_web_processContent($ciniki, $settings, $event['short_description'], 'cilist-description');
 			if( $rc['stat'] == 'ok' ) {
 				$content .= $rc['content'];
 			}

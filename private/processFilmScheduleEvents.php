@@ -71,12 +71,12 @@ function ciniki_web_processFilmScheduleEvents($ciniki, $settings, $events, $limi
 		$content .= "</td></tr>";
 		$content .= "<tr><td $javascript_onclick class='cilist-details" . ($javascript_onclick!=''?' clickable':'') . "'>";
 		if( isset($event['synopsis']) && $event['synopsis'] != '' ) {
-			$rc = ciniki_web_processContent($ciniki, $event['synopsis'], 'cilist-description');
+			$rc = ciniki_web_processContent($ciniki, $settings, $event['synopsis'], 'cilist-description');
 			if( $rc['stat'] == 'ok' ) {
 				$content .= $rc['content'];
 			}
 		} elseif( isset($event['description']) && $event['description'] != '' ) {
-			$rc = ciniki_web_processContent($ciniki, $event['description'], 'cilist-description');
+			$rc = ciniki_web_processContent($ciniki, $settings, $event['description'], 'cilist-description');
 			if( $rc['stat'] == 'ok' ) {
 				$content .= $rc['content'];
 			}

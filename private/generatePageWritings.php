@@ -82,7 +82,7 @@ function ciniki_web_generatePageWritings($ciniki, $settings) {
 		// Add the content
 		//
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-		$rc = ciniki_web_processContent($ciniki, $item['sample']['content']);
+		$rc = ciniki_web_processContent($ciniki, $settings, $item['sample']['content']);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
@@ -157,7 +157,7 @@ function ciniki_web_generatePageWritings($ciniki, $settings) {
 		// Add the description
 		//
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-		$rc = ciniki_web_processContent($ciniki, (isset($item['description'])&&$item['description']!='')?$item['description']:$item['synopsis']);	
+		$rc = ciniki_web_processContent($ciniki, $settings, (isset($item['description'])&&$item['description']!='')?$item['description']:$item['synopsis']);	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
@@ -167,7 +167,7 @@ function ciniki_web_generatePageWritings($ciniki, $settings) {
 		// Add the content
 		//
         if( isset($item['content']) && $item['content'] != '' ) {
-            $rc = ciniki_web_processContent($ciniki, $item['content']);
+            $rc = ciniki_web_processContent($ciniki, $settings, $item['content']);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -181,7 +181,7 @@ function ciniki_web_generatePageWritings($ciniki, $settings) {
 			$page_content .= "<h2>Reviews</h2>";
 			foreach($item['reviews'] as $review) {
 				$page_content .= "<blockquote class='quote-text'>";
-				$rc = ciniki_web_processContent($ciniki, $review['content']);
+				$rc = ciniki_web_processContent($ciniki, $settings, $review['content']);
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
@@ -214,7 +214,7 @@ function ciniki_web_generatePageWritings($ciniki, $settings) {
 				if( isset($orderinfo['title']) && $orderinfo['title'] != '' ) {
 					$page_content .= "<b>" . $orderinfo['title'] . "</b>";
 				}
-				$rc = ciniki_web_processContent($ciniki, $orderinfo['content']);
+				$rc = ciniki_web_processContent($ciniki, $settings, $orderinfo['content']);
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
