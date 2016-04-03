@@ -33,6 +33,8 @@ function ciniki_web_generatePageAccountLogout(&$ciniki, $settings, $business_id,
         }
     }
 
+    session_unset();
+
     //
     // Redirect them back to the home page
     //
