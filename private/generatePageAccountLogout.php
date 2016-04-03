@@ -23,6 +23,9 @@ function ciniki_web_generatePageAccountLogout(&$ciniki, $settings, $business_id,
     $ciniki['session']['change_log_id'] = '';
     unset($_SESSION['customer']);
     unset($_SESSION['cart']);
+    if( isset($_SESSION['login_referer']) ) {
+        unset($_SESSION['login_referer']);
+    }
 
     foreach($ciniki['business']['modules'] as $module => $m) {
         if( isset($ciniki['session'][$module]) ) {

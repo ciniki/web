@@ -37,12 +37,15 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 	$content = '';
 	$display_cart = 'yes';
 	$display_signup = 'no';
+	$display_passwordreset = 'no';
 	$cart_err_msg = '';
 	$signup_err_msg = '';
 	$cart = NULL;
 	$cart_edit = 'yes';
 	$errors = array();
 	$page_title = "Shopping Cart";
+    $required_account_fields = array('first'=>'First Name', 'last'=>'Last Name', 'email_address'=>'Email Address', 'password'=>'Password', 
+        'address1'=>'Address', 'city'=>'City', 'province'=>'State/Province', 'postal'=>'ZIP/Postal Code', 'country'=>'Country');
 
 	//
 	// Required methods
@@ -70,6 +73,145 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 	if( $rc['stat'] == 'ok' ) {
 		$modules = $rc['modules'];
 	}
+
+    //
+    // Check if a login occured before loading the cart
+    //
+    if( isset($_POST['action']) && $_POST['action'] == 'signin' ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'auth');
+        $rc = ciniki_customers_web_auth($ciniki, $settings, $ciniki['request']['business_id'], $_POST['email'], $_POST['password']);
+        if( $rc['stat'] != 'ok' ) {
+            $signinerrors = "Unable to authenticate, please try again or click Forgot your password to get a new one.";
+            $display_signup = 'yes';
+            $display_cart = 'no';
+        } else {
+            $display_signup = 'no';
+            $display_cart = 'review';
+            $cart_edit = 'no';
+            
+            //
+            // Check for any module information that should be loaded into the session
+            //
+            foreach($ciniki['business']['modules'] as $module => $m) {
+                list($pkg, $mod) = explode('.', $module);
+                $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'accountSessionLoad');
+                if( $rc['stat'] == 'ok' ) {
+                    $fn = $rc['function_call'];
+                    $rc = $fn($ciniki, $settings, $ciniki['request']['business_id']);
+                    if( $rc['stat'] != 'ok' ) {
+                        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2900', 'msg'=>'Unable to load account information', 'err'=>$rc['err']));
+                    }
+                }
+            }
+        }
+    }
+
+    //
+    // Check if new password from password reset was submitted
+    //
+    elseif( isset($_POST['action']) && $_POST['action'] == 'passwordreset' ) {
+        if( !isset($_POST['newpassword']) || strlen($_POST['newpassword']) < 8 ) {
+            $passwordreseterrors = "Your new password must be at least 8 characters long.";
+            $display_passwordreset = 'yes';
+            $display_cart = 'no';
+        } elseif( !isset($_POST['email']) || $_POST['email'] == '' ) {
+            $passworderrors = "You need to enter an email address to reset your password.";
+            $display_passwordreset = 'yes';
+            $display_cart = 'no';
+        } elseif( !isset($_POST['temppassword']) || $_POST['temppassword'] == '' ) {
+            $signuperrors = "Sorry, but the link was invalid.  Please try again.";
+            $display_signup = 'yes';
+            $display_cart = 'no';
+        } else {
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'changeTempPassword');
+            $rc = ciniki_customers_web_changeTempPassword($ciniki, $ciniki['request']['business_id'], $_POST['email'], $_POST['temppassword'], $_POST['newpassword']);
+            if( $rc['stat'] != 'ok' ) {
+                $signinerrors = "Sorry, we were unable to set your new password.  Please try again or call us for help.";
+                $display_signup = 'yes';
+                $display_cart = 'no';
+            } else {
+                $signinmsg = "Your password has been reset, please login to continue.";
+                $display_signup = 'yes';
+                $display_cart = 'no';
+            }
+        }
+    }
+
+    //
+    // Check if create account form was submitted
+    //
+    elseif( isset($_POST['action']) && $_POST['action'] == 'createaccount' && (!isset($_POST['continue']) || $_POST['continue'] != 'Back') ) {
+        $signinerrors = '';
+        $display_signup = 'yes';
+        $display_cart = 'no';
+
+        //
+        // Check for required fields
+        //
+        $args = $_POST;
+        if( isset($args['province_code_' . $args['country']]) && $args['province_code_' . $args['country']] != '' ) {
+            $args['province'] = $args['province_code_' . $args['country']];
+        }
+        $missing_fields = array();
+        foreach($required_account_fields as $fid => $fname) {
+            if( !isset($args[$fid]) || trim($args[$fid]) == '' ) {
+                $missing_fields[] = $fname;
+            }
+        }
+        if( count($missing_fields) > 1 ) {
+            $signinerrors = "You must enter " . implode(', ', $missing_fields) . " to create your account.";
+        } elseif( count($missing_fields) > 0 ) {
+            $signinerrors = "You must enter " . implode(', ', $missing_fields) . " to create your account.";
+        }
+        if( $signinerrors == '' ) {
+            //
+            // Check if email address already exists
+            //
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'hooks', 'customerLookup');
+            $rc = ciniki_customers_hooks_customerLookup($ciniki, $ciniki['request']['business_id'], array('email'=>$_POST['email_address']));
+            if( $rc['stat'] != 'noexist' ) {
+                $signinerrors = "There is already an account for that email address, please use the Forgot Password link to recover your password.";
+            }
+        }
+
+        if( $signinerrors == '' ) {
+            //
+            // Setup the customer defaults
+            //
+            $args['phone_label_1'] = 'Home';
+            $args['phone_number_1'] = trim($args['phone']);
+            unset($args['phone']);
+
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'customerAdd');
+            $rc = ciniki_customers_web_customerAdd($ciniki, $ciniki['request']['business_id'], $args);
+            if( $rc['stat'] != 'ok' ) {
+                return $rc;
+            }
+            $customer_id = $rc['id'];
+
+            //
+            // Once the account is created, authenticate
+            //
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'auth');
+            $rc = ciniki_customers_web_auth($ciniki, $settings, $ciniki['request']['business_id'], $args['email_address'], $args['password']);
+            if( $rc['stat'] != 'ok' ) {
+                return $rc;
+            }
+
+            //
+            // Attach to cart
+            //
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartCustomerUpdate');
+            $rc = ciniki_sapos_web_cartCustomerUpdate($ciniki, $settings, $ciniki['request']['business_id']);
+            if( $rc['stat'] != 'ok' ) {
+                return $rc;
+            }
+            $display_signup = 'no';
+            $display_cart = 'review';
+            $cart_edit = 'no';
+        }
+    }
+
 
 	//
 	// Check if a cart already exists
@@ -147,10 +289,8 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 						//
 //						if( $item['quantity'] != $_POST['quantity'] ) {
 						ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartItemUpdate');
-						$rc = ciniki_sapos_web_cartItemUpdate($ciniki, $settings, 
-							$ciniki['request']['business_id'],
-							array('item_id'=>$item['id'],
-								'quantity'=>$item['quantity'] + $_POST['quantity']));
+						$rc = ciniki_sapos_web_cartItemUpdate($ciniki, $settings, $ciniki['request']['business_id'],
+							array('item_id'=>$item['id'], 'quantity'=>$item['quantity'] + $_POST['quantity']));
 						if( $rc['stat'] != 'ok' ) {
 							return $rc;
 						}
@@ -232,10 +372,8 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 						}
 					} else {
 						ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartItemUpdate');
-						$rc = ciniki_sapos_web_cartItemUpdate($ciniki, $settings, 
-							$ciniki['request']['business_id'],
-							array('item_id'=>$item['id'],
-								'quantity'=>$new_quantity));
+						$rc = ciniki_sapos_web_cartItemUpdate($ciniki, $settings, $ciniki['request']['business_id'],
+							array('item_id'=>$item['id'], 'quantity'=>$new_quantity));
 						if( $rc['stat'] != 'ok' ) {
 							return $rc;
 						}
@@ -379,6 +517,32 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		}
 	}
 
+    //
+    // Check if action is forgot
+    //
+    elseif( isset($_POST['action']) && $_POST['action'] == 'forgot' ) {
+        $url = $ciniki['request']['ssl_domain_base_url'] . '/cart/passwordreset';
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'passwordRequestReset');
+        $rc = ciniki_customers_web_passwordRequestReset($ciniki, $ciniki['request']['business_id'], $_POST['email'], $url);
+        if( $rc['stat'] != 'ok' ) {
+            $signinerrors = "You must enter a valid email address to get a new password.";
+        } else {
+            $signinmsg = "A link has been sent to your email to get a new password.";
+        }
+        $_SESSION['passwordreset_referer'] = $ciniki['request']['ssl_domain_base_url'] . "/cart";
+        $display_signup = 'yes';
+        $display_cart = 'no';
+    }
+
+    //
+    // Check if action is forgot
+    //
+    elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'passwordreset' ) {
+        $display_signup = 'no';
+        $display_cart = 'no';
+        $display_passwordreset = 'yes';
+    }
+
 	//
 	// Check if checkout
 	//
@@ -465,108 +629,71 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         if( $rc['stat'] != 'ok' ) {
             $carterrors = "Oops, we seem to have a problem with your payment. Please try again or contact us for help.";
             error_log('ERR-CART: Paypal DoExpressCheckout: [' . $rc['err']['code'] . '] ' . $rc['err']['msg']);
-        }
-
-        //
-        // FIXME: Update any modules with items paid for
-        //
-    
-
-        //
-        // Change the cart into an invoice or order
-        //
-        if( !isset($carterrors) || $carterrors == '' ) {
-            $cart['payment_status'] = 50;
-            if( $cart['shipping_status'] > 0 ) {
-                $cart['status'] = 30;
-                ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'submitOrder');
-                $rc = ciniki_sapos_web_submitOrder($ciniki, $settings, $ciniki['request']['business_id'], $cart);
-            } else {
-                $cart['status'] = 50;
-                ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'submitInvoice');
-                $rc = ciniki_sapos_web_submitInvoice($ciniki, $settings, $ciniki['request']['business_id'], $cart);
-            }
-            if( $rc['stat'] != 'ok' ) {
-                $carterrors = "Oops, we seem to have had a problem with your order.";
-                return $rc;
-            } else {
-                //
-                // Email the receipt to the dealer
-                //
-                if( isset($cart['customer']['emails'][0]['email']['address'])) {
-                    //
-                    // Load business details
-                    //
-                    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'businessDetails');
-                    $rc = ciniki_businesses_businessDetails($ciniki, $ciniki['request']['business_id']);
-                    if( $rc['stat'] != 'ok' ) {
-                        return $rc;
-                    }
-                    $business_details = array();
-                    if( isset($rc['details']) && is_array($rc['details']) ) {	
-                        $business_details = $rc['details'];
-                    }
-
-                    //
-                    // Load the invoice settings
-                    //
-                    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
-                    $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_sapos_settings', 'business_id', $ciniki['request']['business_id'],
-                        'ciniki.sapos', 'settings', 'invoice');
-                    if( $rc['stat'] != 'ok' ) {
-                        return $rc;
-                    }
-                    $sapos_settings = array();
-                    if( isset($rc['settings']) ) {
-                        $sapos_settings = $rc['settings'];
-                    }
-                    
-                    //
-                    // Create the pdf
-                    //
-                    $rc = ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'templates', 'default');
-                    if( $rc['stat'] != 'ok' ) {
-                        return $rc;
-                    }
-                    $fn = $rc['function_call'];
-                    $rc = $fn($ciniki, $ciniki['request']['business_id'], $cart['id'], $business_details, $sapos_settings, 'email');
-                    if( $rc['stat'] != 'ok' ) {
-                        return $rc;
-                    }
-
-                    //
-                    // Email the pdf to the customer
-                    //
-                    $filename = $rc['filename'];
-                    $invoice = $rc['invoice'];
-                    $pdf = $rc['pdf'];
-
-                    $subject = "Invoice #" . $invoice['invoice_number'];
-                    $textmsg = "Thank you for your order, please find the receipt attached.";
-//                    if( isset($settings['page-cart-dealersubmit-email-textmsg']) 
-//                        && $settings['page-cart-dealersubmit-email-textmsg'] != '' 
-//                        ) {
-//                        $textmsg = $settings['page-cart-dealersubmit-email-textmsg'];
-//                    }	
-                    $ciniki['emailqueue'][] = array('to'=>$invoice['customer']['emails'][0]['email']['address'],
-                        'to_name'=>(isset($invoice['customer']['display_name'])?$invoice['customer']['display_name']:''),
-                        'business_id'=>$ciniki['request']['business_id'],
-                        'subject'=>$subject,
-                        'textmsg'=>$textmsg,
-                        'attachments'=>array(array('string'=>$pdf->Output('invoice', 'S'), 'filename'=>$filename)),
-                        );
-                }
-            }
-
-
-            
-            $display_cart = 'no';
+            $display_cart = 'paypalexpresscheckoutconfirm';
             $cart_edit = 'no';
-            $cart = NULL;
-            unset($_SESSION['cart']);
-            unset($ciniki['session']['cart']);
-            $display_cart = 'checkout_success';
         }
+
+        if( !isset($carterrors) || $carterrors == '' ) {
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartPaymentReceived');
+            $rc = ciniki_sapos_web_cartPaymentReceived($ciniki, $settings, $ciniki['request']['business_id'], $cart);
+            if( $rc['stat'] != 'ok' ) {
+                $carterrors = "We have received your payment, thank you. There was a problem processing your order, so have notified the approriate people to look into it.";
+                error_log('ERR-CART: ' . print_r($rc['err']));
+                $ciniki['emailqueue'][] = array('to'=>$ciniki['config']['ciniki.core']['alerts.notify'],
+                    'subject'=>'Web Cart ERR 500',
+                    'textmsg'=>$_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "\n"
+                        . $carterrors . "\n"
+                        . "Customer: \n" 
+                        . print_r($ciniki['session']['customer'], true) 
+                        . "\n"
+                        . print_r($rc, true)
+                        . "\n",
+                    );
+            } else {
+                //
+                // Checkout success
+                //
+                $display_success = 'yes';
+                $display_cart = 'checkout_success';
+                $cart = NULL;
+                $_SESSION['cart']['sapos_id'] = 0;
+                $_SESSION['cart']['num_items'] = 0;
+                $ciniki['session']['cart']['sapos_id'] = 0;
+                $ciniki['session']['cart']['num_items'] = 0;
+            }
+        }
+    }
+
+    //
+    // Display the forgot password link
+    //
+        
+	if( $display_passwordreset == 'yes' ) {
+		$content .= "<article class='page cart'>\n";
+        if( isset($passwordreseterrors) && $passwordreseterrors != '' ) {
+            $content .= "<div class='form-message-content'><div class='form-result-message form-error-message'><div class='form-message-wrapper'>";
+            $content .= "<p class='formerror'>" . $passwordreseterrors . "</p>";
+            $content .= "</div></div></div>";
+        }
+		$content .= "<div id='reset-form' class='reset-form'>\n"
+            . "<p>Please enter a new password.  It must be at least 8 characters long.</p>"
+			. "<form method='POST' action='" . $ciniki['request']['ssl_domain_base_url'] . "/cart'>";
+		$content .="<input type='hidden' name='action' value='passwordreset'>\n";
+		if( isset($_GET['email']) ) {
+			$content .= "<input type='hidden' name='email' value='" . $_GET['email'] . "'>\n";
+		} else {
+			$content .= "<input type='hidden' name='email' value='" . $_POST['email'] . "'>\n";
+		}
+		if( isset($_GET['email']) ) {
+			$content .= "<input type='hidden' name='temppassword' value='" . $_GET['pwd'] . "'>\n";
+		} else {
+			$content .= "<input type='hidden' name='temppassword' value='" . $_POST['temppassword'] . "'>\n";
+		}
+		$content .= "<div class='input'><label for='password'>New Password</label><input id='password' type='password' class='text' maxlength='100' name='newpassword' value='' /></div>\n"
+			. "<div class='submit'><input type='submit' class='submit' value='Set Password' /></div>\n"
+			. "</form>"
+			. "</div>\n";
+        $content .= "</article>";
     }
 
     //
@@ -578,6 +705,16 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		if( isset($_POST['email']) ) {
 			$post_email = $_POST['email'];
 		}
+        if( isset($signinmsg) && $signinmsg != '' ) {
+            $content .= "<div class='form-message-content'><div class='form-result-message form-success-message'><div class='form-message-wrapper'>";
+            $content .= "<p class='formerror'>" . $signinmsg . "</p>";
+            $content .= "</div></div></div>";
+        }
+        if( isset($signinerrors) && $signinerrors != '' ) {
+            $content .= "<div class='form-message-content'><div class='form-result-message form-error-message'><div class='form-message-wrapper'>";
+            $content .= "<p class='formerror'>" . $signinerrors . "</p>";
+            $content .= "</div></div></div>";
+        }
 		$content .= "<aside>";
 		// Javascript to switch forms	
 		$ciniki['request']['inline_javascript'] = "<script type='text/javascript'>\n"
@@ -597,7 +734,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		$content .= "<div id='signin-form' style='display:" . ($display_signup=='yes'?'block':'none') . ";'>\n";
 		$content .= "<h2>Existing Account</h2>";
 		$content .= "<p>Bought something here before? Please sign in to your account:</p>";
-		$content .= "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/account' method='POST'>";
+		$content .= "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' method='POST'>";
 		if( $signup_err_msg != '' ) {
 			$content .= "<p class='formerror'>$signup_err_msg</p>\n";
 		}
@@ -618,11 +755,12 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		$content .= "<div id='forgotpassword-form' style='display:" . ($display_signup=='forgot'?'block':'none') . ";'>\n";
 		$content .= "<h2>Forgot Password</h2>";
 		$content .= "<p>Please enter your email address and you will receive a link to create a new password.</p>";
-		$content .= "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/account' method='POST'>";
+		$content .= "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' method='POST'>";
 		if( $signup_err_msg != '' ) {
 			$content .= "<p class='formerror'>$signup_err_msg</p>\n";
 		}
 		$content .= "<input type='hidden' name='action' value='forgot'>\n"
+            . "<input type='hidden' name='redirect' value='" . $ciniki['request']['ssl_domain_base_url'] . "/cart' />"
 			. "<div class='input'><label for='forgotemail'>Email </label><input id='forgotemail' type='email' class='text' maxlength='250' name='email' value='$post_email' /></div>\n" 
 			. "<div class='submit'><input type='submit' class='submit' value='Get New Password' /></div>\n"
 			. "</form>"
@@ -637,20 +775,105 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		//
 		$content .= "<h2>Create a new account</h2>";
 		$content .= "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' method='POST'>";
+        $content .= "<input type='hidden' name='action' value='createaccount'>";
 		$fields = array(
 			'first'=>array('name'=>'First Name', 'type'=>'text', 'class'=>'text', 'value'=>(isset($_POST['first'])?$_POST['first']:'')),
 			'last'=>array('name'=>'Last Name', 'type'=>'text', 'class'=>'text', 'value'=>(isset($_POST['last'])?$_POST['last']:'')),
+			'email_address'=>array('name'=>'Email Address', 'type'=>'email', 'class'=>'text', 'value'=>(isset($_POST['email_address'])?$_POST['email_address']:'')),
+			'password'=>array('name'=>'Password', 'type'=>'password', 'class'=>'text', 'value'=>(isset($_POST['password'])?$_POST['password']:'')),
 			'phone'=>array('name'=>'Phone Number', 'type'=>'text', 'class'=>'text', 'value'=>(isset($_POST['phone'])?$_POST['phone']:'')),
-			'email'=>array('name'=>'Email Address', 'type'=>'email', 'class'=>'text', 'value'=>(isset($_POST['email'])?$_POST['email']:'')),
 			);
 		foreach($fields as $fid => $field) {
-			$content .= "<div class='input'><label for='$fid'>" . $field['name'] . "</label>"
+			$content .= "<div class='input'><label for='$fid'>" . $field['name'] . (array_key_exists($fid, $required_account_fields)?' *':'') . "</label>"
 				. "<input type='" . $field['type'] . "' class='" . $field['class'] . "' name='$fid' value='" . $field['value'] . "'>";
 			if( isset($errors[$fid]) && $errors[$fid] != '' ) {
 				$content .= "<p class='formerror'>" . $errors[$fid] . "</p>";
 			}
 			$content .= "</div>";
 		}
+
+        //
+        // Setup the address fields
+        //
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'countryCodes');
+        $rc = ciniki_core_countryCodes($ciniki);
+        $country_codes = $rc['countries'];
+        $province_codes = $rc['provinces'];
+        $address = array(
+            'address1'=>(isset($_POST['address1'])?$_POST['address1']:''),
+            'address2'=>(isset($_POST['address2'])?$_POST['address2']:''),
+            'city'=>(isset($_POST['city'])?$_POST['city']:''),
+            'province'=>(isset($args['province'])?$args['province']:''),
+            'postal'=>(isset($_POST['postal'])?$_POST['postal']:''),
+            'country'=>(isset($_POST['country'])?$_POST['country']:'Canada'),
+            );
+        $form = '';
+        $form .= "<h2>Billing Address</h2>";
+        $form .= "<div class='input country'>"
+            . "<label for='country'>Country" . (array_key_exists('country', $required_account_fields)?' *':'') . "</label>"
+            . "<select id='country_code' type='select' class='select' name='country' onchange='updateProvince()'>"
+            . "<option value=''></option>";
+        $selected_country = '';
+        foreach($country_codes as $country_code => $country_name) {
+            $form .= "<option value='" . $country_code . "' " 
+                . (($country_code == $address['country'] || $country_name == $address['country'])?' selected':'')
+                . ">" . $country_name . "</option>";
+            if( $country_code == $address['country'] || $country_name == $address['country'] ) {
+                $selected_country = $country_code;
+            }
+        }
+        $form .= "</select></div>";
+        $form .= "<div class='input address1'>"
+            . "<label for='address1'>Address" . (array_key_exists('address1', $required_account_fields)?' *':'') . "</label>"
+            . "<input type='text' class='text' name='address1' value='" . $address['address1'] . "'>"
+            . "</div>";
+        $form .= "<div class='input address2'>"
+            . "<label for='address2'>" . (array_key_exists('address2', $required_account_fields)?' *':'') . "</label>"
+            . "<input type='text' class='text' name='address2' value='" . $address['address2'] . "'>"
+            . "</div>";
+        $form .= "<div class='input city'>"
+            . "<label for='city'>City" . (array_key_exists('city', $required_account_fields)?' *':'') . "</label>"
+            . "<input type='text' class='text' name='city' value='" . $address['city'] . "'>"
+            . "</div>";
+        $form .= "<div class='input province'>"
+            . "<label for='province'>State/Province" . (array_key_exists('province', $required_account_fields)?' *':'') . "</label>"
+            . "<input id='province_text' type='text' class='text' name='province' "
+                . (($province_codes[$selected_country])?" style='display:none;'":"")
+                . "value='" . $address['province'] . "'>";
+        $js = '';
+        foreach($province_codes as $country_code => $provinces) {
+            $form .= "<select id='province_code_{$country_code}' type='select' class='select' "
+                . (($country_code != $selected_country)?" style='display:none;'":"")
+                . " name='province_code_{$country_code}' >"
+                . "<option value=''></option>";
+            $js .= "document.getElementById('province_code_" . $country_code . "').style.display='none';";
+            foreach($provinces as $province_code => $province_name) {
+                $form .= "<option value='" . $province_code . "'" 
+                    . (($province_code == (isset($_POST["province_code_{$country_code}"])?$_POST["province_code_{$country_code}"]:'') || $province_name == (isset($_POST["province_code_{$country_code}"])?$_POST["province_code_{$country_code}"]:''))?' selected':'')
+                    . ">" . $province_name . "</option>";
+            }
+            $form .= "</select>";
+        }
+        $form .= "</div>";
+        $form .= "<div class='input postal'>"
+            . "<label for='postal'>ZIP/Postal Code" . (array_key_exists('postal', $required_account_fields)?' *':'') . "</label>"
+            . "<input type='text' class='text' name='postal' value='" . $address['postal'] . "'>"
+            . "</div>";
+        $form .= "<script type='text/javascript'>"
+            . "function updateProvince() {"
+                . "var cc = document.getElementById('country_code');"
+                . "var pr = document.getElementById('province_text');"
+                . "var pc = document.getElementById('province_code_'+cc.value);"
+                . $js
+                . "if( pc != null ) {"
+                    . "pc.style.display='';"
+                    . "pr.style.display='none';"
+                . "}else{"
+                    . "pr.style.display='';"
+                . "}"
+            . "}"
+            . "</script>";
+        $content .= $form;
 
 		$content .= "<div class='submit'><input type='submit' name='continue' class='submit' value='Back' />";
 		$content .= " <input type='submit' name='next' class='submit' value='Next' /></div>\n";
@@ -823,6 +1046,11 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 		elseif( $display_cart == 'review' && (!isset($carterrors) || $carterrors == '') ) {
             $content .= "<div class='form-message-content'><div class='form-result-message form-success-message'><div class='form-message-wrapper'>";
 			$content .= "<p>Please review your order.</p>";
+            $content .= "</div></div></div>";
+		}
+		elseif( $display_cart == 'paypalexpresscheckoutconfirm' && (!isset($carterrors) || $carterrors == '') ) {
+            $content .= "<div class='form-message-content'><div class='form-result-message form-success-message'><div class='form-message-wrapper'>";
+			$content .= "<p>To complete your order, please click on Pay Now below.</p>";
             $content .= "</div></div></div>";
 		}
 
@@ -1170,6 +1398,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 					$content .= "<span class='cart-submit'>"
                         . "<input class='cart-submit' type='submit' name='continue' value='Back'/>"
 						. "<input class='cart-submit' type='submit' name='paypalexpresscheckout' value='Checkout via Paypal'/>"
+//						. "<input class='paypal-checkout' type='image' name='paypalexpresscheckout' src='/ciniki-web-layouts/default/img/paypal_checkout_large.png' value='Checkout via Paypal'/>"
 						. "</span>";
 				} elseif( $display_cart == 'paypalexpresscheckoutconfirm' ) {
 					$content .= "<span class='cart-submit'>"
@@ -1200,7 +1429,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
     if( $display_cart == 'checkout_success' ) {
         $page_title = 'Checkout - Complete';
         $content .= "<div class='form-message-content'><div class='form-result-message form-success-message'><div class='form-message-wrapper'>";
-        $content .= "<p class='formerror'>Thank you for your order.</p>";
+        $content .= "<p class='formerror'>Thank you for your order, we have emailed you a receipt.</p>";
         $content .= "</div></div></div>";
     }
 

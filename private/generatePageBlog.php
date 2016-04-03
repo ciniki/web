@@ -504,7 +504,7 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
 
 		if( isset($rc['content']['page-blog-content']) ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $rc['content']['page-blog-content']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $rc['content']['page-blog-content']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}

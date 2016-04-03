@@ -35,7 +35,7 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
     if( isset($ciniki['business']['modules']['ciniki.web']['flags']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x100000) > 0 
         && isset($settings['site-footer-message']) && $settings['site-footer-message'] != '' 
         ) {
-		$rc = ciniki_web_processContent($ciniki, $settings['site-footer-message']);	
+		$rc = ciniki_web_processContent($ciniki, $settings, $settings['site-footer-message']);	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
@@ -174,7 +174,7 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
 		$copyright .= "<span class='copyright'>All content &copy; Copyright " . date('Y') . " by " . ((isset($settings['site-footer-copyright-name']) && $settings['site-footer-copyright-name'] != '')?$settings['site-footer-copyright-name']:$ciniki['business']['details']['name']) . ".</span><br/>";
 	}
 	if( isset($settings['site-footer-copyright-message']) && $settings['site-footer-copyright-message'] != '' ) {
-		$rc = ciniki_web_processContent($ciniki, $settings['site-footer-copyright-message'], 'copyright');	
+		$rc = ciniki_web_processContent($ciniki, $settings, $settings['site-footer-copyright-message'], 'copyright');	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
@@ -378,6 +378,14 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
 		$content .= "<script type='text/javascript'>$javascript</script>";
 	}
 
+    //
+    // Check if a timeout is specified and the user is logged in
+    //
+/*    if( isset($settings['page-account-timeout']) && $settings['page-account-timeout'] > 0 
+        && isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 
+        ) {   
+        $ciniki['request']['inline_javascript'] .= '<script type="text/javascript">setInterval(function(){window.location.href="' . $ciniki['request']['ssl_domain_base_url'] . '/account/logout/timeout";},' . ($settings['page-account-timeout']*60000) . ');</script>';
+    } */
 
 	$content .= "</body>"
 		. "</html>"

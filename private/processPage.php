@@ -54,7 +54,7 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
 
 	if( isset($page['content']) ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-		$rc = ciniki_web_processContent($ciniki, $page['content']);	
+		$rc = ciniki_web_processContent($ciniki, $settings, $page['content']);	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}

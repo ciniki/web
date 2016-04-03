@@ -38,7 +38,7 @@ function ciniki_web_processSponsorsSection($ciniki, $settings, $sponsors) {
 		. "</h2>";
 	if( isset($sponsors['content']) && $sponsors['content'] != '' ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-		$rc = ciniki_web_processContent($ciniki, $sponsors['content'], 'wide');	
+		$rc = ciniki_web_processContent($ciniki, $settings, $sponsors['content'], 'wide');	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}

@@ -82,7 +82,7 @@ function ciniki_web_generatePageWritings($ciniki, $settings) {
 		// Add the content
 		//
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-		$rc = ciniki_web_processContent($ciniki, $item['sample']['content']);
+		$rc = ciniki_web_processContent($ciniki, $settings, $item['sample']['content']);
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
@@ -91,6 +91,20 @@ function ciniki_web_generatePageWritings($ciniki, $settings) {
 		$page_content .= "</div>"
 			. "</article>"
 			. "";
+	}
+
+	//
+	// Check if we are the display a gallery image
+	//
+	elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' 
+		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] == 'gallery' 
+		&& isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' 
+		) {
+		$writing_permalink = $ciniki['request']['uri_split'][0];
+		$image_permalink = $ciniki['request']['uri_split'][2];
+
+
+
 	}
 
 	//
@@ -143,7 +157,7 @@ function ciniki_web_generatePageWritings($ciniki, $settings) {
 		// Add the description
 		//
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-		$rc = ciniki_web_processContent($ciniki, (isset($item['description'])&&$item['description']!='')?$item['description']:$item['synopsis']);	
+		$rc = ciniki_web_processContent($ciniki, $settings, (isset($item['description'])&&$item['description']!='')?$item['description']:$item['synopsis']);	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
@@ -153,7 +167,7 @@ function ciniki_web_generatePageWritings($ciniki, $settings) {
 		// Add the content
 		//
         if( isset($item['content']) && $item['content'] != '' ) {
-            $rc = ciniki_web_processContent($ciniki, $item['content']);
+            $rc = ciniki_web_processContent($ciniki, $settings, $item['content']);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -167,7 +181,7 @@ function ciniki_web_generatePageWritings($ciniki, $settings) {
 			$page_content .= "<h2>Reviews</h2>";
 			foreach($item['reviews'] as $review) {
 				$page_content .= "<blockquote class='quote-text'>";
-				$rc = ciniki_web_processContent($ciniki, $review['content']);
+				$rc = ciniki_web_processContent($ciniki, $settings, $review['content']);
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
@@ -200,7 +214,7 @@ function ciniki_web_generatePageWritings($ciniki, $settings) {
 				if( isset($orderinfo['title']) && $orderinfo['title'] != '' ) {
 					$page_content .= "<b>" . $orderinfo['title'] . "</b>";
 				}
-				$rc = ciniki_web_processContent($ciniki, $orderinfo['content']);
+				$rc = ciniki_web_processContent($ciniki, $settings, $orderinfo['content']);
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
@@ -226,6 +240,20 @@ function ciniki_web_generatePageWritings($ciniki, $settings) {
 					$page_content .= "<br/><br/>";
 				}
 			}
+		}
+
+        //
+        // Check if there are images to display
+        //
+		if( isset($item['images']) && count($item['images']) > 0 ) {
+			$page_content .= "<h2>Additional Images</h2>";
+			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
+			$img_base_url = $base_url . "/$writing_permalink/gallery";
+			$rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $item['images'], 75);
+			if( $rc['stat'] != 'ok' ) {
+				return $rc;
+			}
+			$page_content .= "<div class='image-gallery'>" . $rc['content'] . "</div>";
 		}
 
 		$page_content .= "</div>"

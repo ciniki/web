@@ -48,7 +48,7 @@ function ciniki_web_generateMasterIndex(&$ciniki, $settings) {
 
 	if( isset($rc['content']['page-home-content']) ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-		$rc = ciniki_web_processContent($ciniki, $rc['content']['page-home-content']);	
+		$rc = ciniki_web_processContent($ciniki, $settings, $rc['content']['page-home-content']);	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}

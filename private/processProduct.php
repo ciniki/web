@@ -42,14 +42,14 @@ function ciniki_web_processProduct(&$ciniki, $settings, $business_id, $base_url,
 	//
 	if( isset($product['description']) && $product['description'] != '' ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-		$rc = ciniki_web_processContent($ciniki, $product['description']);	
+		$rc = ciniki_web_processContent($ciniki, $settings, $product['description']);	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}
 		$content .= $rc['content'];
 	} elseif( isset($product['short_description']) ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-		$rc = ciniki_web_processContent($ciniki, $product['short_description']);	
+		$rc = ciniki_web_processContent($ciniki, $settings, $product['short_description']);	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}

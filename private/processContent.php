@@ -12,7 +12,7 @@
 // Returns
 // -------
 //
-function ciniki_web_processContent($ciniki, $unprocessed_content, $pclass='') {
+function ciniki_web_processContent($ciniki, $settings, $unprocessed_content, $pclass='') {
 
 	if( $unprocessed_content == '' ) { 
 		return array('stat'=>'ok', 'content'=>'');
@@ -69,6 +69,50 @@ function ciniki_web_processContent($ciniki, $unprocessed_content, $pclass='') {
 		return "<div class=\'embed-video\'><div class=\'embed-video-wrap\'>" . $content . "</div></div>";
 		');
 	$processed_content = preg_replace_callback('/(<iframe[^>]+youtube.com[^>]+><\/iframe>)/', $youtube_callback, $processed_content);
+
+    //
+    // Check for callbacks to find content to substitute
+    //
+    if( preg_match_all('/(\<ciniki\s+[^\>]+\>)/', $processed_content, $matches) ) {
+        foreach($matches[0] as $match) {
+            $module = '';
+            $args = array();
+            if( preg_match_all('/\s([a-zA-Z]+)=(\'|\")([^\'\"]+)(\'|\")/', $match, $match_args, PREG_SET_ORDER) ) {
+                foreach($match_args as $arg) {    
+                    $args[$arg[1]] = $arg[3];
+                }
+            }
+            if( isset($args['module']) && strstr($args['module'], '.') ) {
+                list($pkg, $mod) = explode('.', $args['module']);
+                $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'processEmbed');
+                if( $rc['stat'] == 'ok' ) {
+                    //
+                    // If the function exists, call function to get embed content
+                    //
+                    $fn = $rc['function_call'];
+                    $rc = $fn($ciniki, $settings, $ciniki['request']['business_id'], $args);
+                    if( $rc['stat'] == 'ok' ) {
+                        //
+                        // Content is plain and can be substituded
+                        //
+                        if( isset($rc['content']) ) {
+                            $processed_content = str_replace($match, $rc['content'], $processed_content);
+                        }
+                        //
+                        // Content is list of blocks that need to be processed and included
+                        //
+                        elseif( isset($rc['blocks']) ) {
+                            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlocks');
+                            $rc = ciniki_web_processBlocks($ciniki, $settings, $ciniki['request']['business_id'], $rc['blocks']);
+                            if( $rc['stat'] == 'ok' ) {
+                                $processed_content = str_replace($match, $rc['content'], $processed_content);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 //	<iframe width="420" height="250" src="https://www.youtube.com/embed/u5kiz7GhJt0?list=PLKRqAE_6bwWsOl0ev4mr2SpqFtxSEhR1M" frameborder="0" allowfullscreen></iframe>
 

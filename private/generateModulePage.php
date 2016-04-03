@@ -61,6 +61,9 @@ function ciniki_web_generateModulePage(&$ciniki, $settings, $business_id, $modul
 		if( isset($settings['theme']['header-article-title']) && $settings['theme']['header-article-title'] == 'yes' ) {
 			$content .= "<h1 class='page-header-title'>" . $pg['page_title'] . "</h1>";
 		}
+        if( isset($pg['subtitle']) && $pg['subtitle'] != '' ) {
+            $content .= "<div class='entry-meta'>" . $pg['subtitle'] . "</div>";
+        }
 		if( isset($settings['theme']['header-breadcrumbs']) && $settings['theme']['header-breadcrumbs'] == 'yes' && isset($pg['breadcrumbs']) ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBreadcrumbs');
 			$rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $ciniki['request']['business_id'], $pg['breadcrumbs']);

@@ -147,7 +147,7 @@ function ciniki_web_processBlockImageList(&$ciniki, $settings, $business_id, $bl
 
 		$content .= "<div class='image-list-content'>";
 		if( isset($item['synopsis']) && $item['synopsis'] != '' ) {
-			$rc = ciniki_web_processContent($ciniki, $item['synopsis'], 'image-list-description');
+			$rc = ciniki_web_processContent($ciniki, $settings, $item['synopsis'], 'image-list-description');
 			if( $rc['stat'] == 'ok' ) {
 				$content .= $rc['content'];
 			}
@@ -161,7 +161,7 @@ function ciniki_web_processBlockImageList(&$ciniki, $settings, $business_id, $bl
 				}
 			}
 		} elseif( isset($item['description']) && $item['description'] != '' ) {
-			$rc = ciniki_web_processContent($ciniki, $item['description'], 'image-list-description');
+			$rc = ciniki_web_processContent($ciniki, $settings, $item['description'], 'image-list-description');
 			if( $rc['stat'] == 'ok' ) {
 				$content .= $rc['content'];
 			}
@@ -175,7 +175,7 @@ function ciniki_web_processBlockImageList(&$ciniki, $settings, $business_id, $bl
 				}
 			}
 		} elseif( isset($item['short_description']) && $item['short_description'] != '' ) {
-			$rc = ciniki_web_processContent($ciniki, $item['short_description'], 'image-list-description');
+			$rc = ciniki_web_processContent($ciniki, $settings, $item['short_description'], 'image-list-description');
 			if( $rc['stat'] == 'ok' ) {
 				$content .= $rc['content'];
 			}

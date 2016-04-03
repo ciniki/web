@@ -444,7 +444,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 			$page_title = 'Verification';
 			if( isset($page_details['page-signup-success']) ) {
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-				$rc = ciniki_web_processContent($ciniki, $page_details['page-signup-success']);	
+				$rc = ciniki_web_processContent($ciniki, $settings, $page_details['page-signup-success']);	
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
@@ -808,7 +808,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 			$page_title = 'Submitted';
 			if( isset($page_details['page-signup-submit']) ) {
 				ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-				$rc = ciniki_web_processContent($ciniki, $page_details['page-signup-submit']);	
+				$rc = ciniki_web_processContent($ciniki, $settings, $page_details['page-signup-submit']);	
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
@@ -834,7 +834,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 
 		if( isset($page_details['page-signup-content']) && $page_details['page-signup-content'] != '' ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $page_details['page-signup-content']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $page_details['page-signup-content']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -842,7 +842,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 		}
 		if( isset($page_details['page-signup-agreement']) && $page_details['page-signup-agreement'] != '' ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $page_details['page-signup-agreement']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $page_details['page-signup-agreement']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}

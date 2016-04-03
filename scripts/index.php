@@ -267,7 +267,7 @@ if( $ciniki['request']['business_id'] == 0 ) {
 //
 session_start();
 $ciniki['session'] = array();
-$ciniki['session']['change_log_id'] = 'web.' . date('Ymd.HMS');
+$ciniki['session']['change_log_id'] = 'web.' . date('Ymd.His');
 $ciniki['session']['user'] = array('id'=>'-2');
 // If the session is for the current business
 if( isset($_SESSION['business_id']) && $_SESSION['business_id'] == $ciniki['request']['business_id'] ) {
@@ -704,8 +704,10 @@ if( $found == 'no' ) {
     // Writings
     elseif( $ciniki['request']['page'] == 'writings' 
         && isset($settings['page-writings-active']) && $settings['page-writings-active'] == 'yes' ) {
-        require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageWritings.php');
-        $rc = ciniki_web_generatePageWritings($ciniki, $settings);
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
+        $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['business_id'], 'ciniki.writingcatalog');
+//        require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageWritings.php');
+//        $rc = ciniki_web_generatePageWritings($ciniki, $settings);
     }
     // Events
     elseif( $ciniki['request']['page'] == 'events' 

@@ -342,7 +342,7 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
 				$page['sponsors'] = $sponsors;
 			}
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processPage');
-			$rc =  ciniki_web_processPage($ciniki, 0, $base_url, $page, array('article_title'=>$article_title, 'page_menu'=>$page_menu));
+			$rc =  ciniki_web_processPage($ciniki, $settings, $base_url, $page, array('article_title'=>$article_title, 'page_menu'=>$page_menu));
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}

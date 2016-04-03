@@ -21,7 +21,7 @@ function ciniki_web_processBlockAsideContent($ciniki, $settings, $business_id, $
     $content = '<aside>';
 	if( isset($block['content']) && $block['content'] != '' ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-		$rc = ciniki_web_processContent($ciniki, $block['content'], ((isset($block['wide'])&&$block['wide']=='yes')?'wide':''));
+		$rc = ciniki_web_processContent($ciniki, $settings, $block['content'], ((isset($block['wide'])&&$block['wide']=='yes')?'wide':''));
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}

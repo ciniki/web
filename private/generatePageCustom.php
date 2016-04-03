@@ -56,7 +56,7 @@ function ciniki_web_generatePageCustom($ciniki, $settings, $pnum) {
 
 	if( isset($rc['content'][$pname . '-content']) ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-		$rc = ciniki_web_processContent($ciniki, $rc['content'][$pname . '-content']);	
+		$rc = ciniki_web_processContent($ciniki, $settings, $rc['content'][$pname . '-content']);	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}

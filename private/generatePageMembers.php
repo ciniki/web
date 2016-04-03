@@ -274,7 +274,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 		//
 		if( isset($member['description']) ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $member['description']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $member['description']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -520,7 +520,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 		$page_content .= "<div class='entry-content'>";
 		if( isset($info['content']) ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $info['content']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $info['content']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -549,7 +549,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 //				. "<header class='entry-title'><h1 class='entry-title'>Membership</h1></header>\n"
 //				. "<div class='entry-content'>\n"
 //				. "";
-//			$rc = ciniki_web_processContent($ciniki, $membership['details']);	
+//			$rc = ciniki_web_processContent($ciniki, $settings, $membership['details']);	
 //			if( $rc['stat'] != 'ok' ) {
 //				return $rc;
 //			}

@@ -79,7 +79,7 @@ function ciniki_web_generatePageNewsletters($ciniki, $settings) {
 	$page_content = '';
 	if( isset($rc['content']) && isset($rc['content']['page-newsletters-content']) ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-		$rc = ciniki_web_processContent($ciniki, $rc['content']['page-downloads-content']);	
+		$rc = ciniki_web_processContent($ciniki, $settings, $rc['content']['page-downloads-content']);	
 		if( $rc['stat'] != 'ok' ) {
 			return $rc;
 		}

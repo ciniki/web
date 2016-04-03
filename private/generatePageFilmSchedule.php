@@ -269,14 +269,14 @@ function ciniki_web_generatePageFilmSchedule($ciniki, $settings) {
 		//
 		if( isset($event['description']) && $event['description'] != '' ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $event['description']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $event['description']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
 			$page_content .= $rc['content'];
 		} elseif( isset($event['synopsis']) ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $event['synopsis']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $event['synopsis']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}

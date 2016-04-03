@@ -250,7 +250,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 		// Add description
 		//
 		if( isset($instructor['full_bio']) ) {
-			$rc = ciniki_web_processContent($ciniki, $instructor['full_bio']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $instructor['full_bio']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -403,7 +403,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 		// Add description
 		//
 		if( isset($offering['long_description']) ) {
-			$rc = ciniki_web_processContent($ciniki, $offering['long_description']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $offering['long_description']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -556,7 +556,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 				}
 				$page_content .= "</div></aside>";
 			}
-			$rc = ciniki_web_processContent($ciniki, $registration['details']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $registration['details']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -569,7 +569,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 			}
 			
 			if( isset($registration['more-details']) && $registration['more-details'] != '' ) {
-				$rc = ciniki_web_processContent($ciniki, $registration['more-details']);	
+				$rc = ciniki_web_processContent($ciniki, $settings, $registration['more-details']);	
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
@@ -669,7 +669,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 				$page_content .= "</div></aside>";
 			}
 			if( isset($cnt['page-courses' . $type_name . '-content']) ) {
-				$rc = ciniki_web_processContent($ciniki, $cnt['page-courses' . $type_name . '-content']);	
+				$rc = ciniki_web_processContent($ciniki, $settings, $cnt['page-courses' . $type_name . '-content']);	
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
@@ -786,7 +786,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 						if( $hide_dates != 'yes' ) {
 							$page_content .= "<p class='clist-subtitle'>" . $offering['condensed_date'] . "</p>";
 						}
-						$rc = ciniki_web_processContent($ciniki, $offering['short_description'], 'clist-description');	
+						$rc = ciniki_web_processContent($ciniki, $settings, $offering['short_description'], 'clist-description');	
 						if( $rc['stat'] != 'ok' ) {
 							return $rc;
 						}
@@ -851,7 +851,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 					}
 					$page_content .= "</div></aside>";
 				}
-				$rc = ciniki_web_processContent($ciniki, $registration['details']);	
+				$rc = ciniki_web_processContent($ciniki, $settings, $registration['details']);	
 				if( $rc['stat'] != 'ok' ) {
 					return $rc;
 				}
@@ -864,7 +864,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
 				}
 				
 				if( isset($registration['more-details']) && $registration['more-details'] != '' ) {
-					$rc = ciniki_web_processContent($ciniki, $registration['more-details']);	
+					$rc = ciniki_web_processContent($ciniki, $settings, $registration['more-details']);	
 					if( $rc['stat'] != 'ok' ) {
 						return $rc;
 					}

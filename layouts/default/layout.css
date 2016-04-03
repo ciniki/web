@@ -356,7 +356,8 @@ header span.title {
 
 #content form,
 #content article.page form {
-	max-width: 28em;
+    box-sizing: border-box;
+	max-width: 30em;
 }
 
 #content article.account form,
@@ -374,7 +375,8 @@ header span.title {
 }
 #content form input.text,
 #content article.page form input.text {
-	max-width: 28em;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 #content div.cart-pricetable {
 	margin: 0 auto;
@@ -394,13 +396,15 @@ header span.title {
 }
 
 #content form table.cart-details input.text {
-	width: 95%;
-	max-width: 95%;
+	width: 100%;
+	max-width: 100%;
 }
 
 #content form div.submit {
 	max-width: 31.2em;
 	max-width: 29.2em;
+    max-width: 30em;
+    box-sizing: border-box;
 	padding-right: 0em;
 }
 

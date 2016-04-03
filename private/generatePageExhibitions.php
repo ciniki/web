@@ -115,7 +115,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 //				. "<header class='entry-title'><h1 class='entry-title'>Exhibitor Application</h1></header>\n"
 //				. "<div class='entry-content'>\n"
 //				. "";
-//			$rc = ciniki_web_processContent($ciniki, $application['details']);	
+//			$rc = ciniki_web_processContent($ciniki, $settings, $application['details']);	
 //			if( $rc['stat'] != 'ok' ) {
 //				return $rc;
 //			}
@@ -379,14 +379,14 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 		//
 		if( isset($exhibition['description']) ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $exhibition['description']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $exhibition['description']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
 			$page_content .= $rc['content'];
 		} elseif( isset($exhibition['short_description']) ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $exhibition['short_description']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $exhibition['short_description']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -500,7 +500,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 			}
 
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $desc_content);
+			$rc = ciniki_web_processContent($ciniki, $settings, $desc_content);
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}

@@ -191,7 +191,7 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
 		//
 		if( isset($participant['description']) ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $participant['description']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $participant['description']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}

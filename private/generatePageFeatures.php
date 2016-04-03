@@ -265,7 +265,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 		//
 		if( isset($feature['full_description']) ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $feature['full_description']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $feature['full_description']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -323,7 +323,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 			&& isset($selected_category['full_description']) 
 			&& $selected_category['full_description'] != '' 
 			) {
-			$rc = ciniki_web_processContent($ciniki, $selected_category['full_description']);	
+			$rc = ciniki_web_processContent($ciniki, $settings, $selected_category['full_description']);	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
@@ -337,7 +337,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 					if( isset($selected_category['addon_description']) 
 						&& $selected_category['addon_description'] != '' 
 						) {
-						$rc = ciniki_web_processContent($ciniki, $selected_category['addon_description']);	
+						$rc = ciniki_web_processContent($ciniki, $settings, $selected_category['addon_description']);	
 						if( $rc['stat'] != 'ok' ) {
 							return $rc;
 						}
@@ -348,7 +348,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 					if( isset($selected_category['future_description']) 
 						&& $selected_category['future_description'] != '' 
 						) {
-						$rc = ciniki_web_processContent($ciniki, $selected_category['future_description']);	
+						$rc = ciniki_web_processContent($ciniki, $settings, $selected_category['future_description']);	
 						if( $rc['stat'] != 'ok' ) {
 							return $rc;
 						}
@@ -370,7 +370,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 					if( isset($selected_category['base_notes']) 
 						&& $selected_category['base_notes'] != '' 
 						) {
-						$rc = ciniki_web_processContent($ciniki, $selected_category['base_notes']);	
+						$rc = ciniki_web_processContent($ciniki, $settings, $selected_category['base_notes']);	
 						if( $rc['stat'] != 'ok' ) {
 							return $rc;
 						}
@@ -380,7 +380,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 					if( isset($selected_category['addon_notes']) 
 						&& $selected_category['addon_notes'] != '' 
 						) {
-						$rc = ciniki_web_processContent($ciniki, $selected_category['addon_notes']);	
+						$rc = ciniki_web_processContent($ciniki, $settings, $selected_category['addon_notes']);	
 						if( $rc['stat'] != 'ok' ) {
 							return $rc;
 						}
@@ -390,7 +390,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
 					if( isset($selected_category['future_notes']) 
 						&& $selected_category['future_notes'] != '' 
 						) {
-						$rc = ciniki_web_processContent($ciniki, $selected_category['future_notes']);	
+						$rc = ciniki_web_processContent($ciniki, $settings, $selected_category['future_notes']);	
 						if( $rc['stat'] != 'ok' ) {
 							return $rc;
 						}

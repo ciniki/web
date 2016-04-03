@@ -79,7 +79,7 @@ function ciniki_web_processEmployeeBios($ciniki, $settings, $page, $employees) {
 			if( ($settings[$setting]&0x40) == 0x40 ) {
 				if( isset($u['user']['employee-bio-content']) && $u['user']['employee-bio-content'] != '' ) {
 					ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-					$rc = ciniki_web_processContent($ciniki, $u['user']['employee-bio-content']);	
+					$rc = ciniki_web_processContent($ciniki, $settings, $u['user']['employee-bio-content']);	
 					if( $rc['stat'] != 'ok' ) {
 						return $rc;
 					}
@@ -136,7 +136,7 @@ function ciniki_web_processEmployeeBios($ciniki, $settings, $page, $employees) {
 				if( ($settings[$setting]&0x40) == 0x40 ) {
 					if( isset($u['user']['employee-bio-content']) && $u['user']['employee-bio-content'] != '' ) {
 						ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-						$rc = ciniki_web_processContent($ciniki, $u['user']['employee-bio-content']);	
+						$rc = ciniki_web_processContent($ciniki, $settings, $u['user']['employee-bio-content']);	
 						if( $rc['stat'] != 'ok' ) {
 							return $rc;
 						}
