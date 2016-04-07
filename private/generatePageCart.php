@@ -99,7 +99,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                     $fn = $rc['function_call'];
                     $rc = $fn($ciniki, $settings, $ciniki['request']['business_id']);
                     if( $rc['stat'] != 'ok' ) {
-                        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2900', 'msg'=>'Unable to load account information', 'err'=>$rc['err']));
+                        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'3189', 'msg'=>'Unable to load account information', 'err'=>$rc['err']));
                     }
                 }
             }
