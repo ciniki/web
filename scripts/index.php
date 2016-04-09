@@ -556,6 +556,13 @@ if( $found == 'no' ) {
         require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageHome.php');
         $rc = ciniki_web_generatePageHome($ciniki, $settings);
     } 
+    // Search
+    elseif( $ciniki['request']['page'] == 'search' 
+//        && isset($settings['page-search-active']) && $settings['page-search-active'] == 'yes' 
+        ) {
+        require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageSearch.php');
+        $rc = ciniki_web_generatePageSearch($ciniki, $settings);
+    } 
     // Contact
     elseif( $ciniki['request']['page'] == 'contact' 
         && isset($settings['page-contact-active']) && $settings['page-contact-active'] == 'yes' ) {

@@ -1914,6 +1914,7 @@ function ciniki_web_main() {
 			this.menu.sections.admin = {'label':'Admin Options', 'buttons':{
 				'clearimagecache':{'label':'Clear Image Cache', 'fn':'M.ciniki_web_main.clearImageCache();'},
 				'clearcontentcache':{'label':'Clear Content Cache', 'fn':'M.ciniki_web_main.clearContentCache();'},
+				'updateindex':{'label':'Update Index', 'fn':'M.ciniki_web_main.updateIndex();'},
 				}};
 			this.home.sections.redirects.active = 'yes';
 		} else {
@@ -2411,6 +2412,16 @@ function ciniki_web_main() {
 				alert("The cache has been cleared");
 			});
 		}
+	};
+
+	this.updateIndex = function(page) {
+        var rsp = M.api.getJSONCb('ciniki.web.indexUpdateNow', {'business_id':M.curBusinessID}, function(rsp) {
+            if( rsp.stat != 'ok' ) {
+                M.api.err(rsp);
+                return false;
+            }
+            alert("The index has been updated");
+        });
 	};
 
 	this.makeFeatured = function() {

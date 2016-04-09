@@ -30,7 +30,7 @@ function ciniki_web_flags($ciniki, $modules) {
 		// 0x1000
 //		array('flag'=>array('bit'=>'13', 'name'=>'')),
 //		array('flag'=>array('bit'=>'14', 'name'=>'')),
-//		array('flag'=>array('bit'=>'15', 'name'=>'')),	
+		array('flag'=>array('bit'=>'15', 'name'=>'Search')),	
 		array('flag'=>array('bit'=>'16', 'name'=>'SEO')),
 		// 0x010000
 		array('flag'=>array('bit'=>'17', 'name'=>'Header Address')),

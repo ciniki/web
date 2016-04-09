@@ -50,11 +50,17 @@ function ciniki_web_generatePageAPI($ciniki, $settings) {
 	//
 	// Search the site
 	//
-	elseif( $ciniki['request']['uri_split'][0] == 'search'
-		&& $ciniki['request']['uri_split'][1] == 'site'
+	elseif( $ciniki['request']['uri_split'][0] == 'site'
+		&& $ciniki['request']['uri_split'][1] == 'search'
 		&& $ciniki['request']['uri_split'][2] != '' 
 		) {
+        $search_str = urldecode($ciniki['request']['uri_split'][2]);
 
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'indexSearch');
+        $rc = ciniki_web_indexSearch($ciniki, $settings, $ciniki['request']['business_id'], $search_str, ((isset($_GET['limit'])&&$_GET['limit']>0)?$_GET['limit']:21));
+        if( $rc['stat'] == 'ok' ) {
+            $rsp = $rc;
+        }
 	}
 
 	return $rsp;

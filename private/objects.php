@@ -263,6 +263,28 @@ function ciniki_web_objects($ciniki) {
             ),
 		'history_table'=>'ciniki_web_history',
         );
+    $objects['index'] = array(
+        'name'=>'Web Index',
+        'o_name'=>'index',
+        'o_container'=>'index',
+        'sync'=>'yes',
+        'table'=>'ciniki_web_index',
+        'fields'=>array(
+            'title'=>array('name'=>'title'),
+            'subtitle'=>array('name'=>'Subtitle', 'default'=>''),
+            'meta'=>array('name'=>'Meta', 'default'=>''),
+            'primary_image_id'=>array('name'=>'Image', 'default'=>'0'),
+            'synopsis'=>array('name'=>'Synopsis', 'default'=>''),
+            'object'=>array('name'=>'Object'),
+            'object_id'=>array('name'=>'Object ID'),
+            'primary_words'=>array('name'=>'Primary Words'),
+            'secondary_words'=>array('name'=>'Secondary Words'),
+            'tertiary_words'=>array('name'=>'Tertiary Words'),
+            'weight'=>array('name'=>'Weight'),
+            'url'=>array('name'=>'URL'),
+            ),
+		'history_table'=>'ciniki_web_history',
+        );
 	
 	return array('stat'=>'ok', 'objects'=>$objects);
 }

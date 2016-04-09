@@ -1241,6 +1241,23 @@ span.exhibitors-description {
 	vertical-align: bottom;
 }
 
+/* Live Search Page */
+div.live-search {
+    margin-bottom: 2em;
+    box-sizing: border-box;
+}
+div.live-search input {
+    width: 100%;
+    font-size: 1em;
+    box-sizing: border-box;
+    padding: 0.5em;
+}
+div.live-search-empty {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    text-align: left;
+}
+
 /* Popup modal boxes */
 div.popup-container {
 	position: fixed;
