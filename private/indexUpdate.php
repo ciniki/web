@@ -59,6 +59,7 @@ function ciniki_web_indexUpdate($ciniki, $business_id) {
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'indexUpdateObject');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'indexUpdateObjectImage');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'indexModuleBaseURL');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'indexObjectBaseURL');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectAdd');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectUpdate');
@@ -84,6 +85,7 @@ function ciniki_web_indexUpdate($ciniki, $business_id) {
     // Update the modules indexes
     //
     foreach($business_modules as $module) {
+        error_log("module: $module");
         $rc = ciniki_web_indexUpdateModule($ciniki, $business_id, $module);
         if( $rc['stat'] != 'ok' ) {
             return $rc;

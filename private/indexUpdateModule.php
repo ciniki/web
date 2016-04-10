@@ -17,16 +17,43 @@ function ciniki_web_indexUpdateModule($ciniki, $business_id, $module) {
 
     //
     // Get the base_url for this module, as it may be inside a custom page.
+    // There can also be base_urls for objects as page may link to object instead of module.
+    // For example, ciniki.customers.dealers
     //
-    if( ciniki_core_checkModuleFlags($ciniki, $module, 0x0200) ) {
+    if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.web', 0x0200) ) {
         $rc = ciniki_web_indexModuleBaseURL($ciniki, $business_id, $module);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
         if( isset($rc['base_url']) ) {
+            error_log($module . '->' . $rc['base_url']);
             $base_url = $rc['base_url'];
         }
     }
+    
+    $object_base_urls = array();
+    $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'hooks', 'webOptions');
+    if( $rc['stat'] == 'ok' ) {
+        $fn = $rc['function_call'];
+        $rc = $fn($ciniki, $business_id, array());
+        if( $rc['stat'] == 'ok' && isset($rc['pages']) ) {
+            $pages = $rc['pages'];
+            foreach($pages as $object => $page) {
+                //
+                // Check for a base_url for the object
+                //
+                $rc = ciniki_web_indexObjectBaseURL($ciniki, $business_id, $object);
+                if( $rc['stat'] != 'ok' ) {
+                    return $rc;
+                }
+                if( isset($rc['base_url']) ) {
+                    error_log($object . '->' . $rc['base_url']);
+                    $object_base_urls[$object] = $rc['base_url'];
+                }
+            }
+        }
+    }
+
 
     //
     // Get the list of objects from the index
@@ -86,6 +113,8 @@ function ciniki_web_indexUpdateModule($ciniki, $business_id, $module) {
         $args = array('object'=>$object['object'], 'object_id'=>$object['object_id']);
         if( isset($base_url) ) {
             $args['base_url'] = $base_url;
+        } elseif( isset($object_base_urls[$object['object']]) ) {
+            $args['base_url'] = $object_base_urls[$object['object']];
         }
         $rc = ciniki_web_indexUpdateObject($ciniki, $business_id, $args);
         if( $rc['stat'] != 'ok' ) {

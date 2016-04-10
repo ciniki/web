@@ -21,8 +21,15 @@ function ciniki_web_indexSearch($ciniki, $settings, $business_id, $search_str, $
             continue;
         }
         $primary_sql .= "AND (primary_words LIKE '" . ciniki_core_dbQuote($ciniki, $word) . "%' OR primary_words LIKE '% " . ciniki_core_dbQuote($ciniki, $word) . "%') ";
-        $secondary_sql .= "AND (secondary_words LIKE '" . ciniki_core_dbQuote($ciniki, $word) . "%' OR secondary_words LIKE '% " . ciniki_core_dbQuote($ciniki, $word) . "%') ";
-        $tertiary_sql .= "AND (tertiary_words LIKE '" . ciniki_core_dbQuote($ciniki, $word) . "%' OR tertiary_words LIKE '% " . ciniki_core_dbQuote($ciniki, $word) . "%') ";
+        $secondary_sql .= "AND ("
+            . "primary_words LIKE '" . ciniki_core_dbQuote($ciniki, $word) . "%' OR primary_words LIKE '% " . ciniki_core_dbQuote($ciniki, $word) . "%'"
+            . "OR secondary_words LIKE '" . ciniki_core_dbQuote($ciniki, $word) . "%' OR secondary_words LIKE '% " . ciniki_core_dbQuote($ciniki, $word) . "%'"
+            . ") ";
+        $tertiary_sql .= "AND ("
+            . "primary_words LIKE '" . ciniki_core_dbQuote($ciniki, $word) . "%' OR primary_words LIKE '% " . ciniki_core_dbQuote($ciniki, $word) . "%'"
+            . "OR secondary_words LIKE '" . ciniki_core_dbQuote($ciniki, $word) . "%' OR secondary_words LIKE '% " . ciniki_core_dbQuote($ciniki, $word) . "%'"
+            . "OR tertiary_words LIKE '" . ciniki_core_dbQuote($ciniki, $word) . "%' OR tertiary_words LIKE '% " . ciniki_core_dbQuote($ciniki, $word) . "%'"
+            . ") ";
     }
 
     if( $primary_sql == '' ) {

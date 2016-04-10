@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This function updates the index for a module.
+// This function updates the index for a object.
 //
 // Arguments
 // ---------
@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_web_indexModuleBaseURL($ciniki, $business_id, $module) {
+function ciniki_web_indexObjectBaseURL($ciniki, $business_id, $object) {
     
     //
     // Get the base_url for this module, as it may be inside a custom page.
@@ -21,7 +21,7 @@ function ciniki_web_indexModuleBaseURL($ciniki, $business_id, $module) {
             . "FROM ciniki_web_pages "
             . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
             . "AND page_type = 30 "
-            . "AND page_module = '" . ciniki_core_dbQuote($ciniki, $module) . "' "
+            . "AND page_module = '" . ciniki_core_dbQuote($ciniki, $object) . "' "
             . "AND (flags&0x01) = 0x01 "
             . "LIMIT 1 "
             . "";
@@ -32,6 +32,7 @@ function ciniki_web_indexModuleBaseURL($ciniki, $business_id, $module) {
         if( !isset($rc['item']) ) {
             return array('stat'=>'ok');
         }
+        error_log(print_r($rc, true));
         $base_url = '/' . $rc['item']['permalink'];
         
         if( $rc['item']['parent_id'] > 0 ) {

@@ -25,13 +25,21 @@ function ciniki_web_indexUpdateObject($ciniki, $business_id, $args) {
     //
     // Check if pages menu enabled, then
     //
-    if( ciniki_core_checkModuleFlags($ciniki, $pkg . '.' . $mod, 0x0200) && !isset($args['base_url']) ) {
+    if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.web', 0x0200) && !isset($args['base_url']) ) {
         $rc = ciniki_web_indexModuleBaseURL($ciniki, $business_id, $pkg . '.' . $mod);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
         if( isset($rc['base_url']) ) {
             $args['base_url'] = $rc['base_url'];
+        } else {
+            $rc = ciniki_web_indexObjectBaseURL($ciniki, $business_id, $args['object']);
+            if( $rc['stat'] != 'ok' ) {
+                return $rc;
+            }
+            if( isset($rc['base_url']) ) {
+                $args['base_url'] = $rc['base_url'];
+            }
         }
     }
 
@@ -85,7 +93,8 @@ function ciniki_web_indexUpdateObject($ciniki, $business_id, $args) {
         // Clean up each of the three word fields
         //
         foreach(array('primary_words', 'secondary_words', 'tertiary_words') as $field) {
-            $str = preg_replace('/\.\s+/', '', $module_object[$field]);
+            $str = preg_replace('/[^a-zA-Z0-9]/', ' ', $module_object[$field]);
+            $str = preg_replace('/\s\s/', ' ', $str);
             $str = strtolower($str);
             $words = explode(' ', $str);
 

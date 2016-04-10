@@ -70,6 +70,8 @@ function ciniki_web_generatePageSearch(&$ciniki, $settings) {
                     . "var e=C.aE('div',null,'image-list-entry-wrap',c);"
                     . "d.appendChild(e);"
                 . "}"
+            . "}else if(prev_live_search_str==''){"
+                . "d.innerHTML='<div class=\"live-search-empty\"></div>';"
             . "}else{"
                 . "d.innerHTML='<div class=\"live-search-empty\">I\'m sorry we couldn\'t find what you were looking for.</div>';"
             . "}"
