@@ -695,7 +695,9 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		// Check for triggers by changing settings
 		//
 		if( $field == 'page-members-list-format'
-			|| $field == 'page-dealers-list-format' ) {
+			|| $field == 'page-dealers-list-format' 
+			|| $field == 'page-distributors-list-format' 
+            ) {
 			$rc = ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'settingChange');
 			if( $rc['stat'] == 'ok' ) {
 				$rc = ciniki_customers_web_settingChange($ciniki, $args['business_id'], $field, $field_value);
