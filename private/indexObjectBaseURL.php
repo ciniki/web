@@ -32,7 +32,6 @@ function ciniki_web_indexObjectBaseURL($ciniki, $business_id, $object) {
         if( !isset($rc['item']) ) {
             return array('stat'=>'ok');
         }
-        error_log(print_r($rc, true));
         $base_url = '/' . $rc['item']['permalink'];
         
         if( $rc['item']['parent_id'] > 0 ) {

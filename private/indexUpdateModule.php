@@ -26,7 +26,6 @@ function ciniki_web_indexUpdateModule($ciniki, $business_id, $module) {
             return $rc;
         }
         if( isset($rc['base_url']) ) {
-            error_log($module . '->' . $rc['base_url']);
             $base_url = $rc['base_url'];
         }
     }
@@ -47,7 +46,6 @@ function ciniki_web_indexUpdateModule($ciniki, $business_id, $module) {
                     return $rc;
                 }
                 if( isset($rc['base_url']) ) {
-                    error_log($object . '->' . $rc['base_url']);
                     $object_base_urls[$object] = $rc['base_url'];
                 }
             }
@@ -101,7 +99,6 @@ function ciniki_web_indexUpdateModule($ciniki, $business_id, $module) {
     //
     foreach($index_objects as $oid => $object) {
         if( !isset($module_objects[$object['object'] . '.' . $object['object_id']]) ) {
-            error_log('Delete');
             $rc = ciniki_core_objectDelete($ciniki, $business_id, 'ciniki.web.index', $object['id'], $object['uuid'], 0x07);
         }
     }
