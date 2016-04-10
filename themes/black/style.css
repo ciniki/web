@@ -416,6 +416,7 @@ div.gallery-image-details span.image-awards {
 	margin-top: 1.0em;
 }
 
+#content div.live-search input,
 #content div.cart-search-input input, 
 #content form textarea,
 #content form input.text {

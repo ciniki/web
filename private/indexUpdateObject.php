@@ -12,8 +12,11 @@
 // -------
 //
 function ciniki_web_indexUpdateObject($ciniki, $business_id, $args) {
-
-    $common_words = array('and', 'the', 'for', 'any', 'are', 'but', 'not', 'was', 'our', 
+    
+    $common_words = array(
+        'a', 'i',
+        'an', 'on', 'in',
+        'and', 'the', 'for', 'any', 'are', 'but', 'not', 'was', 'our', 
         'all', 'has', 'use', 'too', 'put', 'let', 'its', "it's", 
         'they', "they're", 'there', 'their');
 
@@ -23,7 +26,7 @@ function ciniki_web_indexUpdateObject($ciniki, $business_id, $args) {
     // Check if pages menu enabled, then
     //
     if( ciniki_core_checkModuleFlags($ciniki, $pkg . '.' . $mod, 0x0200) && !isset($args['base_url']) ) {
-        $rc = ciniki_web_indexModuleBaseURL($ciniki, $business_id, $module);
+        $rc = ciniki_web_indexModuleBaseURL($ciniki, $business_id, $pkg . '.' . $mod);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }

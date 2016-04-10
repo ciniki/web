@@ -1251,6 +1251,7 @@ div.live-search input {
     font-size: 1em;
     box-sizing: border-box;
     padding: 0.5em;
+    outline: none;
 }
 div.live-search-empty {
     padding-top: 1em;

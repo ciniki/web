@@ -107,6 +107,7 @@ function ciniki_web_generatePageSearch(&$ciniki, $settings) {
 		$page_content .= "</div>";
 	}
 
+    $page_content .= "<div id='content'>";
     $page_content .= "<article class='page'>";
 
     $page_content .= "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$article_title</h1></header>";
@@ -123,6 +124,7 @@ function ciniki_web_generatePageSearch(&$ciniki, $settings) {
     $page_content .= "</div>";
 
     $page_content .= "</article>";
+    $page_content .= "</div>";
 
 	//
 	// Add the footer
