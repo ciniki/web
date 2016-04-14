@@ -14,6 +14,10 @@
 //
 function ciniki_web_generatePageSearch(&$ciniki, $settings) {
 
+    $search_str = '';
+    if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
+        $search_str = $ciniki['request']['uri_split'][0];
+    }
 
     $page = array(
         'title'=>'Search',
@@ -37,6 +41,7 @@ function ciniki_web_generatePageSearch(&$ciniki, $settings) {
             . "var str = document.getElementById('live-search-str').value;\n"
             . "if( prev_live_search_str != str ) {\n"
                 . "if( str != prev_live_search_str ) {\n"
+                    . "window.history.replaceState(null,null,'" . $ciniki['request']['base_url'] . "/search/'+str);"
                     . "C.getBg('site/search/'+encodeURIComponent(str),'',update_search_results);\n"
                 . "}\n"
                 . "prev_live_search_str = str;\n"
@@ -51,6 +56,7 @@ function ciniki_web_generatePageSearch(&$ciniki, $settings) {
                 . "for(i in rsp.results) {"
                     . "var r=rsp.results[i];"
                     . "var c=\"<div class='image-list-entry'>\";"
+//                    . "c+=\"<div class='image-list-label-wrap'><div class='image-list-label'>\"+r.label+\"</div></div>\";"
                     . "if(r.primary_image_url!=''){"
                         . "c+=\"<div class='image-list-image'><div class='image-list-wrap image-list-thumbnail'><a href='\"+r.url+\"'><img alt='\"+r.title+\"' src='\"+r.primary_image_url+\"'/></a></div></div>\";"
                     . "}else{"
@@ -67,7 +73,7 @@ function ciniki_web_generatePageSearch(&$ciniki, $settings) {
                     . "c+=\"<div class='image-list-content'>\"+r.synopsis+\"</div>\";"
                     . "c+=\"<div class='image-list-more'><a href='\"+r.url+\"'>... more</a></div>\";"
                     . "c+='</div>';"
-                    . "var e=C.aE('div',null,'image-list-entry-wrap',c);"
+                    . "var e=C.aE('div',null,'image-list-entry-wrap '+r.class,c);"
                     . "d.appendChild(e);"
                 . "}"
             . "}else if(prev_live_search_str==''){"
@@ -75,8 +81,11 @@ function ciniki_web_generatePageSearch(&$ciniki, $settings) {
             . "}else{"
                 . "d.innerHTML='<div class=\"live-search-empty\">I\'m sorry we couldn\'t find what you were looking for.</div>';"
             . "}"
-        . "};"
-        . "</script>\n";
+        . "};";
+    if( $search_str != '' ) {
+        $ciniki['request']['inline_javascript'] .= "window.onload = update_live_search;";
+    }
+    $ciniki['request']['inline_javascript'] .= "</script>\n";
 
 	//
 	// Add the header
@@ -117,7 +126,7 @@ function ciniki_web_generatePageSearch(&$ciniki, $settings) {
     $page_content .= "<div class='entry-content'>";
     $page_content .= "<div class='live-search'>";
     $page_content .= "<label for='search_str'></label>"
-        . "<input id='live-search-str' class='input' type='text' autofocus placeholder='What are you looking for?' name='search_str' value='" . (isset($_POST['search_str'])?$_POST['search_str']:'') . "' "
+        . "<input id='live-search-str' class='input' type='text' autofocus placeholder='What are you looking for?' name='search_str' value='$search_str' "
             . "onkeyup='return update_live_search();' onsearch='return update_live_search();' onsubmit='return false;' autocomplete='off' />"
             . "";
     $page_content .= "</div>";

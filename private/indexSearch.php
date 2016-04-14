@@ -39,7 +39,7 @@ function ciniki_web_indexSearch($ciniki, $settings, $business_id, $search_str, $
     //
     // Start with searching primary words
     //
-    $strsql = "SELECT id, title, subtitle, meta, primary_image_id, synopsis, url "
+    $strsql = "SELECT id, label, title, subtitle, meta, primary_image_id, synopsis, object, url "
         . "FROM ciniki_web_index "
         . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
         . $primary_sql
@@ -58,7 +58,7 @@ function ciniki_web_indexSearch($ciniki, $settings, $business_id, $search_str, $
     // Add secondary results
     //
     if( count($results) < $limit ) {
-        $strsql = "SELECT id, title, subtitle, meta, primary_image_id, synopsis, url "
+        $strsql = "SELECT id, label, title, subtitle, meta, primary_image_id, synopsis, object, url "
             . "FROM ciniki_web_index "
             . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
             . $secondary_sql
@@ -77,7 +77,7 @@ function ciniki_web_indexSearch($ciniki, $settings, $business_id, $search_str, $
     // Add tertiary results
     //
     if( count($results) < $limit ) {
-        $strsql = "SELECT id, title, subtitle, meta, primary_image_id, synopsis, url "
+        $strsql = "SELECT id, label, title, subtitle, meta, primary_image_id, synopsis, object, url "
             . "FROM ciniki_web_index "
             . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
             . $tertiary_sql
@@ -104,6 +104,8 @@ function ciniki_web_indexSearch($ciniki, $settings, $business_id, $search_str, $
             $result['primary_image_url'] = '';
         }
         $result['url'] = $ciniki['request']['base_url'] . $result['url'];
+        $result['class'] = str_replace('.', '-', $result['object']);
+        unset($result['object']);
         $final_results[] = $result;
     }
 

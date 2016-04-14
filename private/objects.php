@@ -270,7 +270,8 @@ function ciniki_web_objects($ciniki) {
         'sync'=>'yes',
         'table'=>'ciniki_web_index',
         'fields'=>array(
-            'title'=>array('name'=>'title'),
+            'label'=>array('name'=>'Label'),
+            'title'=>array('name'=>'Title'),
             'subtitle'=>array('name'=>'Subtitle', 'default'=>''),
             'meta'=>array('name'=>'Meta', 'default'=>''),
             'primary_image_id'=>array('name'=>'Image', 'default'=>'0'),

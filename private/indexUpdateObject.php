@@ -46,7 +46,7 @@ function ciniki_web_indexUpdateObject($ciniki, $business_id, $args) {
     //
     // Get the current index data
     //
-    $strsql = "SELECT id, uuid, title, subtitle, meta, "
+    $strsql = "SELECT id, uuid, label, title, subtitle, meta, "
         . "primary_image_id, synopsis, "
         . "object, object_id, "
         . "primary_words, secondary_words, tertiary_words, weight, url "
@@ -129,7 +129,7 @@ function ciniki_web_indexUpdateObject($ciniki, $business_id, $args) {
             // Check if anything is different
             //
             $update_args = array();
-            $fields = array('title', 'subtitle', 'meta', 'primary_image_id', 'synopsis', 'primary_words', 'secondary_words', 'tertiary_words', 'weight', 'url');
+            $fields = array('label', 'title', 'subtitle', 'meta', 'primary_image_id', 'synopsis', 'primary_words', 'secondary_words', 'tertiary_words', 'weight', 'url');
             foreach($fields as $field) {
                 if( $index_object[$field] != $module_object[$field] ) {
                     $update_args[$field] = $module_object[$field];
