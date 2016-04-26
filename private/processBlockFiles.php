@@ -21,7 +21,7 @@ function ciniki_web_processBlockFiles(&$ciniki, $settings, $business_id, $block)
 	if( $block['files'] != '' ) {
 		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
 		foreach($block['files'] as $file) {
-			$url = $block['base_url'] . $file['permalink'] . '.' . $file['extension'];
+			$url = $block['base_url'] . '/' . $file['permalink'] . '.' . $file['extension'];
 			if( $url != '' ) {
 				$content .= "<a target='_blank' href='" . $url . "' title='" . $file['name'] . "'>" . $file['name'] . "</a>";
 			} else {
