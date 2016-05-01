@@ -27,9 +27,10 @@ function ciniki_web_generatePageSearch(&$ciniki, $settings) {
     $article_title = 'Search';
 
     if( !isset($ciniki['request']['page-container-class']) ) {
-        $ciniki['request']['page-container-class'] = '';
+        $ciniki['request']['page-container-class'] = 'page-search';
+    } else {
+        $ciniki['request']['page-container-class'] .= ' page-search';
     }
-    $ciniki['request']['page-container-class'] .= 'page-search';
     $ciniki['request']['ciniki_api'] = 'yes';
     if( !isset($ciniki['request']['inline_javascript']) ) {
         $ciniki['request']['inline_javascript'] = '';

@@ -1752,6 +1752,26 @@ function ciniki_web_main() {
 		this.api.fieldHistoryArgs = this.fieldHistoryArgs;
 		this.api.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'api\');');
 		this.api.addClose('Cancel');
+
+		//
+		// The options and information for the search page
+		//
+		this.search = new M.panel('Search',
+			'ciniki_web_main', 'search',
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.search');
+		this.search.data = {};
+		this.search.sections = {
+			'options':{'label':'Options', 'fields':{
+				'page-search-active':{'label':'Active', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'search\');'},
+				}},
+		};
+		this.search.fieldValue = this.fieldValue;
+		this.search.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.search.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'search\');');
+		this.search.addClose('Cancel');
 	}
 
 	this.start = function(cb, ap, aG) {

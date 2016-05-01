@@ -181,6 +181,9 @@ function ciniki_web_siteSettings($ciniki) {
 	if( isset($ciniki['business']['modules']['ciniki.membersonly']) ) {
 		$pages['membersonly'] = array('display_name'=>'Members Only', 'active'=>'no');
 	}
+	if( isset($ciniki['business']['modules']['ciniki.web']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x4000) > 0 ) {
+		$pages['search'] = array('display_name'=>'Search', 'active'=>'no');
+	}
 
 	//
 	// Pages
@@ -384,6 +387,9 @@ function ciniki_web_siteSettings($ciniki) {
 	}
 	if( isset($settings['page-info-active']) && $settings['page-info-active'] == 'yes' ) {
 		$pages['info']['active'] = 'yes';
+	}
+	if( isset($settings['page-search-active']) && $settings['page-search-active'] == 'yes' ) {
+		$pages['search']['active'] = 'yes';
 	}
 
 	//
