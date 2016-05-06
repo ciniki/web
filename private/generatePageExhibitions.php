@@ -77,7 +77,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
 		&& $settings['page-artgalleryexhibitions-archive-number'] > 0 ) {
 		$page_past_limit = intval($settings['page-artgalleryexhibitions-archive-number']);
 	}
-	if( isset($ciniki['request']['args']['page']) && $ciniki['request']['args']['page'] != '' ) {
+	if( isset($ciniki['request']['args']['page']) && $ciniki['request']['args']['page'] != '' && is_numeric($ciniki['request']['args']['page']) ) {
 		$page_past_cur = $ciniki['request']['args']['page'];
 	} else {
 		$page_past_cur = 1;
