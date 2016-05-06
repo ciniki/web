@@ -58,7 +58,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
 				$cobj = $collection['objects']['ciniki.blog.post'];
 			}
 			$page_post_limit = 10;
-			if( isset($ciniki['request']['args']['page']) && $ciniki['request']['args']['page'] != '' ) {
+			if( isset($ciniki['request']['args']['page']) && $ciniki['request']['args']['page'] != '' && is_numeric($ciniki['request']['args']['page']) ) {
 				$page_post_cur = $ciniki['request']['args']['page'];
 			} else {
 				$page_post_cur = 1;
