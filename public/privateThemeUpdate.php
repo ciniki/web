@@ -111,6 +111,7 @@ function ciniki_web_privateThemeUpdate(&$ciniki) {
 	$valid_settings = array(
 		'header-signin-button',
 		'header-social-icons',
+		'header-search-button',
 		'header-menu-button',
 		'header-article-title',
 		'header-breadcrumbs',

@@ -754,6 +754,11 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     //
     // If the theme specifies a header menu button, then setup the javascript for it as well.
     //
+    if( isset($settings['theme']['header-search-button']) && $settings['theme']['header-search-button'] == 'yes' 
+        && isset($ciniki['business']['modules']['ciniki.web']['flags']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x4000) > 0
+        ) {
+        $content .= "<a href='" . $ciniki['request']['base_url'] . '/search' . "' id='main-search-button' class='menu-toggle'><i class='fa fa-search'></i></a>";
+    }
     if( isset($settings['theme']['header-menu-button']) && $settings['theme']['header-menu-button'] == 'yes' ) {
         $content .= "<button type='button' id='main-menu-toggle' onclick='cinikiMainMenuToggle()' class='menu-toggle'><i class='fa fa-bars'></i></button>";
     } else {
