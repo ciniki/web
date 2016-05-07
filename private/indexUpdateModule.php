@@ -57,7 +57,7 @@ function ciniki_web_indexUpdateModule($ciniki, $business_id, $module) {
     // Get the list of objects from the index
     //
     $index_objects = array();
-    $strsql = "SELECT id, uuid, object, object_id, UNIX_TIMESTAMP(last_updated) AS last_updated "
+    $strsql = "SELECT id, uuid, primary_image_id, object, object_id, UNIX_TIMESTAMP(last_updated) AS last_updated "
         . "FROM ciniki_web_index "
         . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
         . "AND object LIKE '" . ciniki_core_dbQuote($ciniki, $module) . ".%' "
@@ -95,11 +95,33 @@ function ciniki_web_indexUpdateModule($ciniki, $business_id, $module) {
     }
 
     //
+    // Get the business uuid
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'cacheDir');
+    $rc = ciniki_web_cacheDir($ciniki, $business_id);
+    if( $rc['stat'] != 'ok' ) {
+        return $rc;
+    }
+    $cache_dir = $rc['cache_dir'];
+
+    //
     // Check for index_objects to delete
     //
     foreach($index_objects as $oid => $object) {
         if( !isset($module_objects[$object['object'] . '.' . $object['object_id']]) ) {
+            //
+            // Remove image
+            //
+            if( $object['primary_image_id'] > 0 ) {
+                $filename = $cache_dir . '/search/' . sprintf("%012d", $object['primary_image_id']) . '.jpg';
+                if( file_exists($filename) ) {
+                    unlink($filename);
+                }
+            }
+
             $rc = ciniki_core_objectDelete($ciniki, $business_id, 'ciniki.web.index', $object['id'], $object['uuid'], 0x07);
+            // Don't fail on delete error
+
         }
     }
 

@@ -47,9 +47,9 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
 		//
 		if( !isset($settings['site-privatetheme-permalink'])
 			|| $settings['site-privatetheme-permalink'] == ''
-			|| !file_exists($ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-permalink']) 
+			|| !file_exists($ciniki['business']['web_cache_dir'] . '/theme-' . $settings['site-privatetheme-permalink']) 
 			|| !isset($settings['site-privatetheme-last-updated']) 
-			|| filemtime($ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-permalink']) < $settings['site-privatetheme-last-updated']
+			|| filemtime($ciniki['business']['web_cache_dir'] . '/theme-' . $settings['site-privatetheme-permalink']) < $settings['site-privatetheme-last-updated']
 			) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'updatePrivateTheme');
 			$rc = ciniki_web_updatePrivateTheme($ciniki, $ciniki['request']['business_id'], $settings, (isset($settings['site-privatetheme-id'])?$settings['site-privatetheme-id']:0));
@@ -196,8 +196,8 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
 	if( isset($ciniki['business']['modules']['ciniki.web']['flags']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x0100) > 0 
 		&& isset($settings['site-privatetheme-permalink']) && $settings['site-privatetheme-permalink'] != '' 
 		) {
-		$theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-permalink'];
-		$theme_cache_url = $ciniki['business']['web_cache_url'] . '/' . $settings['site-privatetheme-permalink'];
+		$theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/theme-' . $settings['site-privatetheme-permalink'];
+		$theme_cache_url = $ciniki['business']['web_cache_url'] . '/theme-' . $settings['site-privatetheme-permalink'];
 		//
 		// Include the private theme files
 		//

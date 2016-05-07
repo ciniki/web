@@ -79,9 +79,25 @@ function ciniki_web_indexUpdateObject($ciniki, $business_id, $args) {
     }
 
     //
+    // Get the business uuid
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'cacheDir');
+    $rc = ciniki_web_cacheDir($ciniki, $business_id);
+    if( $rc['stat'] != 'ok' ) {
+        return $rc;
+    }
+    $cache_dir = $rc['cache_dir'];
+
+    //
     // Check if index should be removed
     //
     if( isset($index_object) && !isset($module_object) ) {
+        if( $index_object['primary_image_id'] > 0 ) {
+            $filename = $cache_dir . '/search/' . sprintf("%012d", $index_object['primary_image_id']) . '.jpg';
+            if( file_exists($filename) ) {
+                unlink($filename);
+            }
+        }
         $rc = ciniki_core_objectDelete($ciniki, $business_id, 'ciniki.web.index', $index_object['id'], $index_object['uuid'], 0x07);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
@@ -136,12 +152,12 @@ function ciniki_web_indexUpdateObject($ciniki, $business_id, $args) {
                 }
             }
 
-            if( isset($update_args['primary_image_id']) ) {
+//            if( isset($update_args['primary_image_id']) ) {
                 $rc = ciniki_web_indexUpdateObjectImage($ciniki, $business_id, $module_object['primary_image_id'], $index_object['id']);
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;
                 }
-            }
+//            }
             
             if( count($update_args) > 0 ) {
                 $rc = ciniki_core_objectUpdate($ciniki, $business_id, 'ciniki.web.index', $index_object['id'], $update_args, 0x07);

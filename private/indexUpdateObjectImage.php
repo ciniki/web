@@ -34,18 +34,28 @@ function ciniki_web_indexUpdateObjectImage($ciniki, $business_id, $image_id, $in
 	}
 	$img = $rc['image'];
 
-	if( $img['type'] == 2 ) {
-		$extension = 'png';
-	} else {
+//	if( $img['type'] == 2 ) {
+//		$extension = 'png';
+//	} else {
 		$extension = 'jpg';
-	}
+//	}
+
+    //
+    // Get the business uuid
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'cacheDir');
+    $rc = ciniki_web_cacheDir($ciniki, $business_id);
+    if( $rc['stat'] != 'ok' ) {
+        return $rc;
+    }
+    $cache_dir = $rc['cache_dir'];
 
     //
     // Get the cache directory
     //
-    $filename = $ciniki['config']['ciniki.core']['root_dir'] . '/ciniki-mods/web/cache/'
-        . '/' . sprintf("%02d/%07d", $business_id, $business_id) 
-        . '/search/' . sprintf("%010d", $image_id) . '.' . $extension;
+//    $filename = $ciniki['config']['ciniki.core']['root_dir'] . '/ciniki-mods/web/cache/'
+//        . '/' . sprintf("%02d/%07d", $business_id, $business_id) 
+    $filename = $cache_dir . '/search/' . sprintf("%012d", $image_id) . '.' . $extension;
 
     if( !file_exists($filename) || filemtime($filename) < $img['last_updated'] ) {
 		//
@@ -81,7 +91,7 @@ function ciniki_web_indexUpdateObjectImage($ciniki, $business_id, $image_id, $in
 		$h = fopen($filename, 'w');
 		if( $h ) {
 			if( $img['type'] == 2 ) {
-				$image->setImageFormat('jpg');
+				$image->setImageFormat('jpeg');
 			} 
             $image->setImageCompressionQuality(60);
 			fwrite($h, $image->getImageBlob());

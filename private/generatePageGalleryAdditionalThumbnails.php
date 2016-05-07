@@ -34,12 +34,14 @@ function ciniki_web_generatePageGalleryAdditionalThumbnails($ciniki, $settings, 
 		//
 		// Check for cached file, if not generate
 		//
-		$img_filename = $ciniki['request']['cache_dir'] . '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/' 
-			. sprintf('%07d', $ciniki['request']['business_id'])
-			. '/t' . $maxlength . '/' . sprintf('%010d', $img['image_id']) . '.jpg';
-		$img_url = $ciniki['request']['cache_url'] . '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/' 
-			. sprintf('%07d', $ciniki['request']['business_id']) 
-			. '/t' . $maxlength . '/' . sprintf('%010d', $img['image_id']) . '.jpg';
+//		$img_filename = $ciniki['request']['cache_dir'] . '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/' 
+//			. sprintf('%07d', $ciniki['request']['business_id'])
+//			. '/t' . $maxlength . '/' . sprintf('%010d', $img['image_id']) . '.jpg';
+//		$img_url = $ciniki['request']['cache_url'] . '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/' 
+//			. sprintf('%07d', $ciniki['request']['business_id']) 
+//			. '/t' . $maxlength . '/' . sprintf('%010d', $img['image_id']) . '.jpg';
+		$img_filename = $ciniki['business']['web_cache_dir'] . '/t' . $maxlength . '/' . sprintf('%010d', $img['image_id']) . '.jpg';
+		$img_url = $ciniki['business']['web_cache_url'] . '/t' . $maxlength . '/' . sprintf('%010d', $img['image_id']) . '.jpg';
 
 		//
 		// If the image file doesn't exist on disk, create it, or if it's been updated in the database since creation

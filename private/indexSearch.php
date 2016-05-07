@@ -98,8 +98,9 @@ function ciniki_web_indexSearch($ciniki, $settings, $business_id, $search_str, $
         // create image url
         //
         if( $result['primary_image_id'] > 0 ) {
-            $result['primary_image_url'] = 'http://' . $ciniki['request']['domain'] . $ciniki['request']['cache_url'] 
-                . sprintf("/%02d/%07d/search/%010d.jpg", $business_id, $business_id, $result['primary_image_id']);
+//            $result['primary_image_url'] = 'http://' . $ciniki['request']['domain'] . $ciniki['request']['cache_url'] 
+//                . sprintf("/%02d/%07d/search/%010d.jpg", $business_id, $business_id, $result['primary_image_id']);
+            $result['primary_image_url'] = $ciniki['business']['web_cache_url'] . sprintf("/search/%012d.jpg", $result['primary_image_id']);
         } else {
             $result['primary_image_url'] = '';
         }

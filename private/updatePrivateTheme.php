@@ -30,12 +30,12 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, $settings, $theme
 			return $rc;
 		}
 		if( isset($rc['theme']) ) {
-			$theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/' . $rc['theme']['permalink'];
+			$theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/theme-' . $rc['theme']['permalink'];
 		} else {
 			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2674', 'msg'=>'No theme specified'));
 		}
 	} else {
-			$theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-permalink'];
+        $theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/theme-' . $settings['site-privatetheme-permalink'];
 	}
 	if( !file_exists($theme_cache_dir) ) {
 		mkdir($theme_cache_dir, 0755, true);

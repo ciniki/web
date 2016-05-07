@@ -46,21 +46,24 @@ function ciniki_web_getPaddedImageURL($ciniki, $image_id, $version, $maxwidth, $
 		$extension = 'jpg';
 	}
 	if( $maxwidth == 0 && $maxheight == 0 ) {
-		$filename = '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/'
-			. sprintf('%07d', $ciniki['request']['business_id'])
-			. '/po/' . sprintf('%010d', $img['id']) . '.' . $extension;
+//		$filename = '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/'
+//			. sprintf('%07d', $ciniki['request']['business_id'])
+//			. '/po/' . sprintf('%010d', $img['id']) . '.' . $extension;
+		$filename = '/po/' . sprintf('%010d', $img['id']) . '.' . $extension;
 	} elseif( $maxwidth == 0 ) {
-		$filename = '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/'
-			. sprintf('%07d', $ciniki['request']['business_id'])
-			. '/ph' . $maxheight . '/' . sprintf('%010d', $img['id']) . '.' . $extension;
+//		$filename = '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/'
+//			. sprintf('%07d', $ciniki['request']['business_id'])
+//			. '/ph' . $maxheight . '/' . sprintf('%010d', $img['id']) . '.' . $extension;
+		$filename = '/ph' . $maxheight . '/' . sprintf('%010d', $img['id']) . '.' . $extension;
 	} else {
-		$filename = '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/'
-			. sprintf('%07d', $ciniki['request']['business_id'])
-			. '/pw' . $maxwidth . '/' . sprintf('%010d', $img['id']) . '.' . $extension;
+//		$filename = '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/'
+//			. sprintf('%07d', $ciniki['request']['business_id'])
+//			. '/pw' . $maxwidth . '/' . sprintf('%010d', $img['id']) . '.' . $extension;
+		$filename = '/pw' . $maxwidth . '/' . sprintf('%010d', $img['id']) . '.' . $extension;
 	}
-	$img_filename = $ciniki['request']['cache_dir'] . $filename;
-	$img_url = $ciniki['request']['cache_url'] . $filename;
-	$img_domain_url = 'http://' . $ciniki['request']['domain'] . $ciniki['request']['cache_url'] . $filename;
+	$img_filename = $ciniki['business']['web_cache_dir'] . $filename;
+	$img_url = $ciniki['business']['web_cache_url'] . $filename;
+	$img_domain_url = 'http://' . $ciniki['request']['domain'] . $ciniki['business']['web_cache_url'] . $filename;
 
 	//
 	// Check last_updated against the file timestamp, if the file exists

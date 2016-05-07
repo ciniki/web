@@ -51,13 +51,15 @@ function ciniki_web_getCroppedImageURL($ciniki, $image_id, $version, $args) {
 	} else {
 		$extension = 'jpg';
 	}
-	$filename = '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/'
-		. sprintf('%07d', $ciniki['request']['business_id'])
-		. '/c' . $args['width'] . 'x' . $args['height'] 
+//	$filename = '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/'
+//		. sprintf('%07d', $ciniki['request']['business_id'])
+//		. '/c' . $args['width'] . 'x' . $args['height'] 
+//		. '/' . sprintf('%010d', $img['id']) . '.' . $extension;
+	$filename = '/c' . $args['width'] . 'x' . $args['height'] 
 		. '/' . sprintf('%010d', $img['id']) . '.' . $extension;
-	$img_filename = $ciniki['request']['cache_dir'] . $filename;
-	$img_url = $ciniki['request']['cache_url'] . $filename;
-	$img_domain_url = 'http://' . $ciniki['request']['domain'] . $ciniki['request']['cache_url'] . $filename;
+	$img_filename = $ciniki['business']['web_cache_dir'] . $filename;
+	$img_url = $ciniki['business']['web_cache_url'] . $filename;
+	$img_domain_url = 'http://' . $ciniki['request']['domain'] . $ciniki['business']['web_cache_url'] . $filename;
 
 	//
 	// Check last_updated against the file timestamp, if the file exists

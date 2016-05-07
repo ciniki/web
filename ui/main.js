@@ -1932,7 +1932,7 @@ function ciniki_web_main() {
 				'layout':{'label':'Layout', 'fn':'M.ciniki_web_main.showLayouts(\'M.ciniki_web_main.showMenu();\');'},
 				}};
 			this.menu.sections.admin = {'label':'Admin Options', 'buttons':{
-				'clearimagecache':{'label':'Clear Image Cache', 'fn':'M.ciniki_web_main.clearImageCache();'},
+				'clearimagecache':{'label':'Clear Cache', 'fn':'M.ciniki_web_main.clearCache();'},
 				'clearcontentcache':{'label':'Clear Content Cache', 'fn':'M.ciniki_web_main.clearContentCache();'},
 				'updateindex':{'label':'Update Index', 'fn':'M.ciniki_web_main.updateIndex();'},
 				}};
@@ -2410,14 +2410,14 @@ function ciniki_web_main() {
 		}
 	};
 
-	this.clearImageCache = function(page) {
+	this.clearCache = function(page) {
 		if( confirm('Are you sure you wish to clear the web cache?') ) {
-			var rsp = M.api.getJSONCb('ciniki.web.clearImageCache', {'business_id':M.curBusinessID}, function(rsp) {
+			var rsp = M.api.getJSONCb('ciniki.web.clearCache', {'business_id':M.curBusinessID}, function(rsp) {
 				if( rsp.stat != 'ok' ) {
 					M.api.err(rsp);
 					return false;
 				}
-				alert("The cache has been cleared");
+				alert("The cache has been cleared. ****** REBUILD INDEX ******* ");
 			});
 		}
 	};

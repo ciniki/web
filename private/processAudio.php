@@ -28,14 +28,15 @@ function ciniki_web_processAudio(&$ciniki, $settings, $business_id, $audio, $arg
 			// Go through the formats and find ones suitable for the web
 			//
 			foreach($track['formats'] as $fid => $format) {
-				$cache_filename = '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/'
-					. sprintf('%07d', $ciniki['request']['business_id'])
-					. '/ciniki.audio/' . $format['uuid'] . '.' . $format['extension'];
+//				$cache_filename = '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/'
+//					. sprintf('%07d', $ciniki['request']['business_id'])
+//					. '/ciniki.audio/' . $format['uuid'] . '.' . $format['extension'];
+				$cache_filename = '/ciniki.audio/' . $format['uuid'] . '.' . $format['extension'];
 				$storage_filename = $ciniki['config']['ciniki.core']['storage_dir'] . '/'
 					. $ciniki['business']['uuid'][0] . '/' . $ciniki['business']['uuid']
 					. '/ciniki.audio/'
 					. $format['uuid'][0] . '/' . $format['uuid'];
-				$cache_full_filename = $ciniki['request']['cache_dir'] . $cache_filename;
+				$cache_full_filename = $ciniki['business']['web_cache_dir'] . $cache_filename;
 				//
 				// Copy the audio to the web-cache
 				//
@@ -45,8 +46,8 @@ function ciniki_web_processAudio(&$ciniki, $settings, $business_id, $audio, $arg
 				if( !file_exists($cache_full_filename) ) {
 					copy($storage_filename, $cache_full_filename);
 				}
-				$audio_url = $ciniki['request']['cache_url'] . $cache_filename;
-				$audio_domain_url = 'http://' . $ciniki['request']['domain'] . $ciniki['request']['cache_url'] . $cache_filename;
+				$audio_url = $ciniki['business']['web_cache_url'] . $cache_filename;
+				$audio_domain_url = 'http://' . $ciniki['request']['domain'] . $ciniki['business']['web_cache_url'] . $cache_filename;
 				if( $format['type'] == '20' ) {
 					$sources['ogg'] = '<source src="' . $audio_url . '" type="audio/ogg" />';
 				} elseif( $format['type'] == '30' ) {

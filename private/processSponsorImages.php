@@ -54,12 +54,14 @@ function ciniki_web_processSponsorImages($ciniki, $settings, $base_url, $sponsor
 			//
 			// Check for cached file, if not generate
 			//
-			$img_filename = $ciniki['request']['cache_dir'] . '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/' 
-				. sprintf('%07d', $ciniki['request']['business_id'])
-				. '/o' . $maxlength . '/' . sprintf('%010d', $sponsor['image_id']) . '.jpg';
-			$img_url = $ciniki['request']['cache_url'] . '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/' 
-				. sprintf('%07d', $ciniki['request']['business_id']) 
-				. '/o' . $maxlength . '/' . sprintf('%010d', $sponsor['image_id']) . '.jpg';
+//			$img_filename = $ciniki['request']['cache_dir'] . '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/' 
+//				. sprintf('%07d', $ciniki['request']['business_id'])
+//				. '/o' . $maxlength . '/' . sprintf('%010d', $sponsor['image_id']) . '.jpg';
+			$img_filename = $ciniki['business']['web_cache_dir'] . '/o' . $maxlength . '/' . sprintf('%010d', $sponsor['image_id']) . '.jpg';
+//			$img_url = $ciniki['request']['cache_url'] . '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/' 
+//				. sprintf('%07d', $ciniki['request']['business_id']) 
+//				. '/o' . $maxlength . '/' . sprintf('%010d', $sponsor['image_id']) . '.jpg';
+			$img_url .= $ciniki['business']['web_cache_url'] . '/o' . $maxlength . '/' . sprintf('%010d', $sponsor['image_id']) . '.jpg';
 
 			//
 			// If the image file doesn't exist on disk, create it, or if it's been updated in the database since creation
