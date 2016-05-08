@@ -186,6 +186,17 @@ if( $ciniki['request']['business_id'] == 0 ) {
 		$ciniki['request']['page'] = 'masterindex';
 		$ciniki['request']['business_id'] = $ciniki['config']['ciniki.core']['master_business_id'];
 		$ciniki['request']['base_url'] = '';
+        //
+        // Setup the cache dir for the master business, incase no other business is found
+        //
+        $strsql = "SELECT uuid FROM ciniki_businesses WHERE id = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_business_id']) . "' ";
+        $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'business');
+        if( $rc['stat'] == 'ok' && isset($rc['business']['uuid']) ) {
+            $uuid = $rc['business']['uuid'];
+            $ciniki['business']['cache_dir'] = $ciniki['config']['ciniki.core']['cache_dir'] . '/' . $uuid[0] . '/' . $uuid;
+            $ciniki['business']['web_cache_dir'] = $ciniki['config']['ciniki.core']['modules_dir'] . '/web/cache/' . $uuid[0] . '/' . $uuid;
+            $ciniki['business']['web_cache_url'] = $ciniki['request']['cache_url'] . '/' . $uuid[0] . '/' . $uuid;
+        }
     
 	} elseif( $ciniki['request']['uri_split'][0] == 'about' 
 		|| $ciniki['request']['uri_split'][0] == 'contact'
@@ -231,6 +242,18 @@ if( $ciniki['request']['business_id'] == 0 ) {
 		$ciniki['business']['uuid'] = '';
 		$ciniki['business']['modules'] = $rc['modules'];
 
+        //
+        // Setup the cache dir for the master business, incase no other business is found
+        //
+        $strsql = "SELECT uuid FROM ciniki_businesses WHERE id = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_business_id']) . "' ";
+        $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'business');
+        if( $rc['stat'] == 'ok' && isset($rc['business']['uuid']) ) {
+            $uuid = $rc['business']['uuid'];
+            $ciniki['business']['cache_dir'] = $ciniki['config']['ciniki.core']['cache_dir'] . '/' . $uuid[0] . '/' . $uuid;
+            $ciniki['business']['web_cache_dir'] = $ciniki['config']['ciniki.core']['modules_dir'] . '/web/cache/' . $uuid[0] . '/' . $uuid;
+            $ciniki['business']['web_cache_url'] = $ciniki['request']['cache_url'] . '/' . $uuid[0] . '/' . $uuid;
+        }
+
 	} else {
 		//
 		// Lookup client name in database
@@ -275,9 +298,6 @@ if( $ciniki['request']['business_id'] == 0 ) {
 			$ciniki['request']['page'] = '';
 		}
 	}
-
-    
-
 }
 
 //
