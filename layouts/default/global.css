@@ -960,6 +960,10 @@ div.googlemap p.exhibitors-more,
     box-sizing: border-box;
 }
 
+#content form div.checkbox p {
+    padding-left: 2em;
+}
+
 #content form textarea {
 	width: 100%;
 	height: 3em;

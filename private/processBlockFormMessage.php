@@ -18,6 +18,10 @@ function ciniki_web_processBlockFormMessage($ciniki, $settings, $business_id, $b
 	}
 	$content = '';
 
+    if( isset($block['title']) && $block['title'] != '' ) {
+        $content .= '<h2>' . $block['title'] . '</h2>';
+    }
+
     $content .= "<div class='form-message-content'>";
     if( $block['level'] == 'error' ) {
         $content .= "<div class='form-result-message form-error-message'><div class='form-message-wrapper'><p>" . $block['message'] . "</p></div></div>";

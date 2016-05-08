@@ -635,6 +635,12 @@ if( $found == 'no' ) {
     	$rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['business_id'], 'ciniki.tradealerts');
     } 
 
+    // Process trade alerts pages
+    elseif( $ciniki['request']['page'] == 'subscriptions' && isset($ciniki['business']['modules']['ciniki.subscriptions']) ) {
+    	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
+    	$rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['business_id'], 'ciniki.subscriptions');
+    } 
+
     // 
     // If Page is enabled and pages menu is used, then search the pages first before checking module pages.
     // This is done so control is handled to generatePage by default

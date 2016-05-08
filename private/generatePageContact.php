@@ -323,10 +323,7 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
 		}
 	}
 
-	$content .= "<br style='clear: both;'/>";
-	$content .= "</div>"
-		. "</article>"
-		. "";
+//	$content .= "<br style='clear: both;'/>";
 
 	//
 	// Check if mailchimp subscribe form should be displayed
@@ -372,7 +369,27 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
 		$content .= '<script type=\'text/javascript\'>(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]=\'EMAIL\';ftypes[0]=\'email\';fnames[1]=\'FNAME\';ftypes[1]=\'text\';fnames[2]=\'LNAME\';ftypes[2]=\'text\';}(jQuery));var $mcj = jQuery.noConflict(true);</script>' . "\n";
 	}
 
+    //
+    // Check if any public subscription lists which could be signed up for
+    //
+    if( isset($ciniki['business']['modules']['ciniki.subscriptions']) 
+        && isset($settings['page-contact-subscriptions-signup']) && $settings['page-contact-subscriptions-signup'] == 'yes'
+        ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'subscriptions', 'web', 'subscriptionManager');
+        $rc = ciniki_subscriptions_web_subscriptionManager($ciniki, $settings, $ciniki['request']['business_id']);
+        if( $rc['stat'] == 'ok' && isset($rc['blocks']) ) {
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlocks');
+            $rc = ciniki_web_processBlocks($ciniki, $settings, $ciniki['request']['business_id'], $rc['blocks']);
+            if( $rc['stat'] == 'ok' && isset($rc['content']) ) {
+                $content .= $rc['content'];
+            }
+        }
+    }
+	$content .= "<br style='clear: both;'/>";
 
+	$content .= "</div>"
+		. "</article>"
+		. "";
 	$content .= "</div>";
 
 	//

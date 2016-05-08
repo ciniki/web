@@ -713,6 +713,16 @@ function ciniki_web_main() {
                     'page-contact-mailchimp-signup':{'label':'Enable Mailchimp', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':''},
                     'page-contact-mailchimp-submit-url':{'label':'Submit URL', 'type':'text'},
 				}},
+			'_subscriptions':{'label':'Mailing List Signup', 
+                'active':function() {return (M.curBusiness.modules['ciniki.subscriptions'])?'yes':'no';}, 
+                'fields':{
+                    'page-contact-subscriptions-signup':{'label':'Enable Signups', 'type':'toggle', 'default':'no', 'toggles':this.activeToggles, 'hint':''},
+				}},
+			'_subscriptions_message':{'label':'Mailing List Intro', 
+                'active':function() {return (M.curBusiness.modules['ciniki.subscriptions'])?'yes':'no';}, 
+                'fields':{
+                    'page-contact-subscriptions-intro-message':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'small'},
+				}},
 			'_save':{'label':'', 'buttons':{
 				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'contact\');'},
 				}},
