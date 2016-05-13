@@ -826,6 +826,15 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
 		if( isset($settings['page-features-active']) && $settings['page-features-active'] == 'yes' ) {
 			$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='features'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/features'>Features</a></li>";
 		}
+		if( isset($settings['page-pdfcatalogs-active']) && $settings['page-pdfcatalogs-active'] == 'yes' ) {
+			$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='pdfcatalogs'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/pdfcatalogs'>";
+			if( isset($settings['page-exhibitions-exhibitors-name']) && $settings['page-exhibitions-exhibitors-name'] != '' ) {
+				$content .= $settings['page-pdfcatalogs-name']; 
+			} else {
+				$content .= "Catalogs";
+			}
+			$content .= "</a></li>";
+		}
 		if( isset($settings['page-products-active']) && $settings['page-products-active'] == 'yes' ) {
 			$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='products'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/products'>Products</a></li>";
 		}

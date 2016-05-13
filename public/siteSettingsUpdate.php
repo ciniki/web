@@ -256,6 +256,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-exhibitions-sponsors-active',
 		'page-exhibitions-tourexhibitors-active',
 		'page-exhibitions-tourexhibitors-name',
+		'page-pdfcatalogs-active',
+		'page-pdfcatalogs-name',
 		'page-products-active',
 		'page-products-name',
 		'page-products-share-buttons',
@@ -398,6 +400,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-cart-product-list',					// Show list of all products
 		'page-cart-po-number',
 		'page-cart-customer-notes',
+		'page-cart-currency-display',
 		'page-cart-dealersubmit-email-template',
 		'page-cart-dealersubmit-email-textmsg',
 		'page-signup-active',

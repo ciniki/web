@@ -1065,6 +1065,27 @@ function ciniki_web_main() {
 		this.writings.addClose('Cancel');
 
 		//
+		// The options and information for the products pdf catalogs page
+		//
+		this.pdfcatalogs = new M.panel('PDF Catalogs',
+			'ciniki_web_main', 'pdfcatalogs',
+			'mc', 'medium', 'sectioned', 'ciniki.web.main.pdfcatalogs');
+		this.pdfcatalogs.data = {};
+		this.pdfcatalogs.sections = {
+			'options':{'label':'', 'fields':{
+				'page-pdfcatalogs-active':{'label':'Display Catalogs', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-pdfcatalogs-name':{'label':'Name', 'type':'text', 'hint':'default is Catalogs'},
+				}},
+			'_save':{'label':'', 'buttons':{
+				'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'pdfcatalogs\');'},
+				}},
+		};
+		this.pdfcatalogs.fieldValue = this.fieldValue;
+		this.pdfcatalogs.fieldHistoryArgs = this.fieldHistoryArgs;
+		this.pdfcatalogs.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'pdfcatalogs\');');
+		this.pdfcatalogs.addClose('Cancel');
+
+		//
 		// The options and information for the products page
 		//
 		this.products = new M.panel('Products',
@@ -1688,6 +1709,7 @@ function ciniki_web_main() {
 				'page-cart-product-list':{'label':'Product List', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-cart-po-number':{'label':'Purchase Order Number', 'type':'multitoggle', 'default':'no', 'toggles':this.activeRequiredToggles},
 				'page-cart-customer-notes':{'label':'Customer Notes', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+				'page-cart-currency-display':{'label':'Display Currency', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
 				}},
 			'_inventory':{'label':'Current Inventory Visible To', 'fields':{
 				'page-cart-inventory-customers-display':{'label':'Customers', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},

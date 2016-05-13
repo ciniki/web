@@ -718,6 +718,12 @@ if( $found == 'no' ) {
 //        require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageProducts.php');
 //        $rc = ciniki_web_generatePageProducts($ciniki, $settings);
     }
+    // PDF Catalogs
+    elseif( $ciniki['request']['page'] == 'pdfcatalogs' 
+        && isset($settings['page-pdfcatalogs-active']) && $settings['page-pdfcatalogs-active'] == 'yes' ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
+        $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['business_id'], 'ciniki.products.pdfcatalogs');
+    }
     // Recipes
     elseif( $ciniki['request']['page'] == 'recipes' 
         && isset($settings['page-recipes-active']) && $settings['page-recipes-active'] == 'yes' ) {

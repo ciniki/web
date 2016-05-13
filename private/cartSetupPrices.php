@@ -58,10 +58,14 @@ function ciniki_web_cartSetupPrices($ciniki, $settings, $business_id, $prices) {
 		if( $final_price != $price['unit_amount'] ) {
 			$content .= '<del>' . numfmt_format_currency($intl_currency_fmt, $price['unit_amount'], $intl_currency) . '</del>' . $discount . ' ';
 			$content .= numfmt_format_currency($intl_currency_fmt, $final_price, $intl_currency);
-			$content .= ' ' . $intl_currency;
+            if( !isset($settings['page-cart-currency-display']) || $settings['page-cart-currency-display'] == 'yes' ) {
+                $content .= ' ' . $intl_currency;
+            }
 		} else {
 			$content .= numfmt_format_currency($intl_currency_fmt, $price['unit_amount'], $intl_currency);
-			$content .= ' ' . $intl_currency;
+            if( !isset($settings['page-cart-currency-display']) || $settings['page-cart-currency-display'] == 'yes' ) {
+                $content .= ' ' . $intl_currency;
+            }
 		}
 
 		// Check if display stock level
