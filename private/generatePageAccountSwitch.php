@@ -68,7 +68,7 @@ function ciniki_web_generatePageAccountSwitch(&$ciniki, $settings, $business_id,
     //
     // Check for a account switch redirect
     //
-    if( $_SESSION['account_chooser_redirect'] != '' ) {
+    if( isset($_SESSION['account_chooser_redirect']) && $_SESSION['account_chooser_redirect'] != '' ) {
         $redirect = $_SESSION['account_chooser_redirect'];
         $_SESSION['account_chooser_redirect'] = '';
         if( $redirect == 'back' 
