@@ -1710,6 +1710,8 @@ function ciniki_web_main() {
 				'page-cart-po-number':{'label':'Purchase Order Number', 'type':'multitoggle', 'default':'no', 'toggles':this.activeRequiredToggles},
 				'page-cart-customer-notes':{'label':'Customer Notes', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				'page-cart-currency-display':{'label':'Display Currency', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+				'page-cart-currency-display':{'label':'Display Currency', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+				'page-cart-registration-child-select':{'label':'Registration Children', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
 				}},
 			'_inventory':{'label':'Current Inventory Visible To', 'fields':{
 				'page-cart-inventory-customers-display':{'label':'Customers', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},

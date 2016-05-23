@@ -401,6 +401,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 		'page-cart-po-number',
 		'page-cart-customer-notes',
 		'page-cart-currency-display',
+        'page-cart-registration-child-select',      // Show a list of children to select for a registration
 		'page-cart-dealersubmit-email-template',
 		'page-cart-dealersubmit-email-textmsg',
 		'page-signup-active',

@@ -294,6 +294,9 @@ if( isset($_SESSION['business_id']) && $_SESSION['business_id'] == $ciniki['requ
 	if( isset($_SESSION['customers']) ) {
 		$ciniki['session']['customers'] = $_SESSION['customers'];
 	}
+	if( isset($_SESSION['children']) ) {
+		$ciniki['session']['children'] = $_SESSION['children'];
+	}
 	if( isset($_SESSION['cart']) ) {
 		$ciniki['session']['cart'] = $_SESSION['cart'];
 	}

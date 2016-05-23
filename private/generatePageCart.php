@@ -360,7 +360,8 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 			foreach($cart['items'] as $item) {
 				$item = $item['item'];
 				if( isset($_POST['quantity_' . $item['id']]) 
-					&& $_POST['quantity_' . $item['id']] != $item['quantity'] ) {
+					&& $_POST['quantity_' . $item['id']] != $item['quantity'] 
+                    ) {
 					$new_quantity = intval($_POST['quantity_' . $item['id']]);
 					if( $new_quantity <= 0 ) {
 						ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartItemDelete');
@@ -374,6 +375,18 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 						ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartItemUpdate');
 						$rc = ciniki_sapos_web_cartItemUpdate($ciniki, $settings, $ciniki['request']['business_id'],
 							array('item_id'=>$item['id'], 'quantity'=>$new_quantity));
+						if( $rc['stat'] != 'ok' ) {
+							return $rc;
+						}
+					}
+				}
+				if( isset($_POST['student_' . $item['id']]) && $_POST['student_' . $item['id']] != $item['student_id'] ) {
+                    print_r("Update student");
+					$new_student_id = intval($_POST['student_' . $item['id']]);
+                    if( $new_student_id != $item['student_id'] ) {
+						ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartItemUpdate');
+						$rc = ciniki_sapos_web_cartItemUpdate($ciniki, $settings, $ciniki['request']['business_id'],
+							array('item_id'=>$item['id'], 'student_id'=>$new_student_id));
 						if( $rc['stat'] != 'ok' ) {
 							return $rc;
 						}
@@ -1108,6 +1121,20 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 				}
 			}
 		}
+
+        //
+        // Check if displaying child select
+        //
+        $registration_customers = array();
+        $display_registration_customer = 'no';
+        if( isset($settings['page-cart-registration-child-select']) && $settings['page-cart-registration-child-select'] == 'yes' ) {
+            if( isset($ciniki['session']['children']) && $ciniki['session']['children'] > 0 ) {
+                $registration_customers = $ciniki['session']['children'];
+                array_unshift($registration_customers, $ciniki['session']['customer']);
+                $display_registration_customer = 'yes';
+            }
+        }
+
 		//
 		// Display cart items
 		//
@@ -1145,6 +1172,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 			$count=0;
 			foreach($cart['items'] as $item_id => $item) {
 				$item = $item['item'];
+//                print "<pre>" . print_r($item, true) . "</pre>";
 				$content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>"
 					. "<td>";
 				if( isset($item['object']) && isset($item['permalink']) ) {
@@ -1159,6 +1187,30 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 				} else {
 					$content .= $item['description'];
 				}
+                //
+                // Check for registration customer
+                //
+                if( $display_registration_customer == 'yes' ) {
+                    if( $cart_edit == 'yes' ) {
+                        $content .= " <select name='student_" . $item['id'] . "' name='student_" . $item['id'] . "'>";
+                        foreach($registration_customers as $child) {
+                            $content .= $child['display_name'];
+                            $content .= "<option value='" . $child['id'] . "' ";
+                            if( $child['id'] == $item['student_id'] ) {
+                                $content .= " selected";
+                            }
+                            $content .= ">" . $child['display_name'] . "</option>";
+                        }
+                        $content .= "</select>";
+                    } else {
+                        foreach($registration_customers as $child) {
+                            if( $child['id'] == $item['student_id'] ) {
+                                $content .= " (" . $child['display_name'] . ")";
+                            }
+                        }
+                    }
+                }
+
 				$content .= "</td>";
 				$content .= "<td class='alignright'>";
 				if( $cart_edit == 'yes' ) {
