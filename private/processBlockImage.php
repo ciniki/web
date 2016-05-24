@@ -37,7 +37,12 @@ function ciniki_web_processBlockImage(&$ciniki, $settings, $business_id, $block)
 
 	$content .= "<div id='image-wrap' class='image-wrap'>";
 	$content .= "<div id='image' class='image'>";
-	$content .= "<img title='" . $block['title'] . "' alt='" . $block['title'] . "' src='" . $img_url . "' />";
+	$img_content = "<img title='" . $block['title'] . "' alt='" . $block['title'] . "' src='" . $img_url . "' />";
+    if( isset($block['base_url']) && isset($block['permalink']) && $block['permalink'] != '' ) {
+        $content .= "<a href='" . $block['base_url'] . '/' . $block['permalink'] . "'>" . $img_content . "</a>";
+    } else {
+        $content .= $img_content;
+    }
 	$content .= "</div>";
 	$content .= "</div>";
 
