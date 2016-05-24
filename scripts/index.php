@@ -717,13 +717,13 @@ if( $found == 'no' ) {
     elseif( $ciniki['request']['page'] == 'products' 
         && isset($settings['page-products-active']) && $settings['page-products-active'] == 'yes' 
         ) {
-//        if( isset($ciniki['business']['modules']['ciniki.herbalist']) ) {
-//            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
-//            $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['business_id'], 'ciniki.herbalist');
-//        } else {
+        if( isset($ciniki['business']['modules']['ciniki.herbalist']) ) {
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
+            $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['business_id'], 'ciniki.herbalist');
+        } else {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
             $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['business_id'], 'ciniki.products');
-//        }
+        }
     }
     // PDF Catalogs
     elseif( $ciniki['request']['page'] == 'pdfcatalogs' 
