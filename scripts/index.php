@@ -715,11 +715,15 @@ if( $found == 'no' ) {
     }
     // Products
     elseif( $ciniki['request']['page'] == 'products' 
-        && isset($settings['page-products-active']) && $settings['page-products-active'] == 'yes' ) {
-        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
-        $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['business_id'], 'ciniki.products');
-//        require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageProducts.php');
-//        $rc = ciniki_web_generatePageProducts($ciniki, $settings);
+        && isset($settings['page-products-active']) && $settings['page-products-active'] == 'yes' 
+        ) {
+//        if( isset($ciniki['business']['modules']['ciniki.herbalist']) ) {
+//            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
+//            $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['business_id'], 'ciniki.herbalist');
+//        } else {
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
+            $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['business_id'], 'ciniki.products');
+//        }
     }
     // PDF Catalogs
     elseif( $ciniki['request']['page'] == 'pdfcatalogs' 
