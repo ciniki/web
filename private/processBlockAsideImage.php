@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_web_processBlockAsideImage($ciniki, $settings, $business_id, $block) {
+function ciniki_web_processBlockAsideImage(&$ciniki, $settings, $business_id, $block) {
 
 	if( !isset($block['image_id']) ) {
 		return array('stat'=>'ok', 'content'=>'');

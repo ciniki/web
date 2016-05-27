@@ -45,7 +45,7 @@ function ciniki_web_processBlockCIList(&$ciniki, $settings, $business_id, $block
 				$item = array_slice($category['list'], 0, 1);
 				$item = array_pop($item);
 				if( isset($item['is_details']) && $item['is_details'] == 'yes' ) {
-					$title_url = $base_url . '/' . $item['permalink'];
+					$title_url = $block['base_url'] . '/' . $item['permalink'];
 				}
 			}
 			$content .= "\n<tr><th><span class='cilist-title'>" 

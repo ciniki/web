@@ -39,6 +39,7 @@ function ciniki_web_processBlocks(&$ciniki, $settings, $business_id, $blocks) {
 			case 'gallery': $processor = 'processBlockGallery'; break;
 			case 'galleryimage': $processor = 'processBlockGalleryImage'; break;
 			case 'links': $processor = 'processBlockLinks'; break;
+			case 'map': $processor = 'processBlockMap'; break;
 			case 'message': $processor = 'processBlockMessage'; break;
 			case 'meta': $processor = 'processBlockMeta'; break;
 			case 'multipagenav': $processor = 'processBlockMultiPageNav'; break;
@@ -66,7 +67,13 @@ function ciniki_web_processBlocks(&$ciniki, $settings, $business_id, $blocks) {
 				}
 				if( isset($rc['content']) ) {
                     if( isset($block['section']) && $block['section'] != '' ) {
-                        $rsp['content'] .= "<div class='block block-" . $block['section'] . "'>"
+                        $display = '';
+                        if( isset($block['display']) && $block['display'] != '' ) {
+                            $display = 'display: ' . $block['display'] . ';';
+                        }
+                        $rsp['content'] .= "<div " . (isset($block['id']) && $block['id'] != '' ? "id='" . $block['id'] . "' " : '') . "class='block block-" . $block['section'] . "'"
+                            . ($display != '' ? " style='" . $display . "'" : "")
+                            . ">"
                             . $rc['content']
                             . "</div>";
                     } else {
