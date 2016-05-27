@@ -38,7 +38,11 @@ function ciniki_web_processBlockGalleryImage(&$ciniki, $settings, $business_id, 
 	//
 	// Set the page to wide if possible
 	//
-	$ciniki['request']['page-container-class'] = 'page-container-wide';
+    if( !isset($ciniki['request']['page-container-class']) ) {
+        $ciniki['request']['page-container-class'] = 'page-container-wide';
+    } else {
+        $ciniki['request']['page-container-class'] .= ' page-container-wide';
+    }
 
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateGalleryJavascript');
 	$rc = ciniki_web_generateGalleryJavascript($ciniki, isset($block['next'])?$block['next']:NULL, isset($block['prev'])?$block['prev']:NULL);

@@ -40,7 +40,8 @@ function ciniki_web_generateGalleryJavascript(&$ciniki, $next, $prev) {
 				. "i.style.width = 'auto';"
 				. "}"
 			. "var cwidth = i.offsetWidth;"
-			. "var wwidth = document.getElementById('main-menu-container').offsetWidth;"
+//			. "var wwidth = document.getElementById('main-menu-container').offsetWidth;"
+			. "var wwidth = document.getElementById('gallery-image').offsetWidth;"
 			. "if( cwidth > wwidth ) {"
 				. "if( navigator.appName == 'Microsoft Internet Explorer') {"
 					. "var ua = navigator.userAgent;"
@@ -134,7 +135,7 @@ function ciniki_web_generateGalleryJavascript(&$ciniki, $next, $prev) {
 				. "document.location.href='" . $prev['url'] . "';"
 			. "}";
 	}
-	if( $next != null && isset($next['permalink']) ) {
+	if( $next != null && isset($next['url']) ) {
 		if( isset($next['image_id']) && $next['image_id'] > 0 ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 			$rc = ciniki_web_getScaledImageURL($ciniki, $next['image_id'], 'original', 0, 600);
