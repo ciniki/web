@@ -116,7 +116,8 @@ function ciniki_web_generatePageDealers($ciniki, $settings) {
 	// Generate the map data.
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'dealersMapMarkers');
-	$rc = ciniki_customers_web_dealersMapMarkers($ciniki, $settings, $ciniki['request']['business_id'], array());
+	$rc = ciniki_customers_web_dealersMapMarkers($ciniki, $settings, $ciniki['request']['business_id'], array(
+        'country'=>(isset($country_name)?$country_name:'')));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
