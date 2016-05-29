@@ -37,24 +37,26 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
     //
     $colours = array(
         '1'=>''
-            . 'fillColor: "rgba(85,123,126,0.5)",'
-            . 'pointColor: "rgba(85,123,126,0.5)",'
-            . 'strokeColor: "rgba(73,91,103,0.5)",'
-            . 'pointStrokeColor: "rgba(73,91,103,0.5)",'
-            . 'highlightFill: "rgba(85,123,126,1.0)",'
-            . 'highlightStroke: "rgba(73,91,103,1.0)",'
-            . 'pointHighlightFill: "rgba(85,123,126,1.0)",'
-            . 'pointHighlightStroke: "rgba(73,91,103,1.0)",'
+            . 'borderColor: "rgba(73,91,103,0.5)",'
+            . 'backgroundColor: "rgba(85,123,126,0.5)",'
+//            . 'pointColor: "rgba(85,123,126,0.5)",'
+//            . 'strokeColor: "rgba(73,91,103,0.5)",'
+//            . 'pointStrokeColor: "rgba(73,91,103,0.5)",'
+//            . 'highlightFill: "rgba(85,123,126,1.0)",'
+//            . 'highlightStroke: "rgba(73,91,103,1.0)",'
+//            . 'pointHighlightFill: "rgba(85,123,126,1.0)",'
+//            . 'pointHighlightStroke: "rgba(73,91,103,1.0)",'
             . '',
         '2'=>''
-            . 'fillColor: "rgba(228,108,10,0.5)",'
-            . 'pointColor: "rgba(228,108,10,0.5)",'
-            . 'strokeColor: "rgba(233,94,0,0.5)",'
-            . 'pointStrokeColor: "rgba(233,94,0,0.5)",'
-            . 'highlightFill: "rgba(228,108,10,1.0)",'
-            . 'highlightStroke: "rgba(233,94,0,1.0)",'
-            . 'pointHighlightFill: "rgba(228,108,10,1.0)",'
-            . 'pointHighlightStroke: "rgba(233,94,0,1.0)",'
+            . 'borderColor: "rgba(233,94,0,0.5)",'
+            . 'backgroundColor: "rgba(228,108,10,0.5)",'
+//            . 'pointColor: "rgba(228,108,10,0.5)",'
+//            . 'strokeColor: "rgba(233,94,0,0.5)",'
+//            . 'pointStrokeColor: "rgba(233,94,0,0.5)",'
+//            . 'highlightFill: "rgba(228,108,10,1.0)",'
+//            . 'highlightStroke: "rgba(233,94,0,1.0)",'
+//            . 'pointHighlightFill: "rgba(228,108,10,1.0)",'
+//            . 'pointHighlightStroke: "rgba(233,94,0,1.0)",'
             . '',
         );
     //
@@ -102,6 +104,7 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
                     $js_datasets[$k] .= '{'
                         . 'label: "' . $dataset['label'] . '",'
                         . 'type: "' . $dataset['type'] . '",'
+                        . 'fill: false,'
                         . '';
                     $js_datasets[$k] .= $colours[$dataset['colour']];
                     $js_datasets[$k] .= 'data: [';
@@ -133,21 +136,55 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
             . "<a onclick='switchOverlayChart_$name(0);'><span class='multipage-nav-button-text'>First</span></a>"
             . "</span>";
         $content .= "<span class='multipage-nav-button multipage-nav-button-prev'>"
-            . "<a onclick='switchOverlayChart_$name(0);'><span class='multipage-nav-button-text'>Prev</span></a>"
+            . "<a onclick='switchOverlayChart_$name(\"prev\");'><span class='multipage-nav-button-text'>Prev</span></a>"
             . "</span>";
         for($i=0;$i<ceil(count($block['labels'])/$block['page_limit']);$i++) {
             $content .= "<span id='multipage-nav-button-$name-$i' class='multipage-nav-button" . ($i==$k?' multipage-nav-button-selected':'') . "'><a onclick='switchOverlayChart_$name($i);'>"
                 . "<span class='multipage-nav-button-text'>" . ($i+1) . "</span></a></span>";
         }
         $content .= "<span class='multipage-nav-button multipage-nav-button-next'>"
-            . "<a onclick='switchOverlayChart_$name($k);'><span class='multipage-nav-button-text'>Next</span></a>"
+            . "<a onclick='switchOverlayChart_$name(\"next\");'><span class='multipage-nav-button-text'>Next</span></a>"
             . "</span>";
         $content .= "<span class='multipage-nav-button multipage-nav-button-last'>"
             . "<a onclick='switchOverlayChart_$name($k);'><span class='multipage-nav-button-text'>Last</span></a>"
             . "</span>";
         $content .= "</div></div>";
 
-        $js .= 'var myOverlayChart_' . $name . ' = new Chart(document.getElementById("' . $block['canvas'] . '").getContext("2d")).Overlay(overlayData_' . $name . '[' . $k . '], {'  
+        $js .= 'var myOverlayChart_' . $name . ' = new Chart(document.getElementById("' . $block['canvas'] . '").getContext("2d"), {'  
+//            . 'scaleBeginAtZero: ' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
+//            . 'populateSparseData: true,'
+            . 'type:"bar",'
+            . 'data: overlayData_' . $name . '[' . $k . '],'
+            . 'options: {'
+                . 'legend: {display:false},'
+                . 'responsive: true,'
+                . 'scales: {'
+                    . 'xAxes: [{'
+                        . 'display: true,'
+                        . 'ticks:{beginAtZero:false},'
+                        . '}],'
+                    . 'yAxes: [{'
+                        . 'ticks:{'
+                            . 'beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
+                            . "userCallback: function(dataLabel, index) { return dataLabel + '%';},"
+                            . '},'
+                        . '}],'
+                . '},'
+                . 'tooltips:{'
+                    . "mode:'single',"
+                    . "callbacks:{"
+                        . "label: function(tooltipItem, data){return tooltipItem.yLabel +'%';},"
+                    . "},"
+                . '},'
+            . '},'
+//            . 'scaleLabel: "<%=value%>%",'
+//            . 'tooltipTemplate: "<%=value%>%",'
+//            . 'multiTooltipTemplate: "<%=value%>%",'
+//            . 'responsive: true,'
+//            . 'fill : false,'
+            . '});';
+          $js .= 'myOverlayChart_' . $name . '.afterLabel = function(){return "%";};';
+/*        $js .= 'console.log("test");var myOverlayChart_' . $name . ' = new Chart(document.getElementById("' . $block['canvas'] . '").getContext("2d")).Overlay(overlayData_' . $name . '[' . $k . '], {'  
             . 'scaleBeginAtZero: ' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
             . 'populateSparseData: true,'
             . 'scaleLabel: "<%=value%>%",'
@@ -155,11 +192,44 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
             . 'multiTooltipTemplate: "<%=value%>%",'
             . 'responsive: true,'
             . 'datasetFill : false,'
-            . '});';
+            . '});'; */
         $js .= 'function switchOverlayChart_' . $name . '(n){'
             . 'myOverlayChart_' . $name . '.destroy();'
             // Setup the new chart with new dataset
-            . 'myOverlayChart_' . $name . ' = new Chart(document.getElementById("' . $block['canvas'] . '").getContext("2d")).Overlay(overlayData_' . $name . '[n], {'  
+            . 'if(n=="prev"||n=="next"){'
+                . 'for(var i=0;i<' . ceil(count($block['labels'])/$block['page_limit']) . ';i++){'
+                    . "var e=document.getElementById('multipage-nav-button-$name-' + i);"
+                    . "if(e.classList.contains('multipage-nav-button-selected')){"
+                        . 'if(n=="prev"){n=i-1;break;}'
+                        . 'if(n=="next"){n=i+1;break;}'
+                    . '}'
+                . '}'
+                . 'if(n<0){n=0;}'
+                . 'if(n>=' . ceil(count($block['labels'])/$block['page_limit']) . '){n=(' . ceil(count($block['labels'])/$block['page_limit']) . '-1);}'
+            . '}'
+            . 'myOverlayChart_' . $name . ' = new Chart(document.getElementById("' . $block['canvas'] . '").getContext("2d"), {'  
+                . 'type:"bar",'
+                . 'data: overlayData_' . $name . '[n],'
+                . 'options: {'
+                    . 'legend: {display:false},'
+                    . 'scales: {'
+                        . 'xAxes: [{ticks:{beginAtZero:false}}],'
+                        . 'yAxes: [{'
+                            . 'ticks:{'
+                                . 'beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
+                                . "userCallback: function(dataLabel, index) { return dataLabel + '%';},"
+                                . '},'
+                            . '}],'
+                    . '},'
+                . 'tooltips:{'
+                    . "mode:'single',"
+                    . "callbacks:{"
+                        . "label: function(tooltipItem, data){return tooltipItem.yLabel +'%';},"
+                    . "},"
+                . '},'
+                . '},'
+                . '});'
+/*            . 'myOverlayChart_' . $name . ' = new Chart(document.getElementById("' . $block['canvas'] . '").getContext("2d")).Overlay(overlayData_' . $name . '[n], {'  
             . 'scaleBeginAtZero: ' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
             . 'populateSparseData: true,'
             . 'scaleLabel: "<%=value%>%",'
@@ -167,7 +237,7 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
             . 'multiTooltipTemplate: "<%=value%>%",'
             . 'responsive: true,'
             . 'datasetFill : false,'
-            . '});'
+            . '});' */
             // Set the highlight button
             . 'for(var i=0;i<' . ceil(count($block['labels'])/$block['page_limit']) . ';i++){'
                 . "var e=document.getElementById('multipage-nav-button-$name-' + i);"
@@ -178,7 +248,7 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
                 . "}"
             . '}'
             . '};';
-       
+      
         $content .= '<script type="text/javascript">' . $js . '</script>';
     } 
     
@@ -197,6 +267,7 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
             $js .= '{'
                 . 'label: "' . $dataset['label'] . '",'
                 . 'type: "' . $dataset['type'] . '",'
+                . 'fill:false,'
                 . '';
             $js .= $colours[$dataset['colour']];
             $js .= 'data: [';
@@ -208,7 +279,39 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
         }
         $js .= ']};';
         $js .= "\n";
-        $js .= 'var myOverlayChart = new Chart(document.getElementById("' . $block['canvas'] . '").getContext("2d")).Overlay(overlayData, {'  
+        $js .= 'var myOverlayChart = new Chart(document.getElementById("' . $block['canvas'] . '").getContext("2d"), {'  
+            . 'type:"line",'
+            . 'data: overlayData,'
+            . 'options: {'
+                . 'responsive: true,'
+                . 'legend:{display:false},'
+                . 'scales:{'
+                    . 'xAxes: [{'
+                        . 'ticks:{beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . '},'
+                        . '}],'
+                    . 'yAxes: [{'
+                        . 'display: true,'
+                        . 'ticks:{'
+                            . 'beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
+                            . "userCallback: function(dataLabel, index) { return dataLabel + '%';},"
+                            . '},'
+                        . '}],'
+                . '},'
+                . 'tooltips:{'
+                    . "mode:'single',"
+                    . "callbacks:{"
+                        . "label: function(tooltipItem, data){return tooltipItem.yLabel +'%';},"
+                    . "},"
+                . '},'
+            . '},'
+//            . 'scaleBeginAtZero: ' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
+//            . 'populateSparseData: true,'
+//            . 'scaleLabel: "<%=value%>%",'
+//            . 'tooltipTemplate: "<%=value%>%",'
+//            . 'multiTooltipTemplate: "<%=value%>%",'
+//            . 'responsive: true,'
+            . '});';
+/*        $js .= 'var myOverlayChart = new Chart(document.getElementById("' . $block['canvas'] . '").getContext("2d")).Overlay(overlayData, {'  
             . 'scaleBeginAtZero: ' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
             . 'populateSparseData: true,'
             . 'scaleLabel: "<%=value%>%",'
@@ -216,7 +319,7 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
             . 'multiTooltipTemplate: "<%=value%>%",'
             . 'responsive: true,'
             . 'datasetFill : false,'
-            . '});';
+            . '});'; */
        
         $content .= '<script type="text/javascript">' . $js . '</script>';
     }
