@@ -836,7 +836,13 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
 			$content .= "</a></li>";
 		}
 		if( isset($settings['page-products-active']) && $settings['page-products-active'] == 'yes' ) {
-			$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='products'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/products'>Products</a></li>";
+			$content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='products'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/products'>";
+            if( isset($settings['page-products-name']) && $settings['page-products-name'] != '' ) {
+                $content .= $settings['page-products-name'];
+            } else {
+                $content .= "Products";
+            }
+            $content .= "</a></li>";
 		}
 		for($i=1;$i<6;$i++) {
 			$pname = 'page-custom-' . sprintf("%03d", $i);
