@@ -21,6 +21,9 @@ function ciniki_web_sliders() {
 		'cropped':'Cropped',
 		'scaled':'Scaled',
 		};
+	this.effectOptions = {
+		'slide':'Slide',
+		};
 	this.init = function() {
 		//
 		// Global functions for history and field value

@@ -139,6 +139,10 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 		$style = 'display:none;';
 	}
 
+    if( $count > 25 ) {
+        $pager_list = '';
+    }
+
 	$javascript = "var Slider = function() { this.initialize.apply(this, arguments) }\n";
 	$javascript .= "Slider.prototype = {\n";
 
@@ -212,31 +216,31 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 	//	$javascript .= "		this.ul.style.maxHeight = this.li[0].clientHeight + 'px'\n";
 		$javascript .= "	},\n";
 	}
-	$javascript .= "	goTo: function(index,reset) {\n";
-	// filter invalid indices
-	$javascript .= "		if( index >= this.li.length ) { index = 0; }\n";
-	$javascript .= "		if (index < 0 || index > this.li.length - 1)\n";
-	$javascript .= "		return\n";
-
-	// move <ul> left
-	$javascript .= "		this.ul.style.left = '-' + (100 * index) + '%'\n";
-	$javascript .= "		if( this.pager != null ) { \n";
-	$javascript .= "			this.pager.children[this.currentIndex].className = '';\n";
-	$javascript .= "			this.pager.children[index].className = 'active';\n";
-	$javascript .= "		}\n";
-	$javascript .= "		this.currentIndex = index\n";
-	$javascript .= "		if(reset!=null){clearInterval(slider_timer);slider_start_timer();}\n";
-	$javascript .= "	},\n";
-
-	$javascript .= "	goToPrev: function() {\n";
-	$javascript .= "		this.goTo(this.currentIndex - 1)\n";
-	$javascript .= "	},\n";
-
-	$javascript .= "	goToNext: function() {\n";
-	$javascript .= "		this.goTo(this.currentIndex + 1)\n";
-	$javascript .= "	},\n";
-
-	$javascript .= "}\n";
+	$javascript .= "goTo: function(index,reset){"
+        // filter invalid indices
+        . "if(index>=this.li.length){index=0;};"
+        . "if(index<0||index>this.li.length-1){return};"
+        . "if(index==0){"
+            . "this.ul.style.transitionProperty='none';"
+        . "}else{"
+            . "this.ul.style.transitionProperty='left';"
+        . "}"
+        // move <ul> left
+        . "this.ul.style.left = '-' + (100 * index) + '%';"
+        . "if( this.pager != null ) {"
+            . "this.pager.children[this.currentIndex].className = '';"
+            . "this.pager.children[index].className = 'active';"
+        . "}"
+        . "this.currentIndex = index;"
+        . "if(reset!=null){clearInterval(slider_timer);slider_start_timer();};"
+	    . "},"
+	    . "goToPrev: function() {"
+            . "this.goTo(this.currentIndex - 1)"
+        . "	},"
+        . "	goToNext: function() {"
+            . "this.goTo(this.currentIndex + 1)"
+        . "	},"
+        . "};\n";
 	$javascript .= "var sliders = [];\n";
 	$javascript .= "var slider_timer;\n";
 	$javascript .= "function slider_setup() {\n";
@@ -281,11 +285,13 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 		$content .= "</ul>\n";
 		$content .= "</div>\n";
 		$content .= "</div>\n";
-		$content .= "<div class='slider-pager-wrap'>";
-		$content .= "<div id='slider-pager' class='slider-pager'>";
-		$content .= $pager_list;
-		$content .= "</div>\n";
-		$content .= "</div>\n";
+        if( $pager_list != '' ) {
+            $content .= "<div class='slider-pager-wrap'>";
+            $content .= "<div id='slider-pager' class='slider-pager'>";
+            $content .= $pager_list;
+            $content .= "</div>\n";
+            $content .= "</div>\n";
+        }
 		$content .= "</div>\n";
 	}
 
