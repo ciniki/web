@@ -96,6 +96,7 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
                             $_SESSION['login_referer'] = $_SERVER['HTTP_REFERER'];
                     }
                 }
+                $_SESSION['loginform'] = 'yes';
                 $content .= "<div id='footer-signin' class='signin-form'>"
                     . "<form action='" . $ciniki['request']['ssl_domain_base_url'] . "/account' method='post'>"
                     . "<input type='hidden' name='action' value='signin'>"
