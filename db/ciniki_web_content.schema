@@ -24,7 +24,7 @@
 create table ciniki_web_content (
 	business_id int not null,
 	detail_key varchar(255) not null,
-	detail_value varchar(60000) not null,
+	detail_value text not null,
 	date_added datetime not null,
 	last_updated datetime not null,
 	primary key (business_id, detail_key)

@@ -86,7 +86,7 @@ create table ciniki_web_pages (
 	primary_image_caption varchar(250) not null,
 	primary_image_url varchar(250) not null,
 	synopsis varchar(10000) not null,
-	content varchar(30000) not null,
+	content text not null,
 	child_title varchar(250) not null,
 	date_added datetime not null,
 	last_updated datetime not null,
