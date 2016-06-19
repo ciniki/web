@@ -6,25 +6,25 @@
 // Arguments
 // ---------
 // ciniki:
-// settings:		The web settings structure, similar to ciniki variable but only web specific information.
+// settings:        The web settings structure, similar to ciniki variable but only web specific information.
 //
 // Returns
 // -------
 //
 function ciniki_web_processBlockVideoLinks(&$ciniki, $settings, $business_id, $block) {
 
-	$content = '';
+    $content = '';
 
-	if( isset($block['title']) && $block['title'] != '' ) {
-		$content .= "<h2>" . $block['title'] . "</h2>";
-	}
+    if( isset($block['title']) && $block['title'] != '' ) {
+        $content .= "<h2>" . $block['title'] . "</h2>";
+    }
 
-	//
-	// Make sure there is content to edit
-	//
-	if( $block['videos'] != '' ) {
-		ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
-		foreach($block['videos'] as $link) {
+    //
+    // Make sure there is content to edit
+    //
+    if( $block['videos'] != '' ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
+        foreach($block['videos'] as $link) {
             //
             // Setup youtube or vimeo video embed
             //
@@ -47,9 +47,9 @@ function ciniki_web_processBlockVideoLinks(&$ciniki, $settings, $business_id, $b
                     . "</div>"
                     . "</div>";
             }
-		}
-	}
-	
-	return array('stat'=>'ok', 'content'=>$content);
+        }
+    }
+    
+    return array('stat'=>'ok', 'content'=>$content);
 }
 ?>

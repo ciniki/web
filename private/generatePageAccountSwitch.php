@@ -8,7 +8,7 @@
 // Arguments
 // ---------
 // ciniki:
-// settings:		The web settings structure, similar to ciniki variable but only web specific information.
+// settings:        The web settings structure, similar to ciniki variable but only web specific information.
 //
 // Returns
 // -------
@@ -85,6 +85,6 @@ function ciniki_web_generatePageAccountSwitch(&$ciniki, $settings, $business_id,
     header('Location: ' . ($ciniki['request']['ssl_domain_base_url']!=''?$ciniki['request']['ssl_domain_base_url']:'') . '/account');
     exit;
 
-	return array('stat'=>'ok');
+    return array('stat'=>'ok');
 }
 ?>

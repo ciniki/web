@@ -8,24 +8,24 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:		The ID of the business to get testimonials for.
+// business_id:     The ID of the business to get testimonials for.
 //
 // Returns
 // -------
 //
 function ciniki_web_pageList($ciniki) {
-	//
-	// Find all the required and optional arguments
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
-	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
-		));
-	if( $rc['stat'] != 'ok' ) {
-		return $rc;
-	}
-	$args = $rc['args'];
-	
+    //
+    // Find all the required and optional arguments
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
+    $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
+        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        ));
+    if( $rc['stat'] != 'ok' ) {
+        return $rc;
+    }
+    $args = $rc['args'];
+    
     //  
     // Check access to business_id as owner, or sys admin. 
     //  
@@ -34,31 +34,31 @@ function ciniki_web_pageList($ciniki) {
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }
-	$modules = $rc['modules'];
+    $modules = $rc['modules'];
 
-	//
-	// Get the list of titles from the database
-	//
-	$strsql = "SELECT id, title "
-		. "FROM ciniki_web_pages "
-		. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
-		. "AND parent_id = 0 "
-		. "ORDER BY sequence, title "
-		. "";
+    //
+    // Get the list of titles from the database
+    //
+    $strsql = "SELECT id, title "
+        . "FROM ciniki_web_pages "
+        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+        . "AND parent_id = 0 "
+        . "ORDER BY sequence, title "
+        . "";
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryTree');
-	$rc = ciniki_core_dbHashQueryTree($ciniki, $strsql, 'ciniki.web', array(
-		array('container'=>'pages', 'fname'=>'id', 'name'=>'page',
-			'fields'=>array('id', 'title')),
-		));
+    $rc = ciniki_core_dbHashQueryTree($ciniki, $strsql, 'ciniki.web', array(
+        array('container'=>'pages', 'fname'=>'id', 'name'=>'page',
+            'fields'=>array('id', 'title')),
+        ));
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }
-	if( isset($rc['pages']) ) {
-		$pages = $rc['pages'];
-	} else {
-		$pages = array();
-	}
-	
-	return array('stat'=>'ok', 'pages'=>$pages);
+    if( isset($rc['pages']) ) {
+        $pages = $rc['pages'];
+    } else {
+        $pages = array();
+    }
+    
+    return array('stat'=>'ok', 'pages'=>$pages);
 }
 ?>

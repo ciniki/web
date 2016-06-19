@@ -6,32 +6,32 @@
 // Arguments
 // ---------
 // ciniki:
-// settings:		The web settings structure, similar to ciniki variable but only web specific information.
+// settings:        The web settings structure, similar to ciniki variable but only web specific information.
 //
 // Returns
 // -------
 //
 function ciniki_web_processBlockTagImages($ciniki, $settings, $business_id, $block) {
 
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getPaddedImageURL');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getPaddedImageURL');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 
-	if( !isset($block['tags']) ) {
-		return array('stat'=>'ok', 'content'=>'');
-	}
+    if( !isset($block['tags']) ) {
+        return array('stat'=>'ok', 'content'=>'');
+    }
 
-	if( !isset($block['base_url']) ) {
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2576', 'msg'=>'Unable to process request'));
-	}
+    if( !isset($block['base_url']) ) {
+        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2576', 'msg'=>'Unable to process request'));
+    }
 
-	$content = "";
+    $content = "";
 
     if( isset($block['title']) && $block['title'] != '' ) {
         $content .= "<h2 class='wide'>" . $block['title'] . "</h2>";
     }
 
-	$content .= "<div class='image-categories'>";
-	foreach($block['tags'] as $tid => $tag) {
+    $content .= "<div class='image-categories'>";
+    foreach($block['tags'] as $tid => $tag) {
         if( isset($tag['name']) ) {
             $name = $tag['name'];
         } elseif( isset($tag['title']) ) {
@@ -49,26 +49,26 @@ function ciniki_web_processBlockTagImages($ciniki, $settings, $business_id, $blo
         } else {
             $rc = ciniki_web_getScaledImageURL($ciniki, $tag['image_id'], 'thumbnail', '240', 0);
         }
-		if( $rc['stat'] != 'ok' ) {
-			$img_url = '/ciniki-web-layouts/default/img/noimage_240.png';
-		} else {
-			$img_url = $rc['url'];
-		}
-		$content .= "<div class='image-categories-thumbnail-wrap" . (isset($block['size']) && $block['size'] != '' ? ' image-categories-thumbnail-' . $block['size'] : '') . "'>"
-			. "<a href='" . $block['base_url'] . '/' . $tag['permalink'] . "' " . "title='$name'>"
-			. "<div class='image-categories-thumbnail'>"
-			. "<img title='$name' alt='$name' src='$img_url' />"
-			. "</div>"
+        if( $rc['stat'] != 'ok' ) {
+            $img_url = '/ciniki-web-layouts/default/img/noimage_240.png';
+        } else {
+            $img_url = $rc['url'];
+        }
+        $content .= "<div class='image-categories-thumbnail-wrap" . (isset($block['size']) && $block['size'] != '' ? ' image-categories-thumbnail-' . $block['size'] : '') . "'>"
+            . "<a href='" . $block['base_url'] . '/' . $tag['permalink'] . "' " . "title='$name'>"
+            . "<div class='image-categories-thumbnail'>"
+            . "<img title='$name' alt='$name' src='$img_url' />"
+            . "</div>"
             . "<div class='image-categories-text'>"
-			. "<span class='image-categories-name'>$name</span>";
+            . "<span class='image-categories-name'>$name</span>";
         if( isset($tag['subname']) && $tag['subname'] != '' ) {
             $content .= "<span class='image-categories-subname'>" . $tag['subname'] . "</span>";
         }
         $content .= "</div>";
-		$content .= "</a></div>";
-	}
-	$content .= "</div>";
+        $content .= "</a></div>";
+    }
+    $content .= "</div>";
 
-	return array('stat'=>'ok', 'content'=>$content);
+    return array('stat'=>'ok', 'content'=>$content);
 }
 ?>

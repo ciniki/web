@@ -8,7 +8,7 @@
 #
 # - page-about-active = yes
 # - page-about-photo = no
-# - page-about-image = 0	The ID of the image in the images module
+# - page-about-image = 0    The ID of the image in the images module
 # - page-home-active = yes
 # - page-home-redirect = about
 # - page-home-redirect_url = /gallery/category
@@ -22,8 +22,8 @@
 # The file depot will update these settings, based on availablity of downloads.  This 
 # will be used by the web delivery to determine when menu options should be displayed, or login button displayed
 #
-# - page-downloads-public = yes		Are there publically available downloads
-# - page-downloads-customer = yes		Are there customer only available downloads
+# - page-downloads-public = yes     Are there publically available downloads
+# - page-downloads-customer = yes       Are there customer only available downloads
 #
 # Site configuration settings:
 #
@@ -32,28 +32,28 @@
 # - site-google-analytics-account = The account code for google analytics eg: UA-32107818-1
 #
 # Private theme settings
-# - site-privatetheme-updated 		= The last updated time the theme was updated in the database
-# - site-privatetheme-active 		= The permalink of the current active theme
+# - site-privatetheme-updated       = The last updated time the theme was updated in the database
+# - site-privatetheme-active        = The permalink of the current active theme
 #
 # Featured on master business homepage
 # - site-featured = yes
 #
 # Fields
 # ------
-# business_id:		The business the domain is part of.
+# business_id:      The business the domain is part of.
 #
-# detail_key:		The decimal notated index key to the setting value.
+# detail_key:       The decimal notated index key to the setting value.
 #
-# detail_value:		The value of the setting.
+# detail_value:     The value of the setting.
 #
-# date_added:		The date and time the domain was added to the table.
-# last_updated:		The date and time the domain was last updated.
+# date_added:       The date and time the domain was added to the table.
+# last_updated:     The date and time the domain was last updated.
 #
 create table ciniki_web_settings (
-	business_id int not null,
-	detail_key varchar(255) not null,
-	detail_value varchar(20000) not null,
-	date_added datetime not null,
-	last_updated datetime not null,
-	primary key (business_id, detail_key)
+    business_id int not null,
+    detail_key varchar(255) not null,
+    detail_value varchar(20000) not null,
+    date_added datetime not null,
+    last_updated datetime not null,
+    primary key (business_id, detail_key)
 ) ENGINE=InnoDB, COMMENT='v1.02';

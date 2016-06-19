@@ -4,42 +4,42 @@
 #
 # Fields
 # ------
-# id:				The ID for the slider image.
-# uuid:				The Universal Unique ID for the image.
-# business_id:		The business the domain is part of.
+# id:               The ID for the slider image.
+# uuid:             The Universal Unique ID for the image.
+# business_id:      The business the domain is part of.
 #
-# name:				The name for this collection.
+# name:             The name for this collection.
 #
-# permalink:		The permalink for the collection.
+# permalink:        The permalink for the collection.
 #
-# status:			The status of the collection.
+# status:           The status of the collection.
 #
-#					 0 - unknown
-#					10 - Active
-#					20 - Invisible, not yet showing on website, but available to add items to.
-#					60 - Deleted
+#                    0 - unknown
+#                   10 - Active
+#                   20 - Invisible, not yet showing on website, but available to add items to.
+#                   60 - Deleted
 #
-# sequence:			The order to present the list of collections in.
+# sequence:         The order to present the list of collections in.
 #
-# image_id:			**future** Image to show on website for this collection.
+# image_id:         **future** Image to show on website for this collection.
 #
-# date_added:		The date and time the domain was added to the table.
-# last_updated:		The date and time the domain was last updated.
+# date_added:       The date and time the domain was added to the table.
+# last_updated:     The date and time the domain was last updated.
 #
 create table ciniki_web_collections (
-	id int not null auto_increment,
-	uuid char(36) not null,
-	business_id int not null,
-	name varchar(150) not null,
-	permalink varchar(150) not null,
-	status tinyint unsigned not null,
-	sequence tinyint unsigned not null,
-	image_id int not null,
-	image_caption varchar(250) not null,
-	synopsis varchar(6000) not null,
-	description varchar(10000) not null,
-	date_added datetime not null,
-	last_updated datetime not null,
-	primary key (id),
-	unique index sync (business_id, uuid, last_updated)
+    id int not null auto_increment,
+    uuid char(36) not null,
+    business_id int not null,
+    name varchar(150) not null,
+    permalink varchar(150) not null,
+    status tinyint unsigned not null,
+    sequence tinyint unsigned not null,
+    image_id int not null,
+    image_caption varchar(250) not null,
+    synopsis varchar(6000) not null,
+    description varchar(10000) not null,
+    date_added datetime not null,
+    last_updated datetime not null,
+    primary key (id),
+    unique index sync (business_id, uuid, last_updated)
 ) ENGINE=InnoDB, COMMENT='v1.01';

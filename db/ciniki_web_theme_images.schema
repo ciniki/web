@@ -5,29 +5,29 @@
 #
 # Fields
 # ------
-# id:				The ID for the slider image.
-# uuid:				The Universal Unique ID.
-# business_id:		The business the domain is part of.
+# id:               The ID for the slider image.
+# uuid:             The Universal Unique ID.
+# business_id:      The business the domain is part of.
 #
-# theme_id:			The ID of the theme the image is attached to.
-# image_id:			The ID of the image attached to the theme.
+# theme_id:         The ID of the theme the image is attached to.
+# image_id:         The ID of the image attached to the theme.
 #
-# name:				The is typically the original image filename, but can be anything the user wants.
-#					The name must be permalink compatible, or it will be made into a permalink upon submission.
+# name:             The is typically the original image filename, but can be anything the user wants.
+#                   The name must be permalink compatible, or it will be made into a permalink upon submission.
 #
-# date_added:		The date and time the domain was added to the table.
-# last_updated:		The date and time the domain was last updated.
+# date_added:       The date and time the domain was added to the table.
+# last_updated:     The date and time the domain was last updated.
 #
 create table ciniki_web_theme_images (
-	id int not null auto_increment,
-	uuid char(36) not null,
-	business_id int not null,
-	theme_id int not null,
-	image_id int not null,	
-	name varchar(150) not null,
-	date_added datetime not null,
-	last_updated datetime not null,
-	primary key (id),
-	unique index (uuid),
-	index sync (business_id, uuid, last_updated)
+    id int not null auto_increment,
+    uuid char(36) not null,
+    business_id int not null,
+    theme_id int not null,
+    image_id int not null,  
+    name varchar(150) not null,
+    date_added datetime not null,
+    last_updated datetime not null,
+    primary key (id),
+    unique index (uuid),
+    index sync (business_id, uuid, last_updated)
 ) ENGINE='InnoDB', COMMENT='v1.01';

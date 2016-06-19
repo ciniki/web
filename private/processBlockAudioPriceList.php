@@ -7,18 +7,18 @@
 // Arguments
 // ---------
 // ciniki:
-// settings:		The web settings structure, similar to ciniki variable but only web specific information.
+// settings:        The web settings structure, similar to ciniki variable but only web specific information.
 //
 // Returns
 // -------
 //
 function ciniki_web_processBlockAudioPriceList(&$ciniki, $settings, $business_id, $block) {
 
-	$content = '';
+    $content = '';
 
-	//
-	// Display any audio sample
-	//
+    //
+    // Display any audio sample
+    //
     if( !isset($block['list']) ) {
         return array('stat'=>'ok', 'content'=>$content);
     }
@@ -184,6 +184,6 @@ function ciniki_web_processBlockAudioPriceList(&$ciniki, $settings, $business_id
         . "}"
         . "</script>";
 
-	return array('stat'=>'ok', 'content'=>$content);
+    return array('stat'=>'ok', 'content'=>$content);
 }
 ?>

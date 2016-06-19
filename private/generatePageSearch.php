@@ -7,7 +7,7 @@
 // Arguments
 // ---------
 // ciniki:
-// settings:		The web settings structure, similar to ciniki variable but only web specific information.
+// settings:        The web settings structure, similar to ciniki variable but only web specific information.
 //
 // Returns
 // -------
@@ -88,36 +88,36 @@ function ciniki_web_generatePageSearch(&$ciniki, $settings) {
     }
     $ciniki['request']['inline_javascript'] .= "</script>\n";
 
-	//
-	// Add the header
-	//
+    //
+    // Add the header
+    //
     $submenu = array();
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Search', $submenu);
-	if( $rc['stat'] != 'ok' ) {	
-		return $rc;
-	}
-	$page_content = $rc['content'];
-	
-	//
-	// Check if article title and breadcrumbs should be displayed above content
-	//
-	if( (isset($settings['theme']['header-article-title']) && $settings['theme']['header-article-title'] == 'yes')
-		|| (isset($settings['theme']['header-breadcrumbs']) && $settings['theme']['header-breadcrumbs'] == 'yes')
-		) {
-		$page_content .= "<div class='page-header'>";
-		if( isset($settings['theme']['header-article-title']) && $settings['theme']['header-article-title'] == 'yes' ) {
-			$page_content .= "<h1 class='page-header-title'>" . $page['title'] . "</h1>";
-		}
-		if( isset($settings['theme']['header-breadcrumbs']) && $settings['theme']['header-breadcrumbs'] == 'yes' && isset($breadcrumbs) ) {
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBreadcrumbs');
-			$rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $ciniki['request']['business_id'], $breadcrumbs);
-			if( $rc['stat'] == 'ok' ) {
-				$page_content .= $rc['content'];
-			}
-		}
-		$page_content .= "</div>";
-	}
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
+    $rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Search', $submenu);
+    if( $rc['stat'] != 'ok' ) { 
+        return $rc;
+    }
+    $page_content = $rc['content'];
+    
+    //
+    // Check if article title and breadcrumbs should be displayed above content
+    //
+    if( (isset($settings['theme']['header-article-title']) && $settings['theme']['header-article-title'] == 'yes')
+        || (isset($settings['theme']['header-breadcrumbs']) && $settings['theme']['header-breadcrumbs'] == 'yes')
+        ) {
+        $page_content .= "<div class='page-header'>";
+        if( isset($settings['theme']['header-article-title']) && $settings['theme']['header-article-title'] == 'yes' ) {
+            $page_content .= "<h1 class='page-header-title'>" . $page['title'] . "</h1>";
+        }
+        if( isset($settings['theme']['header-breadcrumbs']) && $settings['theme']['header-breadcrumbs'] == 'yes' && isset($breadcrumbs) ) {
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBreadcrumbs');
+            $rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $ciniki['request']['business_id'], $breadcrumbs);
+            if( $rc['stat'] == 'ok' ) {
+                $page_content .= $rc['content'];
+            }
+        }
+        $page_content .= "</div>";
+    }
 
     $page_content .= "<div id='content'>";
     $page_content .= "<article class='page'>";
@@ -131,23 +131,23 @@ function ciniki_web_generatePageSearch(&$ciniki, $settings) {
             . "onkeyup='return update_live_search();' onsearch='return update_live_search();' onsubmit='return false;' autocomplete='off' />"
             . "";
     $page_content .= "</div>";
-	$page_content .= "<div id='live-search-results' class='image-list'>\n";
+    $page_content .= "<div id='live-search-results' class='image-list'>\n";
     $page_content .= "</div>";
     $page_content .= "</div>";
 
     $page_content .= "</article>";
     $page_content .= "</div>";
 
-	//
-	// Add the footer
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageFooter');
-	$rc = ciniki_web_generatePageFooter($ciniki, $settings);
-	if( $rc['stat'] != 'ok' ) {	
-		return $rc;
-	}
-	$page_content .= $rc['content'];
+    //
+    // Add the footer
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageFooter');
+    $rc = ciniki_web_generatePageFooter($ciniki, $settings);
+    if( $rc['stat'] != 'ok' ) { 
+        return $rc;
+    }
+    $page_content .= $rc['content'];
 
-	return array('stat'=>'ok', 'content'=>$page_content);
+    return array('stat'=>'ok', 'content'=>$page_content);
 }
 ?>

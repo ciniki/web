@@ -8,7 +8,7 @@
 // Arguments
 // ---------
 // ciniki:
-// settings:		The web settings structure, similar to ciniki variable but only web specific information.
+// settings:        The web settings structure, similar to ciniki variable but only web specific information.
 //
 // Returns
 // -------
@@ -187,17 +187,17 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
         // Javascript to switch login/forgot password forms
         //
         $ciniki['request']['inline_javascript'] = "<script type='text/javascript'>\n"
-            . "	function swapLoginForm(l) {\n"
-            . "		if( l == 'forgotpassword' ) {\n"
-            . "			document.getElementById('signin-form').style.display = 'none';\n"
-            . "			document.getElementById('forgotpassword-form').style.display = 'block';\n"
-            . "			document.getElementById('forgotemail').value = document.getElementById('email').value;\n"
-            . "		} else {\n"
-            . "			document.getElementById('signin-form').style.display = 'block';\n"
-            . "			document.getElementById('forgotpassword-form').style.display = 'none';\n"
-            . "		}\n"
-            . "		return true;\n"
-            . "	}\n"
+            . " function swapLoginForm(l) {\n"
+            . "     if( l == 'forgotpassword' ) {\n"
+            . "         document.getElementById('signin-form').style.display = 'none';\n"
+            . "         document.getElementById('forgotpassword-form').style.display = 'block';\n"
+            . "         document.getElementById('forgotemail').value = document.getElementById('email').value;\n"
+            . "     } else {\n"
+            . "         document.getElementById('signin-form').style.display = 'block';\n"
+            . "         document.getElementById('forgotpassword-form').style.display = 'none';\n"
+            . "     }\n"
+            . "     return true;\n"
+            . " }\n"
             . "</script>"
             . "";
 
@@ -242,41 +242,41 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
         $blocks[] = array('type'=>'content', 'html'=>$content);
     }
 
-	//
-	// Check if this page was directed to from the recovery password email link
-	// The second argument should be the customer uuid
-	// The third argument should be the temp_password
-	//
-	elseif( (isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'passwordreset' 
-		&& isset($_GET['email']) && $_GET['email'] != ''
-		&& isset($_GET['pwd']) && $_GET['pwd'] != '' )
-		|| $display_form == 'reset'
-		) {
+    //
+    // Check if this page was directed to from the recovery password email link
+    // The second argument should be the customer uuid
+    // The third argument should be the temp_password
+    //
+    elseif( (isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'passwordreset' 
+        && isset($_GET['email']) && $_GET['email'] != ''
+        && isset($_GET['pwd']) && $_GET['pwd'] != '' )
+        || $display_form == 'reset'
+        ) {
 
         $article_title = "Reset Password";
         $breadcrumbs[] = array('name'=>'Reset Password', 'url'=>$ciniki['request']['base_url'] . '/account');
 
-		$content .= "<div id='reset-form' class='reset-form'>\n"
+        $content .= "<div id='reset-form' class='reset-form'>\n"
             . "<p>Please enter a new password.  It must be at least 8 characters long.</p>"
-			. "<form method='POST' action='" . $ciniki['request']['ssl_domain_base_url'] . "/account'>";
-		$content .="<input type='hidden' name='action' value='passwordreset'>\n";
-		if( isset($_GET['email']) ) {
-			$content .= "<input type='hidden' name='email' value='" . $_GET['email'] . "'>\n";
-		} else {
-			$content .= "<input type='hidden' name='email' value='" . $_POST['email'] . "'>\n";
-		}
-		if( isset($_GET['email']) ) {
-			$content .= "<input type='hidden' name='temppassword' value='" . $_GET['pwd'] . "'>\n";
-		} else {
-			$content .= "<input type='hidden' name='temppassword' value='" . $_POST['temppassword'] . "'>\n";
-		}
-		$content .= "<div class='input'><label for='password'>New Password</label><input id='password' type='password' class='text' maxlength='100' name='newpassword' value='' /></div>\n"
-			. "<div class='submit'><input type='submit' class='submit' value='Set Password' /></div>\n"
-			. "</form>"
-			. "</div>\n";
+            . "<form method='POST' action='" . $ciniki['request']['ssl_domain_base_url'] . "/account'>";
+        $content .="<input type='hidden' name='action' value='passwordreset'>\n";
+        if( isset($_GET['email']) ) {
+            $content .= "<input type='hidden' name='email' value='" . $_GET['email'] . "'>\n";
+        } else {
+            $content .= "<input type='hidden' name='email' value='" . $_POST['email'] . "'>\n";
+        }
+        if( isset($_GET['email']) ) {
+            $content .= "<input type='hidden' name='temppassword' value='" . $_GET['pwd'] . "'>\n";
+        } else {
+            $content .= "<input type='hidden' name='temppassword' value='" . $_POST['temppassword'] . "'>\n";
+        }
+        $content .= "<div class='input'><label for='password'>New Password</label><input id='password' type='password' class='text' maxlength='100' name='newpassword' value='' /></div>\n"
+            . "<div class='submit'><input type='submit' class='submit' value='Set Password' /></div>\n"
+            . "</form>"
+            . "</div>\n";
         $blocks[] = array('type'=>'content', 'html'=>$content);
-		$display_form = 'no';
-	}
+        $display_form = 'no';
+    }
 
     //
     // Add the header
@@ -284,7 +284,7 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
     $ciniki['request']['page-container-class'] = 'page-account';
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
     $rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Account', array());
-    if( $rc['stat'] != 'ok' ) {	
+    if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }
     $page_content = $rc['content'];
@@ -312,10 +312,10 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
     $page_content .= "<div id='content'>\n"
         . "<article class='page'>\n"
         . "<header class='entry-title'><h1 class='entry-title'>$article_title</h1></header>\n";
-	//
-	// Process the blocks of content
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlocks');
+    //
+    // Process the blocks of content
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlocks');
     $rc = ciniki_web_processBlocks($ciniki, $settings, $business_id, $blocks);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
@@ -330,7 +330,7 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageFooter');
     $rc = ciniki_web_generatePageFooter($ciniki, $settings);
-    if( $rc['stat'] != 'ok' ) {	
+    if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }
     $page_content .= $rc['content'];

@@ -6,7 +6,7 @@
 // Arguments
 // ---------
 // ciniki:
-// settings:		The web settings structure, similar to ciniki variable but only web specific information.
+// settings:        The web settings structure, similar to ciniki variable but only web specific information.
 //
 // Returns
 // -------
@@ -26,11 +26,11 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
 
     $content = '';
 
-	if( isset($block['title']) && $block['title'] != '' ) {
-		$content .= '<h2 class="wide">' . $block['title'] . "</h2>";
-	}
+    if( isset($block['title']) && $block['title'] != '' ) {
+        $content .= '<h2 class="wide">' . $block['title'] . "</h2>";
+    }
 
-	$content .= '<div class="chart chart-overlay"><div class="chart-wrapper"><canvas id="' . $block['canvas'] . '"></canvas></div></div>';
+    $content .= '<div class="chart chart-overlay"><div class="chart-wrapper"><canvas id="' . $block['canvas'] . '"></canvas></div></div>';
 
     //
     // Setup colours FIXME: This should be set via the business settings
@@ -328,7 +328,7 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
         $ciniki['response']['head']['scripts'] = array();
     }
     $ciniki['response']['head']['scripts'][] = array('src'=>'/ciniki-web-layouts/default/libs/Chart.min.js', 'type'=>'text/javascript');
-	
-	return array('stat'=>'ok', 'content'=>$content);
+    
+    return array('stat'=>'ok', 'content'=>$content);
 }
 ?>

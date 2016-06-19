@@ -6,19 +6,19 @@
 // Arguments
 // ---------
 // ciniki:
-// settings:		The web settings structure, similar to ciniki variable but only web specific information.
+// settings:        The web settings structure, similar to ciniki variable but only web specific information.
 //
 // Returns
 // -------
 //
 function ciniki_web_processBlockTabs(&$ciniki, $settings, $business_id, $block) {
 
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processMeta');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processMeta');
 
-	$content = '';
+    $content = '';
 
-	if( isset($block['tabs']) && isset($block['tabs']) ) {
+    if( isset($block['tabs']) && isset($block['tabs']) ) {
         $content .= "<div class='page-tabs-wrap'>";
         $content .= "<div class='page-tabs'>";
         foreach($block['tabs'] as $tab) {
@@ -29,6 +29,6 @@ function ciniki_web_processBlockTabs(&$ciniki, $settings, $business_id, $block) 
         $content .= "</div>";
     }
 
-	return array('stat'=>'ok', 'content'=>$content);
+    return array('stat'=>'ok', 'content'=>$content);
 }
 ?>

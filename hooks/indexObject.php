@@ -34,14 +34,14 @@ function ciniki_web_hooks_indexObject($ciniki, $business_id, $args) {
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'checkModuleFlags');
 
-	//
-	// Load INTL settings
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'intlSettings');
-	$rc = ciniki_businesses_intlSettings($ciniki, $business_id);
-	if( $rc['stat'] != 'ok' ) {
-		return $rc;
-	}
+    //
+    // Load INTL settings
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'intlSettings');
+    $rc = ciniki_businesses_intlSettings($ciniki, $business_id);
+    if( $rc['stat'] != 'ok' ) {
+        return $rc;
+    }
 
     return ciniki_web_indexUpdateObject($ciniki, $business_id, $args);
 }

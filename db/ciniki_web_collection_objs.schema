@@ -4,37 +4,37 @@
 #
 # Fields
 # ------
-# id:				The ID for the slider image.
-# uuid:				The Universal Unique ID for the image.
-# business_id:		The business the domain is part of.
+# id:               The ID for the slider image.
+# uuid:             The Universal Unique ID for the image.
+# business_id:      The business the domain is part of.
 #
-# collection_id:	The ID of the collection to add the reference to.
+# collection_id:    The ID of the collection to add the reference to.
 #
-# object:			The object.
+# object:           The object.
 #
-# sequence:			The sequence to show the items from this object in.  This determines
-#					where each object type shows up in the collection.
+# sequence:         The sequence to show the items from this object in.  This determines
+#                   where each object type shows up in the collection.
 #
-# num_items:		The number of items to show on the collection page.
+# num_items:        The number of items to show on the collection page.
 #
 # title
 #
-# date_added:		The date and time the domain was added to the table.
-# last_updated:		The date and time the domain was last updated.
+# date_added:       The date and time the domain was added to the table.
+# last_updated:     The date and time the domain was last updated.
 #
 create table ciniki_web_collection_objs (
-	id int not null auto_increment,
-	uuid char(36) not null,
-	business_id int not null,
-	collection_id int not null,
-	object varchar(100) not null,
-	sequence tinyint unsigned not null,
-	num_items tinyint unsigned not null,
-	title varchar(150) not null,
-	more varchar(150) not null,
-	date_added datetime not null,
-	last_updated datetime not null,
-	primary key (id),
-	unique index (collection_id, object),
-	unique index sync (business_id, uuid, last_updated)
+    id int not null auto_increment,
+    uuid char(36) not null,
+    business_id int not null,
+    collection_id int not null,
+    object varchar(100) not null,
+    sequence tinyint unsigned not null,
+    num_items tinyint unsigned not null,
+    title varchar(150) not null,
+    more varchar(150) not null,
+    date_added datetime not null,
+    last_updated datetime not null,
+    primary key (id),
+    unique index (collection_id, object),
+    unique index sync (business_id, uuid, last_updated)
 ) ENGINE=InnoDB, COMMENT='v1.01';

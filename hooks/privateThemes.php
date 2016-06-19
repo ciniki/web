@@ -7,7 +7,7 @@
 // Arguments
 // ---------
 // ciniki:
-// business_id:		The ID of the business to get events for.
+// business_id:     The ID of the business to get events for.
 //
 // Returns
 // -------
@@ -21,9 +21,9 @@ function ciniki_web_hooks_privateThemes($ciniki, $business_id, $args) {
     $strsql = "SELECT ciniki_web_themes.id, "
         . "ciniki_web_themes.name "
         . "FROM ciniki_web_themes "
-		. "WHERE ciniki_web_themes.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "WHERE ciniki_web_themes.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
         . "";
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
     $rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.web', array(
         array('container'=>'themes', 'fname'=>'id', 'fields'=>array('id', 'name')),
         ));

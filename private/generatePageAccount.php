@@ -9,7 +9,7 @@
 // Arguments
 // ---------
 // ciniki:
-// settings:		The web settings structure, similar to ciniki variable but only web specific information.
+// settings:        The web settings structure, similar to ciniki variable but only web specific information.
 //
 // Returns
 // -------
@@ -19,20 +19,20 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
     $breadcrumbs = array();
     $breadcrumbs[] = array('name'=>'Account', 'url'=>$ciniki['request']['domain_base_url'] . '/account');
 
-	//
-	// Check if should be forced to SSL
-	//
-	if( isset($settings['site-ssl-force-account']) 
-		&& $settings['site-ssl-force-account'] == 'yes' 
-		) {
-		if( isset($settings['site-ssl-active'])
-			&& $settings['site-ssl-active'] == 'yes'
-			&& (!isset($_SERVER['HTTP_CLUSTER_HTTPS']) || $_SERVER['HTTP_CLUSTER_HTTPS'] != 'on')
-			&& (!isset($_SERVER['SERVER_PORT']) || $_SERVER['SERVER_PORT'] != '443' ) )  {
-			header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-			exit;
-		}
-	}
+    //
+    // Check if should be forced to SSL
+    //
+    if( isset($settings['site-ssl-force-account']) 
+        && $settings['site-ssl-force-account'] == 'yes' 
+        ) {
+        if( isset($settings['site-ssl-active'])
+            && $settings['site-ssl-active'] == 'yes'
+            && (!isset($_SERVER['HTTP_CLUSTER_HTTPS']) || $_SERVER['HTTP_CLUSTER_HTTPS'] != 'on')
+            && (!isset($_SERVER['SERVER_PORT']) || $_SERVER['SERVER_PORT'] != '443' ) )  {
+            header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+            exit;
+        }
+    }
 
     //
     // Check if logout was requested
@@ -74,11 +74,11 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
     // Check if there was a switch of customer (parent switching between child accounts)
     // This is a special case because of the redirects
     //
-	if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'switch'
-		&& isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' 
-		&& isset($ciniki['session']['customers'])
-		&& isset($ciniki['session']['customers'][$ciniki['request']['uri_split'][1]])
-		) {
+    if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'switch'
+        && isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' 
+        && isset($ciniki['session']['customers'])
+        && isset($ciniki['session']['customers'][$ciniki['request']['uri_split'][1]])
+        ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageAccountSwitch', $breadcrumbs);
         return ciniki_web_generatePageAccountSwitch($ciniki, $settings, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][1]);
     }
@@ -177,58 +177,58 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
     //
     // Check if a container class was set
     //
-	if( isset($page['container-class']) && $page['container-class'] != '' ) {
-		if( !isset($ciniki['request']['page-container-class']) ) { 
-			$ciniki['request']['page-container-class'] = $page['container-class'];
-		} else {
-			$ciniki['request']['page-container-class'] .= ' ' . $page['container-class'];
-		}
-	}
+    if( isset($page['container-class']) && $page['container-class'] != '' ) {
+        if( !isset($ciniki['request']['page-container-class']) ) { 
+            $ciniki['request']['page-container-class'] = $page['container-class'];
+        } else {
+            $ciniki['request']['page-container-class'] .= ' ' . $page['container-class'];
+        }
+    }
 
-	//
-	// Process the blocks of content before header incase require includes in header
-	//
+    //
+    // Process the blocks of content before header incase require includes in header
+    //
     $block_content = "<div class='entry-content'>\n";
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlocks');
-	if( isset($page['blocks']) ) {
-		$rc = ciniki_web_processBlocks($ciniki, $settings, $ciniki['request']['business_id'], $page['blocks']);
-		if( $rc['stat'] != 'ok' ) {
-			return $rc;
-		}
-		$block_content .= $rc['content'];
-	}
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlocks');
+    if( isset($page['blocks']) ) {
+        $rc = ciniki_web_processBlocks($ciniki, $settings, $ciniki['request']['business_id'], $page['blocks']);
+        if( $rc['stat'] != 'ok' ) {
+            return $rc;
+        }
+        $block_content .= $rc['content'];
+    }
     $block_content .= "</div>";
     $block_content .= "</article>";
 
-	//
-	// Add the header
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
-	$rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Account', $submenu);
-	if( $rc['stat'] != 'ok' ) {	
-		return $rc;
-	}
-	$page_content = $rc['content'];
-	
-	//
-	// Check if article title and breadcrumbs should be displayed above content
-	//
-	if( (isset($settings['theme']['header-article-title']) && $settings['theme']['header-article-title'] == 'yes')
-		|| (isset($settings['theme']['header-breadcrumbs']) && $settings['theme']['header-breadcrumbs'] == 'yes')
-		) {
-		$page_content .= "<div class='page-header'>";
-		if( isset($settings['theme']['header-article-title']) && $settings['theme']['header-article-title'] == 'yes' ) {
-			$page_content .= "<h1 class='page-header-title'>" . $page['title'] . "</h1>";
-		}
-		if( isset($settings['theme']['header-breadcrumbs']) && $settings['theme']['header-breadcrumbs'] == 'yes' && isset($breadcrumbs) ) {
-			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBreadcrumbs');
-			$rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $ciniki['request']['business_id'], $breadcrumbs);
-			if( $rc['stat'] == 'ok' ) {
-				$page_content .= $rc['content'];
-			}
-		}
-		$page_content .= "</div>";
-	}
+    //
+    // Add the header
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
+    $rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Account', $submenu);
+    if( $rc['stat'] != 'ok' ) { 
+        return $rc;
+    }
+    $page_content = $rc['content'];
+    
+    //
+    // Check if article title and breadcrumbs should be displayed above content
+    //
+    if( (isset($settings['theme']['header-article-title']) && $settings['theme']['header-article-title'] == 'yes')
+        || (isset($settings['theme']['header-breadcrumbs']) && $settings['theme']['header-breadcrumbs'] == 'yes')
+        ) {
+        $page_content .= "<div class='page-header'>";
+        if( isset($settings['theme']['header-article-title']) && $settings['theme']['header-article-title'] == 'yes' ) {
+            $page_content .= "<h1 class='page-header-title'>" . $page['title'] . "</h1>";
+        }
+        if( isset($settings['theme']['header-breadcrumbs']) && $settings['theme']['header-breadcrumbs'] == 'yes' && isset($breadcrumbs) ) {
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBreadcrumbs');
+            $rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $ciniki['request']['business_id'], $breadcrumbs);
+            if( $rc['stat'] == 'ok' ) {
+                $page_content .= $rc['content'];
+            }
+        }
+        $page_content .= "</div>";
+    }
 
     $page_content .= "<div id='content'>";
 
@@ -282,16 +282,16 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
 
     $page_content .= "</div>";
 
-	//
-	// Add the footer
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageFooter');
-	$rc = ciniki_web_generatePageFooter($ciniki, $settings);
-	if( $rc['stat'] != 'ok' ) {	
-		return $rc;
-	}
-	$page_content .= $rc['content'];
+    //
+    // Add the footer
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageFooter');
+    $rc = ciniki_web_generatePageFooter($ciniki, $settings);
+    if( $rc['stat'] != 'ok' ) { 
+        return $rc;
+    }
+    $page_content .= $rc['content'];
 
-	return array('stat'=>'ok', 'content'=>$page_content);
+    return array('stat'=>'ok', 'content'=>$page_content);
 }
 ?>

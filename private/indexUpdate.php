@@ -13,14 +13,14 @@
 //
 function ciniki_web_indexUpdate($ciniki, $business_id) {
 
-	//
-	// Load INTL settings
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'intlSettings');
-	$rc = ciniki_businesses_intlSettings($ciniki, $business_id);
-	if( $rc['stat'] != 'ok' ) {
-		return $rc;
-	}
+    //
+    // Load INTL settings
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'intlSettings');
+    $rc = ciniki_businesses_intlSettings($ciniki, $business_id);
+    if( $rc['stat'] != 'ok' ) {
+        return $rc;
+    }
 
     //
     // Get the list of modules currently in the index

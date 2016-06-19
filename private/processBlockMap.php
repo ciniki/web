@@ -6,7 +6,7 @@
 // Arguments
 // ---------
 // ciniki:
-// settings:		The web settings structure, similar to ciniki variable but only web specific information.
+// settings:        The web settings structure, similar to ciniki variable but only web specific information.
 //
 // Returns
 // -------
@@ -54,6 +54,6 @@ function ciniki_web_processBlockMap(&$ciniki, $settings, $business_id, $block) {
         $content .= "<div class='googlemap' id='googlemap'></div>";
     }
 
-	return array('stat'=>'ok', 'content'=>$content);
+    return array('stat'=>'ok', 'content'=>$content);
 }
 ?>
