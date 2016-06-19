@@ -102,6 +102,9 @@ function ciniki_web_siteSettings($ciniki) {
     if( isset($ciniki['business']['modules']['ciniki.products']) ) {
         $pages['products'] = array('display_name'=>'Products', 'active'=>'no');
     }
+    if( isset($ciniki['business']['modules']['ciniki.herbalist']) ) {
+        $pages['herbalist'] = array('display_name'=>'Products', 'active'=>'no');
+    }
     if( isset($ciniki['business']['modules']['ciniki.filmschedule']) ) {
         $pages['filmschedule'] = array('display_name'=>'Schedule', 'active'=>'no');
     }
@@ -291,6 +294,9 @@ function ciniki_web_siteSettings($ciniki) {
     }
     if( isset($settings['page-products-active']) && $settings['page-products-active'] == 'yes' ) {
         $pages['products']['active'] = 'yes';
+    }
+    if( isset($settings['page-herbalist-active']) && $settings['page-herbalist-active'] == 'yes' ) {
+        $pages['herbalist']['active'] = 'yes';
     }
     if( isset($settings['page-recipes-active']) && $settings['page-recipes-active'] == 'yes' ) {
         $pages['recipes']['active'] = 'yes';

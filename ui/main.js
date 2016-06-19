@@ -1086,6 +1086,37 @@ function ciniki_web_main() {
         this.pdfcatalogs.addClose('Cancel');
 
         //
+        // The options and information for the herbalist page
+        //
+        this.herbalist = new M.panel('Products',
+            'ciniki_web_main', 'herbalist',
+            'mc', 'medium', 'sectioned', 'ciniki.web.main.herbalist');
+        this.herbalist.data = {};
+        this.herbalist.sections = {
+            'options':{'label':'', 'fields':{
+                'page-herbalist-active':{'label':'Display Products', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                'page-herbalist-name':{'label':'Name', 'type':'text', 'hint':'default is Products'},
+//                'page-herbalist-categories-format':{'label':'Category Format', 'type':'toggle', 'default':'thumbnails', 'toggles':{'thumbnails':'Thumbnails', 'list':'List'}},
+//                'page-herbalist-categories-size':{'label':'Category Thumbnail Size', 'type':'toggle', 'default':'auto', 'toggles':this.productThumbnailToggles},
+//                'page-herbalist-subcategories-size':{'label':'Sub-Category Thumbnail Size', 'type':'toggle', 'default':'auto', 'toggles':this.productThumbnailToggles},
+//                'page-herbalist-thumbnail-format':{'label':'Thumbnail Format', 'type':'toggle', 'default':'square-cropped', 'toggles':{'square-cropped':'Cropped', 'square-padded':'Padded'}},
+//                'page-herbalist-thumbnail-padding-color':{'label':'Padding Color', 'type':'colour'},
+//                'page-herbalist-path':{'label':'Path', 'type':'toggle', 'default':'yes', 'toggles':this.activeToggles},
+                }},
+            'social':{'label':'Social Media', 'visible':'yes', 'fields':{
+                'page-herbalist-share-buttons':{'label':'Sharing', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+                }},
+            '_save':{'label':'', 'buttons':{
+                'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'herbalist\');'},
+                }},
+        };
+        this.herbalist.fieldValue = this.fieldValue;
+        this.herbalist.fieldHistoryArgs = this.fieldHistoryArgs;
+        this.herbalist.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'herbalist\');');
+//      this.herbalist.addLeftButton('website', 'Preview', 'M.showWebsite(\'/herbalist\');');
+        this.herbalist.addClose('Cancel');
+
+        //
         // The options and information for the products page
         //
         this.products = new M.panel('Products',

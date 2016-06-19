@@ -835,6 +835,15 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
             }
             $content .= "</a></li>";
         }
+        if( isset($settings['page-herbalist-active']) && $settings['page-herbalist-active'] == 'yes' ) {
+            $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='products'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/products'>";
+            if( isset($settings['page-herbalist-name']) && $settings['page-herbalist-name'] != '' ) {
+                $content .= $settings['page-herbalist-name'];
+            } else {
+                $content .= "Products";
+            }
+            $content .= "</a></li>";
+        }
         if( isset($settings['page-products-active']) && $settings['page-products-active'] == 'yes' ) {
             $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='products'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/products'>";
             if( isset($settings['page-products-name']) && $settings['page-products-name'] != '' ) {
