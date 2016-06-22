@@ -385,6 +385,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-account-header-buttons',
         'page-account-sidebar',
         'page-account-password-change',
+        'page-account-children-update',
         'page-account-phone-update',
         'page-account-email-update',
         'page-account-address-update',
@@ -407,6 +408,9 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-cart-registration-child-select',      // Show a list of children to select for a registration
         'page-cart-dealersubmit-email-template',
         'page-cart-dealersubmit-email-textmsg',
+        'page-cart-account-create-button',
+        'page-cart-child-create-button',
+        'page-cart-noaccount-message',
         'page-signup-active',
         'page-signup-menu',
         'page-api-active',

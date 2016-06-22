@@ -20,6 +20,15 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
     $breadcrumbs[] = array('name'=>'Account', 'url'=>$ciniki['request']['domain_base_url'] . '/account');
 
     //
+    // Set no caching
+    //
+    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); 
+    header("Cache-Control: no-store, no-cache, must-revalidate"); 
+    header("Cache-Control: post-check=0, pre-check=0", false);
+    header("Pragma: no-cache");
+
+    //
     // Check if should be forced to SSL
     //
     if( isset($settings['site-ssl-force-account']) 

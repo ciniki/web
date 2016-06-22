@@ -14,7 +14,6 @@
 // -------
 //
 function ciniki_web_generatePageCart(&$ciniki, $settings) {
-
     //
     // Check if should be forced to SSL
     //
@@ -102,6 +101,11 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                         return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'3189', 'msg'=>'Unable to load account information', 'err'=>$rc['err']));
                     }
                 }
+            }
+
+            if( isset($_POST['next']) && $_POST['next'] == 'edit' ) {
+                header("Location: " . $ciniki['request']['ssl_domain_base_url'] . "/cart");
+                exit;
             }
         }
     }
@@ -207,11 +211,15 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                 return $rc;
             }
             $display_signup = 'no';
-            $display_cart = 'review';
-            $cart_edit = 'no';
+            if( isset($_POST['next']) && $_POST['next'] == 'edit' ) {
+                header("Location: " . $ciniki['request']['ssl_domain_base_url'] . "/cart");
+                exit;
+            } else {
+                $display_cart = 'review';
+                $cart_edit = 'no';
+            }
         }
     }
-
 
     //
     // Check if a cart already exists
@@ -333,7 +341,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         $_SESSION['cart']['num_items'] = count($cart['items']);
         $ciniki['session']['cart']['num_items'] = count($cart['items']);
     }
-    
+
     //
     // Check if cart quantities were updated
     //
@@ -359,9 +367,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         if( isset($cart['items']) ) {
             foreach($cart['items'] as $item) {
                 $item = $item['item'];
-                if( isset($_POST['quantity_' . $item['id']]) 
-                    && $_POST['quantity_' . $item['id']] != $item['quantity'] 
-                    ) {
+                if( isset($_POST['quantity_' . $item['id']]) && $_POST['quantity_' . $item['id']] != $item['quantity'] ) {
                     $new_quantity = intval($_POST['quantity_' . $item['id']]);
                     if( $new_quantity <= 0 ) {
                         ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartItemDelete');
@@ -380,8 +386,9 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                         }
                     }
                 }
-                if( isset($_POST['student_' . $item['id']]) && $_POST['student_' . $item['id']] != $item['student_id'] ) {
-                    print_r("Update student");
+                if( isset($_POST['student_' . $item['id']]) && $_POST['student_' . $item['id']] != $item['student_id'] 
+                    && (!isset($new_quantity) || $new_quantity > 0)
+                    ) {
                     $new_student_id = intval($_POST['student_' . $item['id']]);
                     if( $new_student_id != $item['student_id'] ) {
                         ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartItemUpdate');
@@ -571,6 +578,14 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
     }
 
     //
+    // Check if create account was clicked
+    //
+    elseif( isset($_POST['createaccount']) && $_POST['createaccount'] != '' && $cart != NULL ) {
+        $display_signup = 'createaccount';
+        $display_cart = 'no';
+    }
+
+    //
     // Check if checkout via paypal
     //
     elseif( isset($_POST['paypalexpresscheckout']) && $_POST['paypalexpresscheckout'] != '' && $cart != NULL 
@@ -712,7 +727,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
     //
     // Display the signup/login form
     //
-    if( $display_signup == 'yes' || $display_signup == 'forgot' ) {
+    if( $display_signup == 'yes' || $display_signup == 'forgot' || $display_signup == 'createaccount' ) {
         $content .= "<article class='page cart'>\n";
         $post_email = '';
         if( isset($_POST['email']) ) {
@@ -744,10 +759,13 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
             . " }\n"
             . "</script>\n";
 //          $content .= "<div class='entry-content'>";
-        $content .= "<div id='signin-form' style='display:" . ($display_signup=='yes'?'block':'none') . ";'>\n";
+        $content .= "<div id='signin-form' style='display:" . ($display_signup=='yes' || $display_signup == 'createaccount' ?'block':'none') . ";'>\n";
         $content .= "<h2>Existing Account</h2>";
         $content .= "<p>Bought something here before? Please sign in to your account:</p>";
         $content .= "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' method='POST'>";
+        if( $display_signup == 'createaccount' ) {
+            $content .= "<input type='hidden' name='next' value='edit'>";
+        }
         if( $signup_err_msg != '' ) {
             $content .= "<p class='formerror'>$signup_err_msg</p>\n";
         }
@@ -789,6 +807,9 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         $content .= "<h2>Create a new account</h2>";
         $content .= "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' method='POST'>";
         $content .= "<input type='hidden' name='action' value='createaccount'>";
+        if( $display_signup == 'createaccount' ) {
+            $content .= "<input type='hidden' name='next' value='edit'>";
+        }
         $fields = array(
             'first'=>array('name'=>'First Name', 'type'=>'text', 'class'=>'text', 'value'=>(isset($_POST['first'])?$_POST['first']:'')),
             'last'=>array('name'=>'Last Name', 'type'=>'text', 'class'=>'text', 'value'=>(isset($_POST['last'])?$_POST['last']:'')),
@@ -889,7 +910,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         $content .= $form;
 
         $content .= "<div class='submit'><input type='submit' name='continue' class='submit' value='Back' />";
-        $content .= " <input type='submit' name='next' class='submit' value='Next' /></div>\n";
+        $content .= " <input type='submit' name='continue' class='submit' value='Next' /></div>\n";
 //      $content .= "<div class='cart-buttons'>";
 //      $content .= "<span class='cart-submit'>"
 //          . "<input class='cart-submit' type='submit' name='continue' value='Continue Shopping'/>"
@@ -1127,12 +1148,28 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         //
         $registration_customers = array();
         $display_registration_customer = 'no';
-        if( isset($settings['page-cart-registration-child-select']) && $settings['page-cart-registration-child-select'] == 'yes' ) {
-            if( isset($ciniki['session']['children']) && $ciniki['session']['children'] > 0 ) {
-                $registration_customers = $ciniki['session']['children'];
+        if( isset($settings['page-cart-registration-child-select']) && $settings['page-cart-registration-child-select'] == 'yes' 
+            && isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0
+            ) {
+            $strsql = "SELECT id, display_name "
+                . "FROM ciniki_customers "
+                . "WHERE parent_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['session']['customer']['id']) . "' "
+                . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+                . "";
+            $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.customers', 'child');
+            if( $rc['stat'] != 'ok' ) {
+                return $rc;
+            }
+            if( isset($rc['rows']) ) {
+                $registration_customers = $rc['rows'];
                 array_unshift($registration_customers, $ciniki['session']['customer']);
                 $display_registration_customer = 'yes';
             }
+//            if( isset($ciniki['session']['children']) && $ciniki['session']['children'] > 0 ) {
+//                $registration_customers = $ciniki['session']['children'];
+//                array_unshift($registration_customers, $ciniki['session']['customer']);
+//                $display_registration_customer = 'yes';
+//            }
         }
 
         //
@@ -1192,7 +1229,9 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                 //
                 if( $display_registration_customer == 'yes' ) {
                     if( $cart_edit == 'yes' ) {
-                        $content .= " <select name='student_" . $item['id'] . "' name='student_" . $item['id'] . "'>";
+                        $content .= " for <select name='student_" . $item['id'] . "' name='student_" . $item['id'] . "'"
+//                            . " onchange='if(this.options[this.selectedIndex].value==0){window.open(\"" . $ciniki['request']['ssl_domain_base_url'] . "/account/children/cartadd" . "\",\"_self\");return false;}'"
+                            . ">";
                         foreach($registration_customers as $child) {
                             $content .= $child['display_name'];
                             $content .= "<option value='" . $child['id'] . "' ";
@@ -1201,6 +1240,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                             }
                             $content .= ">" . $child['display_name'] . "</option>";
                         }
+//                        $content .= "<option value='0'>New Child</option>";
                         $content .= "</select>";
                     } else {
                         foreach($registration_customers as $child) {
@@ -1419,6 +1459,11 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                 }
             }
                     
+            if( $cart_edit == 'yes' && isset($settings['page-cart-noaccount-message']) && $settings['page-cart-noaccount-message'] != '' 
+                && (!isset($ciniki['session']['customer']['id']) || $ciniki['session']['customer']['id'] == 0)
+                ) {
+                $content .= "<br/><div>" . $settings['page-cart-noaccount-message'] . "</div>";
+            }
             // cart buttons
 //          $content .= "<table class='cart-buttons'>"
 //              . "<tfoot>";
@@ -1431,6 +1476,22 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                 $content .= "<span class='cart-submit'>"
                     . "<input class='cart-submit' type='submit' name='update' value='Update'/>"
                     . "</span>";
+                if( isset($settings['page-cart-account-create-button']) && $settings['page-cart-account-create-button'] == 'yes' 
+                    && (!isset($ciniki['session']['customer']['id']) || $ciniki['session']['customer']['id'] == 0)
+                    ) {
+                    $content .= "<span class='cart-submit'>"
+                        . "<input class='cart-submit' type='submit' name='createaccount' value='Create Account'/>"
+                        . "</span>";
+                }
+                if( isset($settings['page-cart-child-create-button']) && $settings['page-cart-child-create-button'] == 'yes' 
+                    && isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0
+                    ) {
+                    $content .= "<span class='cart-submit'>"
+                        . "<input class='cart-submit' type='submit' name='addchild' value='Add Child' "
+                            . "onclick='window.open(\"" . $ciniki['request']['ssl_domain_base_url'] . "/account/children/cartadd" . "\",\"_self\");return false;'"
+                            . " />"
+                        . "</span>";
+                } 
             }
             if( isset($ciniki['session']['customer']['dealer_status']) 
                 && $ciniki['session']['customer']['dealer_status'] > 0 
@@ -1484,7 +1545,6 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         $content .= "<p class='formerror'>Thank you for your order, we have emailed you a receipt.</p>";
         $content .= "</div></div></div>";
     }
-
 
     //
     // Add the header

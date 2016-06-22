@@ -1699,6 +1699,7 @@ function ciniki_web_main() {
                     'type':'multitoggle', 'default':'no', 'toggles':{'no':'No', 'left':'Left', 'right':'Right'}},
                 'page-account-header-signin-text':{'label':'Signin Text', 'type':'text', 'size':'small'},
                 'page-account-password-change':{'label':'Change Password', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+                'page-account-children-update':{'label':'Children Update', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-account-phone-update':{'label':'Phone Update', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-account-email-update':{'label':'Email Update', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-account-address-update':{'label':'Address Update', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
@@ -1743,12 +1744,17 @@ function ciniki_web_main() {
                 'page-cart-currency-display':{'label':'Display Currency', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
                 'page-cart-currency-display':{'label':'Display Currency', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
                 'page-cart-registration-child-select':{'label':'Registration Children', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                'page-cart-account-create-button':{'label':'Create Account Button', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                'page-cart-child-create-button':{'label':'Create Child Button', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 }},
             '_inventory':{'label':'Current Inventory Visible To', 'fields':{
                 'page-cart-inventory-customers-display':{'label':'Customers', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-cart-inventory-members-display':{'label':'Members', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-cart-inventory-dealers-display':{'label':'Dealers', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-cart-inventory-distributors-display':{'label':'Distributors', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                }},
+            '_nologinmessage':{'label':'No Account Message', 'fields':{
+                'page-cart-noaccount-message':{'label':'', 'hidelabel':'yes', 'type':'textarea'},
                 }},
             '_dealersubmit':{'label':'', 'active':'no', 'fields':{
                 'page-cart-dealersubmit-email-template':{'label':'Email Dealer Order Template', 'type':'multitoggle', 'default':'none', 'toggles':this.dealerSubmitTemplates},
@@ -1933,20 +1939,18 @@ function ciniki_web_main() {
         //
         // Setup for cart
         //
-        if( M.curBusiness.modules['ciniki.sapos'] != null
-            && M.curBusiness.modules['ciniki.mail'] != null
-            ) {
+        if( M.modOn('ciniki.sapos') && M.modOn('ciniki.mail') && M.modFlagOn('ciniki.customers', 0x10) ) {
             this.cart.sections._dealersubmit.active = 'yes';
             this.cart.sections._dealersubmit_email_textmsg.active = 'yes';
         } else {
             this.cart.sections._dealersubmit.active = 'no';
             this.cart.sections._dealersubmit_email_textmsg.active = 'no';
         }
+
         //
         // Setup for sponsors
         //
-        if( M.curBusiness.modules['ciniki.sponsors'] != null
-            && (M.curBusiness.modules['ciniki.sponsors'].flags&0x02) ) {
+        if( M.modOn('ciniki.sponsors') && (M.curBusiness.modules['ciniki.sponsors'].flags&0x02) ) {
             this.home.sections.sponsors.visible = 'yes';
         } else {
             this.home.sections.sponsors.visible = 'no';
