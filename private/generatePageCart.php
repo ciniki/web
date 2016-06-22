@@ -464,6 +464,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
             //
             if( isset($settings['page-cart-dealersubmit-email-template']) 
                 && $settings['page-cart-dealersubmit-email-template'] != '' 
+                && $settings['page-cart-dealersubmit-email-template'] != 'none' 
                 && isset($cart['customer']['emails'][0]['email']['address'])
                 ) {
                 //
@@ -1150,6 +1151,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         $display_registration_customer = 'no';
         if( isset($settings['page-cart-registration-child-select']) && $settings['page-cart-registration-child-select'] == 'yes' 
             && isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0
+            && isset($ciniki['session']['customer']['children-allowed']) && $ciniki['session']['customer']['children-allowed'] == 'yes'
             ) {
             $strsql = "SELECT id, display_name "
                 . "FROM ciniki_customers "
