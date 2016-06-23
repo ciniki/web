@@ -1283,6 +1283,7 @@ function ciniki_web_main() {
                     'shortbio-blank-addressesnl-phones-emails-links':'Short Bio, Addresses, Phones, Emails, Links',
                     'addressesnl-blank-shortbio-phones-emails-links':'Addresses, Short Bio, Phones, Emails, Links',
                     'shortbio-blank-addressesnl-phones-links':'Short Bio, Addresses, Phones, Links',
+                    'addressesnl-phones-emails-links':'Addresses, Phones, Emails, Links',
                     }},
             }},
             '_save':{'label':'', 'buttons':{
@@ -1322,6 +1323,7 @@ function ciniki_web_main() {
                     'shortbio-blank-addressesnl-phones-emails-links':'Short Bio, Addresses, Phones, Emails, Links',
                     'addressesnl-blank-shortbio-phones-emails-links':'Addresses, Short Bio, Phones, Emails, Links',
                     'shortbio-blank-addressesnl-phones-links':'Short Bio, Addresses, Phones, Links',
+                    'addressesnl-phones-emails-links':'Addresses, Phones, Emails, Links',
                     }},
             }},
             '_save':{'label':'', 'buttons':{
