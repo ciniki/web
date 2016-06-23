@@ -1464,7 +1464,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
             if( $cart_edit == 'yes' && isset($settings['page-cart-noaccount-message']) && $settings['page-cart-noaccount-message'] != '' 
                 && (!isset($ciniki['session']['customer']['id']) || $ciniki['session']['customer']['id'] == 0)
                 ) {
-                $content .= "<div><p class='cart-noaccount-message'>" . $settings['page-cart-noaccount-message'] . "</p></div>";
+                $content .= "<div><p class='wide cart-noaccount-message'>" . $settings['page-cart-noaccount-message'] . "</p></div>";
             }
             // cart buttons
 //          $content .= "<table class='cart-buttons'>"
