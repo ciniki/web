@@ -1464,7 +1464,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
             if( $cart_edit == 'yes' && isset($settings['page-cart-noaccount-message']) && $settings['page-cart-noaccount-message'] != '' 
                 && (!isset($ciniki['session']['customer']['id']) || $ciniki['session']['customer']['id'] == 0)
                 ) {
-                $content .= "<br/><div>" . $settings['page-cart-noaccount-message'] . "</div>";
+                $content .= "<div><p class='cart-noaccount-message'>" . $settings['page-cart-noaccount-message'] . "</p></div>";
             }
             // cart buttons
 //          $content .= "<table class='cart-buttons'>"
@@ -1544,7 +1544,11 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
     if( $display_cart == 'checkout_success' ) {
         $page_title = 'Checkout - Complete';
         $content .= "<div class='form-message-content'><div class='form-result-message form-success-message'><div class='form-message-wrapper'>";
-        $content .= "<p class='formerror'>Thank you for your order, we have emailed you a receipt.</p>";
+        if( isset($settings['page-cart-payment-success-message']) && $settings['page-cart-payment-success-message'] != '' ) {
+            $content .= "<p class='formerror payment-success'>" . $settings['page-cart-payment-success-message'] . "</p>";
+        } else {
+            $content .= "<p class='formerror payment-success'>Thank you for your order, we have emailed you a receipt.</p>";
+        }
         $content .= "</div></div></div>";
     }
 
