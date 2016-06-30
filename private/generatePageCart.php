@@ -345,9 +345,9 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
     //
     // Check if cart quantities were updated
     //
-    elseif( (isset($_POST['update']) && $_POST['update'] != '' 
-            && isset($_POST['action']) && $_POST['action'] == 'update')
+    elseif( (isset($_POST['update']) && $_POST['update'] != '' && isset($_POST['action']) && $_POST['action'] == 'update')
         || (isset($_POST['submitorder']) && $_POST['submitorder'] != '') 
+        || (isset($_POST['checkout']) && $_POST['checkout'] != '') 
         ) {
         $update_args = array();
         if( isset($_POST['po_number']) ) {
@@ -405,7 +405,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         //
         // Redirect to avoid form duplicate submission
         //
-        if( !isset($_POST['submitorder']) ) {
+        if( !isset($_POST['submitorder']) && !isset($_POST['checkout']) ) {
             header("Location: " . $ciniki['request']['ssl_domain_base_url'] . "/cart");
             exit;
         }
@@ -1487,6 +1487,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                 }
                 if( isset($settings['page-cart-child-create-button']) && $settings['page-cart-child-create-button'] == 'yes' 
                     && isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0
+                    && isset($ciniki['session']['customer']['children-allowed']) && $ciniki['session']['customer']['children-allowed'] == 'yes'
                     ) {
                     $content .= "<span class='cart-submit'>"
                         . "<input class='cart-submit' type='submit' name='addchild' value='Add Child' "
