@@ -779,6 +779,12 @@ if( $found == 'no' ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
         $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['business_id'], 'ciniki.patents');
     } 
+    // jiji
+    elseif( $ciniki['request']['page'] == 'buysell' 
+        && isset($settings['page-jiji-active']) && $settings['page-jiji-active'] == 'yes' ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
+        $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['business_id'], 'ciniki.jiji');
+    } 
     // Blog
     elseif( $ciniki['request']['page'] == 'blog' 
         && isset($settings['page-blog-active']) && $settings['page-blog-active'] == 'yes' ) {

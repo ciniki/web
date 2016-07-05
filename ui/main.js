@@ -1173,6 +1173,27 @@ function ciniki_web_main() {
         //
         // The options and information for the blog page
         //
+        this.jiji = new M.panel('Buy/Sell',
+            'ciniki_web_main', 'jiji',
+            'mc', 'medium', 'sectioned', 'ciniki.web.main.jiji');
+        this.jiji.data = {};
+        this.jiji.sections = {
+            'options':{'label':'', 'fields':{
+                'page-jiji-active':{'label':'Display Buy/Sell', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                'page-jiji-name':{'label':'Name', 'type':'text', 'hint':'default is Buy/Sell'},
+                }},
+            '_save':{'label':'', 'buttons':{
+                'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'jiji\');'},
+                }},
+        };
+        this.jiji.fieldValue = this.fieldValue;
+        this.jiji.fieldHistoryArgs = this.fieldHistoryArgs;
+        this.jiji.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'jiji\');');
+        this.jiji.addClose('Cancel');
+
+        //
+        // The options and information for the blog page
+        //
         this.blog = new M.panel('Blog',
             'ciniki_web_main', 'blog',
             'mc', 'medium', 'sectioned', 'ciniki.web.main.blog');

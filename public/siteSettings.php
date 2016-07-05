@@ -171,6 +171,9 @@ function ciniki_web_siteSettings($ciniki) {
             $pages['memberblog'] = array('display_name'=>'Member News', 'active'=>'no');
         }
     }
+    if( isset($ciniki['business']['modules']['ciniki.jiji']) ) {
+        $pages['jiji'] = array('display_name'=>'Buy/Sell', 'active'=>'no');
+    }
     if( isset($ciniki['business']['modules']['ciniki.sapos']) && ($ciniki['business']['modules']['ciniki.sapos']['flags']&0x08) > 0 ) {
         $pages['cart'] = array('display_name'=>'Shopping Cart', 'active'=>'no');
     }
@@ -303,6 +306,9 @@ function ciniki_web_siteSettings($ciniki) {
     }
     if( isset($settings['page-patents-active']) && $settings['page-patents-active'] == 'yes' ) {
         $pages['patents']['active'] = 'yes';
+    }
+    if( isset($settings['page-jiji-active']) && $settings['page-jiji-active'] == 'yes' ) {
+        $pages['jiji']['active'] = 'yes';
     }
     if( isset($settings['page-blog-active']) && $settings['page-blog-active'] == 'yes' ) {
         $pages['blog']['active'] = 'yes';

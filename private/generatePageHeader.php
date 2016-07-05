@@ -1201,6 +1201,13 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
             }
             $content .= "</a></li>";
         }
+        if( isset($settings['page-jiji-active']) && $settings['page-jiji-active'] == 'yes' ) {
+            if( isset($settings['page-jiji-name']) && $settings['page-jiji-name'] != '' ) {
+                $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='jiji'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/buysell'>" . $settings['page-jiji-name'] . "</a></li>";
+            } else {
+                $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='jiji'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/buysell'>Buy/Sell</a></li>";
+            }
+        }
         //
         // Check if membersonly area is enabled, and the member has logged in
         //

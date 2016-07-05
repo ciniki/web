@@ -238,6 +238,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-propertyrentals-active',
         'page-propertyrentals-name',
         'page-propertyrentals-rented',
+        'page-jiji-active',
+        'page-jiji-name',
         'page-blog-active',
         'page-blog-name',
         'page-blog-share-buttons',
