@@ -939,7 +939,6 @@ if( $rc['stat'] == '404' ) {
             $url = $_SERVER['REQUEST_URI'];
             $u = preg_split('/\?/', $url);
             $url = $u[0];
-            error_log("url: $url");
             if( $ciniki['request']['base_url'] != '' ) {
                 $url = preg_replace('#' . $ciniki['request']['base_url'] . '#i', '', $url, 1);
             }
