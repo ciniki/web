@@ -46,6 +46,7 @@ function ciniki_web_lookupClientDomain(&$ciniki, $domain, $type) {
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
+
     //
     // Make sure only one row was returned, otherwise there's a config error 
     // and we don't know which business the domain actually belongs to
@@ -53,6 +54,7 @@ function ciniki_web_lookupClientDomain(&$ciniki, $domain, $type) {
     if( !isset($rc['business']) || !isset($rc['business']['business_id']) ) {
         return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'610', 'msg'=>'Configuration error'));
     }
+    $isprimary = $rc['business']['isprimary'];
     $business_id = $rc['business']['business_id'];
     $business_uuid = $rc['business']['uuid'];
 
@@ -72,12 +74,13 @@ function ciniki_web_lookupClientDomain(&$ciniki, $domain, $type) {
             $sitename = $rc['business']['sitename'];
         }
     }
+
     //
     // Get primary domain if not primary
     //
     $redirect = '';
     $domain = '';
-    if( $rc['business']['isprimary'] == 'no' ) {
+    if( $isprimary == 'no' ) {
         $strsql = "SELECT domain, flags "
             . "FROM ciniki_business_domains "
             . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
