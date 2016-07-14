@@ -164,7 +164,13 @@ if( $ciniki['config']['ciniki.web']['master.domain'] != $_SERVER['HTTP_HOST']
         $ciniki['business']['modules'] = $rc['modules'];
         if( isset($rc['redirect']) && $rc['redirect'] != '' && $preview == 'no' ) {
             Header('HTTP/1.1 301 Moved Permanently'); 
-            Header('Location: http://' . $rc['redirect'] . $_SERVER['REQUEST_URI']);
+            Header('Location: http' . ($rc['forcessl']=='yes'?'s':'') . '://' . $rc['redirect'] . $_SERVER['REQUEST_URI']);
+            exit;
+        }
+        if( isset($rc['forcessl']) && $rc['forcessl'] == 'yes' ) {
+            Header('HTTP/1.1 301 Moved Permanently'); 
+            Header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+            exit;
         }
 
         $ciniki['request']['page'] = $ciniki['request']['uri_split'][0];
@@ -288,13 +294,15 @@ if( $ciniki['request']['business_id'] == 0 ) {
             // get redirected back to main website so search engines don't see site twice
             //
             Header('HTTP/1.1 301 Moved Permanently'); 
-            Header('Location: http://' . $rc['redirect'] . preg_replace('/^\/[^\/]+/', '', $_SERVER['REQUEST_URI']));
+            Header('Location: http' . ($rc['forcessl']=='yes'?'s':'') . '://' . $rc['redirect'] . preg_replace('/^\/[^\/]+/', '', $_SERVER['REQUEST_URI']));
+            exit;
         }
         elseif( isset($rc['domain']) && $rc['domain'] != '' && $preview == 'no'
             && (!isset($ciniki['config']['ciniki.web']['shop.domain']) || $ciniki['config']['ciniki.web']['shop.domain'] != $_SERVER['HTTP_HOST'])
             ) {
             Header('HTTP/1.1 301 Moved Permanently'); 
-            Header('Location: http://' . $rc['domain'] . preg_replace('/^\/[^\/]+/', '', $_SERVER['REQUEST_URI']));
+            Header('Location: http' . ($rc['forcessl']=='yes'?'s':'') . '://' . $rc['domain'] . preg_replace('/^\/[^\/]+/', '', $_SERVER['REQUEST_URI']));
+            exit;
         }
         //
         // If they have requested the shop domain, check to make sure they are logged in or going to account page, otherwise they should be redirected back to main site.
@@ -313,17 +321,25 @@ if( $ciniki['request']['business_id'] == 0 ) {
             //
             if( isset($rc['redirect']) && $rc['redirect'] != '' && $preview == 'no' ) {
                 Header('HTTP/1.1 301 Moved Permanently'); 
-                Header('Location: http://' . $rc['redirect'] . preg_replace('/^\/[^\/]+/', '', $_SERVER['REQUEST_URI']));
+                Header('Location: http' . ($rc['forcessl']=='yes'?'s':'') . '://' . $rc['redirect'] . preg_replace('/^\/[^\/]+/', '', $_SERVER['REQUEST_URI']));
+                exit;
             } 
             elseif( isset($rc['domain']) && $rc['domain'] != '' && $preview == 'no' ) {
                 Header('HTTP/1.1 301 Moved Permanently'); 
-                Header('Location: http://' . $rc['domain'] . preg_replace('/^\/[^\/]+/', '', $_SERVER['REQUEST_URI']));
+                Header('Location: http' . ($rc['forcessl']=='yes'?'s':'') . '://' . $rc['domain'] . preg_replace('/^\/[^\/]+/', '', $_SERVER['REQUEST_URI']));
+                exit;
             } 
             //
             // No domain, redirect
             else {
                 Header('HTTP/1.1 301 Moved Permanently'); 
                 Header('Location: http://' . $ciniki['config']['ciniki.web']['master.domain'] . $_SERVER['REQUEST_URI']);
+                exit;
+            }
+            if( $rc['forcessl'] == 'yes' ) {
+                Header('HTTP/1.1 301 Moved Permanently'); 
+                Header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+                exit;
             }
         }
 
@@ -341,6 +357,20 @@ if( $ciniki['request']['business_id'] == 0 ) {
             $ciniki['request']['page'] = '';
         }
     }
+}
+
+//
+// Make sure shop URLs are forced to SSL
+//
+if( isset($ciniki['config']['ciniki.web']['shop.domain']) && $_SERVER['HTTP_HOST'] == $ciniki['config']['ciniki.web']['shop.domain'] 
+    && ((isset($_SERVER['HTTP_CLUSTER_HTTPS']) && $_SERVER['HTTP_CLUSTER_HTTPS'] != 'on') || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] != '443'))
+    ) {
+    //
+    // Force redirect to SSL
+    //
+    Header('HTTP/1.1 301 Moved Permanently'); 
+    Header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+    exit;
 }
 
 //

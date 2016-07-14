@@ -27,14 +27,15 @@ function ciniki_web_lookupClientDomain(&$ciniki, $domain, $type) {
     $sitename = '';
     if( $type == 'sitename' ) {
         $sitename = $domain;
-        $strsql = "SELECT id AS business_id, uuid, 'no' AS isprimary "
+        $strsql = "SELECT id AS business_id, uuid, 'no' AS isprimary, 'no' as forcessl "
             . "FROM ciniki_businesses "
             . "WHERE sitename = '" . ciniki_core_dbQuote($ciniki, $domain) . "' "
             . "AND status = 1 "
             . "";
     } else {
         $strsql = "SELECT ciniki_business_domains.business_id, ciniki_businesses.uuid, "
-            . "IF((ciniki_business_domains.flags&0x01)=0x01, 'yes', 'no') AS isprimary "
+            . "IF((ciniki_business_domains.flags&0x01)=0x01, 'yes', 'no') AS isprimary, "
+            . "IF((ciniki_business_domains.flags&0x10)=0x10, 'yes', 'no') AS forcessl "
             . "FROM ciniki_business_domains, ciniki_businesses "
             . "WHERE ciniki_business_domains.domain = '" . ciniki_core_dbQuote($ciniki, $domain) . "' "
             . "AND ciniki_business_domains.status < 50 "
@@ -55,6 +56,7 @@ function ciniki_web_lookupClientDomain(&$ciniki, $domain, $type) {
         return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'610', 'msg'=>'Configuration error'));
     }
     $isprimary = $rc['business']['isprimary'];
+    $forcessl = $rc['business']['forcessl'];
     $business_id = $rc['business']['business_id'];
     $business_uuid = $rc['business']['uuid'];
 
@@ -94,6 +96,9 @@ function ciniki_web_lookupClientDomain(&$ciniki, $domain, $type) {
             return $rc;
         }
         if( isset($rc['business']) && $rc['business']['domain'] != '' ) {
+            if( ($rc['business']['flags']&0x10) == 0x10 ) {
+                $forcessl = 'yes';
+            }
             if( ($rc['business']['flags']&0x01) == 0x01 ) {
                 $redirect = $rc['business']['domain'];
             } else {
@@ -124,6 +129,6 @@ function ciniki_web_lookupClientDomain(&$ciniki, $domain, $type) {
     }
     $modules = $rc['modules'];
 
-    return array('stat'=>'ok', 'business_id'=>$business_id, 'business_uuid'=>$business_uuid, 'modules'=>$modules, 'redirect'=>$redirect, 'domain'=>$domain, 'sitename'=>$sitename);
+    return array('stat'=>'ok', 'business_id'=>$business_id, 'business_uuid'=>$business_uuid, 'modules'=>$modules, 'redirect'=>$redirect, 'domain'=>$domain, 'sitename'=>$sitename, 'forcessl'=>$forcessl);
 }
 ?>
