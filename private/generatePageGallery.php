@@ -329,7 +329,6 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
             }
             $page_content .= $rc['content'];
         }
-
     } 
 
     //

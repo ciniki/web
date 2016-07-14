@@ -77,6 +77,11 @@ function ciniki_web_siteSettings($ciniki) {
     //
     $pages = array();
     $pages['home'] = array('display_name'=>'Home', 'active'=>'no');
+    if( $args['business_id'] == $ciniki['config']['ciniki.core']['master_business_id'] 
+        && isset($ciniki['config']['ciniki.web']['shop.domain']) && $ciniki['config']['ciniki.web']['shop.domain'] != '' 
+        ) {
+        $pages['shop'] = array('display_name'=>'Shop', 'active'=>'no');
+    }
     if( isset($ciniki['business']['modules']['ciniki.info']) ) {
         $pages['about'] = array('display_name'=>'About', 'active'=>'no');
     }
@@ -186,7 +191,11 @@ function ciniki_web_siteSettings($ciniki) {
     if( isset($ciniki['business']['modules']['ciniki.surveys']) ) {
         $pages['surveys'] = array('display_name'=>'Surveys', 'active'=>'no');
     }
-    if( isset($ciniki['business']['modules']['ciniki.filedepot']) || isset($ciniki['business']['modules']['ciniki.products']) || isset($ciniki['business']['modules']['ciniki.subscriptions']) ) {
+    if( isset($ciniki['business']['modules']['ciniki.filedepot']) 
+        || isset($ciniki['business']['modules']['ciniki.products']) 
+        || isset($ciniki['business']['modules']['ciniki.subscriptions']) 
+        || isset($ciniki['business']['modules']['ciniki.merchandise']) 
+        ) {
         $pages['account'] = array('display_name'=>'Account', 'active'=>'no');
     }
     if( isset($ciniki['business']['modules']['ciniki.membersonly']) ) {
@@ -273,6 +282,9 @@ function ciniki_web_siteSettings($ciniki) {
     //
     if( isset($settings['page-home-active']) && $settings['page-home-active'] == 'yes' ) {
         $pages['home']['active'] = 'yes';
+    }
+    if( isset($settings['page-shop-active']) && $settings['page-shop-active'] == 'yes' ) {
+        $pages['shop']['active'] = 'yes';
     }
     //
     // Allow any about page to trigger it to be active in website menu

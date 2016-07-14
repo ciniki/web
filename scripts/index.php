@@ -135,7 +135,9 @@ if( $rc['stat'] == 'ok' && isset($rc['business']['uuid']) ) {
 // Determine which site and page should be displayed
 // FIXME: Check for redirects from sitename or domain names to primary domain name.
 //
-if( $ciniki['config']['ciniki.web']['master.domain'] != $_SERVER['HTTP_HOST'] ) {
+if( $ciniki['config']['ciniki.web']['master.domain'] != $_SERVER['HTTP_HOST'] 
+    && (!isset($ciniki['config']['ciniki.web']['shop.domain']) || $ciniki['config']['ciniki.web']['shop.domain'] != $_SERVER['HTTP_HOST'])
+    ) {
     //
     // Lookup client domain in database
     //
@@ -152,6 +154,12 @@ if( $ciniki['config']['ciniki.web']['master.domain'] != $_SERVER['HTTP_HOST'] ) 
     //
     if( $rc['stat'] == 'ok' ) {
         $ciniki['request']['business_id'] = $rc['business_id'];
+        if( isset($rc['domain']) && $rc['domain'] != '' ) {
+            $ciniki['business']['domain'] = $rc['domain'];
+        }
+        if( isset($rc['sitename']) && $rc['sitename'] != '' ) {
+            $ciniki['business']['sitename'] = $rc['sitename'];
+        }
         $ciniki['business']['uuid'] = $rc['business_uuid'];
         $ciniki['business']['modules'] = $rc['modules'];
         if( isset($rc['redirect']) && $rc['redirect'] != '' && $preview == 'no' ) {
@@ -172,6 +180,11 @@ if( $ciniki['config']['ciniki.web']['master.domain'] != $_SERVER['HTTP_HOST'] ) 
     }
 }
 
+//
+// Start the session here so we have access to _SESSION when checking if redirect
+//
+session_start();
+
 // 
 // If nothing was found, assume the master business
 //
@@ -183,9 +196,15 @@ if( $ciniki['request']['business_id'] == 0 ) {
     $ciniki['request']['domain_base_url'] = 'http://' . $ciniki['config']['ciniki.web']['master.domain'];
     $ciniki['request']['ssl_domain_base_url'] = 'http://' . $ciniki['config']['ciniki.web']['master.domain'];
     if( $uri == '' ) {
-        $ciniki['request']['page'] = 'masterindex';
-        $ciniki['request']['business_id'] = $ciniki['config']['ciniki.core']['master_business_id'];
-        $ciniki['request']['base_url'] = '';
+        if( isset($ciniki['config']['ciniki.web']['shop.domain']) && $_SERVER['HTTP_HOST'] == $ciniki['config']['ciniki.web']['shop.domain'] && isset($ciniki['config']['ciniki.core']['shop_business_id']) ) {
+            $ciniki['request']['page'] = 'home';
+            $ciniki['request']['business_id'] = $ciniki['config']['ciniki.core']['shop_business_id'];
+            $ciniki['request']['base_url'] = '';
+        } else {
+            $ciniki['request']['page'] = 'masterindex';
+            $ciniki['request']['business_id'] = $ciniki['config']['ciniki.core']['master_business_id'];
+            $ciniki['request']['base_url'] = '';
+        }
     } elseif( $ciniki['request']['uri_split'][0] == 'about' 
         || $ciniki['request']['uri_split'][0] == 'contact'
         || $ciniki['request']['uri_split'][0] == 'features'
@@ -251,13 +270,61 @@ if( $ciniki['request']['business_id'] == 0 ) {
         $ciniki['request']['business_id'] = $rc['business_id'];
         $ciniki['business']['uuid'] = $rc['business_uuid'];
         $ciniki['business']['modules'] = $rc['modules'];
+        if( isset($rc['domain']) ) {
+            $ciniki['business']['domain'] = $rc['domain'];
+        }
         $ciniki['request']['base_url'] = ($preview=='yes'?'/preview/':'/') . $ciniki['request']['uri_split'][0];
         $ciniki['request']['domain'] = $ciniki['config']['ciniki.web']['master.domain'];
         $ciniki['request']['domain_base_url'] = 'http://' . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $ciniki['request']['uri_split'][0];
         $ciniki['request']['ssl_domain_base_url'] = 'http://' . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $ciniki['request']['uri_split'][0];
-        if( isset($rc['redirect']) && $rc['redirect'] != '' && $preview == 'no' ) {
+        //
+        // If the customer has a primary domain, then make sure the request is redirected to the primary domain
+        //
+        if( isset($rc['redirect']) && $rc['redirect'] != '' && $preview == 'no' 
+            && (!isset($ciniki['config']['ciniki.web']['shop.domain']) || $ciniki['config']['ciniki.web']['shop.domain'] != $_SERVER['HTTP_HOST'])
+            ) {
+            // 
+            // If going to shop domain, only redirect if not logged in or going to account page. Otherwise make sure they
+            // get redirected back to main website so search engines don't see site twice
+            //
             Header('HTTP/1.1 301 Moved Permanently'); 
             Header('Location: http://' . $rc['redirect'] . preg_replace('/^\/[^\/]+/', '', $_SERVER['REQUEST_URI']));
+        }
+        elseif( isset($rc['domain']) && $rc['domain'] != '' && $preview == 'no'
+            && (!isset($ciniki['config']['ciniki.web']['shop.domain']) || $ciniki['config']['ciniki.web']['shop.domain'] != $_SERVER['HTTP_HOST'])
+            ) {
+            Header('HTTP/1.1 301 Moved Permanently'); 
+            Header('Location: http://' . $rc['domain'] . preg_replace('/^\/[^\/]+/', '', $_SERVER['REQUEST_URI']));
+        }
+        //
+        // If they have requested the shop domain, check to make sure they are logged in or going to account page, otherwise they should be redirected back to main site.
+        //
+        if( isset($ciniki['config']['ciniki.web']['shop.domain']) 
+            && $ciniki['config']['ciniki.web']['shop.domain'] == $_SERVER['HTTP_HOST']                          // Going to shop domain
+            && (!isset($_SESSION['customer']['id']) || $_SESSION['customer']['id'] == 0)      // Not logged in
+            && !preg_match("/^\/[^\/]+\/account/", $_SERVER['REQUEST_URI'])                                     // Not going to account page
+            ) {
+/*            print "<pre>";
+            print_r($_SESSION);
+            print "</pre>";
+            print "Redirect";  */
+            //
+            // Check if a redirect is specified
+            //
+            if( isset($rc['redirect']) && $rc['redirect'] != '' && $preview == 'no' ) {
+                Header('HTTP/1.1 301 Moved Permanently'); 
+                Header('Location: http://' . $rc['redirect'] . preg_replace('/^\/[^\/]+/', '', $_SERVER['REQUEST_URI']));
+            } 
+            elseif( isset($rc['domain']) && $rc['domain'] != '' && $preview == 'no' ) {
+                Header('HTTP/1.1 301 Moved Permanently'); 
+                Header('Location: http://' . $rc['domain'] . preg_replace('/^\/[^\/]+/', '', $_SERVER['REQUEST_URI']));
+            } 
+            //
+            // No domain, redirect
+            else {
+                Header('HTTP/1.1 301 Moved Permanently'); 
+                Header('Location: http://' . $ciniki['config']['ciniki.web']['master.domain'] . $_SERVER['REQUEST_URI']);
+            }
         }
 
         //
@@ -279,7 +346,6 @@ if( $ciniki['request']['business_id'] == 0 ) {
 //
 // Setup the session
 //
-session_start();
 $ciniki['session'] = array();
 $ciniki['session']['change_log_id'] = 'web.' . date('Ymd.His');
 $ciniki['session']['user'] = array('id'=>'-2');
@@ -405,6 +471,13 @@ if( isset($settings['site-header-og-image']) && $settings['site-header-og-image'
 
 if( isset($settings['site-ssl-active']) && $settings['site-ssl-active'] == 'yes' ) {
     $ciniki['request']['ssl_domain_base_url'] = preg_replace('/^http:/', 'https:', $ciniki['request']['ssl_domain_base_url']);
+}
+
+//
+// Check for the SSL Shop configuration
+//
+if( isset($settings['site-ssl-shop']) && $settings['site-ssl-shop'] == 'yes' && isset($ciniki['config']['ciniki.web']['shop.domain']) && $ciniki['config']['ciniki.web']['shop.domain'] != '' ) {
+    $ciniki['request']['ssl_domain_base_url'] = 'https://' . $ciniki['config']['ciniki.web']['shop.domain'] . '/' . $ciniki['business']['details']['sitename'];
 }
 
 // print "<pre>"; print_r($ciniki); print "</pre>";
@@ -559,6 +632,11 @@ if( $found == 'no' ) {
     if( $ciniki['request']['page'] == 'masterindex' && isset($settings['page-home-active']) && $settings['page-home-active'] == 'yes' ) {
         require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generateMasterIndex.php');
         $rc = ciniki_web_generateMasterIndex($ciniki, $settings);
+    } 
+    // Shop Home page
+    elseif( $ciniki['request']['page'] == 'shopindex' && isset($settings['page-shop-active']) && $settings['page-shop-active'] == 'yes' ) {
+        require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generateShopIndex.php');
+        $rc = ciniki_web_generateShopIndex($ciniki, $settings);
     } 
     // Signup Page
     elseif( $ciniki['request']['page'] == 'signup' && $settings['page-signup-active'] == 'yes' ) {

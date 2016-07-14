@@ -24,7 +24,9 @@ function ciniki_web_lookupClientDomain(&$ciniki, $domain, $type) {
     //
     // Query the database for the domain
     //
+    $sitename = '';
     if( $type == 'sitename' ) {
+        $sitename = $domain;
         $strsql = "SELECT id AS business_id, uuid, 'no' AS isprimary "
             . "FROM ciniki_businesses "
             . "WHERE sitename = '" . ciniki_core_dbQuote($ciniki, $domain) . "' "
@@ -55,23 +57,46 @@ function ciniki_web_lookupClientDomain(&$ciniki, $domain, $type) {
     $business_uuid = $rc['business']['uuid'];
 
     //
+    // Get the sitename
+    //
+    if( $type == 'domain' ) {
+        $strsql = "SELECT sitename "
+            . "FROM ciniki_businesses "
+            . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+            . "AND status = 1 ";
+        $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'business');
+        if( $rc['stat'] != 'ok' ) {
+            return $rc;
+        }
+        if( isset($rc['business']['sitename']) ) {
+            $sitename = $rc['business']['sitename'];
+        }
+    }
+    //
     // Get primary domain if not primary
     //
     $redirect = '';
+    $domain = '';
     if( $rc['business']['isprimary'] == 'no' ) {
-        $strsql = "SELECT domain "
+        $strsql = "SELECT domain, flags "
             . "FROM ciniki_business_domains "
             . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
-            . "AND (flags&0x01) = 0x01 "
+//            . "AND (flags&0x01) = 0x01 "  // Converted to sort by flags, so if there is a domain it will redirect
             . "AND status < 50 "
+            . "ORDER BY (flags&0x01) DESC "
+            . "LIMIT 1 "
             . "";
         $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'business');
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
         if( isset($rc['business']) && $rc['business']['domain'] != '' ) {
-            $redirect = $rc['business']['domain'];
-        }
+            if( ($rc['business']['flags']&0x01) == 0x01 ) {
+                $redirect = $rc['business']['domain'];
+            } else {
+                $domain = $rc['business']['domain'];
+            }
+        } 
     }
 
     //
@@ -96,6 +121,6 @@ function ciniki_web_lookupClientDomain(&$ciniki, $domain, $type) {
     }
     $modules = $rc['modules'];
 
-    return array('stat'=>'ok', 'business_id'=>$business_id, 'business_uuid'=>$business_uuid, 'modules'=>$modules, 'redirect'=>$redirect);
+    return array('stat'=>'ok', 'business_id'=>$business_id, 'business_uuid'=>$business_uuid, 'modules'=>$modules, 'redirect'=>$redirect, 'domain'=>$domain, 'sitename'=>$sitename);
 }
 ?>

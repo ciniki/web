@@ -44,6 +44,16 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
     }
 
     //
+    // Check if should force to shop.domain
+    //
+    if( isset($settings['site-ssl-shop']) && $settings['site-ssl-shop'] == 'yes' 
+        && isset($ciniki['config']['ciniki.web']['shop.domain']) && $_SERVER['HTTP_HOST'] != $ciniki['config']['ciniki.web']['shop.domain'] && $_SERVER['HTTP_HOST'] != $ciniki['config']['ciniki.web']['master.domain']
+        ) {
+        header('Location: https://' . $ciniki['config']['ciniki.web']['shop.domain'] . '/' . $ciniki['business']['sitename'] . $_SERVER['REQUEST_URI']);
+        exit;
+    }
+
+    //
     // Check if logout was requested
     //
     if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'logout' ) {

@@ -452,6 +452,7 @@ function ciniki_web_main() {
                 'site-ssl-active':{'label':'SSL Enabled', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'site-ssl-force-cart':{'label':'SSL Cart Only', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'site-ssl-force-account':{'label':'SSL Account Only', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                'site-ssl-shop':{'label':'SSL Shopping Domain', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 }},
             '_save':{'label':'', 'buttons':{
                 'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'ssl\');'},
@@ -623,6 +624,41 @@ function ciniki_web_main() {
         this.home.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'home\');');
 //      this.home.addLeftButton('website', 'Preview', 'M.showWebsite(\'/\');');
         this.home.addClose('Cancel');
+
+        //
+        // The options and information for the shop page
+        //
+        this.shop = new M.panel('Shop',
+            'ciniki_web_main', 'shop',
+            'mc', 'medium mediumaside', 'sectioned', 'ciniki.web.main.shop');
+        this.shop.data = {};
+        this.shop.sections = {
+            'options':{'label':'', 'aside':'yes', 'fields':{
+                'page-shop-active':{'label':'Display Home Page', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                }},
+            '_image':{'label':'Image', 'type':'imageform', 'aside':'yes', 'fields':{
+                'page-shop-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
+                }},
+            '_content':{'label':'Welcome Message (optional)', 'fields':{
+                'page-shop-content':{'label':'', 'hidelabel':'yes', 'hint':'', 'type':'textarea', 'size':'large'},
+                }},
+            '_save':{'label':'', 'buttons':{
+                'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'shop\');'},
+                }},
+        };
+        this.shop.fieldValue = this.fieldValue;
+        this.shop.fieldHistoryArgs = this.fieldHistoryArgs;
+        this.shop.sectionData = function(s) { 
+            return this.data[s];
+        };
+        this.shop.addDropImage = function(iid) {
+            this.setFieldValue('page-shop-image', iid);
+            return true;
+        };
+        this.shop.deleteImage = this.deleteImage;
+        this.shop.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'shop\');');
+//      this.shop.addLeftButton('website', 'Preview', 'M.showWebsite(\'/\');');
+        this.shop.addClose('Cancel');
 
         //
         // The options and information for the custom 001 page
