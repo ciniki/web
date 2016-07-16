@@ -797,7 +797,28 @@ function ciniki_web_main() {
         };
 
         //
-        // The options and information for the Features page
+        // The options and information for the Merchandise page
+        //
+        this.merchandise = new M.panel('Merchandise',
+            'ciniki_web_main', 'merchandise',
+            'mc', 'narrow', 'sectioned', 'ciniki.web.main.merchandise');
+        this.merchandise.data = {};
+        this.merchandise.sections = {
+            'options':{'label':'Options', 'fields':{
+                'page-merchandise-active':{'label':'Show Shop', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                'page-merchandise-name':{'label':'Name', 'type':'text'},
+                }},
+            '_save':{'label':'', 'buttons':{
+                'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'merchandise\');'},
+                }},
+        };
+        this.merchandise.fieldValue = this.fieldValue;
+        this.merchandise.fieldHistoryArgs = this.fieldHistoryArgs;
+        this.merchandise.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'merchandise\');');
+        this.merchandise.addClose('Cancel');
+
+        //
+        // The options and information for the Properties page
         //
         this.propertyrentals = new M.panel('Properties',
             'ciniki_web_main', 'propertyrentals',
@@ -814,7 +835,7 @@ function ciniki_web_main() {
         };
         this.propertyrentals.fieldValue = this.fieldValue;
         this.propertyrentals.fieldHistoryArgs = this.fieldHistoryArgs;
-        this.propertyrentals.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'features\');');
+        this.propertyrentals.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'propertyrentals\');');
 //      this.features.addLeftButton('website', 'Preview', 'M.showWebsite(\'/features\');');
         this.propertyrentals.addClose('Cancel');
 

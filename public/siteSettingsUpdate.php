@@ -430,6 +430,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-tutorials-image-caption',
         'page-tutorials-content',
         'page-faq-active',
+        'page-merchandise-active',
+        'page-merchandise-name',
         'site-theme',
         'site-layout',
 //      'site-subscription-agreement',

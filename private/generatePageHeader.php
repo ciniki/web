@@ -1208,6 +1208,13 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
                 $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='jiji'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/buysell'>Buy/Sell</a></li>";
             }
         }
+        if( isset($settings['page-merchandise-active']) && $settings['page-merchandise-active'] == 'yes' ) {
+            if( isset($settings['page-merchandise-name']) && $settings['page-merchandise-name'] != '' ) {
+                $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='merchandise'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/merchandise'>" . $settings['page-merchandise-name'] . "</a></li>";
+            } else {
+                $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='merchandise'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/merchandise'>Shop</a></li>";
+            }
+        }
         //
         // Check if membersonly area is enabled, and the member has logged in
         //

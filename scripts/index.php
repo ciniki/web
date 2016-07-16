@@ -973,6 +973,12 @@ if( $found == 'no' ) {
         require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePagePropertyRentals.php');
         $rc = ciniki_web_generatePagePropertyRentals($ciniki, $settings, 'info');
     } 
+    // Merchandise
+    elseif( $ciniki['request']['page'] == 'merchandise' 
+        && isset($settings['page-merchandise-active']) && $settings['page-merchandise-active'] == 'yes' ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
+        $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['business_id'], 'ciniki.merchandise');
+    } 
     // Info
     elseif( $ciniki['request']['page'] == 'info' 
         && isset($settings['page-info-active']) && $settings['page-info-active'] == 'yes' ) {

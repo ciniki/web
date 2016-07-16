@@ -243,6 +243,9 @@ function ciniki_web_siteSettings($ciniki) {
     if( isset($ciniki['business']['modules']['ciniki.info']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x20) > 0 ) {
         $pages['info'] = array('display_name'=>'Information', 'active'=>'no');
     }
+    if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.merchandise', 0x0100) ) {
+        $pages['merchandise'] = array('display_name'=>'Shop', 'active'=>'no');
+    }
     $pages['contact'] = array('display_name'=>'Contact', 'active'=>'no');
 
 
@@ -419,6 +422,9 @@ function ciniki_web_siteSettings($ciniki) {
     }
     if( isset($settings['page-info-active']) && $settings['page-info-active'] == 'yes' ) {
         $pages['info']['active'] = 'yes';
+    }
+    if( isset($settings['page-merchandise-active']) && $settings['page-merchandise-active'] == 'yes' ) {
+        $pages['merchandise']['active'] = 'yes';
     }
     if( isset($settings['page-search-active']) && $settings['page-search-active'] == 'yes' ) {
         $pages['search']['active'] = 'yes';
