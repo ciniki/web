@@ -263,9 +263,14 @@ if( $ciniki['request']['business_id'] == 0 ) {
 //      require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/lookupClientDomain.php');
         $rc = ciniki_web_lookupClientDomain($ciniki, $ciniki['request']['uri_split'][0], 'sitename');
         if( $rc['stat'] != 'ok' ) {
-            // Generate the master business 404 page
-            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateMaster404');
-            $rc = ciniki_web_generateMaster404($ciniki, $rc);
+            if( $ciniki['request']['uri_split'][0] == 'robots.txt' ) {
+                ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageRobots');
+                $rc = ciniki_web_generatePageRobots($ciniki, array());
+            } else {
+                // Generate the master business 404 page
+                ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateMaster404');
+                $rc = ciniki_web_generateMaster404($ciniki, $rc);
+            }
             if( isset($rc['content']) ) {
                 print $rc['content'];
             } else {
@@ -1036,8 +1041,13 @@ if( $found == 'no' ) {
         }
 
         if( $found == 'no' ) {
-            require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePage404.php');
-            $rc = ciniki_web_generatePage404($ciniki, $settings, null); 
+            if( $_SERVER['REQUEST_URI'] == '/robots.txt' ) {
+                require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageRobots.php');
+                $rc = ciniki_web_generatePageRobots($ciniki, $settings);
+            } else { 
+                require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePage404.php');
+                $rc = ciniki_web_generatePage404($ciniki, $settings, null); 
+            }
         }
 
     //  print_error($rc, 'Unknown page ' . $ciniki['request']['page']);
@@ -1046,34 +1056,39 @@ if( $found == 'no' ) {
 }
 
 if( $rc['stat'] == '404' ) {
-        //
-        // If no page was found, check up the chain of redirects to see if theres a general match
-        //
-        if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.web', 0x04000000) ) {
-            $url = $_SERVER['REQUEST_URI'];
-            $u = preg_split('/\?/', $url);
-            $url = $u[0];
-            if( $ciniki['request']['base_url'] != '' ) {
-                $url = preg_replace('#' . $ciniki['request']['base_url'] . '#i', '', $url, 1);
-            }
-            while( $url != '' ) {   
-                $strsql = "SELECT newurl "
-                    . "FROM ciniki_web_redirects "
-                    . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
-                    . "AND oldurl = '" . ciniki_core_dbQuote($ciniki, $url) . "' "
-                    . "";
-                $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'redirect');
-                if( $rc['stat'] == 'ok' && isset($rc['redirect']['newurl']) ) {
-                    Header('HTTP/1.1 301 Moved Permanently'); 
-                    Header('Location: ' . $ciniki['request']['domain_base_url'] . $rc['redirect']['newurl']);
-                    exit;
-                }
-                $url = preg_replace("/\/[^\/]*$/", '', $url);
-            }
+    //
+    // If no page was found, check up the chain of redirects to see if theres a general match
+    //
+    if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.web', 0x04000000) ) {
+        $url = $_SERVER['REQUEST_URI'];
+        $u = preg_split('/\?/', $url);
+        $url = $u[0];
+        if( $ciniki['request']['base_url'] != '' ) {
+            $url = preg_replace('#' . $ciniki['request']['base_url'] . '#i', '', $url, 1);
         }
+        while( $url != '' ) {   
+            $strsql = "SELECT newurl "
+                . "FROM ciniki_web_redirects "
+                . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+                . "AND oldurl = '" . ciniki_core_dbQuote($ciniki, $url) . "' "
+                . "";
+            $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'redirect');
+            if( $rc['stat'] == 'ok' && isset($rc['redirect']['newurl']) ) {
+                Header('HTTP/1.1 301 Moved Permanently'); 
+                Header('Location: ' . $ciniki['request']['domain_base_url'] . $rc['redirect']['newurl']);
+                exit;
+            }
+            $url = preg_replace("/\/[^\/]*$/", '', $url);
+        }
+    }
 
-    require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePage404.php');
-    $rc = ciniki_web_generatePage404($ciniki, $settings, $rc);
+    if( $ciniki['request']['uri_split'][0] == 'robots.txt' ) {
+        require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageRobots.php');
+        $rc = ciniki_web_generatePageRobots($ciniki, $settings);
+    } else {
+        require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePage404.php');
+        $rc = ciniki_web_generatePage404($ciniki, $settings, $rc);
+    }
 } 
 
 if( isset($ciniki['response']['format']) && $ciniki['response']['format'] == 'json' ) {
