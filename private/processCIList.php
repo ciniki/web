@@ -42,7 +42,11 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
                 $item = array_slice($category['list'], 0, 1);
                 $item = array_pop($item);
                 if( isset($item['is_details']) && $item['is_details'] == 'yes' ) {
-                    $title_url = $base_url . '/' . $item['permalink'];
+                    if( isset($item['url']) ) {
+                        $title_url = $item['url'];
+                    } else {
+                        $title_url = $base_url . '/' . $item['permalink'];
+                    }
                 }
             }
             $content .= "\n<tr><th><span class='cilist-title'>" 
@@ -61,7 +65,11 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
             $url_display = '... more';
             $url_target = '';
             $javascript_onclick = '';
-            if( isset($item['is_details']) && $item['is_details'] == 'yes' 
+            if( isset($item['is_details']) && $item['is_details'] == 'yes'
+                && isset($item['localurl']) && $item['localurl'] != '' ) {
+                $url = $item['localurl'];
+                $javascript_onclick = " onclick='javascript:location.href=\"$url\";' ";
+            } elseif( isset($item['is_details']) && $item['is_details'] == 'yes' 
                 && isset($item['permalink']) && $item['permalink'] != '' ) {
                 $url = $base_url . "/" . $item['permalink'];
                 $javascript_onclick = " onclick='javascript:location.href=\"$url\";' ";
@@ -73,6 +81,7 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
                 $url = $rc['url'];
                 $url_target = '_blank';
                 $url_display = $rc['display'];
+                $javascript_onclick = " onclick='javascript:location.href=\"$url\";' ";
             }
 
             // Setup the item image
