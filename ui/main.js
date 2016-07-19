@@ -1851,6 +1851,9 @@ function ciniki_web_main() {
             '_paymentsuccessmessage':{'label':'Payment Success Message', 'fields':{
                 'page-cart-payment-success-message':{'label':'', 'hidelabel':'yes', 'type':'textarea'},
                 }},
+            '_paymentsuccessmessageemails':{'label':'Notification emails for payments', 'fields':{
+                'page-cart-payment-success-emails':{'label':'', 'hidelabel':'yes', 'type':'text'},
+                }},
             '_dealersubmit':{'label':'', 'active':'no', 'fields':{
                 'page-cart-dealersubmit-email-template':{'label':'Email Dealer Order Template', 'type':'multitoggle', 'default':'none', 'toggles':this.dealerSubmitTemplates},
                 }},

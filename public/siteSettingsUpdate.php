@@ -422,6 +422,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-cart-child-create-button',
         'page-cart-noaccount-message',
         'page-cart-payment-success-message',
+        'page-cart-payment-success-emails',         // Emails to send notification to when order paid for
         'page-signup-active',
         'page-signup-menu',
         'page-api-active',

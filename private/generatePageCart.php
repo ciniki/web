@@ -651,6 +651,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'paypalExpressCheckoutDo');
         $rc = ciniki_sapos_web_paypalExpressCheckoutDo($ciniki, $ciniki['request']['business_id'], array(
+            'invoice_id'=>$cart['id'],
             'type'=>'Sale',
             'amount'=>$cart['total_amount'],
             'currency'=>$intl_currency,
