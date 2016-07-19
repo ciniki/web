@@ -292,6 +292,7 @@ if( $ciniki['request']['business_id'] == 0 ) {
         // If the customer has a primary domain, then make sure the request is redirected to the primary domain
         //
         if( isset($rc['redirect']) && $rc['redirect'] != '' && $preview == 'no' 
+            && (!isset($ciniki['config']['ciniki.web']['redirects']) || $ciniki['config']['ciniki.web']['redirects'] != 'off')
             && (!isset($ciniki['config']['ciniki.web']['shop.domain']) || $ciniki['config']['ciniki.web']['shop.domain'] != $_SERVER['HTTP_HOST'])
             ) {
             // 
@@ -303,6 +304,7 @@ if( $ciniki['request']['business_id'] == 0 ) {
             exit;
         }
         elseif( isset($rc['domain']) && $rc['domain'] != '' && $preview == 'no'
+            && (!isset($ciniki['config']['ciniki.web']['redirects']) || $ciniki['config']['ciniki.web']['redirects'] != 'off')
             && (!isset($ciniki['config']['ciniki.web']['shop.domain']) || $ciniki['config']['ciniki.web']['shop.domain'] != $_SERVER['HTTP_HOST'])
             ) {
             Header('HTTP/1.1 301 Moved Permanently'); 
