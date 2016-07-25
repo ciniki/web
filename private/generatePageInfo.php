@@ -375,7 +375,7 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
                 return $rc;
             }
             if( isset($rc['content']) && $rc['content'] != '' ) {
-        //      $page_content .= "<article class='page'>\n";
+              $page_content .= "<article class='page'>\n";
                 if( isset($settings['page-about-bios-title']) && $settings['page-about-bios-title'] != '' ) {
                     $page_content .= "<h2>" . $settings['page-about-bios-title'] . "</h2>\n";
                 } 
@@ -387,7 +387,7 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
                 $page_content .= $rc['content'];
 //                  . "</div>";
 //              $page_content .= $rc['content'];
-//              $page_content .= "</article>\n";
+              $page_content .= "</article>\n";
             }
         }
     }
