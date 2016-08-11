@@ -2571,14 +2571,13 @@ function ciniki_web_main() {
     this.savePage = function(page) {
         var c = this[page].serializeForm('no');
         if( c != '' ) {
-            var rsp = M.api.postJSONCb('ciniki.web.siteSettingsUpdate', 
-                {'business_id':M.curBusinessID}, c, function(rsp) {
-                    if( rsp.stat != 'ok' ) {
-                        M.api.err(rsp);
-                        return false;
-                    } 
-                    M.ciniki_web_main[page].close();
-                });
+            M.api.postJSONCb('ciniki.web.siteSettingsUpdate', {'business_id':M.curBusinessID}, c, function(rsp) {
+                if( rsp.stat != 'ok' ) {
+                    M.api.err(rsp);
+                    return false;
+                } 
+                M.ciniki_web_main[page].close();
+            });
         } else {
             this[page].close();
         }
