@@ -167,7 +167,6 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
         }
     }
     if( isset($settings['page-home-seo-description']) && $settings['page-home-seo-description'] != '' ) {
-    print_r($settings);
         $ciniki['response']['head']['og']['description'] = strip_tags($settings['page-home-seo-description']);
     }
 
