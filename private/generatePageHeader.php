@@ -259,8 +259,10 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     if( isset($ciniki['response']['head']['og']) ) {
         $og_site_name = $ciniki['business']['details']['name'];
         foreach($ciniki['response']['head']['og'] as $og_type => $og_value) {
-//          if( $og_type != 'og:description' && $og_value != '' ) {
             if( $og_value != '' ) {
+                if( $og_type == 'description' ) {
+                    $content .= "<meta name='$og_type' content='$og_value' />\n";
+                }
                 if( $og_type == 'site_name' ) {
                     $og_site_name = $og_value;
                 }
@@ -272,7 +274,6 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
         }
         if( $ciniki['response']['head']['og']['title'] == '' ) {
             $content .= '<meta property="og:title" content="' . $ciniki['business']['details']['name'] . ' - ' . $title . '"/>' . "\n";
-            
         }
     }
 

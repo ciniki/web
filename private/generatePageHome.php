@@ -166,6 +166,10 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
             $ciniki['response']['head']['og']['description'] = strip_tags($rc['content']['page-home-content']);
         }
     }
+    if( isset($settings['page-home-seo-description']) && $settings['page-home-seo-description'] != '' ) {
+        $ciniki['response']['head']['og']['description'] = strip_tags($settings['page-home-seo-description']);
+    }
+
 
     if( isset($rc['content']['page-home-content']) && $rc['content']['page-home-content'] != '' ) {
         if( !isset($settings['page-home-content-layout']) || $settings['page-home-content-layout'] != 'manual' ) {
