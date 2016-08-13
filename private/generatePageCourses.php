@@ -374,6 +374,8 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
         $page_title = $offering['name'];
         if( ($ciniki['business']['modules']['ciniki.courses']['flags']&0x01) == 0x01 && $offering['code'] != '' ) {
             $page_title = $offering['code'] . ' - ' . $offering['name'];
+        } elseif( ($ciniki['business']['modules']['ciniki.courses']['flags']&0x20) == 0x20 && $offering['offering_code'] != '' ) {
+            $page_title = $offering['offering_code'] . ' - ' . $offering['name'];
         }
         if( isset($settings['page-courses-level-display']) 
             && $settings['page-courses-level-display'] == 'yes' 
@@ -768,6 +770,8 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
                         }
                         if( ($ciniki['business']['modules']['ciniki.courses']['flags']&0x01) == 0x01 && $offering['code'] != '' ) {
                             $offering_name = $offering['code'] . ' - ' . $offering['name'];
+                        } elseif( ($ciniki['business']['modules']['ciniki.courses']['flags']&0x20) == 0x20 && $offering['offering_code'] != '' ) {
+                            $offering_name = $offering['offering_code'] . ' - ' . $offering['name'];
                         } else {
                             $offering_name = $offering['name'];
                         }
