@@ -13,7 +13,6 @@
 // -------
 //
 function ciniki_web_generatePageEvents($ciniki, $settings) {
-
     //
     // Check if a file was specified to be downloaded
     //

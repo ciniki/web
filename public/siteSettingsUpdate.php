@@ -342,6 +342,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-events-active',
         'page-events-upcoming-empty-hide',
         'page-events-title',
+        'page-events-current',
         'page-events-past',
         'page-events-categories-display',
         'page-events-image',

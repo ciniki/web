@@ -886,6 +886,7 @@ function ciniki_web_main() {
             'options':{'label':'Options', 'fields':{
                 'page-events-active':{'label':'Show events', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-events-title':{'label':'Title', 'hint':'Events', 'type':'text'},
+                'page-events-current':{'label':'Separate Current Events', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'onchange':'M.ciniki_web_main.events.updateVisible'},
                 'page-events-past':{'label':'Include past events', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'onchange':'M.ciniki_web_main.events.updateVisible'},
                 'page-events-upcoming-empty-hide':{'label':'Hide empty upcoming', 'visible':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'visible':function() {return M.ciniki_web_main.events.data['page-events-past']}},
                 'page-events-categories-display':{'label':'Display Categories', 'type':'toggle', 'default':'off', 'toggles':this.eventCategoryDisplay},

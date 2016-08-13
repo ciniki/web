@@ -873,8 +873,10 @@ if( $found == 'no' ) {
     // Events
     elseif( $ciniki['request']['page'] == 'events' 
         && isset($settings['page-events-active']) && $settings['page-events-active'] == 'yes' ) {
-        require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageEvents.php');
-        $rc = ciniki_web_generatePageEvents($ciniki, $settings);
+//        require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageEvents.php');
+//        $rc = ciniki_web_generatePageEvents($ciniki, $settings);
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
+        $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['business_id'], 'ciniki.events');
     } 
     // Film Schedule
     elseif( $ciniki['request']['page'] == 'schedule' 
