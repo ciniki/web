@@ -24,6 +24,11 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
     $popup_box_content = '';
     $javascript = '';
 
+    // Generate the footer content
+    $content .= "<hr class='section-divider footer-section-divider' />\n";
+    $content .= "<footer>";
+    $content .= "<div class='footer-wrapper'>";
+
     //
     // Check if there are any sponsors
     //
@@ -46,11 +51,6 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
             }
         }
     }
-
-    // Generate the footer content
-    $content .= "<hr class='section-divider footer-section-divider' />\n";
-    $content .= "<footer>";
-    $content .= "<div class='footer-wrapper'>";
 
     //
     // Check if there is a pre footer message
