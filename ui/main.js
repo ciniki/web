@@ -537,7 +537,13 @@ function ciniki_web_main() {
                 'page-home-upcoming-filmschedule-more':{'label':'More', 'active':'yes', 'type':'text', 'hint':'... more films'},
                 'page-home-upcoming-filmschedule-number':{'label':'Number of Upcoming', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
                 }},
-            '_events':{'label':'Events', 'aside':'yes', 'active':'no', 'fields':{
+            '_currentevents':{'label':'Current Events', 'aside':'yes', 'active':'no', 'fields':{
+                'page-home-current-events':{'label':'Display Current', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+                'page-home-current-events-title':{'label':'Title', 'active':'yes', 'type':'text', 'hint':'Current Events'},
+                'page-home-current-events-more':{'label':'More', 'active':'yes', 'type':'text', 'hint':'... more events'},
+                'page-home-current-events-number':{'label':'Number of Current', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
+                }},
+            '_upcomingevents':{'label':'Upcoming Events', 'aside':'yes', 'active':'no', 'fields':{
                 'page-home-upcoming-events':{'label':'Display Upcoming', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
                 'page-home-upcoming-events-title':{'label':'Title', 'active':'yes', 'type':'text', 'hint':'Upcoming Events'},
                 'page-home-upcoming-events-more':{'label':'More', 'active':'yes', 'type':'text', 'hint':'... more events'},
@@ -2021,7 +2027,8 @@ function ciniki_web_main() {
         this.home.sections._artcatalog.active=(M.curBusiness.modules['ciniki.artcatalog']!=null)?'yes':'no';
         this.home.sections._gallery.active=(M.curBusiness.modules['ciniki.gallery']!=null)?'yes':'no';
         this.home.sections._recipes.active=(M.curBusiness.modules['ciniki.recipes']!=null)?'yes':'no';
-        this.home.sections._events.active=(M.curBusiness.modules['ciniki.events']!=null)?'yes':'no';
+        this.home.sections._currentevents.active=(M.curBusiness.modules['ciniki.events']!=null)?'yes':'no';
+        this.home.sections._upcomingevents.active=(M.curBusiness.modules['ciniki.events']!=null)?'yes':'no';
         this.home.sections._filmschedule.active=(M.curBusiness.modules['ciniki.filmschedule']!=null)?'yes':'no';
         this.home.sections._products.active=(M.curBusiness.modules['ciniki.products']!=null)?'yes':'no';
         this.home.sections._writings.active=(M.curBusiness.modules['ciniki.writingcatalog']!=null)?'yes':'no';

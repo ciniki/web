@@ -833,6 +833,61 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
     }
 
     //
+    // List any current events
+    //
+    if( isset($ciniki['business']['modules']['ciniki.events']) 
+        && isset($settings['page-events-active']) && $settings['page-events-active'] == 'yes' 
+        && isset($settings['page-home-current-events']) && $settings['page-home-current-events'] == 'yes'
+        ) {
+        $list_size = 2;
+        if( isset($settings['page-home-current-events-number']) 
+            && $settings['page-home-current-events-number'] > 0 ) {
+            $list_size = $settings['page-home-current-events-number'];
+        }
+        //
+        // Load and parse the events
+        //
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'eventList');
+        $rc = ciniki_events_web_eventList($ciniki, $settings, $ciniki['request']['business_id'], array('type'=>'current', 'limit'=>$list_size+1));
+        if( $rc['stat'] != 'ok' ) {
+            return $rc;
+        }
+        $number_of_events = count($rc['events']);
+        if( isset($rc['events']) && $number_of_events > 0 ) {
+            $events = $rc['events'];
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processEvents');
+            $rc = ciniki_web_processEvents($ciniki, $settings, $events, $list_size);
+            if( $rc['stat'] != 'ok' ) {
+                return $rc;
+            }
+            $page_content .= "<article class='page page-home'>\n"
+                . "<header class='entry-title'><h1 class='entry-title'>";
+            if( isset($settings['page-home-current-events-title']) && $settings['page-home-current-events-title'] != '' ) {
+                $page_content .= $settings['page-home-current-events-title'];
+            } else {
+                $page_content .= "Upcoming Events";
+            }
+            $page_content .= "</h1></header>\n"
+                . "<div class='entry-content'>"
+                . $rc['content']
+                . "";
+            if( $number_of_events > $list_size ) {
+                $page_content .= "<div class='cilist-more'><a href='" . $ciniki['request']['base_url'] . "/events'>";
+                if( isset($settings['page-home-current-events-more']) && $settings['page-home-current-events-more'] != '' ) {
+                    $page_content .= $settings['page-home-current-events-more'];
+                } else {
+                    $page_content .= "... more events";
+                }
+                $page_content .= "</a></div>";
+//              $page_content .= "<div class='cilist-more'><a href='" . $ciniki['request']['base_url'] . "/events'>... more events</a></div>";
+            }
+            $page_content .= "</div>";
+            $page_content .= "</article>\n"
+                . "";
+        }
+    }
+
+    //
     // List any upcoming events
     //
     if( isset($ciniki['business']['modules']['ciniki.events']) 
@@ -848,7 +903,11 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
         // Load and parse the events
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'eventList');
-        $rc = ciniki_events_web_eventList($ciniki, $settings, $ciniki['request']['business_id'], array('type'=>'upcoming', 'limit'=>$list_size+1));
+        if( isset($settings['page-home-current-events']) && $settings['page-home-current-events'] == 'yes' ) {
+            $rc = ciniki_events_web_eventList($ciniki, $settings, $ciniki['request']['business_id'], array('type'=>'future', 'limit'=>$list_size+1));
+        } else {
+            $rc = ciniki_events_web_eventList($ciniki, $settings, $ciniki['request']['business_id'], array('type'=>'upcoming', 'limit'=>$list_size+1));
+        }
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
