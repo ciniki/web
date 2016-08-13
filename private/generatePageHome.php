@@ -865,7 +865,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
             if( isset($settings['page-home-current-events-title']) && $settings['page-home-current-events-title'] != '' ) {
                 $page_content .= $settings['page-home-current-events-title'];
             } else {
-                $page_content .= "Upcoming Events";
+                $page_content .= "Current Events";
             }
             $page_content .= "</h1></header>\n"
                 . "<div class='entry-content'>"
