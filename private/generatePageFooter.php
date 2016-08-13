@@ -24,6 +24,29 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
     $popup_box_content = '';
     $javascript = '';
 
+    //
+    // Check if there are any sponsors
+    //
+    if( isset($ciniki['business']['modules']['ciniki.sponsors']) 
+        && ($ciniki['business']['modules']['ciniki.sponsors']['flags']&0x02) == 0x02
+        ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'sponsors', 'web', 'sponsorRefList');
+        $rc = ciniki_sponsors_web_sponsorRefList($ciniki, $settings, $ciniki['request']['business_id'], 'ciniki.web.page', 'footer');
+        if( $rc['stat'] != 'ok' ) {
+            return $rc;
+        }
+        if( isset($rc['sponsors']) ) {
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processSponsorsSection');
+            $rc = ciniki_web_processSponsorsSection($ciniki, $settings, $rc['sponsors']);
+            if( $rc['stat'] != 'ok' ) {
+                return $rc;
+            }
+            if( isset($rc['content']) && $rc['content'] != '' ) {
+                $content .= $rc['content'];
+            }
+        }
+    }
+
     // Generate the footer content
     $content .= "<hr class='section-divider footer-section-divider' />\n";
     $content .= "<footer>";

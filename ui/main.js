@@ -306,6 +306,10 @@ function ciniki_web_main() {
                 'site-footer-landingpage1-title':{'label':'Title', 'type':'text'},
                 'site-footer-landingpage1-permalink':{'label':'Landing Page', 'type':'select', 'options':this.landingpages},
                 }},
+            'sponsors':{'label':'Sponsors', 'type':'simplegrid', 'num_cols':1,
+                'addTxt':'Manage Sponsors',
+                'addFn':'M.startApp(\'ciniki.sponsors.ref\',null,\'M.ciniki_web_main.updateSponsors("footer");\',\'mc\',{\'object\':\'ciniki.web.page\',\'object_id\':\'footer\'});',
+                },
             '_save':{'label':'', 'buttons':{
                 'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'footer\');'},
                 }},
@@ -313,6 +317,10 @@ function ciniki_web_main() {
         this.footer.fieldValue = this.fieldValue;
         this.footer.fieldHistoryArgs = this.fieldHistoryArgs;
         this.footer.deleteImage = this.deleteImage;
+        this.footer.cellValue = function(s, i, j, d) { return d.sponsor.title; }
+        this.footer.rowFn = function(s, i, d) {
+            return 'M.startApp(\'ciniki.sponsors.ref\',null,\'M.ciniki_web_main.updateSponsors("footer");\',\'mc\',{\'ref_id\':\'' + d.sponsor.ref_id + '\'});';
+        };
         this.footer.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'footer\');');
         this.footer.addClose('Cancel');
 
@@ -1489,7 +1497,7 @@ function ciniki_web_main() {
         this.sponsors.addClose('Cancel');
 
         //
-        // The options and information for the sponsors page
+        // The options and information for the newsletters page
         //
         this.newsletters = new M.panel('Newsletters',
             'ciniki_web_main', 'newsletters',
@@ -1510,7 +1518,7 @@ function ciniki_web_main() {
         this.newsletters.addClose('Cancel');
 
         //
-        // The options and information for the sponsors page
+        // The options and information for the surveys page
         //
         this.surveys = new M.panel('Newsletters',
             'ciniki_web_main', 'surveys',
@@ -2233,32 +2241,29 @@ function ciniki_web_main() {
         }
 
         if( page == 'coursestype' && subpage != null ) {
-            var rsp = M.api.getJSONCb('ciniki.web.pageSettingsGet', 
-                {'business_id':M.curBusinessID, 'page':'courses-' + subpage, 'content':'yes'}, function(rsp) {
-                    if( rsp.stat != 'ok' ) {
-                        M.api.err(rsp);
-                        return false;
-                    }
-                    M.ciniki_web_main.showPageFinish(cb, page, subpage, subpagetitle, rsp);
-                });
+            M.api.getJSONCb('ciniki.web.pageSettingsGet', {'business_id':M.curBusinessID, 'page':'courses-' + subpage, 'content':'yes'}, function(rsp) {
+                if( rsp.stat != 'ok' ) {
+                    M.api.err(rsp);
+                    return false;
+                }
+                M.ciniki_web_main.showPageFinish(cb, page, subpage, subpagetitle, rsp);
+            });
         } else if( page == 'coursesregistration' ) {
-            var rsp = M.api.getJSONCb('ciniki.web.pageSettingsGet', 
-                {'business_id':M.curBusinessID, 'page':'courses-registration', 'content':'yes'}, function(rsp) {
-                    if( rsp.stat != 'ok' ) {
-                        M.api.err(rsp);
-                        return false;
-                    }
-                    M.ciniki_web_main.showPageFinish(cb, page, subpage, subpagetitle, rsp);
-                });
+            M.api.getJSONCb('ciniki.web.pageSettingsGet', {'business_id':M.curBusinessID, 'page':'courses-registration', 'content':'yes'}, function(rsp) {
+                if( rsp.stat != 'ok' ) {
+                    M.api.err(rsp);
+                    return false;
+                }
+                M.ciniki_web_main.showPageFinish(cb, page, subpage, subpagetitle, rsp);
+            });
         } else {
-            var rsp = M.api.getJSONCb('ciniki.web.pageSettingsGet', 
-                {'business_id':M.curBusinessID, 'page':page, 'content':'yes', 'sponsors':'yes'}, function(rsp) {
-                    if( rsp.stat != 'ok' ) {
-                        M.api.err(rsp);
-                        return false;
-                    }
-                    M.ciniki_web_main.showPageFinish(cb, page, subpage, subpagetitle, rsp);
-                });
+            M.api.getJSONCb('ciniki.web.pageSettingsGet', {'business_id':M.curBusinessID, 'page':page, 'content':'yes', 'sponsors':'yes'}, function(rsp) {
+                if( rsp.stat != 'ok' ) {
+                    M.api.err(rsp);
+                    return false;
+                }
+                M.ciniki_web_main.showPageFinish(cb, page, subpage, subpagetitle, rsp);
+            });
         }
     }
 
@@ -2416,21 +2421,20 @@ function ciniki_web_main() {
     };
 
     this.updateSponsors = function(page) {
-        M.api.getJSONCb('ciniki.web.pageSettingsGet', 
-            {'business_id':M.curBusinessID, 'page':page, 'sponsors':'yes'}, function(rsp) {
-                if( rsp.stat != 'ok' ) {
-                    M.api.err(rsp);
-                    return false;
-                }
-                var p = M.ciniki_web_main[page];
-                if( rsp.sponsors != null ) {
-                    p.data.sponsors = rsp.sponsors;
-                } else {
-                    p.data.sponsors = null;
-                }
-                p.refreshSection('sponsors');
-                p.show();
-            });
+        M.api.getJSONCb('ciniki.web.pageSettingsGet', {'business_id':M.curBusinessID, 'page':page, 'sponsors':'yes'}, function(rsp) {
+            if( rsp.stat != 'ok' ) {
+                M.api.err(rsp);
+                return false;
+            }
+            var p = M.ciniki_web_main[page];
+            if( rsp.sponsors != null ) {
+                p.data.sponsors = rsp.sponsors;
+            } else {
+                p.data.sponsors = null;
+            }
+            p.refreshSection('sponsors');
+            p.show();
+        });
     };
 
 //  this.showLogo = function(cb, logo) {
