@@ -281,6 +281,16 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
                 . "<span class='image-awards'>" . $rc['content'] . "</span>"
                 . "";
         }
+        if( isset($img['publications']) && $img['publications'] != '' && isset($img['webflags']) && ($img['webflags']&0x4000) > 0 ) {
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+            $rc = ciniki_web_processContent($ciniki, $settings, $img['publications']);    
+            if( $rc['stat'] != 'ok' ) {
+                return $rc;
+            }
+            $page_content .= "<span class='image-awards-title'>Publications</span>"
+                . "<span class='image-awards'>" . $rc['content'] . "</span>"
+                . "";
+        }
         //
         // Check for additional images for the artwork to be displayed
         //
