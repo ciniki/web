@@ -106,6 +106,9 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
                         . 'type: "' . $dataset['type'] . '",'
                         . 'fill: false,'
                         . '';
+                    if( isset($dataset['yAxisID']) ) {
+                        $js_datasets[$k] .= 'yAxisID:"' . $dataset['yAxisID'] . '",';
+                    }
                     $js_datasets[$k] .= $colours[$dataset['colour']];
                     $js_datasets[$k] .= 'data: [';
                 }
@@ -158,17 +161,40 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
             . 'options: {'
                 . 'legend: {display:false},'
                 . 'responsive: true,'
+                . 'stacked: false,'
                 . 'scales: {'
                     . 'xAxes: [{'
                         . 'display: true,'
                         . 'ticks:{beginAtZero:false},'
                         . '}],'
-                    . 'yAxes: [{'
-                        . 'ticks:{'
-                            . 'beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
-                            . "userCallback: function(dataLabel, index) { return dataLabel + '%';},"
-                            . '},'
-                        . '}],'
+                    . 'yAxes: [{';
+        if( isset($options['yAxes']) && $options['yAxes'] == 'dual' ) {
+            $js .= ''
+//                . 'type:"linear",'
+                . 'display:true,'
+                . 'position:"left",'
+                . 'id:"y-axis-1",'
+                . 'ticks:{'
+                    . 'beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
+                    . "userCallback: function(dataLabel, index) { return dataLabel + '%';},"
+                    . '},'
+                . '},{'
+ //               . 'type:"linear",'
+                . 'display:true,'
+                . 'position:"right",'
+                . 'id:"y-axis-2",'
+                . 'gridLines: {drawOnChartArea:false},'
+                . 'ticks:{'
+                    . 'beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
+                    . "userCallback: function(dataLabel, index) { return dataLabel + '%';},"
+                    . '},';
+        } else {
+            $js .= 'ticks:{'
+                . 'beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
+                . "userCallback: function(dataLabel, index) { return dataLabel + '%';},"
+                . '},';
+        }
+        $js .= '}],'
                 . '},'
                 . 'tooltips:{'
                     . "mode:'single',"
@@ -214,12 +240,33 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
                     . 'legend: {display:false},'
                     . 'scales: {'
                         . 'xAxes: [{ticks:{beginAtZero:false}}],'
-                        . 'yAxes: [{'
-                            . 'ticks:{'
-                                . 'beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
-                                . "userCallback: function(dataLabel, index) { return dataLabel + '%';},"
-                                . '},'
-                            . '}],'
+                        . 'yAxes: [{';
+        if( isset($options['yAxes']) && $options['yAxes'] == 'dual' ) {
+            $js .= 'type:"linear",'
+                . 'display:true,'
+                . 'position:"left",'
+                . 'id:"y-axis-1",'
+                . 'ticks:{'
+                    . 'beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
+                    . "userCallback: function(dataLabel, index) { return dataLabel + '%';},"
+                    . '},'
+                . '},{'
+                . 'type:"linear",'
+                . 'display:true,'
+                . 'position:"right",'
+                . 'id:"y-axis-2",'
+                . 'gridLines: {drawOnChartArea:false},'
+                . 'ticks:{'
+                    . 'beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
+                    . "userCallback: function(dataLabel, index) { return dataLabel + '%';},"
+                    . '},';
+        } else {
+            $js .= 'ticks:{'
+                . 'beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
+                . "userCallback: function(dataLabel, index) { return dataLabel + '%';},"
+                . '},';
+        }
+        $js .= '}],'
                     . '},'
                 . 'tooltips:{'
                     . "mode:'single',"
@@ -269,6 +316,9 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
                 . 'type: "' . $dataset['type'] . '",'
                 . 'fill:false,'
                 . '';
+            if( isset($dataset['yAxisID']) ) {
+                $js .= 'yAxisID:"' . $dataset['yAxisID'] . '",';
+            }
             $js .= $colours[$dataset['colour']];
             $js .= 'data: [';
             foreach($dataset['data'] as $data_point) {
@@ -289,13 +339,33 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
                     . 'xAxes: [{'
                         . 'ticks:{beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . '},'
                         . '}],'
-                    . 'yAxes: [{'
-                        . 'display: true,'
-                        . 'ticks:{'
-                            . 'beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
-                            . "userCallback: function(dataLabel, index) { return dataLabel + '%';},"
-                            . '},'
-                        . '}],'
+                    . 'yAxes: [{';
+        if( isset($options['yAxes']) && $options['yAxes'] == 'dual' ) {
+            $js .= 'type:"linear",'
+                . 'display:true,'
+                . 'position:"left",'
+                . 'id:"y-axis-1",'
+                . 'ticks:{'
+                    . 'beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
+                    . "userCallback: function(dataLabel, index) { return dataLabel + '%';},"
+                    . '},'
+                . '},{'
+                . 'type:"linear",'
+                . 'display:true,'
+                . 'position:"right",'
+                . 'id:"y-axis-2",'
+                . 'gridLines: {drawOnChartArea:false},'
+                . 'ticks:{'
+                    . 'beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
+                    . "userCallback: function(dataLabel, index) { return dataLabel + '%';},"
+                    . '},';
+        } else {
+            $js .= 'ticks:{'
+                . 'beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
+                . "userCallback: function(dataLabel, index) { return dataLabel + '%';},"
+                . '},';
+        }
+        $js .= '}],'
                 . '},'
                 . 'tooltips:{'
                     . "mode:'single',"
