@@ -43,6 +43,26 @@ function ciniki_web_hooks_uiSettings($ciniki, $business_id, $args) {
         $settings['sitename'] = $rc['business']['sitename'];
     }
 
-    return array('stat'=>'ok', 'settings'=>$settings);  
+    $rsp = array('stat'=>'ok', 'settings'=>$settings, 'menu_items'=>array());  
+
+    //
+    // Check permissions for what menu items should be available
+    //
+    if( isset($ciniki['business']['modules']['ciniki.web'])
+        && (isset($args['permissions']['owners'])
+            || isset($args['permissions']['employees'])
+            || isset($args['permissions']['resellers'])
+            || ($ciniki['session']['user']['perms']&0x01) == 0x01
+            )
+        ) {
+        $menu_item = array(
+            'priority'=>1000,
+            'label'=>'Website', 
+            'edit'=>array('app'=>'ciniki.web.main'),
+            );
+        $rsp['menu_items'][] = $menu_item;
+    } 
+
+    return $rsp;
 }
 ?>
