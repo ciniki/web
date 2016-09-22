@@ -454,6 +454,31 @@ article {
 	margin-bottom: 1em;
 }
 
+/* Thumbnail List */
+#content div.thumbnail-list {
+    box-sizing: border-box;
+    width: 100%;
+    vertical-align: top;
+    clear: both;
+    text-align: center;
+}
+#content div.thumbnail-list-item-wrap {
+    display: inline-block;
+    width: 8.5em;
+    padding: 5px;
+    box-sizing: border-box;
+    vertical-align: top;
+    margin-bottom: 0.5em;
+    box-sizing: border-box;
+}
+#content div.thumbnail-list-item {
+    box-sizing: border-box;
+}
+#content div.thumbnail-list-item-image {
+    box-sizing: border-box;
+    line-height: 1px;
+}
+
 /* Image list */
 #content div.image-list {
 	width: 100%;

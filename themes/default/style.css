@@ -283,6 +283,15 @@ div.gallery-image-details span.image-awards {
 	padding-left: 1em;
 }
 
+div.thumbnail-list-item-image {
+    border: 1px solid #aaa;
+    padding: 7px;
+}
+
+div.thumbnail-list-item-text {
+    padding: 7px;
+}
+
 #content h1,
 #content h1.entry-title,
 #content b.entry-title,

@@ -1341,6 +1341,7 @@ function ciniki_web_main() {
                     'shortbio-blank-townsprovinces-phones-emails-links':'Short Bio, Town, Phones, Emails, Links',
                     'shortbio-blank-addresses-phones-emails-links':'Short Bio, Addresses, Phones, Emails, Links',
                     'addresses-blank-shortbio-phones-emails-links':'Addresses, Short Bio, Phones, Emails, Links',
+                    'thumbnail-list':'Thumbnails with Names',
                     }},
                 'page-members-membership-details':{'label':'Display Membership Information', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 }},
