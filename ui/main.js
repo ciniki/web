@@ -38,6 +38,7 @@ function ciniki_web_main() {
     if( M.userPerms&0x01 == 0x01 ) {
         this.themesAvailable['field'] = 'Field - Green/White';
         this.themesAvailable['redbrick'] = 'Red Brick';
+        this.themesAvailable['redbrick2'] = 'Red Brick 2';
         this.themesAvailable['private'] = 'Private';
 //      this.themesAvailable['orangebrick'] = 'Orange Brick';
 //      this.themesAvailable['splatter'] = 'Splatter';
