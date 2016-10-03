@@ -1066,6 +1066,8 @@ hr.footer-section-divider {
 	border: 0px;
 	border-top: 1px solid #333;
 	background: #ccc;
+    padding-top: 0.5em;
+    padding-bottom: 1em;
 }
 
 footer a,
