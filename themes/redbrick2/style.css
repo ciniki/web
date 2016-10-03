@@ -488,15 +488,15 @@ div.gallery-image-details span.image-awards {
 #content div.largebutton-list div.button-list-button a, 
 #content div.button-list div.button-list-button a {
 	font-size: 1.2em;
-	border: 2px solid #da7c0c;
-	border-radius: 10px;
+	border: 2px solid #074d82;
+	border-radius: 8px;
 	color: #fff;
 	text-shadow: 0 1px 1px rgba(0,0,0,0.5);
 	padding: 0.3em 0 0.3em 0;
-	background: #f78d1d;
-	background: -webkit-gradient(linear, left top, left bottom, from(#faa51a), to(#f47a20));
-	background: -moz-linear-gradient(top,  #faa51a,  #f47a20);
-	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#faa51a', endColorstr='#f47a20');
+	background: #075d92;
+	background: -webkit-gradient(linear, left top, left bottom, from(#378db2), to(#075d92));
+	background: -moz-linear-gradient(top,  #378db2,  #075d92);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#378db2', endColorstr='#075d92');
 }
 
 #content div.largebutton-list div.button-list-button a {
