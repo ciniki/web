@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_web_indexUpdateObject($ciniki, $business_id, $args) {
+function ciniki_web_indexUpdateObject(&$ciniki, $business_id, $args) {
     
     $common_words = array(
         'a', 'i',

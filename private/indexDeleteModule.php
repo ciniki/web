@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_web_indexDeleteModule($ciniki, $business_id, $module) {
+function ciniki_web_indexDeleteModule(&$ciniki, $business_id, $module) {
 
     //
     // Get the current index data

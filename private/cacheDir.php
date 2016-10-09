@@ -66,13 +66,13 @@ function ciniki_web_cacheDir(&$ciniki, $business_id) {
         // Save settings in $ciniki cache for faster access
         //
         if( !isset($ciniki['business']) ) {
-            $ciniki['business'] = array('settings'=>array('cache_dir'=>$cache_dir));
+            $ciniki['business'] = array('settings'=>array('web_cache_dir'=>$cache_dir));
         } 
         elseif( !isset($ciniki['business']['settings']) ) {
-            $ciniki['business']['settings'] = array('cache_dir'=>$cache_dir);
+            $ciniki['business']['settings'] = array('web_cache_dir'=>$cache_dir);
         } 
         else {
-            $ciniki['business']['settings']['cache_dir'] = $cache_dir;
+            $ciniki['business']['settings']['web_cache_dir'] = $cache_dir;
         }
     } else {
         return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'3388', 'msg'=>'Unable to get business cache directory'));
