@@ -161,6 +161,8 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
             case 23: $page_settings_name = 'sponsorship'; break;
             case 24: $page_settings_name = 'jobs'; break;
             case 25: $page_settings_name = 'extended-bio'; break;
+            case 27: $page_settings_name = 'committees'; break;
+            case 28: $page_settings_name = 'bylaws'; break;
         }
     }
 
@@ -535,6 +537,18 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
         ) {
         $submenu['sponsorship'] = array('name'=>$info_pages['23']['title'], 
             'url'=>$ciniki['request']['base_url'] . "/$pg/" . $info_pages['23']['permalink']);
+    }
+    if( isset($settings["page-$pg-committees-active"]) && $settings["page-$pg-committees-active"] == 'yes' 
+        && isset($info_pages['27'])
+        ) {
+        $submenu['committees'] = array('name'=>$info_pages['27']['title'], 
+            'url'=>$ciniki['request']['base_url'] . "/$pg/" . $info_pages['27']['permalink']);
+    }
+    if( isset($settings["page-$pg-bylaws-active"]) && $settings["page-$pg-bylaws-active"] == 'yes' 
+        && isset($info_pages['28'])
+        ) {
+        $submenu['bylaws'] = array('name'=>$info_pages['28']['title'], 
+            'url'=>$ciniki['request']['base_url'] . "/$pg/" . $info_pages['28']['permalink']);
     }
 
     //
