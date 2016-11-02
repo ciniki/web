@@ -48,6 +48,8 @@ function ciniki_web_pages() {
                     'article_title':{'label':'Page Title', 'visible':'no', 'type':'text'},
                     'sequence':{'label':'Page Order', 'type':'text', 'size':'small'},
                     '_flags_1':{'label':'Visible', 'type':'flagtoggle', 'bit':0x01, 'field':'flags_1', 'default':'on'},
+                    '_flags_2':{'label':'Private', 'type':'flagtoggle', 'bit':0x02, 'field':'flags_2', 'default':'off',
+                        'active':function() { return M.curBusiness.modules['ciniki.customers'] != null ? 'yes' : 'no';}, },
                     'menu_flags':{'label':'Menu Options', 'type':'flags', 'flags':this.menuFlags},
                 }},
                 '_page_type':{'label':'', 'aside':'yes', 'visible':'hidden', 'fields':{
@@ -388,6 +390,11 @@ function ciniki_web_pages() {
                 } else {
                     flags &= ~0x01;
                 }
+                if( this.formValue('_flags_2') == 'on' ) {
+                    flags |= 0x02;
+                } else {
+                    flags &= ~0x02;
+                }
                 if( this.page_id > 0 ) {
                     var c = this.serializeFormData('no');
                     if( c != null || flags != this.data.flags ) {
@@ -466,6 +473,7 @@ function ciniki_web_pages() {
         this[pn].modules_pages = rsp.modules_pages;
         // Remove child_format flags
         this[pn].data.flags_1 = (rsp.page.flags&0xFFFFFF0F);
+        this[pn].data.flags_2 = (rsp.page.flags&0xFFFFFF0F);
         this[pn].data.child_format = (rsp.page.flags&0x000000F0);
         this[pn].sections.details.fields.parent_id.active = 'yes';
         if( this[pn].page_id == 0 && parent_id != null ) {

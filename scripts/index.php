@@ -598,7 +598,8 @@ if( isset($ciniki['config']['ciniki.core']['packages'])
                         $ciniki['business']['pages'][$permalink] = array('pkg'=>$pkg, 
                             'fn'=>$page['fn'],
                             'active'=>$page['active'],
-                            'title'=>$page['title']
+                            'title'=>$page['title'],
+                            'permalink'=>$permalink,
                             );
                     }
                 }
@@ -1086,7 +1087,7 @@ if( $rc['stat'] == '404' ) {
         }
     }
 
-    if( $ciniki['request']['uri_split'][0] == 'robots.txt' ) {
+    if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'robots.txt' ) {
         require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageRobots.php');
         $rc = ciniki_web_generatePageRobots($ciniki, $settings);
     } else {
