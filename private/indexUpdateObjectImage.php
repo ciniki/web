@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_web_indexUpdateObjectImage($ciniki, $business_id, $image_id, $index_id) {
+function ciniki_web_indexUpdateObjectImage(&$ciniki, $business_id, $image_id, $index_id) {
 
     if( $image_id <= 0 ) {
         return array('stat'=>'ok');

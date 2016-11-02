@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_web_indexUpdateModule($ciniki, $business_id, $module) {
+function ciniki_web_indexUpdateModule(&$ciniki, $business_id, $module) {
    
     list($pkg, $mod) = explode('.', $module);
 

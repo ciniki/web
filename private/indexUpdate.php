@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_web_indexUpdate($ciniki, $business_id) {
+function ciniki_web_indexUpdate(&$ciniki, $business_id) {
 
     //
     // Load INTL settings

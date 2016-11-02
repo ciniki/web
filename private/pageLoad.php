@@ -155,6 +155,8 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
     // Check if there are any children
     //
     $strsql = "SELECT id, title, permalink, "
+        . "page_type, "
+        . "page_redirect_url, "
         . "primary_image_id, "
         . "category, synopsis, content, "
         . "IF(content<>'','yes','no') AS is_details "
@@ -167,7 +169,7 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
         array('container'=>'children', 'fname'=>'category', 
             'fields'=>array('name'=>'category')),
         array('container'=>'list', 'fname'=>'id', 
-            'fields'=>array('id', 'title', 'permalink', 'image_id'=>'primary_image_id',
+            'fields'=>array('id', 'page_type', 'page_redirect_url', 'title', 'permalink', 'image_id'=>'primary_image_id',
                 'synopsis', 'content', 'is_details')),
         ));
     if( $rc['stat'] != 'ok' ) {

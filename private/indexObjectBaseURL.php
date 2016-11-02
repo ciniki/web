@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_web_indexObjectBaseURL($ciniki, $business_id, $object) {
+function ciniki_web_indexObjectBaseURL(&$ciniki, $business_id, $object) {
     
     //
     // Get the base_url for this module, as it may be inside a custom page.

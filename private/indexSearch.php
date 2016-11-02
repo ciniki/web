@@ -10,7 +10,7 @@
 // Returns
 // -------
 //
-function ciniki_web_indexSearch($ciniki, $settings, $business_id, $search_str, $limit) {
+function ciniki_web_indexSearch(&$ciniki, $settings, $business_id, $search_str, $limit) {
 
     $words = explode(' ', $search_str);
     $primary_sql = '';

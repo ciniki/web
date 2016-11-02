@@ -305,9 +305,9 @@ function ciniki_web_pages() {
                     p.children[0].className = 'medium';
                 }
                 this.sections._module_options.visible = 'hidden';
-                this.sections._image.visible = (pt=='10'?'yes':'hidden');
+                this.sections._image.visible = (pt=='10' || (pt==20 && this.data.parent_id > 0)?'yes':'hidden');
                 this.sections._image_caption.visible = (pt=='10'?'yes':'hidden');
-                this.sections._synopsis.visible = (pt=='10'?'yes':'hidden');
+                this.sections._synopsis.visible = (pt=='10' || (pt==20 && this.data.parent_id > 0)?'yes':'hidden');
                 this.sections._content.visible = ((pt=='10'||pt==11)?'yes':'hidden');
                 this.sections.files.visible = (pt=='10'?'yes':'hidden');
                 this.sections.images.visible = (pt=='10'?'yes':'hidden');

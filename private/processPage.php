@@ -104,7 +104,12 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
                 foreach($page['children'] as $cid => $child) {
                     $page['children'][$cid]['title'] = $child['name'];
                     $page['children'][$cid]['image_id'] = $child['list'][$child['id']]['image_id'];
-                    $page['children'][$cid]['is_details'] = 'yes';
+                    $page['children'][$cid]['synopsis'] = (isset($child['list'][$child['id']]['synopsis']) ? $child['list'][$child['id']]['synopsis'] : '');
+                    if( isset($child['list'][$child['id']]['page_type']) && $child['list'][$child['id']]['page_type'] == 20 ) {
+                        $page['children'][$cid]['url'] = $child['list'][$child['id']]['page_redirect_url'];
+                    } else {
+                        $page['children'][$cid]['is_details'] = 'yes';
+                    }
                 }
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockImageList');
                 $rc = ciniki_web_processBlockImageList($ciniki, $settings, $ciniki['request']['business_id'], array(

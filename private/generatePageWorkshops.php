@@ -79,8 +79,7 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
         // and prev from the list of images returned
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'workshops', 'web', 'workshopDetails');
-        $rc = ciniki_workshops_web_workshopDetails($ciniki, $settings, 
-            $ciniki['request']['business_id'], $workshop_permalink);
+        $rc = ciniki_workshops_web_workshopDetails($ciniki, $settings, $ciniki['request']['business_id'], $workshop_permalink);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -123,6 +122,10 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
         }
         
         $page_title = $workshop['name'] . ' - ' . $img['title'];
+
+        if( $img == NULL ) {
+            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'3642', 'msg'=>'The image you requested does not exist.'));
+        }
     
         //
         // Load the image
