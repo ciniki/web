@@ -454,6 +454,76 @@ article {
 	margin-bottom: 1em;
 }
 
+/* Table slide */
+#content div.table-slide-horizontal {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+    vertical-align: top;
+    border: 1px solid #ccc;
+}
+#content div.table-slide-horizontal div.table-slide-rowlabels {
+    display: inline-block;
+    width: 50%;
+    box-sizing: border-box;
+    margin: 0px;
+    vertical-align: top;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+#content div.table-slide-horizontal div.table-slide-data {
+    display: inline-block;
+    width: 50%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    margin: 0px;
+    box-sizing: border-box;
+    vertical-align: top;
+    border-left: 1px solid #ccc;
+}
+#content div.table-slide-horizontal div.table-slide-column {
+    display: inline-block;
+    width: 8em;
+    box-sizing: border-box;
+    margin: 0px;
+}
+#content div.table-slide-horizontal div.table-slide-rowlabel {
+    text-align: right;
+}
+#content div.table-slide-horizontal div.table-slide-rowlabel,
+#content div.table-slide-horizontal div.table-slide-clabel {
+    background: #fff;
+    font-weight: bold;
+}
+#content div.table-slide-horizontal div.table-slide-clabel {
+    text-align: center;
+    margin-right: 1px;
+}
+#content div.table-slide-horizontal div.table-slide-rowlabel,
+#content div.table-slide-horizontal div.table-slide-clabel,
+#content div.table-slide-horizontal div.table-slide-coldata {
+    min-height: 2em;
+    padding: 0.5em;
+    margin: 0px;
+    box-sizing: border-box;
+}
+#content div.table-slide-horizontal div.table-slide-coldata {
+    background: #fff;
+    overflow: hidden;
+    margin-right: 1px;
+}
+#content div.table-slide-horizontal div.table-slide-rowlabel:nth-child(odd),
+#content div.table-slide-horizontal div.table-slide-coldata:nth-child(odd) {
+    background: #eee;
+}
+#content div.table-slide-horizontal div.table-slide-alignright {
+    text-align: right;
+}
+
+
 /* Thumbnail List */
 #content div.thumbnail-list {
     box-sizing: border-box;

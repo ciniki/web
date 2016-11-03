@@ -684,6 +684,12 @@ span.exhibitors-description {
 		max-width: 95%;
 	}
 /*    #content div.thumbnail-list-item-wrap { width: 20%; } */
+    #content div.table-slide-horizontal div.table-slide-rowlabels {
+        width: 40%;
+    }
+    #content div.table-slide-horizontal div.table-slide-data {
+        width: 60%;
+    }
 }
 
 /* 12. Anything over 50 em
@@ -723,10 +729,22 @@ span.exhibitors-description {
 		padding-bottom: 0.5em;
 	}
 /*     #content div.thumbnail-list-item-wrap { width: 16.6%; } */
+    #content div.table-slide-horizontal div.table-slide-rowlabels {
+        width: 35%;
+    }
+    #content div.table-slide-horizontal div.table-slide-data {
+        width: 65%;
+    }
 }
 
 @media screen and (min-width: 60em) {
 /*     #content div.thumbnail-list-item-wrap { width: 12.5%; } */
+    #content div.table-slide-horizontal div.table-slide-rowlabels {
+        width: 25%;
+    }
+    #content div.table-slide-horizontal div.table-slide-data {
+        width: 75%;
+    }
 }
 
 
