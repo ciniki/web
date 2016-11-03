@@ -143,7 +143,7 @@ function ciniki_web_getCroppedImageURL($ciniki, $image_id, $version, $args) {
             fwrite($h, $image->getImageBlob());
             fclose($h);
         } else {
-            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.99', 'msg'=>'Unable to load image'));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.175', 'msg'=>'Unable to load image'));
         }
     }
 
