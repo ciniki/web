@@ -91,11 +91,11 @@ print "<!DOCTYPE html>\n";
             <p>Oops, we seem to have hit a snag.  <?php echo $msg; ?></p>
             <table class="list header border" cellspacing='0' cellpadding='0'>
                 <thead>
-                    <tr><th>Package</th><th>Code</th><th>Message</th></tr>
+                    <tr><th>Code</th><th>Message</th></tr>
                 </thead>
                 <tbody>
                     <?php
-                    print "<tr><td>" . $rc['err']['pkg'] . "</td><td>" . $rc['err']['code'] . "</td><td>" . $rc['err']['msg'] . "</td></tr>\n";
+                    print "<tr><td>" . $rc['err']['code'] . "</td><td>" . $rc['err']['msg'] . "</td></tr>\n";
                     ?>
                 </tbody>
             </table>
