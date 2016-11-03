@@ -161,7 +161,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
     } 
 
     if( $requested_item == null ) {
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2907', 'msg'=>'Requested page not found.'));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.13', 'msg'=>'Requested page not found.'));
     }
 
     //
@@ -171,7 +171,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
     $content = '';
     $rc = ciniki_core_loadMethod($ciniki, $requested_item['package'], $requested_item['module'], 'web', 'accountProcessRequest');
     if( $rc['stat'] != 'ok' ) {
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2908', 'msg'=>'Requested page not found.', 'err'=>$rc['err']));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.14', 'msg'=>'Requested page not found.', 'err'=>$rc['err']));
     }
     $fn = $rc['function_call'];
     $rc = $fn($ciniki, $settings, $ciniki['request']['business_id'], array(

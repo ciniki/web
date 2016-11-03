@@ -19,7 +19,7 @@ function ciniki_web_generatePageAccountSwitch(&$ciniki, $settings, $business_id,
     // Make sure the new account exists
     //
     if( !isset($ciniki['session']['customers'][$customer_id]) ) {
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2901', 'msg'=>'Account does not exist'));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.16', 'msg'=>'Account does not exist'));
     }
 
     //
@@ -39,7 +39,7 @@ function ciniki_web_generatePageAccountSwitch(&$ciniki, $settings, $business_id,
             $fn = $rc['function_call'];
             $rc = $fn($ciniki, $settings, $business_id);
             if( $rc['stat'] != 'ok' ) {
-                return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2903', 'msg'=>'Unable to unload account information', 'err'=>$rc['err']));
+                return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.17', 'msg'=>'Unable to unload account information', 'err'=>$rc['err']));
             }
         }
         if( isset($ciniki['session'][$module]) ) {
@@ -60,7 +60,7 @@ function ciniki_web_generatePageAccountSwitch(&$ciniki, $settings, $business_id,
             $fn = $rc['function_call'];
             $rc = $fn($ciniki, $settings, $business_id);
             if( $rc['stat'] != 'ok' ) {
-                return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2904', 'msg'=>'Unable to load account information', 'err'=>$rc['err']));
+                return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.18', 'msg'=>'Unable to load account information', 'err'=>$rc['err']));
             }
         }
     }

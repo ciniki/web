@@ -73,7 +73,7 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
                         $fn = $rc['function_call'];
                         $rc = $fn($ciniki, $settings, $business_id);
                         if( $rc['stat'] != 'ok' ) {
-                            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2900', 'msg'=>'Unable to load account information', 'err'=>$rc['err']));
+                            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.15', 'msg'=>'Unable to load account information', 'err'=>$rc['err']));
                         }
                     }
                 }

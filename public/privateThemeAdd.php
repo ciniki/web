@@ -59,7 +59,7 @@ function ciniki_web_privateThemeAdd(&$ciniki) {
         return $rc;
     }
     if( $rc['num_rows'] > 0 ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2531', 'msg'=>'You already have a theme with this name, you must choose another name.'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.158', 'msg'=>'You already have a theme with this name, you must choose another name.'));
     }
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionStart');

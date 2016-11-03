@@ -28,7 +28,7 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
     // Check the module is enabled for the business
     //
     if( !isset($ciniki['business']['modules'][$module]) ) {
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2571', 'msg'=>"I'm sorry, but the page you requested does not exist."));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.124', 'msg'=>"I'm sorry, but the page you requested does not exist."));
     }
 
     //
@@ -36,7 +36,7 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
     //
     $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'processRequest');
     if( $rc['stat'] != 'ok' ) {
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2577', 'msg'=>"I'm sorry, but the page you requested does not exist."));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.125', 'msg'=>"I'm sorry, but the page you requested does not exist."));
     }
     $fn = $rc['function_call'];
     $rc = $fn($ciniki, $settings, $ciniki['request']['business_id'], $args);

@@ -81,7 +81,7 @@ function ciniki_web_sliderImageGet($ciniki) {
         return $rc;
     }
     if( !isset($rc['images']) ) {
-        return array('stat'=>'ok', 'err'=>array('pkg'=>'ciniki', 'code'=>'2075', 'msg'=>'Unable to find slider image'));
+        return array('stat'=>'ok', 'err'=>array('code'=>'ciniki.web.173', 'msg'=>'Unable to find slider image'));
     }
     $image = $rc['images'][0]['image'];
 

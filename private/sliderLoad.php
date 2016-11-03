@@ -52,7 +52,7 @@ function ciniki_web_sliderLoad(&$ciniki, $settings, $business_id, $slider_id) {
     }
 
     if( !isset($rc['sliders'][$slider_id]) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1763', 'msg'=>'Slider not found'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.128', 'msg'=>'Slider not found'));
     }
 
     return array('stat'=>'ok', 'slider'=>$rc['sliders'][$slider_id]);

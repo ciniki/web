@@ -44,7 +44,7 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
         //
         // If there was an error locating the files, display generic error
         //
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1413', 'msg'=>'The file you requested does not exist.'));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.94', 'msg'=>'The file you requested does not exist.'));
     }
 
     //
@@ -88,7 +88,7 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
         $ciniki['response']['head']['og']['url'] .= '/' . $workshop_permalink;
 
         if( !isset($workshop['images']) || count($workshop['images']) < 1 ) {
-            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1470', 'msg'=>'Unable to find image'));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.95', 'msg'=>'Unable to find image'));
         }
 
         $first = NULL;
@@ -124,7 +124,7 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
         $page_title = $workshop['name'] . ' - ' . $img['title'];
 
         if( $img == NULL ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'3642', 'msg'=>'The image you requested does not exist.'));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.96', 'msg'=>'The image you requested does not exist.'));
         }
     
         //

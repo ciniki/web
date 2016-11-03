@@ -56,7 +56,7 @@ function ciniki_web_privateThemeContentUpdate(&$ciniki) {
         return $rc;
     }
     if( !isset($rc['item']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1554', 'msg'=>'Content not found'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.159', 'msg'=>'Content not found'));
     }
     $item = $rc['item'];
 

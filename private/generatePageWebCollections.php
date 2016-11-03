@@ -290,7 +290,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
             $page_content .= $block_content;
         } 
         else {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2066', 'msg'=>"There are no items for this collection."));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.93', 'msg'=>"There are no items for this collection."));
         }
     }
 

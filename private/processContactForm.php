@@ -96,7 +96,7 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $business_id) {
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'hooks', 'businessOwners');
                 $rc = ciniki_businesses_hooks_businessOwners($ciniki, $business_id, array());
                 if( $rc['stat'] != 'ok' ) {
-                    return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2608', 'msg'=>'Unable to get business owners', 'err'=>$rc['err']));
+                    return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.120', 'msg'=>'Unable to get business owners', 'err'=>$rc['err']));
                 }
                 $owners = $rc['users'];
                 foreach($owners as $user_id => $owner) {

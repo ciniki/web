@@ -656,7 +656,7 @@ function ciniki_web_generatePageDealers($ciniki, $settings) {
                 $page_content .= $rc['content'];
             }
         } else {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1924', 'msg'=>'No dealers found for this .'));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.35', 'msg'=>'No dealers found for this .'));
         }
     } 
 

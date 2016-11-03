@@ -46,7 +46,7 @@ function ciniki_web_sliderImageAdd(&$ciniki) {
     } 
 
     if( $args['slider_id'] <= 0 ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1756', 'msg'=>'No slider specified'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.172', 'msg'=>'No slider specified'));
     }
 
     if( $args['sequence'] == 0 ) {

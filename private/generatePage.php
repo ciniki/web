@@ -293,7 +293,7 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
                 return $rc;
             }
             if( !isset($rc['file']) ) {
-                return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2201', 'msg'=>"I'm sorry, but the file you requested does not exist."));
+                return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.12', 'msg'=>"I'm sorry, but the file you requested does not exist."));
             }
             $filename = $rc['file']['name'] . '.' . $rc['file']['extension'];
 

@@ -128,7 +128,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
         $feature = $rc['feature'];
 
         if( !isset($feature['images']) || count($feature['images']) < 1 ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1720', 'msg'=>"We're sorry, but the image you requested does not exist."));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.53', 'msg'=>"We're sorry, but the image you requested does not exist."));
         }
 
         $first = NULL;
@@ -180,7 +180,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
             }
         $img_url = $rc['url'];
         } else {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1758', 'msg'=>"We're sorry, but the image you requested does not exist."));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.54', 'msg'=>"We're sorry, but the image you requested does not exist."));
         }
 
         //

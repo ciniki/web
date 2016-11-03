@@ -14,11 +14,11 @@
 function ciniki_web_hooks_indexObject($ciniki, $business_id, $args) {
     
     if( !isset($args['object']) || $args['object'] == '' ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'3271', 'msg'=>'No object specified'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.1', 'msg'=>'No object specified'));
     }
 
     if( !isset($args['object_id']) || $args['object_id'] == '' ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'3272', 'msg'=>'No object ID specified'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.2', 'msg'=>'No object ID specified'));
     }
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'indexUpdateObject');

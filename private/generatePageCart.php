@@ -98,7 +98,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                     $fn = $rc['function_call'];
                     $rc = $fn($ciniki, $settings, $ciniki['request']['business_id']);
                     if( $rc['stat'] != 'ok' ) {
-                        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'3189', 'msg'=>'Unable to load account information', 'err'=>$rc['err']));
+                        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.24', 'msg'=>'Unable to load account information', 'err'=>$rc['err']));
                     }
                 }
             }
@@ -233,7 +233,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         $ciniki['session']['cart']['num_items'] = 0;
 
     } elseif( $rc['stat'] != 'ok' ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1693', 'msg'=>'Error processing shopping cart, please try again.'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.25', 'msg'=>'Error processing shopping cart, please try again.'));
     } else {
         $cart = $rc['cart'];
         $_SESSION['cart']['num_items'] = count($cart['items']);

@@ -82,10 +82,10 @@ function ciniki_web_generatePageMembersonly($ciniki, $settings) {
         // to the signin page
         //
         if( !isset($ciniki['business']['modules']['ciniki.membersonly']) ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2195', 'msg'=>'Page does not exist.'));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.74', 'msg'=>'Page does not exist.'));
         }
         if( !isset($settings['page-membersonly-active']) || $settings['page-membersonly-active'] != 'yes' ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2196', 'msg'=>'Page does not active.'));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.75', 'msg'=>'Page does not active.'));
         }
         if( !isset($ciniki['session']['customer']['member_status']) 
             || $ciniki['session']['customer']['member_status'] != '10' ) {

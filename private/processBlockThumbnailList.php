@@ -18,7 +18,7 @@ function ciniki_web_processBlockThumbnailList(&$ciniki, $settings, $business_id,
     }
 
     if( !isset($block['base_url']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'3046', 'msg'=>'Unable to process request'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.118', 'msg'=>'Unable to process request'));
     }
 
     $content = "";

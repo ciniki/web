@@ -73,7 +73,7 @@ function ciniki_web_sliderImageUpdate(&$ciniki) {
             return $rc;
         }
         if( !isset($rc['item']) ) {
-            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1770', 'msg'=>'Unable to find image'));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.174', 'msg'=>'Unable to find image'));
         }
         $old_sequence = $rc['item']['sequence'];
         $slider_id = $rc['item']['slider_id'];

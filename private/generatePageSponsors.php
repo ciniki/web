@@ -33,7 +33,7 @@ function ciniki_web_generatePageSponsors($ciniki, $settings) {
         $pkg = 'ciniki';
         $mod = 'exhibitions';
     } else {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'946', 'msg'=>'No sponsor module enabled'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.82', 'msg'=>'No sponsor module enabled'));
     }
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');

@@ -59,12 +59,12 @@ function ciniki_web_generatePagePropertyRentals($ciniki, $settings) {
         $rc = ciniki_propertyrentals_web_propertyDetails($ciniki, $settings, 
             $ciniki['request']['business_id'], $property_permalink);
         if( $rc['stat'] != 'ok' ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2414', 'msg'=>"I'm sorry, but we can't seem to find the image you requested.", $rc['err']));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.78', 'msg'=>"I'm sorry, but we can't seem to find the image you requested.", $rc['err']));
         }
         $property = $rc['property'];
 
         if( !isset($property['images']) || count($property['images']) < 1 ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2415', 'msg'=>"I'm sorry, but we can't seem to find the image you requested."));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.79', 'msg'=>"I'm sorry, but we can't seem to find the image you requested."));
         }
 
         $first = NULL;
@@ -107,7 +107,7 @@ function ciniki_web_generatePagePropertyRentals($ciniki, $settings) {
         }
 
         if( $img == NULL ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2416', 'msg'=>"I'm sorry, but we can't seem to find the image you requested."));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.80', 'msg'=>"I'm sorry, but we can't seem to find the image you requested."));
         }
         //
         // Load the image
@@ -177,7 +177,7 @@ function ciniki_web_generatePagePropertyRentals($ciniki, $settings) {
         //
         $rc = ciniki_propertyrentals_web_propertyDetails($ciniki, $settings, $ciniki['request']['business_id'], $permalink);
         if( $rc['stat'] != 'ok' ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2417', 'msg'=>"I'm sorry, but we can't find the property you requested.", $rc['err']));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.81', 'msg'=>"I'm sorry, but we can't find the property you requested.", $rc['err']));
         }
         $property = $rc['property'];
 

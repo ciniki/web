@@ -123,7 +123,7 @@ function ciniki_web_generatePageSurveys($ciniki, $settings) {
     // Display the list of members if a specific one isn't selected
     //
     else {
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1070', 'msg'=>'No surveys available'));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.83', 'msg'=>'No surveys available'));
     }
 
     //

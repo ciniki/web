@@ -53,7 +53,7 @@ function ciniki_web_lookupClientDomain(&$ciniki, $domain, $type) {
     // and we don't know which business the domain actually belongs to
     //
     if( !isset($rc['business']) || !isset($rc['business']['business_id']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'610', 'msg'=>'Configuration error'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.110', 'msg'=>'Configuration error'));
     }
     $isprimary = $rc['business']['isprimary'];
     $forcessl = $rc['business']['forcessl'];
@@ -125,7 +125,7 @@ function ciniki_web_lookupClientDomain(&$ciniki, $domain, $type) {
         return $rc;
     }
     if( !isset($rc['modules']) || !isset($rc['modules']['ciniki.web']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'613', 'msg'=>'Website not activated.'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.111', 'msg'=>'Website not activated.'));
     }
     $modules = $rc['modules'];
 

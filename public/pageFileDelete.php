@@ -52,7 +52,7 @@ function ciniki_web_pageFileDelete(&$ciniki) {
         return $rc;
     }
     if( !isset($rc['file']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2221', 'msg'=>'Unable to find existing item'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.142', 'msg'=>'Unable to find existing item'));
     }
     $uuid = $rc['file']['uuid'];
 

@@ -49,7 +49,7 @@ function ciniki_web_clearContentCache($ciniki) {
         return $rc;
     }
     if( !isset($rc['business']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1603', 'msg'=>'Business does not exist'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.130', 'msg'=>'Business does not exist'));
     }
     $uuid = $rc['business']['uuid'];
 

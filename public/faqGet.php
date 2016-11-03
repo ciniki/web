@@ -64,7 +64,7 @@ function ciniki_web_faqGet($ciniki) {
         return $rc;
     }
     if( !isset($rc['faqs']) ) {
-        return array('stat'=>'ok', 'err'=>array('pkg'=>'ciniki', 'code'=>'1349', 'msg'=>'Unable to find question'));
+        return array('stat'=>'ok', 'err'=>array('code'=>'ciniki.web.133', 'msg'=>'Unable to find question'));
     }
     $faq = $rc['faqs'][0]['faq'];
 
