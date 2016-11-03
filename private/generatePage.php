@@ -25,6 +25,7 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
             return ciniki_landingpages_web_generatePage($ciniki, $settings);
         }
     }
+//    print "<pre>" . print_r($ciniki, true) . "</pre>";
 
     $request_pages = array_merge(array($ciniki['request']['page']), $ciniki['request']['uri_split']);
 
@@ -54,6 +55,9 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
                 return $rc;
             }
             $page = $rc['page'];
+            if( ($page['flags']&0x02) == 0x02 && (!isset($ciniki['session']['customer']['id']) || $ciniki['session']['customer']['id'] < 1) ) {
+                return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.99', 'msg'=>'Page not found'));
+            }
             $page['depth'] = $i;
 //          $base_url .= '/' . $rc['page']['permalink'];
             if( $top_page == NULL ) { 

@@ -426,12 +426,14 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
         // Display a cart and/or customer signin for regular businesses
         elseif( $ciniki['request']['business_id'] != $ciniki['config']['ciniki.core']['master_business_id']
             && isset($settings['page-account-active']) && $settings['page-account-active'] == 'yes'
-            && ((isset($settings['page-downloads-customers']) && $settings['page-downloads-customers'] == 'yes')
-                // Add check for members blog
-                || (isset($settings['page-cart-active']) && $settings['page-cart-active'] == 'yes')
-                || (isset($settings['page-subscriptions-public']) && $settings['page-subscriptions-public'] == 'yes')
-                || (isset($ciniki['business']['modules']['ciniki.blog']) && ($ciniki['business']['modules']['ciniki.blog']['flags']&0x0100) > 0) // Used if there are other pages that allow customer only content
-            )) {
+            && isset($ciniki['business']['modules']['ciniki.customers'])
+//            && ((isset($settings['page-downloads-customers']) && $settings['page-downloads-customers'] == 'yes')
+//                // Add check for members blog
+//                || (isset($settings['page-cart-active']) && $settings['page-cart-active'] == 'yes')
+//                || (isset($settings['page-subscriptions-public']) && $settings['page-subscriptions-public'] == 'yes')
+//                || (isset($ciniki['business']['modules']['ciniki.blog']) && ($ciniki['business']['modules']['ciniki.blog']['flags']&0x0100) > 0) // Used if there are other pages that allow customer only content
+//            )) {
+            ) {
             // Regular business signin
 //          $signin_content .= "<div class='signin'><div class='signin-wrapper'>";
             // Check for a cart
@@ -615,7 +617,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     // Get any pages if enables
     //
     if( isset($ciniki['business']['modules']['ciniki.web']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x40) == 0x40) {
-        $strsql = "SELECT id, title, permalink, page_type, page_redirect_url, page_module, menu_flags "
+        $strsql = "SELECT id, title, permalink, flags, page_type, page_redirect_url, page_module, menu_flags "
             . "FROM ciniki_web_pages "
             . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
             . "AND parent_id = 0 "
@@ -625,7 +627,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
         $rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.web', array(
             array('container'=>'pages', 'fname'=>'id', 
-                'fields'=>array('id', 'title', 'permalink', 'page_type', 'page_redirect_url', 'page_module', 'menu_flags')),
+                'fields'=>array('id', 'title', 'permalink', 'flags', 'page_type', 'page_redirect_url', 'page_module', 'menu_flags')),
             ));
         if( $rc['stat'] != 'ok' ) {
             return $rc;
@@ -633,11 +635,20 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
         if( isset($rc['pages']) ) {
             $pages = $rc['pages'];
             //
+            // Check if page is only for authenticated users
+            //
+            foreach($pages as $pid => $page) {
+                if( ($page['flags']&0x02) > 0 && (!isset($ciniki['session']['customer']['id']) || $ciniki['session']['customer']['id'] < 1) ) {
+                    unset($pages[$pid]);
+                }
+            }
+
+            //
             // Get the subpages for menu
             //
             if( count($pages) > 0 ) {
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuoteIDs');
-                $strsql = "SELECT id, parent_id, title, permalink, page_type, page_redirect_url, page_module, menu_flags "
+                $strsql = "SELECT id, parent_id, title, permalink, flags, page_type, page_redirect_url, page_module, menu_flags "
                     . "FROM ciniki_web_pages "
                     . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
                     . "AND parent_id IN (" . ciniki_core_dbQuoteIDs($ciniki, array_keys($pages)) . ") "
@@ -648,7 +659,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
                     array('container'=>'parents', 'fname'=>'parent_id', 
                         'fields'=>array('parent_id')),
                     array('container'=>'subpages', 'fname'=>'id', 
-                        'fields'=>array('id', 'title', 'permalink', 'page_type', 'page_redirect_url', 'page_module', 'menu_flags')),
+                        'fields'=>array('id', 'title', 'permalink', 'flags', 'page_type', 'page_redirect_url', 'page_module', 'menu_flags')),
                     ));
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;

@@ -44,7 +44,7 @@
 # flags:            The options for this page.
 #
 #                   0x01 - Visible
-#                   0x02 - 
+#                   0x02 - Visible to logged in ciniki.customers only
 #                   0x04 -
 #                   0x08 - 
 #                   0x10 - Display children as cilist **default**
