@@ -461,7 +461,8 @@ article {
     padding: 0px;
     margin: 0px;
     vertical-align: top;
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
+    overflow: hidden;
 }
 #content div.table-slide-horizontal div.table-slide-rowlabels {
     display: inline-block;
@@ -476,13 +477,13 @@ article {
 #content div.table-slide-horizontal div.table-slide-data {
     display: inline-block;
     width: 50%;
-    overflow-x: auto;
+    overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
     margin: 0px;
     box-sizing: border-box;
     vertical-align: top;
-    border-left: 1px solid #ccc;
+    border-left: 1px solid #ddd;
 }
 #content div.table-slide-horizontal div.table-slide-column {
     display: inline-block;

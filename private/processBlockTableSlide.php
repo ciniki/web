@@ -23,7 +23,10 @@ function ciniki_web_processBlockTableSlide(&$ciniki, $settings, $business_id, $b
         $content .= "<div class='table-slide-horizontal'>";
         $content .= "<div class='table-slide-rowlabels'>";
         foreach($block['rows'] as $row) {
-            $content .= "<div class='table-slide-rowlabel'>" 
+            $content .= "<div class='table-slide-rowlabel"
+                . (isset($row['labelclass']) && $row['labelclass'] != '' ? ' table-slide-' . $row['labelclass'] : 
+                    (isset($row['class']) && $row['class'] != '' ? ' table-slide-' . $row['class'] : ''))
+                . "'>" 
                 . ((isset($row['label']) && $row['label'] != '' ) ? $row['label'] : '&nbsp;') 
                 . "</div>";
         }
@@ -34,7 +37,8 @@ function ciniki_web_processBlockTableSlide(&$ciniki, $settings, $business_id, $b
             $content .= "<div class='table-slide-column'>";
             foreach($block['rows'] as $row) {
                 $content .= "<div class='table-slide-coldata" 
-                    . ((isset($row['class']) && $row['class'] != '') ? " table-slide-" . $row['class'] : '&nbsp;')
+                    . (isset($row['dataclass']) && $row['dataclass'] != '' ? ' table-slide-' . $row['dataclass'] : 
+                        (isset($row['class']) && $row['class'] != '' ? ' table-slide-' . $row['class'] : '&nbsp;'))
                     . "'>"
                     . (isset($col[$row['field']]) ? $col[$row['field']] : '&nbsp;')
                     . "</div>";
