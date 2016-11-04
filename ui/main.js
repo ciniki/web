@@ -1823,7 +1823,8 @@ function ciniki_web_main() {
                     'page-account-children-member-non-update':{'label':'Non-Member', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 }},
             'redirect':{'label':'On login', 'fields':{
-                'page-account-signin-redirect':{'label':'Redirect to', 'type':'select', 'options':{}},
+                //'page-account-signin-redirect':{'label':'Redirect to', 'type':'select', 'options':{}},
+                'page-account-signin-redirect':{'label':'Redirect to', 'type':'text'},
                 }},
             'welcome':{'label':'Sign in Greeting', 'fields':{
                 'page-account-content':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'medium', 
@@ -2379,13 +2380,13 @@ function ciniki_web_main() {
                 this.account.sections.options.fields['page-account-header-buttons'].active = 'yes';
             }
             // Setup the redirects
-            var popts = {'':'Nowhere', '/':'Home', 'back':'Previous Page'};
+//            var popts = {'':'Nowhere', '/':'Home', 'back':'Previous Page'};
 //          if( M.curBusiness.modules['ciniki.artcatalog'] != null ) { popts['/gallery'] = 'Gallery'; }
 //          if( M.curBusiness.modules['ciniki.gallery'] != null ) { popts['/gallery'] = 'Gallery'; }
-            if( M.curBusiness.modules['ciniki.blog'] != null 
-                && (M.curBusiness.modules['ciniki.blog'].flags&0x100) > 0) { popts['/memberblog'] = 'Member Blog'; }
-            if( M.curBusiness.modules['ciniki.membersonly'] != null ) { popts['/membersonly'] = 'Members Only'; }
-            this.account.sections.redirect.fields['page-account-signin-redirect'].options = popts;
+//            if( M.curBusiness.modules['ciniki.blog'] != null 
+//                && (M.curBusiness.modules['ciniki.blog'].flags&0x100) > 0) { popts['/memberblog'] = 'Member Blog'; }
+//            if( M.curBusiness.modules['ciniki.membersonly'] != null ) { popts['/membersonly'] = 'Members Only'; }
+//            this.account.sections.redirect.fields['page-account-signin-redirect'].options = popts;
             this[page].refresh();
             this[page].show(cb);
         } else if( page == 'exhibitions' ) {
