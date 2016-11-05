@@ -434,20 +434,21 @@ function ciniki_web_main() {
         //
         this.css = new M.panel('Custom CSS',
             'ciniki_web_main', 'css',
-            'mc', 'medium', 'sectioned', 'ciniki.web.main.css');
+            'mc', 'xlarge', 'sectioned', 'ciniki.web.main.css');
         this.css.data = {'site-customer-css':''};
         this.css.sections = {
             '_css':{'label':'Custom CSS', 'fields':{
-                'site-custom-css':{'label':'', 'type':'textarea', 'size':'large', 'hidelabel':'yes'},
+                'site-custom-css':{'label':'', 'type':'textarea', 'size':'xlarge', 'hidelabel':'yes'},
                 }},
             '_save':{'label':'', 'buttons':{
-                'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'css\');'},
+                'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'css\', \'\');'},
                 }},
         };
         this.css.fieldValue = this.fieldValue;
         this.css.fieldHistoryArgs = this.fieldHistoryArgs;
-        this.css.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'css\');');
-        this.css.addClose('Cancel');
+        this.css.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'css\',\'\');');
+        this.css.addLeftButton('back', 'Back', 'M.ciniki_web_main.savePage(\'css\');');
+//        this.css.addClose('Cancel');
 
         //
         // The panel setup the SSL settings for the site
@@ -2580,7 +2581,8 @@ function ciniki_web_main() {
             });
     };
 
-    this.savePage = function(page) {
+    this.savePage = function(page, cb) {
+        if( cb == null ) { cb = 'M.ciniki_web_main[' + page + '].close();'; }
         var c = this[page].serializeForm('no');
         if( c != '' ) {
             M.api.postJSONCb('ciniki.web.siteSettingsUpdate', {'business_id':M.curBusinessID}, c, function(rsp) {
@@ -2588,10 +2590,10 @@ function ciniki_web_main() {
                     M.api.err(rsp);
                     return false;
                 } 
-                M.ciniki_web_main[page].close();
+                eval(cb);
             });
         } else {
-            this[page].close();
+            eval(cb);
         }
     };
 
