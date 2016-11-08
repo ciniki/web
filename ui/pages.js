@@ -49,7 +49,8 @@ function ciniki_web_pages() {
                     'sequence':{'label':'Page Order', 'type':'text', 'size':'small'},
                     '_flags_1':{'label':'Visible', 'type':'flagtoggle', 'bit':0x01, 'field':'flags_1', 'default':'on'},
                     '_flags_2':{'label':'Private', 'type':'flagtoggle', 'bit':0x02, 'field':'flags_2', 'default':'off',
-                        'active':function() { return M.curBusiness.modules['ciniki.customers'] != null ? 'yes' : 'no';}, },
+                        'active':(M.curBusiness.modules['ciniki.customers'] != null ? 'yes' : 'no'),
+                        },
                     'menu_flags':{'label':'Menu Options', 'type':'flags', 'flags':this.menuFlags},
                 }},
                 '_page_type':{'label':'', 'aside':'yes', 'visible':'hidden', 'fields':{
