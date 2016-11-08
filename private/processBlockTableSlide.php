@@ -20,7 +20,9 @@ function ciniki_web_processBlockTableSlide(&$ciniki, $settings, $business_id, $b
             $content .= "<h2>" . $block['title'] . "</h2>";
         }
 
-        $content .= "<div class='table-slide-horizontal'>";
+        $content .= "<div class='table-slide-horizontal"
+            . (isset($block['class']) && $block['class'] != '' ? ' table-slide-' . $block['class'] : '')
+            . "'>";
         $content .= "<div class='table-slide-rowlabels'>";
         foreach($block['rows'] as $row) {
             $content .= "<div class='table-slide-rowlabel"

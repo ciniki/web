@@ -463,6 +463,8 @@ article {
     vertical-align: top;
     border: 1px solid #ddd;
     overflow: hidden;
+    margin-bottom: 2em;
+    line-height: 0px;
 }
 #content div.table-slide-horizontal div.table-slide-rowlabels {
     display: inline-block;
@@ -473,6 +475,7 @@ article {
     overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
+    line-height: 0px;
 }
 #content div.table-slide-horizontal div.table-slide-data {
     display: inline-block;
@@ -484,15 +487,18 @@ article {
     box-sizing: border-box;
     vertical-align: top;
     border-left: 1px solid #ddd;
+    line-height: 0px;
 }
 #content div.table-slide-horizontal div.table-slide-column {
     display: inline-block;
     width: 8em;
     box-sizing: border-box;
     margin: 0px;
+    line-height: 0px;
 }
 #content div.table-slide-horizontal div.table-slide-rowlabel {
     text-align: right;
+    line-height: 1.2em;
 }
 #content div.table-slide-horizontal div.table-slide-rowlabel,
 #content div.table-slide-horizontal div.table-slide-clabel {
@@ -507,9 +513,10 @@ article {
 #content div.table-slide-horizontal div.table-slide-clabel,
 #content div.table-slide-horizontal div.table-slide-coldata {
     min-height: 2em;
-    padding: 0.5em;
+    padding: 0.75em;
     margin: 0px;
     box-sizing: border-box;
+    line-height: 1.2em;
 }
 #content div.table-slide-horizontal div.table-slide-coldata {
     background: #fff;
