@@ -447,7 +447,7 @@ function ciniki_web_main() {
         this.css.fieldValue = this.fieldValue;
         this.css.fieldHistoryArgs = this.fieldHistoryArgs;
         this.css.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'css\',\'\');');
-        this.css.addLeftButton('back', 'Back', 'M.ciniki_web_main.savePage(\'css\');');
+        this.css.addLeftButton('back', 'Back', 'M.ciniki_web_main.savePage(\'css\',null);');
 //        this.css.addClose('Cancel');
 
         //
@@ -2582,7 +2582,7 @@ function ciniki_web_main() {
     };
 
     this.savePage = function(page, cb) {
-        if( cb == null ) { cb = 'M.ciniki_web_main[' + page + '].close();'; }
+        if( cb == null ) { cb = 'M.ciniki_web_main[\'' + page + '\'].close();'; }
         var c = this[page].serializeForm('no');
         if( c != '' ) {
             M.api.postJSONCb('ciniki.web.siteSettingsUpdate', {'business_id':M.curBusinessID}, c, function(rsp) {
