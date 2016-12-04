@@ -26,7 +26,8 @@ function ciniki_web_main() {
     //
     this.themesAvailable = {
         'default':'Simple - Black/White',
-        'black':'Midnight - Blue/Black',
+        'black':'Midnight Blue - Blue/Black',
+        'midnightorange':'Midnight Orange - Orange/Black',
         'davinci':'Davinci - Brown/Beige',
         'orangebrick':'Orange Brick - Brown/Beige',
         'orangebrick2':'Brick - Brown/Beige',
