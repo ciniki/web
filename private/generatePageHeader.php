@@ -1077,7 +1077,11 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
             }
         }
         if( isset($settings['page-newsletters-active']) && $settings['page-newsletters-active'] == 'yes' ) {
-            $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='newsletters'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/newsletters'>Newsletters</a></li>";
+            if( isset($settings['page-newsletters-title']) && $settings['page-newsletters-title'] != '' ) {
+                $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='newsletters'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/newsletters'>" . $settings['page-newsletters-title'] . "</a></li>";
+            } else {
+                $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='newsletters'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/newsletters'>Newsletters</a></li>";
+            }
         }
         if( isset($settings['page-downloads-active']) && $settings['page-downloads-active'] == 'yes' 
             && ( 

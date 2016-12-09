@@ -1510,11 +1510,12 @@ function ciniki_web_main() {
         //
         this.newsletters = new M.panel('Newsletters',
             'ciniki_web_main', 'newsletters',
-            'mc', 'narrow', 'sectioned', 'ciniki.web.main.newsletters');
+            'mc', 'medium', 'sectioned', 'ciniki.web.main.newsletters');
         this.newsletters.data = {};
         this.newsletters.sections = {
             'options':{'label':'', 'fields':{
                 'page-newsletters-active':{'label':'Display Newsletters', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                'page-newsletters-title':{'label':'Title', 'hint':'Events', 'type':'text'},
                 }},
             '_save':{'label':'', 'buttons':{
                 'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'newsletters\');'},

@@ -344,6 +344,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-distributors-list-format',
         'page-sponsors-active',
         'page-newsletters-active',
+        'page-newsletters-title',
         'page-surveys-active',
         'page-workshops-active',
         'page-workshops-past',
