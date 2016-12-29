@@ -47,7 +47,7 @@ function ciniki_web_privateThemeContentDelete(&$ciniki) {
         return $rc;
     }
     if( !isset($rc['item']) ) {
-        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.161', 'msg'=>'Image does not exist'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.177', 'msg'=>'Image does not exist'));
     }
     $item = $rc['item'];
 

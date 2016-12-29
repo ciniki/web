@@ -122,7 +122,9 @@ if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split']
 //
 // Setup the cache dir for the master business, incase no other business is found
 //
-$strsql = "SELECT uuid FROM ciniki_businesses WHERE id = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_business_id']) . "' ";
+$strsql = "SELECT uuid "
+    . "FROM ciniki_businesses "
+    . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_business_id']) . "' ";
 $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'business');
 if( $rc['stat'] == 'ok' && isset($rc['business']['uuid']) ) {
     $uuid = $rc['business']['uuid'];
@@ -162,6 +164,8 @@ if( $ciniki['config']['ciniki.web']['master.domain'] != $_SERVER['HTTP_HOST']
         }
         $ciniki['business']['uuid'] = $rc['business_uuid'];
         $ciniki['business']['modules'] = $rc['modules'];
+        $ciniki['business']['pages'] = $rc['pages'];
+        $ciniki['business']['module_pages'] = $rc['module_pages'];
         if( isset($rc['redirect']) && $rc['redirect'] != '' && $preview == 'no' ) {
             Header('HTTP/1.1 301 Moved Permanently'); 
             Header('Location: http' . ($rc['forcessl']=='yes'?'s':'') . '://' . $rc['redirect'] . $_SERVER['REQUEST_URI']);
@@ -281,6 +285,8 @@ if( $ciniki['request']['business_id'] == 0 ) {
         $ciniki['request']['business_id'] = $rc['business_id'];
         $ciniki['business']['uuid'] = $rc['business_uuid'];
         $ciniki['business']['modules'] = $rc['modules'];
+        $ciniki['business']['pages'] = $rc['pages'];
+        $ciniki['business']['module_pages'] = $rc['module_pages'];
         if( isset($rc['domain']) ) {
             $ciniki['business']['domain'] = $rc['domain'];
         }
@@ -403,6 +409,7 @@ if( isset($_SESSION['business_id']) && $_SESSION['business_id'] == $ciniki['requ
     if( isset($_SESSION['cart']) ) {
         $ciniki['session']['cart'] = $_SESSION['cart'];
     }
+
     //
     // Load each modules session information
     //
@@ -420,6 +427,7 @@ if( isset($_SESSION['business_id']) && $_SESSION['business_id'] == $ciniki['requ
     if( isset($ciniki['session']['customer']) ) { unset($ciniki['session']['customer']); };
     if( isset($ciniki['session']['customers']) ) { unset($ciniki['session']['customers']); };
     if( isset($ciniki['session']['cart']) ) { unset($ciniki['session']['cart']); };
+
     //
     // Unload each sessions information
     //

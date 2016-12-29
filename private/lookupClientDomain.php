@@ -129,6 +129,41 @@ function ciniki_web_lookupClientDomain(&$ciniki, $domain, $type) {
     }
     $modules = $rc['modules'];
 
-    return array('stat'=>'ok', 'business_id'=>$business_id, 'business_uuid'=>$business_uuid, 'modules'=>$modules, 'redirect'=>$redirect, 'domain'=>$domain, 'sitename'=>$sitename, 'forcessl'=>$forcessl);
+    //
+    // Get the list of module pages and build their Base URL's
+    //
+    $strsql = "SELECT id, parent_id, permalink, title, flags, page_type, page_module "
+        . "FROM ciniki_web_pages "
+        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "";
+    $rc = ciniki_core_dbHashIDQuery($ciniki, $strsql, 'ciniki.web', 'pages', 'id');
+    if( $rc['stat'] != 'ok' ) {
+        return $rc;
+    }
+    if( !isset($rc['pages']) ) {
+        $pages = array();
+        $module_pages = array();
+    } else {
+        $pages = $rc['pages'];
+        $module_pages = array();
+        //
+        // Find the module pages and setup their base URL's
+        //
+        foreach($pages as $pid => $page) {
+            if( $page['page_type'] == 30 ) {
+                $module_pages[$page['page_module']] = $page;
+                $module_pages[$page['page_module']]['base_url'] = '/' . $page['permalink'];
+                if( $page['parent_id'] > 0 ) {
+                    $parent_id = $page['parent_id'];
+                    while($parent_id > 0 && isset($pages[$parent_id])) {
+                        $module_pages[$page['page_module']]['base_url'] = '/' . $pages[$parent_id]['permalink'] . $module_pages[$page['page_module']]['base_url'];
+                        $parent_id = $pages[$parent_id]['parent_id'];
+                    }
+                }
+            }
+        }
+    }
+
+    return array('stat'=>'ok', 'business_id'=>$business_id, 'business_uuid'=>$business_uuid, 'modules'=>$modules, 'pages'=>$pages, 'module_pages'=>$module_pages, 'redirect'=>$redirect, 'domain'=>$domain, 'sitename'=>$sitename, 'forcessl'=>$forcessl);
 }
 ?>

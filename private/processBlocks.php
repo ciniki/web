@@ -43,10 +43,12 @@ function ciniki_web_processBlocks(&$ciniki, $settings, $business_id, $blocks) {
             case 'message': $processor = 'processBlockMessage'; break;
             case 'meta': $processor = 'processBlockMeta'; break;
             case 'multipagenav': $processor = 'processBlockMultiPageNav'; break;
+            case 'orderoptions': $processor = 'processBlockOrderOptions'; break;
             case 'prices': $processor = 'processBlockPrices'; break;
             case 'pricelist': $processor = 'processBlockPriceList'; break;
             case 'pricetable': $processor = 'processBlockPriceTable'; break;
             case 'printoptions': $processor = 'processBlockPrintOptions'; break;
+            case 'productcards': $processor = 'processBlockProductCards'; break;
             case 'sharebuttons': $processor = 'processBlockShareButtons'; break;
             case 'sponsors': $processor = 'processBlockSponsors'; break;
             case 'tableslide': $processor = 'processBlockTableSlide'; break;

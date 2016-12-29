@@ -1,130 +1,130 @@
 /* 8. CUSTOM LAYOUT & TYPOGRAPHY (Daddy bear)
 ----------------------------------------------------------------------------------------*/
 #page-container {
-	padding: 1.618em;
-	margin: 0 auto;
-	max-width: 60em;
+    padding: 1.618em;
+    margin: 0 auto;
+    max-width: 60em;
 }
 
 #page-container.signin {
-	padding-top: 0em;
+    padding-top: 0em;
 }
 
 header div.signin {
 }
 
 /* header span.social-icons {
-	display: inline-block;
-	vertical-align: baseline;
-	text-align: right;
-	float: right;
+    display: inline-block;
+    vertical-align: baseline;
+    text-align: right;
+    float: right;
 } */
 
 header span.title {
-	display: inline;
+    display: inline;
 }
 
 #site-description {
-	margin-top: 0.5em;
+    margin-top: 0.5em;
 }
 
 #sub-menu-container ul.menu li.menu-item,
 #main-menu-container ul.menu li.menu-item {
-	display: inline-block;
-	padding: 0.4em;
-	margin: 0px;
-	border: 0px;
+    display: inline-block;
+    padding: 0.4em;
+    margin: 0px;
+    border: 0px;
 }
 
 #sub-menu-container ul.menu li.menu-item a,
 #main-menu-container ul.menu li.menu-item a {
-	width: auto;
-	height: auto;
-	padding: 0px;
-	display: inline;
+    width: auto;
+    height: auto;
+    padding: 0px;
+    display: inline;
 }
 
 #sub-menu-container ul.menu li.compact-hidden, 
 #main-menu-container ul.menu li.compact-hidden {
-	display: inline-block;
+    display: inline-block;
 }
 
 #sub-menu-container {
-	display: inline-block;
-	margin-right: auto;
+    display: inline-block;
+    margin-right: auto;
 }
 #content div.image-categories div.image-categories-thumbnail-wrap {
-	margin: 5px;
-	max-width: 260px;
+    margin: 5px;
+    max-width: 260px;
 }
 #content div.image-categories div.image-categories-thumbnail-small {
-	max-width: 140px;
+    max-width: 140px;
 }
 #content div.image-categories div.image-categories-thumbnail-medium {
-	max-width: 200px;
+    max-width: 200px;
 }
 
 /* #content div.image-gallery {
-	padding: 0px;
+    padding: 0px;
 } 
 
 #content div.image-categories div.image-categories-thumbnail-wrap {
-	width: 270px;
+    width: 270px;
 }
 
 #content div.image-categories div.image-categories-thumbnail {
-	width: 270px;
+    width: 270px;
 }
 #content span.image-categories-name {
-	width: 260px;
+    width: 260px;
 }
 
 #content div.image-categories-thumbnail img {
-	width: 260px;
-	height: 260px;
+    width: 260px;
+    height: 260px;
 }
 
 #content div.image-categories-thumbnail-small span.image-categories-name {
-	width: 100px;
+    width: 100px;
 }
 
 #content div.image-categories-thumbnail-small div.image-categories-thumbnail img {
-	width: 100px;
-	height: 100px;
+    width: 100px;
+    height: 100px;
 }
 
 #content div.image-categories-thumbnail-medium span.image-categories-name {
-	width: 190px;
+    width: 190px;
 }
 
 #content div.image-categories-thumbnail-medium div.image-categories-thumbnail img {
-	width: 190px;
-	height: 190px;
+    width: 190px;
+    height: 190px;
 } */
 
 div.sponsor-gallery div.sponsor-gallery-thumbnail {
-/*	max-width: 130px;
-	max-height: 130px; */
-	margin: 7px;
+/*    max-width: 130px;
+    max-height: 130px; */
+    margin: 7px;
 }
 
 #content div.image-gallery div.image-gallery-thumbnail {
-/*	width: 130px;
-	height: 130px; */
-	margin: 7px;
+/*    width: 130px;
+    height: 130px; */
+    margin: 7px;
 }
 
 /*#content div.image-gallery-thumbnail img {
-	width: 130px;
-	height: 130px;
+    width: 130px;
+    height: 130px;
 } */
 
 /* #content ul {
-	width: 28em;
+    width: 28em;
 } */
 
 #content dl {
-	width: 30em;
+    width: 30em;
 }
 
 #content div.wide h2, 
@@ -141,48 +141,53 @@ div.sponsor-gallery div.sponsor-gallery-thumbnail {
 #content p.wide,
 #content ul.wide,
 #content dl.wide {
-/* 	width: 100%; */
-	max-width: 100%;
-	clear: both;
+/*     width: 100%; */
+    max-width: 100%;
+    clear: both;
+}
+
+#content div.order-options.wide {
+    max-width: 45em;
+    margin: 0 auto;
 }
 
 #content dl.wide {
-	width: auto;
-	max-width: 100%;
+    width: auto;
+    max-width: 100%;
 }
 
 #content article.page form.wide {
-	width: 100%;
-	max-width: 100%;
+    width: 100%;
+    max-width: 100%;
 }
 
 #content dl dt {
-	margin-left: 0;
-	display: block;
-	vertical-align: top;
+    margin-left: 0;
+    display: block;
+    vertical-align: top;
 }
 
 #content dl dd {
-	display: inline-block;
-	margin-left: 1.8em;
+    display: inline-block;
+    margin-left: 1.8em;
 }
 
 /* Image List */
 #content div.image-list-entry {
-	margin-bottom: 25px;
+    margin-bottom: 25px;
 }
 #content div.image-list-image {
-	text-align: right;
+    text-align: right;
 }
 #content div.image-list-wrap {
-	text-align: right;
+    text-align: right;
 }
 
 
 
 #content table.blist {
-	border-collapse: collapse;
-	table-layout: auto;
+    border-collapse: collapse;
+    table-layout: auto;
 }
 
 #content table.clist,
@@ -192,15 +197,15 @@ div.sponsor-gallery div.sponsor-gallery-thumbnail {
 #content table.exhibitors-list,
 #content table.downloads-list,
 #content table.event-list {
-	border-collapse: collapse;
-	table-layout: auto;
+    border-collapse: collapse;
+    table-layout: auto;
 }
 
 #content table.blist > tbody > tr > th,
 #content table.clist > tbody > tr > th {
-	display: table-cell;
-	padding-bottom: 1em;
-	min-width: 15em;
+    display: table-cell;
+    padding-bottom: 1em;
+    min-width: 15em;
 }
 
 /* #content table.sponsors-list > tbody > tr > th, */
@@ -209,45 +214,45 @@ div.sponsor-gallery div.sponsor-gallery-thumbnail {
 #content table.exhibitors-list > tbody > tr > th,
 #content table.downloads-list th,
 #content table.event-list th {
-	display: table-cell;
-	padding-bottom: 1em;
+    display: table-cell;
+    padding-bottom: 1em;
 }
 
 #content table.cilist > tbody > tr,
 #content table.members-list > tbody > tr,
 #content table.sponsors-list > tbody > tr,
 #content table.exhibitors-list > tbody > tr {
-	padding-bottom: 1em;
+    padding-bottom: 1em;
 }
 
 /* #content table.sponsors-list > tbody > tr > td, */
 #content table.cilist > tbody > tr > td,
 #content table.members-list > tbody > tr > td,
 #content table.exhibitors-list > tbody > tr > td {
-	display: table-cell;
-	padding-left: 0em;
-	padding-bottom: 1em;
+    display: table-cell;
+    padding-left: 0em;
+    padding-bottom: 1em;
 }
 
 #content table.cilist-categories td.cilist-image,
 #content table.members-list table.members-category-list td.members-image,
 #content table.exhibitors-list table.exhibitors-category-list td.exhibitors-image {
-	padding-left: 0.5em;
-	padding-right: 0.5em;
-	min-width: 9.5em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    min-width: 9.5em;
 }
 
 #content table.blist td {
-	display: table-cell;
-	min-width: 30em;
+    display: table-cell;
+    min-width: 30em;
 }
 
 #content table.clist td,
 #content table.downloads-list td,
 #content table.event-list td {
-	display: table-cell;
-	padding-left: 1.5em;
-	padding-bottom: 1em;
+    display: table-cell;
+    padding-left: 1.5em;
+    padding-bottom: 1em;
 }
 
 /* #content table.sponsors-list > tbody > tr > th, */
@@ -266,11 +271,11 @@ div.sponsor-gallery div.sponsor-gallery-thumbnail {
 #content table.downloads-list td,
 #content table.event-list th,
 #content table.event-list td {
-	border-top: 1px solid;
+    border-top: 1px solid;
 }
 
 #content table.cilist-categories > tbody > tr > td.cilist-details {
-	width: 100%;
+    width: 100%;
 }
 
 #content span.blist-category,
@@ -282,96 +287,96 @@ div.sponsor-gallery div.sponsor-gallery-thumbnail {
 #content span.downloads-category,
 #content span.links-category,
 #content span.event-date {
-	display: inline-block;
-	white-space: pre;
-	max-width: 100%;
-	padding-right: 0px;
-	width: 49%;
+    display: inline-block;
+    white-space: pre;
+    max-width: 100%;
+    padding-right: 0px;
+    width: 49%;
 }
 
 #content table.cilist th {
-	padding-top: 0.25em;
+    padding-top: 0.25em;
 }
 
 #content span.cilist-subcategory,
 #content span.exhibitors-subcategory {
-	display: block;
-	text-align: left;
+    display: block;
+    text-align: left;
 }
 
 #content div.gallery-image {
-	max-width: 100%;
-	width: auto;
+    max-width: 100%;
+    width: auto;
 }
 
 #content div.gallery-image div.gallery-image-wrap {
-	display: inline-block;
-	width: auto;
+    display: inline-block;
+    width: auto;
 }
 
 #content div.gallery-image div.gallery-image-details {
-	min-width: 25em;
+    min-width: 25em;
 }
 
 #content div.largebutton-list div.button-list-wrap {
-	width: 49%;
-	display: inline-block;
+    width: 49%;
+    display: inline-block;
 }
 
 #content .clearaside {
-	clear: both;
+    clear: both;
 }
 
 #content aside div.largebutton-list div.button-list-wrap {
-	width: 100%;
-	display: block;
+    width: 100%;
+    display: block;
 }
 
 #content div.button-list div.button-list-wrap {
-	width: 32%;
-	margin-right: 0.2em;
-	margin-left: 0.2em;
-	display: inline-block;
+    width: 32%;
+    margin-right: 0.2em;
+    margin-left: 0.2em;
+    display: inline-block;
 }
 
 #content div.largebutton-list div.button-list-wrap a,
 #content div.button-list div.button-list-wrap a {
-	width: 100%;
-	display: inline-block;
+    width: 100%;
+    display: inline-block;
 }
 
 /* blist buttons */
 #content table.blist div.button-list div.button-list-wrap {
-	width: 100%;
-	margin-left: 0em;
-	margin-right: 0em;
+    width: 100%;
+    margin-left: 0em;
+    margin-right: 0em;
 }
 
 #content table.blist div.button-list-wrap a {
-	margin: 0.2em 0em 0.2em 0em;
-	display: block;
-	width: auto;
-	text-align: left;
+    margin: 0.2em 0em 0.2em 0em;
+    display: block;
+    width: auto;
+    text-align: left;
 }
 
 #content form,
 #content article.page form {
     box-sizing: border-box;
-	max-width: 30em;
+    max-width: 30em;
 }
 
 #content article.account form,
 #content article.cart form {
-	max-width: 100%;
+    max-width: 100%;
 }
 
 #content article.cart form {
-	width: 100%;
-	max-width: 100%;
+    width: 100%;
+    max-width: 100%;
 }
 
-#content form textarea {	
-	max-width: 100%;
+#content form textarea {    
+    max-width: 100%;
 }
 #content form input.text,
 #content article.page form input.text {
@@ -379,65 +384,65 @@ div.sponsor-gallery div.sponsor-gallery-thumbnail {
     box-sizing: border-box;
 }
 #content div.cart-pricetable {
-	margin: 0 auto;
+    margin: 0 auto;
 }
 #content div.cart-pricetable-small {
-	max-width: 45em;
-	margin: 0 auto;
+    max-width: 45em;
+    margin: 0 auto;
 }
 #content table.cart-pricetable tr th {
-	display: table-cell;
+    display: table-cell;
 }
 #content table.cart-pricetable tr {
-	display: table-row;
+    display: table-row;
 }
 #content table.cart-pricetable tr td {
-	display: table-cell;
+    display: table-cell;
 }
 
 #content form table.cart-details input.text {
-	width: 100%;
-	max-width: 100%;
+    width: 100%;
+    max-width: 100%;
 }
 
 #content form div.submit {
-	max-width: 31.2em;
-	max-width: 29.2em;
+    max-width: 31.2em;
+    max-width: 29.2em;
     max-width: 30em;
     box-sizing: border-box;
-	padding-right: 0em;
+    padding-right: 0em;
 }
 
 #content form div.bigsubmit,
 #content form div.bigsubmit2 {
-	max-width: 30em;
+    max-width: 30em;
 }
 
 div.block-primary-image,
 aside {
-	float: right;
-	clear: right;
-	width: 25em;
-	height: auto;
+    float: right;
+    clear: right;
+    width: 25em;
+    height: auto;
 }
 
 #content article.page {
-	width: 100%; 
-	margin: 0 auto;
+    width: 100%; 
+    margin: 0 auto;
 }
 
 #content.evensplit form input.text {
-	max-width: 26em;
+    max-width: 26em;
 }
 
 #content.evensplit form div.submit, 
 #content.evensplit form div.bigsubmit, 
 #content.evensplit form div.bigsubmit2  {
-	max-width: 27em;
+    max-width: 27em;
 }
 
 #content.evensplit aside {
-	width: 30em;
+    width: 30em;
 }
 
 header span.social-icons { display: inline-block; }
@@ -445,10 +450,10 @@ header div.signin .hide-babybear { display: inline-block; }
 div.hide-babybear { display: block; }
 
 #content table.cilist td.cilist-image {
-	display: table-cell;
+    display: table-cell;
 }
 span.exhibitors-description {
-	display: inline;
+    display: inline;
 }
 
 /* Set the full size for the word-cloud */
@@ -465,153 +470,204 @@ span.exhibitors-description {
 
 #content div.entry-content div.googlemap { height: 30em; }
 
+#content div.order-options {
+    clear: none;
+    max-width: 30em;
+    margin: 0px;
+}
+
 /* 9. CUSTOM LAYOUT & TYPOGRAPHY (Mummy bear)
 ----------------------------------------------------------------------------------------*/
 @media screen and (min-width: 30em) and (max-width: 63.236em) {
-	body { width: 100%; }
-	#page-container { width: auto; max-width: 90%; }
-	#sub-menu-container { text-align: left; }
-	#content dl dd { margin-left: 3em; }
-	#content span.exhibitors-category {
-		display: inline-block;
-		width: 49%;
-	}
-	#content span.cilist-subcategory,
-	#content span.exhibitors-subcategory {
-		display: inline-block;
-		text-align: right;
-		width: 50%;
-	}
-/*	#content span.image-categories-name { width: 190px; }
-	#content div.image-categories-thumbnail img {
-		width: 190px;
-		height: 190px;
-	} */
+    body { width: 100%; }
+    #page-container { width: auto; max-width: 90%; }
+    #sub-menu-container { text-align: left; }
+    #content dl dd { margin-left: 3em; }
+    #content span.exhibitors-category {
+        display: inline-block;
+        width: 49%;
+    }
+    #content span.cilist-subcategory,
+    #content span.exhibitors-subcategory {
+        display: inline-block;
+        text-align: right;
+        width: 50%;
+    }
+/*    #content span.image-categories-name { width: 190px; }
+    #content div.image-categories-thumbnail img {
+        width: 190px;
+        height: 190px;
+    } */
 
-	#content div.gallery-image { width: 100%; }
-	#content table.sponsors-list table.sponsors-category-list td.sponsors-image {
-		padding-right: 0.1em;
-		padding-left: 0;
-	}
+    #content div.gallery-image { width: 100%; }
+    #content table.sponsors-list table.sponsors-category-list td.sponsors-image {
+        padding-right: 0.1em;
+        padding-left: 0;
+    }
 
-	#content table.cilist table.cilist-categories td.cilist-image,
-	#content table.members-list table.members-category-list td.members-image,
-	#content table.exhibitors-list table.exhibitors-category-list td.exhibitors-image {
-		padding-right: 0.1em;
-		padding-left: 0;
-		min-width: 9.0em;
-	}
-	#content table.exhibitors-list > tbody > tr > th,
-	#content table.blist > tbody > tr > th,
-	#content table.clist > tbody > tr > th,
-	#content table.cilist > tbody > tr > th,
-	#content table.members-list > tbody > tr > th,
-	#content table.downloads-list th,
-	#content table.event-list th {
-		display: block;
-		padding-bottom: 0em;
-		border-top-width: 0px;
-	}
+    #content table.cilist table.cilist-categories td.cilist-image,
+    #content table.members-list table.members-category-list td.members-image,
+    #content table.exhibitors-list table.exhibitors-category-list td.exhibitors-image {
+        padding-right: 0.1em;
+        padding-left: 0;
+        min-width: 9.0em;
+    }
+    #content table.exhibitors-list > tbody > tr > th,
+    #content table.blist > tbody > tr > th,
+    #content table.clist > tbody > tr > th,
+    #content table.cilist > tbody > tr > th,
+    #content table.members-list > tbody > tr > th,
+    #content table.downloads-list th,
+    #content table.event-list th {
+        display: block;
+        padding-bottom: 0em;
+        border-top-width: 0px;
+    }
 
-	#content table.blist > tbody > tr > td,
-	#content table.clist > tbody > tr > td,
-	#content table.cilist > tbody > tr > td,
-	#content table.members-list > tbody > tr > td,
-	#content table.sponsors-list > tbody > tr > td,
-	#content table.exhibitors-list > tbody > tr > td,
-	#content table.downloads-list td,
-	#content table.event-list td {
-		display: block;
-	}
-	#content table.cilist > tbody > tr > td,
-	#content table.members-list > tbody > tr > td,
-	#content table.sponsors-list > tbody > tr > td,
-	#content table.exhibitors-list > tbody > tr > td {
-		padding-left: 0em;
-		margin-left: 0px;
-	}
-	#content table.blist td,
-	#content table.clist td,
-	#content table.downloads-list td,
-	#content table.event-list td {
-		padding-left: 5em;
-		margin-left: 0px;
-	}
-	#content div.largebutton-list div.button-list-wrap, 
-	#content div.button-list div.button-list-wrap {
-		width: 100%;
-	}
-	#content form div.input { width: 100%; }
-	#content form input.text,
-	#content form,
-	#content dl,
-	#content h2,
-	#content h3,
-	#content h4 {
-		width: 100%;
-		max-width: 100%;
-	}
-	#content.evensplit form input.text { max-width: 96%; }
-	#content form div.submit { width: 100%; }
-	#content.evensplit form div.submit { max-width: 100%; }
-	#content ul { max-width: 45em; }
-	#content p,
-	#content dl.wide,
-	#content ol.wide,
-	#content ul.wide {
-		max-width: 45em;
-		margin: 0 auto 1.618em;
-	}
-	#content div.embed-video {
-		margin: 0 auto 1.618em;
-	}
-	div.block-primary-image,
-	aside {
-		float: none;
-		width: auto; 
-		max-width: 30em;
-		height: auto;
-		margin: 0 auto 2.2em;
-	}
-	div.block-primary-image div.image-wrap { max-width: 30em; margin: 0 auto; }
-	aside div.image-wrap { max-width: 30em; margin: 0 auto; }
-	#content article.page {
-		width: 100%; 
-		margin: 0 auto;
-	}
-	#content.evensplit aside { width: 30em; }
-	#content.evensplit form div.bigsubmit,
-	#content.evensplit form div.bigsubmit2 {
-		width: 100%;
-		max-width: 100%;
-	}
-	div.hide-babybear { display: block; }
-	span.exhibitors-description { display: inline; }
+    #content table.blist > tbody > tr > td,
+    #content table.clist > tbody > tr > td,
+    #content table.cilist > tbody > tr > td,
+    #content table.members-list > tbody > tr > td,
+    #content table.sponsors-list > tbody > tr > td,
+    #content table.exhibitors-list > tbody > tr > td,
+    #content table.downloads-list td,
+    #content table.event-list td {
+        display: block;
+    }
+    #content table.cilist > tbody > tr > td,
+    #content table.members-list > tbody > tr > td,
+    #content table.sponsors-list > tbody > tr > td,
+    #content table.exhibitors-list > tbody > tr > td {
+        padding-left: 0em;
+        margin-left: 0px;
+    }
+    #content table.blist td,
+    #content table.clist td,
+    #content table.downloads-list td,
+    #content table.event-list td {
+        padding-left: 5em;
+        margin-left: 0px;
+    }
+    #content div.largebutton-list div.button-list-wrap, 
+    #content div.button-list div.button-list-wrap {
+        width: 100%;
+    }
+    #content form div.input { width: 100%; }
+    #content form input.text,
+    #content form,
+    #content dl,
+    #content h2,
+    #content h3,
+    #content h4 {
+        width: 100%;
+        max-width: 100%;
+    }
+    #content.evensplit form input.text { max-width: 96%; }
+    #content form div.submit { width: 100%; }
+    #content.evensplit form div.submit { max-width: 100%; }
+    #content ul { max-width: 45em; }
+    #content p,
+    #content dl.wide,
+    #content ol.wide,
+    #content ul.wide {
+        max-width: 45em;
+        margin: 0 auto 1.618em;
+    }
+    #content div.embed-video {
+        margin: 0 auto 1.618em;
+    }
+    div.block-primary-image,
+    aside {
+        float: none;
+        width: auto; 
+        max-width: 30em;
+        height: auto;
+        margin: 0 auto 2.2em;
+    }
+    div.block-primary-image div.image-wrap { max-width: 30em; margin: 0 auto; }
+    aside div.image-wrap { max-width: 30em; margin: 0 auto; }
+    #content article.page {
+        width: 100%; 
+        margin: 0 auto;
+    }
+    #content.evensplit aside { width: 30em; }
+    #content.evensplit form div.bigsubmit,
+    #content.evensplit form div.bigsubmit2 {
+        width: 100%;
+        max-width: 100%;
+    }
+    div.hide-babybear { display: block; }
+    span.exhibitors-description { display: inline; }
+
+    #content div.order-options {
+        clear: both;
+        max-width: 45em;
+        margin: 0 auto;
+    }
 }
 
 /* 10. CUSTOM LAYOUT & TYPOGRAPHY (Older Sister bear)
 ----------------------------------------------------------------------------------------*/
 @media screen and (min-width: 40em) and (max-width: 63.236em) {
-	body { width: 100%; }
-	#page-container.page-container-wide { width: auto; max-width: 100% }
-	#content article.page { width: 36em; width: 100%; }
-	#content.evensplit aside,
-	div.block-primary-image { max-width: 100%; width: 36em; width: 100%; } 
-	aside { max-width: 100%; width: 36em; width: 100%; } 
-	#content div.largebutton-list { text-align: center; }
-	#content div.button-list { text-align: center; }
-	#content div.button-list div.button-list-wrap {
-		display: inline-block;
-		width: 48%;
-	}
-	#content.evensplit form div.bigsubmit2 { width: 100%; max-width: 100%;
-	}
+    body { width: 100%; }
+    #page-container.page-container-wide { width: auto; max-width: 100% }
+    #content article.page { width: 36em; width: 100%; }
+    #content.evensplit aside,
+    div.block-primary-image { max-width: 100%; width: 36em; width: 100%; } 
+    aside { max-width: 100%; width: 36em; width: 100%; } 
+    #content div.largebutton-list { text-align: center; }
+    #content div.button-list { text-align: center; }
+    #content div.button-list div.button-list-wrap {
+        display: inline-block;
+        width: 48%;
+    }
+    #content.evensplit form div.bigsubmit2 { width: 100%; max-width: 100%;
+    }
 
-	div.hide-babybear { display: block; }
+    div.hide-babybear { display: block; }
 }
 
 @media screen and (min-width: 35em) {
-/*    #content div.thumbnail-list-item-wrap { width: 25%; } */
+    div.product-card {
+        display: flex;
+        flex-flow: row nowrap;
+        height: 100%;
+    }
+    div.product-card-thumbnail {
+        width: 30%;
+        height: 100%;
+        margin-right: 1em;
+        margin-bottom: 0em;
+        box-sizing: border-box;
+    }
+    div.product-card-text {
+        width: 70%;
+        display: flex;
+        flex-flow: column;
+    }
+    div.product-card-options {
+        margin-top: auto;
+    }
+}
+@media screen and (min-width: 45em) {
+    a.product-card-a {
+        width: 50%;
+        display: flex;
+        flex-flow: row;
+        position: relative;
+    }
+    a.product-card-a:nth-child(1n) {
+        padding-left: 0em;
+        padding-right: 0.5em;
+    }
+    a.product-card-a:nth-child(2n) {
+        padding-left: 0.5em;
+        padding-right: 0em;
+        box-sizing: border-box;
+    }
+    div.product-card-wrap {
+        width: 100%;
+    }
 }
 
 /* 11. Anything over 40 em
@@ -637,52 +693,52 @@ span.exhibitors-description {
         box-sizing: border-box;
         display: inline-block;
     }
-	#content div.image-list-image {
-		width: 35%;
-	}
-	#content div.image-list-details {
-		width: 65%;
-	}
-	#content table.sponsors-list table.sponsors-category-list td.sponsors-image {
-		padding-left: 0.0em;
-		padding-right: 0.5em;
-	/*	min-width: 9.5em; */
-		border: 0px;
-		display: table-cell;
-	}
-	#content table.sponsors-list table.sponsors-category-list td.sponsors-image img {
-		max-width: none;
-	}
-	#content table.sponsors-list table.sponsors-category-list td.sponsors-details {
-		display: table-cell;
-	}
-	#content table.sponsors-list table.sponsors-category-list td.sponsors-description p {
-		max-width: 100%;
-		width: 100%;
-	}
-	#content div.quote {
-		margin: 0em 2em 1.5em 2em;
-		padding-bottom: 0.5em;
-	}
-	article.cart header h1.entry-title {
-		display: inline-block;
-		width: 50%;
-		padding-left: 0px;
-		padding-right: 0px;
-	}
-	article.cart header div.cart-search-input {
-		display: inline-block;
-		text-align: right;
-		width: 50%;
-		margin-top: 0em;
-	}
-	#content div.cart-search-input input {
-		width: 90%;
-	}
-	div.popup-wrapper {
-		margin: 30px auto;
-		max-width: 95%;
-	}
+    #content div.image-list-image {
+        width: 35%;
+    }
+    #content div.image-list-details {
+        width: 65%;
+    }
+    #content table.sponsors-list table.sponsors-category-list td.sponsors-image {
+        padding-left: 0.0em;
+        padding-right: 0.5em;
+    /*    min-width: 9.5em; */
+        border: 0px;
+        display: table-cell;
+    }
+    #content table.sponsors-list table.sponsors-category-list td.sponsors-image img {
+        max-width: none;
+    }
+    #content table.sponsors-list table.sponsors-category-list td.sponsors-details {
+        display: table-cell;
+    }
+    #content table.sponsors-list table.sponsors-category-list td.sponsors-description p {
+        max-width: 100%;
+        width: 100%;
+    }
+    #content div.quote {
+        margin: 0em 2em 1.5em 2em;
+        padding-bottom: 0.5em;
+    }
+    article.cart header h1.entry-title {
+        display: inline-block;
+        width: 50%;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    article.cart header div.cart-search-input {
+        display: inline-block;
+        text-align: right;
+        width: 50%;
+        margin-top: 0em;
+    }
+    #content div.cart-search-input input {
+        width: 90%;
+    }
+    div.popup-wrapper {
+        margin: 30px auto;
+        max-width: 95%;
+    }
 /*    #content div.thumbnail-list-item-wrap { width: 20%; } */
     #content div.table-slide-horizontal div.table-slide-rowlabels {
         width: 40%;
@@ -695,15 +751,15 @@ span.exhibitors-description {
 /* 12. Anything over 50 em
 ------------------------------------------------------------------------------*/
 @media screen and (min-width: 50em) {
-/*	#content div.image-list-image {
-		width: 40%;
-	}
-	#content div.image-list-wrap {
-		max-width: 200px;
-	} 
-	#content div.image-list-details {
-		width: 60%;
-	} */
+/*    #content div.image-list-image {
+        width: 40%;
+    }
+    #content div.image-list-wrap {
+        max-width: 200px;
+    } 
+    #content div.image-list-details {
+        width: 60%;
+    } */
     #content div.image-list-wrap {
         max-width: 100%;
     }
@@ -724,11 +780,10 @@ span.exhibitors-description {
     #content div.image-list-details {
         width: 65%;
     }
-	#content div.quote {
-		margin: 0em 5em 1.5em 5em;
-		padding-bottom: 0.5em;
-	}
-/*     #content div.thumbnail-list-item-wrap { width: 16.6%; } */
+    #content div.quote {
+        margin: 0em 5em 1.5em 5em;
+        padding-bottom: 0.5em;
+    }
     #content div.table-slide-horizontal div.table-slide-rowlabels {
         width: 35%;
     }
@@ -738,7 +793,6 @@ span.exhibitors-description {
 }
 
 @media screen and (min-width: 60em) {
-/*     #content div.thumbnail-list-item-wrap { width: 12.5%; } */
     #content div.table-slide-horizontal div.table-slide-rowlabels {
         width: 25%;
     }
@@ -751,134 +805,134 @@ span.exhibitors-description {
 /* 13. Print 
 ------------------------------------------------------------------------------*/
 @media print {
-	header div.signin {display: none; }
-	header nav { display: none; }
-	.image-list-more { display: none; }
-	.cilist-more { display: none; }
-	#content h2,
-	#content p {
-		max-width: 100%; 
-	}
-	div.block-primary-image {width: 50%; }
-	aside {width: 50%; }
-	body { width: 100%; }
-	#content .share-buttons-wrap { display: none; }
-	div.primary-block-image div.image-wrap { padding-left: 0px; }
-	aside div.image-wrap { padding-left: 0px; }
-	#content div.slider { display: none; }
-	#page-container { width: auto; max-width: 45em; }
-	#sub-menu-container { text-align: left; }
-	#content dl dd { margin-left: 3em; }
-	#content span.exhibitors-category {
-		display: inline-block;
-		width: 49%;
-	}
-	#content span.cilist-subcategory,
-	#content span.exhibitors-subcategory {
-		display: inline-block;
-		text-align: right;
-		width: 50%;
-	}
-/*	#content span.image-categories-name { width: 190px; }
-	#content div.image-categories-thumbnail img {
-		width: 190px;
-		height: 190px;
-	} */
+    header div.signin {display: none; }
+    header nav { display: none; }
+    .image-list-more { display: none; }
+    .cilist-more { display: none; }
+    #content h2,
+    #content p {
+        max-width: 100%; 
+    }
+    div.block-primary-image {width: 50%; }
+    aside {width: 50%; }
+    body { width: 100%; }
+    #content .share-buttons-wrap { display: none; }
+    div.primary-block-image div.image-wrap { padding-left: 0px; }
+    aside div.image-wrap { padding-left: 0px; }
+    #content div.slider { display: none; }
+    #page-container { width: auto; max-width: 45em; }
+    #sub-menu-container { text-align: left; }
+    #content dl dd { margin-left: 3em; }
+    #content span.exhibitors-category {
+        display: inline-block;
+        width: 49%;
+    }
+    #content span.cilist-subcategory,
+    #content span.exhibitors-subcategory {
+        display: inline-block;
+        text-align: right;
+        width: 50%;
+    }
+/*    #content span.image-categories-name { width: 190px; }
+    #content div.image-categories-thumbnail img {
+        width: 190px;
+        height: 190px;
+    } */
 
-	#content div.gallery-image { width: 100%; }
-	#content table.sponsors-list table.sponsors-category-list td.sponsors-image {
-		padding-right: 0.1em;
-		padding-left: 0;
-	}
+    #content div.gallery-image { width: 100%; }
+    #content table.sponsors-list table.sponsors-category-list td.sponsors-image {
+        padding-right: 0.1em;
+        padding-left: 0;
+    }
 
-	#content table.cilist table.cilist-categories td.cilist-image,
-	#content table.members-list table.members-category-list td.members-image,
-	#content table.exhibitors-list table.exhibitors-category-list td.exhibitors-image {
-		padding-right: 0.1em;
-		padding-left: 0;
-		min-width: 9.0em;
-	}
-	#content table.exhibitors-list > tbody > tr > th,
-	#content table.blist > tbody > tr > th,
-	#content table.clist > tbody > tr > th,
-	#content table.cilist > tbody > tr > th,
-	#content table.members-list > tbody > tr > th,
-	#content table.downloads-list th,
-	#content table.event-list th {
-		display: block;
-		padding-bottom: 0em;
-		border-top-width: 0px;
-	}
+    #content table.cilist table.cilist-categories td.cilist-image,
+    #content table.members-list table.members-category-list td.members-image,
+    #content table.exhibitors-list table.exhibitors-category-list td.exhibitors-image {
+        padding-right: 0.1em;
+        padding-left: 0;
+        min-width: 9.0em;
+    }
+    #content table.exhibitors-list > tbody > tr > th,
+    #content table.blist > tbody > tr > th,
+    #content table.clist > tbody > tr > th,
+    #content table.cilist > tbody > tr > th,
+    #content table.members-list > tbody > tr > th,
+    #content table.downloads-list th,
+    #content table.event-list th {
+        display: block;
+        padding-bottom: 0em;
+        border-top-width: 0px;
+    }
 
-	#content table.blist > tbody > tr > td,
-	#content table.clist > tbody > tr > td,
-	#content table.cilist > tbody > tr > td,
-	#content table.members-list > tbody > tr > td,
-	#content table.sponsors-list > tbody > tr > td,
-	#content table.exhibitors-list > tbody > tr > td,
-	#content table.downloads-list td,
-	#content table.event-list td {
-		display: block;
-	}
-	#content table.cilist > tbody > tr > td,
-	#content table.members-list > tbody > tr > td,
-	#content table.sponsors-list > tbody > tr > td,
-	#content table.exhibitors-list > tbody > tr > td {
-		padding-left: 0em;
-		margin-left: 0px;
-	}
-	#content table.blist td,
-	#content table.clist td,
-	#content table.downloads-list td,
-	#content table.event-list td {
-		padding-left: 5em;
-		margin-left: 0px;
-	}
-	#content div.largebutton-list div.button-list-wrap, 
-	#content div.button-list div.button-list-wrap {
-		width: 100%;
-	}
-	#content form div.input { width: 100%; }
-	#content form {
-		width: 100%;
-		max-width: 100%;
-	}
-	#content dl {
-		width: 100%;
-		max-width: 100%;
-	}
-	#content form input.text {
-		width: 100%;
-		max-width: 100%;
-	}
-	#content.evensplit form input.text { max-width: 96%; }
-	#content form div.submit { width: 100%; }
-	#content.evensplit form div.submit { max-width: 100%; }
-	#content ul { max-width: 45em; }
-	#content p,
-	#content dl.wide,
-	#content ul.wide {
-		max-width: 45em;
-	}
-	div.block-primary-image,
-	aside {
-		float: none;
-		width: auto; 
-		max-width: 30em;
-		height: auto;
-		margin: 0 auto 2.2em;
-	}
-	aside div.image-wrap { max-width: 30em; margin: 0 auto; }
-	#content article.page {
-		width: 100%; 
-		margin: 0 auto;
-	}
-	#content.evensplit aside { width: 30em; }
-	#content.evensplit form div.bigsubmit,
-	#content.evensplit form div.bigsubmit2 {
-		width: 100%;
-		max-width: 100%;
-	}
-	div.hide-babybear { display: block; }
-	span.exhibitors-description { display: inline; }
+    #content table.blist > tbody > tr > td,
+    #content table.clist > tbody > tr > td,
+    #content table.cilist > tbody > tr > td,
+    #content table.members-list > tbody > tr > td,
+    #content table.sponsors-list > tbody > tr > td,
+    #content table.exhibitors-list > tbody > tr > td,
+    #content table.downloads-list td,
+    #content table.event-list td {
+        display: block;
+    }
+    #content table.cilist > tbody > tr > td,
+    #content table.members-list > tbody > tr > td,
+    #content table.sponsors-list > tbody > tr > td,
+    #content table.exhibitors-list > tbody > tr > td {
+        padding-left: 0em;
+        margin-left: 0px;
+    }
+    #content table.blist td,
+    #content table.clist td,
+    #content table.downloads-list td,
+    #content table.event-list td {
+        padding-left: 5em;
+        margin-left: 0px;
+    }
+    #content div.largebutton-list div.button-list-wrap, 
+    #content div.button-list div.button-list-wrap {
+        width: 100%;
+    }
+    #content form div.input { width: 100%; }
+    #content form {
+        width: 100%;
+        max-width: 100%;
+    }
+    #content dl {
+        width: 100%;
+        max-width: 100%;
+    }
+    #content form input.text {
+        width: 100%;
+        max-width: 100%;
+    }
+    #content.evensplit form input.text { max-width: 96%; }
+    #content form div.submit { width: 100%; }
+    #content.evensplit form div.submit { max-width: 100%; }
+    #content ul { max-width: 45em; }
+    #content p,
+    #content dl.wide,
+    #content ul.wide {
+        max-width: 45em;
+    }
+    div.block-primary-image,
+    aside {
+        float: none;
+        width: auto; 
+        max-width: 30em;
+        height: auto;
+        margin: 0 auto 2.2em;
+    }
+    aside div.image-wrap { max-width: 30em; margin: 0 auto; }
+    #content article.page {
+        width: 100%; 
+        margin: 0 auto;
+    }
+    #content.evensplit aside { width: 30em; }
+    #content.evensplit form div.bigsubmit,
+    #content.evensplit form div.bigsubmit2 {
+        width: 100%;
+        max-width: 100%;
+    }
+    div.hide-babybear { display: block; }
+    span.exhibitors-description { display: inline; }
 }
