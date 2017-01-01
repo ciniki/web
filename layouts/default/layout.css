@@ -623,10 +623,7 @@ span.exhibitors-description {
     }
     #content.evensplit form div.bigsubmit2 { width: 100%; max-width: 100%;
     }
-
-    div.hide-babybear { display: block; }
 }
-
 @media screen and (min-width: 35em) {
     div.product-card {
         display: flex;
@@ -647,6 +644,30 @@ span.exhibitors-description {
     }
     div.product-card-options {
         margin-top: auto;
+    }
+}
+@media screen and (min-width: 40em) {
+    div.hide-babybear { display: block; }
+
+    table.order-details thead tr,
+    table.order-details tbody tr,
+    table.order-details tfoot tr {
+        display: table-row;
+    }
+    table.order-details thead th {
+        display: table-cell;
+        width: auto;
+    }
+    table.order-details tbody td:nth-child(1) { display: table-cell; width: auto; }
+    table.order-details tbody td:nth-child(2) { display: table-cell; width: auto; padding: 0.5em 0em 0.5em 0.5em; }
+    table.order-details tbody td:nth-child(3) { display: table-cell; width: auto; }
+    table.order-details tbody td:nth-child(4) { display: table-cell; width: auto; }
+    table.order-details tbody td:nth-child(5) { display: table-cell; width: auto; }
+    #content table.order-details tfoot td:nth-child(1),
+    #content table.order-details tfoot td:nth-child(2),
+    #content table.order-details tfoot td:nth-child(3) {
+        display: table-cell;
+        width: auto;
     }
 }
 @media screen and (min-width: 45em) {

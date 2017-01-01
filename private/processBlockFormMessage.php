@@ -19,7 +19,7 @@ function ciniki_web_processBlockFormMessage($ciniki, $settings, $business_id, $b
     $content = '';
 
     if( isset($block['title']) && $block['title'] != '' ) {
-        $content .= '<h2>' . $block['title'] . '</h2>';
+        $content .= "<h2" . ((isset($block['size'])&&$block['size']!='') ? " class='" . $block['size'] . "'" : '') . ">" . $block['title'] . "</h2>";
     }
 
     $content .= "<div class='form-message-content'>";

@@ -16,7 +16,7 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
     $heart_off = '<span class="fa-icon order-icon order-options-fav-off">&#xf08a;</span>';
     $heart_on = '<span class="fa-icon order-icon order-options-fav-on">&#xf004;</span>';
     $order_off = '<span class="fa-icon order-icon order-options-order-on">&#xf217;</span>';
-    $order_on = '<span class="fa-icon order-icon order-options-order-on" onclick="javascript: toggleOptionOrder();>&#xf217;</span>';
+    $order_on = '<span class="fa-icon order-icon order-options-order-on">&#xf217;</span>';
 
     $content = '';
 
@@ -35,22 +35,11 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
     //
     // Setup the api endpoints and submit urls
     //
-    if( isset($ciniki['business']['modules']['ciniki.poma']) ) {
-        //
-        // Favourite API endpoints
-        //
-        $api_fav_on = 'ciniki/poma/favItemAdd/ciniki.foodmarket.output/';
-        $api_fav_off = 'ciniki/poma/favItemDelete/ciniki.foodmarket.output/'; 
-        $api_order_update = 'ciniki/poma/orderItemUpdate/ciniki.foodmarket.output/';
-        $api_repeat_update = 'ciniki/poma/repeatItemUpdate/ciniki.foodmarket.output/';
-        $api_queue_qty = 'ciniki/poma/queueItemUpdate/ciniki.foodmarket.output/';
-    } else {
-        $api_fav_on = '';
-        $api_fav_off = '';
-        $api_order_qty = '';
-        $api_repeat_update = '';
-        $api_queue_qty = '';
-    }
+    $api_fav_on = (isset($block['api_fav_on']) ? $block['api_fav_on'] : '');
+    $api_fav_off = (isset($block['api_fav_off']) ? $block['api_fav_off'] : '');
+    $api_order_update = (isset($block['api_order_update']) ? $block['api_order_update'] : '');
+    $api_repeat_update = (isset($block['api_repeat_update']) ? $block['api_repeat_update'] : '');
+    $api_queue_update = (isset($block['api_queue_update']) ? $block['api_queue_update'] : '');
 
     //
     // Check for block title
@@ -65,7 +54,7 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
     if( $block['options'] != '' ) {
         $content .= "<div class='order-options" . ((isset($block['size'])&&$block['size']!='') ? ' ' . $block['size'] : '') . "'>";
         $content .= "<table class='order-options'>";
-        $content .= "<body>";   
+        $content .= "<tbody>";   
         foreach($block['options'] as $oid => $option) {
             $content .= "<tr class='order-options-item'>";
             $content .= "<td class='name'>" . $option['name'] . "</td>";
@@ -105,13 +94,14 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
                     || (isset($option['repeat']) && $option['repeat'] == 'yes') 
                     || (isset($option['queue']) && $option['queue'] == 'yes')
                     ) {
+                error_log('testing');
                     $content .= "<tr id='order_option_" . $option['id'] . "' class='order-options-order order-hide'><td colspan='4'>";
                     if( isset($option['available']) && $option['available'] == 'yes' 
                         && isset($ciniki['session']['ciniki.poma']['date']['order_date_text'])
                         ) {
                         $content .=  "<div class='order-option'>Order "
-                            . "<span class='order-option-qty'>"
-                            . "<span class='order-option-qty-down' onclick='orderQtyDown(" . $option['id'] . ");'>-</span>"
+                            . "<span class='order-qty'>"
+                            . "<span class='order-qty-down' onclick='orderQtyDown(" . $option['id'] . ");'>-</span>"
     //                        . "<input type='number' pattern='[0-9]' min='0' step='1' id='order_quantity_" . $option['id'] . "' name='order_quantity_" . $option['id'] . "' value='" . $option['order_quantity'] . "' editable=false/>"
                             . "<input id='order_quantity_" . $option['id'] . "' name='order_quantity_" . $option['id'] . "' "
                                 . "value='" . $option['order_quantity'] . "' "
@@ -119,7 +109,7 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
                                 . "onkeyup='orderQtyChange(" . $option['id'] . ");' "
                                 . "onchange='orderQtyChange(" . $option['id'] . ");' "
                                 . "/>"
-                            . "<span class='order-option-qty-up' onclick='orderQtyUp(" . $option['id'] . ");'>+</span>"
+                            . "<span class='order-qty-up' onclick='orderQtyUp(" . $option['id'] . ");'>+</span>"
                             . "</span>"
                             . " on " . $ciniki['session']['ciniki.poma']['date']['order_date_text']
                             . "</div>";
@@ -187,6 +177,12 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
                 . "orderQtyChange(id);"
             . "}"
             . "function orderQtyChange(id){"
+                . "var e=C.gE('order_quantity_' + id);"
+                . "if(e.value!=e.old_value){"
+                    . "C.getBg('" . $api_order_update . "'+id,{'quantity':e.value},function(){"
+                        . "console.log('updated');"
+                    . "});"
+                . "}"
                 . "console.log('change');"
             . "}"
             . "</script>";
