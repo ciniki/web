@@ -52,6 +52,7 @@ function ciniki_web_processBlocks(&$ciniki, $settings, $business_id, $blocks) {
             case 'productcards': $processor = 'processBlockProductCards'; break;
             case 'sharebuttons': $processor = 'processBlockShareButtons'; break;
             case 'sponsors': $processor = 'processBlockSponsors'; break;
+            case 'table': $processor = 'processBlockTable'; break;
             case 'tableslide': $processor = 'processBlockTableSlide'; break;
             case 'tabs': $processor = 'processBlockTabs'; break;
             case 'tagcloud': $processor = 'processBlockTagCloud'; break;

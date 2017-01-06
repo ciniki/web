@@ -932,6 +932,25 @@ function ciniki_web_main() {
         this.events.addClose('Cancel');
 
         //
+        // The options and information for the Music Festival page
+        //
+        this.musicfestivals = new M.panel('Music Festival', 'ciniki_web_main', 'musicfestivals', 'mc', 'medium', 'sectioned', 'ciniki.web.main.musicfestivals');
+        this.musicfestivals.data = {};
+        this.musicfestivals.sections = {
+            'options':{'label':'Options', 'fields':{
+                'page-musicfestivals-active':{'label':'Show Music Festival', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                'page-musicfestivals-title':{'label':'Title', 'hint':'Music Festival', 'type':'text'},
+                }},
+            '_save':{'label':'', 'buttons':{
+                'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'musicfestivals\');'},
+                }},
+        };
+        this.musicfestivals.fieldValue = this.fieldValue;
+        this.musicfestivals.fieldHistoryArgs = this.fieldHistoryArgs;
+        this.musicfestivals.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'musicfestivals\');');
+        this.musicfestivals.addClose('Cancel');
+
+        //
         // The options and information for the Events page
         //
         this.filmschedule = new M.panel('Schedule',

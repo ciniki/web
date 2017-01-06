@@ -41,7 +41,7 @@ function ciniki_web_generateCinikiJavascript($ciniki) {
                 . "if(x.readyState==4&&x.status==200){"
                     . "var r=eval('('+x.responseText+')');"
                     . "if(r.stat!='ok'){console.log(x.responseText);}"
-                    . "else{f(r);}"
+                    . "f(r);"
                 . "};"
                 . "if(x.readyState>2&&x.status>=300){console.log('apierr:'+x.status);}"
             . "};"

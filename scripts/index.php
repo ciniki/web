@@ -991,6 +991,12 @@ if( $found == 'no' ) {
         require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePagePropertyRentals.php');
         $rc = ciniki_web_generatePagePropertyRentals($ciniki, $settings, 'info');
     } 
+    // Music Festival
+    elseif( $ciniki['request']['page'] == 'musicfestivals' 
+        && isset($settings['page-musicfestivals-active']) && $settings['page-musicfestivals-active'] == 'yes' ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
+        $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['business_id'], 'ciniki.musicfestivals');
+    } 
     // Merchandise
     elseif( $ciniki['request']['page'] == 'merchandise' 
         && isset($settings['page-merchandise-active']) && $settings['page-merchandise-active'] == 'yes' ) {
@@ -1106,13 +1112,12 @@ if( $rc['stat'] == '404' ) {
 
 if( isset($ciniki['response']['format']) && $ciniki['response']['format'] == 'json' ) {
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'printHashToJSON');
-    $rc['stat'] = 'ok';
     header("Content-Type: text/plain; charset=utf-8");
     header("Cache-Control: no-cache, must-revalidate");
     ciniki_core_printHashToJSON($rc);
 }
 
-if( $rc['stat'] != 'ok' && $rc['stat'] != 'exit' ) {
+elseif( $rc['stat'] != 'ok' && $rc['stat'] != 'exit' ) {
     require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePage500.php');
     $rc = ciniki_web_generatePage500($ciniki, $settings, $rc);
 //  print_error($rc, 'Unable to generate page.');

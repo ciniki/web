@@ -119,6 +119,9 @@ function ciniki_web_siteSettings($ciniki) {
     if( isset($ciniki['business']['modules']['ciniki.events']) ) {
         $pages['events'] = array('display_name'=>'Events', 'active'=>'no');
     }
+    if( isset($ciniki['business']['modules']['ciniki.musicfestivals']) ) {
+        $pages['musicfestivals'] = array('display_name'=>'Music Festival', 'active'=>'no');
+    }
     if( isset($ciniki['business']['modules']['ciniki.exhibitions']) ) {
         $pages['exhibitions'] = array('display_name'=>'Exhibitions', 'active'=>'no');
     }
@@ -345,6 +348,9 @@ function ciniki_web_siteSettings($ciniki) {
     }
     if( isset($settings['page-events-active']) && $settings['page-events-active'] == 'yes' ) {
         $pages['events']['active'] = 'yes';
+    }
+    if( isset($settings['page-musicfestivals-active']) && $settings['page-musicfestivals-active'] == 'yes' ) {
+        $pages['musicfestivals']['active'] = 'yes';
     }
     if( isset($settings['page-filmschedule-active']) && $settings['page-filmschedule-active'] == 'yes' ) {
         $pages['filmschedule']['active'] = 'yes';

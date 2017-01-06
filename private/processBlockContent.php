@@ -16,8 +16,23 @@ function ciniki_web_processBlockContent(&$ciniki, $settings, $business_id, $bloc
     $content = '';
 
     //
-    // Check for a title
+    // Check for a image
     //
+    $image_content = '';
+    if( isset($block['aside_image_id']) && $block['aside_image_id'] > 0 ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+        $rc = ciniki_web_getScaledImageURL($ciniki, $block['aside_image_id'], 'original', '500', 0);
+        if( $rc['stat'] != 'ok' ) {
+            return $rc;
+        }
+        $image_content = "<aside><div class='image-wrap'><div class='image'>"
+            . "<img title='' alt='" . (isset($block['title'])?$block['title']:'') . "' src='" . $rc['url'] . "' />"
+            . "</div>";
+        if( isset($block['aside_image_caption']) && $block['aside_image_caption'] != '' ) {
+            $image_content .= "<div class='image-caption'>" . $block['aside_image_caption'] . "</div>";
+        }
+        $image_content .= "</div></aside>";
+    }
 
     //
     // Make sure there is content to edit
@@ -32,6 +47,7 @@ function ciniki_web_processBlockContent(&$ciniki, $settings, $business_id, $bloc
             if( isset($block['title']) && $block['title'] != '' ) {
                 $content .= "<h2" . ((isset($block['wide'])&&$block['wide']=='yes')?" class='wide'":'') . ">" . $block['title'] . "</h2>";
             }
+            $content .= $image_content;
             $content .= $rc['content'];
         }
     }
@@ -39,6 +55,7 @@ function ciniki_web_processBlockContent(&$ciniki, $settings, $business_id, $bloc
         if( isset($block['title']) && $block['title'] != '' ) {
             $content .= "<h2>" . $block['title'] . "</h2>";
         }
+        $content .= $image_content;
         $content .= $block['html'];
     }
 

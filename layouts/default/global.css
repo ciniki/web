@@ -462,6 +462,24 @@ article {
     margin-bottom: 1em;
 }
 
+/* Table */
+#content div.table {
+    clear: both;
+    width: 100%;
+    max-width: 100%;
+}
+#content div.table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+#content div.table table th,
+#content div.table table td {
+    padding: 0.35em 0.5em;
+}
+#content div.table table th {
+    font-weight: bold;
+}
+
 /* Table slide */
 #content div.table-slide-horizontal {
     width: 100%;
