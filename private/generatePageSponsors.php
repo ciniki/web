@@ -24,6 +24,36 @@ function ciniki_web_generatePageSponsors($ciniki, $settings) {
     //
     // FIXME: Check if anything has changed, and if not load from cache
     //
+    if( isset($settings['page-sponsors-sponsorship-active']) && $settings['page-sponsors-sponsorship-active'] == 'yes'
+        && ciniki_core_checkModuleFlags($ciniki, 'ciniki.info', 0x400000)
+        && isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'sponsorship'
+        && isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] == 'download'
+        && isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' 
+        ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'fileDownload');
+        $rc = ciniki_info_web_fileDownload($ciniki, $ciniki['request']['business_id'], 'sponsorship', '', $ciniki['request']['uri_split'][2]);
+        if( $rc['stat'] == 'ok' ) {
+            header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+            header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+            header('Cache-Control: no-cache, must-revalidate');
+            header('Pragma: no-cache');
+            $file = $rc['file'];
+            if( $file['extension'] == 'pdf' ) {
+                header('Content-Type: application/pdf');
+            }
+//          header('Content-Disposition: attachment;filename="' . $file['filename'] . '"');
+            header('Content-Length: ' . strlen($file['binary_content']));
+            header('Cache-Control: max-age=0');
+
+            print $file['binary_content'];
+            exit;
+        }
+        
+        //
+        // If there was an error locating the files, display generic error
+        //
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.65', 'msg'=>'The file you requested does not exist.  Please check your link and try again.'));
+    }
 
     $page_title = "Sponsors";
     if( isset($ciniki['business']['modules']['ciniki.sponsors']) ) {
@@ -40,24 +70,58 @@ function ciniki_web_generatePageSponsors($ciniki, $settings) {
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processSponsors');
 
-    ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'sponsorList');
-    $sponsorList = $pkg . '_' . $mod . '_web_sponsorList';
-    $rc = $sponsorList($ciniki, $settings, $ciniki['request']['business_id']);
-    if( $rc['stat'] != 'ok' ) {
-        return $rc;
-    }
-    if( isset($rc['levels']) ) {
-        $sponsors = $rc['levels'];
-        foreach($sponsors as $lnum => $level) {
-            $page_content .= "<article class='page'>\n"
-                . "<header class='entry-title'><h1 class='entry-title'>";
-            if( isset($level['level']['name']) ) {
-                $page_content .= $level['level']['name'] . ' ';
+    if( isset($settings['page-sponsors-sponsorship-active']) && $settings['page-sponsors-sponsorship-active'] == 'yes'
+        && ciniki_core_checkModuleFlags($ciniki, 'ciniki.info', 0x400000)
+        && isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'sponsorship'
+        ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'pageDetails');
+        $rc = ciniki_info_web_pageDetails($ciniki, $settings, $ciniki['request']['business_id'], array('permalink'=>'sponsorship'));
+        if( $rc['stat'] != 'ok' ) {
+            return $rc;
+        }
+        $info = $rc['content'];
+        
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processPage');
+        $rc = ciniki_web_processPage($ciniki, $settings, $ciniki['request']['base_url'] . "/sponsors", $info, 
+            array());
+        if( $rc['stat'] != 'ok' ) {
+            return $rc;
+        }
+        $page_content .= $rc['content'];
+        
+    } else {
+        ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'sponsorList');
+        $sponsorList = $pkg . '_' . $mod . '_web_sponsorList';
+        $rc = $sponsorList($ciniki, $settings, $ciniki['request']['business_id']);
+        if( $rc['stat'] != 'ok' ) {
+            return $rc;
+        }
+        if( isset($rc['levels']) ) {
+            $sponsors = $rc['levels'];
+            foreach($sponsors as $lnum => $level) {
+                $page_content .= "<article class='page'>\n"
+                    . "<header class='entry-title'><h1 class='entry-title'>";
+                if( isset($level['level']['name']) ) {
+                    $page_content .= $level['level']['name'] . ' ';
+                }
+                $page_content .= "</h1></header>\n"
+                    . "<div class='entry-content'>\n"
+                    . "";
+                $rc = ciniki_web_processSponsors($ciniki, $settings, $level['level']['number'], $level['level']['categories']);
+                if( $rc['stat'] == 'ok' ) {
+                    $page_content .= $rc['content'];
+                }
+                $page_content .= "</div>\n"
+                    . "</article>\n"
+                    . "";
             }
-            $page_content .= "</h1></header>\n"
+        } else {
+            $sponsors = $rc['categories'];
+            $page_content .= "<article class='page'>\n"
+                . "<header class='entry-title'><h1 class='entry-title'>Sponsors</h1></header>\n"
                 . "<div class='entry-content'>\n"
                 . "";
-            $rc = ciniki_web_processSponsors($ciniki, $settings, $level['level']['number'], $level['level']['categories']);
+            $rc = ciniki_web_processSponsors($ciniki, $settings, 30, $sponsors);
             if( $rc['stat'] == 'ok' ) {
                 $page_content .= $rc['content'];
             }
@@ -65,19 +129,6 @@ function ciniki_web_generatePageSponsors($ciniki, $settings) {
                 . "</article>\n"
                 . "";
         }
-    } else {
-        $sponsors = $rc['categories'];
-        $page_content .= "<article class='page'>\n"
-            . "<header class='entry-title'><h1 class='entry-title'>Sponsors</h1></header>\n"
-            . "<div class='entry-content'>\n"
-            . "";
-        $rc = ciniki_web_processSponsors($ciniki, $settings, 30, $sponsors);
-        if( $rc['stat'] == 'ok' ) {
-            $page_content .= $rc['content'];
-        }
-        $page_content .= "</div>\n"
-            . "</article>\n"
-            . "";
     }
 
     //
@@ -85,10 +136,21 @@ function ciniki_web_generatePageSponsors($ciniki, $settings) {
     //
 
     //
+    // Build the submenu if required
+    //
+    $submenu = array();
+    if( isset($settings['page-sponsors-sponsorship-active']) && $settings['page-sponsors-sponsorship-active'] == 'yes'
+        && ciniki_core_checkModuleFlags($ciniki, 'ciniki.info', 0x400000)
+        ) {
+        $submenu['sponsors'] = array('name'=>'Sponsors', 'url'=>$ciniki['request']['base_url'] . '/sponsors');
+        $submenu['sponsorship'] = array('name'=>'Become a Sponsor', 'url'=>$ciniki['request']['base_url'] . '/sponsors/sponsorship');
+    } 
+
+    //
     // Add the header
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
-    $rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Sponsors', array());
+    $rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Sponsors', $submenu);
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }

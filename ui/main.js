@@ -234,13 +234,22 @@ function ciniki_web_main() {
         //
         // The panel to allow the user to select a layout
         //
-        this.layout = new M.panel('Color Scheme',
-            'ciniki_web_main', 'layout',
-            'mc', 'narrow', 'sectioned', 'ciniki.web.main.layout');
+        this.layout = new M.panel('Layout', 'ciniki_web_main', 'layout', 'mc', 'narrow', 'sectioned', 'ciniki.web.main.layout');
         this.layout.data = {'site-layout':'default'};
         this.layout.sections = {
             '_layout':{'label':'', 'fields':{
                 'site-layout':{'label':'Layout', 'type':'select', 'options':this.layoutsAvailable},
+                }},
+            '_homepage_sections':{'label':'Home Page Photos', 'fields':{
+                'page-home-number-photos':{'label':'# of Photos', 'type':'toggle', 'default':'1', 'toggles':{'1':'1', '2':'2'}},
+                }},
+            '_homepage_sequences':{'label':'Home Page Sequence', 'fields':{
+                'page-home-content-sequence':{'label':'Content', 'type':'text', 'size':'small'},
+//                'page-home-gallery-slider-sequence':{'label':'Gallery Slider', 'type':'text', 'size':'small'},
+//                'page-home-gallery-sequence':{'label':'Gallery', 'type':'text', 'size':'small'},
+//                'page-home-membergallery-sequence':{'label':'Member Gallery', 'type':'text', 'size':'small'},
+//                'page-home-blog-sequence':{'label':'Blog', 'type':'text', 'size':'small'},
+//                'page-home-events-sequence':{'label':'Events', 'type':'text', 'size':'small'},
                 }},
             '_save':{'label':'', 'buttons':{
                 'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'layout\');'},
@@ -567,12 +576,34 @@ function ciniki_web_main() {
                 'addTxt':'Manage Sliders',
                 'addFn':'M.startApp(\'ciniki.web.sliders\',null,\'M.ciniki_web_main.showPage(null,"home");\');',
                 },
-            '_image':{'label':'Image', 'type':'imageform', 'fields':{
-                'page-home-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
+            '_imagetabs':{'label':'', 'type':'paneltabs', 'selected':'1', 
+                'visible':function() { return (M.ciniki_web_main.home.data['page-home-number-photos'] != null && M.ciniki_web_main.home.data['page-home-number-photos'] > 1 ? 'yes' : 'no'); },
+                'tabs':{
+                    '1':{'label':' 1 ', 'fn':'M.ciniki_web_main.home.switchImage(\'1\');'},
+                    '2':{'label':' 2 ', 'fn':'M.ciniki_web_main.home.switchImage(\'2\');'},
                 }},
-            '_image_caption':{'label':'', 'fields':{
-                'page-home-image-caption':{'label':'Caption', 'type':'text'},
-                'page-home-image-url':{'label':'Link', 'type':'text'},
+            '_image':{'label':'Image', 'type':'imageform', 
+                'visible':function() { return (M.ciniki_web_main.home.sections._imagetabs.selected == '1' ? 'yes' : 'hidden'); },
+                'fields':{
+                    'page-home-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
+                }},
+            '_image_caption':{'label':'', 
+                'visible':function() { return (M.ciniki_web_main.home.sections._imagetabs.selected == '1' ? 'yes' : 'hidden'); },
+                'fields':{
+                    'page-home-image-caption':{'label':'Caption', 'type':'text'},
+                    'page-home-image-url':{'label':'Link', 'type':'text'},
+                }},
+            '_image2':{'label':'2nd Image', 'type':'imageform', 
+                'visible':function() { return (M.ciniki_web_main.home.sections._imagetabs.selected == '2' ? 'yes' : 'hidden'); },
+
+                'fields':{
+                    'page-home-image2':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
+                }},
+            '_image2_caption':{'label':'', 
+                'visible':function() { return (M.ciniki_web_main.home.sections._imagetabs.selected == '2' ? 'yes' : 'hidden'); },
+                'fields':{
+                    'page-home-image2-caption':{'label':'Caption', 'type':'text'},
+                    'page-home-image2-url':{'label':'Link', 'type':'text'},
                 }},
             '_title':{'label':'Title', 'fields':{
                 'page-home-title':{'label':'', 'hidelabel':'yes', 'hint':'', 'type':'text'},
@@ -635,13 +666,25 @@ function ciniki_web_main() {
             return this.data[s];
         };
         this.home.addDropImage = function(iid) {
-            this.setFieldValue('page-home-image', iid);
+            if( this.sections._imagetabs.selected == '2' ) {
+                this.setFieldValue('page-home-image2', iid);
+            } else {
+                this.setFieldValue('page-home-image', iid);
+            }
             return true;
         };
         this.home.cellValue = function(s, i, j, d) { return d.sponsor.title; }
         this.home.rowFn = function(s, i, d) {
             return 'M.startApp(\'ciniki.sponsors.ref\',null,\'M.ciniki_web_main.updateSponsors("home");\',\'mc\',{\'ref_id\':\'' + d.sponsor.ref_id + '\'});';
         };
+        this.home.switchImage = function(i) {
+            this.sections._imagetabs.selected = i;
+            this.refreshSection('_imagetabs');
+            this.showHideSection('_image');
+            this.showHideSection('_image_caption');
+            this.showHideSection('_image2');
+            this.showHideSection('_image2_caption');
+        }
         this.home.deleteImage = this.deleteImage;
         this.home.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'home\');');
 //      this.home.addLeftButton('website', 'Preview', 'M.showWebsite(\'/\');');
@@ -1512,7 +1555,8 @@ function ciniki_web_main() {
         this.sponsors.data = {};
         this.sponsors.sections = {
             'options':{'label':'', 'fields':{
-                'page-sponsors-active':{'label':'Display Sponsors', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                'page-sponsors-active':{'label':'Display Sponsors', 'type':'toggle', 'default':'no', 'toggles':this.activeToggles},
+                'page-sponsors-sponsorship-active':{'label':'Display Sponsorship', 'type':'toggle', 'default':'no', 'toggles':this.activeToggles},
                 }},
             '_save':{'label':'', 'buttons':{
                 'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'sponsors\');'},
@@ -2232,8 +2276,9 @@ function ciniki_web_main() {
     };
 
     this.showLayouts = function(cb) {
-        this.layout.refresh();
-        this.layout.show(cb);
+        this.showPage(cb, 'layout');
+//        this.layout.refresh();
+//        this.layout.show(cb);
     };
 
     this.showHeader = function(cb) {
@@ -2286,6 +2331,14 @@ function ciniki_web_main() {
                 }
                 M.ciniki_web_main.showPageFinish(cb, page, subpage, subpagetitle, rsp);
             });
+        } else if( page == 'layout' ) {
+            M.api.getJSONCb('ciniki.web.pageSettingsGet', {'business_id':M.curBusinessID, 'page':'home', 'content':'yes'}, function(rsp) {
+                if( rsp.stat != 'ok' ) {
+                    M.api.err(rsp);
+                    return false;
+                }
+                M.ciniki_web_main.showPageFinish(cb, page, subpage, subpagetitle, rsp);
+            });
         } else {
             M.api.getJSONCb('ciniki.web.pageSettingsGet', {'business_id':M.curBusinessID, 'page':page, 'content':'yes', 'sponsors':'yes'}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
@@ -2315,6 +2368,7 @@ function ciniki_web_main() {
             if( this[page].data != null && this[page].data['page-home-membergallery-slider-size'] == null ) {
                 this[page].data['page-home-membergallery-slider-size'] = 'xlarge';
             }
+            this.home.sections._imagetabs.selected = 1;
             if( (M.curBusiness.modules['ciniki.web'].flags&0x02) > 0 ) {
                 this.home.sections._slider.active = 'yes';
                 this.home.sections._slider_buttons.visible = 'yes';

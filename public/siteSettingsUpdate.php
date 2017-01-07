@@ -124,6 +124,9 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-home-image',
         'page-home-image-caption',
         'page-home-image-url',
+        'page-home-image2',
+        'page-home-image2-caption',
+        'page-home-image2-url',
         'page-home-title',      // Title used on homepage, but not in <head><title>
         'page-home-url',        // Used if different from home of Ciniki hosted website, 
                                 // used to redirect back to main site for subdomains.
@@ -149,6 +152,13 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-home-quicklinks-009-name',
         'page-home-quicklinks-009-url',
         'page-home-content-layout',
+        'page-home-number-photos',
+        'page-home-content-sequence',
+        'page-home-gallery-slider-sequence',
+        'page-home-gallery-sequence',
+        'page-home-membergallery-sequence',
+        'page-home-blog-sequence',
+        'page-home-events-sequence',
         'page-about-active',
         'page-about-title',
         'page-about-history-active',
@@ -343,6 +353,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-distributors-map-display',
         'page-distributors-list-format',
         'page-sponsors-active',
+        'page-sponsors-sponsorship-active',
         'page-newsletters-active',
         'page-newsletters-title',
         'page-surveys-active',
@@ -609,6 +620,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
             // Check for image updates
             //
             if( ($field == 'page-home-image' 
+                    || $field == 'page-about-image2' 
                     || $field == 'page-about-image' 
                     || $field == 'site-header-image' )
                 && (!isset($settings[$field]) 
