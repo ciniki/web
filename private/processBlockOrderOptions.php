@@ -15,8 +15,10 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
 
     $heart_off = '<span class="fa-icon order-icon order-options-fav-off">&#xf08a;</span>';
     $heart_on = '<span class="fa-icon order-icon order-options-fav-on">&#xf004;</span>';
-    $order_off = '<span class="fa-icon order-icon order-options-order-on">&#xf217;</span>';
+    $order_off = '<span class="fa-icon order-icon order-options-order-off">&#xf217;</span>';
     $order_on = '<span class="fa-icon order-icon order-options-order-on">&#xf217;</span>';
+    $order_repeat = '<span class="fa-icon order-icon order-options-order-repeat">&#xf217;</span>';
+    $order_queue = '<span class="fa-icon order-icon order-options-order-queue">&#xf217;</span>';
 
     $content = '';
 
@@ -69,12 +71,15 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
                 } else {
                     $content .= "<td></td>";
                 }
-                if( (isset($option['available']) && $option['available'] == 'yes' && isset($option['order_quantity']) && $option['order_quantity'] > 0)
-                    || (isset($option['repeat']) && $option['repeat'] == 'yes' && isset($option['repeat_quantity']) && $option['repeat_quantity'] > 0)
-                    || (isset($option['queue']) && $option['queue'] == 'yes' && isset($option['queue_quantity']) && $option['queue_quantity'] > 0)
-                    ) {
+                if( isset($option['available']) && $option['available'] == 'yes' && isset($option['order_quantity']) && $option['order_quantity'] > 0 ) {
                     $content .= "<td id='option_" . $option['id'] . "' class='clickable aligncenter' onclick='orderToggle(" . $option['id'] . ");'>" . $order_on . "</td>";
                 } 
+                elseif( isset($option['repeat']) && $option['repeat'] == 'yes' && isset($option['repeat_quantity']) && $option['repeat_quantity'] > 0 ) {
+                    $content .= "<td id='option_" . $option['id'] . "' class='clickable aligncenter' onclick='orderToggle(" . $option['id'] . ");'>" . $order_repeat . "</td>";
+                }
+                elseif( isset($option['queue']) && $option['queue'] == 'yes' && isset($option['queue_quantity']) && $option['queue_quantity'] > 0 ) {
+                    $content .= "<td id='option_" . $option['id'] . "' class='clickable aligncenter' onclick='orderToggle(" . $option['id'] . ");'>" . $order_queue . "</td>";
+                }
                 elseif( (isset($option['available']) && $option['available'] == 'yes') 
                     || (isset($option['repeat']) && $option['repeat'] == 'yes') 
                     || (isset($option['queue']) && $option['queue'] == 'yes') 
@@ -167,6 +172,7 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
             . "function orderQtyUp(id){"
                 . "var e=C.gE('order_quantity_' + id);"
                 . "if(e.value==''){"
+                    . "return true;"
                     . "e.value=1;"
                 . "}else{"
                     . "e.value=parseInt(e.value)+1;"
@@ -178,6 +184,7 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
                 . "if(parseInt(e.value)<1){"
                     . "e.value=0;"
                 . "}else if(e.value==''){"
+                    . "return true;"
                     . "e.value=1;"
                 . "}else{"
                     . "e.value=parseInt(e.value)-1;"
@@ -186,12 +193,20 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
             . "}"
             . "function orderQtyChange(id){"
                 . "var e=C.gE('order_quantity_' + id);"
+                . "var icn=C.gE('option_' + id).firstElementChild;"
                 . "if(e.value!=e.old_value){"
                     . "C.getBg('" . $api_order_update . "'+id,{'quantity':e.value},function(r){"
                         . "if(r.stat!='ok'){"
                             . "e.value=e.old_value;"
                             . "alert('We had a problem updating your order. Please try again or contact us for help.');"
                             . "return false;"
+                        . "}"
+                        . "if(e.value>0&&icn.classList.contains('order-options-order-off')){"
+                            . "icn.classList.remove('order-options-order-off');"
+                            . "icn.classList.add('order-options-order-on');"
+                        . "}else if(e.value==0&&icn.classList.contains('order-options-order-on')){"
+                            . "icn.classList.remove('order-options-order-on');"
+                            . "icn.classList.add('order-options-order-off');"
                         . "}"
                     . "});"
                 . "}"

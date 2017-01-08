@@ -1505,8 +1505,14 @@ table.order-options {
 table.order-details th,
 table.order-details td,
 table.order-options td {
-    padding: 0.5em 0.5em;
+    padding: 0.6em 0.5em;
     box-sizing: border-box;
+}
+table.order-options tbody td:nth-child(3),
+table.order-options tbody td:nth-child(4) {
+    font-size: 1.2em;
+    vertical-align: middle;
+    padding: 0.1em;
 }
 table.order-details thead th {
     display: none;

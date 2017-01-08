@@ -1240,7 +1240,7 @@ aside div.borderless {
     font-weight: bold;
 }
 #content table.order-options tr.order-options-order td {
-    border-top: 0px dashed #ddd;
+    border-top: 1px dashed #ddd;
     padding: 0px;
     padding-bottom: 0em;
 }
@@ -1289,6 +1289,20 @@ aside div.borderless {
 #content table.order-details span.order-qty-up,
 #content table.order-options span.order-qty-up {
     border-left: 1px solid #ddd;
+}
+/* Order is important for colour options, repeat can be on when order-off */
+/* order-off/on is for current date order */
+#content table.order-details span.order-options-order-queue,
+#content table.order-options span.order-options-order-queue {
+    color: #e90;
+}
+#content table.order-details span.order-options-order-repeat,
+#content table.order-options span.order-options-order-repeat {
+    color: #0ae;
+}
+#content table.order-details span.order-options-order-on,
+#content table.order-options span.order-options-order-on {
+    color: #0d5;
 }
 
 /* Styles for block table */
