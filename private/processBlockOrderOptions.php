@@ -99,7 +99,6 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
                     || (isset($option['repeat']) && $option['repeat'] == 'yes') 
                     || (isset($option['queue']) && $option['queue'] == 'yes')
                     ) {
-                error_log('testing');
                     $content .= "<tr id='order_option_" . $option['id'] . "' class='order-options-order order-hide'><td colspan='4'>";
                     if( isset($option['available']) && $option['available'] == 'yes' 
                         && isset($ciniki['session']['ciniki.poma']['date']['order_date_text'])
