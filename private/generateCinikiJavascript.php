@@ -43,7 +43,7 @@ function ciniki_web_generateCinikiJavascript($ciniki) {
                     . "if(r.stat!='ok'){console.log(x.responseText);}"
                     . "f(r);"
                 . "};"
-                . "if(x.readyState>2&&x.status>=300){console.log('apierr:'+x.status);}"
+                . "if(x.readyState>2&&x.status>=300){f({'stat':'fail', 'err':{'code':'300', 'msg':'Error connecting to server.'}});console.log('apierr:'+x.status);}"
             . "};"
             . "x.send(null);"
         . "};"  // end this.getBg
