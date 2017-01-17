@@ -54,15 +54,19 @@ function ciniki_web_processBlockOrderDetails(&$ciniki, $settings, $business_id, 
         if( isset($block['order']['items']) && count($block['order']['items']) > 0 ) {
             $content .= "<tbody>";   
             foreach($block['order']['items'] as $item) {
+                $sub_button = '';
+                if( isset($item['substitutions']) && $item['substitutions'] == 'yes' ) {
+                    $sub_button = "<span class='order-details-substitutions'><a href='" . $block['base_url'] . "/substitutions/" . $item['id'] . "'>Customize</a></span>";
+                }
                 $content .= "<tr id='order_item_" . $item['id'] . "'>";
                 if( isset($item['code']) && $item['code'] != '' && isset($item['description']) && $item['description'] != '' ) {
-                    $content .= "<td>" . $item['code'] . ' - ' . $item['description'] . "</td>";
+                    $content .= "<td>" . $item['code'] . ' - ' . $item['description'] . " $sub_button</td>";
                 } elseif( $item['code'] != '' ) {
-                    $content .= "<td>" . $item['code'] . "</td>";
+                    $content .= "<td>" . $item['code'] . " $sub_button</td>";
                 } elseif( $item['description'] != '' ) {
-                    $content .= "<td>" . $item['description'] . "</td>";
+                    $content .= "<td>" . $item['description'] . " $sub_button</td>";
                 } else {
-                    $content .= "<td></td>";
+                    $content .= "<td>$sub_button</td>";
                 }
                 if( isset($block['order']['editable']) && $block['order']['editable'] == 'yes' ) {
                     $content .= "<td>"

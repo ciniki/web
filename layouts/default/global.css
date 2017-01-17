@@ -1488,7 +1488,8 @@ div.popup-content ul {
 }
 
 /* POMA Orders */
-div.order-details {
+div.order-details,
+div.order-substitutions {
     max-width: 100%;
 }
 div.order-options {
@@ -1496,6 +1497,7 @@ div.order-options {
     margin: 0 auto;
 }
 table.order-details,
+table.order-substitutions,
 table.order-options {
     font-size: 1em;
     width: 100%;
@@ -1504,6 +1506,8 @@ table.order-options {
 }
 table.order-details th,
 table.order-details td,
+table.order-substitutions th,
+table.order-substitutions td,
 table.order-options td {
     padding: 0.6em 0.5em;
     box-sizing: border-box;
@@ -1531,6 +1535,13 @@ table.order-details tbody td:first-child {
 }
 table.order-details thead th:nth-child(2) {
     padding-right: 1.5em;
+}
+table.order-substitutions thead th {
+    text-align: left;
+}
+table.order-substitutions thead th:nth-child(2),
+table.order-substitutions tbody td:nth-child(2) {
+    text-align: right;
 }
 table.order-details tbody tr {
     display: block;
@@ -1569,6 +1580,7 @@ table.order-options tr.order-options-order {
     text-align: right;
 }
 table.order-details span.order-qty,
+table.order-substitutions span.order-qty,
 table.order-options span.order-qty {
     display: inline-block;
     padding: 0em;
@@ -1577,6 +1589,8 @@ table.order-options span.order-qty {
 }
 table.order-details span.order-qty-down,
 table.order-details span.order-qty-up,
+table.order-substitutions span.order-qty-down,
+table.order-substitutions span.order-qty-up,
 table.order-options span.order-qty-down,
 table.order-options span.order-qty-up {
     display: inline-block;
@@ -1584,6 +1598,7 @@ table.order-options span.order-qty-up {
     cursor: pointer;
 }
 table.order-details input,
+table.order-substitutions input,
 table.order-options input {
     width: 2em;
     font-size: 1.0em;
