@@ -43,6 +43,8 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
     $api_repeat_update = (isset($block['api_repeat_update']) ? $block['api_repeat_update'] : '');
     $api_queue_update = (isset($block['api_queue_update']) ? $block['api_queue_update'] : '');
 
+    $js_variables = array();
+
     //
     // Check for block title
     //
@@ -95,30 +97,66 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
             // Check if cart should be shown
             //
             if( isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 ) {
-                if( (isset($option['available']) && $option['available'] == 'yes') 
-                    || (isset($option['repeat']) && $option['repeat'] == 'yes') 
-                    || (isset($option['queue']) && $option['queue'] == 'yes')
-                    ) {
+                //
+                // Add the hidden row for adding to current order
+                //
+                if( isset($option['available']) && $option['available'] == 'yes' && isset($ciniki['session']['ciniki.poma']['date']['order_date_text']) ) {
                     $content .= "<tr id='order_option_" . $option['id'] . "' class='order-options-order order-hide'><td colspan='4'>";
-                    if( isset($option['available']) && $option['available'] == 'yes' 
-                        && isset($ciniki['session']['ciniki.poma']['date']['order_date_text'])
-                        ) {
-                        $content .=  "<div class='order-option'>Order "
-                            . "<span class='order-qty'>"
-                            . "<span class='order-qty-down' onclick='orderQtyDown(" . $option['id'] . ");'>-</span>"
-    //                        . "<input type='number' pattern='[0-9]' min='0' step='1' id='order_quantity_" . $option['id'] . "' name='order_quantity_" . $option['id'] . "' value='" . $option['order_quantity'] . "' editable=false/>"
-                            . "<input id='order_quantity_" . $option['id'] . "' name='order_quantity_" . $option['id'] . "' "
-                                . "value='" . $option['order_quantity'] . "' "
-                                . "old_value='" . $option['order_quantity'] . "' "
-                                . "onkeyup='orderQtyChange(" . $option['id'] . ");' "
-                                . "onchange='orderQtyChange(" . $option['id'] . ");' "
-                                . "/>"
-                            . "<span class='order-qty-up' onclick='orderQtyUp(" . $option['id'] . ");'>+</span>"
-                            . "</span>"
-                            . " on " . $ciniki['session']['ciniki.poma']['date']['order_date_text']
-                            . "</div>";
-                    }
+                    $content .=  "<div class='order-option'>Order "
+                        . "<span class='order-qty'>"
+                        . "<span class='order-qty-down' onclick='orderQtyDown(" . $option['id'] . ");'>-</span>"
+//                        . "<input type='number' pattern='[0-9]' min='0' step='1' id='order_quantity_" . $option['id'] . "' name='order_quantity_" . $option['id'] . "' value='" . $option['order_quantity'] . "' editable=false/>"
+                        . "<input id='order_quantity_" . $option['id'] . "' name='order_quantity_" . $option['id'] . "' "
+                            . "value='" . $option['order_quantity'] . "' "
+//                            . "old_value='" . $option['order_quantity'] . "' "
+                            . "onkeyup='orderQtyChange(" . $option['id'] . ");' "
+                            . "onchange='orderQtyChange(" . $option['id'] . ");' "
+                            . "/>"
+                        . "<span class='order-qty-up' onclick='orderQtyUp(" . $option['id'] . ");'>+</span>"
+                        . "</span>"
+                        . " on " . $ciniki['session']['ciniki.poma']['date']['order_date_text']
+                        . "</div>";
+                    $js_variables['order_quantity_' . $option['id']] = $option['order_quantity'];
                     $content .= "</td></tr>";
+                }
+                //
+                // Add the hidden row for adding to standing orders
+                //
+                if( isset($option['repeat']) && $option['repeat'] == 'yes' ) {
+                    error_log(print_r($option, true));
+                    $content .= "<tr id='repeat_option_" . $option['id'] . "' class='order-options-order order-hide'><td colspan='4'>";
+                    $content .=  "<div class='repeat-option'>Repeat "
+                        . "<span class='order-qty'>"
+                        . "<span class='order-qty-down' onclick='repeatQtyDown(" . $option['id'] . ");'>-</span>"
+                        . "<input id='repeat_quantity_" . $option['id'] . "' name='repeat_quantity_" . $option['id'] . "' "
+                            . "value='" . $option['repeat_quantity'] . "' "
+//                            . "old_value='" . $option['repeat_quantity'] . "' "
+                            . "onkeyup='repeatQtyChange(" . $option['id'] . ");' "
+                            . "onchange='repeatQtyChange(" . $option['id'] . ");' "
+                            . "/>"
+                        . "<span class='order-qty-up' onclick='repeatQtyUp(" . $option['id'] . ");'>+</span>"
+                        . "</span>"
+                        . " every "
+                        . "<select id='repeat_days_" . $option['id'] . "' onchange='repeatChange(" . $option['id'] . ");'>"
+                            . "<option value='7'" . (isset($option['repeat_days'])&&$option['repeat_days']==7?' selected':'') . ">week</option>"
+                            . "<option value='14'" . (isset($option['repeat_days'])&&$option['repeat_days']==14?' selected':'') . ">2 weeks</option>"
+                            . "<option value='21'" . (isset($option['repeat_days'])&&$option['repeat_days']==21?' selected':'') . ">3 weeks</option>"
+                            . "<option value='28'" . (isset($option['repeat_days'])&&$option['repeat_days']==28?' selected':'') . ">4 weeks</option>"
+                        . "</select>"
+                        . "</div>";
+                    $js_variables['repeat_quantity_' . $option['id']] = $option['repeat_quantity'];
+                    $js_variables['repeat_days_' . $option['id']] = isset($option['repeat_days']) ? $option['repeat_days'] : 0;
+//                        $content .= "<pre>" . print_r($option, true) . "</pre>";
+                    $content .=  "<div id='repeat_option_next_" . $option['id'] . "' class='repeat-option " . ($option['repeat_quantity']>0?'':"repeat-next-hide") . "'>"
+                        . "Next order on <span id='repeat_date_next_" . $option['id'] . "'>" . $ciniki['session']['ciniki.poma']['date']['order_date_text'] . "</span>"
+                        . " SKIP"
+                        . "</div>";
+                    $content .= "</td></tr>";
+                }
+                //
+                // Add the hidden row for managing item in a queue
+                //
+                if( isset($option['queue']) && $option['queue'] == 'yes' ) {
                 }
             }
         }
@@ -134,6 +172,13 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
         }
         $ciniki['request']['ciniki_api'] = 'yes';
         $ciniki['request']['inline_javascript'] .= "<script type='text/javascript'>"
+            . "var org_val={"
+            . "";
+        foreach($js_variables as $k => $v) {
+            $ciniki['request']['inline_javascript'] .= "'$k':'$v',";
+        }
+        $ciniki['request']['inline_javascript'] .= ""
+            . "};"
             . "function favToggle(id){"
                 . "var e=C.gE('fav_' + id);"
                 . "if(e.classList.contains('fav-on')){"
@@ -167,6 +212,16 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
                     . "e.classList.remove('order-hide');"
                     . "e.classList.add('order-show');"
                 . "}"
+                . "var e=C.gE('repeat_option_' + id);"
+                . "if(e!=null){"
+                    . "if(e.classList.contains('order-show')){"
+                        . "e.classList.remove('order-show');"
+                        . "e.classList.add('order-hide');"
+                    . "}else{"
+                        . "e.classList.remove('order-hide');"
+                        . "e.classList.add('order-show');"
+                    . "}"
+                . "}"
             . "}"
             . "function orderQtyUp(id){"
                 . "var e=C.gE('order_quantity_' + id);"
@@ -192,29 +247,86 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
             . "}"
             . "function orderQtyChange(id){"
                 . "var e=C.gE('order_quantity_' + id);"
+                . "var e2=C.gE('repeat_quantity_' + id);"
                 . "var icn=C.gE('option_' + id).firstElementChild;"
-                . "if(e.value!=e.old_value){"
+                . "if(e.value!=org_val['order_quantity_'+id]){"
                     . "C.getBg('" . $api_order_update . "'+id,{'quantity':e.value},function(r){"
                         . "if(r.stat!='ok'){"
-                            . "e.value=e.old_value;"
+                            . "e.value=org_val['order_quantity_'+id];"
                             . "alert('We had a problem updating your order. Please try again or contact us for help.');"
                             . "return false;"
                         . "}"
-                        . "if(e.value>0&&icn.classList.contains('order-options-order-off')){"
-                            . "icn.classList.remove('order-options-order-off');"
+                        . "org_val['order_quantity_'+id]=e.value;"
+                        . "if(e.value>0&&!icn.classList.contains('order-options-order-on')){"
                             . "icn.classList.add('order-options-order-on');"
                         . "}else if(e.value==0&&icn.classList.contains('order-options-order-on')){"
                             . "icn.classList.remove('order-options-order-on');"
-                            . "icn.classList.add('order-options-order-off');"
                         . "}"
                     . "});"
                 . "}"
-//                . "if(e.value!=e.old_value){"
-//                    . "C.getBg('" . $api_order_update . "'+id,{'quantity':e.value},function(r){"
-//                        . "console.log('updated');"
-//                    . "});"
-//                . "}"
-                . "console.log('change');"
+            . "}"
+            . "function repeatQtyUp(id){"
+                . "var e=C.gE('repeat_quantity_' + id);"
+                . "if(e.value==''){"
+                    . "return true;"
+                    . "e.value=1;"
+                . "}else{"
+                    . "e.value=parseInt(e.value)+1;"
+                . "}"
+                . "repeatChange(id);"
+            . "}"
+            . "function repeatQtyDown(id){"
+                . "var e=C.gE('repeat_quantity_' + id);"
+                . "if(parseInt(e.value)<1){"
+                    . "e.value=0;"
+                . "}else if(e.value==''){"
+                    . "return true;"
+                    . "e.value=1;"
+                . "}else{"
+                    . "e.value=parseInt(e.value)-1;"
+                . "}"
+                . "repeatChange(id);"
+            . "}"
+            . "function repeatChange(id){"
+                . "var e=C.gE('repeat_quantity_' + id);"
+                . "var d=C.gE('repeat_days_' + id);"
+                . "var e3=C.gE('repeat_option_next_' + id);"
+                . "var icn=C.gE('option_' + id).firstElementChild;"
+                . "var args={};"
+                . "if(e.value!=org_val['repeat_quantity_'+id]){"
+                    . "args['quantity']=e.value;"
+                . "}"
+                . "if(d.value!=org_val['repeat_days_'+id]){"
+                    . "args['repeat_days']=d.value;"
+                . "}"
+                . "C.getBg('" . $api_repeat_update . "'+id,args,function(r){"
+                    . "if(r.stat!='ok'){"
+                        . "e.value=org_val['repeat_quantity_'+id];"
+                        . "alert('We had a problem updating your standing order. Please try again or contact us for help.');"
+                        . "return false;"
+                    . "}"
+                    . "if(r.item.next_order_date_text!=null){"
+                        . "e3.innerHTML=r.item.next_order_date_text;"
+                    . "}"
+                    . "if(r.item.quantity!=null){"
+                        . "org_val['repeat_quantity_'+id]=r.item.quantity;"
+                    . "}"
+                    . "if(r.item.repeat_days!=null){"
+                        . "org_val['repeat_days_'+id]=r.item.repeat_days;"
+                    . "}"
+                    . "if(parseFloat(e.value)>0&&!icn.classList.contains('order-options-order-repeat')){"
+                        . "icn.classList.add('order-options-order-repeat');"
+                    . "}else if(e.value==0&&icn.classList.contains('order-options-order-repeat')){"
+                        . "icn.classList.remove('order-options-order-repeat');"
+                    . "}"
+                    . "if(parseFloat(e.value)>0){"
+                        . "if(e3.classList.contains('repeat-next-hide')){"
+                            . "e3.classList.remove('repeat-next-hide');"
+                        . "}"
+                    . "}else if(!e3.classList.contains('repeat-next-hide')){"
+                        . "e3.classList.add('repeat-next-hide');"
+                    . "}"
+                . "});"
             . "}"
             . "</script>";
     }

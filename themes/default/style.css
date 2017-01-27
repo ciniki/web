@@ -1249,7 +1249,8 @@ aside div.borderless {
     padding: 0px;
     padding-bottom: 0em;
 }
-#content table.order-options div.order-option {
+#content table.order-options div.order-option,
+#content table.order-options div.repeat-option {
     margin-left: 0em;
     background: #f5f5f5;
     border-left: 0px solid #ddd;

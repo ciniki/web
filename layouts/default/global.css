@@ -1106,6 +1106,7 @@ div.sponsor-gallery-thumbnail img {
     width: 100%;
     box-sizing: border-box;
 }
+#content table.order-options select,
 #content form select {
     font-size: 1em;
     box-sizing: border-box;
@@ -1613,6 +1614,9 @@ table.order-options tr.order-hide {
 }
 table.order-options tr.order-show {
     display: table-row;
+}
+table.order-options .repeat-next-hide {
+    display: none;
 }
 
 /* 7. BROWSER AND NON-SEMANTIC STYLING

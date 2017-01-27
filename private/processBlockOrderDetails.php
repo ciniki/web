@@ -68,7 +68,9 @@ function ciniki_web_processBlockOrderDetails(&$ciniki, $settings, $business_id, 
                 } else {
                     $content .= "<td>$sub_button</td>";
                 }
-                if( isset($block['order']['editable']) && $block['order']['editable'] == 'yes' ) {
+                if( isset($block['order']['editable']) && $block['order']['editable'] == 'yes' 
+                    && isset($item['modifications']) && $item['modifications'] == 'yes'
+                    ) {
                     $content .= "<td>"
                         . "<span class='order-qty'>"
                         . "<span class='order-qty-down' onclick='orderQtyDown(" . $item['id'] . ");'>-</span>"
