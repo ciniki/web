@@ -1183,10 +1183,12 @@ aside div.borderless {
     text-align: center;
 }
 
+#content div.order-options button,
 #content div.cart form input.cart-submit, 
 #content form div.cart-buttons input.cart-submit, 
 #content div.cart-buttons form input.cart-submit, 
 #content div.cart-pricelist form input.cart-submit {
+    outline: 0;
     cursor: pointer;
     font-size: 0.9em;
     border-radius: 8px;

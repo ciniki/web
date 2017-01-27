@@ -123,7 +123,6 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
                 // Add the hidden row for adding to standing orders
                 //
                 if( isset($option['repeat']) && $option['repeat'] == 'yes' ) {
-                    error_log(print_r($option, true));
                     $content .= "<tr id='repeat_option_" . $option['id'] . "' class='order-options-order order-hide'><td colspan='4'>";
                     $content .=  "<div class='repeat-option'>Repeat "
                         . "<span class='order-qty'>"
@@ -140,16 +139,16 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
                         . "<select id='repeat_days_" . $option['id'] . "' onchange='repeatChange(" . $option['id'] . ");'>"
                             . "<option value='7'" . (isset($option['repeat_days'])&&$option['repeat_days']==7?' selected':'') . ">week</option>"
                             . "<option value='14'" . (isset($option['repeat_days'])&&$option['repeat_days']==14?' selected':'') . ">2 weeks</option>"
-                            . "<option value='21'" . (isset($option['repeat_days'])&&$option['repeat_days']==21?' selected':'') . ">3 weeks</option>"
-                            . "<option value='28'" . (isset($option['repeat_days'])&&$option['repeat_days']==28?' selected':'') . ">4 weeks</option>"
+//                            . "<option value='21'" . (isset($option['repeat_days'])&&$option['repeat_days']==21?' selected':'') . ">3 weeks</option>"
+//                            . "<option value='28'" . (isset($option['repeat_days'])&&$option['repeat_days']==28?' selected':'') . ">4 weeks</option>"
                         . "</select>"
                         . "</div>";
                     $js_variables['repeat_quantity_' . $option['id']] = $option['repeat_quantity'];
                     $js_variables['repeat_days_' . $option['id']] = isset($option['repeat_days']) ? $option['repeat_days'] : 0;
 //                        $content .= "<pre>" . print_r($option, true) . "</pre>";
                     $content .=  "<div id='repeat_option_next_" . $option['id'] . "' class='repeat-option " . ($option['repeat_quantity']>0?'':"repeat-next-hide") . "'>"
-                        . "Next order on <span id='repeat_date_next_" . $option['id'] . "'>" . $ciniki['session']['ciniki.poma']['date']['order_date_text'] . "</span>"
-                        . " SKIP"
+                        . "Next order on <span id='repeat_date_next_" . $option['id'] . "'>" . $option['repeat_next_date'] . "</span>"
+                        . " <button onclick='repeatSkip(" . $option['id'] . ");'>Skip</button>"
                         . "</div>";
                     $content .= "</td></tr>";
                 }
@@ -287,7 +286,10 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
                 . "}"
                 . "repeatChange(id);"
             . "}"
-            . "function repeatChange(id){"
+            . "function repeatSkip(id){"
+                . "repeatChange(id,'yes');"
+            . "}"
+            . "function repeatChange(id,skip){"
                 . "var e=C.gE('repeat_quantity_' + id);"
                 . "var d=C.gE('repeat_days_' + id);"
                 . "var e3=C.gE('repeat_option_next_' + id);"
@@ -299,6 +301,9 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
                 . "if(d.value!=org_val['repeat_days_'+id]){"
                     . "args['repeat_days']=d.value;"
                 . "}"
+                . "if(skip!=null&&skip=='yes'){"
+                    . "args['skip']='yes';"
+                . "}"
                 . "C.getBg('" . $api_repeat_update . "'+id,args,function(r){"
                     . "if(r.stat!='ok'){"
                         . "e.value=org_val['repeat_quantity_'+id];"
@@ -306,7 +311,7 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
                         . "return false;"
                     . "}"
                     . "if(r.item.next_order_date_text!=null){"
-                        . "e3.innerHTML=r.item.next_order_date_text;"
+                        . "C.gE('repeat_date_next_'+id).innerHTML=r.item.next_order_date_text;"
                     . "}"
                     . "if(r.item.quantity!=null){"
                         . "org_val['repeat_quantity_'+id]=r.item.quantity;"

@@ -1110,6 +1110,10 @@ div.sponsor-gallery-thumbnail img {
 #content form select {
     font-size: 1em;
     box-sizing: border-box;
+    outline: 0;
+}
+#content table.order-options button {
+    font-size: 1em;
 }
 
 #content form table.cart-details input {
