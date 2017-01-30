@@ -77,8 +77,8 @@ function ciniki_web_processBlockOrderSubstitutions(&$ciniki, $settings, $busines
     //
     $json_item .= "'subs':[";
     if( isset($block['substitutions']) && count($block['substitutions']) > 0 ) {
-        $content .= "<h2" . ((isset($block['size'])&&$block['size']!='') ? " class='" . $block['size'] . "'" : '') . ">Add Items</h2>";
-        $content .= "<p>Choose items you would like to substitute.</p>";
+        $content .= "<h2" . ((isset($block['size'])&&$block['size']!='') ? " class='" . $block['size'] . "'" : '') . ">Available Items</h2>";
+        $content .= "<p>If you would like to add an item from below, you'll need to reduce quantities from items above.</p>";
         $content .= "<div class='order-substitutions" . ((isset($block['size'])&&$block['size']!='') ? ' ' . $block['size'] : '') . "'>";
         $content .= "<table class='order-substitutions order-substitutions-subs'>";
         $content .= "<thead><tr><th>Item</th><th></th></tr></thead>";
