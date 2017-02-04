@@ -899,6 +899,12 @@ hr.header-section-divider {
   color: #55b155;
 }
 
+#content div.form-warning-message {
+  border: 1px solid #faa51a;
+  background: #ffefdd;
+  color: #f47a20;
+}
+
 #content div.form-error-message {
   border: 1px solid #f8e6e6;
   background: #fff5f5;

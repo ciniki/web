@@ -72,6 +72,18 @@ function ciniki_web_processBlockOrderSubstitutions(&$ciniki, $settings, $busines
     $content .= "</tbody>";
     $content .= "</table>";
 
+    $content .= "<br/><div id='order-substitions-error-msg' class='form-message-content' style='display: none;'>"
+        . "<div class='form-result-message form-error-message'><div class='form-message-wrapper'>"
+        . "<p>Your Basket is empty.</p>"
+        . "</div></div></div>";
+    $content .= "<div id='order-substitions-warning-msg' class='form-message-content' style='display: none;'>"
+        . "<div class='form-result-message form-warning-message'><div class='form-message-wrapper'>"
+        . "<p>Your Basket still has room, add some more items.</p>"
+        . "</div></div></div>";
+    $content .= "<div id='order-substitions-success-msg' class='form-message-content' style='display: none;'>"
+        . "<div class='form-result-message form-success-message'><div class='form-message-wrapper'>"
+        . "<p>Your Basket is full.</p>"
+        . "</div></div></div>";
     //
     // Add the list of substitutions
     //
@@ -105,6 +117,7 @@ function ciniki_web_processBlockOrderSubstitutions(&$ciniki, $settings, $busines
         . "};"
         . "";
 
+        
 //    $content .= "<pre class='wide'>" . print_r($block['order'], true) . "</pre>";
 
     //
@@ -182,9 +195,14 @@ function ciniki_web_processBlockOrderSubstitutions(&$ciniki, $settings, $busines
             . "var t=C.gE('order_items');" // The tbody containing the order items
             . "t.innerHTML='';"
             . "var cheapest=999;"
+            . "var full=0;" // start with empty basket
             . "for(var i in item.subitems) {"
+                . "if(item.subitems[i].quantity>0&&full==0){full=2;}"
                 . "if(item.subitems[i].unit_amount<cheapest){"
                     . "cheapest=item.subitems[i].unit_amount;"
+                . "}"
+                . "if(item.subitems[i].quantity>0&&item.subitems[i].unit_amount<parseFloat(item.available)){"
+                    . "full=1;"
                 . "}"
                 . "var qb = \"<span class='order-qty'>"
                     . "<span class='order-qty-down' onclick='orderQtyDown(\" + i + \");'>\"+(parseFloat(item.subitems[i].quantity)>0?'-':'')+\"</span>"
@@ -212,12 +230,23 @@ function ciniki_web_processBlockOrderSubstitutions(&$ciniki, $settings, $busines
                     . "var ab='';"
                     . "if(parseFloat(item.available)>parseFloat(item.subs[i].unit_amount)){"
                         . "ab=\"<span class='order-button'><button onclick='orderSubAdd(\" + i + \");'>Add</button></span>\";"
+                        . "if(full==2){full=1;}"
                     . "}"
                     . "var r=C.aE('tr');"
                     . "r.appendChild(C.aE('td',null,null,item.subs[i].description));"
                     . "r.appendChild(C.aE('td',null,null,ab));"
                     . "t.appendChild(r);"
                 . "}"
+            . "}"
+            . "C.gE('order-substitions-error-msg').style.display='none';"
+            . "C.gE('order-substitions-warning-msg').style.display='none';"
+            . "C.gE('order-substitions-success-msg').style.display='none';"
+            . "if(full==0){"
+                . "C.gE('order-substitions-error-msg').style.display='';"
+            . "}else if(full==1){"
+                . "C.gE('order-substitions-warning-msg').style.display='';"
+            . "}else if(full==2){"
+                . "C.gE('order-substitions-success-msg').style.display='';"
             . "}"
         . "}"
         . "window.onload = function(){orderSubsUpdate();};"
