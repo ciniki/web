@@ -1107,12 +1107,14 @@ div.sponsor-gallery-thumbnail img {
     box-sizing: border-box;
 }
 #content table.order-options select,
+#content table.order-repeats select,
 #content form select {
     font-size: 1em;
     box-sizing: border-box;
     outline: 0;
 }
-#content table.order-options button {
+#content table.order-options button,
+#content table.order-repeats button {
     font-size: 1em;
 }
 
@@ -1503,6 +1505,7 @@ div.order-options {
 }
 table.order-details,
 table.order-substitutions,
+table.order-repeats,
 table.order-options {
     font-size: 1em;
     width: 100%;
@@ -1513,9 +1516,15 @@ table.order-details th,
 table.order-details td,
 table.order-substitutions th,
 table.order-substitutions td,
+table.order-repeats th,
+table.order-repeats td,
 table.order-options td {
     padding: 0.6em 0.5em;
     box-sizing: border-box;
+}
+table.order-repeats tbody td:nth-child(2),
+table.order-repeats tbody td:nth-child(3) {
+    text-align: right;
 }
 table.order-options tbody td:nth-child(3),
 table.order-options tbody td:nth-child(4) {
@@ -1566,6 +1575,10 @@ table.order-details tbody td:nth-child(3) { order: 3; width: 10%; padding-left: 
 table.order-details tbody td:nth-child(4) { order: 4; width: 35%; }
 table.order-details tbody td:nth-child(5) { order: 5; width: 20%; }
 
+table.order-repeats tbody td { 
+    display: block;
+    width: 100%; 
+}
 table.order-details tfoot td:nth-child(1) {
     display: none;
     width: 70%;
@@ -1586,16 +1599,21 @@ table.order-options tr.order-options-order {
 }
 table.order-details span.order-qty,
 table.order-substitutions span.order-qty,
+table.order-repeats span.order-qty,
 table.order-options span.order-qty {
     display: inline-block;
     padding: 0em;
     margin: 0px 0.25em;
     box-sizing: border-box;
+    min-width: 4.4em;
+    white-space: nobreak;
 }
 table.order-details span.order-qty-down,
 table.order-details span.order-qty-up,
 table.order-substitutions span.order-qty-down,
 table.order-substitutions span.order-qty-up,
+table.order-repeats span.order-qty-down,
+table.order-repeats span.order-qty-up,
 table.order-options span.order-qty-down,
 table.order-options span.order-qty-up {
     display: inline-block;
@@ -1604,6 +1622,7 @@ table.order-options span.order-qty-up {
 }
 table.order-details input,
 table.order-substitutions input,
+table.order-repeats input,
 table.order-options input {
     width: 2em;
     font-size: 1.0em;
@@ -1621,6 +1640,9 @@ table.order-options tr.order-show {
 }
 table.order-options .repeat-next-hide {
     display: none;
+}
+table.order-repeats tbody td > div.repeat-option:nth-child(2) {
+    margin-top: 0.5em;
 }
 
 /* 7. BROWSER AND NON-SEMANTIC STYLING

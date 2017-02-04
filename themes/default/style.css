@@ -1086,14 +1086,12 @@ aside div.borderless {
 
 #content div.cart table.cart-items thead tr {
     border: 2px solid #aaa;
-    border: 2px solid red;
     border-left-top-radius: 10px;
     border-right-top-radius: 10px;
 }
 
 #content div.cart table.cart-items tfoot tr {
     border: 2px solid #aaa;
-    border: 2px solid red;
     border-left-bottom-radius: 10px;
     border-right-bottom-radius: 10px;
 }
@@ -1184,6 +1182,7 @@ aside div.borderless {
 }
 
 #content div.order-options button,
+#content div.order-repeats button,
 #content div.cart form input.cart-submit, 
 #content form div.cart-buttons input.cart-submit, 
 #content div.cart-buttons form input.cart-submit, 
@@ -1216,12 +1215,18 @@ aside div.borderless {
 }
 #content table.order-details thead tr th,
 #content table.order-substitutions thead tr th,
+#content table.order-repeats thead tr th,
 #content table.order-options tr td {
     border-top: 1px solid #aaa;
 }
+#content table.order-repeats tbody td,
 #content table.order-details tbody td {
     /* background: #f5f5f5; */
     border-top: 0px dashed #aaa;
+}
+#content table.order-repeats tbody tr td:first-child {
+    border-top: 1px solid #aaa;
+    border-bottom: 1px dashed #aaa;
 }
 #content table.order-details tbody tr td:first-child {
     background: #fff;
@@ -1231,9 +1236,11 @@ aside div.borderless {
 #content table.order-details tbody {
     border-bottom: 3px double #aaa;
 }
+#content table.order-repeats tbody,
 #content table.order-substitutions tbody {
     border-bottom: 1px solid #aaa;
 }
+#content table.order-substitutions tbody tr:nth-child(even) td,
 #content table.order-details tbody tr:nth-child(even) td {
     background: #f5f5f5;
 }
@@ -1251,8 +1258,16 @@ aside div.borderless {
     padding: 0px;
     padding-bottom: 0em;
 }
-#content table.order-options div.order-option,
-#content table.order-options div.repeat-option {
+#content table.order-repeats tr:nth-child(even) td:first-child,
+    background: #f5f5f5;
+}
+#content table.order-repeats tr:nth-child(even) td:nth-child(2) {
+    background: #f5f5f5;
+}
+#content table.order-repeats tr:nth-child(even) td {
+    background: #f5f5f5;
+}
+#content table.order-options div.order-option {
     margin-left: 0em;
     background: #f5f5f5;
     border-left: 0px solid #ddd;
@@ -1260,11 +1275,17 @@ aside div.borderless {
     border-bottom: 0px solid #ddd;
     padding: 0.5em;
 }
+#content table.order-substitutions tbody td {
+    background: #fff;
+    border-top: 1px solid #aaa;
+    border-bottom: 0px;
+}
 #content table.order-options {
     border-bottom: 1px solid #aaa;
 }
 #content table.order-details span.order-qty,
 #content table.order-substitutions span.order-qty,
+#content table.order-repeats span.order-qty,
 #content table.order-options span.order-qty {
     border: 1px solid #aaa;
     border-radius: 3px;
@@ -1272,6 +1293,7 @@ aside div.borderless {
 }
 #content table.order-details input,
 #content table.order-substitutions input,
+#content table.order-repeats input,
 #content table.order-options input {
     text-align: center;
     margin: 0em;
@@ -1283,6 +1305,8 @@ aside div.borderless {
 #content table.order-details span.order-qty-up,
 #content table.order-substitutions span.order-qty-down,
 #content table.order-substitutions span.order-qty-up,
+#content table.order-repeats span.order-qty-down,
+#content table.order-repeats span.order-qty-up,
 #content table.order-options span.order-qty-down,
 #content table.order-options span.order-qty-up {
     font-size: 1.1em;
@@ -1296,11 +1320,13 @@ aside div.borderless {
 }
 #content table.order-details span.order-qty-down,
 #content table.order-substitutions span.order-qty-down,
+#content table.order-repeats span.order-qty-down,
 #content table.order-options span.order-qty-down {
     border-right: 1px solid #ddd;
 }
 #content table.order-details span.order-qty-up,
 #content table.order-substitutions span.order-qty-up,
+#content table.order-repeats span.order-qty-up,
 #content table.order-options span.order-qty-up {
     border-left: 1px solid #ddd;
 }
@@ -1404,8 +1430,7 @@ aside div.borderless {
     #content div.image-categories-thumbnail-small {
         margin: 10px;
     }
-    #content table.order-details tbody td,
-    #content table.order-substitutions tbody td {
+    #content table.order-details tbody td {
         background: #fff;
         border-top: 1px solid #aaa;
         border-bottom: 0px;

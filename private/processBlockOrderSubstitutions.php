@@ -182,9 +182,7 @@ function ciniki_web_processBlockOrderSubstitutions(&$ciniki, $settings, $busines
             . "var t=C.gE('order_items');" // The tbody containing the order items
             . "t.innerHTML='';"
             . "var cheapest=999;"
-            . "console.log(item);"
             . "for(var i in item.subitems) {"
-                . "console.log(item);"
                 . "if(item.subitems[i].unit_amount<cheapest){"
                     . "cheapest=item.subitems[i].unit_amount;"
                 . "}"
