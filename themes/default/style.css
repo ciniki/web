@@ -1273,6 +1273,7 @@ aside div.borderless {
 #content table.order-repeats tr:nth-child(even) td {
     background: #f5f5f5;
 }
+#content table.order-options div.repeat-option,
 #content table.order-options div.order-option {
     margin-left: 0em;
     background: #f5f5f5;
