@@ -1217,6 +1217,8 @@ function ciniki_web_main() {
             'options':{'label':'', 'fields':{
                 'page-pdfcatalogs-active':{'label':'Display Catalogs', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-pdfcatalogs-name':{'label':'Name', 'type':'text', 'hint':'default is Catalogs'},
+                'page-pdfcatalogs-thumbnail-format':{'label':'Thumbnail Format', 'type':'toggle', 'default':'square-cropped', 'toggles':{'square-cropped':'Cropped', 'square-padded':'Padded'}},
+                'page-pdfcatalogs-thumbnail-padding-color':{'label':'Padding Color', 'type':'colour'},
                 }},
             '_save':{'label':'', 'buttons':{
                 'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'pdfcatalogs\');'},

@@ -1,3 +1,5 @@
+@import url('/ciniki-web-themes/default/style.css');
+
 html {
 	background: #fff;
 	background-color: #fff;
@@ -19,14 +21,15 @@ body {
 #site-title a:hover,
 #site-title a:active {
 	text-decoration: none;
-	color: #fff;
-	text-shadow: 2px 2px 10px #000;
+	color: #422213;
+/*	text-shadow: 2px 2px 1px #000;*/
 }
 
 #site-description {
 	font-style: italic;
 	color: #fff;
-	text-shadow: 2px 2px 10px #000;
+	color: #422213;
+/*	text-shadow: 0px 0px 0px #000; */
 }
 
 #page-container.signin {
@@ -216,6 +219,7 @@ div.image-exhibitors-thumbnail,
 div.image-gallery-thumbnail {
 	border: 1px solid #aaa;
 	display: inline-block;
+    background: #fff;
 	margin: 4px;
 	padding: 7px;
 }
