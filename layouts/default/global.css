@@ -1644,6 +1644,11 @@ table.order-options .repeat-next-hide {
 table.order-repeats tbody td > div.repeat-option:nth-child(2) {
     margin-top: 0.5em;
 }
+#content div.table.table-order-subitems {
+    clear: none;
+    max-width: 30em;
+    margin-bottom: 1em;
+}
 
 /* 7. BROWSER AND NON-SEMANTIC STYLING
 ----------------------------------------------------------------------------------------*/

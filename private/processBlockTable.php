@@ -20,16 +20,18 @@ function ciniki_web_processBlockTable(&$ciniki, $settings, $business_id, $block)
     }
 
     $content .= "<div class='table"
-        . (isset($block['class']) && $block['class'] != '' ? ' table-slide-' . $block['class'] : '')
+        . (isset($block['class']) && $block['class'] != '' ? ' table-' . $block['class'] : '')
         . "'>";
     $content .= "<table>";
-    $content .= "<thead><tr>";
-    foreach($block['columns'] as $column) {
-        $content .= "<th" . (isset($column['class']) && $column['class'] != '' ? " class='" . $column['class'] . "'" : "") . ">"
-            . $column['label']
-            . "</th>";
+    if( !isset($block['headers']) || $block['headers'] == 'yes' ) {
+        $content .= "<thead><tr>";
+        foreach($block['columns'] as $column) {
+            $content .= "<th" . (isset($column['class']) && $column['class'] != '' ? " class='" . $column['class'] . "'" : "") . ">"
+                . $column['label']
+                . "</th>";
+        }
+        $content .= "</tr></thead>";
     }
-    $content .= "</tr></thead>";
     $content .= "<tbody>";
     foreach($block['rows'] as $row) {
         $content .= "<tr>";
