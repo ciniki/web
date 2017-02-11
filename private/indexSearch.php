@@ -11,8 +11,9 @@
 // -------
 //
 function ciniki_web_indexSearch(&$ciniki, $settings, $business_id, $search_str, $limit) {
-
-    $words = explode(' ', $search_str);
+    
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'makeKeywords');
+    $words = ciniki_core_makeKeywords($ciniki, $search_str, true);
     $primary_sql = '';
     $secondary_sql = '';
     $tertiary_sql = '';
