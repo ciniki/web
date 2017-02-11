@@ -52,6 +52,13 @@
 #                   0x40 - Display children as articlesubmenu (only valid on parent_id = 0)
 #                   0x80 - Display children as imagelist
 #                   0x0100 - Display children as sections **future**
+#                   0x0200 - 
+#                   0x0400 - 
+#                   0x0800 - 
+#                   0x1000 - Reverse sort on files
+#                   0x2000 - 
+#                   0x4000 - 
+#                   0x8000 - 
 #
 # primary_image_id: The ID of the main image for the page/section
 # primary_image_caption:    The caption for the image.

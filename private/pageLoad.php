@@ -140,6 +140,11 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
         . "WHERE ciniki_web_page_files.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
         . "AND ciniki_web_page_files.page_id = '" . ciniki_core_dbQuote($ciniki, $page['id']) . "' "
         . "";
+    if( ($page['flags']&0x1000) == 0x1000 ) {
+        $strsql .= "ORDER BY name DESC ";
+    } else {
+        $strsql .= "ORDER BY name ASC ";
+    }
     $rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.info', array(
         array('container'=>'files', 'fname'=>'id', 
             'fields'=>array('id', 'name', 'extension', 'permalink', 'description')),

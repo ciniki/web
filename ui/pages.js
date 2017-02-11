@@ -92,6 +92,9 @@ function ciniki_web_pages() {
                     'addTxt':'Add File',
                     'addFn':'M.ciniki_web_pages.'+pn+'.editComponent(\'ciniki.web.pagefiles\',\'M.ciniki_web_pages.'+pn+'.updateFiles();\',{\'file_id\':\'0\'});',
                     },
+                '_files':{'label':'', 'aside':'yes', 'visible':'hidden', 'fields':{
+                    '_flags_10':{'label':'Reverse Order', 'type':'flagtoggle', 'bit':0x1000, 'field':'flags_10', 'default':'on'},
+                }},
                 'images':{'label':'Gallery', 'aside':'yes', 'visible':'hidden', 'type':'simplethumbs'},
                 '_images':{'label':'', 'aside':'yes', 'visible':'hidden', 'type':'simplegrid', 'num_cols':1,
                     'addTxt':'Add Image',
@@ -311,6 +314,7 @@ function ciniki_web_pages() {
                 this.sections._synopsis.visible = (pt=='10' || (pt==20 && this.data.parent_id > 0)?'yes':'hidden');
                 this.sections._content.visible = ((pt=='10'||pt==11)?'yes':'hidden');
                 this.sections.files.visible = (pt=='10'?'yes':'hidden');
+                this.sections._files.visible = (pt=='10'?'yes':'hidden');
                 this.sections.images.visible = (pt=='10'?'yes':'hidden');
                 this.sections._images.visible = (pt=='10'?'yes':'hidden');
                 this.sections._children.visible = (pt=='10'?'yes':'hidden');
@@ -396,6 +400,11 @@ function ciniki_web_pages() {
                 } else {
                     flags &= ~0x02;
                 }
+                if( this.formValue('_flags_10') == 'on' ) {
+                    flags |= 0x1000;
+                } else {
+                    flags &= ~0x1000;
+                }
                 if( this.page_id > 0 ) {
                     var c = this.serializeFormData('no');
                     if( c != null || flags != this.data.flags ) {
@@ -475,6 +484,7 @@ function ciniki_web_pages() {
         // Remove child_format flags
         this[pn].data.flags_1 = (rsp.page.flags&0xFFFFFF0F);
         this[pn].data.flags_2 = (rsp.page.flags&0xFFFFFF0F);
+        this[pn].data.flags_10 = (rsp.page.flags&0x0000F000);
         this[pn].data.child_format = (rsp.page.flags&0x000000F0);
         this[pn].sections.details.fields.parent_id.active = 'yes';
         if( this[pn].page_id == 0 && parent_id != null ) {
