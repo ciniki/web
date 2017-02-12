@@ -16,7 +16,7 @@ function ciniki_web_generatePageSearch(&$ciniki, $settings) {
 
     $search_str = '';
     if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
-        $search_str = $ciniki['request']['uri_split'][0];
+        $search_str = urldecode($ciniki['request']['uri_split'][0]);
     }
 
     $page = array(
