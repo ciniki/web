@@ -1861,6 +1861,9 @@ function ciniki_web_main() {
 //          'info':{'label':'', 'html':'If you want to allow customers the ability to login and manage their account
             'options':{'label':'', 'fields':{
                 'page-account-active':{'label':'Customer Logins', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                'page-account-dealers-only':{'label':'Dealers Only', 
+                    'active':function() { return M.modFlagSet('ciniki.customers', 0x10); },
+                    'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-account-child-logins':{'label':'Child Logins', 
                     'active':function() { return M.modFlagSet('ciniki.customers', 0x200000); },
                     'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},

@@ -410,6 +410,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-downloads-active',
         'page-downloads-name',
         'page-account-active',
+        'page-account-dealers-only',
         'page-account-child-logins',
         'page-account-header-buttons',
         'page-account-sidebar',
