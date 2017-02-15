@@ -1337,6 +1337,11 @@ aside div.borderless {
 #content table.order-options span.order-qty-up {
     border-left: 1px solid #ddd;
 }
+#content table.order-details span.discount-text,
+#content table.order-details span.deposit-text {
+    display: block;
+    color: #888;
+}
 /* Order is important for colour options, repeat can be on when order-off */
 /* order-off/on is for current date order */
 #content table.order-details span.order-options-order-queue,
