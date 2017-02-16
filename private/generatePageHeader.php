@@ -1302,7 +1302,12 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
             $cur_url = $ciniki['request']['base_url'] . '/' . $ciniki['request']['page'] . '/' . $ciniki['request']['uri_split'][0];
         }
         foreach($submenu as $sid => $item) {
-            $content .= "<li class='menu-item" . ($cur_url!=''&&strncmp($item['url'], $cur_url, strlen($cur_url))==0?' menu-item-selected':'') . "'><a href='" . $item['url'] . "'>" . $item['name'] . "</a></li>";
+            if( (isset($item['selected']) && $item['selected'] == 'yes') || ($cur_url != '' && strncmp($item['url'], $cur_url, strlen($cur_url)) == 0) ) {
+                $content .= "<li class='menu-item menu-item-selected'>";
+            } else {
+                $content .= "<li class='menu-item'>";
+            }
+            $content .= "<a href='" . $item['url'] . "'>" . $item['name'] . "</a></li>";
         }
         $content .= "</ul>\n"
             . "</div>\n";

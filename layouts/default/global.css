@@ -1526,6 +1526,10 @@ table.order-repeats tbody td:nth-child(2),
 table.order-repeats tbody td:nth-child(3) {
     text-align: right;
 }
+table.order-options tbody tr td {
+    min-width: 2em;
+    vertical-align: middle;
+}
 table.order-options tbody td:nth-child(3),
 table.order-options tbody td:nth-child(4) {
     font-size: 1.2em;

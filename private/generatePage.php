@@ -178,7 +178,6 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
         if( isset($rc['submenu']) ) {
             $submenu = $rc['submenu'];
         }
-
     } 
 
     //
