@@ -161,7 +161,7 @@ function ciniki_web_processBlockOrderDetails(&$ciniki, $settings, $business_id, 
                     . "}"
                     . "if(r.order!=null&&r.order.items!=null&&r.order.items[id]!=null){"
                         . "var i=r.order.items[id];"
-                        . "C.gE('order_item_price_'+id).innerHTML=i.price_text;"
+                        . "C.gE('order_item_price_'+id).innerHTML=i.price_html;"
                         . "C.gE('order_item_total_'+id).innerHTML=i.total_text;"
                         . "C.gE('order_total').innerHTML=r.order.total_text;"
                     . "}else if(parseInt(e.value)==0){"

@@ -62,7 +62,11 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
         foreach($block['options'] as $oid => $option) {
             $content .= "<tr class='order-options-item'>";
             $content .= "<td class='name'>" . $option['name'] . "</td>";
-            $content .= "<td class='price alignright'>" . $option['price_text'] . "</td>";
+            if( isset($option['sale_price_text']) && $option['sale_price_text'] != '' ) {
+                $content .= "<td class='price alignright'><s>" . $option['price_text'] . '</s> ' . $option['sale_price_text'] . "</td>";
+            } else {
+                $content .= "<td class='price alignright'>" . $option['price_text'] . "</td>";
+            }
             if( isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 ) {
                 if( isset($option['favourite']) && $option['favourite'] == 'yes' ) {
                     if( isset($option['favourite_value']) && $option['favourite_value'] == 'on' ) {

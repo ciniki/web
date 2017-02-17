@@ -65,6 +65,9 @@ function ciniki_web_processBlockProductCards($ciniki, $settings, $business_id, $
         if( isset($card['options']) && count($card['options']) > 0 ) {
             $content .= "<div class='product-card-options'>";
             foreach($card['options'] as $option) {
+                if( isset($option['sale_price_display']) && $option['sale_price_display'] != '' ) {
+                    $option['price_display'] = '<s>' . $option['price_display'] . '</s> ' . $option['sale_price_display'];
+                }
                 $content .= "<div class='product-card-option'>"
                     . "<span class='product-card-option-name'>" . $option['name'] . "</span>"
                     . "<span class='product-card-option-price'>" . $option['price_display'] . "</span>"
