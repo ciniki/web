@@ -956,6 +956,10 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         // Check if we should display inventory
         //
         $inv = 'no';
+        $codes = 'no';
+        if( isset($ciniki['business']['modules']['ciniki.sapos']['flags']) && ($ciniki['business']['modules']['ciniki.sapos']['flags']&0x0400) == 0x0400 ) {
+            $codes = 'yes';
+        }
         if( isset($settings['page-cart-inventory-customersj-display']) 
             && $settings['page-cart-inventory-customersj-display'] == 'yes' 
             ) {
@@ -1016,7 +1020,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                                 . "c.colSpan=" . ($inv=='yes'?5:4) . ";"
                                 . "tr.appendChild(c);"
                             . "}else{"
-                                . "tr.appendChild(C.aE('td',null,null,p.name));"
+                                . "tr.appendChild(C.aE('td',null,null," . ($codes=='yes' ? "(p.code!='' ? p.code + ' - ' : '')" : '') . " + p.name));"
                                 . "if(p.cart!=null&&p.cart=='yes'"
                                     // Check if inventory available or backorder available
                                     . "&&(p.inventory_available>0||(p.inventory_flags&0x02)>0)){"
@@ -1223,9 +1227,9 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                     }
                 }
                 if( isset($item['url']) && $item['url'] != '' ) {
-                    $content .= "<a href='" . $item['url'] . "'>" . $item['description'] . "</a>";
+                    $content .= "<a href='" . $item['url'] . "'>" . ($codes == 'yes' && $item['code'] != '' ? $item['code'] . ' - ' : '') . $item['description'] . "</a>";
                 } else {
-                    $content .= $item['description'];
+                    $content .= ($codes == 'yes' && $item['code'] != '' ? $item['code'] . ' - ' : '') . $item['description'];
                 }
                 //
                 // Check for registration customer
