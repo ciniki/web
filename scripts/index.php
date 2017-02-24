@@ -634,7 +634,11 @@ if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.web', 0x04000000) ) {
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'redirect');
     if( $rc['stat'] == 'ok' && isset($rc['redirect']['newurl']) ) {
         Header('HTTP/1.1 301 Moved Permanently'); 
-        Header('Location: ' . $ciniki['request']['domain_base_url'] . $rc['redirect']['newurl']);
+        if( preg_match("/^http/", $rc['redirect']['newurl']) ) {
+            Header('Location: ' . $rc['redirect']['newurl']);
+        } else {
+            Header('Location: ' . $ciniki['request']['domain_base_url'] . $rc['redirect']['newurl']);
+        }
         exit;
     }
 }
@@ -1094,7 +1098,11 @@ if( $rc['stat'] == '404' ) {
             $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'redirect');
             if( $rc['stat'] == 'ok' && isset($rc['redirect']['newurl']) ) {
                 Header('HTTP/1.1 301 Moved Permanently'); 
-                Header('Location: ' . $ciniki['request']['domain_base_url'] . $rc['redirect']['newurl']);
+                if( preg_match("/^http/", $rc['redirect']['newurl']) ) {
+                    Header('Location: ' . $rc['redirect']['newurl']);
+                } else {
+                    Header('Location: ' . $ciniki['request']['domain_base_url'] . $rc['redirect']['newurl']);
+                }
                 exit;
             }
             $url = preg_replace("/\/[^\/]*$/", '', $url);
