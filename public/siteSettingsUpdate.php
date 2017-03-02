@@ -370,6 +370,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-events-image',
         'page-events-image-caption',
         'page-events-content',
+        'page-events-thumbnail-format',
+        'page-events-thumbnail-padding-color',
         'page-musicfestivals-active',
         'page-musicfestivals-title',
         'page-musicfestivals-festivalid',
