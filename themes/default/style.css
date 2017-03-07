@@ -1338,9 +1338,11 @@ aside div.borderless {
     border-left: 1px solid #ddd;
 }
 #content table.order-details span.discount-text,
-#content table.order-details span.deposit-text {
+#content table.order-details span.deposit-text,
+#content table.order-details span.tax-text {
     display: block;
     color: #888;
+    font-size: 0.9em;
 }
 /* Order is important for colour options, repeat can be on when order-off */
 /* order-off/on is for current date order */

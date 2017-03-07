@@ -96,12 +96,18 @@ function ciniki_web_processBlockOrderDetails(&$ciniki, $settings, $business_id, 
                     . ((isset($item['discount_text']) && $item['discount_text'] != '') ? '<span class="discount-text">' . $item['discount_text'] . '</span>' : '')
                     . ((isset($item['deposit_text']) && $item['deposit_text'] != '') ? '<span class="deposit-text">' . $item['deposit_text'] . '</span>' : '')
                     . "</td>";
-                $content .= "<td id='order_item_total_" . $item['id'] . "'>" . $item['total_text'] . "</td>";
+                $content .= "<td><span id='order_item_total_" . $item['id'] . "'>" . $item['total_text'] . "</span>"
+                    . "<span class='tax-text'>" . $item['tax_text'] . "</span></td>";
                 $content .= "</tr>";
             }
             $content .= "</tbody>";
         }
         $content .= "<tfoot>";
+//        if( isset($block['order']['taxes_amount']) && $block['order']['taxes_amount'] > 0 ) {
+//        }
+        $content .= "<tr" . ($block['order']['taxes_amount'] > 0 ? '': " style='display:none;'") . "><td colspan='3'></td><td>Taxes</td>"
+            . "<td id='order_taxes'>$" . number_format($block['order']['taxes_amount'], 2, '.', ',') . "</td>"
+            . "</tr>";
         $content .= "<tr><td colspan='3'></td><td>Total</td>"
             . "<td id='order_total'>$" . number_format($block['order']['total_amount'], 2, '.', ',') . "</td>"
             . "</tr>";
@@ -163,11 +169,15 @@ function ciniki_web_processBlockOrderDetails(&$ciniki, $settings, $business_id, 
                         . "var i=r.order.items[id];"
                         . "C.gE('order_item_price_'+id).innerHTML=i.price_html;"
                         . "C.gE('order_item_total_'+id).innerHTML=i.total_text;"
+                        . "C.gE('order_taxes').innerHTML=r.order.taxes_amount;"
+                        . "C.gE('order_taxes').parentNode.style.display=(r.order.taxes_amount>0?'':'none');"
                         . "C.gE('order_total').innerHTML=r.order.total_text;"
                     . "}else if(parseInt(e.value)==0){"
                         . "var f=C.gE('order_item_'+id);"
                         . "f.parentNode.removeChild(f);"
                         . "if(r.order!=null){"
+                            . "C.gE('order_taxes').innerHTML=r.order.taxes_amount;"
+                            . "C.gE('order_taxes').parentNode.style.display=(r.order.taxes_amount>0?'':'none');"
                             . "C.gE('order_total').innerHTML=r.order.total_text;"
                         . "}"
                     . "}"
