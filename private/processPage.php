@@ -100,7 +100,16 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
             $content .= "<h2>" . $page['child_title'] . "</h2>";
         }
         if( count($page['children']) > 0 ) {
-            if( ($page['flags']&0x80) > 0 ) {
+            if( ($page['flags']&0x0200) == 0x0200 ) {
+                $children = '';
+                foreach($page['children'] as $cid => $child) {
+                    $url = $base_url . '/' . $child['permalink'];
+                    $children .= "<a href='" . $url . "' title='" . $child['name'] . "'>" . $child['name'] . "</a><br/>";
+                }
+                if( $children != '' ) {
+                    $content .= "<div class='block block-files'>" . $children . "</div>";
+                }
+            } elseif( ($page['flags']&0x80) > 0 ) {
                 foreach($page['children'] as $cid => $child) {
                     $page['children'][$cid]['title'] = $child['name'];
                     $page['children'][$cid]['image_id'] = $child['list'][$child['id']]['image_id'];

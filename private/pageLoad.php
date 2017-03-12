@@ -39,7 +39,13 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
             . "FROM ciniki_web_pages "
             . "WHERE parent_id = '" . ciniki_core_dbQuote($ciniki, $page['id']) . "' "
             . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
-            . "ORDER BY category, sequence, title "
+            . "";
+        if( isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 ) {
+            $strsql .= "AND (flags&0x01) = 0x01 "; // Public and private pages
+        } else {
+            $strsql .= "AND (flags&0x03) = 0x01 ";  // Public pages only
+        }
+        $strsql .= "ORDER BY category, sequence, title "
             . "";
         $rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.customers', array(
             array('container'=>'children', 'fname'=>'permalink', 
@@ -50,6 +56,12 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
         }
         if( isset($rc['children']) ) {
             $page['children'] = $rc['children'];
+            //
+            // Check for private pages
+            //
+            foreach($page['children'] as $cid => $child) {
+                
+            }
         }
         //
         // Get any sponsors for this page, and that references for sponsors is enabled
@@ -168,11 +180,16 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
         . "FROM ciniki_web_pages "
         . "WHERE parent_id = '" . ciniki_core_dbQuote($ciniki, $page['id']) . "' "
         . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
-        . "ORDER BY category, sequence, title "
+        . "";
+    if( isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 ) {
+        $strsql .= "AND (flags&0x01) = 0x01 "; // Public and private pages
+    } else {
+        $strsql .= "AND (flags&0x03) = 0x01 ";  // Public pages only
+    }
+    $strsql .= "ORDER BY category, sequence, title "
         . "";
     $rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.customers', array(
-        array('container'=>'children', 'fname'=>'category', 
-            'fields'=>array('name'=>'category')),
+        array('container'=>'children', 'fname'=>'category', 'fields'=>array('name'=>'category')),
         array('container'=>'list', 'fname'=>'id', 
             'fields'=>array('id', 'page_type', 'page_redirect_url', 'title', 'permalink', 'image_id'=>'primary_image_id',
                 'synopsis', 'content', 'is_details')),

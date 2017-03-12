@@ -8,6 +8,7 @@ function ciniki_web_pages() {
     this.childFormat = {
         '5':{'name':'List'},
         '8':{'name':'Image List'},
+        '10':{'name':'Name List'},
 //      '6':{'name':'Menu'},
 //      '32':{'name':'List'},
         };
@@ -93,7 +94,7 @@ function ciniki_web_pages() {
                     'addFn':'M.ciniki_web_pages.'+pn+'.editComponent(\'ciniki.web.pagefiles\',\'M.ciniki_web_pages.'+pn+'.updateFiles();\',{\'file_id\':\'0\'});',
                     },
                 '_files':{'label':'', 'aside':'yes', 'visible':'hidden', 'fields':{
-                    '_flags_10':{'label':'Reverse Order', 'type':'flagtoggle', 'bit':0x1000, 'field':'flags_10', 'default':'on'},
+                    '_flags_14':{'label':'Reverse Order', 'type':'flagtoggle', 'bit':0x1000, 'field':'flags_14', 'default':'on'},
                 }},
                 'images':{'label':'Gallery', 'aside':'yes', 'visible':'hidden', 'type':'simplethumbs'},
                 '_images':{'label':'', 'aside':'yes', 'visible':'hidden', 'type':'simplegrid', 'num_cols':1,
@@ -400,7 +401,7 @@ function ciniki_web_pages() {
                 } else {
                     flags &= ~0x02;
                 }
-                if( this.formValue('_flags_10') == 'on' ) {
+                if( this.formValue('_flags_14') == 'on' ) {
                     flags |= 0x1000;
                 } else {
                     flags &= ~0x1000;
@@ -484,8 +485,8 @@ function ciniki_web_pages() {
         // Remove child_format flags
         this[pn].data.flags_1 = (rsp.page.flags&0xFFFFFF0F);
         this[pn].data.flags_2 = (rsp.page.flags&0xFFFFFF0F);
-        this[pn].data.flags_10 = (rsp.page.flags&0x0000F000);
-        this[pn].data.child_format = (rsp.page.flags&0x000000F0);
+        this[pn].data.flags_14 = (rsp.page.flags&0x0000F000);
+        this[pn].data.child_format = (rsp.page.flags&0x00000FF0);
         this[pn].sections.details.fields.parent_id.active = 'yes';
         if( this[pn].page_id == 0 && parent_id != null ) {
             this[pn].data.parent_id = parent_id;
