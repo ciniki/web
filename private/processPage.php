@@ -103,7 +103,7 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
             if( ($page['flags']&0x0200) == 0x0200 ) {
                 $children = '';
                 foreach($page['children'] as $cid => $child) {
-                    $url = $base_url . '/' . $child['permalink'];
+                    $url = $base_url . '/' . $page['permalink'] . '/' . $child['permalink'];
                     $children .= "<a href='" . $url . "' title='" . $child['name'] . "'>" . $child['name'] . "</a><br/>";
                 }
                 if( $children != '' ) {
