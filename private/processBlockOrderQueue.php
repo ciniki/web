@@ -64,19 +64,23 @@ function ciniki_web_processBlockOrderQueue(&$ciniki, $settings, $business_id, $b
             // Add the hidden row for adding to queue orders
             //
             $content .= "<td class='options'>";
-            $content .=  "<div class='repeat-option'>"
-                . $block['pretext']
-                . "<span class='order-qty'>"
-                . "<span class='order-qty-down' onclick='queueQtyDown(" . $item['id'] . ");'>-</span>"
-                . "<input id='queue_quantity_" . $item['id'] . "' name='queue_quantity_" . $item['id'] . "' "
-                    . "value='" . (float)$item['queue_quantity'] . "' "
-                    . "onkeyup='queueQtyChange(" . $item['id'] . ");' "
-                    . "onchange='queueQtyChange(" . $item['id'] . ");' "
-                    . "/>"
-                . "<span class='order-qty-up' onclick='queueQtyUp(" . $item['id'] . ");'>+</span>"
-                . "</span>"
-                . $block['posttext']
-                . "</div>";
+            $content .=  "<div class='repeat-option'>";
+            if( isset($block['ordered']) && $block['ordered'] == 'yes' ) {
+                $content .= "There " . ($item['queue_quantity'] > 1 ? 'are ' : 'is ') . '<b>' . (float)$item['queue_quantity'] . '</b> on order for you';
+            } else {
+                $content .= "You have "
+                    . "<span class='order-qty'>"
+                    . "<span class='order-qty-down' onclick='queueQtyDown(" . $item['id'] . ");'>-</span>"
+                    . "<input id='queue_quantity_" . $item['id'] . "' name='queue_quantity_" . $item['id'] . "' "
+                        . "value='" . (float)$item['queue_quantity'] . "' "
+                        . "onkeyup='queueQtyChange(" . $item['id'] . ");' "
+                        . "onchange='queueQtyChange(" . $item['id'] . ");' "
+                        . "/>"
+                    . "<span class='order-qty-up' onclick='queueQtyUp(" . $item['id'] . ");'>+</span>"
+                    . "</span>"
+                    . " in your queue";
+            }
+            $content .= "</div>";
             $js_variables['object_ref_' . $item['id']] = $item['object'] . '/' . $item['object_id'];
             $js_variables['queue_quantity_' . $item['id']] = $item['queue_quantity'];
             $content .= "</td></tr>";
