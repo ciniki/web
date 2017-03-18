@@ -160,6 +160,22 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
                 // Add the hidden row for managing item in a queue
                 //
                 if( isset($option['queue']) && $option['queue'] == 'yes' ) {
+                    $content .= "<tr id='order_option_" . $option['id'] . "' class='order-options-order order-hide'><td colspan='4'>";
+                    $content .=  "<div class='order-option'>"
+                        . "You have "
+                        . "<span class='order-qty'>"
+                        . "<span class='order-qty-down' onclick='queueQtyDown(" . $option['id'] . ");'>-</span>"
+                        . "<input id='queue_quantity_" . $option['id'] . "' name='order_quantity_" . $option['id'] . "' "
+                            . "value='" . $option['queue_quantity'] . "' "
+                            . "onkeyup='queueQtyChange(" . $option['id'] . ");' "
+                            . "onchange='queueQtyChange(" . $option['id'] . ");' "
+                            . "/>"
+                        . "<span class='order-qty-up' onclick='queueQtyUp(" . $option['id'] . ");'>+</span>"
+                        . "</span>"
+                        . " in your queue"
+                        . "</div>";
+                    $js_variables['queue_quantity_' . $option['id']] = $option['queue_quantity'];
+                    $content .= "</td></tr>";
                 }
             }
         }
@@ -336,6 +352,47 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
                         . "e3.classList.add('repeat-next-hide');"
                     . "}"
                 . "});"
+            . "}"
+            . "function queueQtyUp(id){"
+                . "var e=C.gE('queue_quantity_' + id);"
+                . "if(e.value==''){"
+                    . "return true;"
+                    . "e.value=1;"
+                . "}else{"
+                    . "e.value=parseInt(e.value)+1;"
+                . "}"
+                . "queueQtyChange(id);"
+            . "}"
+            . "function queueQtyDown(id){"
+                . "var e=C.gE('queue_quantity_' + id);"
+                . "if(parseInt(e.value)<1){"
+                    . "e.value=0;"
+                . "}else if(e.value==''){"
+                    . "return true;"
+                    . "e.value=1;"
+                . "}else{"
+                    . "e.value=parseInt(e.value)-1;"
+                . "}"
+                . "queueQtyChange(id);"
+            . "}"
+            . "function queueQtyChange(id){"
+                . "var e=C.gE('queue_quantity_' + id);"
+                . "var icn=C.gE('option_' + id).firstElementChild;"
+                . "if(e.value!=org_val['queue_quantity_'+id]){"
+                    . "C.getBg('" . $api_queue_update . "'+id,{'quantity':e.value},function(r){"
+                        . "if(r.stat!='ok'){"
+                            . "e.value=org_val['queue_quantity_'+id];"
+                            . "alert('We had a problem updating your queue. Please try again or contact us for help.');"
+                            . "return false;"
+                        . "}"
+                        . "org_val['queue_quantity_'+id]=e.value;"
+                        . "if(e.value>0&&!icn.classList.contains('order-options-order-queue')){"
+                            . "icn.classList.add('order-options-order-queue');"
+                        . "}else if(e.value==0&&icn.classList.contains('order-options-order-queue')){"
+                            . "icn.classList.remove('order-options-order-queue');"
+                        . "}"
+                    . "});"
+                . "}"
             . "}"
             . "</script>";
     }

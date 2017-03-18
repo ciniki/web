@@ -46,6 +46,7 @@ function ciniki_web_processBlocks(&$ciniki, $settings, $business_id, $blocks) {
             case 'orderdetails': $processor = 'processBlockOrderDetails'; break;
             case 'orderoptions': $processor = 'processBlockOrderOptions'; break;
             case 'orderrepeats': $processor = 'processBlockOrderRepeats'; break;
+            case 'orderqueue': $processor = 'processBlockOrderQueue'; break;
             case 'ordersubstitutions': $processor = 'processBlockOrderSubstitutions'; break;
             case 'prices': $processor = 'processBlockPrices'; break;
             case 'pricelist': $processor = 'processBlockPriceList'; break;

@@ -1511,6 +1511,7 @@ table.order-options {
     width: 100%;
     max-width: 100%;
     border-collapse: collapse;
+    margin-bottom: 1em;
 }
 table.order-details th,
 table.order-details td,
