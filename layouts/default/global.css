@@ -859,7 +859,7 @@ div.sponsor-gallery,
 }
 #content div.image-categories-thumbnail-small {
     max-width: 135px;
-    max-width: 85px;
+    max-width: 29%;
     margin: 5px;
 }
 #content div.image-categories-thumbnail-medium {
