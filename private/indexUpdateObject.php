@@ -111,34 +111,6 @@ function ciniki_web_indexUpdateObject(&$ciniki, $business_id, $args) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'makeKeywords');
         foreach(array('primary_words', 'secondary_words', 'tertiary_words') as $field) {
             $module_object[$field] = ciniki_core_makeKeywords($ciniki, $module_object[$field]);
-/*
-            $str = preg_replace('/[^a-zA-Z0-9]/', ' ', $module_object[$field]);
-            $str = preg_replace('/\s\s/', ' ', $str);
-            $str = strtolower($str);
-            $words = explode(' ', $str);
-
-            //
-            // Remove 2 letter words, and common words
-            //
-            foreach($words as $wid => $word) {
-//                if( strlen($word) < 3 ) {
-//                    unset($words[$wid]);
-//                }
-                if( in_array($word, $common_words) ) {
-                    unset($words[$wid]);
-                }
-            }
-
-            //
-            // Sort the words
-            //
-            sort($words);
-
-            //
-            // Remove duplicates, and join into single string
-            //
-            $module_object[$field] = implode(' ', array_unique($words)); 
-            */
         }
 
         //
