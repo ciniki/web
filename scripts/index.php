@@ -1078,7 +1078,11 @@ if( $found == 'no' ) {
     }
 }
 
-if( $rc['stat'] == '404' ) {
+if( $rc['stat'] == '503' ) {
+    require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePage503.php');
+    $rc = ciniki_web_generatePage503($ciniki, $settings, $rc);
+}
+elseif( $rc['stat'] == '404' ) {
     //
     // If no page was found, check up the chain of redirects to see if theres a general match
     //

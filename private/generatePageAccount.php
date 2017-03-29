@@ -29,6 +29,19 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
     header("Pragma: no-cache");
 
     //
+    // Check if maintanence mode
+    //
+    if( isset($ciniki['config']['ciniki.core']['maintenance']) && $ciniki['config']['ciniki.core']['maintenance'] == 'on' ) {
+        if( isset($ciniki['config']['ciniki.core']['maintenance.message']) && $ciniki['config']['ciniki.core']['maintenance.message'] != '' ) {
+            $msg = $ciniki['config']['ciniki.core']['maintenance.message'];
+        } else {
+            $msg = "We are currently doing maintenance on the system and will be back soon.";
+        }
+
+        return array('stat'=>'503', 'err'=>array('code'=>'maintenance', 'msg'=>$msg));
+    }
+
+    //
     // Check if should be forced to SSL
     //
     if( isset($settings['site-ssl-force-account']) 
