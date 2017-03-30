@@ -311,7 +311,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
                 $instructor_url = $ciniki['request']['base_url'] . "/courses/instructor/" . $instructor['permalink'];
 
                 // Setup the instructor image
-                if( isset($instructor['isdetails']) && $instructor['isdetails'] == 'yes' ) {
+                if( isset($instructor['is_details']) && $instructor['is_details'] == 'yes' ) {
                     $page_content .= "<tr><td class='cilist-image' rowspan='2'>";
                 } else {
                     $page_content .= "<tr><td class='cilist-image'>";
@@ -334,7 +334,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
                     $page_content .= "<p class='cilist-description'>" . $instructor['short_bio'] . "</p>";
                 }
                 $page_content .= "</td></tr>";
-                if( isset($instructor['isdetails']) && $instructor['isdetails'] == 'yes' ) {
+                if( isset($instructor['is_details']) && $instructor['is_details'] == 'yes' ) {
                     $page_content .= "<tr><td class='cilist-more'><a href='$instructor_url'>... more</a></td></tr>";
                 }
                 $page_content .= "</tbody></table>";
@@ -489,7 +489,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
                 $instructor_url = $ciniki['request']['base_url'] . "/courses/instructor/" . $instructor['permalink'];
 
                 // Setup the instructor image
-                if( isset($instructor['isdetails']) && $instructor['isdetails'] == 'yes' ) {
+                if( isset($instructor['is_details']) && $instructor['is_details'] == 'yes' ) {
                     $page_content .= "<tr><td class='cilist-image' rowspan='2'>";
                 } else {
                     $page_content .= "<tr><td class='cilist-image'>";
@@ -512,7 +512,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
                     $page_content .= "<p class='cilist-description'>" . $instructor['short_bio'] . "</p>";
                 }
                 $page_content .= "</td></tr>";
-                if( isset($instructor['isdetails']) && $instructor['isdetails'] == 'yes' ) {
+                if( isset($instructor['is_details']) && $instructor['is_details'] == 'yes' ) {
                     $page_content .= "<tr><td class='cilist-more'><a href='$instructor_url'>... more</a></td></tr>";
                 }
                 $page_content .= "</tbody></table>";
@@ -763,7 +763,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
                             . "<td>";
                     }
                     foreach($c['offerings'] as $onum => $offering) {
-                        if( $offering['isdetails'] == 'yes' ) {
+                        if( $offering['is_details'] == 'yes' ) {
                             $offering_url = $ciniki['request']['base_url'] . '/courses/course/' . $offering['course_permalink'] . '/' . $offering['permalink'];
                         } else {
                             $offering_url = '';
