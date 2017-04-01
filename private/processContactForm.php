@@ -86,6 +86,7 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $business_id) {
                 $send_to_emails = explode(',', $settings['page-contact-form-emails']);
                 foreach($send_to_emails as $email) {
                     $ciniki['emailqueue'][] = array('to'=>trim($email),
+                        'business_id'=>$business_id,
                         'replyto_email'=>$_POST['contact-form-email'],
                         'replyto_name'=>$_POST['contact-form-name'],
                         'subject'=>$subject,
@@ -101,6 +102,7 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $business_id) {
                 $owners = $rc['users'];
                 foreach($owners as $user_id => $owner) {
                     $ciniki['emailqueue'][] = array('user_id'=>$user_id,
+                        'business_id'=>$business_id,
                         'replyto_email'=>$_POST['contact-form-email'],
                         'replyto_name'=>$_POST['contact-form-name'],
                         'subject'=>$subject,
