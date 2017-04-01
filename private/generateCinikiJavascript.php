@@ -18,6 +18,7 @@ function ciniki_web_generateCinikiJavascript($ciniki) {
     // This is done so the image can be properly fit to the size of the screen.
     //
     if( (isset($_SERVER['HTTP_CLUSTER_HTTPS']) && $_SERVER['HTTP_CLUSTER_HTTPS'] == 'on')
+        || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
         || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443') )  {
         $url = $ciniki['request']['ssl_domain_base_url'];
     } else {

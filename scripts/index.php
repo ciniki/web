@@ -80,6 +80,7 @@ $ciniki['emailqueue'] = array();
 
 // Set the flag if we serving this request over ssl
 if( (isset($_SERVER['HTTP_CLUSTER_HTTPS']) && $_SERVER['HTTP_CLUSTER_HTTPS'] == 'on')
+    || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
     || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443' ) 
     ) {
     $ciniki['request']['ssl'] = 'yes';
@@ -376,7 +377,10 @@ if( $ciniki['request']['business_id'] == 0 ) {
 // Make sure shop URLs are forced to SSL
 //
 if( isset($ciniki['config']['ciniki.web']['shop.domain']) && $_SERVER['HTTP_HOST'] == $ciniki['config']['ciniki.web']['shop.domain'] 
-    && ((isset($_SERVER['HTTP_CLUSTER_HTTPS']) && $_SERVER['HTTP_CLUSTER_HTTPS'] != 'on') || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] != '443'))
+    && ((isset($_SERVER['HTTP_CLUSTER_HTTPS']) && $_SERVER['HTTP_CLUSTER_HTTPS'] != 'on') 
+        || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
+        || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] != '443')
+        )
     ) {
     //
     // Force redirect to SSL
