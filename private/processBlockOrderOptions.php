@@ -67,7 +67,9 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
             } else {
                 $content .= "<td class='price alignright'>" . $option['price_text'] . "</td>";
             }
-            if( isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 ) {
+            if( isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 
+                && (!isset($ciniki['config']['ciniki.core']['maintenance']) || $ciniki['config']['ciniki.core']['maintenance'] != 'on') 
+                ) {
                 if( isset($option['favourite']) && $option['favourite'] == 'yes' ) {
                     if( isset($option['favourite_value']) && $option['favourite_value'] == 'on' ) {
                         $content .= "<td id='fav_" . $option['id'] . "' class='clickable aligncenter fav-on' onclick='favToggle(" . $option['id'] . ");'>" . $heart_on . "</td>";
@@ -100,7 +102,9 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $business_id, 
             //
             // Check if cart should be shown
             //
-            if( isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 ) {
+            if( isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 
+                && (!isset($ciniki['config']['ciniki.core']['maintenance']) || $ciniki['config']['ciniki.core']['maintenance'] != 'on') 
+                ) {
                 //
                 // Add the hidden row for adding to current order
                 //
