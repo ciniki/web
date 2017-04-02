@@ -314,7 +314,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
         $home_page_aside_image .= "<div class='image-wrap'>"
             . "<div class='image'>$href2<img title='' alt='" . $ciniki['business']['details']['name'] . "' src='" . $url2 . "' />$_href2</div>";
         if( isset($settings['page-home-image2-caption']) && $settings['page-home-image2-caption'] != '' ) {
-            $home_page_aside_image .= "<div class='image-caption'>$href" . $settings['page-home-image2-caption'] . "$_href</div>";
+            $home_page_aside_image .= "<div class='image-caption'>$href2" . $settings['page-home-image2-caption'] . "$_href2</div>";
         }
         $home_page_aside_image .= "</div>";
         $home_page_aside_image .= "</aside>";
