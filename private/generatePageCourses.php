@@ -763,7 +763,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
                             . "<td>";
                     }
                     foreach($c['offerings'] as $onum => $offering) {
-                        if( $offering['is_details'] == 'yes' ) {
+                        if( isset($offering['is_details']) && $offering['is_details'] == 'yes' ) {
                             $offering_url = $ciniki['request']['base_url'] . '/courses/course/' . $offering['course_permalink'] . '/' . $offering['permalink'];
                         } else {
                             $offering_url = '';
