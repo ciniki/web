@@ -21,7 +21,7 @@ function ciniki_web_processGalleryImage(&$ciniki, $settings, $business_id, $args
     $content = '';
 
     if( !isset($args['item']['images']) || count($args['item']['images']) < 1 ) {
-        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.121', 'msg'=>'Unable to find image'));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.121', 'msg'=>"I'm sorry, but we don't seem to have the image your requested."));
     }
 
     $first = NULL;
