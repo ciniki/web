@@ -418,6 +418,10 @@ div.sponsor-gallery div.sponsor-gallery-thumbnail {
     max-width: 30em;
 }
 
+div.block-current-exhibitions {
+    clear: both;
+}
+
 div.block-primary-image,
 aside {
     float: right;
