@@ -138,7 +138,7 @@ if( $rc['stat'] == 'ok' && isset($rc['business']['uuid']) ) {
 // Determine which site and page should be displayed
 // FIXME: Check for redirects from sitename or domain names to primary domain name.
 //
-if( $ciniki['config']['ciniki.web']['master.domain'] != $_SERVER['HTTP_HOST'] 
+if( isset($_SERVER['HTTP_HOST']) && $ciniki['config']['ciniki.web']['master.domain'] != $_SERVER['HTTP_HOST'] 
     && (!isset($ciniki['config']['ciniki.web']['shop.domain']) || $ciniki['config']['ciniki.web']['shop.domain'] != $_SERVER['HTTP_HOST'])
     ) {
     //
