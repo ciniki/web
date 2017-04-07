@@ -21,7 +21,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
     if( isset($ciniki['business']['modules']['ciniki.info'])
         && isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'download'
         && isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' 
-        && isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][2] != '' 
+        && isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' 
         ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'fileDownload');
         $rc = ciniki_info_web_fileDownload($ciniki, $ciniki['request']['business_id'], 
