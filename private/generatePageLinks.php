@@ -345,7 +345,7 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 
     
     $submenu = array();
-    if( ($ciniki['business']['modules']['ciniki.links']['flags']&0x03) == 0x03 ) {
+    if( isset($ciniki['business']['modules']['ciniki.links']['flags']) && ($ciniki['business']['modules']['ciniki.links']['flags']&0x03) == 0x03 ) {
         // Display the category/tags buttons
         $submenu['categories'] = array('name'=>'Categories',
             'url'=>$ciniki['request']['base_url'] . '/links/categories');
