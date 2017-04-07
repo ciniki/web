@@ -693,7 +693,7 @@ if( $found == 'no' ) {
         $rc = ciniki_web_generateShopIndex($ciniki, $settings);
     } 
     // Signup Page
-    elseif( $ciniki['request']['page'] == 'signup' && $settings['page-signup-active'] == 'yes' ) {
+    elseif( $ciniki['request']['page'] == 'signup' && isset($settings['page-signup-active']) && $settings['page-signup-active'] == 'yes' ) {
         require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageSignup.php');
         $rc = ciniki_web_generatePageSignup($ciniki, $settings);
     } 
