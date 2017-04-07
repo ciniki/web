@@ -207,7 +207,7 @@ if( $ciniki['request']['business_id'] == 0 ) {
     $ciniki['request']['domain_base_url'] = 'http://' . $ciniki['config']['ciniki.web']['master.domain'];
     $ciniki['request']['ssl_domain_base_url'] = 'http://' . $ciniki['config']['ciniki.web']['master.domain'];
     if( $uri == '' ) {
-        if( isset($ciniki['config']['ciniki.web']['shop.domain']) && $_SERVER['HTTP_HOST'] == $ciniki['config']['ciniki.web']['shop.domain'] && isset($ciniki['config']['ciniki.core']['shop_business_id']) ) {
+        if( isset($ciniki['config']['ciniki.web']['shop.domain']) && isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == $ciniki['config']['ciniki.web']['shop.domain'] && isset($ciniki['config']['ciniki.core']['shop_business_id']) ) {
             $ciniki['request']['page'] = 'home';
             $ciniki['request']['business_id'] = $ciniki['config']['ciniki.core']['shop_business_id'];
             $ciniki['request']['base_url'] = '';
@@ -376,7 +376,7 @@ if( $ciniki['request']['business_id'] == 0 ) {
 //
 // Make sure shop URLs are forced to SSL
 //
-if( isset($ciniki['config']['ciniki.web']['shop.domain']) && $_SERVER['HTTP_HOST'] == $ciniki['config']['ciniki.web']['shop.domain'] 
+if( isset($ciniki['config']['ciniki.web']['shop.domain']) && isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == $ciniki['config']['ciniki.web']['shop.domain'] 
     && ((isset($_SERVER['HTTP_CLUSTER_HTTPS']) && $_SERVER['HTTP_CLUSTER_HTTPS'] != 'on') 
         || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
         || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] != '443')
