@@ -34,7 +34,7 @@ function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $
         return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.103', 'msg'=>'Unable to load image', 'err'=>$rc['err']));
     }
     if( !isset($rc['image']) ) {
-        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.104', 'msg'=>'Unable to load image'));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.104', 'msg'=>'The image you requested does not exist.'));
     }
     $img = $rc['image'];
 
