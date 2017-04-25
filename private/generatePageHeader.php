@@ -491,13 +491,6 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
             . "</a>"
             . "</span>";
     }
-    if( $social_icons != '' ) {
-        if( $signin_content != '' ) {
-            $signin_content .= "<span class='social-divider hide-babybear'>|</span>";
-        }
-        $signin_content .= "<span class='social-icons hide-babybear'>$social_icons</span>";
-    }
-
     //
     // Setup the page-container
     //
@@ -506,7 +499,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     if( isset($ciniki['request']['page-container-class']) && $ciniki['request']['page-container-class'] != '' ) {
         $page_container_class = $ciniki['request']['page-container-class'];
     }
-    if( $signin_content != '' ) {
+    if( $signin_content != '' || $social_icons != '' ) {
         if( $page_container_class != '' ) { $page_container_class .= " "; }
         $page_container_class .= 'signin';
     }
@@ -523,10 +516,28 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     $content .= "<header>\n";
     $content .= "<div class='header-wrapper'>\n";
 
+//    if( $social_icons != '' ) {
+//        if( $signin_content != '' ) {
+//            $signin_content .= "<span class='social-divider hide-babybear'>|</span>";
+//        }
+//        $signin_content .= "<span class='social-icons hide-babybear'>$social_icons</span>";
+//    }
+
     // Add signin button if any.
-    if( $signin_content != '' ) {
+    if( $signin_content != '' && $social_icons != '' ) {
+        $content .= "<div class='signin'><div class='signin-wrapper'>";
+        $content .= $signin_content . "<span class='social-divider hide-babybear'>|</span>";
+        $content .= "<span class='social-icons hide-babybear'>$social_icons</span>";
+        $content .= "</div></div>\n";
+    } 
+    elseif( $signin_content != '' ) {
         $content .= "<div class='signin'><div class='signin-wrapper'>";
         $content .= $signin_content;
+        $content .= "</div></div>\n";
+    } 
+    elseif( $social_icons != '' ) {
+        $content .= "<div class='signin'><div class='signin-wrapper hide-babybear'>";
+        $content .= "<span class='social-icons hide-babybear'>$social_icons</span>";
         $content .= "</div></div>\n";
     }
 
