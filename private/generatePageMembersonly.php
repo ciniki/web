@@ -32,7 +32,7 @@ function ciniki_web_generatePageMembersonly($ciniki, $settings) {
             $err_msg = '';  
             if( isset($_POST['password']) && $_POST['password'] == $settings['page-membersonly-password'] ) {
                 $_SESSION['membersonly']['authenticated'] = 'yes';
-                header('Location: http://' . $_SERVER[HTTP_HOST] . $_SERVER[REQUEST_URI]);
+                header('Location: http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
                 exit;
             } else {
                 //
