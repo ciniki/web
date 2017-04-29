@@ -1249,7 +1249,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
                 $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='merchandise'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/merchandise'>Shop</a></li>";
             }
         }
-        //
+/*        //
         // Check if membersonly area is enabled, and the member has logged in
         //
         if( isset($settings['page-membersonly-active']) && $settings['page-membersonly-active'] == 'yes' 
@@ -1267,7 +1267,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
             }
             $content .= "</a></li>";
         }
-
+*/
         if( isset($settings['page-tutorials-active']) && $settings['page-tutorials-active'] == 'yes' ) {
             $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='tutorials'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/tutorials'>Tutorials</a></li>";
         }
@@ -1291,6 +1291,25 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
             }
             $content .= "</a></li>";
         }
+    }
+
+    //
+    // Check if membersonly area is enabled, and the member has logged in
+    //
+    if( isset($settings['page-membersonly-active']) && $settings['page-membersonly-active'] == 'yes' 
+        && isset($ciniki['business']['modules']['ciniki.membersonly'])
+        // Customer is logged in, or menu item should always be displayed
+        && (isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0
+            || (isset($settings['page-membersonly-menu-active']) && $settings['page-membersonly-menu-active'] == 'yes')
+            )
+        ) {
+        $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='membersonly'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/membersonly'>";
+        if( isset($settings['page-membersonly-name']) && $settings['page-membersonly-name'] != '' ) {
+            $content .= $settings['page-membersonly-name'];
+        } else {
+            $content .= "Members Only";
+        }
+        $content .= "</a></li>";
     }
     if( isset($settings['page-contact-active']) && $settings['page-contact-active'] == 'yes' ) {
         $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='contact'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/contact'>Contact</a></li>";
