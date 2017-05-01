@@ -93,7 +93,18 @@ function ciniki_web_pageFileAdd(&$ciniki) {
     if( $args['extension'] != 'pdf' ) {
         return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.141', 'msg'=>'The file must be a PDF file.'));
     }
-    $args['binary_content'] = file_get_contents($_FILES['uploadfile']['tmp_name']);
+//    $args['binary_content'] = file_get_contents($_FILES['uploadfile']['tmp_name']);
+    $args['binary_content'] = '';
+
+    //
+    // Move the file into storage
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'storageFileAdd');
+    $rc = ciniki_core_storageFileAdd($ciniki, $args['business_id'], 'ciniki.web.page_file', array('subdir'=>'pagefiles', 'filename'=>$_FILES['uploadfile']['tmp_name']));
+    if( $rc['stat'] != 'ok' ) {
+        return $rc;
+    }
+    $args['uuid'] = $rc['uuid'];
 
     //
     // Add the file to the database

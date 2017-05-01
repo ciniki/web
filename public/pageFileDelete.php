@@ -56,6 +56,15 @@ function ciniki_web_pageFileDelete(&$ciniki) {
     }
     $uuid = $rc['file']['uuid'];
 
+    //
+    // Remove from ciniki-storage
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'storageFileDelete');
+    $rc = ciniki_core_storageFileDelete($ciniki, $args['business_id'], 'ciniki.web.page_file', array('subdir'=>'pagefiles', 'uuid'=>$uuid));
+    if( $rc['stat'] != 'ok' ) {
+        return $rc;
+    }
+
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectDelete');
     return ciniki_core_objectDelete($ciniki, $args['business_id'], 'ciniki.web.page_file', $args['file_id'], $uuid, 0x07);
 }

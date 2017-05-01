@@ -280,6 +280,7 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
             // Get the file details
             //
             $strsql = "SELECT ciniki_web_page_files.id, "
+                . "ciniki_web_page_files.uuid, "
                 . "ciniki_web_page_files.name, "
                 . "ciniki_web_page_files.permalink, "
                 . "ciniki_web_page_files.extension, "
@@ -298,21 +299,31 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
             if( !isset($rc['file']) ) {
                 return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.12', 'msg'=>"I'm sorry, but the file you requested does not exist."));
             }
+            $file = $rc['file'];
             $filename = $rc['file']['name'] . '.' . $rc['file']['extension'];
+
+            //
+            // Load the file contents
+            //
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'storageFileLoad');
+            $rc = ciniki_core_storageFileLoad($ciniki, $ciniki['request']['business_id'], 'ciniki.web.page_file', array('subdir'=>'pagefiles', 'uuid'=>$file['uuid']));
+            if( $rc['stat'] != 'ok' ) {
+                return $rc;
+            }
+            $binary_content = $rc['binary_content'];
 
             header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
             header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
             header('Cache-Control: no-cache, must-revalidate');
             header('Pragma: no-cache');
-            $file = $rc['file'];
             if( $file['extension'] == 'pdf' ) {
                 header('Content-Type: application/pdf');
             }
     //      header('Content-Disposition: attachment;filename="' . $filename . '"');
-            header('Content-Length: ' . strlen($rc['file']['binary_content']));
+            header('Content-Length: ' . strlen($binary_content));
             header('Cache-Control: max-age=0');
 
-            print $rc['file']['binary_content'];
+            print $binary_content;
             exit;
         }
 
