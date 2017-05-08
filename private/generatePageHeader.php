@@ -352,6 +352,22 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     }
 
     //
+    // Setup the background image
+    //
+    if( isset($settings['site-background-image']) && $settings['site-background-image'] > 0 ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+        $rc = ciniki_web_getScaledImageURL($ciniki, $settings['site-background-image'], 'original', 0, 0, 90);
+        if( $rc['stat'] == 'ok' ) {
+            $content .= "<style>"
+                . "html, body {"
+                    . "background:#333 url('" . $rc['url'] . "') repeat 0 0; "
+                . "}"
+                . "</style>"
+                . "";
+        }
+    }
+
+    //
     // Tried the html5shiv to correct ie8 Mono Social Icon Font problems, but did not work
     //
 //  $content .= "<!--[if lt IE 9]>\n"

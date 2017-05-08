@@ -441,6 +441,7 @@ function ciniki_web_siteSettings($ciniki) {
     //
     $rc_settings = array();
     $rc_header = array();
+    $rc_background = array();
     $rc_footer = array();
     $rc_advanced = array();
     if( isset($settings['site-theme']) && $settings['site-theme'] != '' ) {
@@ -452,6 +453,11 @@ function ciniki_web_siteSettings($ciniki) {
         array_push($rc_settings, array('setting'=>array('name'=>'layout', 'display_name'=>'Theme', 'value'=>$settings['site-layout'])));
     } else {
         array_push($rc_settings, array('setting'=>array('name'=>'layout', 'display_name'=>'Theme', 'value'=>'default')));
+    }
+    if( isset($settings['site-background-image']) && $settings['site-background-image'] > 0 ) {
+        array_push($rc_background, array('setting'=>array('name'=>'site-background-image', 'display_name'=>'Background Image', 'value'=>$settings['site-background-image'])));
+    } else {
+        array_push($rc_background, array('setting'=>array('name'=>'site-background-image', 'display_name'=>'Background Image', 'value'=>'0')));
     }
     if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
         array_push($rc_header, array('setting'=>array('name'=>'site-header-image', 'display_name'=>'Header Image', 'value'=>$settings['site-header-image'])));
@@ -510,6 +516,7 @@ function ciniki_web_siteSettings($ciniki) {
     //
     $rsp['settings'] = $rc_settings;
     $rsp['header'] = $rc_header;
+    $rsp['background'] = $rc_background;
     $rsp['footer'] = $rc_footer;
     $rsp['advanced'] = $rc_advanced;
     $rsp['url'] = $url;

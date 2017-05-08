@@ -467,6 +467,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'site-layout',
 //      'site-subscription-agreement',
 //      'site-privacy-policy',
+        'site-background-image',
         'site-header-image',
         'site-header-image-size',
         'site-header-og-image',
@@ -627,6 +628,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
             if( ($field == 'page-home-image' 
                     || $field == 'page-about-image2' 
                     || $field == 'page-about-image' 
+                    || $field == 'site-background-image'
                     || $field == 'site-header-image' )
                 && (!isset($settings[$field]) 
                     || $settings[$field] != $ciniki['request']['args'][$field] )

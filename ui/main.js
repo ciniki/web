@@ -115,9 +115,10 @@ function ciniki_web_main() {
             'advanced':{'label':'Advanced', 'list':{
                 'privatethemes':{'label':'Private Themes', 'visible':'no', 'fn':'M.startApp(\'ciniki.web.privatethemes\',null,\'M.ciniki_web_main.showMenu();\');'},
                 'metatags':{'label':'Meta Tags', 'fn':'M.ciniki_web_main.showSiteSettings(\'M.ciniki_web_main.showMenu();\',\'metatags\');'},
-                'header':{'label':'Header', 'fn':'M.ciniki_web_main.showHeader(\'M.ciniki_web_main.showMenu();\');'},
                 'social':{'label':'Social Media Links', 'fn':'M.startApp(\'ciniki.web.social\',null,\'M.ciniki_web_main.showMenu();\');'},
                 'collections':{'label':'Web Collections', 'visible':'no', 'fn':'M.startApp(\'ciniki.web.collections\',null,\'M.ciniki_web_main.showMenu();\');'},
+                'background':{'label':'Background', 'fn':'M.ciniki_web_main.showBackground(\'M.ciniki_web_main.showMenu();\');'},
+                'header':{'label':'Header', 'fn':'M.ciniki_web_main.showHeader(\'M.ciniki_web_main.showMenu();\');'},
                 'footer':{'label':'Footer', 'fn':'M.ciniki_web_main.showFooter(\'M.ciniki_web_main.showMenu();\');'},
                 'mylivechat':{'label':'My Live Chat', 
                     'visible':function() { return (M.curBusiness.modules['ciniki.web'].flags&0x02000000)>0?'yes':'no';}, 
@@ -295,6 +296,33 @@ function ciniki_web_main() {
         this.header.deleteImage = this.deleteImage;
         this.header.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'header\');');
         this.header.addClose('Cancel');
+
+        //
+        // The panel to allow the user to select a theme
+        //
+        this.background = new M.panel('Background', 'ciniki_web_main', 'background', 'mc', 'medium', 'sectioned', 'ciniki.web.main.background');
+        this.background.data = {'site-background-image':'0'};
+        this.background.sections = {
+            '_image':{'label':'Image', 'aside':'yes', 'type':'imageform', 'fields':{
+                'site-background-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
+                }},
+//            'options':{'label':'Options', 'fields':{
+//                'site-background-image-size':{'label':'Image Size', 'type':'select', 'default':'medium', 'options':this.headerImageSize},
+//                'site-background-title':{'label':'Display Business Name', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles, 'editFn':'M.startApp(\'ciniki.businesses.info\',null,\'M.ciniki_web_main.background.show();\');'},
+//                }},
+            '_save':{'label':'', 'buttons':{
+                'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'background\');'},
+                }},
+        };
+        this.background.fieldValue = this.fieldValue;
+        this.background.fieldHistoryArgs = this.fieldHistoryArgs;
+        this.background.addDropImage = function(iid) {
+            this.setFieldValue('site-background-image', iid);
+            return true;
+        };
+        this.background.deleteImage = this.deleteImage;
+        this.background.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'background\');');
+        this.background.addClose('Cancel');
 
         //
         // The panel to allow the user to set footer properties
@@ -2238,6 +2266,10 @@ function ciniki_web_main() {
             p.sections._url.list.url.value = rsp.url;
 //          p.sections._url.list.url.fn = 'window.open(\'' + rsp.url + '\');';
 //          p.data.settings = rsp.settings;
+            M.ciniki_web_main.background.data = {};
+            for(i in rsp.background) {
+                M.ciniki_web_main.background.data[rsp.background[i].setting.name] = rsp.background[i].setting.value;
+            }
             M.ciniki_web_main.header.data = {};
             for(i in rsp.header) {
                 M.ciniki_web_main.header.data[rsp.header[i].setting.name] = rsp.header[i].setting.value;
@@ -2291,6 +2323,10 @@ function ciniki_web_main() {
     this.showHeader = function(cb) {
         this.header.refresh();
         this.header.show(cb);
+    };
+    this.showBackground = function(cb) {
+        this.background.refresh();
+        this.background.show(cb);
     };
 
     this.showFooter = function(cb) {
