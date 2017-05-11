@@ -355,12 +355,28 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     // Setup the background image
     //
     if( isset($settings['site-background-image']) && $settings['site-background-image'] > 0 ) {
+/*
+        // This doesn't work because you can't apply an overlay to a background image.
+        $background_color = '';
+        if( isset($settings['site-background-overlay-colour']) && $settings['site-background-overlay-colour'] != '' ) {
+            list($r,$g,$b) = array_map('hexdec',str_split(substr($settings['site-background-overlay-colour'], 1),2));
+            $p = (isset($settings['site-background-overlay-percent']) && $settings['site-background-overlay-percent'] != '') ? $settings['site-background-overlay-percent'] : 1;
+            if( $p > 1 ) { $p = 1; }
+            if( $p < 0 ) { $p = 0; }
+            $background_color = "rgba($r,$g,$b,$p)";
+        } 
+*/
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
         $rc = ciniki_web_getScaledImageURL($ciniki, $settings['site-background-image'], 'original', 0, 0, 90);
         if( $rc['stat'] == 'ok' ) {
             $content .= "<style>"
-                . "html, body {"
-                    . "background:#333 url('" . $rc['url'] . "') repeat 0 0; "
+                . "html {"
+                    . "background: url('" . $rc['url'] . "'); "
+                    . "background-repeat: repeat-y; "
+                    . "background-size: 100%; "
+                    . "background-attachment: fixed; "
+                    . "background-position-x: " . (isset($settings['site-background-position-x']) && $settings['site-background-position-x'] != '' ? $settings['site-background-position-x'] : '0') . ";"
+                    . "background-position-y: " . (isset($settings['site-background-position-y']) && $settings['site-background-position-y'] != '' ? $settings['site-background-position-y'] : '0') . ";"
                 . "}"
                 . "</style>"
                 . "";

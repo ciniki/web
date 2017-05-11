@@ -117,7 +117,9 @@ function ciniki_web_main() {
                 'metatags':{'label':'Meta Tags', 'fn':'M.ciniki_web_main.showSiteSettings(\'M.ciniki_web_main.showMenu();\',\'metatags\');'},
                 'social':{'label':'Social Media Links', 'fn':'M.startApp(\'ciniki.web.social\',null,\'M.ciniki_web_main.showMenu();\');'},
                 'collections':{'label':'Web Collections', 'visible':'no', 'fn':'M.startApp(\'ciniki.web.collections\',null,\'M.ciniki_web_main.showMenu();\');'},
-                'background':{'label':'Background', 'fn':'M.ciniki_web_main.showBackground(\'M.ciniki_web_main.showMenu();\');'},
+                'background':{'label':'Background', 
+                    'visible':function() { return M.modFlagSet('ciniki.web', 0x1000); },
+                    'fn':'M.ciniki_web_main.showBackground(\'M.ciniki_web_main.showMenu();\');'},
                 'header':{'label':'Header', 'fn':'M.ciniki_web_main.showHeader(\'M.ciniki_web_main.showMenu();\');'},
                 'footer':{'label':'Footer', 'fn':'M.ciniki_web_main.showFooter(\'M.ciniki_web_main.showMenu();\');'},
                 'mylivechat':{'label':'My Live Chat', 
@@ -306,10 +308,10 @@ function ciniki_web_main() {
             '_image':{'label':'Image', 'aside':'yes', 'type':'imageform', 'fields':{
                 'site-background-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
                 }},
-//            'options':{'label':'Options', 'fields':{
-//                'site-background-image-size':{'label':'Image Size', 'type':'select', 'default':'medium', 'options':this.headerImageSize},
-//                'site-background-title':{'label':'Display Business Name', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles, 'editFn':'M.startApp(\'ciniki.businesses.info\',null,\'M.ciniki_web_main.background.show();\');'},
-//                }},
+            'options':{'label':'Options', 'fields':{
+                'site-background-position-x':{'label':'Position X', 'type':'toggle', 'toggles':{'left':'Left', 'center':'Center', 'right':'Right'}},
+                'site-background-position-y':{'label':'Position Y', 'type':'toggle', 'toggles':{'left':'Left', 'center':'Center', 'right':'Right'}},
+                }},
             '_save':{'label':'', 'buttons':{
                 'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'background\');'},
                 }},

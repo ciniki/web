@@ -459,6 +459,19 @@ function ciniki_web_siteSettings($ciniki) {
     } else {
         array_push($rc_background, array('setting'=>array('name'=>'site-background-image', 'display_name'=>'Background Image', 'value'=>'0')));
     }
+    $bg_keys = array(
+        'site-background-overlay-colour',
+        'site-background-overlay-percent',
+        'site-background-position-x',
+        'site-background-position-y',
+        );
+    foreach($bg_keys as $bg_key) {
+        if( isset($settings[$bg_key]) && $settings[$bg_key] != '' ) {
+            array_push($rc_background, array('setting'=>array('name'=>$bg_key, 'value'=>$settings[$bg_key])));
+        } else {
+            array_push($rc_background, array('setting'=>array('name'=>$bg_key, 'value'=>'')));
+        }
+    }
     if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
         array_push($rc_header, array('setting'=>array('name'=>'site-header-image', 'display_name'=>'Header Image', 'value'=>$settings['site-header-image'])));
     } else {
