@@ -40,6 +40,7 @@ function ciniki_web_main() {
         this.themesAvailable['field'] = 'Field - Green/White';
         this.themesAvailable['redbrick'] = 'Red Brick';
         this.themesAvailable['redbrick2'] = 'Red Brick 2';
+        this.themesAvailable['bluepaws'] = 'Blue Paws';
         this.themesAvailable['private'] = 'Private';
 //      this.themesAvailable['orangebrick'] = 'Orange Brick';
 //      this.themesAvailable['splatter'] = 'Splatter';
