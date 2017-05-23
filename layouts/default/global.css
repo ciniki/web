@@ -1656,6 +1656,101 @@ table.order-repeats tbody td > div.repeat-option:nth-child(2) {
     margin-bottom: 1em;
 }
 
+ol.sectioned-form-sections {
+    width: auto;
+    max-width: auto;
+    box-sizing: border-box;
+}
+ol.sectioned-form-sections li.active {
+    font-weight: bold;
+}
+div.sectioned-form {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    vertical-align: top;
+}
+#content article.page div.sectioned-form form {
+    width: 100%;
+    max-width: 100%;
+}
+#content div.sectioned-form p {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 1em;
+}
+#content div.sectioned-form p:last-child {
+    margin-bottom: 0.25em;
+}
+#content div.sectioned-form label {
+    margin-bottom: 0.25em;
+    margin-top: 0.5em;
+}
+#content form div.sectioned-form-label label {
+    margin-top: 1.5em;
+    font-size: 1.3em;
+}
+#content div.sectioned-form form fieldset div.checkbox {
+    display: inline-block;
+    width: 100%;
+}
+#content div.sectioned-form form fieldset label {
+    display: inline-block;
+    margin: 0;
+    font-weight: normal;
+    width: auto;
+}
+#content div.sectioned-form div.sectioned-form-text input,
+#content div.sectioned-form div.sectioned-form-date input {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    font-size: 1.1em;
+    padding: 0.5em;
+    margin-bottom: 0.5em;
+}
+#content div.sectioned-form div.sectioned-form-radio input {
+    font-size: 2em;
+    display: inline-block;
+}
+#content div.sectioned-form div.sectioned-form-checkboxes input {
+    font-size: 2em;
+}
+#content div.sectioned-form-hidden {
+    display: none;
+}
+#content div.sectioned-form input.submit {
+    margin: 0.5em;
+    min-width: 8em;
+}
+#content div.sectioned-form div.sectioned-form-textarea textarea {
+    height: 4em;
+}
+#content div.sectioned-form div.sectioned-form-radio .sectioned-form-err-msg {
+    padding-top: 1em;
+}
+#content div.sectioned-form-nav {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+#content div.sectioned-form-nav span.sectioned-form-nav-button {
+    display: inline-block;
+    box-sizing: border-box;
+    width: 50%;
+}
+#content div.sectioned-form-nav span.sectioned-form-nav-button a {
+    display: inline-block;
+    padding: 0.5em;
+    box-sizing: border-box;
+}
+#content div.sectioned-form-nav span.sectioned-form-nav-button-next {
+    text-align: right;
+}
+
 /* 7. BROWSER AND NON-SEMANTIC STYLING
 ----------------------------------------------------------------------------------------*/
 .cf:before, .cf:after { content: ""; display: block; }

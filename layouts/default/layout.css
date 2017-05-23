@@ -678,6 +678,29 @@ span.exhibitors-description {
         width: 50%;
         margin-top: 0px;
     }
+    #content div.sectioned-form div.sectioned-form-input input,
+    #content div.sectioned-form div.sectioned-form-input textarea,
+    #content div.sectioned-form div.sectioned-form-input p {
+    }
+    #content div.sectioned-form-content {
+        padding-right: 1em;
+    }
+    #content div.sectioned-form-medium {
+        display: inline-block;
+        width: 50%;
+        padding-right: 1em;
+        box-sizing: border-box;
+        vertical-align: top;
+    }
+    #content div.sectioned-form-small {
+        display: inline-block;
+        width: 33%;
+        box-sizing: border-box;
+        vertical-align: top;
+    }
+    #content div.sectioned-form-hidden {
+        display: none;
+    }
 }
 @media screen and (min-width: 45em) {
     a.product-card-a {
