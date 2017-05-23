@@ -52,7 +52,17 @@ function ciniki_web_processBlockSectionedForm(&$ciniki, $settings, $business_id,
         } else {
             $content .= "<li>" . $section['name'] . "</li>";
             foreach($section['fields'] as $fid => $field) {
-                $hidden_fields .= "<input type='hidden' name='$fid' value=\"" . (isset($block['values'][$fid]) ? $block['values'][$fid] : '') . "\"/>";
+                if( $field['type'] == 'checkboxes' ) {
+                    $c = 0;
+                    foreach($field['options'] as $o) {
+                        if( isset($block['values'][$fid]) && in_array($o, $block['values'][$fid]) ) {
+                            $hidden_fields .= "<input type='hidden' name='{$fid}_{$c}' value=\"$o\"/>";
+                        }
+                        $c++;
+                    }
+                } else {
+                    $hidden_fields .= "<input type='hidden' name='$fid' value=\"" . (isset($block['values'][$fid]) ? $block['values'][$fid] : '') . "\"/>";
+                }
             }
         }
         if( $cur_section == null ) {
@@ -103,8 +113,7 @@ function ciniki_web_processBlockSectionedForm(&$ciniki, $settings, $business_id,
             } elseif( $field['type'] == 'select' ) {
                 $content .= "<select id='$fid' name='$fid'>";
                 foreach( $field['options'] as $o) {
-                    $content .= "<option value=\"$o\"" . (isset($block['values'][$fid]) && $block['values'][$fid] == $o ? ' selected': '') . ">"
-                        . $o . "</option>";
+                    $content .= "<option value=\"$o\"" . (isset($block['values'][$fid]) && $block['values'][$fid] == $o ? ' selected': '') . ">$o</option>";
                 }
                 $content .= "</select>";
 
@@ -114,7 +123,7 @@ function ciniki_web_processBlockSectionedForm(&$ciniki, $settings, $business_id,
                 foreach( $field['options'] as $o) {
                     $content .= "<div class='checkbox'>";
                     $content .= "<input type='checkbox' id='{$fid}_{$c}' name='{$fid}_{$c}' value=\"$o\"" 
-                        . (isset($block['values'][$fid]) && $block['values'][$fid] == $o ? ' checked': '') . " />"
+                        . (isset($block['values'][$fid]) && in_array($o, $block['values'][$fid]) ? ' checked': '') . " />"
                         . "<label for='{$fid}_{$c}'>$o</label>";
                     $content .= "</div>";
                     $c++;
