@@ -28,7 +28,6 @@ function ciniki_web_processBlockSectionedForm(&$ciniki, $settings, $business_id,
     if( isset($block['title']) && $block['title'] != '' ) {
         $content .= "<h2" . ((isset($block['size'])&&$block['size']!='') ? " class='" . $block['size'] . "'" : '') . ">" . $block['title'] . "</h2>";
     }
-    error_log($block['section']);
 
     //
     // List the sections of the forms
