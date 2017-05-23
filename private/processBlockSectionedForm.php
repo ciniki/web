@@ -106,9 +106,15 @@ function ciniki_web_processBlockSectionedForm(&$ciniki, $settings, $business_id,
             } elseif( $field['type'] == 'date' ) {
                 $content .= "<input type='text' id='$fid' name='$fid' value=\"" . (isset($block['values'][$fid]) ? $block['values'][$fid] : '') . "\"/>";
             } elseif( $field['type'] == 'radio' ) {
+                $content .= "<fieldset>";
+                $c = 0;
                 foreach( $field['options'] as $o) {
-                    $content .= "<input onchange='updateForm();' type='radio' id='$fid' name='$fid' value=\"$o\"" . (isset($block['values'][$fid]) && $block['values'][$fid] == $o ? ' checked': '') . ">$o</input>";
+                    $content .= "<input onchange='updateForm();' type='radio' id='{$fid}_{$c}' name='$fid' value=\"$o\"" 
+                        . (isset($block['values'][$fid]) && $block['values'][$fid] == $o ? ' checked': '') . " />";
+                    $content .= "<label for='{$fid}_{$c}'>$o</label>";
+                    $c++;
                 }
+                $content .= "</fieldset>";
             } elseif( $field['type'] == 'select' ) {
                 $content .= "<select id='$fid' name='$fid'>";
                 foreach( $field['options'] as $o) {
