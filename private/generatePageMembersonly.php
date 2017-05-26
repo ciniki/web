@@ -177,12 +177,14 @@ function ciniki_web_generatePageMembersonly($ciniki, $settings) {
         }
         $page_content .= $rc['content'];
     }
+    
+    $ciniki['request']['page-container-class'] = 'ciniki-membersonly';
 
     //
     // Add the header
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
-    $rc = ciniki_web_generatePageHeader($ciniki, $settings, 'About', $submenu);
+    $rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Members Only', $submenu);
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }
