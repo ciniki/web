@@ -389,6 +389,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-membersonly-menu-active',
         'page-membersonly-name',
         'page-membersonly-password',
+        'page-membersonly-message',
         'page-contact-active',
         'page-contact-google-map',
         'page-contact-map-latitude',

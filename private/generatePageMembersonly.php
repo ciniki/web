@@ -46,7 +46,16 @@ function ciniki_web_generatePageMembersonly($ciniki, $settings) {
                 $content = $rc['content'];
 
                 $content .= "<div id='content'>\n";
-                $content .= "<p>This page is password protected.</p>";
+                if( isset($settings['page-membersonly-message']) && $settings['page-membersonly-message'] != '' ) {
+                    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+                    $rc = ciniki_web_processContent($ciniki, $settings, $settings['page-membersonly-message'], 'wide');   
+                    if( $rc['stat'] != 'ok' ) {
+                        return $rc;
+                    }
+                    $content .= $rc['content'];
+                } else {
+                    $content .= "<p>This page is password protected.</p>";
+                }
                 $content .= "<form method='POST' action=''>";
                 if( $err_msg != '' ) {
                     $content .= "<p class='formerror'>$err_msg</p>\n";

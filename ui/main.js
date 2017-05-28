@@ -1571,6 +1571,9 @@ function ciniki_web_main() {
                 'page-membersonly-name':{'label':'Name', 'type':'text', 'hint':'Members Only'},
                 'page-membersonly-password':{'label':'Password', 'type':'text', 'hint':''},
                 }},
+            '_message':{'label':'Password Required Message', 'fields':{
+                'page-membersonly-message':{'label':'Intro message', 'hidelabel':'yes', 'type':'textarea', 'hint':''},
+                }},
             '_save':{'label':'', 'buttons':{
                 'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'membersonly\');'},
                 }},
