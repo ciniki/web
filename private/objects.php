@@ -66,6 +66,7 @@ function ciniki_web_objects($ciniki) {
             'effect'=>array(),
             'speed'=>array(),
             'resize'=>array(),
+            'modules'=>array(),
             ),
         'history_table'=>'ciniki_web_history',
         );

@@ -84,6 +84,9 @@ function ciniki_web_sliders() {
                 'addFn':'M.ciniki_web_sliders.editImage();',
 //              'addFn':'M.startApp(\'ciniki.web.sliderimages\',null,\'M.ciniki_web_sliders.edit.addDropImageRefresh();\',\'mc\',{\'slider_id\':M.ciniki_web_sliders.edit.slider_id,\'add\':\'yes\'});',
                 },
+            '_modules':{'label':'Modules', 'visible':function() {return (M.userPerms&0x01) == 1 ? 'yes' : 'no';}, 'fields':{
+                'modules':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'small'},
+                }},
             '_buttons':{'label':'', 'buttons':{
                 'save':{'label':'Save', 'fn':'M.ciniki_web_sliders.saveSlider();'},
                 'delete':{'label':'Delete', 'fn':'M.ciniki_web_sliders.deleteSlider();'},
