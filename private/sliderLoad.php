@@ -68,19 +68,21 @@ function ciniki_web_sliderLoad(&$ciniki, $settings, $business_id, $slider_id) {
         $modules = explode(',', $slider['modules']);
         foreach($modules as $m) {
             $m_pieces = explode('.', $m);
-            $module = $m_pieces[0] . '.' . $m_pieces[1];
-            $pkg = $m_pieces[0];
-            $mod = $m_pieces[1];
-            $base_url = $ciniki['request']['base_url'] . '/animals';
-            if( isset($m_pieces[2]) ) {
-                $base_url = $ciniki['request']['base_url'] . '/' . $m_pieces[2];
-            }
-            $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'sliderImages');
-            if( $rc['stat'] == 'ok' ) {
-                $fn = $rc['function_call'];
-                $rc = $fn($ciniki, $settings, $business_id, array('base_url'=>$base_url));
-                if( isset($rc['images']) ) {
-                    $slider['images'] = array_merge($slider['images'], $rc['images']);
+            if( isset($m_pieces[1]) ) {
+                $module = $m_pieces[0] . '.' . $m_pieces[1];
+                $pkg = $m_pieces[0];
+                $mod = $m_pieces[1];
+                $base_url = $ciniki['request']['base_url'] . '/animals';
+                if( isset($m_pieces[2]) ) {
+                    $base_url = $ciniki['request']['base_url'] . '/' . $m_pieces[2];
+                }
+                $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'sliderImages');
+                if( $rc['stat'] == 'ok' ) {
+                    $fn = $rc['function_call'];
+                    $rc = $fn($ciniki, $settings, $business_id, array('base_url'=>$base_url));
+                    if( isset($rc['images']) ) {
+                        $slider['images'] = array_merge($slider['images'], $rc['images']);
+                    }
                 }
             }
         }
