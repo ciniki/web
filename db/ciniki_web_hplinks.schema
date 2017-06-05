@@ -1,0 +1,37 @@
+#
+# Description
+# -----------
+# This table stores the private members only pages for the website.
+#
+# Fields
+# ------
+# id:               The ID assigned to the page.
+# uuid:             The Universal Unique ID.
+# business_id:      The business the page is attached to.
+#
+# parent_id:        The ID of the parent for nested pages.
+#
+# title:            The title for the page/section, to be used in the Menu.
+# url:              The URL for the link, can be internal or external.
+#
+# sequence:         The display order for nested content.
+#
+# image_id:         The ID of the image to be used as the thumbnail.
+#
+# date_added:       The UTC date and time the record was added.
+# last_updated:     The UTC date and time the record was last updated.
+#
+create table ciniki_web_hplinks (
+    id int not null auto_increment,
+    uuid char(36) not null,
+    business_id int not null,
+    parent_id int not null,
+    title varchar(250) not null,
+    url varchar(250) not null,
+    sequence tinyint unsigned not null,
+    image_id int not null,
+    date_added datetime not null,
+    last_updated datetime not null,
+    primary key (id),
+    index sync (business_id, uuid, last_updated)
+) ENGINE='InnoDB', COMMENT='v1.01';
