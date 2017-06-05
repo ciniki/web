@@ -1071,6 +1071,71 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
             . "";
     }
 
+    //
+    // Check for any home page links to be added
+    //
+    if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.web', 0x2000) ) {
+        $strsql = "SELECT l1.id, l1.title, l1.url, l1.image_id, "
+            . "l2.id AS l2_id, l2.title AS l2_title, l2.url AS l2_url, l2.image_id AS l2_image_id "
+            . "FROM ciniki_web_hplinks AS l1 "
+            . "LEFT JOIN ciniki_web_hplinks AS l2 ON ("
+                . "l1.id = l2.parent_id "
+                . "AND l2.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+                . ") "
+            . "WHERE l1.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+            . "AND l1.parent_id = 0 "
+            . "ORDER BY l1.sequence, l1.title, l2.sequence, l2.title " 
+            . "";
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryArrayTree');
+        $rc = ciniki_core_dbHashQueryArrayTree($ciniki, $strsql, 'ciniki.web', array(
+            array('container'=>'links', 'fname'=>'id', 'fields'=>array('id', 'title', 'url', 'image_id')),
+            array('container'=>'links', 'fname'=>'l2_id', 'fields'=>array('id'=>'l2_id', 'title'=>'l2_title', 'url'=>'l2_url', 'image_id'=>'l2_image_id')),
+            ));
+        if( $rc['stat'] != 'ok' ) {
+            return $rc;
+        }
+        if( isset($rc['links']) && count($rc['links']) > 0 ) {
+            $links = $rc['links'];
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockTagImages');
+            //
+            // Check for subcategory links and if found, then display as multiple categories instead of one.
+            //
+            $format = '1cat';
+            foreach($links AS $link) {
+                if( isset($link['links']) && count($link['links']) > 0 ) {
+                    $format = 'mcat';
+                }
+            }
+            $page_content .= "<article class='page page-home'>\n"
+                . "<div class='entry-content'>\n";
+            if( $format == '1cat' ) {
+                $rc = ciniki_web_processBlockTagImages($ciniki, $settings, $ciniki['request']['business_id'], array(
+                    'base_url'=>'',
+                    'size'=>'small',
+                    'tags'=>$link['links'],
+                    ));
+                if( $rc['stat'] == 'ok' && isset($rc['content']) ) {
+                    $page_content .= $rc['content'];
+                }
+            } else {
+                foreach($links AS $link) {
+                    if( isset($link['links']) && count($link['links']) > 0 ) {
+                        $rc = ciniki_web_processBlockTagImages($ciniki, $settings, $ciniki['request']['business_id'], array(
+                            'base_url'=>'',
+//                            'title'=>$link['title'],
+                            'size'=>'small',
+                            'tags'=>$link['links'],
+                            ));
+                        if( $rc['stat'] == 'ok' && isset($rc['content']) ) {
+                            $page_content .= "<h1>" . $link['title'] . "</h1>\n";
+                            $page_content .= $rc['content'];
+                        }
+                    }
+                }
+            }
+            $page_content .= "</div></article>";
+        }
+    }
 
     //
     // Check if there are any sponsors

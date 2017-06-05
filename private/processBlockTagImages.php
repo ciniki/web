@@ -54,9 +54,13 @@ function ciniki_web_processBlockTagImages($ciniki, $settings, $business_id, $blo
         } else {
             $img_url = $rc['url'];
         }
-        $content .= "<div class='image-categories-thumbnail-wrap" . (isset($block['size']) && $block['size'] != '' ? ' image-categories-thumbnail-' . $block['size'] : '') . "'>"
-            . "<a href='" . $block['base_url'] . '/' . $tag['permalink'] . "' " . "title='$name'>"
-            . "<div class='image-categories-thumbnail'>"
+        $content .= "<div class='image-categories-thumbnail-wrap" . (isset($block['size']) && $block['size'] != '' ? ' image-categories-thumbnail-' . $block['size'] : '') . "'>";
+        if( isset($tag['url']) ) {
+            $content .= "<a href='" . $tag['url'] . "' " . "title='$name'>";
+        } else {
+            $content .= "<a href='" . $block['base_url'] . '/' . $tag['permalink'] . "' " . "title='$name'>";
+        }
+        $content .= "<div class='image-categories-thumbnail'>"
             . "<img title='$name' alt='$name' src='$img_url' />"
             . "</div>"
             . "<div class='image-categories-text'>"
