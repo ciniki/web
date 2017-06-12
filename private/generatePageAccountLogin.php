@@ -217,7 +217,8 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
             . "</form>"
             . "<br/>";
         if( !isset($settings['page-account-password-change']) 
-            || $settings['page-account-password-change'] == 'yes' ) {
+            || $settings['page-account-password-change'] == 'yes' || $settings['page-account-forgot-password'] == 'yes'
+            ) {
             $content .= "<div id='forgot-link'><p>"
                 . "<a class='color' href='javscript:void(0);' onclick='swapLoginForm(\"forgotpassword\");return false;'>Forgot your password?</a></p></div>\n";
         }
