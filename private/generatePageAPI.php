@@ -63,6 +63,27 @@ function ciniki_web_generatePageAPI($ciniki, $settings) {
         }
     }
 
+    //
+    // Check for module processing
+    //
+    elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' 
+        && isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' 
+        ) {
+        $pkg = $ciniki['request']['uri_split'][0];
+        $mod = $ciniki['request']['uri_split'][1];
+        
+        $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'processAPI');
+        if( $rc['stat'] == 'ok' ) {
+            $fn = $rc['function_call'];
+            $args = array(
+                'uri_split'=>$ciniki['request']['uri_split'],
+                );
+            array_shift($args['uri_split']);
+            array_shift($args['uri_split']);
+            $rsp = $fn($ciniki, $settings, $ciniki['request']['business_id'], $args);
+        }
+    }
+
     return $rsp;
 }
 ?>

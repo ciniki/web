@@ -29,7 +29,7 @@ function ciniki_web_moduleInitialize($ciniki, $business_id) {
         return $rc;
     }
     if( !isset($rc['modules']) || !isset($rc['modules']['ciniki.web']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'672', 'msg'=>'Access denied.'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.112', 'msg'=>'Access denied.'));
     }
     $modules = $rc['modules'];
 

@@ -21,7 +21,7 @@ function ciniki_web_processBlockTagImages($ciniki, $settings, $business_id, $blo
     }
 
     if( !isset($block['base_url']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2576', 'msg'=>'Unable to process request'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.117', 'msg'=>'Unable to process request'));
     }
 
     $content = "";
@@ -54,9 +54,13 @@ function ciniki_web_processBlockTagImages($ciniki, $settings, $business_id, $blo
         } else {
             $img_url = $rc['url'];
         }
-        $content .= "<div class='image-categories-thumbnail-wrap" . (isset($block['size']) && $block['size'] != '' ? ' image-categories-thumbnail-' . $block['size'] : '') . "'>"
-            . "<a href='" . $block['base_url'] . '/' . $tag['permalink'] . "' " . "title='$name'>"
-            . "<div class='image-categories-thumbnail'>"
+        $content .= "<div class='image-categories-thumbnail-wrap" . (isset($block['size']) && $block['size'] != '' ? ' image-categories-thumbnail-' . $block['size'] : '') . "'>";
+        if( isset($tag['url']) ) {
+            $content .= "<a href='" . $tag['url'] . "' " . "title='$name'>";
+        } else {
+            $content .= "<a href='" . $block['base_url'] . '/' . $tag['permalink'] . "' " . "title='$name'>";
+        }
+        $content .= "<div class='image-categories-thumbnail'>"
             . "<img title='$name' alt='$name' src='$img_url' />"
             . "</div>"
             . "<div class='image-categories-text'>"

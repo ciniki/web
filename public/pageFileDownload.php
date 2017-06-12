@@ -43,6 +43,7 @@ function ciniki_web_pageFileDownload($ciniki) {
     // Get the uuid for the file
     //
     $strsql = "SELECT ciniki_web_page_files.id, "
+        . "ciniki_web_page_files.uuid, "
         . "ciniki_web_page_files.name, "
         . "ciniki_web_page_files.extension, "
         . "ciniki_web_page_files.binary_content "
@@ -56,28 +57,38 @@ function ciniki_web_pageFileDownload($ciniki) {
         return $rc;
     }
     if( !isset($rc['file']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2222', 'msg'=>'Unable to find file'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.143', 'msg'=>'Unable to find file'));
     }
+    $file = $rc['file'];
     $filename = $rc['file']['name'] . '.' . $rc['file']['extension'];
+
+    //
+    // Load the file contents
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'storageFileLoad');
+    $rc = ciniki_core_storageFileLoad($ciniki, $args['business_id'], 'ciniki.web.page_file', array('subdir'=>'pagefiles', 'uuid'=>$file['uuid']));
+    if( $rc['stat'] != 'ok' ) {
+        return $rc;
+    }
+    $binary_content = $rc['binary_content'];
 
     header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); 
     header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT"); 
     header('Cache-Control: no-cache, must-revalidate');
     header('Pragma: no-cache');
 
-    if( $rc['file']['extension'] == 'pdf' ) {
+    if( $file['extension'] == 'pdf' ) {
         header('Content-Type: application/pdf');
     } else {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2223', 'msg'=>'Unsupported file type'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.144', 'msg'=>'Unsupported file type'));
     }
     // Specify Filename
     header('Content-Disposition: attachment;filename="' . $filename . '"');
-    header('Content-Length: ' . strlen($rc['file']['binary_content']));
+    header('Content-Length: ' . strlen($binary_content));
     header('Cache-Control: max-age=0');
 
-    print $rc['file']['binary_content'];
-    exit();
+    print $binary_content;
     
-    return array('stat'=>'binary');
+    return array('stat'=>'exit');
 }
 ?>

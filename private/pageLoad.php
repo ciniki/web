@@ -27,7 +27,7 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
             . "";
         $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'page');
         if( $rc['stat'] != 'ok' || !isset($rc['page']) ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2231', 'msg'=>"I'm sorry, but we were unable to find the page you requested."));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.113', 'msg'=>"I'm sorry, but we were unable to find the page you requested."));
         }
         $page = $rc['page'];
 
@@ -39,7 +39,13 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
             . "FROM ciniki_web_pages "
             . "WHERE parent_id = '" . ciniki_core_dbQuote($ciniki, $page['id']) . "' "
             . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
-            . "ORDER BY category, sequence, title "
+            . "";
+        if( isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 ) {
+            $strsql .= "AND (flags&0x01) = 0x01 "; // Public and private pages
+        } else {
+            $strsql .= "AND (flags&0x03) = 0x01 ";  // Public pages only
+        }
+        $strsql .= "ORDER BY category, sequence, title "
             . "";
         $rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.customers', array(
             array('container'=>'children', 'fname'=>'permalink', 
@@ -50,6 +56,12 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
         }
         if( isset($rc['children']) ) {
             $page['children'] = $rc['children'];
+            //
+            // Check for private pages
+            //
+            foreach($page['children'] as $cid => $child) {
+                
+            }
         }
         //
         // Get any sponsors for this page, and that references for sponsors is enabled
@@ -112,7 +124,7 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
             . "AND ciniki_web_pages.parent_id = '" . ciniki_core_dbQuote($ciniki, $args['parent_id']) . "' "
             . "";
     } else {
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2232', 'msg'=>'I\'m sorry, we were unable to find the page you requested.'));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.114', 'msg'=>'I\'m sorry, we were unable to find the page you requested.'));
     }
     $rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.info', array(
         array('container'=>'page', 'fname'=>'id',
@@ -128,7 +140,7 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
         return $rc;
     }
     if( !isset($rc['page']) || count($rc['page']) < 1 ) {
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2233', 'msg'=>"I'm sorry, but we can't find the page you requested."));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.115', 'msg'=>"I'm sorry, but we can't find the page you requested."));
     }
     $page = array_pop($rc['page']);
 
@@ -140,6 +152,11 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
         . "WHERE ciniki_web_page_files.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
         . "AND ciniki_web_page_files.page_id = '" . ciniki_core_dbQuote($ciniki, $page['id']) . "' "
         . "";
+    if( ($page['flags']&0x1000) == 0x1000 ) {
+        $strsql .= "ORDER BY name DESC ";
+    } else {
+        $strsql .= "ORDER BY name ASC ";
+    }
     $rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.info', array(
         array('container'=>'files', 'fname'=>'id', 
             'fields'=>array('id', 'name', 'extension', 'permalink', 'description')),
@@ -155,19 +172,26 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
     // Check if there are any children
     //
     $strsql = "SELECT id, title, permalink, "
+        . "page_type, "
+        . "page_redirect_url, "
         . "primary_image_id, "
         . "category, synopsis, content, "
         . "IF(content<>'','yes','no') AS is_details "
         . "FROM ciniki_web_pages "
         . "WHERE parent_id = '" . ciniki_core_dbQuote($ciniki, $page['id']) . "' "
         . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
-        . "ORDER BY category, sequence, title "
+        . "";
+    if( isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 ) {
+        $strsql .= "AND (flags&0x01) = 0x01 "; // Public and private pages
+    } else {
+        $strsql .= "AND (flags&0x03) = 0x01 ";  // Public pages only
+    }
+    $strsql .= "ORDER BY category, sequence, title "
         . "";
     $rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.customers', array(
-        array('container'=>'children', 'fname'=>'category', 
-            'fields'=>array('name'=>'category')),
+        array('container'=>'children', 'fname'=>'category', 'fields'=>array('name'=>'category')),
         array('container'=>'list', 'fname'=>'id', 
-            'fields'=>array('id', 'title', 'permalink', 'image_id'=>'primary_image_id',
+            'fields'=>array('id', 'page_type', 'page_redirect_url', 'title', 'permalink', 'image_id'=>'primary_image_id',
                 'synopsis', 'content', 'is_details')),
         ));
     if( $rc['stat'] != 'ok' ) {

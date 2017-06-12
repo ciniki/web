@@ -15,6 +15,19 @@
 //
 function ciniki_web_generatePageCart(&$ciniki, $settings) {
     //
+    // Check if maintanence mode
+    //
+    if( isset($ciniki['config']['ciniki.core']['maintenance']) && $ciniki['config']['ciniki.core']['maintenance'] == 'on' ) {
+        if( isset($ciniki['config']['ciniki.core']['maintenance.message']) && $ciniki['config']['ciniki.core']['maintenance.message'] != '' ) {
+            $msg = $ciniki['config']['ciniki.core']['maintenance.message'];
+        } else {
+            $msg = "We are currently doing maintenance on the system and will be back soon.";
+        }
+
+        return array('stat'=>'503', 'err'=>array('code'=>'maintenance', 'msg'=>$msg));
+    }
+
+    //
     // Check if should be forced to SSL
     //
     if( isset($settings['site-ssl-force-cart']) 
@@ -23,7 +36,9 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         if( isset($settings['site-ssl-active'])
             && $settings['site-ssl-active'] == 'yes'
             && (!isset($_SERVER['HTTP_CLUSTER_HTTPS']) || $_SERVER['HTTP_CLUSTER_HTTPS'] != 'on')
-            && (!isset($_SERVER['SERVER_PORT']) || $_SERVER['SERVER_PORT'] != '443' ) )  {
+            && (!isset($_SERVER['HTTP_X_FORWARDED_PROTO']) || $_SERVER['HTTP_X_FORWARDED_PROTO'] != 'https')
+            && (!isset($_SERVER['SERVER_PORT']) || $_SERVER['SERVER_PORT'] != '443' ) 
+            ) {
             header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
             exit;
         }
@@ -98,7 +113,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                     $fn = $rc['function_call'];
                     $rc = $fn($ciniki, $settings, $ciniki['request']['business_id']);
                     if( $rc['stat'] != 'ok' ) {
-                        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'3189', 'msg'=>'Unable to load account information', 'err'=>$rc['err']));
+                        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.24', 'msg'=>'Unable to load account information', 'err'=>$rc['err']));
                     }
                 }
             }
@@ -233,7 +248,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         $ciniki['session']['cart']['num_items'] = 0;
 
     } elseif( $rc['stat'] != 'ok' ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1693', 'msg'=>'Error processing shopping cart, please try again.'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.25', 'msg'=>'Error processing shopping cart, please try again.'));
     } else {
         $cart = $rc['cart'];
         $_SESSION['cart']['num_items'] = count($cart['items']);
@@ -956,6 +971,10 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         // Check if we should display inventory
         //
         $inv = 'no';
+        $codes = 'no';
+        if( isset($ciniki['business']['modules']['ciniki.sapos']['flags']) && ($ciniki['business']['modules']['ciniki.sapos']['flags']&0x0400) == 0x0400 ) {
+            $codes = 'yes';
+        }
         if( isset($settings['page-cart-inventory-customersj-display']) 
             && $settings['page-cart-inventory-customersj-display'] == 'yes' 
             ) {
@@ -1016,7 +1035,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                                 . "c.colSpan=" . ($inv=='yes'?5:4) . ";"
                                 . "tr.appendChild(c);"
                             . "}else{"
-                                . "tr.appendChild(C.aE('td',null,null,p.name));"
+                                . "tr.appendChild(C.aE('td',null,null," . ($codes=='yes' ? "(p.code!='' ? p.code + ' - ' : '')" : '') . " + p.name));"
                                 . "if(p.cart!=null&&p.cart=='yes'"
                                     // Check if inventory available or backorder available
                                     . "&&(p.inventory_available>0||(p.inventory_flags&0x02)>0)){"
@@ -1223,9 +1242,9 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                     }
                 }
                 if( isset($item['url']) && $item['url'] != '' ) {
-                    $content .= "<a href='" . $item['url'] . "'>" . $item['description'] . "</a>";
+                    $content .= "<a href='" . $item['url'] . "'>" . ($codes == 'yes' && $item['code'] != '' ? $item['code'] . ' - ' : '') . $item['description'] . "</a>";
                 } else {
-                    $content .= $item['description'];
+                    $content .= ($codes == 'yes' && $item['code'] != '' ? $item['code'] . ' - ' : '') . $item['description'];
                 }
                 //
                 // Check for registration customer

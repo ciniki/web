@@ -61,7 +61,7 @@ function ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $base_url,
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'loadImage');
                 $rc = ciniki_images_loadImage($ciniki, $ciniki['request']['business_id'], $img['image_id'], 'thumbnail');
                 if( $rc['stat'] != 'ok' ) {
-                    return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1337', 'msg'=>'Unable to generate image: ' . $img['image_id'], 'err'=>$rc['err']));
+                    return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.63', 'msg'=>'Unable to generate image: ' . $img['image_id'], 'err'=>$rc['err']));
                 }
                 $image = $rc['image'];
                 

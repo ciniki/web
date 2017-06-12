@@ -56,10 +56,10 @@ function ciniki_web_processBlockGalleryImage(&$ciniki, $settings, $business_id, 
 
     $content .= "<div id='gallery-image' class='gallery-image'>";
     $content .= "<div id='gallery-image-wrap' class='gallery-image-wrap'>";
-    if( isset($block['prev']) ) {
+    if( isset($block['prev']['url']) ) {
         $content .= "<a id='gallery-image-prev' class='gallery-image-prev' href='" . $block['prev']['url'] . "'><div id='gallery-image-prev-img'></div></a>";
     }
-    if( isset($block['next']) ) {
+    if( isset($block['next']['url']) ) {
         $content .= "<a id='gallery-image-next' class='gallery-image-next' href='" . $block['next']['url'] . "'><div id='gallery-image-next-img'></div></a>";
     }
     $content .= "<img id='gallery-image-img' title='" . $block['image']['title'] . "' alt='" . $block['image']['title'] . "' src='" . $img_url . "' onload='javascript: gallery_resize_arrows();' />";

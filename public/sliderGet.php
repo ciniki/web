@@ -43,7 +43,7 @@ function ciniki_web_sliderGet($ciniki) {
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectGet');
     $rc = ciniki_core_objectGet($ciniki, $args['business_id'], 'ciniki.web.slider', $args['slider_id']);
     if( $rc['stat'] != 'ok' ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1760', 'msg'=>'Unable to find the slider image you requested.', 'err'=>$rc['err']));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.170', 'msg'=>'Unable to find the slider image you requested.', 'err'=>$rc['err']));
     }
     $slider = $rc['slider'];
 
@@ -54,7 +54,7 @@ function ciniki_web_sliderGet($ciniki) {
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectGetSubs');
     $rc = ciniki_core_objectGetSubs($ciniki, $args['business_id'], 'ciniki.web.slider', $args['slider_id'], 'ciniki.web.slider_image');
     if( $rc['stat'] != 'ok' ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1761', 'msg'=>'Unable to find the slider image you requested.', 'err'=>$rc['err']));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.171', 'msg'=>'Unable to find the slider image you requested.', 'err'=>$rc['err']));
     }
     if( isset($rc['images']) ) {
         $images = $rc['images'];

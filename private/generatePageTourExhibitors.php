@@ -50,12 +50,12 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
             $ciniki['request']['business_id'], 
             $settings['page-exhibitions-exhibition'], $exhibitor_permalink);
         if( $rc['stat'] != 'ok' ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1307', 'msg'=>"I'm sorry, but we can't seem to find the image your requested.", $rc['err']));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.84', 'msg'=>"I'm sorry, but we can't seem to find the image your requested.", $rc['err']));
         }
         $participant = $rc['participant'];
 
         if( !isset($participant['images']) || count($participant['images']) < 1 ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1102', 'msg'=>"I'm sorry, but we can't seem to find the image your requested."));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.85', 'msg'=>"I'm sorry, but we can't seem to find the image your requested."));
         }
 
         $first = NULL;
@@ -97,7 +97,7 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
         }
     
         if( $img == NULL ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1332', 'msg'=>"I'm sorry, but we can't seem to find the image your requested."));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.86', 'msg'=>"I'm sorry, but we can't seem to find the image your requested."));
         }
     
         //
@@ -162,7 +162,7 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
         $rc = ciniki_exhibitions_web_participantDetails($ciniki, $settings, 
             $ciniki['request']['business_id'], $settings['page-exhibitions-exhibition'], $exhibitor_permalink);
         if( $rc['stat'] != 'ok' ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1308', 'msg'=>"I'm sorry, but we can't find the exhibitor your requested.", $rc['err']));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.87', 'msg'=>"I'm sorry, but we can't find the exhibitor your requested.", $rc['err']));
         }
         $participant = $rc['participant'];
         $page_title = $participant['name'];

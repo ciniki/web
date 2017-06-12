@@ -57,12 +57,12 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
         $rc = ciniki_classes_web_classDetails($ciniki, $settings, 
             $ciniki['request']['business_id'], $class_permalink);
         if( $rc['stat'] != 'ok' ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1810', 'msg'=>"I'm sorry, but we can't seem to find the image you requested.", $rc['err']));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.26', 'msg'=>"I'm sorry, but we can't seem to find the image you requested.", $rc['err']));
         }
         $class = $rc['class'];
 
         if( !isset($class['images']) || count($class['images']) < 1 ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1811', 'msg'=>"I'm sorry, but we can't seem to find the image you requested."));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.27', 'msg'=>"I'm sorry, but we can't seem to find the image you requested."));
         }
 
         $first = NULL;
@@ -105,7 +105,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
         }
 
         if( $img == NULL ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1008', 'msg'=>"I'm sorry, but we can't seem to find the image you requested."));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.28', 'msg'=>"I'm sorry, but we can't seem to find the image you requested."));
         }
         //
         // Load the image
@@ -175,7 +175,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
         $rc = ciniki_classes_web_classDetails($ciniki, $settings, 
             $ciniki['request']['business_id'], $permalink);
         if( $rc['stat'] != 'ok' ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1812', 'msg'=>"I'm sorry, but we can't find the class you requested.", $rc['err']));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.29', 'msg'=>"I'm sorry, but we can't find the class you requested.", $rc['err']));
         }
         $class = $rc['class'];
         $page_title = $class['name'];

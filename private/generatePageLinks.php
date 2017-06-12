@@ -268,7 +268,7 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
-        $sections = isset($rc['sections'])?$rc['sections']:array();
+        $sections = isset($rc['categories'])?$rc['categories']:array();
         if( $tag_permalink != '' ) {
             $skeys = array_keys($sections);
             $section_name = $skeys[0];
@@ -287,7 +287,7 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
                 . "";
             $prev_sections = NULL;
             foreach($sections as $cnum => $c) {
-                if( !isset($c['links']) ) {
+                if( !isset($c['list']) ) {
                     continue;
                 }
                 if( $prev_sections != NULL ) {
@@ -303,7 +303,7 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
                         . "<span class='clist-category'></span></th>"
                         . "<td>";
                 }
-                foreach($c['links'] as $fnum => $link) {
+                foreach($c['list'] as $fnum => $link) {
                     //$page_content .= "<p>";
                     if( isset($link['url']) ) {
                         $url = $link['url'];
@@ -345,7 +345,7 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 
     
     $submenu = array();
-    if( ($ciniki['business']['modules']['ciniki.links']['flags']&0x03) == 0x03 ) {
+    if( isset($ciniki['business']['modules']['ciniki.links']['flags']) && ($ciniki['business']['modules']['ciniki.links']['flags']&0x03) == 0x03 ) {
         // Display the category/tags buttons
         $submenu['categories'] = array('name'=>'Categories',
             'url'=>$ciniki['request']['base_url'] . '/links/categories');

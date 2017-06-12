@@ -39,7 +39,7 @@ function ciniki_web_createFakeRequest($ciniki, $business_id) {
         return $rc;
     }
     if( !isset($rc['business']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2124', 'msg'=>'Business not found'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.11', 'msg'=>'Business not found'));
     }
     $business = $rc['business'];
     $web_ciniki['business'] = array('uuid'=>$rc['business']['uuid']);

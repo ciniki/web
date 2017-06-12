@@ -80,6 +80,7 @@ $ciniki['emailqueue'] = array();
 
 // Set the flag if we serving this request over ssl
 if( (isset($_SERVER['HTTP_CLUSTER_HTTPS']) && $_SERVER['HTTP_CLUSTER_HTTPS'] == 'on')
+    || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
     || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443' ) 
     ) {
     $ciniki['request']['ssl'] = 'yes';
@@ -122,7 +123,9 @@ if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split']
 //
 // Setup the cache dir for the master business, incase no other business is found
 //
-$strsql = "SELECT uuid FROM ciniki_businesses WHERE id = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_business_id']) . "' ";
+$strsql = "SELECT uuid "
+    . "FROM ciniki_businesses "
+    . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_business_id']) . "' ";
 $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'business');
 if( $rc['stat'] == 'ok' && isset($rc['business']['uuid']) ) {
     $uuid = $rc['business']['uuid'];
@@ -135,7 +138,7 @@ if( $rc['stat'] == 'ok' && isset($rc['business']['uuid']) ) {
 // Determine which site and page should be displayed
 // FIXME: Check for redirects from sitename or domain names to primary domain name.
 //
-if( $ciniki['config']['ciniki.web']['master.domain'] != $_SERVER['HTTP_HOST'] 
+if( isset($_SERVER['HTTP_HOST']) && $ciniki['config']['ciniki.web']['master.domain'] != $_SERVER['HTTP_HOST'] 
     && (!isset($ciniki['config']['ciniki.web']['shop.domain']) || $ciniki['config']['ciniki.web']['shop.domain'] != $_SERVER['HTTP_HOST'])
     ) {
     //
@@ -162,6 +165,8 @@ if( $ciniki['config']['ciniki.web']['master.domain'] != $_SERVER['HTTP_HOST']
         }
         $ciniki['business']['uuid'] = $rc['business_uuid'];
         $ciniki['business']['modules'] = $rc['modules'];
+        $ciniki['business']['pages'] = $rc['pages'];
+        $ciniki['business']['module_pages'] = $rc['module_pages'];
         if( isset($rc['redirect']) && $rc['redirect'] != '' && $preview == 'no' ) {
             Header('HTTP/1.1 301 Moved Permanently'); 
             Header('Location: http' . ($rc['forcessl']=='yes'?'s':'') . '://' . $rc['redirect'] . $_SERVER['REQUEST_URI']);
@@ -202,7 +207,7 @@ if( $ciniki['request']['business_id'] == 0 ) {
     $ciniki['request']['domain_base_url'] = 'http://' . $ciniki['config']['ciniki.web']['master.domain'];
     $ciniki['request']['ssl_domain_base_url'] = 'http://' . $ciniki['config']['ciniki.web']['master.domain'];
     if( $uri == '' ) {
-        if( isset($ciniki['config']['ciniki.web']['shop.domain']) && $_SERVER['HTTP_HOST'] == $ciniki['config']['ciniki.web']['shop.domain'] && isset($ciniki['config']['ciniki.core']['shop_business_id']) ) {
+        if( isset($ciniki['config']['ciniki.web']['shop.domain']) && isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == $ciniki['config']['ciniki.web']['shop.domain'] && isset($ciniki['config']['ciniki.core']['shop_business_id']) ) {
             $ciniki['request']['page'] = 'home';
             $ciniki['request']['business_id'] = $ciniki['config']['ciniki.core']['shop_business_id'];
             $ciniki['request']['base_url'] = '';
@@ -281,6 +286,8 @@ if( $ciniki['request']['business_id'] == 0 ) {
         $ciniki['request']['business_id'] = $rc['business_id'];
         $ciniki['business']['uuid'] = $rc['business_uuid'];
         $ciniki['business']['modules'] = $rc['modules'];
+        $ciniki['business']['pages'] = $rc['pages'];
+        $ciniki['business']['module_pages'] = $rc['module_pages'];
         if( isset($rc['domain']) ) {
             $ciniki['business']['domain'] = $rc['domain'];
         }
@@ -369,8 +376,11 @@ if( $ciniki['request']['business_id'] == 0 ) {
 //
 // Make sure shop URLs are forced to SSL
 //
-if( isset($ciniki['config']['ciniki.web']['shop.domain']) && $_SERVER['HTTP_HOST'] == $ciniki['config']['ciniki.web']['shop.domain'] 
-    && ((isset($_SERVER['HTTP_CLUSTER_HTTPS']) && $_SERVER['HTTP_CLUSTER_HTTPS'] != 'on') || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] != '443'))
+if( isset($ciniki['config']['ciniki.web']['shop.domain']) && isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == $ciniki['config']['ciniki.web']['shop.domain'] 
+    && ((isset($_SERVER['HTTP_CLUSTER_HTTPS']) && $_SERVER['HTTP_CLUSTER_HTTPS'] != 'on') 
+        || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
+        || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] != '443')
+        )
     ) {
     //
     // Force redirect to SSL
@@ -403,6 +413,7 @@ if( isset($_SESSION['business_id']) && $_SESSION['business_id'] == $ciniki['requ
     if( isset($_SESSION['cart']) ) {
         $ciniki['session']['cart'] = $_SESSION['cart'];
     }
+
     //
     // Load each modules session information
     //
@@ -420,6 +431,7 @@ if( isset($_SESSION['business_id']) && $_SESSION['business_id'] == $ciniki['requ
     if( isset($ciniki['session']['customer']) ) { unset($ciniki['session']['customer']); };
     if( isset($ciniki['session']['customers']) ) { unset($ciniki['session']['customers']); };
     if( isset($ciniki['session']['cart']) ) { unset($ciniki['session']['cart']); };
+
     //
     // Unload each sessions information
     //
@@ -598,7 +610,8 @@ if( isset($ciniki['config']['ciniki.core']['packages'])
                         $ciniki['business']['pages'][$permalink] = array('pkg'=>$pkg, 
                             'fn'=>$page['fn'],
                             'active'=>$page['active'],
-                            'title'=>$page['title']
+                            'title'=>$page['title'],
+                            'permalink'=>$permalink,
                             );
                     }
                 }
@@ -625,7 +638,11 @@ if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.web', 0x04000000) ) {
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'redirect');
     if( $rc['stat'] == 'ok' && isset($rc['redirect']['newurl']) ) {
         Header('HTTP/1.1 301 Moved Permanently'); 
-        Header('Location: ' . $ciniki['request']['domain_base_url'] . $rc['redirect']['newurl']);
+        if( preg_match("/^http/", $rc['redirect']['newurl']) ) {
+            Header('Location: ' . $rc['redirect']['newurl']);
+        } else {
+            Header('Location: ' . $ciniki['request']['domain_base_url'] . $rc['redirect']['newurl']);
+        }
         exit;
     }
 }
@@ -676,7 +693,7 @@ if( $found == 'no' ) {
         $rc = ciniki_web_generateShopIndex($ciniki, $settings);
     } 
     // Signup Page
-    elseif( $ciniki['request']['page'] == 'signup' && $settings['page-signup-active'] == 'yes' ) {
+    elseif( $ciniki['request']['page'] == 'signup' && isset($settings['page-signup-active']) && $settings['page-signup-active'] == 'yes' ) {
         require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageSignup.php');
         $rc = ciniki_web_generatePageSignup($ciniki, $settings);
     } 
@@ -982,6 +999,12 @@ if( $found == 'no' ) {
         require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePagePropertyRentals.php');
         $rc = ciniki_web_generatePagePropertyRentals($ciniki, $settings, 'info');
     } 
+    // Music Festival
+    elseif( $ciniki['request']['page'] == 'musicfestivals' 
+        && isset($settings['page-musicfestivals-active']) && $settings['page-musicfestivals-active'] == 'yes' ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
+        $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['business_id'], 'ciniki.musicfestivals');
+    } 
     // Merchandise
     elseif( $ciniki['request']['page'] == 'merchandise' 
         && isset($settings['page-merchandise-active']) && $settings['page-merchandise-active'] == 'yes' ) {
@@ -1059,7 +1082,11 @@ if( $found == 'no' ) {
     }
 }
 
-if( $rc['stat'] == '404' ) {
+if( $rc['stat'] == '503' ) {
+    require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePage503.php');
+    $rc = ciniki_web_generatePage503($ciniki, $settings, $rc);
+}
+elseif( $rc['stat'] == '404' ) {
     //
     // If no page was found, check up the chain of redirects to see if theres a general match
     //
@@ -1079,14 +1106,18 @@ if( $rc['stat'] == '404' ) {
             $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'redirect');
             if( $rc['stat'] == 'ok' && isset($rc['redirect']['newurl']) ) {
                 Header('HTTP/1.1 301 Moved Permanently'); 
-                Header('Location: ' . $ciniki['request']['domain_base_url'] . $rc['redirect']['newurl']);
+                if( preg_match("/^http/", $rc['redirect']['newurl']) ) {
+                    Header('Location: ' . $rc['redirect']['newurl']);
+                } else {
+                    Header('Location: ' . $ciniki['request']['domain_base_url'] . $rc['redirect']['newurl']);
+                }
                 exit;
             }
             $url = preg_replace("/\/[^\/]*$/", '', $url);
         }
     }
 
-    if( $ciniki['request']['uri_split'][0] == 'robots.txt' ) {
+    if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'robots.txt' ) {
         require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageRobots.php');
         $rc = ciniki_web_generatePageRobots($ciniki, $settings);
     } else {
@@ -1097,13 +1128,12 @@ if( $rc['stat'] == '404' ) {
 
 if( isset($ciniki['response']['format']) && $ciniki['response']['format'] == 'json' ) {
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'printHashToJSON');
-    $rc['stat'] = 'ok';
     header("Content-Type: text/plain; charset=utf-8");
     header("Cache-Control: no-cache, must-revalidate");
     ciniki_core_printHashToJSON($rc);
 }
 
-if( $rc['stat'] != 'ok' && $rc['stat'] != 'exit' ) {
+elseif( $rc['stat'] != 'ok' && $rc['stat'] != 'exit' ) {
     require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePage500.php');
     $rc = ciniki_web_generatePage500($ciniki, $settings, $rc);
 //  print_error($rc, 'Unable to generate page.');
@@ -1177,11 +1207,11 @@ print "<!DOCTYPE html>\n";
             <?php if($rc != NULL && $rc['stat'] != 'ok' ) { ?>
             <table class="list header border" cellspacing='0' cellpadding='0'>
                 <thead>
-                    <tr><th>Package</th><th>Code</th><th>Message</th></tr>
+                    <tr><th>Code</th><th>Message</th></tr>
                 </thead>
                 <tbody>
                     <?php
-                    print "<tr><td>" . $rc['err']['pkg'] . "</td><td>" . $rc['err']['code'] . "</td><td>" . $rc['err']['msg'] . "</td></tr>\n";
+                    print "<tr><td>" . $rc['err']['code'] . "</td><td>" . $rc['err']['msg'] . "</td></tr>\n";
                     ?>
                 </tbody>
             </table>

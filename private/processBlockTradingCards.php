@@ -18,7 +18,7 @@ function ciniki_web_processBlockTradingCards($ciniki, $settings, $business_id, $
     }
 
     if( !isset($block['base_url']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'3046', 'msg'=>'Unable to process request'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.119', 'msg'=>'Unable to process request'));
     }
 
     $content = "";

@@ -23,6 +23,7 @@ function ciniki_web_sliderAdd(&$ciniki) {
         'resize'=>array('required'=>'no', 'default'=>'cropped', 'blank'=>'yes', 'name'=>'Resize'), 
         'image_offset'=>array('required'=>'no', 'default'=>'middle-center', 'blank'=>'yes', 'name'=>'Position'), 
         'images'=>array('required'=>'no', 'default'=>'', 'blank'=>'yes', 'type'=>'idlist', 'name'=>'Images'),
+        'modules'=>array('required'=>'no', 'default'=>'', 'blank'=>'yes', 'name'=>'Modules'),
         )); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;

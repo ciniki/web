@@ -53,7 +53,7 @@ function ciniki_web_collectionDetails($ciniki, $business_id, $collection_permali
         return $rc;
     }
     if( !isset($rc['collections']) ) {
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2068', 'msg'=>'That collection does not exist.'));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.10', 'msg'=>'That collection does not exist.'));
     }
     $collection = array_pop($rc['collections']);
 

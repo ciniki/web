@@ -1,0 +1,4 @@
+#
+#
+ALTER TABLE ciniki_web_sliders ADD COLUMN modules varchar(250) not null AFTER resize;
+ALTER TABLE ciniki_web_sliders COMMENT='v1.04';

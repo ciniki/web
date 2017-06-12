@@ -21,6 +21,7 @@ function ciniki_web_sliderLoad(&$ciniki, $settings, $business_id, $slider_id) {
         . "ciniki_web_sliders.effect, "
         . "ciniki_web_sliders.speed, "
         . "ciniki_web_sliders.resize, "
+        . "ciniki_web_sliders.modules, "
         . "ciniki_web_slider_images.id AS slider_image_id, "
         . "ciniki_web_slider_images.image_id, "
         . "ciniki_web_slider_images.caption, "
@@ -43,7 +44,7 @@ function ciniki_web_sliderLoad(&$ciniki, $settings, $business_id, $slider_id) {
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
     $rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.web', array(
         array('container'=>'sliders', 'fname'=>'id',
-            'fields'=>array('size', 'effect', 'speed', 'resize')),
+            'fields'=>array('size', 'effect', 'speed', 'resize', 'modules')),
         array('container'=>'images', 'fname'=>'slider_image_id',
             'fields'=>array('image_id', 'caption', 'url', 'image_offset', 'last_updated')),
         ));
@@ -52,9 +53,41 @@ function ciniki_web_sliderLoad(&$ciniki, $settings, $business_id, $slider_id) {
     }
 
     if( !isset($rc['sliders'][$slider_id]) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1763', 'msg'=>'Slider not found'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.128', 'msg'=>'Slider not found'));
+    }
+    $slider = $rc['sliders'][$slider_id];
+
+    if( !isset($slider['images']) ) {
+        $slider['images'] = array();
     }
 
-    return array('stat'=>'ok', 'slider'=>$rc['sliders'][$slider_id]);
+    //
+    // Check if additional images to load
+    //
+    if( $slider['modules'] != '' ) {
+        $modules = explode(',', $slider['modules']);
+        foreach($modules as $m) {
+            $m_pieces = explode('.', $m);
+            if( isset($m_pieces[1]) ) {
+                $module = $m_pieces[0] . '.' . $m_pieces[1];
+                $pkg = $m_pieces[0];
+                $mod = $m_pieces[1];
+                $base_url = $ciniki['request']['base_url'] . '/animals';
+                if( isset($m_pieces[2]) ) {
+                    $base_url = $ciniki['request']['base_url'] . '/' . $m_pieces[2];
+                }
+                $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'sliderImages');
+                if( $rc['stat'] == 'ok' ) {
+                    $fn = $rc['function_call'];
+                    $rc = $fn($ciniki, $settings, $business_id, array('base_url'=>$base_url));
+                    if( isset($rc['images']) ) {
+                        $slider['images'] = array_merge($slider['images'], $rc['images']);
+                    }
+                }
+            }
+        }
+    }
+
+    return array('stat'=>'ok', 'slider'=>$slider);
 }
 ?>

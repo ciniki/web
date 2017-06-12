@@ -32,7 +32,7 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, $settings, $theme
         if( isset($rc['theme']) ) {
             $theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/theme-' . $rc['theme']['permalink'];
         } else {
-            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2674', 'msg'=>'No theme specified'));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.129', 'msg'=>'No theme specified'));
         }
     } else {
         $theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/theme-' . $settings['site-privatetheme-permalink'];

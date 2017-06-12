@@ -86,6 +86,7 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $business_id) {
                 $send_to_emails = explode(',', $settings['page-contact-form-emails']);
                 foreach($send_to_emails as $email) {
                     $ciniki['emailqueue'][] = array('to'=>trim($email),
+                        'business_id'=>$business_id,
                         'replyto_email'=>$_POST['contact-form-email'],
                         'replyto_name'=>$_POST['contact-form-name'],
                         'subject'=>$subject,
@@ -96,11 +97,12 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $business_id) {
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'hooks', 'businessOwners');
                 $rc = ciniki_businesses_hooks_businessOwners($ciniki, $business_id, array());
                 if( $rc['stat'] != 'ok' ) {
-                    return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2608', 'msg'=>'Unable to get business owners', 'err'=>$rc['err']));
+                    return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.120', 'msg'=>'Unable to get business owners', 'err'=>$rc['err']));
                 }
                 $owners = $rc['users'];
                 foreach($owners as $user_id => $owner) {
                     $ciniki['emailqueue'][] = array('user_id'=>$user_id,
+                        'business_id'=>$business_id,
                         'replyto_email'=>$_POST['contact-form-email'],
                         'replyto_name'=>$_POST['contact-form-name'],
                         'subject'=>$subject,

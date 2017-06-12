@@ -73,7 +73,7 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
                         $fn = $rc['function_call'];
                         $rc = $fn($ciniki, $settings, $business_id);
                         if( $rc['stat'] != 'ok' ) {
-                            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2900', 'msg'=>'Unable to load account information', 'err'=>$rc['err']));
+                            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.15', 'msg'=>'Unable to load account information', 'err'=>$rc['err']));
                         }
                     }
                 }
@@ -220,7 +220,7 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
             || $settings['page-account-password-change'] == 'yes' || $settings['page-account-forgot-password'] == 'yes'
             ) {
             $content .= "<div id='forgot-link'><p>"
-                . "<a class='color' href='javscript:void(0);' onclick='swapLoginForm(\"forgotpassword\");return false;'>Forgot your password?</a></p></div>\n";
+                . "<a class='color' href='javscript:void(0);' onclick='swapLoginForm(\"forgotpassword\");return false;'>Forgot your password or first time logging in?</a></p></div>\n";
         }
         $content .= "</div>\n";
         

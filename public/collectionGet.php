@@ -42,7 +42,7 @@ function ciniki_web_collectionGet($ciniki) {
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectGet');
     $rc = ciniki_core_objectGet($ciniki, $args['business_id'], 'ciniki.web.collection', $args['collection_id']);
     if( $rc['stat'] != 'ok' ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2058', 'msg'=>'Unable to find the collection image you requested.', 'err'=>$rc['err']));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.131', 'msg'=>'Unable to find the collection image you requested.', 'err'=>$rc['err']));
     }
     $collection = $rc['collection'];
 

@@ -64,7 +64,7 @@ function ciniki_web_faqDelete(&$ciniki) {
         return $rc;
     }
     if( !isset($rc['faq']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1270', 'msg'=>'Unable to find existing question'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.132', 'msg'=>'Unable to find existing question'));
     }
     $uuid = $rc['faq']['uuid'];
 

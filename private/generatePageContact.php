@@ -170,7 +170,7 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
     //
     // Generate the list of employee's who are to be shown on the website
     //
-    if( $settings['page-contact-user-display'] == 'yes' ) {
+    if( isset($settings['page-contact-user-display']) && $settings['page-contact-user-display'] == 'yes' ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processEmployeeBios');
         $rc = ciniki_web_processEmployeeBios($ciniki, $settings, 'contact', $contact_users);
         if( $rc['stat'] != 'ok' ) {

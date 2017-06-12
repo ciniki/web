@@ -650,7 +650,7 @@ function ciniki_web_generatePageDistributors($ciniki, $settings) {
                 $page_content .= $rc['content'];
             }
         } else {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1402', 'msg'=>'No distributors found for this .'));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.37', 'msg'=>'No distributors found for this .'));
         }
     } 
 

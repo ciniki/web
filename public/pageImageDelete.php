@@ -47,7 +47,7 @@ function ciniki_web_pageImageDelete(&$ciniki) {
         return $rc;
     }
     if( !isset($rc['item']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2209', 'msg'=>'Image does not exist'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.151', 'msg'=>'Image does not exist'));
     }
     $item = $rc['item'];
 

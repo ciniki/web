@@ -74,7 +74,7 @@ function ciniki_web_processSponsorImages($ciniki, $settings, $base_url, $sponsor
                 //
                 $rc = ciniki_images_loadImage($ciniki, $ciniki['request']['business_id'], $sponsor['image_id'], 'original');
                 if( $rc['stat'] != 'ok' ) {
-                    return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2052', 'msg'=>'Unable to generate image: ' . $sponsor['image_id'], 'err'=>$rc['err']));
+                    return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.126', 'msg'=>'Unable to generate image: ' . $sponsor['image_id'], 'err'=>$rc['err']));
                 }
                 $image = $rc['image'];
                 

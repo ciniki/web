@@ -28,6 +28,8 @@ function ciniki_web_about() {
         '23':{'name':'Sponsorship', 'ui':'sponsorship', 'permalink':'sponsorship', 'flags':0x400000},
         '24':{'name':'Jobs', 'ui':'jobs', 'permalink':'jobs', 'flags':0x800000},
         '25':{'name':'Extended Bio', 'ui':'extendedbio', 'permalink':'extended-bio', 'flags':0x01000000},
+        '27':{'name':'Committees', 'ui':'committees', 'permalink':'committees', 'flags':0x04000000},
+        '28':{'name':'Bylaws', 'ui':'bylaws', 'permalink':'bylaws', 'flags':0x08000000},
     };
     
     this.userFlags = {
@@ -188,12 +190,11 @@ function ciniki_web_about() {
     this.savePage = function() {
         var c = this.page.serializeForm('no');
         if( c != '' ) {
-            var rsp = M.api.postJSONCb('ciniki.web.siteSettingsUpdate', 
-                {'business_id':M.curBusinessID}, c, function(rsp) {
-                    if( rsp.stat != 'ok' ) {
-                        M.api.err(rsp);
-                        return false;
-                    } 
+            M.api.postJSONCb('ciniki.web.siteSettingsUpdate', {'business_id':M.curBusinessID}, c, function(rsp) {
+                if( rsp.stat != 'ok' ) {
+                    M.api.err(rsp);
+                    return false;
+                } 
                 M.ciniki_web_about.page.close();
             });
         } else {

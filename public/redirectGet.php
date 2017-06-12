@@ -77,10 +77,10 @@ function ciniki_web_redirectGet($ciniki) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
         $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'redirect');
         if( $rc['stat'] != 'ok' ) {
-            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2945', 'msg'=>'Web Redirect not found', 'err'=>$rc['err']));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.167', 'msg'=>'Web Redirect not found', 'err'=>$rc['err']));
         }
         if( !isset($rc['redirect']) ) {
-            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2946', 'msg'=>'Unable to find Web Redirect'));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.168', 'msg'=>'Unable to find Web Redirect'));
         }
         $redirect = $rc['redirect'];
     }

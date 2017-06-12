@@ -44,7 +44,7 @@ function ciniki_web_generatePageDirectory($ciniki, $settings) {
         //
         // If there was an error locating the files, display generic error
         //
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2077', 'msg'=>'The file you requested does not exist.'));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.36', 'msg'=>'The file you requested does not exist.'));
     }
 
     //

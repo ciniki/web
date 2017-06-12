@@ -93,7 +93,7 @@ function ciniki_web_processBlockCIList(&$ciniki, $settings, $business_id, $block
             }
             if( isset($item['image_id']) && $item['image_id'] > 0 ) {
                 if( isset($block['thumbnail_format']) && $block['thumbnail_format'] == 'square-padded' ) {
-                    $version = ((isset($block['image_version'])&&$block['image_version']!='')?$block['image_version']:'thumbnail');
+                    $version = ((isset($block['image_version'])&&$block['image_version']!='')?$block['image_version']:'original');
                     $rc = ciniki_web_getPaddedImageURL($ciniki, $item['image_id'], 'original', 
                         ((isset($block['image_width'])&&$block['image_width']!='')?$block['image_width']:'150'), 
                         ((isset($block['image_height'])&&$block['image_height']!='')?$block['image_height']:'0'),

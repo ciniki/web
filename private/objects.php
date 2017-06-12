@@ -66,6 +66,7 @@ function ciniki_web_objects($ciniki) {
             'effect'=>array(),
             'speed'=>array(),
             'resize'=>array(),
+            'modules'=>array(),
             ),
         'history_table'=>'ciniki_web_history',
         );
@@ -283,6 +284,21 @@ function ciniki_web_objects($ciniki) {
             'tertiary_words'=>array('name'=>'Tertiary Words'),
             'weight'=>array('name'=>'Weight'),
             'url'=>array('name'=>'URL'),
+            ),
+        'history_table'=>'ciniki_web_history',
+        );
+    $objects['hplink'] = array(
+        'name'=>'Home Page Link',
+        'o_name'=>'hplink',
+        'o_container'=>'hplinks',
+        'sync'=>'yes',
+        'table'=>'ciniki_web_hplinks',
+        'fields'=>array(
+            'parent_id'=>array('name'=>'Parent', 'default'=>'0'),
+            'title'=>array('name'=>'Title'),
+            'url'=>array('name'=>'URL'),
+            'sequence'=>array('name'=>'Sequence', 'default'=>'1'),
+            'image_id'=>array('name'=>'Image', 'default'=>'0', 'ref'=>'ciniki.images.image'),
             ),
         'history_table'=>'ciniki_web_history',
         );

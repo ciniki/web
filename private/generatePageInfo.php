@@ -50,7 +50,7 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
         //
         // If there was an error locating the files, display generic error
         //
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1054', 'msg'=>'The file you requested does not exist.  Please check your link and try again.'));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.64', 'msg'=>'The file you requested does not exist.  Please check your link and try again.'));
     }
 
     if( isset($ciniki['business']['modules']['ciniki.info']) 
@@ -81,7 +81,7 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
         //
         // If there was an error locating the files, display generic error
         //
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1034', 'msg'=>'The file you requested does not exist.  Please check your link and try again.'));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.65', 'msg'=>'The file you requested does not exist.  Please check your link and try again.'));
     }
 
     //
@@ -131,7 +131,7 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
         $content_type = 1;
         $page_permalink = 'about';
     } else {
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2158', 'msg'=>"I'm sorry, but we're still adding information"));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.66', 'msg'=>"I'm sorry, but we're still adding information"));
     }
 
     // This allows for permalink and title renaming
@@ -161,6 +161,8 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
             case 23: $page_settings_name = 'sponsorship'; break;
             case 24: $page_settings_name = 'jobs'; break;
             case 25: $page_settings_name = 'extended-bio'; break;
+            case 27: $page_settings_name = 'committees'; break;
+            case 28: $page_settings_name = 'bylaws'; break;
         }
     }
 
@@ -191,7 +193,7 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
         $info = $rc['content'];
 
         if( !isset($info['images']) || count($info['images']) < 1 ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1681', 'msg'=>"We're sorry, but the image you requested doesn't exist."));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.67', 'msg'=>"We're sorry, but the image you requested doesn't exist."));
         }
 
         $first = NULL;
@@ -231,7 +233,7 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
         }
 
         if( $img == NULL ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1401', 'msg'=>"I'm sorry, but we don't seem to have the image your requested."));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.68', 'msg'=>"I'm sorry, but we don't seem to have the image your requested."));
         }
     
         //
@@ -396,7 +398,7 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
         //
         // No default page
         //
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2140', 'msg'=>"I'm sorry, but we're still adding information"));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.69', 'msg'=>"I'm sorry, but we're still adding information"));
     }   
 
     //
@@ -535,6 +537,18 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
         ) {
         $submenu['sponsorship'] = array('name'=>$info_pages['23']['title'], 
             'url'=>$ciniki['request']['base_url'] . "/$pg/" . $info_pages['23']['permalink']);
+    }
+    if( isset($settings["page-$pg-committees-active"]) && $settings["page-$pg-committees-active"] == 'yes' 
+        && isset($info_pages['27'])
+        ) {
+        $submenu['committees'] = array('name'=>$info_pages['27']['title'], 
+            'url'=>$ciniki['request']['base_url'] . "/$pg/" . $info_pages['27']['permalink']);
+    }
+    if( isset($settings["page-$pg-bylaws-active"]) && $settings["page-$pg-bylaws-active"] == 'yes' 
+        && isset($info_pages['28'])
+        ) {
+        $submenu['bylaws'] = array('name'=>$info_pages['28']['title'], 
+            'url'=>$ciniki['request']['base_url'] . "/$pg/" . $info_pages['28']['permalink']);
     }
 
     //

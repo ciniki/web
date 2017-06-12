@@ -55,7 +55,7 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
         //
         // If there was an error locating the files, display generic error
         //
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1588', 'msg'=>'The file you requested does not exist.'));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.19', 'msg'=>'The file you requested does not exist.'));
     }
 
     //
@@ -91,7 +91,7 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
         $mod = 'blog';
         $category_uri_component = 'blog';
     } else {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1589', 'msg'=>'No blog module enabled'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.20', 'msg'=>'No blog module enabled'));
     }
 
     //
@@ -118,7 +118,7 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
         $post = $rc['post'];
 
         if( !isset($post['images']) || count($post['images']) < 1 ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1590', 'msg'=>"We're sorry, but we could not find the image you requested."));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.21', 'msg'=>"We're sorry, but we could not find the image you requested."));
         }
 
         //
@@ -159,7 +159,7 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
             $last = $image;
         }
         if( $img == NULL ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2120', 'msg'=>"We're sorry, but we could not find the image you requested."));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.22', 'msg'=>"We're sorry, but we could not find the image you requested."));
         }
 
         if( count($post['images']) == 1 ) {
@@ -191,7 +191,7 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
             }
             $img_url = $rc['url'];
         } else {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2117', 'msg'=>"We're sorry, but we could not find the image you requested."));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.23', 'msg'=>"We're sorry, but we could not find the image you requested."));
         }
 
         //

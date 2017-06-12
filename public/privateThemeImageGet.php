@@ -60,7 +60,7 @@ function ciniki_web_privateThemeImageGet($ciniki) {
         return $rc;
     }
     if( !isset($rc['images']) ) {
-        return array('stat'=>'ok', 'err'=>array('pkg'=>'ciniki', 'code'=>'2550', 'msg'=>'Unable to find image'));
+        return array('stat'=>'ok', 'err'=>array('code'=>'ciniki.web.162', 'msg'=>'Unable to find image'));
     }
     $image = $rc['images'][0]['image'];
     

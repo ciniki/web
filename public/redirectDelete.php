@@ -51,7 +51,7 @@ function ciniki_web_redirectDelete(&$ciniki) {
         return $rc;
     }
     if( !isset($rc['redirect']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2944', 'msg'=>'Airlock does not exist.'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.166', 'msg'=>'Airlock does not exist.'));
     }
     $redirect = $rc['redirect'];
 

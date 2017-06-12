@@ -22,14 +22,17 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
     //
     if( isset($ciniki['config']) && isset($ciniki['config']['ciniki.core']) && isset($ciniki['config']['ciniki.core']['ssl']) 
         && $ciniki['config']['ciniki.core']['ssl'] == 'off' 
-        && (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != 'on') ) { 
+        && (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != 'on') 
+        ) { 
         $verify_base_url = 'http://' . $_SERVER['HTTP_HOST'] . $ciniki['request']['base_url'] . '/signup/verify';
     } else {
         //  
         // Check if secure connection
         //  
         if( (isset($_SERVER['HTTP_CLUSTER_HTTPS']) && $_SERVER['HTTP_CLUSTER_HTTPS'] == 'on') 
-            || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443' ) )  {
+            || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
+            || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443' ) 
+            ) {
             $verify_base_url = 'https://' . $_SERVER['HTTP_HOST'] . $ciniki['request']['base_url'] . '/signup/verify';
         } else {
             header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);

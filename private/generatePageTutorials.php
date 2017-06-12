@@ -48,7 +48,7 @@ function ciniki_web_generatePageTutorials($ciniki, $settings) {
         //
         // If there was an error locating the files, display generic error
         //
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2252', 'msg'=>'The file you requested does not exist.'));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.88', 'msg'=>'The file you requested does not exist.'));
     }
 
     //
@@ -66,7 +66,7 @@ function ciniki_web_generatePageTutorials($ciniki, $settings) {
         $pkg = 'ciniki';
         $mod = 'tutorials';
     } else {
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2253', 'msg'=>'Page not found.'));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.89', 'msg'=>'Page not found.'));
     }
 
     $tags = array();
@@ -213,7 +213,7 @@ function ciniki_web_generatePageTutorials($ciniki, $settings) {
             }
             $page_content .= "</table>";
         } else {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2254', 'msg'=>"I'm sorry, but there are no tutorials available."));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.90', 'msg'=>"I'm sorry, but there are no tutorials available."));
         }
         $page_content .= "</div></article>\n";  
     }
@@ -308,7 +308,7 @@ function ciniki_web_generatePageTutorials($ciniki, $settings) {
                 $last = $step;
             }
             if( !isset($tutorial['steps']) || count($tutorial['steps']) < 1 ) {
-                return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2246', 'msg'=>'Unable to find step'));
+                return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.91', 'msg'=>'Unable to find step'));
             }
             if( count($tutorial['steps']) == 1 ) {
                 $prev = NULL;
@@ -470,7 +470,7 @@ function ciniki_web_generatePageTutorials($ciniki, $settings) {
     // Error nothing specified
     //
     else {
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2255', 'msg'=>"I'm sorry, but there are no tutorials available."));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.92', 'msg'=>"I'm sorry, but there are no tutorials available."));
     }
 
     //

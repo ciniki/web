@@ -18,7 +18,7 @@ function ciniki_web_processBlockTagImageList($ciniki, $settings, $business_id, $
     }
 
     if( !isset($block['base_url']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2591', 'msg'=>'Unable to process request'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.116', 'msg'=>'Unable to process request'));
     }
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');

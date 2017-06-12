@@ -58,7 +58,7 @@ function ciniki_web_hooks_webCollectionUpdate($ciniki, $business_id, $args) {
                 $rc = ciniki_core_objectDelete($ciniki, $business_id, 'ciniki.web.collection_objref', 
                     $cur_col['id'], $cur_col['uuid'], 0x04);
                 if( $rc['stat'] != 'ok' ) {
-                    return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2055', 'msg'=>'Unable to remove from the collection', 'err'=>$rc['err']));
+                    return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.3', 'msg'=>'Unable to remove from the collection', 'err'=>$rc['err']));
                 }
             }
         }
@@ -74,7 +74,7 @@ function ciniki_web_hooks_webCollectionUpdate($ciniki, $business_id, $args) {
                         'object_id'=>$args['object_id'],
                         'collection_id'=>$new_col_id), 0x04);
                 if( $rc['stat'] != 'ok' ) {
-                    return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2054', 'msg'=>'Unable to add the collection', 'err'=>$rc['err']));
+                    return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.4', 'msg'=>'Unable to add the collection', 'err'=>$rc['err']));
                 }
             }
         }

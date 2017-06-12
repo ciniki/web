@@ -43,7 +43,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
         //
         // If there was an error locating the files, display generic error
         //
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1348', 'msg'=>'The file you requested does not exist.'));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.39', 'msg'=>'The file you requested does not exist.'));
     }
 
     //
@@ -104,7 +104,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
         $event = $rc['event'];
 
         if( !isset($event['images']) || count($event['images']) < 1 ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2146', 'msg'=>"We're sorry, but we could not find the image you requested."));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.40', 'msg'=>"We're sorry, but we could not find the image you requested."));
         }
 
         //
@@ -127,7 +127,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
         }
         
         if( !isset($event['images']) || count($event['images']) < 1 ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1287', 'msg'=>"I'm sorry, but we don't seem to have the photo you requested."));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.41', 'msg'=>"I'm sorry, but we don't seem to have the photo you requested."));
         }
 
         $first = NULL;
@@ -179,7 +179,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
             }
             $img_url = $rc['url'];
         } else {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2150', 'msg'=>"We're sorry, but the image you requested does not exist."));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.42', 'msg'=>"We're sorry, but the image you requested does not exist."));
         }
 
         //

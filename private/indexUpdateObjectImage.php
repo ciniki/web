@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_web_indexUpdateObjectImage($ciniki, $business_id, $image_id, $index_id) {
+function ciniki_web_indexUpdateObjectImage(&$ciniki, $business_id, $image_id, $index_id) {
 
     if( $image_id <= 0 ) {
         return array('stat'=>'ok');
@@ -27,10 +27,10 @@ function ciniki_web_indexUpdateObjectImage($ciniki, $business_id, $image_id, $in
         . "";
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.images', 'image');
     if( $rc['stat'] != 'ok' ) { 
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'3277', 'msg'=>'Unable to load image', 'err'=>$rc['err']));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.106', 'msg'=>'Unable to load image', 'err'=>$rc['err']));
     }
     if( !isset($rc['image']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'3278', 'msg'=>'Unable to load image'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.107', 'msg'=>'Unable to load image'));
     }
     $img = $rc['image'];
 
@@ -97,7 +97,7 @@ function ciniki_web_indexUpdateObjectImage($ciniki, $business_id, $image_id, $in
             fwrite($h, $image->getImageBlob());
             fclose($h);
         } else {
-            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'3279', 'msg'=>'Unable to load image'));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.108', 'msg'=>'Unable to load image'));
         }
     }
 

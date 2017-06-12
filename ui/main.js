@@ -26,7 +26,8 @@ function ciniki_web_main() {
     //
     this.themesAvailable = {
         'default':'Simple - Black/White',
-        'black':'Midnight - Blue/Black',
+        'black':'Midnight Blue - Blue/Black',
+        'midnightorange':'Midnight Orange - Orange/Black',
         'davinci':'Davinci - Brown/Beige',
         'orangebrick':'Orange Brick - Brown/Beige',
         'orangebrick2':'Brick - Brown/Beige',
@@ -38,6 +39,8 @@ function ciniki_web_main() {
     if( M.userPerms&0x01 == 0x01 ) {
         this.themesAvailable['field'] = 'Field - Green/White';
         this.themesAvailable['redbrick'] = 'Red Brick';
+        this.themesAvailable['redbrick2'] = 'Red Brick 2';
+        this.themesAvailable['bluepaws'] = 'Blue Paws';
         this.themesAvailable['private'] = 'Private';
 //      this.themesAvailable['orangebrick'] = 'Orange Brick';
 //      this.themesAvailable['splatter'] = 'Splatter';
@@ -113,9 +116,12 @@ function ciniki_web_main() {
             'advanced':{'label':'Advanced', 'list':{
                 'privatethemes':{'label':'Private Themes', 'visible':'no', 'fn':'M.startApp(\'ciniki.web.privatethemes\',null,\'M.ciniki_web_main.showMenu();\');'},
                 'metatags':{'label':'Meta Tags', 'fn':'M.ciniki_web_main.showSiteSettings(\'M.ciniki_web_main.showMenu();\',\'metatags\');'},
-                'header':{'label':'Header', 'fn':'M.ciniki_web_main.showHeader(\'M.ciniki_web_main.showMenu();\');'},
                 'social':{'label':'Social Media Links', 'fn':'M.startApp(\'ciniki.web.social\',null,\'M.ciniki_web_main.showMenu();\');'},
                 'collections':{'label':'Web Collections', 'visible':'no', 'fn':'M.startApp(\'ciniki.web.collections\',null,\'M.ciniki_web_main.showMenu();\');'},
+                'background':{'label':'Background', 
+                    'visible':function() { return M.modFlagSet('ciniki.web', 0x1000); },
+                    'fn':'M.ciniki_web_main.showBackground(\'M.ciniki_web_main.showMenu();\');'},
+                'header':{'label':'Header', 'fn':'M.ciniki_web_main.showHeader(\'M.ciniki_web_main.showMenu();\');'},
                 'footer':{'label':'Footer', 'fn':'M.ciniki_web_main.showFooter(\'M.ciniki_web_main.showMenu();\');'},
                 'mylivechat':{'label':'My Live Chat', 
                     'visible':function() { return (M.curBusiness.modules['ciniki.web'].flags&0x02000000)>0?'yes':'no';}, 
@@ -232,13 +238,22 @@ function ciniki_web_main() {
         //
         // The panel to allow the user to select a layout
         //
-        this.layout = new M.panel('Color Scheme',
-            'ciniki_web_main', 'layout',
-            'mc', 'narrow', 'sectioned', 'ciniki.web.main.layout');
+        this.layout = new M.panel('Layout', 'ciniki_web_main', 'layout', 'mc', 'narrow', 'sectioned', 'ciniki.web.main.layout');
         this.layout.data = {'site-layout':'default'};
         this.layout.sections = {
             '_layout':{'label':'', 'fields':{
                 'site-layout':{'label':'Layout', 'type':'select', 'options':this.layoutsAvailable},
+                }},
+            '_homepage_sections':{'label':'Home Page Photos', 'fields':{
+                'page-home-number-photos':{'label':'# of Photos', 'type':'toggle', 'default':'1', 'toggles':{'1':'1', '2':'2'}},
+                }},
+            '_homepage_sequences':{'label':'Home Page Sequence', 'fields':{
+                'page-home-content-sequence':{'label':'Content', 'type':'text', 'size':'small'},
+//                'page-home-gallery-slider-sequence':{'label':'Gallery Slider', 'type':'text', 'size':'small'},
+//                'page-home-gallery-sequence':{'label':'Gallery', 'type':'text', 'size':'small'},
+//                'page-home-membergallery-sequence':{'label':'Member Gallery', 'type':'text', 'size':'small'},
+//                'page-home-blog-sequence':{'label':'Blog', 'type':'text', 'size':'small'},
+//                'page-home-events-sequence':{'label':'Events', 'type':'text', 'size':'small'},
                 }},
             '_save':{'label':'', 'buttons':{
                 'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'layout\');'},
@@ -286,6 +301,33 @@ function ciniki_web_main() {
         this.header.addClose('Cancel');
 
         //
+        // The panel to allow the user to select a theme
+        //
+        this.background = new M.panel('Background', 'ciniki_web_main', 'background', 'mc', 'medium', 'sectioned', 'ciniki.web.main.background');
+        this.background.data = {'site-background-image':'0'};
+        this.background.sections = {
+            '_image':{'label':'Image', 'aside':'yes', 'type':'imageform', 'fields':{
+                'site-background-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
+                }},
+            'options':{'label':'Options', 'fields':{
+                'site-background-position-x':{'label':'Position X', 'type':'toggle', 'toggles':{'left':'Left', 'center':'Center', 'right':'Right'}},
+                'site-background-position-y':{'label':'Position Y', 'type':'toggle', 'toggles':{'left':'Left', 'center':'Center', 'right':'Right'}},
+                }},
+            '_save':{'label':'', 'buttons':{
+                'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'background\');'},
+                }},
+        };
+        this.background.fieldValue = this.fieldValue;
+        this.background.fieldHistoryArgs = this.fieldHistoryArgs;
+        this.background.addDropImage = function(iid) {
+            this.setFieldValue('site-background-image', iid);
+            return true;
+        };
+        this.background.deleteImage = this.deleteImage;
+        this.background.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'background\');');
+        this.background.addClose('Cancel');
+
+        //
         // The panel to allow the user to set footer properties
         //
         this.footer = new M.panel('Footer',
@@ -293,7 +335,7 @@ function ciniki_web_main() {
             'mc', 'medium', 'sectioned', 'ciniki.web.main.footer');
         this.footer.data = {};
         this.footer.sections = {
-            '_message':{'label':'Message', 'active':function() {console.log('test'); return ((M.curBusiness.modules['ciniki.web'].flags&0x100000)>0?'yes':'no');}, 'fields':{
+            '_message':{'label':'Message', 'active':function() { return ((M.curBusiness.modules['ciniki.web'].flags&0x100000)>0?'yes':'no');}, 'fields':{
                 'site-footer-message':{'label':'', 'type':'textarea', 'size':'medium', 'hidelabel':'yes'},
                 }},
             'options':{'label':'Options', 'fields':{
@@ -433,20 +475,21 @@ function ciniki_web_main() {
         //
         this.css = new M.panel('Custom CSS',
             'ciniki_web_main', 'css',
-            'mc', 'medium', 'sectioned', 'ciniki.web.main.css');
+            'mc', 'xlarge', 'sectioned', 'ciniki.web.main.css');
         this.css.data = {'site-customer-css':''};
         this.css.sections = {
             '_css':{'label':'Custom CSS', 'fields':{
-                'site-custom-css':{'label':'', 'type':'textarea', 'size':'large', 'hidelabel':'yes'},
+                'site-custom-css':{'label':'', 'type':'textarea', 'size':'xlarge', 'hidelabel':'yes'},
                 }},
             '_save':{'label':'', 'buttons':{
-                'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'css\');'},
+                'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'css\', \'\');'},
                 }},
         };
         this.css.fieldValue = this.fieldValue;
         this.css.fieldHistoryArgs = this.fieldHistoryArgs;
-        this.css.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'css\');');
-        this.css.addClose('Cancel');
+        this.css.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'css\',\'\');');
+        this.css.addLeftButton('back', 'Back', 'M.ciniki_web_main.savePage(\'css\',null);');
+//        this.css.addClose('Cancel');
 
         //
         // The panel setup the SSL settings for the site
@@ -482,6 +525,13 @@ function ciniki_web_main() {
             'options':{'label':'', 'aside':'yes', 'fields':{
                 'page-home-active':{'label':'Display Home Page', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 }},
+            '_slider':{'label':'Image Slider', 'aside':'yes', 'active':'no', 'fields':{
+                'page-home-slider':{'label':'Slider', 'active':'no', 'type':'select', 'options':{}},
+                }},
+            '_slider_buttons':{'label':'', 'aside':'yes', 'visible':'no', 'type':'simplegrid', 'num_cols':1,
+                'addTxt':'Manage Sliders',
+                'addFn':'M.startApp(\'ciniki.web.sliders\',null,\'M.ciniki_web_main.showPage(null,"home");\');',
+                },
             '_slideshow':{'label':'Slide Show', 'aside':'yes', 'fields':{
                 'page-home-gallery-slider-type':{'label':'Display Slide Show', 'type':'toggle', 'default':'no', 'toggles':{'no':'Off', 'random':'Random', 'latest':'Latest', 'forsale':'For Sale'}},
                 'page-home-gallery-slider-size':{'label':'Size', 'type':'select', 'default':'large', 'options':this.sliderSizeOptions},
@@ -557,19 +607,39 @@ function ciniki_web_main() {
                 'page-home-writings-covers':{'label':'Display Book Covers', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
                 'page-home-writings-covers-title':{'label':'Title', 'active':'yes', 'type':'text', 'hint':'Books'},
                 }},
-            '_slider':{'label':'Image Slider', 'aside':'yes', 'active':'no', 'fields':{
-                'page-home-slider':{'label':'Slider', 'active':'no', 'type':'select', 'options':{}},
-                }},
-            '_slider_buttons':{'label':'', 'aside':'yes', 'visible':'no', 'type':'simplegrid', 'num_cols':1,
-                'addTxt':'Manage Sliders',
-                'addFn':'M.startApp(\'ciniki.web.sliders\',null,\'M.ciniki_web_main.showPage(null,"home");\');',
+            'hplinks':{'label':'Links', 'type':'simplegrid', 'aside':'yes', 'num_cols':1,
+                'active':function() { return ((M.userPerms&0x01) && M.modFlagSet('ciniki.web', 0x2000)); }, 
+                'addTxt':'Add Link',
+                'addFn':'M.ciniki_web_main.hplink.open(\'M.ciniki_web_main.showPage(null,"home");\',0);',
                 },
-            '_image':{'label':'Image', 'type':'imageform', 'fields':{
-                'page-home-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
+            '_imagetabs':{'label':'', 'type':'paneltabs', 'selected':'1', 
+                'visible':function() { return (M.ciniki_web_main.home.data['page-home-number-photos'] != null && M.ciniki_web_main.home.data['page-home-number-photos'] > 1 ? 'yes' : 'no'); },
+                'tabs':{
+                    '1':{'label':' 1 ', 'fn':'M.ciniki_web_main.home.switchImage(\'1\');'},
+                    '2':{'label':' 2 ', 'fn':'M.ciniki_web_main.home.switchImage(\'2\');'},
                 }},
-            '_image_caption':{'label':'', 'fields':{
-                'page-home-image-caption':{'label':'Caption', 'type':'text'},
-                'page-home-image-url':{'label':'Link', 'type':'text'},
+            '_image':{'label':'Image', 'type':'imageform', 
+                'visible':function() { return (M.ciniki_web_main.home.sections._imagetabs.selected == '1' ? 'yes' : 'hidden'); },
+                'fields':{
+                    'page-home-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
+                }},
+            '_image_caption':{'label':'', 
+                'visible':function() { return (M.ciniki_web_main.home.sections._imagetabs.selected == '1' ? 'yes' : 'hidden'); },
+                'fields':{
+                    'page-home-image-caption':{'label':'Caption', 'type':'text'},
+                    'page-home-image-url':{'label':'Link', 'type':'text'},
+                }},
+            '_image2':{'label':'2nd Image', 'type':'imageform', 
+                'visible':function() { return (M.ciniki_web_main.home.sections._imagetabs.selected == '2' ? 'yes' : 'hidden'); },
+
+                'fields':{
+                    'page-home-image2':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
+                }},
+            '_image2_caption':{'label':'', 
+                'visible':function() { return (M.ciniki_web_main.home.sections._imagetabs.selected == '2' ? 'yes' : 'hidden'); },
+                'fields':{
+                    'page-home-image2-caption':{'label':'Caption', 'type':'text'},
+                    'page-home-image2-url':{'label':'Link', 'type':'text'},
                 }},
             '_title':{'label':'Title', 'fields':{
                 'page-home-title':{'label':'', 'hidelabel':'yes', 'hint':'', 'type':'text'},
@@ -632,13 +702,37 @@ function ciniki_web_main() {
             return this.data[s];
         };
         this.home.addDropImage = function(iid) {
-            this.setFieldValue('page-home-image', iid);
+            if( this.sections._imagetabs.selected == '2' ) {
+                this.setFieldValue('page-home-image2', iid);
+            } else {
+                this.setFieldValue('page-home-image', iid);
+            }
             return true;
         };
-        this.home.cellValue = function(s, i, j, d) { return d.sponsor.title; }
+        this.home.cellValue = function(s, i, j, d) { 
+            if( s == 'sponsors' ) {
+                return d.sponsor.title; 
+            }
+            if( s == 'hplinks' ) {
+                return d.title; 
+            }
+        }
         this.home.rowFn = function(s, i, d) {
-            return 'M.startApp(\'ciniki.sponsors.ref\',null,\'M.ciniki_web_main.updateSponsors("home");\',\'mc\',{\'ref_id\':\'' + d.sponsor.ref_id + '\'});';
+            if( s == 'sponsors' ) {
+                return 'M.startApp(\'ciniki.sponsors.ref\',null,\'M.ciniki_web_main.updateSponsors("home");\',\'mc\',{\'ref_id\':\'' + d.sponsor.ref_id + '\'});';
+            }
+            if( s == 'hplinks' ) {
+                return 'M.ciniki_web_main.hplink.open(\'M.ciniki_web_main.showPage(null,"home");\',\'' + d.id + '\');';
+            }
         };
+        this.home.switchImage = function(i) {
+            this.sections._imagetabs.selected = i;
+            this.refreshSection('_imagetabs');
+            this.showHideSection('_image');
+            this.showHideSection('_image_caption');
+            this.showHideSection('_image2');
+            this.showHideSection('_image2_caption');
+        }
         this.home.deleteImage = this.deleteImage;
         this.home.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'home\');');
 //      this.home.addLeftButton('website', 'Preview', 'M.showWebsite(\'/\');');
@@ -894,6 +988,8 @@ function ciniki_web_main() {
                 'page-events-past':{'label':'Include past events', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'onchange':'M.ciniki_web_main.events.updateVisible'},
                 'page-events-upcoming-empty-hide':{'label':'Hide empty upcoming', 'visible':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'visible':function() {return M.ciniki_web_main.events.data['page-events-past']}},
                 'page-events-categories-display':{'label':'Display Categories', 'type':'toggle', 'default':'off', 'toggles':this.eventCategoryDisplay},
+                'page-events-thumbnail-format':{'label':'Thumbnail Format', 'type':'toggle', 'default':'square-cropped', 'toggles':{'square-cropped':'Cropped', 'square-padded':'Padded'}},
+                'page-events-thumbnail-padding-color':{'label':'Padding Color', 'type':'colour'},
                 }},
             '_image':{'label':'Image', 'active':'no', 'type':'imageform', 'fields':{
                 'page-events-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
@@ -927,6 +1023,25 @@ function ciniki_web_main() {
         this.events.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'events\');');
 //      this.events.addLeftButton('website', 'Preview', 'M.showWebsite(\'/events\');');
         this.events.addClose('Cancel');
+
+        //
+        // The options and information for the Music Festival page
+        //
+        this.musicfestivals = new M.panel('Music Festival', 'ciniki_web_main', 'musicfestivals', 'mc', 'medium', 'sectioned', 'ciniki.web.main.musicfestivals');
+        this.musicfestivals.data = {};
+        this.musicfestivals.sections = {
+            'options':{'label':'Options', 'fields':{
+                'page-musicfestivals-active':{'label':'Show Music Festival', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                'page-musicfestivals-title':{'label':'Title', 'hint':'Music Festival', 'type':'text'},
+                }},
+            '_save':{'label':'', 'buttons':{
+                'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'musicfestivals\');'},
+                }},
+        };
+        this.musicfestivals.fieldValue = this.fieldValue;
+        this.musicfestivals.fieldHistoryArgs = this.fieldHistoryArgs;
+        this.musicfestivals.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'musicfestivals\');');
+        this.musicfestivals.addClose('Cancel');
 
         //
         // The options and information for the Events page
@@ -1152,6 +1267,8 @@ function ciniki_web_main() {
             'options':{'label':'', 'fields':{
                 'page-pdfcatalogs-active':{'label':'Display Catalogs', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-pdfcatalogs-name':{'label':'Name', 'type':'text', 'hint':'default is Catalogs'},
+                'page-pdfcatalogs-thumbnail-format':{'label':'Thumbnail Format', 'type':'toggle', 'default':'square-cropped', 'toggles':{'square-cropped':'Cropped', 'square-padded':'Padded'}},
+                'page-pdfcatalogs-thumbnail-padding-color':{'label':'Padding Color', 'type':'colour'},
                 }},
             '_save':{'label':'', 'buttons':{
                 'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'pdfcatalogs\');'},
@@ -1471,6 +1588,9 @@ function ciniki_web_main() {
                 'page-membersonly-name':{'label':'Name', 'type':'text', 'hint':'Members Only'},
                 'page-membersonly-password':{'label':'Password', 'type':'text', 'hint':''},
                 }},
+            '_message':{'label':'Password Required Message', 'fields':{
+                'page-membersonly-message':{'label':'Intro message', 'hidelabel':'yes', 'type':'textarea', 'hint':''},
+                }},
             '_save':{'label':'', 'buttons':{
                 'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'membersonly\');'},
                 }},
@@ -1490,7 +1610,8 @@ function ciniki_web_main() {
         this.sponsors.data = {};
         this.sponsors.sections = {
             'options':{'label':'', 'fields':{
-                'page-sponsors-active':{'label':'Display Sponsors', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                'page-sponsors-active':{'label':'Display Sponsors', 'type':'toggle', 'default':'no', 'toggles':this.activeToggles},
+                'page-sponsors-sponsorship-active':{'label':'Display Sponsorship', 'type':'toggle', 'default':'no', 'toggles':this.activeToggles},
                 }},
             '_save':{'label':'', 'buttons':{
                 'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'sponsors\');'},
@@ -1507,11 +1628,12 @@ function ciniki_web_main() {
         //
         this.newsletters = new M.panel('Newsletters',
             'ciniki_web_main', 'newsletters',
-            'mc', 'narrow', 'sectioned', 'ciniki.web.main.newsletters');
+            'mc', 'medium', 'sectioned', 'ciniki.web.main.newsletters');
         this.newsletters.data = {};
         this.newsletters.sections = {
             'options':{'label':'', 'fields':{
                 'page-newsletters-active':{'label':'Display Newsletters', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                'page-newsletters-title':{'label':'Title', 'hint':'Events', 'type':'text'},
                 }},
             '_save':{'label':'', 'buttons':{
                 'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'newsletters\');'},
@@ -1792,6 +1914,9 @@ function ciniki_web_main() {
 //          'info':{'label':'', 'html':'If you want to allow customers the ability to login and manage their account
             'options':{'label':'', 'fields':{
                 'page-account-active':{'label':'Customer Logins', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                'page-account-dealers-only':{'label':'Dealers Only', 
+                    'active':function() { return M.modFlagSet('ciniki.customers', 0x10); },
+                    'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-account-child-logins':{'label':'Child Logins', 
                     'active':function() { return M.modFlagSet('ciniki.customers', 0x200000); },
                     'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
@@ -1822,7 +1947,8 @@ function ciniki_web_main() {
                     'page-account-children-member-non-update':{'label':'Non-Member', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 }},
             'redirect':{'label':'On login', 'fields':{
-                'page-account-signin-redirect':{'label':'Redirect to', 'type':'select', 'options':{}},
+                //'page-account-signin-redirect':{'label':'Redirect to', 'type':'select', 'options':{}},
+                'page-account-signin-redirect':{'label':'Redirect to', 'type':'text'},
                 }},
             'welcome':{'label':'Sign in Greeting', 'fields':{
                 'page-account-content':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'medium', 
@@ -1963,6 +2089,143 @@ function ciniki_web_main() {
         this.search.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'search\');');
         this.search.addClose('Cancel');
     }
+
+    //
+    // The panel to edit Home Page Link
+    //
+    this.hplink = new M.panel('Home Page Link', 'ciniki_web_main', 'hplink', 'mc', 'medium mediumaside', 'sectioned', 'ciniki.web.main.hplink');
+    this.hplink.cbStacked = 'yes';
+    this.hplink.data = null;
+    this.hplink.hplink_id = 0;
+    this.hplink.nplist = [];
+    this.hplink.sections = {
+        '_image_id':{'label':'Image', 'type':'imageform', 'aside':'yes', 'fields':{
+            'image_id':{'label':'', 'type':'image_id', 'hidelabel':'yes', 'controls':'all', 'history':'no',
+                'addDropImage':function(iid) {
+                    M.ciniki_web_main.hplink.setFieldValue('image_id', iid);
+                    return true;
+                    },
+                'addDropImageRefresh':'',
+                'removeImage':function(fid) {
+                    M.ciniki_web_main.hplink.setFieldValue(fid,0);
+                    return true;
+                 },
+             },
+        }},
+        'general':{'label':'', 'fields':{
+            'parent_id':{'label':'Parent', 'type':'select', 'options':{}},
+            'sequence':{'label':'Order', 'type':'text', 'size':'small'},
+            'title':{'label':'Title', 'required':'yes', 'type':'text'},
+            'url':{'label':'URL', 'required':'yes', 'type':'text'},
+            }},
+        'hplinks':{'label':'Sub Links', 'type':'simplegrid', 'num_cols':1,
+            'addTxt':'Add Link',
+            'addFn':'M.ciniki_web_main.hplink.openChild(0);',
+//            'addFn':'M.ciniki_web_main.hplink.open(\'M.ciniki_web_main.hplink.open(null,"' + M.ciniki_web_main.hplink.hplink_id + '");\',0);',
+            },
+        '_buttons':{'label':'', 'buttons':{
+            'save':{'label':'Save', 'fn':'M.ciniki_web_main.hplink.save();'},
+            'delete':{'label':'Delete', 
+                'visible':function() {return M.ciniki_web_main.hplink.hplink_id > 0 ? 'yes' : 'no'; },
+                'fn':'M.ciniki_web_main.hplink.remove();'},
+            }},
+        };
+    this.hplink.fieldValue = function(s, i, d) { return this.data[i]; }
+    this.hplink.fieldHistoryArgs = function(s, i) {
+        return {'method':'ciniki.web.hplinkHistory', 'args':{'business_id':M.curBusinessID, 'hplink_id':this.hplink_id, 'field':i}};
+    }
+    this.hplink.cellValue = function(s, i, j, d) { 
+        if( s == 'hplinks' ) {
+            return d.title; 
+        }
+    }
+    this.hplink.rowFn = function(s, i, d) {
+        if( s == 'hplinks' ) {
+            return 'M.ciniki_web_main.hplink.openChild(' + d.id + ');';
+//            return 'M.ciniki_web_main.hplink.save("M.ciniki_web_main.hplink.open(\'M.ciniki_web_main.hplink.open(null,' + M.ciniki_web_main.hplink.hplink_id + ');\',\'' + d.id + '\');")';
+        }
+    };
+    this.hplink.openChild = function(cid) {
+        this.save('M.ciniki_web_main.hplink.open("M.ciniki_web_main.hplink.open(null,' + this.hplink_id + ');",' + cid + ',' + this.hplink_id + ');');
+    }
+    this.hplink.open = function(cb, hid, pid, list) {
+        if( hid != null ) { this.hplink_id = hid; }
+        if( pid != null ) { this.parent_id = pid; }
+        if( list != null ) { this.nplist = list; }
+        M.api.getJSONCb('ciniki.web.hplinkGet', {'business_id':M.curBusinessID, 'hplink_id':this.hplink_id}, function(rsp) {
+            if( rsp.stat != 'ok' ) {
+                M.api.err(rsp);
+                return false;
+            }
+            var p = M.ciniki_web_main.hplink;
+            p.data = rsp.hplink;
+            p.sections.general.fields.parent_id.options = {'0':'None'};
+            for(i in rsp.parents) {
+                p.sections.general.fields.parent_id.options[rsp.parents[i].id] = rsp.parents[i].title;
+            }
+            if( pid != null ) {
+                p.data.parent_id = pid;
+            }
+            p.refresh();
+            p.show(cb);
+        });
+    }
+    this.hplink.save = function(cb) {
+        if( cb == null ) { cb = 'M.ciniki_web_main.hplink.close();'; }
+        if( !this.checkForm() ) { return false; }
+        if( this.hplink_id > 0 ) {
+            var c = this.serializeForm('no');
+            if( c != '' ) {
+                M.api.postJSONCb('ciniki.web.hplinkUpdate', {'business_id':M.curBusinessID, 'hplink_id':this.hplink_id}, c, function(rsp) {
+                    if( rsp.stat != 'ok' ) {
+                        M.api.err(rsp);
+                        return false;
+                    }
+                    eval(cb);
+                });
+            } else {
+                eval(cb);
+            }
+        } else {
+            var c = this.serializeForm('yes');
+            M.api.postJSONCb('ciniki.web.hplinkAdd', {'business_id':M.curBusinessID}, c, function(rsp) {
+                if( rsp.stat != 'ok' ) {
+                    M.api.err(rsp);
+                    return false;
+                }
+                M.ciniki_web_main.hplink.hplink_id = rsp.id;
+                eval(cb);
+            });
+        }
+    }
+    this.hplink.remove = function() {
+        if( confirm('Are you sure you want to remove hplink?') ) {
+            M.api.getJSONCb('ciniki.web.hplinkDelete', {'business_id':M.curBusinessID, 'hplink_id':this.hplink_id}, function(rsp) {
+                if( rsp.stat != 'ok' ) {
+                    M.api.err(rsp);
+                    return false;
+                }
+                M.ciniki_web_main.hplink.close();
+            });
+        }
+    }
+    this.hplink.nextButtonFn = function() {
+        if( this.nplist != null && this.nplist.indexOf('' + this.hplink_id) < (this.nplist.length - 1) ) {
+            return 'M.ciniki_web_main.hplink.save(\'M.ciniki_web_main.hplink.open(null,' + this.nplist[this.nplist.indexOf('' + this.hplink_id) + 1] + ');\');';
+        }
+        return null;
+    }
+    this.hplink.prevButtonFn = function() {
+        if( this.nplist != null && this.nplist.indexOf('' + this.hplink_id) > 0 ) {
+            return 'M.ciniki_web_main.hplink.save(\'M.ciniki_web_main.hplink_id.open(null,' + this.nplist[this.nplist.indexOf('' + this.hplink_id) - 1] + ');\');';
+        }
+        return null;
+    }
+    this.hplink.addButton('save', 'Save', 'M.ciniki_web_main.hplink.save();');
+    this.hplink.addClose('Cancel');
+    this.hplink.addButton('next', 'Next');
+    this.hplink.addLeftButton('prev', 'Prev');
+
 
     this.start = function(cb, ap, aG) {
         args = {};
@@ -2163,6 +2426,10 @@ function ciniki_web_main() {
             p.sections._url.list.url.value = rsp.url;
 //          p.sections._url.list.url.fn = 'window.open(\'' + rsp.url + '\');';
 //          p.data.settings = rsp.settings;
+            M.ciniki_web_main.background.data = {};
+            for(i in rsp.background) {
+                M.ciniki_web_main.background.data[rsp.background[i].setting.name] = rsp.background[i].setting.value;
+            }
             M.ciniki_web_main.header.data = {};
             for(i in rsp.header) {
                 M.ciniki_web_main.header.data[rsp.header[i].setting.name] = rsp.header[i].setting.value;
@@ -2208,13 +2475,18 @@ function ciniki_web_main() {
     };
 
     this.showLayouts = function(cb) {
-        this.layout.refresh();
-        this.layout.show(cb);
+        this.showPage(cb, 'layout');
+//        this.layout.refresh();
+//        this.layout.show(cb);
     };
 
     this.showHeader = function(cb) {
         this.header.refresh();
         this.header.show(cb);
+    };
+    this.showBackground = function(cb) {
+        this.background.refresh();
+        this.background.show(cb);
     };
 
     this.showFooter = function(cb) {
@@ -2262,6 +2534,14 @@ function ciniki_web_main() {
                 }
                 M.ciniki_web_main.showPageFinish(cb, page, subpage, subpagetitle, rsp);
             });
+        } else if( page == 'layout' ) {
+            M.api.getJSONCb('ciniki.web.pageSettingsGet', {'business_id':M.curBusinessID, 'page':'home', 'content':'yes'}, function(rsp) {
+                if( rsp.stat != 'ok' ) {
+                    M.api.err(rsp);
+                    return false;
+                }
+                M.ciniki_web_main.showPageFinish(cb, page, subpage, subpagetitle, rsp);
+            });
         } else {
             M.api.getJSONCb('ciniki.web.pageSettingsGet', {'business_id':M.curBusinessID, 'page':page, 'content':'yes', 'sponsors':'yes'}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
@@ -2291,6 +2571,7 @@ function ciniki_web_main() {
             if( this[page].data != null && this[page].data['page-home-membergallery-slider-size'] == null ) {
                 this[page].data['page-home-membergallery-slider-size'] = 'xlarge';
             }
+            this.home.sections._imagetabs.selected = 1;
             if( (M.curBusiness.modules['ciniki.web'].flags&0x02) > 0 ) {
                 this.home.sections._slider.active = 'yes';
                 this.home.sections._slider_buttons.visible = 'yes';
@@ -2306,6 +2587,9 @@ function ciniki_web_main() {
                 this.home.sections._slider.active = 'no';
                 this.home.sections._slider_buttons.visible = 'no';
                 this.home.sections._slider.fields['page-home-slider'].active = 'no';
+            }
+            if( rsp.hplinks != null ) {
+                this.home.data.hplinks = rsp.hplinks;
             }
 //          if( M.curBusiness.modules['ciniki.artcatalog'] != null ) {
 //              this.home.sections.options.fields['page-home-gallery-slider-type'].active = 'yes';
@@ -2378,13 +2662,13 @@ function ciniki_web_main() {
                 this.account.sections.options.fields['page-account-header-buttons'].active = 'yes';
             }
             // Setup the redirects
-            var popts = {'':'Nowhere', '/':'Home', 'back':'Previous Page'};
+//            var popts = {'':'Nowhere', '/':'Home', 'back':'Previous Page'};
 //          if( M.curBusiness.modules['ciniki.artcatalog'] != null ) { popts['/gallery'] = 'Gallery'; }
 //          if( M.curBusiness.modules['ciniki.gallery'] != null ) { popts['/gallery'] = 'Gallery'; }
-            if( M.curBusiness.modules['ciniki.blog'] != null 
-                && (M.curBusiness.modules['ciniki.blog'].flags&0x100) > 0) { popts['/memberblog'] = 'Member Blog'; }
-            if( M.curBusiness.modules['ciniki.membersonly'] != null ) { popts['/membersonly'] = 'Members Only'; }
-            this.account.sections.redirect.fields['page-account-signin-redirect'].options = popts;
+//            if( M.curBusiness.modules['ciniki.blog'] != null 
+//                && (M.curBusiness.modules['ciniki.blog'].flags&0x100) > 0) { popts['/memberblog'] = 'Member Blog'; }
+//            if( M.curBusiness.modules['ciniki.membersonly'] != null ) { popts['/membersonly'] = 'Members Only'; }
+//            this.account.sections.redirect.fields['page-account-signin-redirect'].options = popts;
             this[page].refresh();
             this[page].show(cb);
         } else if( page == 'exhibitions' ) {
@@ -2578,7 +2862,8 @@ function ciniki_web_main() {
             });
     };
 
-    this.savePage = function(page) {
+    this.savePage = function(page, cb) {
+        if( cb == null ) { cb = 'M.ciniki_web_main[\'' + page + '\'].close();'; }
         var c = this[page].serializeForm('no');
         if( c != '' ) {
             M.api.postJSONCb('ciniki.web.siteSettingsUpdate', {'business_id':M.curBusinessID}, c, function(rsp) {
@@ -2586,10 +2871,10 @@ function ciniki_web_main() {
                     M.api.err(rsp);
                     return false;
                 } 
-                M.ciniki_web_main[page].close();
+                eval(cb);
             });
         } else {
-            this[page].close();
+            eval(cb);
         }
     };
 

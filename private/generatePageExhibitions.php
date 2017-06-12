@@ -47,7 +47,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
         //
         // If there was an error locating the files, display generic error
         //
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1116', 'msg'=>'Unable to locate file'));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.43', 'msg'=>'Unable to locate file'));
     }
 
     //
@@ -100,7 +100,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
         $rc = ciniki_info_web_pageDetails($ciniki, $settings, $ciniki['request']['business_id'],
             array('content_type'=>10));
         if( $rc['stat'] != 'ok' ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1302', 'msg'=>"I'm sorry, but we can't find any information about the requestion application.", 'err'=>$rc['err']));;
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.44', 'msg'=>"I'm sorry, but we can't find any information about the requestion application.", 'err'=>$rc['err']));;
         }
         $info = $rc['content'];
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processPage');
@@ -151,7 +151,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
         $rc = ciniki_artgallery_web_exhibitionDetails($ciniki, $settings, 
             $ciniki['request']['business_id'], $exhibition_permalink);
         if( $rc['stat'] != 'ok' ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1304', 'msg'=>"I'm sorry, but we can't seem to find the image your requested.", $rc['err']));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.45', 'msg'=>"I'm sorry, but we can't seem to find the image your requested.", $rc['err']));
         }
         $exhibition = $rc['exhibition'];
 
@@ -171,7 +171,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
         }
         
         if( !isset($exhibition['images']) || count($exhibition['images']) < 1 ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1132', 'msg'=>"I'm sorry, but we can't seem to find the image your requested."));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.46', 'msg'=>"I'm sorry, but we can't seem to find the image your requested."));
         }
 
         $first = NULL;
@@ -212,7 +212,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
         }
     
         if( $img == NULL || $img['image_id'] <= 0 ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1305', 'msg'=>"I'm sorry, but we can't seem to find the image your requested."));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.47', 'msg'=>"I'm sorry, but we can't seem to find the image your requested."));
         }
     
         //
@@ -280,7 +280,7 @@ function ciniki_web_generatePageExhibitions($ciniki, $settings) {
         $rc = ciniki_artgallery_web_exhibitionDetails($ciniki, $settings, 
             $ciniki['request']['business_id'], $exhibition_permalink);
         if( $rc['stat'] != 'ok' ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1306', 'msg'=>"I'm sorry, but we can't seem to find the exhibition you requested."));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.48', 'msg'=>"I'm sorry, but we can't seem to find the exhibition you requested."));
         }
         $exhibition = $rc['exhibition'];
         // Format the date

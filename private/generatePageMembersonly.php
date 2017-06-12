@@ -32,7 +32,7 @@ function ciniki_web_generatePageMembersonly($ciniki, $settings) {
             $err_msg = '';  
             if( isset($_POST['password']) && $_POST['password'] == $settings['page-membersonly-password'] ) {
                 $_SESSION['membersonly']['authenticated'] = 'yes';
-                header('Location: http://' . $_SERVER[HTTP_HOST] . $_SERVER[REQUEST_URI]);
+                header('Location: http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
                 exit;
             } else {
                 //
@@ -46,7 +46,16 @@ function ciniki_web_generatePageMembersonly($ciniki, $settings) {
                 $content = $rc['content'];
 
                 $content .= "<div id='content'>\n";
-                $content .= "<p>This page is password protected.</p>";
+                if( isset($settings['page-membersonly-message']) && $settings['page-membersonly-message'] != '' ) {
+                    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+                    $rc = ciniki_web_processContent($ciniki, $settings, $settings['page-membersonly-message'], 'wide');   
+                    if( $rc['stat'] != 'ok' ) {
+                        return $rc;
+                    }
+                    $content .= $rc['content'];
+                } else {
+                    $content .= "<p>This page is password protected.</p>";
+                }
                 $content .= "<form method='POST' action=''>";
                 if( $err_msg != '' ) {
                     $content .= "<p class='formerror'>$err_msg</p>\n";
@@ -82,10 +91,10 @@ function ciniki_web_generatePageMembersonly($ciniki, $settings) {
         // to the signin page
         //
         if( !isset($ciniki['business']['modules']['ciniki.membersonly']) ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2195', 'msg'=>'Page does not exist.'));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.74', 'msg'=>'Page does not exist.'));
         }
         if( !isset($settings['page-membersonly-active']) || $settings['page-membersonly-active'] != 'yes' ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2196', 'msg'=>'Page does not active.'));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.75', 'msg'=>'Page does not active.'));
         }
         if( !isset($ciniki['session']['customer']['member_status']) 
             || $ciniki['session']['customer']['member_status'] != '10' ) {
@@ -177,12 +186,14 @@ function ciniki_web_generatePageMembersonly($ciniki, $settings) {
         }
         $page_content .= $rc['content'];
     }
+    
+    $ciniki['request']['page-container-class'] = 'ciniki-membersonly';
 
     //
     // Add the header
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
-    $rc = ciniki_web_generatePageHeader($ciniki, $settings, 'About', $submenu);
+    $rc = ciniki_web_generatePageHeader($ciniki, $settings, 'Members Only', $submenu);
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }

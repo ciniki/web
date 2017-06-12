@@ -29,7 +29,7 @@ function ciniki_web_generatePageMemberBlog($ciniki, $settings) {
     //
     if( !isset($ciniki['business']['modules']['ciniki.blog'])
         || ($ciniki['business']['modules']['ciniki.blog']['flags']&0x0100) == 0 ) {
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1610', 'msg'=>'Page does not exist.'));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.70', 'msg'=>'Page does not exist.'));
     }
     if( !isset($ciniki['session']['customer']['member_status']) 
         || $ciniki['session']['customer']['member_status'] != '10' ) {

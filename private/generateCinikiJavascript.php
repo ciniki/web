@@ -18,6 +18,7 @@ function ciniki_web_generateCinikiJavascript($ciniki) {
     // This is done so the image can be properly fit to the size of the screen.
     //
     if( (isset($_SERVER['HTTP_CLUSTER_HTTPS']) && $_SERVER['HTTP_CLUSTER_HTTPS'] == 'on')
+        || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
         || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443') )  {
         $url = $ciniki['request']['ssl_domain_base_url'];
     } else {
@@ -41,9 +42,9 @@ function ciniki_web_generateCinikiJavascript($ciniki) {
                 . "if(x.readyState==4&&x.status==200){"
                     . "var r=eval('('+x.responseText+')');"
                     . "if(r.stat!='ok'){console.log(x.responseText);}"
-                    . "else{f(r);}"
+                    . "f(r);"
                 . "};"
-                . "if(x.readyState>2&&x.status>=300){console.log('apierr:'+x.status);}"
+                . "if(x.readyState>2&&x.status>=300){f({'stat':'fail', 'err':{'code':'300', 'msg':'Error connecting to server.'}});console.log('apierr:'+x.status);}"
             . "};"
             . "x.send(null);"
         . "};"  // end this.getBg

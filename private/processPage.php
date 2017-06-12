@@ -100,11 +100,25 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
             $content .= "<h2>" . $page['child_title'] . "</h2>";
         }
         if( count($page['children']) > 0 ) {
-            if( ($page['flags']&0x80) > 0 ) {
+            if( isset($page['flags']) && ($page['flags']&0x0200) == 0x0200 ) {
+                $children = '';
+                foreach($page['children'] as $cid => $child) {
+                    $url = $base_url . '/' . $page['permalink'] . '/' . $child['permalink'];
+                    $children .= "<a href='" . $url . "' title='" . $child['name'] . "'>" . $child['name'] . "</a><br/>";
+                }
+                if( $children != '' ) {
+                    $content .= "<div class='block block-files'>" . $children . "</div>";
+                }
+            } elseif( isset($page['flags']) && ($page['flags']&0x80) > 0 ) {
                 foreach($page['children'] as $cid => $child) {
                     $page['children'][$cid]['title'] = $child['name'];
                     $page['children'][$cid]['image_id'] = $child['list'][$child['id']]['image_id'];
-                    $page['children'][$cid]['is_details'] = 'yes';
+                    $page['children'][$cid]['synopsis'] = (isset($child['list'][$child['id']]['synopsis']) ? $child['list'][$child['id']]['synopsis'] : '');
+                    if( isset($child['list'][$child['id']]['page_type']) && $child['list'][$child['id']]['page_type'] == 20 ) {
+                        $page['children'][$cid]['url'] = $child['list'][$child['id']]['page_redirect_url'];
+                    } else {
+                        $page['children'][$cid]['is_details'] = 'yes';
+                    }
                 }
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockImageList');
                 $rc = ciniki_web_processBlockImageList($ciniki, $settings, $ciniki['request']['business_id'], array(

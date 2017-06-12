@@ -119,6 +119,9 @@ function ciniki_web_siteSettings($ciniki) {
     if( isset($ciniki['business']['modules']['ciniki.events']) ) {
         $pages['events'] = array('display_name'=>'Events', 'active'=>'no');
     }
+    if( isset($ciniki['business']['modules']['ciniki.musicfestivals']) ) {
+        $pages['musicfestivals'] = array('display_name'=>'Music Festival', 'active'=>'no');
+    }
     if( isset($ciniki['business']['modules']['ciniki.exhibitions']) ) {
         $pages['exhibitions'] = array('display_name'=>'Exhibitions', 'active'=>'no');
     }
@@ -258,7 +261,7 @@ function ciniki_web_siteSettings($ciniki) {
         return $rc;
     }
     if( !isset($rc['settings']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'623', 'msg'=>'No settings found, site not configured.'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.169', 'msg'=>'No settings found, site not configured.'));
     }
     $settings = $rc['settings'];
 
@@ -345,6 +348,9 @@ function ciniki_web_siteSettings($ciniki) {
     }
     if( isset($settings['page-events-active']) && $settings['page-events-active'] == 'yes' ) {
         $pages['events']['active'] = 'yes';
+    }
+    if( isset($settings['page-musicfestivals-active']) && $settings['page-musicfestivals-active'] == 'yes' ) {
+        $pages['musicfestivals']['active'] = 'yes';
     }
     if( isset($settings['page-filmschedule-active']) && $settings['page-filmschedule-active'] == 'yes' ) {
         $pages['filmschedule']['active'] = 'yes';
@@ -435,6 +441,7 @@ function ciniki_web_siteSettings($ciniki) {
     //
     $rc_settings = array();
     $rc_header = array();
+    $rc_background = array();
     $rc_footer = array();
     $rc_advanced = array();
     if( isset($settings['site-theme']) && $settings['site-theme'] != '' ) {
@@ -446,6 +453,24 @@ function ciniki_web_siteSettings($ciniki) {
         array_push($rc_settings, array('setting'=>array('name'=>'layout', 'display_name'=>'Theme', 'value'=>$settings['site-layout'])));
     } else {
         array_push($rc_settings, array('setting'=>array('name'=>'layout', 'display_name'=>'Theme', 'value'=>'default')));
+    }
+    if( isset($settings['site-background-image']) && $settings['site-background-image'] > 0 ) {
+        array_push($rc_background, array('setting'=>array('name'=>'site-background-image', 'display_name'=>'Background Image', 'value'=>$settings['site-background-image'])));
+    } else {
+        array_push($rc_background, array('setting'=>array('name'=>'site-background-image', 'display_name'=>'Background Image', 'value'=>'0')));
+    }
+    $bg_keys = array(
+        'site-background-overlay-colour',
+        'site-background-overlay-percent',
+        'site-background-position-x',
+        'site-background-position-y',
+        );
+    foreach($bg_keys as $bg_key) {
+        if( isset($settings[$bg_key]) && $settings[$bg_key] != '' ) {
+            array_push($rc_background, array('setting'=>array('name'=>$bg_key, 'value'=>$settings[$bg_key])));
+        } else {
+            array_push($rc_background, array('setting'=>array('name'=>$bg_key, 'value'=>'')));
+        }
     }
     if( isset($settings['site-header-image']) && $settings['site-header-image'] > 0 ) {
         array_push($rc_header, array('setting'=>array('name'=>'site-header-image', 'display_name'=>'Header Image', 'value'=>$settings['site-header-image'])));
@@ -504,6 +529,7 @@ function ciniki_web_siteSettings($ciniki) {
     //
     $rsp['settings'] = $rc_settings;
     $rsp['header'] = $rc_header;
+    $rsp['background'] = $rc_background;
     $rsp['footer'] = $rc_footer;
     $rsp['advanced'] = $rc_advanced;
     $rsp['url'] = $url;

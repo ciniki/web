@@ -24,6 +24,16 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
     }
     $name = preg_replace('/[^a-zA-Z0-9]/', '', $block['canvas']);
 
+    //
+    // Check for legend options
+    //
+    if( isset($options['legend']) && $options['legend'] == 'yes' ) {
+        $options['legend_js'] = '{'
+            . 'display: true,'
+            . 'position: "bottom",'
+            . '}';
+    }
+
     $content = '';
 
     if( isset($block['title']) && $block['title'] != '' ) {
@@ -104,12 +114,24 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
                     $js_datasets[$k] .= '{'
                         . 'label: "' . $dataset['label'] . '",'
                         . 'type: "' . $dataset['type'] . '",'
-                        . 'fill: false,'
+                        . 'fill: ' . (isset($dataset['fill']) ? $dataset['fill'] : 'false') . ','
                         . '';
                     if( isset($dataset['yAxisID']) ) {
                         $js_datasets[$k] .= 'yAxisID:"' . $dataset['yAxisID'] . '",';
                     }
-                    $js_datasets[$k] .= $colours[$dataset['colour']];
+                    if( isset($dataset['colour']) ) {
+                        $js_datasets[$k] .= $colours[$dataset['colour']];
+                    } elseif( isset($dataset['colours']) ) {
+                        foreach($dataset['colours'] as $colour => $value) {
+                            $js_datasets[$k] .= $colour . 'Color: "' . $value . '",';
+                        }
+                    }
+                    if( isset($dataset['lineTension']) ) {
+                        $js_datasets[$k] .= 'lineTension: ' . $dataset['lineTension'] . ',';
+                    }
+                    if( isset($dataset['pointRadius']) ) {
+                        $js_datasets[$k] .= 'pointRadius: ' . $dataset['pointRadius'] . ',';
+                    }
                     $js_datasets[$k] .= 'data: [';
                 }
                 $js_datasets[$k] .= $data_point . ',';
@@ -159,7 +181,7 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
             . 'type:"bar",'
             . 'data: overlayData_' . $name . '[' . $k . '],'
             . 'options: {'
-                . 'legend: {display:false},'
+                . (isset($options['legend_js']) ? 'legend: ' . $options['legend_js'] : 'legend: {display:false}') . ','
                 . 'responsive: true,'
                 . 'stacked: false,'
                 . 'scales: {'
@@ -176,7 +198,9 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
                 . 'id:"y-axis-1",'
                 . 'ticks:{'
                     . 'beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
-                    . "userCallback: function(dataLabel, index) { return dataLabel + '%';},"
+                    . "userCallback: function(dataLabel, index) { "
+                        . (isset($options['ticklabel_js']) ? $options['ticklabel_js'] : "return dataLabel + '%';")
+                        . "},"
                     . '},'
                 . '},{'
  //               . 'type:"linear",'
@@ -186,12 +210,16 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
                 . 'gridLines: {drawOnChartArea:false},'
                 . 'ticks:{'
                     . 'beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
-                    . "userCallback: function(dataLabel, index) { return dataLabel + '%';},"
+                    . "userCallback: function(dataLabel, index) { "
+                        . (isset($options['ticklabel_js']) ? $options['ticklabel_js'] : "return dataLabel + '%';")
+                        . "},"
                     . '},';
         } else {
             $js .= 'ticks:{'
                 . 'beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
-                . "userCallback: function(dataLabel, index) { return dataLabel + '%';},"
+                . "userCallback: function(dataLabel, index) { "
+                    . (isset($options['ticklabel_js']) ? $options['ticklabel_js'] : "return dataLabel + '%';")
+                    . "},"
                 . '},';
         }
         $js .= '}],'
@@ -237,7 +265,7 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
                 . 'type:"bar",'
                 . 'data: overlayData_' . $name . '[n],'
                 . 'options: {'
-                    . 'legend: {display:false},'
+                    . (isset($options['legend_js']) ? 'legend: ' . $options['legend_js'] : 'legend: {display:false}') . ','
                     . 'scales: {'
                         . 'xAxes: [{ticks:{beginAtZero:false}}],'
                         . 'yAxes: [{';
@@ -248,7 +276,9 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
                 . 'id:"y-axis-1",'
                 . 'ticks:{'
                     . 'beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
-                    . "userCallback: function(dataLabel, index) { return dataLabel + '%';},"
+                    . "userCallback: function(dataLabel, index) { "
+                        . (isset($options['ticklabel_js']) ? $options['ticklabel_js'] : "return dataLabel + '%';")
+                        . "},"
                     . '},'
                 . '},{'
                 . 'type:"linear",'
@@ -258,12 +288,16 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
                 . 'gridLines: {drawOnChartArea:false},'
                 . 'ticks:{'
                     . 'beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
-                    . "userCallback: function(dataLabel, index) { return dataLabel + '%';},"
+                    . "userCallback: function(dataLabel, index) { "
+                        . (isset($options['ticklabel_js']) ? $options['ticklabel_js'] : "return dataLabel + '%';")
+                        . "},"
                     . '},';
         } else {
             $js .= 'ticks:{'
                 . 'beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
-                . "userCallback: function(dataLabel, index) { return dataLabel + '%';},"
+                . "userCallback: function(dataLabel, index) { "
+                    . (isset($options['ticklabel_js']) ? $options['ticklabel_js'] : "return dataLabel + '%';")
+                    . "},"
                 . '},';
         }
         $js .= '}],'
@@ -314,12 +348,24 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
             $js .= '{'
                 . 'label: "' . $dataset['label'] . '",'
                 . 'type: "' . $dataset['type'] . '",'
-                . 'fill:false,'
+                . 'fill: ' . (isset($dataset['fill']) ? $dataset['fill'] : 'false') . ','
                 . '';
             if( isset($dataset['yAxisID']) ) {
                 $js .= 'yAxisID:"' . $dataset['yAxisID'] . '",';
             }
-            $js .= $colours[$dataset['colour']];
+            if( isset($dataset['colour']) ) {
+                $js .= $colours[$dataset['colour']];
+            } elseif( isset($dataset['colours']) ) {
+                foreach($dataset['colours'] as $colour => $value) {
+                    $js .= $colour . 'Color: "' . $value . '",';
+                }
+            }
+            if( isset($dataset['lineTension']) ) {
+                $js .= 'lineTension: ' . $dataset['lineTension'] . ',';
+            }
+            if( isset($dataset['pointRadius']) ) {
+                $js .= 'pointRadius: ' . $dataset['pointRadius'] . ',';
+            }
             $js .= 'data: [';
             foreach($dataset['data'] as $data_point) {
                 $js .= $data_point . ',';
@@ -334,7 +380,7 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
             . 'data: overlayData,'
             . 'options: {'
                 . 'responsive: true,'
-                . 'legend:{display:false},'
+                . (isset($options['legend_js']) ? 'legend: ' . $options['legend_js'] : 'legend: {display:false}') . ','
                 . 'scales:{'
                     . 'xAxes: [{'
                         . 'ticks:{beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . '},'
@@ -347,7 +393,9 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
                 . 'id:"y-axis-1",'
                 . 'ticks:{'
                     . 'beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
-                    . "userCallback: function(dataLabel, index) { return dataLabel + '%';},"
+                    . "userCallback: function(dataLabel, index) { "
+                        . (isset($options['ticklabel_js']) ? $options['ticklabel_js'] : "return dataLabel + '%';")
+                        . "},"
                     . '},'
                 . '},{'
                 . 'type:"linear",'
@@ -357,12 +405,16 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
                 . 'gridLines: {drawOnChartArea:false},'
                 . 'ticks:{'
                     . 'beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
-                    . "userCallback: function(dataLabel, index) { return dataLabel + '%';},"
+                    . "userCallback: function(dataLabel, index) { "
+                        . (isset($options['ticklabel_js']) ? $options['ticklabel_js'] : "return dataLabel + '%';")
+                        . "},"
                     . '},';
         } else {
             $js .= 'ticks:{'
                 . 'beginAtZero:' . (isset($options['scaleBeginAtZero'])?$options['scaleBeginAtZero']:'true') . ','
-                . "userCallback: function(dataLabel, index) { return dataLabel + '%';},"
+                . "userCallback: function(dataLabel, index) { "
+                    . (isset($options['ticklabel_js']) ? $options['ticklabel_js'] : "return dataLabel + '%';")
+                    . "},"
                 . '},';
         }
         $js .= '}],'
@@ -370,7 +422,9 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
                 . 'tooltips:{'
                     . "mode:'single',"
                     . "callbacks:{"
-                        . "label: function(tooltipItem, data){return tooltipItem.yLabel +'%';},"
+                        . "label: function(tooltipItem, data){"
+                        . (isset($options['tooltiplabel_js']) ? $options['tooltiplabel_js'] : "return tooltipItem.yLabel + '%';")
+                        . "},"
                     . "},"
                 . '},'
             . '},'

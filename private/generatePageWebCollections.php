@@ -150,7 +150,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
                     }
                     $block_content .= "<article class='page page-home'>\n"
                         . "<header class='entry-title'><h1 class='entry-title'>Past "
-                        . ((isset($cobj['title']) && $cobj['title'] != '')?$cobj['title2']:'Events')
+                        . ((isset($cobj['title']) && $cobj['title'] != '')?$cobj['title']:'Events')
                         . "</h1></header>\n"
                         . "<div class='entry-content'>"
                         . $rc['content']
@@ -213,7 +213,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
                     }
                     $block_content .= "<article class='page page-home'>\n"
                         . "<header class='entry-title'><h1 class='entry-title'>Past "
-                        . ((isset($cobj['title']) && $cobj['title'] != '')?$cobj['title2']:'Workshops')
+                        . ((isset($cobj['title']) && $cobj['title'] != '')?$cobj['title']:'Workshops')
                         . "</h1></header>\n"
                         . "<div class='entry-content'>"
                         . $rc['content']
@@ -277,7 +277,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
                     }
                     $block_content .= "<article class='page page-home'>\n"
                         . "<header class='entry-title'><h1 class='entry-title'>Past "
-                        . ((isset($cobj['title']) && $cobj['title'] != '')?$cobj['title2']:'Exhibitions')
+                        . ((isset($cobj['title']) && $cobj['title'] != '')?$cobj['title']:'Exhibitions')
                         . "</h1></header>\n"
                         . "<div class='entry-content'>"
                         . $rc['content']
@@ -290,7 +290,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
             $page_content .= $block_content;
         } 
         else {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2066', 'msg'=>"There are no items for this collection."));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.93', 'msg'=>"There are no items for this collection."));
         }
     }
 

@@ -1,0 +1,157 @@
+@import "/ciniki-web-themes/black/style.css";
+
+#content h1 {
+    color: #FF6600;
+}
+
+a,
+a:visited,
+a:hover,
+a:active,
+#content a.contact-email,
+#content a,
+#content a:visited,
+#content a:hover,
+#content a:active {
+    color: #CC6611;
+}
+
+header h1,
+header h1 a:visited,
+header h1 a:hover,
+header h1 a:active {
+    color: #FF6600;
+}
+
+
+#content h2,
+#content h1 a,
+#content h1 a:visited,
+#content h1 a:hover,
+#content h1 a:active,
+#content h2 a,
+#content h2 a:visited,
+#content h2 a:hover,
+#content h2 a:active {
+    color: #FF6600;
+}
+
+#content a.clist-url,
+#content a.cilist-url,
+#content a.members-url,
+#content a.sponsors-url,
+#content a.links-url,
+#content a.downloads-url,
+#content a.event-url {
+    color: #CC6611;
+}
+
+#content form input.submit {
+    border: 2px solid #FF6600;
+    background: #FF6600;
+    background: linear-gradient(to bottom,  #EE9955,  #CC6611);
+}
+
+#content form input.bigsubmit {
+    border: 2px solid #FF6600;
+    background: #FF6600;
+    background: linear-gradient(to bottom,  #EE9955,  #CC6611);
+}
+
+#content div.largebutton-list div.button-list-button a, 
+#content div.button-list div.button-list-button a {
+    border: 2px solid #FF6600;
+    background: #FF6600;
+    background: linear-gradient(to bottom,  #EE9955,  #CC6611);
+}
+
+#content div.cart-pricelist input.cart-submit {
+    border: 2px solid #FF6600;
+    background: #FF6600;
+    background: linear-gradient(to bottom,  #EE9955,  #CC6611);
+}
+
+#content div.word-cloud span.size-9 a,
+#content div.word-cloud span.size-9 a:visited,
+#content div.word-cloud span.size-9 a:hover, 
+#content div.word-cloud span.size-9 a:active { 
+    text-decoration: bold; color: #FF8B00; 
+}
+
+#content div.word-cloud span.size-8 a,
+#content div.word-cloud span.size-8 a:visited,
+#content div.word-cloud span.size-8 a:hover, 
+#content div.word-cloud span.size-8 a:active { 
+    text-decoration: bold; color: #FF86; 
+}
+
+#content div.word-cloud span.size-7 a,
+#content div.word-cloud span.size-7 a:visited,
+#content div.word-cloud span.size-7 a:hover, 
+#content div.word-cloud span.size-7 a:active { 
+    text-decoration: bold; color: #FF7B00; 
+}
+
+#content div.word-cloud span.size-6 a,
+#content div.word-cloud span.size-6 a:visited,
+#content div.word-cloud span.size-6 a:hover, 
+#content div.word-cloud span.size-6 a:active { 
+    text-decoration: bold; color: #FF7600; 
+}
+
+#content div.word-cloud span.size-5 a,
+#content div.word-cloud span.size-5 a:visited,
+#content div.word-cloud span.size-5 a:hover, 
+#content div.word-cloud span.size-5 a:active { 
+    text-decoration: bold; color: #FF6B00; 
+}
+
+#content div.word-cloud span.size-4 a,
+#content div.word-cloud span.size-4 a:visited,
+#content div.word-cloud span.size-4 a:hover, 
+#content div.word-cloud span.size-4 a:active { 
+    text-decoration: bold; color: #FF6600; 
+}
+
+#content div.word-cloud span.size-3 a,
+#content div.word-cloud span.size-3 a:visited,
+#content div.word-cloud span.size-3 a:hover, 
+#content div.word-cloud span.size-3 a:active { 
+    text-decoration: bold; color: #EF6610; 
+}
+
+#content div.word-cloud span.size-2 a,
+#content div.word-cloud span.size-2 a:visited,
+#content div.word-cloud span.size-2 a:hover, 
+#content div.word-cloud span.size-2 a:active { 
+    text-decoration: bold; color: #DF6620; 
+}
+
+#content div.word-cloud span.size-1 a,
+#content div.word-cloud span.size-1 a:visited,
+#content div.word-cloud span.size-1 a:hover, 
+#content div.word-cloud span.size-1 a:active { 
+    text-decoration: bold; color: #CF6630; 
+}
+
+#content div.word-cloud span.size-0 a,
+#content div.word-cloud span.size-0 a:visited,
+#content div.word-cloud span.size-0 a:hover, 
+#content div.word-cloud span.size-0 a:active { 
+    text-decoration: bold; color: #BF6640; 
+}
+
+#sub-menu-container li.menu-item {
+    color: #FF6600;
+    border: 2px solid #FF9966;
+    background-color: #FF6600;
+    background: linear-gradient(to bottom, #EE9955, #CC6611);
+}
+
+@media screen and (min-width: 33em) {
+    #sub-menu-container {
+        color: #FF6600;
+        border: 2px solid #FF9966;
+        background: linear-gradient(to bottom, #EE9955, #CC6611);
+    }
+}

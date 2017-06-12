@@ -21,7 +21,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
     if( isset($ciniki['business']['modules']['ciniki.info'])
         && isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'download'
         && isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' 
-        && isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][2] != '' 
+        && isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' 
         ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'fileDownload');
         $rc = ciniki_info_web_fileDownload($ciniki, $ciniki['request']['business_id'], 
@@ -47,7 +47,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
         //
         // If there was an error locating the files, display generic error
         //
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'1759', 'msg'=>'We\'re sorry, but the file you requested does not exist.'));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.71', 'msg'=>'We\'re sorry, but the file you requested does not exist.'));
     }
 
     //
@@ -147,7 +147,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
         $member = $rc['member'];
 
         if( !isset($member['images']) || count($member['images']) < 1 ) {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'967', 'msg'=>"I'm sorry, but the image you requested does not exist."));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.72', 'msg'=>"I'm sorry, but the image you requested does not exist."));
         }
 
         $first = NULL;
@@ -199,7 +199,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
             }
             $img_url = $rc['url'];
         } else {
-            return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2151', 'msg'=>"We're sorry, but the image you requested does not exist."));
+            return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.73', 'msg'=>"We're sorry, but the image you requested does not exist."));
         }
 
         //

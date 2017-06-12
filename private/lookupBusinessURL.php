@@ -74,6 +74,6 @@ function ciniki_web_lookupBusinessURL(&$ciniki, $business_id) {
         }
     }
 
-    return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'1052', 'msg'=>'Unable to find business URL'));
+    return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.109', 'msg'=>'Unable to find business URL'));
 }
 ?>
