@@ -92,12 +92,20 @@ function ciniki_web_processBlockOrderDetails(&$ciniki, $settings, $business_id, 
                         . ($item['quantity'] > 1 ? ' ' . $item['quantity_plural'] : ' ' . $item['quantity_single'])
                         . "</td>";
                 }
-                $content .= "<td id='order_item_price_" . $item['id'] . "'>" . $item['price_text'] 
-                    . ((isset($item['discount_text']) && $item['discount_text'] != '') ? '<span class="discount-text">' . $item['discount_text'] . '</span>' : '')
-                    . ((isset($item['deposit_text']) && $item['deposit_text'] != '') ? '<span class="deposit-text">' . $item['deposit_text'] . '</span>' : '')
-                    . "</td>";
-                $content .= "<td><span id='order_item_total_" . $item['id'] . "'>" . $item['total_text'] . "</span>"
-                    . "<span class='tax-text'>" . $item['tax_text'] . "</span></td>";
+                if( isset($item['flags']) && ($item['flags']&0x0200) == 0x0200 ) {
+                    //
+                    // Prepaid item, hide the price and total
+                    //
+                    $content .= "<td><span id='order_item_price_" . $item['id'] . "' style='display: none;'></span></td>"
+                        . "<td><span id='order_item_total_" . $item['id'] . "' style='display: none;'></span></td>";
+                } else {
+                    $content .= "<td id='order_item_price_" . $item['id'] . "'>" . $item['price_text'] 
+                        . ((isset($item['discount_text']) && $item['discount_text'] != '') ? '<span class="discount-text">' . $item['discount_text'] . '</span>' : '')
+                        . ((isset($item['deposit_text']) && $item['deposit_text'] != '') ? '<span class="deposit-text">' . $item['deposit_text'] . '</span>' : '')
+                        . "</td>";
+                    $content .= "<td><span id='order_item_total_" . $item['id'] . "'>" . $item['total_text'] . "</span>"
+                        . "<span class='tax-text'>" . $item['tax_text'] . "</span></td>";
+                }
                 $content .= "</tr>";
             }
             $content .= "</tbody>";
