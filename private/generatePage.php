@@ -131,11 +131,11 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
     $submenu = array();
     
     $page_menu = array();
-    if( $top_page != null && ($top_page['flags']&0x40) == 0x040 && isset($top_page['children']) && count($top_page['children']) > 0 ) {
+    if( $top_page != null && ($top_page['flags']&0x40) == 0x40 && isset($top_page['children']) && count($top_page['children']) > 0 ) {
         foreach($top_page['children'] as $child) {
             $page_menu[] = array('name'=>$child['name'], 'url'=>$top_page['base_url'] . '/' . $child['permalink']);
         }
-    }
+    } 
 
     //
     // Process a module page
@@ -147,6 +147,15 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
 
 //      $breadcrumbs[] = array('name'=>$page['title'], 'url'=>$base_url . '/' . $ciniki['request']['page']);
 
+        if( ($top_page['flags']&0x20) == 0x20 && isset($top_page['children']) ) {
+            foreach($top_page['children'] as $child) {
+                $submenu[$child['permalink']] = array('name'=>$child['name'],
+                    'url'=>$ciniki['request']['base_url'] . '/' . $top_page['permalink'] . '/' . $child['permalink']);
+            }
+            if( $top_page['id'] == $page['id'] ) {
+                unset($page['children']);
+            }
+        }
         //
         // Process the module request
         //
@@ -175,6 +184,7 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
             $page_title = $rc['page_title'];
             $article_title = $rc['page_title'];
         }
+        error_log(print_r($submenu, true));
         if( isset($rc['submenu']) ) {
             $submenu = $rc['submenu'];
         }
