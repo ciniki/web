@@ -184,7 +184,6 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
             $page_title = $rc['page_title'];
             $article_title = $rc['page_title'];
         }
-        error_log(print_r($submenu, true));
         if( isset($rc['submenu']) ) {
             $submenu = $rc['submenu'];
         }
