@@ -82,14 +82,31 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
     //
     // Check if customer is logged in, or display the login form/forgot password form.
     //
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageAccountLogin');
-    $rc = ciniki_web_generatePageAccountLogin($ciniki, $settings, $ciniki['request']['business_id'], $breadcrumbs);
-    if( $rc['stat'] != 'ok' ) {
-        return $rc;
-    }
-    if( $rc['stat'] == 'ok' && isset($rc['content']) ) {
-        // Login form display or welcome page
-        return $rc;
+    if( isset($ciniki['config']['ciniki.web']['generatePageAccountLogin']) && $ciniki['config']['ciniki.web']['generatePageAccountLogin'] != '' ) {
+        list($pkg, $mod, $dir, $fn) = explode('_', $ciniki['config']['ciniki.web']['generatePageAccountLogin']);
+        $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, $dir, $fn);
+        if( $rc['stat'] != 'ok' ) {
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.999', 'msg'=>'Unable to find override login page'));
+        }
+        $fn = $rc['function_call']; 
+        $rc = $fn($ciniki, $settings, $ciniki['request']['business_id'], $breadcrumbs);
+        if( $rc['stat'] != 'ok' ) {
+            return $rc;
+        }
+        if( $rc['stat'] == 'ok' && isset($rc['content']) ) {
+            // Login form display or welcome page
+            return $rc;
+        }
+    } else {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageAccountLogin');
+        $rc = ciniki_web_generatePageAccountLogin($ciniki, $settings, $ciniki['request']['business_id'], $breadcrumbs);
+        if( $rc['stat'] != 'ok' ) {
+            return $rc;
+        }
+        if( $rc['stat'] == 'ok' && isset($rc['content']) ) {
+            // Login form display or welcome page
+            return $rc;
+        }
     }
 
     //
