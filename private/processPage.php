@@ -26,6 +26,7 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
         . (isset($args['article_title'])&&$args['article_title']!=''?$args['article_title'] . ' - ':'')
         . $page['title'] . "</h1>"
         . "";
+    $ciniki['response']['head']['og']['title'] = $page['title'];
     if( isset($args['page_menu']) && count($args['page_menu']) > 0 ) {
         $content .= "<div class='page-menu-container'><ul class='page-menu'>";
         foreach($args['page_menu'] as $item) {  
@@ -42,6 +43,7 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
+        $page['response']['head']['og']['image'] = $rc['url'];
         $content .= "<aside>"
             . "<div class='block block-primary-image'>"
             . "<div class='image-wrap'>"
@@ -52,7 +54,19 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
         $content .= "</div></div></aside>";
     }
 
+    $ciniki['response']['head']['og']['url'] = 'http://' . $ciniki['request']['domain'] . $base_url;
+    if( isset($page['synopsis']) && $page['synopsis'] != '' ) {
+        $ciniki['response']['head']['og']['description'] = strip_tags($page['synopsis']);
+// Note: Content typically too long, need to find a way to shorten.
+//    } elseif( isset($page['content']) && $page['content'] != '' ) {
+//        $ciniki['response']['head']['og']['content'] = strip_tags($page['content']);
+    }
+
+    $share = 'end';
     if( isset($page['content']) ) {
+        if( $page['content'] != '' ) {
+            $share = 'content';
+        }
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
         $rc = ciniki_web_processContent($ciniki, $settings, $page['content']);  
         if( $rc['stat'] != 'ok' ) {
@@ -67,7 +81,24 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
             $files .= "<p><a target='_blank' href='" . $url . "' title='" . $file['name'] . "'>" . $file['name'] . "</a></p>";
         }
         if( $files != '' ) {
+            $share = 'content';
             $content .= "<div class='block block-files'>" . $files . "</div>";
+        }
+    }
+
+    //
+    // Display the share buttons, if they haven't been disabled.
+    //
+    if( $share == 'content' && ($page['flags']&0x2000) == 0 ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockShareButtons');
+        $rc = ciniki_web_processBlockShareButtons($ciniki, $settings, $ciniki['request']['business_id'], array(
+            'pagetitle'=>$page['title'],
+            ));
+        if( $rc['stat'] != 'ok' ) {
+            return $rc;
+        }
+        if( isset($rc['content']) ) {
+            $content .= $rc['content'];
         }
     }
 
@@ -179,6 +210,22 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
 //      $content .= "</div>"
 //          . "</article>"
 //          . "";
+    }
+
+    //
+    // Display the share buttons, if they haven't been disabled.
+    //
+    if( $share == 'end' && ($page['flags']&0x2000) == 0 ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockShareButtons');
+        $rc = ciniki_web_processBlockShareButtons($ciniki, $settings, $ciniki['request']['business_id'], array(
+            'pagetitle'=>$page['title'],
+            ));
+        if( $rc['stat'] != 'ok' ) {
+            return $rc;
+        }
+        if( isset($rc['content']) ) {
+            $content .= $rc['content'];
+        }
     }
 
     //
