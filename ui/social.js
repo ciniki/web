@@ -44,6 +44,11 @@ function ciniki_web_social() {
                 'site-social-vimeo-footer-active':{'label':'Vimeo', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
                 'site-social-instagram-footer-active':{'label':'Instagram', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
             }},
+            'pages':{'label':'Share Buttons', 
+                'active':function() { return M.modFlagSet('ciniki.web', 0x40); },
+                'fields':{
+                    'site-social-share-buttons':{'label':'Share Buttons', 'type':'toggle', 'default':'no', 'toggles':this.activeToggles},
+                }},
             '_buttons':{'label':'', 'buttons':{
                 'save':{'label':'Save', 'fn':'M.ciniki_web_social.save(\'M.ciniki_web_social.main.close();\');'},
             }},

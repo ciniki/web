@@ -507,6 +507,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'site-social-instagram-footer-active',
         'site-social-email-header-active',
         'site-social-email-footer-active',
+        'site-social-share-buttons',
         'site-ssl-active',
         'site-ssl-force-cart',
         'site-ssl-force-account',
