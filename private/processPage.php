@@ -89,8 +89,6 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
     //
     // Display the share buttons, if they haven't been disabled.
     //
-    error_log(print_r($settings, true));
-    error_log($settings['site-social-share-buttons']);
     if( $share == 'content' && isset($settings['site-social-share-buttons']) && $settings['site-social-share-buttons'] == 'yes' && ($page['flags']&0x2000) == 0 ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockShareButtons');
         $rc = ciniki_web_processBlockShareButtons($ciniki, $settings, $ciniki['request']['business_id'], array(
