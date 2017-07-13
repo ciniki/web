@@ -8,11 +8,12 @@
 #
 # Fields
 # ------
+# id:               The id of the question.
+# uuid:             The Universal Unique ID.
 # business_id:      The business the domain is part of.
 #
-# detail_key:       The decimal notated index key to the setting value.
-#
-# detail_value:     The value of the setting.
+# surl:             The shortened url
+# furl:             The full expanded url
 #
 # date_added:       The date and time the domain was added to the table.
 # last_updated:     The date and time the domain was last updated.
