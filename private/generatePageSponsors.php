@@ -52,7 +52,7 @@ function ciniki_web_generatePageSponsors($ciniki, $settings) {
         //
         // If there was an error locating the files, display generic error
         //
-        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.65', 'msg'=>'The file you requested does not exist.  Please check your link and try again.'));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.191', 'msg'=>'The file you requested does not exist.  Please check your link and try again.'));
     }
 
     $page_title = "Sponsors";

@@ -47,7 +47,7 @@ function ciniki_web_movetoStorage(&$ciniki) {
             $storage_filename = $storage_dirname . '/' . $file['uuid'];
             if( !is_dir($storage_dirname) ) {
                 if( !mkdir($storage_dirname, 0700, true) ) {
-                    return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.179', 'msg'=>'Unable to add file'));
+                    return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.189', 'msg'=>'Unable to add file'));
                 }
             }
             if( file_exists($storage_filename) ) {

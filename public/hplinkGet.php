@@ -143,7 +143,7 @@ function ciniki_web_hplinkGet($ciniki) {
             ),
         ));
     if( $rc['stat'] != 'ok' ) {
-        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.178', 'msg'=>'Home Page Link not found', 'err'=>$rc['err']));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.190', 'msg'=>'Home Page Link not found', 'err'=>$rc['err']));
     }
     if( isset($rc['hplinks']) ) {
         $rsp['parents'] = $rc['hplinks'];

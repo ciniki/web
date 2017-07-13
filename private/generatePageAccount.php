@@ -86,7 +86,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
         list($pkg, $mod, $dir, $fn) = explode('_', $ciniki['config']['ciniki.web']['generatePageAccountLogin']);
         $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, $dir, $fn);
         if( $rc['stat'] != 'ok' ) {
-            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.999', 'msg'=>'Unable to find override login page'));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.188', 'msg'=>'Unable to find override login page'));
         }
         $fn = $rc['function_call']; 
         $rc = $fn($ciniki, $settings, $ciniki['request']['business_id'], $breadcrumbs);
