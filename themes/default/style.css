@@ -143,6 +143,41 @@ div.product-card-title {
     color: #333;
 }
 
+/* Price Cards */
+div.price-card-wrap {
+    padding: 0.75em;
+}
+div.price-card {
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    padding: 0.75em;
+}
+div.price-card-thumbnail {
+    border: 0px solid #ddd;
+    padding: 0em;
+    box-sizing: border-box;
+    line-height: 1px;
+}
+div.price-card-text {
+    color: #777;
+}
+div.price-card-title {
+    color: #333;
+}
+div.price-card-form {
+    
+}
+#content article.page div.price-card form div.price-card-amount {
+    font-size: 1.3em;
+}
+#content article.page div.price-card form div.price-card-amount input {
+    font-size: 0.7em;
+    max-width: 5em;
+}
+#content article.page div.price-card form div.price-card-submit input {
+    font-size: 1.2em;
+}
+
 /* Image categories */
 div.image-categories-thumbnail-wrap {
     display: inline-block;
@@ -1203,6 +1238,7 @@ aside div.borderless {
     text-align: center;
 }
 
+#content div.price-cards form input.cart-submit,
 #content div.order-options button,
 #content div.order-repeats button,
 #content div.cart form input.cart-submit, 

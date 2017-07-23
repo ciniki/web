@@ -642,7 +642,6 @@ span.exhibitors-description {
         box-sizing: border-box;
     }
     div.product-card-text {
-        width: 70%;
         display: flex;
         flex-flow: column;
     }
@@ -701,6 +700,36 @@ span.exhibitors-description {
     #content div.sectioned-form-hidden {
         display: none;
     }
+    div.price-card {
+        display: flex;
+/*         flex-flow: row nowrap; */
+        height: 100%;
+    }
+    div.price-card-thumbnail {
+        width: 30%;
+        height: 100%;
+        margin-right: 1em;
+        margin-bottom: 0em;
+        box-sizing: border-box;
+    }
+    div.price-card-text,
+    div.price-card-form {
+        display: flex;
+        flex-flow: column;
+    }
+    #content article.page div.price-card-form form div.price-card-amount {
+        display: inline-block;
+        text-align: center;
+        width: 40%;
+        box-sizing: border-box;
+        padding: 0.2em;
+    }
+    #content article.page div.price-card-form form div.price-card-submit {
+        display: inline-block;
+        text-align: center;
+        width: 60%;
+        box-sizing: border-box;
+    }
 }
 @media screen and (min-width: 45em) {
     a.product-card-a {
@@ -720,6 +749,31 @@ span.exhibitors-description {
     }
     div.product-card-wrap {
         width: 100%;
+    }
+    div.price-card-wrap {
+        width: 50%;
+        display: flex;
+        flex-flow: column;
+        position: relative;
+    }
+    div.price-card-wrap:nth-child(1n) {
+        padding-left: 0em;
+        padding-right: 0.5em;
+    }
+    div.price-card-wrap:nth-child(2n) {
+        padding-left: 0.5em;
+        padding-right: 0em;
+        box-sizing: border-box;
+    }
+    div.price-card {
+        width: 100%;
+        text-align: center;
+    }
+    #content article.page div.price-card-form form div.price-card-amount {
+        width: 50%;
+    }
+    #content article.page div.price-card-form form div.price-card-submit {
+        width: 50%;
     }
 }
 

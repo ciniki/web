@@ -333,6 +333,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                 array('object'=>$_POST['object'],
                     'object_id'=>$_POST['object_id'],
                     'price_id'=>(isset($_POST['price_id'])?$_POST['price_id']:0),
+                    'user_amount'=>(isset($_POST['user_amount'])?$_POST['user_amount']:0),
                     'quantity'=>$_POST['quantity']));
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
@@ -1276,7 +1277,9 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                 $content .= "</td>";
                 $content .= "<td class='alignright'>";
                 if( $cart_edit == 'yes' ) {
-                    if( ($item['flags']&0x08) == 0 ) {
+                    if( ($item['flags']&0x8000) == 0x8000 ) {
+                        $content .= "<input id='quantity_" . $item['id'] . "' name='quantity_" . $item['id'] . "' type='hidden' value='" . $item['quantity'] . "'/>";
+                    } elseif( ($item['flags']&0x08) == 0 ) {
                         $content .= "<span class='cart-quantity'>"
                             . "<input class='quantity' id='quantity_" . $item['id'] . "' name='quantity_" . $item['id'] . "' type='text' value='" 
                                 . $item['quantity'] . "' size='2'/>"
