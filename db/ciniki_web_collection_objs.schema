@@ -17,7 +17,8 @@
 #
 # num_items:        The number of items to show on the collection page.
 #
-# title
+# title:            The title for the Object to display in the list.
+# more:             The more text for the object for the object, other '... more' is used.
 #
 # date_added:       The date and time the domain was added to the table.
 # last_updated:     The date and time the domain was last updated.
