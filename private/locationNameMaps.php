@@ -51,7 +51,7 @@ function ciniki_web_locationNameMaps($ciniki) {
             'ia'=>array('name'=>'Iowa'),
             'ks'=>array('name'=>'Kansas'),
             'ky'=>array('name'=>'Kentucky'),
-            'la'=>array('name'=>'Louisiana'),
+            'la'=>array('name'=>'Louisiana', 'google'=>'Louisana'),
             'me'=>array('name'=>'Maine'),
             'md'=>array('name'=>'Maryland'),
             'ma'=>array('name'=>'Massachusetts'),
