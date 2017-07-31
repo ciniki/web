@@ -12,6 +12,8 @@
 # label:            The label for this entry, used to group entries.
 # title:            The title for the indexed object.
 # subtitle:         The subtitle for the indexed object.
+# meta:             The meta information for the indexed item.
+#
 # primary_image_id: The ID of the image to use in the results list.
 # synopsis:         The synopsis of the object.
 #

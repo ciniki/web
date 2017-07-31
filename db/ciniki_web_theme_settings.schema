@@ -10,6 +10,8 @@
 # uuid:             The Universal Unique ID.
 # business_id:      The business the theme is part of.
 #
+# theme_id:         The ID of the theme the setting is for.
+#
 # detail_key:       The decimal notated index key to the setting value.
 #
 # detail_value:     The value of the setting.

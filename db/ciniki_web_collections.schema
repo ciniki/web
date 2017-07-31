@@ -21,7 +21,11 @@
 #
 # sequence:         The order to present the list of collections in.
 #
-# image_id:         **future** Image to show on website for this collection.
+# image_id:         **Future** Image to show on website for this collection.
+# image_caption:    **Future** The caption for the image.
+#
+# synopsis:         **Future** The synopsis for the collection.
+# description:      **Future** The full description for the collection.
 #
 # date_added:       The date and time the domain was added to the table.
 # last_updated:     The date and time the domain was last updated.
