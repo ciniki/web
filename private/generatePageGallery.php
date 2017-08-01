@@ -533,6 +533,9 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
             } else {
                 $page_title = 'Galleries';
             }
+            if( isset($selected_category) && $selected_category != '' ) {
+                $page_title .= ' - ' . $selected_category;
+            }
             if( $mod == 'artcatalog' && isset($settings['page-gallery-artcatalog-format']) 
                 && $settings['page-gallery-artcatalog-format'] == 'list'
                 ) {
