@@ -81,9 +81,13 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
                 //
                 // Check if category selected
                 //
-                if( isset($uri_split[0]) && $uri_split[0] == $permalink ) {
+                if( isset($uri_split[0]) ) {
+                    if( $uri_split[0] == $permalink ) {
+                        $selected_category = $cat;
+                        $cat_permalink = array_shift($uri_split);
+                    }
+                } elseif( $selected_category == '' ) {
                     $selected_category = $cat;
-                    $cat_permalink = array_shift($uri_split);
                 }
             }
         }
