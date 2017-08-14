@@ -51,7 +51,11 @@ function ciniki_web_processBlockProductCards($ciniki, $settings, $business_id, $
         } else {
             $img_url = $rc['url'];
         }
-        $content .= "<a class='product-card-a' href='" . $block['base_url'] . '/' . $card['permalink'] . "' " . "title='$name'>";
+        if( isset($block['hide_details']) && $block['hide_details'] == 'yes' ) {
+            $content .= "<div class='product-card-a'>";
+        } else {
+            $content .= "<a class='product-card-a' href='" . $block['base_url'] . '/' . $card['permalink'] . "' " . "title='$name'>";
+        }
         $content .= "<div class='product-card-wrap'>"
             . "<div class='product-card'>"
             . "<div class='product-card-thumbnail'>"
@@ -65,19 +69,29 @@ function ciniki_web_processBlockProductCards($ciniki, $settings, $business_id, $
         if( isset($card['options']) && count($card['options']) > 0 ) {
             $content .= "<div class='product-card-options'>";
             foreach($card['options'] as $option) {
-                if( isset($option['sale_price_display']) && $option['sale_price_display'] != '' ) {
+                if( isset($option['sale_price_display']) && $option['sale_price_display'] != '' 
+                    && (!isset($block['hide_prices']) || $block['hide_prices'] == 'no')
+                    ) {
                     $option['price_display'] = '<s>' . $option['price_display'] . '</s> ' . $option['sale_price_display'];
                 }
                 $content .= "<div class='product-card-option'>"
                     . "<span class='product-card-option-name'>" . $option['name'] . "</span>"
-                    . "<span class='product-card-option-price'>" . $option['price_display'] . "</span>"
+                    . "<span class='product-card-option-price'>";
+                if( !isset($block['hide_prices']) || $block['hide_prices'] == 'no' ) {
+                    $content .= $option['price_display'];
+                }
+                $content .= "</span>"
                     . "</div>";
             }
             $content .= "</div>";
         }
         $content .= "</div>";
         $content .= "</div></div>";
-        $content .= "</a>";
+        if( isset($block['hide_details']) && $block['hide_details'] == 'yes' ) {
+            $content .= "</div>";
+        } else {
+            $content .= "</a>";
+        }
     }
     $content .= "</div>";
 

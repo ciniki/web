@@ -644,6 +644,7 @@ span.exhibitors-description {
     div.product-card-text {
         display: flex;
         flex-flow: column;
+        flex-grow: 1;
     }
     div.product-card-options {
         margin-top: auto;
@@ -732,17 +733,17 @@ span.exhibitors-description {
     }
 }
 @media screen and (min-width: 45em) {
-    a.product-card-a {
+    .product-card-a {
         width: 50%;
         display: flex;
         flex-flow: row;
         position: relative;
     }
-    a.product-card-a:nth-child(1n) {
+    .product-card-a:nth-child(1n) {
         padding-left: 0em;
         padding-right: 0.5em;
     }
-    a.product-card-a:nth-child(2n) {
+    .product-card-a:nth-child(2n) {
         padding-left: 0.5em;
         padding-right: 0em;
         box-sizing: border-box;

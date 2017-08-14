@@ -1391,7 +1391,7 @@ div.product-cards {
     display: flex;
     flex-flow: row wrap;
 }
-a.product-card-a {
+.product-card-a {
     background: #fff;
     flex-shrink: 1;
     margin: 0px;
