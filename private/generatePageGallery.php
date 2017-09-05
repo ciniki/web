@@ -267,7 +267,6 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
         //
         // Load the image
         //
-        error_log($quality . '--' . $height);
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
         $rc = ciniki_web_getScaledImageURL($ciniki, $img['image_id'], 'original', 0, $height, $quality);
         if( $rc['stat'] != 'ok' ) {
