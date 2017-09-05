@@ -1209,6 +1209,12 @@ function ciniki_web_main() {
                 'page-gallery-name':{'label':'Name', 'type':'text', 'hint':'default is Gallery'},
                 'page-gallery-artcatalog-split':{'label':'Split Menu', 'active':'no', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-gallery-artcatalog-format':{'label':'Format', 'active':'no', 'type':'multitoggle', 'default':'icons', 'toggles':{'icons':'Icons', 'list':'List'}},
+                'page-gallery-image-quality':{'label':'Format', 
+                    'active':function() { return ((M.userPerms&0x01) == 0x01 ? 'yes' : 'no'); },
+                    'type':'toggle', 'default':'regular', 'toggles':{'regular':'Regular', 'high':'High'}},
+                'page-gallery-image-size':{'label':'Size', 
+                    'active':function() { return ((M.userPerms&0x01) == 0x01 ? 'yes' : 'no'); },
+                    'type':'toggle', 'default':'regular', 'toggles':{'regular':'Regular', 'large':'Large'}},
                 }},
             'sort':{'label':'Sorting', 'active':'no', 'fields':{
                 'page-gallery-album-sort':{'label':'List albums by', 'type':'select', 'default':'name-asc', 'options':{}},

@@ -301,6 +301,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-patents-share-buttons',
         'page-gallery-active',
         'page-gallery-name',
+        'page-gallery-image-quality',
+        'page-gallery-image-size',
         'page-gallery-artcatalog-format',           // Split the menu into types
         'page-gallery-artcatalog-split',            // Split the menu into types
         'page-gallery-artcatalog-paintings',            // Split the menu into types

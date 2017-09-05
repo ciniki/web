@@ -21,10 +21,18 @@ function ciniki_web_processBlockImage(&$ciniki, $settings, $business_id, $block)
     $content = '';
 
     //
+    // Check for quality setting
+    //
+    $quality = 60;
+    if( isset($block['quality']) && $block['quality'] == 'high' ) {
+        $quality = 90;
+    }
+
+    //
     // Load the image
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-    $rc = ciniki_web_getScaledImageURL($ciniki, $block['image_id'], 'original', 0, 600);
+    $rc = ciniki_web_getScaledImageURL($ciniki, $block['image_id'], 'original', 0, 600, $quality);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }

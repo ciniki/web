@@ -253,10 +253,23 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
         }
 
         //
+        // Check for quality setting
+        //
+        $quality = 60;
+        if( isset($settings['page-gallery-image-quality']) && $settings['page-gallery-image-quality'] == 'high' ) {
+            $quality = 90;
+        }
+        $height = 600;
+        if( isset($settings['page-gallery-image-size']) && $settings['page-gallery-image-size'] == 'large' ) {
+            $height = 1200;
+        }
+
+        //
         // Load the image
         //
+        error_log($quality . '--' . $height);
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-        $rc = ciniki_web_getScaledImageURL($ciniki, $img['image_id'], 'original', 0, 600);
+        $rc = ciniki_web_getScaledImageURL($ciniki, $img['image_id'], 'original', 0, $height, $quality);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }

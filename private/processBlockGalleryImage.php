@@ -21,10 +21,22 @@ function ciniki_web_processBlockGalleryImage(&$ciniki, $settings, $business_id, 
     $content = '';
 
     //
+    // Check for quality setting
+    //
+    $quality = 60;
+    if( isset($block['quality']) && $block['quality'] == 'high' ) {
+        $quality = 90;
+    }
+    $height = 600;
+    if( isset($block['size']) && $block['size'] == 'large' ) {
+        $height = 1200;
+    }
+
+    //
     // Load the image
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-    $rc = ciniki_web_getScaledImageURL($ciniki, $block['image']['image_id'], 'original', 0, 600);
+    $rc = ciniki_web_getScaledImageURL($ciniki, $block['image']['image_id'], 'original', 0, $height, $quality);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }

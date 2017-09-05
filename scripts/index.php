@@ -878,6 +878,9 @@ if( $found == 'no' ) {
         && isset($settings['page-gallery-active']) && $settings['page-gallery-active'] == 'yes' ) {
         require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageGallery.php');
         $rc = ciniki_web_generatePageGallery($ciniki, $settings);
+        // generateModulePage does not work for split artcatalog into categories
+        //ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
+        //$rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['business_id'], 'ciniki.gallery');
     }
     // Writings
     elseif( $ciniki['request']['page'] == 'writings' 
