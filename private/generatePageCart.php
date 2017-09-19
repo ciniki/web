@@ -890,7 +890,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         $form .= "<div class='input province'>"
             . "<label for='province'>State/Province" . (array_key_exists('province', $required_account_fields)?' *':'') . "</label>"
             . "<input id='province_text' type='text' class='text' name='province' "
-                . (($province_codes[$selected_country])?" style='display:none;'":"")
+                . ((isset($province_codes[$selected_country]) && $province_codes[$selected_country])?" style='display:none;'":"")
                 . "value='" . $address['province'] . "'>";
         $js = '';
         foreach($province_codes as $country_code => $provinces) {
