@@ -1158,7 +1158,7 @@ foreach($ciniki['business']['modules'] as $module => $m) {
 //
 if( isset($ciniki['emailqueue']) && count($ciniki['emailqueue']) > 0 ) {
     ob_start();
-    if(strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false ) {
+    if( isset($_SERVER['HTTP_ACCEPT_ENCODING']) && strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false ) {
         ob_start("ob_gzhandler");
         print $rc['content'];
         ob_end_flush();
