@@ -841,7 +841,14 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     // Check if pages flags and pages menu flag is NOT set for web module
     //
     if( !isset($ciniki['business']['modules']['ciniki.web']['flags']) || ($ciniki['business']['modules']['ciniki.web']['flags']&0x0200) == 0 ) {
-        $content .= "<li class='menu-item" . ($ciniki['request']['page']=='home'?' menu-item-selected':'') . "'><a href='" . $page_home_url . "'>Home</a></li>";
+        $content .= "<li class='menu-item" . ($ciniki['request']['page']=='home'?' menu-item-selected':'') . "'>"
+            . "<a href='" . $page_home_url . "'>";
+            if( isset($settings['page-home-title']) && $settings['page-home-title'] != '' ) {
+                $content .= $settings['page-home-title'];
+            } else {
+                $content .= "Home";
+            }
+        $content .= "</a></li>";
     //  print "<pre>" .  print_r($ciniki['request'], true) . "</pre>";
     //  print "<pre>" .  print_r($settings, true) . "</pre>";
         if( isset($settings['page-about-active']) && $settings['page-about-active'] == 'yes' ) {
