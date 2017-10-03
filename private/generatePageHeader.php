@@ -1189,7 +1189,14 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
         if( isset($settings['page-home-active']) && $settings['page-home-active'] == 'yes' 
             && ($ciniki['business']['modules']['ciniki.web']['flags']&0x0200) > 0 
             ) {
-            $content .= "<li class='menu-item" . ($ciniki['request']['page']=='home'?' menu-item-selected':'') . "'><a href='" . $page_home_url . "'>Home</a></li>";
+            $content .= "<li class='menu-item" . ($ciniki['request']['page']=='home'?' menu-item-selected':'') . "'>"
+                . "<a href='" . $page_home_url . "'>";
+            if( isset($settings['page-home-title']) && $settings['page-home-title'] != '' ) {
+                $content .= $settings['page-home-title'];
+            } else {
+                $content .= "Home";
+            }
+            $content .= "</a></li>";
         }
 //      print "<pre>" .  print_r($ciniki['request'], true) . "</pre>";
 //      print "<pre>" .  print_r($ciniki['response'], true) . "</pre>";
