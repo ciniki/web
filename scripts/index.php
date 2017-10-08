@@ -172,7 +172,7 @@ if( isset($_SERVER['HTTP_HOST']) && $ciniki['config']['ciniki.web']['master.doma
             Header('Location: http' . ($rc['forcessl']=='yes'?'s':'') . '://' . $rc['redirect'] . $_SERVER['REQUEST_URI']);
             exit;
         }
-        if( isset($rc['forcessl']) && $rc['forcessl'] == 'yes' ) {
+        if( isset($rc['forcessl']) && $rc['forcessl'] == 'yes' && $ciniki['request']['ssl'] != 'yes' ) {
             Header('HTTP/1.1 301 Moved Permanently'); 
             Header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
             exit;
