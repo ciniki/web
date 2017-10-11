@@ -27,6 +27,7 @@ function ciniki_web_processBlocks(&$ciniki, $settings, $business_id, $blocks) {
             case 'asideimage': $processor = 'processBlockAsideImage'; break;
             case 'audiolist': $processor = 'processBlockAudioList'; break;
             case 'audiopricelist': $processor = 'processBlockAudioPriceList'; break;
+            case 'calendar': $processor = 'processBlockCalendar'; break;
             case 'chartoverlay': $processor = 'processBlockChartOverlay'; break;
             case 'cilist': $processor = 'processBlockCIList'; break;
             case 'clist': $processor = 'processBlockCList'; break;

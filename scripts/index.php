@@ -292,6 +292,11 @@ if( $ciniki['request']['business_id'] == 0 ) {
             $ciniki['business']['domain'] = $rc['domain'];
         }
         $ciniki['request']['base_url'] = ($preview=='yes'?'/preview/':'/') . $ciniki['request']['uri_split'][0];
+        if( $ciniki['request']['base_url'] != '' ) {
+            foreach($ciniki['business']['module_pages'] as $pid => $page) {
+                $ciniki['business']['module_pages'][$pid]['base_url'] = $ciniki['request']['base_url'] . $page['base_url'];
+            }
+        }
         $ciniki['request']['domain'] = $ciniki['config']['ciniki.web']['master.domain'];
         $ciniki['request']['domain_base_url'] = 'http://' . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $ciniki['request']['uri_split'][0];
         $ciniki['request']['ssl_domain_base_url'] = 'http://' . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $ciniki['request']['uri_split'][0];

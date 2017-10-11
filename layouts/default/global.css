@@ -45,6 +45,7 @@ time, mark, audio, video {
   font-size:100%;
   font: inherit;
   vertical-align: baseline;
+  box-sizing: border-box;
   }
 
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
@@ -903,7 +904,8 @@ div.sponsor-gallery,
 #content div.image-cilist-thumbnail,
 #content div.image-members-thumbnail,
 #content div.image-exhibitors-thumbnail {
-    height: 115px;
+    line-height: 0px;
+/*    height: 115px;*/
 }
 
 #content div.image-cilist-original,
@@ -915,8 +917,9 @@ div.sponsor-gallery,
 div.sponsor-gallery div.sponsor-gallery-thumbnail {
 }
 #content div.image-gallery div.image-gallery-thumbnail {
+    line-height: 0px;
     width: 115px; 
-    height: 115px;
+/*    height: 115px; */
 }
 
 #content div.additional-image-gallery div.image-gallery-thumbnail {
@@ -939,8 +942,8 @@ div.sponsor-gallery div.sponsor-gallery-thumbnail {
 div.sponsor-gallery-thumbnail img {
 }
 #content div.image-gallery-thumbnail img {
-    width: 115px; 
-    height: 115px;
+/*    width: 115px; 
+    height: 115px; */
 }
 
 #content div.additional-image-gallery div.image-gallery-thumbnail img {
@@ -1836,6 +1839,82 @@ div.sectioned-form {
 }
 #content div.sectioned-form-nav span.sectioned-form-nav-button-next {
     text-align: right;
+}
+/* Calendars */
+#content table.calendar {
+    display: block;
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 100%;
+}
+#content table.calendar thead {
+    display: none;
+}
+#content table.calendar tbody {
+    display: block;
+}
+#content table.calendar tr {
+    display: block;
+}
+#content table.calendar td.calendar-day {
+    display: table-row;
+    width: 100%;
+    min-height: 3em;
+}
+#content table.calendar div.calendar-date,
+#content table.calendar div.calendar-day-items {
+    display: table-cell;
+}
+#content table.calendar div.calendar-date {
+    padding: 1em 0.5em 1em 0.25em;
+    padding-right: 1em;
+    vertical-align: top;
+    height: 3em;
+    min-height: 3em;
+    width: 6em;
+    min-width: 6em;
+}
+#content table.calendar div.calendar-day-items {
+    padding: 0.5em;
+    width: 100%;
+}
+#content table.calendar td.calendar-day-blank {
+    display: none;
+}
+#content div.calendar-controls {
+    text-align: center;
+}
+#content div.calendar-controls-date {
+    display: inline-block;
+    padding: 0 1em;
+    min-width: 10em;
+    text-align: center;
+    vertical-align: top;
+}
+#content div.calendar-controls-arrow {
+    display: inline-block;
+}
+#content span.calendar-day-date {
+    display: inline-block;
+    width: 2em;
+    text-align: right;
+    padding-right: 0.5em;
+}
+#content div.calendar-controls-arrow a span {
+    font-style: normal;
+    font-size: 1.5em;
+    padding: 0.2em;
+}
+#content div.calendar-item {
+    margin-bottom: 0.5em;
+}
+#content div.calendar-item-title {
+    display: inline-block;
+    margin-right: 1em;
+}
+#content div.calendar-item-time {
+    display: inline-block;
+    font-size: 0.9em;
 }
 
 /* 7. BROWSER AND NON-SEMANTIC STYLING

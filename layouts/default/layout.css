@@ -898,6 +898,56 @@ span.exhibitors-description {
     #content div.table-slide-horizontal div.table-slide-data {
         width: 65%;
     }
+    /* Calendar */
+    #content table.calendar-grid {
+        display: table;
+    }
+    #content table.calendar-grid span.calendar-day-weekday {
+        display: none;
+    }
+    #content table.calendar-grid table.calendar thead {
+        display: table-header-group;
+        width: 100%;
+    }
+    #content table.calendar-grid tbody {
+        display: table-row-group;
+        width: 100%;
+    }
+    #content table.calendar-grid tr {
+        display: table-row;
+    }
+    #content table.calendar-grid thead th {
+        text-align: center;
+    }
+    #content table.calendar-grid th,
+    #content table.calendar-grid td,
+    #content table.calendar-grid td.calendar-day {
+        display: table-cell;
+        width: calc(100%/7);
+    }
+    #content table.calendar-grid div.calendar-date,
+    #content table.calendar-grid div.calendar-day-items {
+        display: block;
+        min-height: 1em;
+        width: 100%;
+        min-width: 100%;
+    }
+    #content table.calendar.calendar-grid div.calendar-date {
+        height: 1.5em;
+        padding: 0.25em;
+        width: 100%;
+    }
+    #content table.calendar-grid span.calendar-day-date {
+        display: block;
+        width: 100%;
+    }
+    #content table.calendar-grid td.calendar-day-blank {
+        display: table-cell;
+    }
+    #content table.calendar-grid div.calendar-item-blank {
+        min-height: 5em;
+    }
+
 /*    #content table.order-repeats tbody td {
         display: table-cell;
         width: 50%;
