@@ -139,7 +139,11 @@ function ciniki_web_processBlockCalendar($ciniki, $settings, $business_id, $bloc
                         }
                     }
                 }
-                $content .= "'>";
+                $content .= "'";
+                if( isset($item['style']) && $item['style'] != '' ) {
+                    $content .= ' style="' . $item['style'] . '"';
+                }
+                $content .= ">";
                 $content .= "<div class='calendar-item-title'>" . $item['title'] . "</div>";
                 $content .= "<div class='calendar-item-time'>" . $item['time_text'] . "</div>";
                 $content .= "</div>";
