@@ -66,6 +66,19 @@ function ciniki_web_processBlockCalendar($ciniki, $settings, $business_id, $bloc
     $content .= "</div>";
 
     //
+    // Check for a top legend
+    //
+    if( isset($block['legend_top']) && count($block['legend_top']) > 0 ) {
+        $content .= "<div class='calendar-legend'>";
+        foreach($block['legend_top'] as $item) {
+            $content .= "<div class='calendar-legend-item' style='" . $item['style'] . "'>";
+            $content .= "<div class='calendar-legend-title'>" . $item['title'] . "</div>";
+            $content .= "</div>";
+        }
+        $content .= "</div>";
+    }
+
+    //
     // Start the calendar
     //
     if( isset($block['display']) && $block['display'] == 'grid' ) {
@@ -102,6 +115,7 @@ function ciniki_web_processBlockCalendar($ciniki, $settings, $business_id, $bloc
             $content .= "<td class='calendar-day calendar-day-blank'></td>";
         }
     }
+
     //
     // Add the days between the start and end dates
     //
@@ -174,6 +188,19 @@ function ciniki_web_processBlockCalendar($ciniki, $settings, $business_id, $bloc
     }
 
     $content .= "</tbody></table>";
+
+    //
+    // Check for a bottom legend
+    //
+    if( isset($block['legend_bottom']) && count($block['legend_bottom']) > 0 ) {
+        $content .= "<div class='calendar-legend'>";
+        foreach($block['legend_bottom'] as $item) {
+            $content .= "<div class='calendar-legend-item' style='" . $item['style'] . "'>";
+            $content .= "<div class='calendar-legend-title'>" . $item['title'] . "</div>";
+            $content .= "</div>";
+        }
+        $content .= "</div>";
+    }
 
     return array('stat'=>'ok', 'content'=>$content);
 }

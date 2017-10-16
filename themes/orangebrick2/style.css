@@ -1145,6 +1145,7 @@ aside div.borderless {
     text-transform: uppercase;
     font-family: helvetica, arial, sans-serif
 }
+#content div.calendar-legend-item,
 #content div.calendar-item {
     border: 1px solid #ddd;
     background: #eee;

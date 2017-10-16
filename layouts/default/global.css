@@ -1905,6 +1905,16 @@ div.sectioned-form {
     font-size: 1.5em;
     padding: 0.2em;
 }
+#content div.calendar-legend {
+    margin-bottom: 1em;
+    padding: 0.5em;
+    text-align: center;
+}
+#content div.calendar-legend div {
+    display: inline-block;
+    margin-left: 0.25em; 
+    margin-right: 0.25em;
+}
 #content div.calendar-item {
     margin-bottom: 0.5em;
 }
