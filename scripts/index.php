@@ -201,11 +201,21 @@ session_start();
 //
 if( $ciniki['request']['business_id'] == 0 ) {
     //
+    // Check if should be redirected to secure website
+    //
+    if( isset($ciniki['config']['ciniki.web']['master.domain.forcessl']) 
+        && $ciniki['config']['ciniki.web']['master.domain.forcessl'] == 'on' 
+        && $ciniki['request']['ssl'] != 'yes'
+        ) {
+        Header('HTTP/1.1 301 Moved Permanently'); 
+        Header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+    }
+    //
     // Check which page, or if they requested a clients website
     //
     $ciniki['request']['domain'] = $ciniki['config']['ciniki.web']['master.domain'];
     $ciniki['request']['domain_base_url'] = 'http://' . $ciniki['config']['ciniki.web']['master.domain'];
-    $ciniki['request']['ssl_domain_base_url'] = 'http://' . $ciniki['config']['ciniki.web']['master.domain'];
+    $ciniki['request']['ssl_domain_base_url'] = 'https://' . $ciniki['config']['ciniki.web']['master.domain'];
     if( $uri == '' ) {
         if( isset($ciniki['config']['ciniki.web']['shop.domain']) && isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == $ciniki['config']['ciniki.web']['shop.domain'] && isset($ciniki['config']['ciniki.core']['shop_business_id']) ) {
             $ciniki['request']['page'] = 'home';
