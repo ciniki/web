@@ -1932,6 +1932,8 @@ div.sectioned-form {
     margin: 0px;
     height: 100vh;
     width: 100vw;
+    overflow: hidden;
+    box-sizing: border-box;
 }
 #content .slideshow {
     display: block;
@@ -1940,11 +1942,13 @@ div.sectioned-form {
     box-sizing: border-box;
     font-size: 1.5em;
     position: relative;
+    box-sizing: border-box;
 }
 #content .slideshow-slide {
     display: none;
     top: 0px;
     left: 0px;
+    box-sizing: border-box;
 }
 #content .slideshow-slide-active {
     display: block;
