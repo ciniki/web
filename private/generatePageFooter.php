@@ -16,6 +16,13 @@
 function ciniki_web_generatePageFooter(&$ciniki, $settings) {
     global $start_time;
 
+    //
+    // Check if fullscreen content, and don't display any footers
+    //
+    if( isset($ciniki['response']['fullscreen-content']) && $ciniki['response']['fullscreen-content'] == 'yes' ) {
+        return array('stat'=>'ok', 'content'=>"</body></html>");
+    }
+
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
     //
     // Store the content

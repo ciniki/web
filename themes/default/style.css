@@ -1425,6 +1425,11 @@ aside div.borderless {
     background: #f5f5f5;
 }
 
+/* Styles show fullscreen slideshows */
+#content.fullscreen {
+    background: #fff;
+}
+
 
 /* Styles for larger screens */
 @media screen and (min-width: 33em) {

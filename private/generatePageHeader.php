@@ -410,6 +410,13 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     }
     $content .= ">\n";
 
+    //
+    // Check if headers should be displayed
+    //
+    if( isset($ciniki['response']['fullscreen-content']) && $ciniki['response']['fullscreen-content'] == 'yes' ) {
+        return array('stat'=>'ok', 'content'=>$content);
+    }
+
     // Check for social media icons
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'socialIcons');
     $rc = ciniki_web_socialIcons($ciniki, $settings, 'header');

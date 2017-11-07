@@ -130,66 +130,70 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
 //  if( isset($page['sidebar']) && count($page['sidebar']) > 0 ) {
 //      $rsp['content'] .= "<div class='col-left-wide'>";
 //  }
-    if( isset($page['sidebar']) && count($page['sidebar']) > 0 ) {
-        $rsp['content'] .= "<article class='page col-left-wide'>\n";
+    if( !isset($page['fullscreen-content']) || $page['fullscreen-content'] != 'yes' ) {
+        if( isset($page['sidebar']) && count($page['sidebar']) > 0 ) {
+            $rsp['content'] .= "<article class='page col-left-wide'>\n";
+        } else {
+            $rsp['content'] .= "<article class='page'>\n";
+        }
+        $rsp['content'] .= "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$article_title</h1>";
+        if( isset($page['subtitle']) && $page['subtitle'] != '' ) {
+            $rsp['content'] .= "<h2>" . $page['subtitle'] . "</h2>";
+        }
+        if( isset($page['breadcrumbs']) ) {
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBreadcrumbs');
+            $rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $business_id, $page['breadcrumbs']);
+            if( $rc['stat'] == 'ok' ) {
+                $rsp['content'] .= $rc['content'];
+            }
+        }
+
+        //
+        // Setup the meta information
+        //
+        if( isset($page['meta']) && count($page['meta']) > 0 ) {
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processMeta');
+            $rc = ciniki_web_processMeta($ciniki, $settings, $page);
+            if( isset($rc['content']) && $rc['content'] != '' ) {
+                $rsp['content'] .= "<div class='entry-meta'>" . $rc['content'] . "</div>";
+            }
+        }
+
+        elseif( isset($page['article_meta']) && count($page['article_meta']) > 0 ) {
+            $rsp['content'] .= "<div class='entry-meta'>";
+            $count = 0;
+            foreach($page['article_meta'] as $meta) {
+                $rsp['content'] .= ($count>0?'<br/>':'') . $meta;
+                $count++;
+            }
+            $rsp['content'] .= "</div>";
+        }
+        
+        //
+        // Check if share buttons should be included in header
+        //
+        if( isset($page['article_header_share_buttons']) && $page['article_header_share_buttons'] == 'yes' ) {
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockShareButtons');
+            $rc = ciniki_web_processBlockShareButtons($ciniki, $settings, $business_id, array('pagetitle'=>$page['title']));
+            if( $rc['content'] != '' ) {
+                $rsp['content'] .= $rc['content'];
+            }
+        }
+
+        if( isset($args['page_menu']) && count($args['page_menu']) > 0 ) {
+            $rsp['content'] .= "<div class='page-menu-container'><ul class='page-menu'>";
+            foreach($args['page_menu'] as $item) {  
+                $rsp['content'] .= "<li class='page-menu-item'><a href='" . $item['url'] . "'>" . $item['name'] . "</a></li>";
+            }
+            $rsp['content'] .= "</ul></div>";
+        }
+
+        $rsp['content'] .= "</header>\n"
+            . "<div class='entry-content'>\n"
+            . "";
     } else {
-        $rsp['content'] .= "<article class='page'>\n";
+        $rsp['fullscreen-content'] = $page['fullscreen-content'];
     }
-    $rsp['content'] .= "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$article_title</h1>";
-    if( isset($page['subtitle']) && $page['subtitle'] != '' ) {
-        $rsp['content'] .= "<h2>" . $page['subtitle'] . "</h2>";
-    }
-    if( isset($page['breadcrumbs']) ) {
-        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBreadcrumbs');
-        $rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $business_id, $page['breadcrumbs']);
-        if( $rc['stat'] == 'ok' ) {
-            $rsp['content'] .= $rc['content'];
-        }
-    }
-
-    //
-    // Setup the meta information
-    //
-    if( isset($page['meta']) && count($page['meta']) > 0 ) {
-        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processMeta');
-        $rc = ciniki_web_processMeta($ciniki, $settings, $page);
-        if( isset($rc['content']) && $rc['content'] != '' ) {
-            $rsp['content'] .= "<div class='entry-meta'>" . $rc['content'] . "</div>";
-        }
-    }
-
-    elseif( isset($page['article_meta']) && count($page['article_meta']) > 0 ) {
-        $rsp['content'] .= "<div class='entry-meta'>";
-        $count = 0;
-        foreach($page['article_meta'] as $meta) {
-            $rsp['content'] .= ($count>0?'<br/>':'') . $meta;
-            $count++;
-        }
-        $rsp['content'] .= "</div>";
-    }
-    
-    //
-    // Check if share buttons should be included in header
-    //
-    if( isset($page['article_header_share_buttons']) && $page['article_header_share_buttons'] == 'yes' ) {
-        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockShareButtons');
-        $rc = ciniki_web_processBlockShareButtons($ciniki, $settings, $business_id, array('pagetitle'=>$page['title']));
-        if( $rc['content'] != '' ) {
-            $rsp['content'] .= $rc['content'];
-        }
-    }
-
-    if( isset($args['page_menu']) && count($args['page_menu']) > 0 ) {
-        $rsp['content'] .= "<div class='page-menu-container'><ul class='page-menu'>";
-        foreach($args['page_menu'] as $item) {  
-            $rsp['content'] .= "<li class='page-menu-item'><a href='" . $item['url'] . "'>" . $item['name'] . "</a></li>";
-        }
-        $rsp['content'] .= "</ul></div>";
-    }
-
-    $rsp['content'] .= "</header>\n"
-        . "<div class='entry-content'>\n"
-        . "";
 
     //
     // Process the blocks of content
@@ -206,7 +210,9 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
     //
     // close the article
     //
-    $rsp['content'] .= "</div></article>";
+    if( !isset($page['fullscreen-content']) || $page['fullscreen-content'] != 'yes' ) {
+        $rsp['content'] .= "</div></article>";
+    }
 
     //
     // Add the sidebar content

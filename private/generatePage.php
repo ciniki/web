@@ -179,6 +179,9 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
         if( isset($rc['content']) ) {
             $page_content .= $rc['content'];
         }
+        if( isset($rc['fullscreen-content']) ) {
+            $page['fullscreen-content'] = $rc['fullscreen-content'];
+        }
         $breadcrumbs = $rc['breadcrumbs'];
         if( isset($rc['page_title']) ) {
             $page_title = $rc['page_title'];
@@ -373,6 +376,10 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
         }
     }
 
+    if( isset($page['fullscreen-content']) && $page['fullscreen-content'] == 'yes' ) {
+        $ciniki['response']['fullscreen-content'] = 'yes';
+    } 
+
     //
     // Add the header
     //
@@ -383,30 +390,36 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
     }
     $content = $rc['content'];
 
-    //
-    // Check if article title and breadcrumbs should be displayed above content
-    //
-    if( (isset($settings['theme']['header-article-title']) && $settings['theme']['header-article-title'] == 'yes')
-        || (isset($settings['theme']['header-breadcrumbs']) && $settings['theme']['header-breadcrumbs'] == 'yes')
-        ) {
-        $content .= "<div class='page-header'>";
-        if( isset($settings['theme']['header-article-title']) && $settings['theme']['header-article-title'] == 'yes' ) {
-            $content .= "<h1 class='page-header-title'>" . $article_title . "</h1>";
-        }
-        if( isset($settings['theme']['header-breadcrumbs']) && $settings['theme']['header-breadcrumbs'] == 'yes' && isset($breadcrumbs) ) {
-            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBreadcrumbs');
-            $rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $ciniki['request']['business_id'], $breadcrumbs);
-            if( $rc['stat'] == 'ok' ) {
-                $content .= $rc['content'];
+    if( isset($page['fullscreen-content']) && $page['fullscreen-content'] == 'yes' ) {
+        $content .= "<div id='content' class='fullscreen'>\n";
+        $content .= $page_content;
+        $content .= "</div>\n";
+    } else {
+        //
+        // Check if article title and breadcrumbs should be displayed above content
+        //
+        if( (isset($settings['theme']['header-article-title']) && $settings['theme']['header-article-title'] == 'yes')
+            || (isset($settings['theme']['header-breadcrumbs']) && $settings['theme']['header-breadcrumbs'] == 'yes')
+            ) {
+            $content .= "<div class='page-header'>";
+            if( isset($settings['theme']['header-article-title']) && $settings['theme']['header-article-title'] == 'yes' ) {
+                $content .= "<h1 class='page-header-title'>" . $article_title . "</h1>";
             }
+            if( isset($settings['theme']['header-breadcrumbs']) && $settings['theme']['header-breadcrumbs'] == 'yes' && isset($breadcrumbs) ) {
+                ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBreadcrumbs');
+                $rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $ciniki['request']['business_id'], $breadcrumbs);
+                if( $rc['stat'] == 'ok' ) {
+                    $content .= $rc['content'];
+                }
+            }
+            $content .= "</div>";
         }
-        $content .= "</div>";
-    }
 
-    $content .= "<div id='content'>\n";
-    $content .= $page_content;
-    $content .= "<br style='clear: both;' />\n";
-    $content .= "</div>\n";
+        $content .= "<div id='content'>\n";
+        $content .= $page_content;
+        $content .= "<br style='clear: both;' />\n";
+        $content .= "</div>\n";
+    }
 
     //
     // Add the footer
