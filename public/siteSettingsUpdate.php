@@ -127,6 +127,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-home-image2',
         'page-home-image2-caption',
         'page-home-image2-url',
+        'page-home-menu-title',      // Title for menu<head><title>
         'page-home-title',      // Title used on homepage, but not in <head><title>
         'page-home-url',        // Used if different from home of Ciniki hosted website, 
                                 // used to redirect back to main site for subdomains.

@@ -850,8 +850,8 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     if( !isset($ciniki['business']['modules']['ciniki.web']['flags']) || ($ciniki['business']['modules']['ciniki.web']['flags']&0x0200) == 0 ) {
         $content .= "<li class='menu-item" . ($ciniki['request']['page']=='home'?' menu-item-selected':'') . "'>"
             . "<a href='" . $page_home_url . "'>";
-            if( isset($settings['page-home-title']) && $settings['page-home-title'] != '' ) {
-                $content .= $settings['page-home-title'];
+            if( isset($settings['page-home-menu-title']) && $settings['page-home-menu-title'] != '' ) {
+                $content .= $settings['page-home-menu-title'];
             } else {
                 $content .= "Home";
             }
@@ -1198,8 +1198,8 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
             ) {
             $content .= "<li class='menu-item" . ($ciniki['request']['page']=='home'?' menu-item-selected':'') . "'>"
                 . "<a href='" . $page_home_url . "'>";
-            if( isset($settings['page-home-title']) && $settings['page-home-title'] != '' ) {
-                $content .= $settings['page-home-title'];
+            if( isset($settings['page-home-menu-title']) && $settings['page-home-menu-title'] != '' ) {
+                $content .= $settings['page-home-menu-title'];
             } else {
                 $content .= "Home";
             }

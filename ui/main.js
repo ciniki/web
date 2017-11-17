@@ -524,7 +524,7 @@ function ciniki_web_main() {
         this.home.sections = {
             'options':{'label':'', 'aside':'yes', 'fields':{
                 'page-home-active':{'label':'Display Home Page', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
-                'page-home-title':{'label':'Title', 
+                'page-home-menu-title':{'label':'Title', 
                     'active':function() {return (M.userPerms&0x01) == 0x01 ? 'yes' :'no';}, 
                     'hint':'Home', 'type':'text'},
                 }},
