@@ -229,6 +229,11 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
             $content .= "<script src='" . $script['src'] . "' type='" . $script['type'] . "'></script>\n";
         }
     }
+
+    if( isset($ciniki['response']['web-app']) && $ciniki['response']['web-app'] == 'yes' ) {
+        $content .= '<meta name="apple-mobile-web-app-capable" content="yes" />' . "\n";
+        $content .= '<meta id="apple_sbarstyle" name="apple-mobile-web-app-status-bar-style" content="black" />' . "\n";
+    }
     
     //
     // Header to support mobile device resize

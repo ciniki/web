@@ -1952,9 +1952,16 @@ div.sectioned-form {
 }
 #content .slideshow-slide-active {
     display: block;
+    display: table;
+    border-collapse: collapse;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
 }
 #content .slideshow-image {
     display: inline-block;
+    display: table-cell;
     width: 60%;
     text-align: center;
     vertical-align: middle;
@@ -1964,7 +1971,7 @@ div.sectioned-form {
 }
 #content .slideshow-fullscreen .slideshow-image {
     height: 100vh;
-    line-height: 95vh;
+/*    line-height: 95vh; */
 }
 #content .slideshow-image img {
     max-height: 100%;
@@ -1972,7 +1979,8 @@ div.sectioned-form {
     box-sizing: border-box;
 }
 #content .slideshow-content {
-    float: right;
+/*    float: right; */
+    display: table-cell;
     width: 40%;
     vertical-align: top;
     padding: 2em;
