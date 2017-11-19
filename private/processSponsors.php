@@ -51,7 +51,7 @@ function ciniki_web_processSponsors($ciniki, $settings, $level, $categories) {
                 }
 
                 // Setup the sponsor image
-                $content .= "<tr><td class='sponsors-image' rowspan='3'>";
+                $content .= "<tr class='sponsor-start'><td class='sponsors-image' rowspan='3'>";
                 if( isset($sponsor['image_id']) && $sponsor['image_id'] > 0 ) {
                     if( $level == 50 ) {
                         $rc = ciniki_web_getScaledImageURL($ciniki, $sponsor['image_id'], 'original', 400, 0);
