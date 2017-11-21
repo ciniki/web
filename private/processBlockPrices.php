@@ -125,7 +125,9 @@ function ciniki_web_processBlockPrices(&$ciniki, $settings, $business_id, $block
                 $content .= "<input type='hidden' name='action' value='add'/>";
                 $content .= "<input type='hidden' name='object' value='" . $price['object'] . "'/>";
                 $content .= "<input type='hidden' name='object_id' value='" . $price['object_id'] . "'/>";
-                $content .= "<input type='hidden' name='price_id' value='" . $price['price_id'] . "'/>";
+                if( isset($price['price_id']) && $price['price_id'] != '' ) {
+                    $content .= "<input type='hidden' name='price_id' value='" . $price['price_id'] . "'/>";
+                }
                 $content .= "<input type='hidden' name='final_price' value='" . $final_price . "'/>";
                 // Check what type of field the quantity should be based on how many are available
                 if( isset($price['limited_units']) && $price['limited_units'] == 'yes' 

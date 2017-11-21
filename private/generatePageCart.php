@@ -57,6 +57,8 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
     $cart = NULL;
     $cart_edit = 'yes';
     $errors = array();
+    $paypal_checkout = 'no';
+    $stripe_checkout = 'no';
     $page_title = "Shopping Cart";
     $required_account_fields = array('first'=>'First Name', 'last'=>'Last Name', 'email_address'=>'Email Address', 'password'=>'Password', 
         'address1'=>'Address', 'city'=>'City', 'province'=>'State/Province', 'postal'=>'ZIP/Postal Code', 'country'=>'Country');
@@ -88,6 +90,29 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         $modules = $rc['modules'];
     }
 
+    //
+    // Load the business settings
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
+    $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_sapos_settings', 'business_id', $ciniki['request']['business_id'], 'ciniki.sapos', 'settings', '');
+    if( $rc['stat'] != 'ok' ) {
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.15', 'msg'=>'Unable to load settings', 'err'=>$rc['err']));
+    }
+    $sapos_settings = isset($rc['settings']) ? $rc['settings'] : array();
+    
+    if( isset($sapos_settings['stripe-pk']) && $sapos_settings['stripe-pk'] != '' 
+        && isset($sapos_settings['stripe-sk']) && $sapos_settings['stripe-sk'] != '' 
+        ) {
+        $stripe_checkout = 'yes';
+    }
+
+    if( isset($sapos_settings['paypal-ec-clientid']) && $sapos_settings['paypal-ec-clientid'] != '' 
+        && isset($sapos_settings['paypal-ec-password']) && $sapos_settings['paypal-ec-password'] != '' 
+        && isset($sapos_settings['paypal-ec-signature']) && $sapos_settings['paypal-ec-signature'] != '' 
+        ) {
+        $paypal_checkout = 'yes';
+    }
+    
     //
     // Check if a login occured before loading the cart
     //
@@ -629,6 +654,32 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
     }
 
     //
+    // FIXME: Check if checkout via stripe
+    //
+    elseif( $stripe_checkout == 'yes' && isset($_POST['stripecheckout']) && $_POST['stripecheckout'] != '' && $cart != NULL 
+        && isset($cart['customer_id']) && $cart['customer_id'] > 0 
+        ) {
+/*        //
+        // Load stripe settings
+        //
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'paypalExpressCheckoutSet');
+        $rc = ciniki_sapos_web_paypalExpressCheckoutSet($ciniki, $ciniki['request']['business_id'], array(
+            'amount'=>$cart['total_amount'],
+            'type'=>'Sale',
+            'returnurl'=>$ciniki['request']['ssl_domain_base_url'] . '/cart/pesuccess',
+            'cancelurl'=>$ciniki['request']['ssl_domain_base_url'] . '/cart/pecancel',
+            'currency'=>$intl_currency,
+            'shipping'=>($cart['shipping_status'] > 0 ? 'yes' : 'no'),
+            ));
+        if( $rc['stat'] != 'ok' ) {
+            $carterrors = $rc['err']['msg'];
+        }
+
+        $display_cart = 'review';
+        $page_title = 'Checkout - Review'; */
+    }
+
+    //
     // Check if checkout was paypal express success
     //
     elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'pesuccess'
@@ -656,8 +707,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
     //
     // Check if checkout was paypal express success
     //
-    elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'pecancel'
-        ) {
+    elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'pecancel') {
         $carterrors = "You cancelled the transaction at Paypal, your purchase was not completed.";
     }
 
@@ -1535,10 +1585,15 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
             } else {
                 if( $display_cart == 'review' ) {
                     $content .= "<span class='cart-submit'>"
-                        . "<input class='cart-submit' type='submit' name='continue' value='Back'/>"
-                        . "<input class='cart-submit' type='submit' name='paypalexpresscheckout' value='Checkout via Paypal'/>"
+                        . "<input class='cart-submit' type='submit' name='continue' value='Back'/>";
+                    if( $stripe_checkout == 'yes' ) {
+                        $content .= "<input class='cart-submit' type='submit' name='strikecheckout' value='Pay Now'/>";
+                    }
+                    if( $paypal_checkout == 'yes' ) {
+                        $content .= "<input class='cart-submit' type='submit' name='paypalexpresscheckout' value='Checkout via Paypal'/>";
+                    }
 //                      . "<input class='paypal-checkout' type='image' name='paypalexpresscheckout' src='/ciniki-web-layouts/default/img/paypal_checkout_large.png' value='Checkout via Paypal'/>"
-                        . "</span>";
+                    $content .= "</span>";
                 } elseif( $display_cart == 'paypalexpresscheckoutconfirm' ) {
                     $content .= "<span class='cart-submit'>"
                         . "<input class='cart-submit' type='submit' name='paypalexpresscheckoutdo' value='Pay Now'/>"
