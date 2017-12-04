@@ -12,17 +12,17 @@
 // Returns
 // -------
 //
-function ciniki_web_processPageForms(&$ciniki, $settings, $business_id) {
+function ciniki_web_processPageForms(&$ciniki, $settings, $tnid) {
 
     $success_message = '';
     $error_message = '';
 
-    if( isset($ciniki['business']['modules']['ciniki.web']['flags']) 
-        && ($ciniki['business']['modules']['ciniki.web']['flags']&0x04) > 0 
+    if( isset($ciniki['tenant']['modules']['ciniki.web']['flags']) 
+        && ($ciniki['tenant']['modules']['ciniki.web']['flags']&0x04) > 0 
         && isset($_POST['contact-form-name'])
         ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContactForm');
-        return ciniki_web_processContactForm($ciniki, $settings, $business_id);
+        return ciniki_web_processContactForm($ciniki, $settings, $tnid);
     }
 
     return array('stat'=>'ok', 'error_message'=>$error_message, 'success_message'=>$success_message);

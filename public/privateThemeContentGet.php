@@ -7,7 +7,7 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:         The ID of the business.
+// tnid:         The ID of the tenant.
 //
 // Returns
 // -------
@@ -18,7 +18,7 @@ function ciniki_web_privateThemeContentGet($ciniki) {
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'content_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Content'),
         'theme_id'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Theme'),
         'content_type'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Type'),
@@ -30,10 +30,10 @@ function ciniki_web_privateThemeContentGet($ciniki) {
 
     //  
     // Make sure this module is activated, and
-    // check permission to run this function for this business
+    // check permission to run this function for this tenant
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
-    $rc = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.privateThemeContentGet'); 
+    $rc = ciniki_web_checkAccess($ciniki, $args['tnid'], 'ciniki.web.privateThemeContentGet'); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }   
@@ -48,7 +48,7 @@ function ciniki_web_privateThemeContentGet($ciniki) {
         //
         $strsql = "SELECT MAX(sequence) AS sequence "
             . "FROM ciniki_web_theme_content "
-            . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+            . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
             . "AND theme_id = '" . ciniki_core_dbQuote($ciniki, $args['theme_id']) . "' "
             . "";
         if( isset($args['content_type']) && $args['content_type'] != '' ) {
@@ -85,7 +85,7 @@ function ciniki_web_privateThemeContentGet($ciniki) {
             . "ciniki_web_theme_content.media, "
             . "ciniki_web_theme_content.content "
             . "FROM ciniki_web_theme_content "
-            . "WHERE ciniki_web_theme_content.business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+            . "WHERE ciniki_web_theme_content.tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
             . "AND ciniki_web_theme_content.id = '" . ciniki_core_dbQuote($ciniki, $args['content_id']) . "' "
             . "";
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryTree');

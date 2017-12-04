@@ -9,13 +9,13 @@
 // Returns
 // -------
 //
-function ciniki_web_collectionObjSettingsUpdate($ciniki, $business_id, $collection_id, $args) {
+function ciniki_web_collectionObjSettingsUpdate($ciniki, $tnid, $collection_id, $args) {
 
     //
     // Get the current list of objects
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'collectionObjSettingsGet');
-    $rc = ciniki_web_collectionObjSettingsGet($ciniki, $business_id, $collection_id);
+    $rc = ciniki_web_collectionObjSettingsGet($ciniki, $tnid, $collection_id);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -31,7 +31,7 @@ function ciniki_web_collectionObjSettingsUpdate($ciniki, $business_id, $collecti
     foreach($args as $arg_name => $arg_value) {
         if( preg_match("/^(.*\..*\..*)-(.*)$/", $arg_name, $matches) ) {
             list($pkg, $mod, $obj) = explode('.', $matches[1]);
-            if( isset($ciniki['business']['modules'][$pkg . '.' . $mod]) ) {
+            if( isset($ciniki['tenant']['modules'][$pkg . '.' . $mod]) ) {
                 if( !isset($cur_settings[$arg_name]) || $cur_settings[$arg_name] != $arg_value ) {
                     if( !isset($objs[$pkg . '.' . $mod . '.' . $obj]) ) {
                         $objs[$pkg . '.' . $mod . '.' . $obj] = array();
@@ -51,7 +51,7 @@ function ciniki_web_collectionObjSettingsUpdate($ciniki, $business_id, $collecti
         //
         if( isset($cur_objects[$obj_name]) ) {
             // Update the object
-            $rc = ciniki_core_objectUpdate($ciniki, $business_id, 'ciniki.web.collection_obj', 
+            $rc = ciniki_core_objectUpdate($ciniki, $tnid, 'ciniki.web.collection_obj', 
                 $cur_objects[$obj_name]['id'], $object, 0x04);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
@@ -64,7 +64,7 @@ function ciniki_web_collectionObjSettingsUpdate($ciniki, $business_id, $collecti
             if( !isset($object['sequence']) ) { $object['sequence'] = ''; }
             if( !isset($object['num_items']) ) { $object['num_items'] = ''; }
             if( !isset($object['more']) ) { $object['more'] = ''; }
-            $rc = ciniki_core_objectAdd($ciniki, $business_id, 'ciniki.web.collection_obj', $object, 0x04);
+            $rc = ciniki_core_objectAdd($ciniki, $tnid, 'ciniki.web.collection_obj', $object, 0x04);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }

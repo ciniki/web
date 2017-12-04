@@ -14,7 +14,7 @@
 // Returns
 // -------
 //
-function ciniki_web_sliderLoad(&$ciniki, $settings, $business_id, $slider_id) {
+function ciniki_web_sliderLoad(&$ciniki, $settings, $tnid, $slider_id) {
 
     $strsql = "SELECT ciniki_web_sliders.id, "
         . "ciniki_web_sliders.size, "
@@ -31,13 +31,13 @@ function ciniki_web_sliderLoad(&$ciniki, $settings, $business_id, $slider_id) {
         . "FROM ciniki_web_sliders "
         . "LEFT JOIN ciniki_web_slider_images ON ("
             . "ciniki_web_sliders.id = ciniki_web_slider_images.slider_id "
-            . "AND ciniki_web_slider_images.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+            . "AND ciniki_web_slider_images.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . "AND ciniki_web_slider_images.start_date <= UTC_TIMESTAMP() "
             . "AND (ciniki_web_slider_images.end_date = '0000-00-00 00:00:00' "
                 . "OR ciniki_web_slider_images.end_date > UTC_TIMESTAMP() "
                 . ") "
             . ") "
-        . "WHERE ciniki_web_sliders.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "WHERE ciniki_web_sliders.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "AND ciniki_web_sliders.id = '" . ciniki_core_dbQuote($ciniki, $slider_id) . "' "
         . "ORDER BY ciniki_web_slider_images.sequence "
         . "";
@@ -79,7 +79,7 @@ function ciniki_web_sliderLoad(&$ciniki, $settings, $business_id, $slider_id) {
                 $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'sliderImages');
                 if( $rc['stat'] == 'ok' ) {
                     $fn = $rc['function_call'];
-                    $rc = $fn($ciniki, $settings, $business_id, array('base_url'=>$base_url));
+                    $rc = $fn($ciniki, $settings, $tnid, array('base_url'=>$base_url));
                     if( isset($rc['images']) ) {
                         $slider['images'] = array_merge($slider['images'], $rc['images']);
                     }

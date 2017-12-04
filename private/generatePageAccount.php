@@ -64,7 +64,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
     if( isset($settings['site-ssl-shop']) && $settings['site-ssl-shop'] == 'yes' 
         && isset($ciniki['config']['ciniki.web']['shop.domain']) && $_SERVER['HTTP_HOST'] != $ciniki['config']['ciniki.web']['shop.domain'] && $_SERVER['HTTP_HOST'] != $ciniki['config']['ciniki.web']['master.domain']
         ) {
-        header('Location: https://' . $ciniki['config']['ciniki.web']['shop.domain'] . '/' . $ciniki['business']['sitename'] . $_SERVER['REQUEST_URI']);
+        header('Location: https://' . $ciniki['config']['ciniki.web']['shop.domain'] . '/' . $ciniki['tenant']['sitename'] . $_SERVER['REQUEST_URI']);
         exit;
     }
 
@@ -74,9 +74,9 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
     if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'logout' ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageAccountLogout');
         if( isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] == 'timeout' ) {
-            return ciniki_web_generatePageAccountLogout($ciniki, $settings, $ciniki['request']['business_id'], 'yes');
+            return ciniki_web_generatePageAccountLogout($ciniki, $settings, $ciniki['request']['tnid'], 'yes');
         }
-        return ciniki_web_generatePageAccountLogout($ciniki, $settings, $ciniki['request']['business_id'], 'no');
+        return ciniki_web_generatePageAccountLogout($ciniki, $settings, $ciniki['request']['tnid'], 'no');
     }
 
     //
@@ -89,7 +89,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
             return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.188', 'msg'=>'Unable to find override login page'));
         }
         $fn = $rc['function_call']; 
-        $rc = $fn($ciniki, $settings, $ciniki['request']['business_id'], $breadcrumbs);
+        $rc = $fn($ciniki, $settings, $ciniki['request']['tnid'], $breadcrumbs);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -99,7 +99,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
         }
     } else {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageAccountLogin');
-        $rc = ciniki_web_generatePageAccountLogin($ciniki, $settings, $ciniki['request']['business_id'], $breadcrumbs);
+        $rc = ciniki_web_generatePageAccountLogin($ciniki, $settings, $ciniki['request']['tnid'], $breadcrumbs);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -131,23 +131,23 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
         && isset($ciniki['session']['customers'][$ciniki['request']['uri_split'][1]])
         ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageAccountSwitch', $breadcrumbs);
-        return ciniki_web_generatePageAccountSwitch($ciniki, $settings, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][1]);
+        return ciniki_web_generatePageAccountSwitch($ciniki, $settings, $ciniki['request']['tnid'], $ciniki['request']['uri_split'][1]);
     }
 
 //    print "<pre>" . print_r($ciniki['request'], true) . "</pre>";
-//    print "<pre>" . print_r($ciniki['business'], true) . "</pre>";
+//    print "<pre>" . print_r($ciniki['tenant'], true) . "</pre>";
 //    exit;
 
     //
     // Gather the submodule menu items
     //
     $submenu = array();
-    foreach($ciniki['business']['modules'] as $module => $m) {
+    foreach($ciniki['tenant']['modules'] as $module => $m) {
         list($pkg, $mod) = explode('.', $module);
         $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'accountSubMenuItems');
         if( $rc['stat'] == 'ok' ) {
             $fn = $rc['function_call'];
-            $rc = $fn($ciniki, $settings, $ciniki['request']['business_id']);
+            $rc = $fn($ciniki, $settings, $ciniki['request']['tnid']);
             if( $rc['stat'] == 'ok' && isset($rc['submenu']) ) {
                 $submenu = array_merge($submenu, $rc['submenu']);
             }
@@ -206,7 +206,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
         return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.14', 'msg'=>'Requested page not found.', 'err'=>$rc['err']));
     }
     $fn = $rc['function_call'];
-    $rc = $fn($ciniki, $settings, $ciniki['request']['business_id'], array(
+    $rc = $fn($ciniki, $settings, $ciniki['request']['tnid'], array(
         'page_title'=>'Account', 
         'breadcrumbs'=>$breadcrumbs,
         'base_url'=>$base_url,
@@ -242,7 +242,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
     $block_content = "<div class='entry-content'>\n";
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlocks');
     if( isset($page['blocks']) ) {
-        $rc = ciniki_web_processBlocks($ciniki, $settings, $ciniki['request']['business_id'], $page['blocks']);
+        $rc = ciniki_web_processBlocks($ciniki, $settings, $ciniki['request']['tnid'], $page['blocks']);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -273,7 +273,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
         }
         if( isset($settings['theme']['header-breadcrumbs']) && $settings['theme']['header-breadcrumbs'] == 'yes' && isset($breadcrumbs) ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBreadcrumbs');
-            $rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $ciniki['request']['business_id'], $breadcrumbs);
+            $rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $ciniki['request']['tnid'], $breadcrumbs);
             if( $rc['stat'] == 'ok' ) {
                 $page_content .= $rc['content'];
             }
@@ -293,7 +293,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
         $page_content .= "<aside id='sidebar-menu' class='col-left-narrow sidebar-menu'>";
         $page_content .= "<div class='aside-content sidebar-menu'>";
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockMenu');
-        $rc = ciniki_web_processBlockMenu($ciniki, $settings, $ciniki['request']['business_id'], array('title'=>'', 'menu'=>$sidebar_menu));
+        $rc = ciniki_web_processBlockMenu($ciniki, $settings, $ciniki['request']['tnid'], array('title'=>'', 'menu'=>$sidebar_menu));
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -322,7 +322,7 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
         $page_content .= "<aside id='sidebar-menu' class='col-right-narrow sidebar-menu'>";
         $page_content .= "<div class='aside-content sidebar-menu'>";
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockMenu');
-        $rc = ciniki_web_processBlockMenu($ciniki, $settings, $ciniki['request']['business_id'], array('title'=>'', 'menu'=>$sidebar_menu));
+        $rc = ciniki_web_processBlockMenu($ciniki, $settings, $ciniki['request']['tnid'], array('title'=>'', 'menu'=>$sidebar_menu));
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }

@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This function updates the theme files in the cache for the business. It will also
+// This function updates the theme files in the cache for the tenant. It will also
 // update any settings if required.
 //
 // Arguments

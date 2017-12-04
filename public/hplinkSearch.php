@@ -2,13 +2,13 @@
 //
 // Description
 // -----------
-// This method searchs for a Home Page Links for a business.
+// This method searchs for a Home Page Links for a tenant.
 //
 // Arguments
 // ---------
 // api_key:
 // auth_token:
-// business_id:        The ID of the business to get Home Page Link for.
+// tnid:        The ID of the tenant to get Home Page Link for.
 // start_needle:       The search string to search for.
 // limit:              The maximum number of entries to return.
 //
@@ -21,7 +21,7 @@ function ciniki_web_hplinkSearch($ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'),
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'),
         'start_needle'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Search String'),
         'limit'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Limit'),
         ));
@@ -31,10 +31,10 @@ function ciniki_web_hplinkSearch($ciniki) {
     $args = $rc['args'];
 
     //
-    // Check access to business_id as owner, or sys admin.
+    // Check access to tnid as owner, or sys admin.
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
-    $rc = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.hplinkSearch');
+    $rc = ciniki_web_checkAccess($ciniki, $args['tnid'], 'ciniki.web.hplinkSearch');
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -48,7 +48,7 @@ function ciniki_web_hplinkSearch($ciniki) {
         . "ciniki_web_hplinks.url, "
         . "ciniki_web_hplinks.sequence "
         . "FROM ciniki_web_hplinks "
-        . "WHERE ciniki_web_hplinks.business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+        . "WHERE ciniki_web_hplinks.tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
         . "AND ("
             . "name LIKE '" . ciniki_core_dbQuote($ciniki, $args['start_needle']) . "%' "
             . "OR name LIKE '% " . ciniki_core_dbQuote($ciniki, $args['start_needle']) . "%' "

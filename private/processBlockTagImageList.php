@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_web_processBlockTagImageList($ciniki, $settings, $business_id, $block) {
+function ciniki_web_processBlockTagImageList($ciniki, $settings, $tnid, $block) {
 
     if( !isset($block['tags']) ) {
         return array('stat'=>'ok', 'content'=>'');

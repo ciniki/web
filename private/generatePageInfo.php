@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This function will generate the info page for the business.
+// This function will generate the info page for the tenant.
 //
 // Arguments
 // ---------
@@ -18,15 +18,15 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
     // Check if a file was specified to be downloaded
     //
     $download_err = '';
-//  if( (isset($ciniki['business']['modules']['ciniki.artclub'])
-//          || isset($ciniki['business']['modules']['ciniki.artgallery']))
-    if( isset($ciniki['business']['modules']['ciniki.info']) 
+//  if( (isset($ciniki['tenant']['modules']['ciniki.artclub'])
+//          || isset($ciniki['tenant']['modules']['ciniki.artgallery']))
+    if( isset($ciniki['tenant']['modules']['ciniki.info']) 
         && isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != ''
         && isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != ''
         && isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] == 'download'
         && isset($ciniki['request']['uri_split'][3]) && $ciniki['request']['uri_split'][3] != '' ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'fileDownload');
-        $rc = ciniki_info_web_fileDownload($ciniki, $ciniki['request']['business_id'], 
+        $rc = ciniki_info_web_fileDownload($ciniki, $ciniki['request']['tnid'], 
             $ciniki['request']['uri_split'][0],
             $ciniki['request']['uri_split'][1],
             $ciniki['request']['uri_split'][3]);
@@ -53,12 +53,12 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
         return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.64', 'msg'=>'The file you requested does not exist.  Please check your link and try again.'));
     }
 
-    if( isset($ciniki['business']['modules']['ciniki.info']) 
+    if( isset($ciniki['tenant']['modules']['ciniki.info']) 
         && isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != ''
         && isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] == 'download'
         && isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'fileDownload');
-        $rc = ciniki_info_web_fileDownload($ciniki, $ciniki['request']['business_id'], 
+        $rc = ciniki_info_web_fileDownload($ciniki, $ciniki['request']['tnid'], 
             $ciniki['request']['uri_split'][0], '',
             $ciniki['request']['uri_split'][2]);
         if( $rc['stat'] == 'ok' ) {
@@ -99,7 +99,7 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
     // Get the pages with content
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'pages');
-    $rc = ciniki_info_web_pages($ciniki, $settings, $ciniki['request']['business_id']);
+    $rc = ciniki_info_web_pages($ciniki, $settings, $ciniki['request']['tnid']);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -185,7 +185,7 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
         // and prev from the list of images returned
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'pageDetails');
-        $rc = ciniki_info_web_pageDetails($ciniki, $settings, $ciniki['request']['business_id'], 
+        $rc = ciniki_info_web_pageDetails($ciniki, $settings, $ciniki['request']['tnid'], 
             array('permalink'=>$content_permalink));
         if( $rc['stat'] != 'ok' ) {
             return $rc;
@@ -293,7 +293,7 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
         ) {
 
         ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'testimonials');
-        $rc = ciniki_info_web_testimonials($ciniki, $settings, $ciniki['request']['business_id']);
+        $rc = ciniki_info_web_testimonials($ciniki, $settings, $ciniki['request']['tnid']);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -322,7 +322,7 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
         && $settings["page-$pg-" . $page_settings_name . '-active'] == 'yes' 
         ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'pageDetails');
-        $rc = ciniki_info_web_pageDetails($ciniki, $settings, $ciniki['request']['business_id'], 
+        $rc = ciniki_info_web_pageDetails($ciniki, $settings, $ciniki['request']['tnid'], 
             array('permalink'=>$page_permalink));
         if( $rc['stat'] != 'ok' ) {
             return $rc;
@@ -343,7 +343,7 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
     //
     elseif( $pg == 'about' && $content_type == 1 ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'pageDetails');
-        $rc = ciniki_info_web_pageDetails($ciniki, $settings, $ciniki['request']['business_id'], 
+        $rc = ciniki_info_web_pageDetails($ciniki, $settings, $ciniki['request']['tnid'], 
             array('content_type'=>1));
         if( $rc['stat'] != 'ok' ) {
             return $rc;
@@ -363,10 +363,10 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
         //
         if( isset($settings['page-about-user-display']) && $settings['page-about-user-display'] == 'yes' ) {
             //
-            // Check which parts of the business contact information to display automatically
+            // Check which parts of the tenant contact information to display automatically
             //
-            ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'web', 'bios');
-            $rc = ciniki_businesses_web_bios($ciniki, $settings, $ciniki['request']['business_id'], 'about');
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'web', 'bios');
+            $rc = ciniki_tenants_web_bios($ciniki, $settings, $ciniki['request']['tnid'], 'about');
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }

@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_web_indexUpdateObjectImage(&$ciniki, $business_id, $image_id, $index_id) {
+function ciniki_web_indexUpdateObjectImage(&$ciniki, $tnid, $image_id, $index_id) {
 
     if( $image_id <= 0 ) {
         return array('stat'=>'ok');
@@ -23,7 +23,7 @@ function ciniki_web_indexUpdateObjectImage(&$ciniki, $business_id, $image_id, $i
     $strsql = "SELECT id, type, UNIX_TIMESTAMP(ciniki_images.last_updated) AS last_updated "
         . "FROM ciniki_images "
         . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $image_id) . "' "
-        . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "AND tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "";
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.images', 'image');
     if( $rc['stat'] != 'ok' ) { 
@@ -41,10 +41,10 @@ function ciniki_web_indexUpdateObjectImage(&$ciniki, $business_id, $image_id, $i
 //  }
 
     //
-    // Get the business uuid
+    // Get the tenant uuid
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'cacheDir');
-    $rc = ciniki_web_cacheDir($ciniki, $business_id);
+    $rc = ciniki_web_cacheDir($ciniki, $tnid);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -54,7 +54,7 @@ function ciniki_web_indexUpdateObjectImage(&$ciniki, $business_id, $image_id, $i
     // Get the cache directory
     //
 //    $filename = $ciniki['config']['ciniki.core']['root_dir'] . '/ciniki-mods/web/cache/'
-//        . '/' . sprintf("%02d/%07d", $business_id, $business_id) 
+//        . '/' . sprintf("%02d/%07d", $tnid, $tnid) 
     $filename = $cache_dir . '/search/' . sprintf("%012d", $image_id) . '.' . $extension;
 
     if( !file_exists($filename) || filemtime($filename) < $img['last_updated'] ) {
@@ -62,7 +62,7 @@ function ciniki_web_indexUpdateObjectImage(&$ciniki, $business_id, $image_id, $i
         // Load the image from the database
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'loadImage');
-        $rc = ciniki_images_loadImage($ciniki, $business_id, $img['id'], 'thumbnail');
+        $rc = ciniki_images_loadImage($ciniki, $tnid, $img['id'], 'thumbnail');
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }

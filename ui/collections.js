@@ -1,5 +1,5 @@
 //
-// The app to manage web options for a business
+// The app to manage web options for a tenant
 //
 function ciniki_web_collections() {
     this.collectionStatuses = {
@@ -12,7 +12,7 @@ function ciniki_web_collections() {
         // Global functions for history and field value
         //
         this.fieldHistoryArgs = function(s, i) {
-            return {'method':'ciniki.web.pageSettingsHistory','args':{'business_id':M.curBusinessID, 'field':i}};
+            return {'method':'ciniki.web.pageSettingsHistory','args':{'tnid':M.curTenantID, 'field':i}};
         }
         this.fieldValue = function(s, i, d) { 
             if( this.data[i] == null ) { return ''; }
@@ -102,7 +102,7 @@ function ciniki_web_collections() {
                 }},
         };
         this.edit.fieldHistoryArgs = function(s, i) {
-            return {'method':'ciniki.web.collectionHistory', 'args':{'business_id':M.curBusinessID, 
+            return {'method':'ciniki.web.collectionHistory', 'args':{'tnid':M.curTenantID, 
                 'collection_id':this.collection_id, 'field':i}};
         }
         this.edit.addDropImage = function(iid) {
@@ -143,7 +143,7 @@ function ciniki_web_collections() {
                 this.edit.sections[i].active = 'no';
             }
         }
-        for(i in M.curBusiness.modules) {
+        for(i in M.curTenant.modules) {
             if( this.edit.sections[i] != null ) {
                 this.edit.sections[i].active = 'yes';
             }
@@ -155,7 +155,7 @@ function ciniki_web_collections() {
     this.showMain = function(cb) {
         this.main.reset();
 
-        M.api.getJSONCb('ciniki.web.collectionList', {'business_id':M.curBusinessID}, function(rsp) {
+        M.api.getJSONCb('ciniki.web.collectionList', {'tnid':M.curTenantID}, function(rsp) {
             if( rsp.stat != 'ok' ) {
                 M.api.err(rsp);
                 return false;
@@ -171,7 +171,7 @@ function ciniki_web_collections() {
         if( sid != null ) { this.edit.collection_id = sid; }
         if( this.edit.collection_id > 0 ) {
             this.edit.sections._buttons.buttons.delete.visible = 'yes';
-            M.api.getJSONCb('ciniki.web.collectionGet', {'business_id':M.curBusinessID, 
+            M.api.getJSONCb('ciniki.web.collectionGet', {'tnid':M.curTenantID, 
                 'collection_id':this.edit.collection_id}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
@@ -197,7 +197,7 @@ function ciniki_web_collections() {
             var c = this.edit.serializeForm('no');
             if( c != '' ) {
                 M.api.postJSONCb('ciniki.web.collectionUpdate', 
-                    {'business_id':M.curBusinessID, 'collection_id':this.edit.collection_id}, c, function(rsp) {
+                    {'tnid':M.curTenantID, 'collection_id':this.edit.collection_id}, c, function(rsp) {
                         if( rsp.stat != 'ok' ) {
                             M.api.err(rsp);
                             return false;
@@ -215,7 +215,7 @@ function ciniki_web_collections() {
             }
             var c = this.edit.serializeForm('yes');
             M.api.postJSONCb('ciniki.web.collectionAdd', 
-                {'business_id':M.curBusinessID}, c, function(rsp) {
+                {'tnid':M.curTenantID}, c, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;
@@ -227,7 +227,7 @@ function ciniki_web_collections() {
 
     this.deleteCollection = function() {
         if( confirm('Are you sure you want to this collection?') ) {
-            var rsp = M.api.getJSONCb('ciniki.web.collectionDelete', {'business_id':M.curBusinessID, 
+            var rsp = M.api.getJSONCb('ciniki.web.collectionDelete', {'tnid':M.curTenantID, 
                 'collection_id':this.edit.collection_id}, 
                 function(rsp) {
                     if( rsp.stat != 'ok' ) {

@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_web_processBlockTagImages($ciniki, $settings, $business_id, $block) {
+function ciniki_web_processBlockTagImages($ciniki, $settings, $tnid, $block) {
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getPaddedImageURL');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');

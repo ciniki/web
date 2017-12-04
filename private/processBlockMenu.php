@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_web_processBlockMenu(&$ciniki, $settings, $business_id, $block) {
+function ciniki_web_processBlockMenu(&$ciniki, $settings, $tnid, $block) {
 
     $content = '';
 

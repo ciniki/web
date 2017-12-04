@@ -12,13 +12,13 @@
 // Returns
 // -------
 //
-function ciniki_web_processContactForm(&$ciniki, $settings, $business_id) {
+function ciniki_web_processContactForm(&$ciniki, $settings, $tnid) {
 
     $success_message = '';
     $error_message = '';
 
-    if( !isset($ciniki['business']['modules']['ciniki.web']['flags'])
-        || ($ciniki['business']['modules']['ciniki.web']['flags']&0x04) == 0 ) {
+    if( !isset($ciniki['tenant']['modules']['ciniki.web']['flags'])
+        || ($ciniki['tenant']['modules']['ciniki.web']['flags']&0x04) == 0 ) {
         $error_message = "This feature is not enabled.";
         return array('stat'=>'ok', 'error_message'=>$error_message, 'success_message'=>'');
     }
@@ -56,9 +56,9 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $business_id) {
         //
         // If the mail inbox flag has been sent, put the message into the inbox
         //
-        if( isset($ciniki['business']['modules']['ciniki.mail']['flags']) && ($ciniki['business']['modules']['ciniki.mail']['flags']&0x10) > 0 ) {
+        if( isset($ciniki['tenant']['modules']['ciniki.mail']['flags']) && ($ciniki['tenant']['modules']['ciniki.mail']['flags']&0x10) > 0 ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'mail', 'hooks', 'inboxAddMessage');
-            $rc = ciniki_mail_hooks_inboxAddMessage($ciniki, $business_id, array(
+            $rc = ciniki_mail_hooks_inboxAddMessage($ciniki, $tnid, array(
                 'from_name'=>$_POST['contact-form-name'],
                 'from_email'=>$_POST['contact-form-email'],
                 'subject'=>$subject,
@@ -68,12 +68,12 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $business_id) {
                 ));
             if( $rc['stat'] != 'ok' ) {
                 $error_message = "I'm sorry, we had a problem delivering your message. Please try again, or contact us by phone.";
-                error_log('WEB [' . $ciniki['business']['details']['name'] . ']: Error with form submit (2606)');
+                error_log('WEB [' . $ciniki['tenant']['details']['name'] . ']: Error with form submit (2606)');
             }
         } 
         
         //
-        // No inbox, email the message to specified email addresses or the business owners
+        // No inbox, email the message to specified email addresses or the tenant owners
         //
         else {
             $msg = "New message from " . $_POST['contact-form-name'] . " (" . $_POST['contact-form-email'] . ")"
@@ -86,7 +86,7 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $business_id) {
                 $send_to_emails = explode(',', $settings['page-contact-form-emails']);
                 foreach($send_to_emails as $email) {
                     $ciniki['emailqueue'][] = array('to'=>trim($email),
-                        'business_id'=>$business_id,
+                        'tnid'=>$tnid,
                         'replyto_email'=>$_POST['contact-form-email'],
                         'replyto_name'=>$_POST['contact-form-name'],
                         'subject'=>$subject,
@@ -94,15 +94,15 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $business_id) {
                         );
                 }
             } else {
-                ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'hooks', 'businessOwners');
-                $rc = ciniki_businesses_hooks_businessOwners($ciniki, $business_id, array());
+                ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'hooks', 'tenantOwners');
+                $rc = ciniki_tenants_hooks_tenantOwners($ciniki, $tnid, array());
                 if( $rc['stat'] != 'ok' ) {
-                    return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.120', 'msg'=>'Unable to get business owners', 'err'=>$rc['err']));
+                    return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.120', 'msg'=>'Unable to get tenant owners', 'err'=>$rc['err']));
                 }
                 $owners = $rc['users'];
                 foreach($owners as $user_id => $owner) {
                     $ciniki['emailqueue'][] = array('user_id'=>$user_id,
-                        'business_id'=>$business_id,
+                        'tnid'=>$tnid,
                         'replyto_email'=>$_POST['contact-form-email'],
                         'replyto_name'=>$_POST['contact-form-name'],
                         'subject'=>$subject,

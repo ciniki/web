@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, $block) {
+function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $tnid, $block) {
 
     if( !isset($block['labels']) || !isset($block['datasets']) ) {
         return array('stat'=>'ok', 'content'=>'');
@@ -43,7 +43,7 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $business_id, 
     $content .= '<div class="chart chart-overlay"><div class="chart-wrapper"><canvas id="' . $block['canvas'] . '"></canvas></div></div>';
 
     //
-    // Setup colours FIXME: This should be set via the business settings
+    // Setup colours FIXME: This should be set via the tenant settings
     //
     $colours = array(
         '1'=>''

@@ -50,7 +50,7 @@ function ciniki_web_generatePage404($ciniki, $settings, $errors) {
         }
         if( isset($settings['theme']['header-breadcrumbs']) && $settings['theme']['header-breadcrumbs'] == 'yes' && isset($breadcrumbs) ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBreadcrumbs');
-            $rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $ciniki['request']['business_id'], $breadcrumbs);
+            $rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $ciniki['request']['tnid'], $breadcrumbs);
             if( $rc['stat'] == 'ok' ) {
                 $content .= $rc['content'];
             }

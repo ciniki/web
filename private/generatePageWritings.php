@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This function will generate the writing catalog page for the business.
+// This function will generate the writing catalog page for the tenant.
 //
 // Arguments
 // ---------
@@ -42,7 +42,7 @@ function ciniki_web_generatePageWritings($ciniki, $settings) {
         // Get the writing information
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'writingcatalog', 'web', 'writingSample');
-        $rc = ciniki_writingcatalog_web_writingSample($ciniki, $settings, $ciniki['request']['business_id'], $writing_permalink, $sample_permalink);
+        $rc = ciniki_writingcatalog_web_writingSample($ciniki, $settings, $ciniki['request']['tnid'], $writing_permalink, $sample_permalink);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -117,7 +117,7 @@ function ciniki_web_generatePageWritings($ciniki, $settings) {
         // Get the writing information
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'writingcatalog', 'web', 'writingDetails');
-        $rc = ciniki_writingcatalog_web_writingDetails($ciniki, $settings, $ciniki['request']['business_id'], $writing_permalink);
+        $rc = ciniki_writingcatalog_web_writingDetails($ciniki, $settings, $ciniki['request']['tnid'], $writing_permalink);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -221,7 +221,7 @@ function ciniki_web_generatePageWritings($ciniki, $settings) {
                 $page_content .= $rc['content'];
                 if( isset($orderinfo['paypal_business']) && $orderinfo['paypal_business'] != '' ) {
                     $page_content .= "<form style='display:inline-block;width:10em;' target='paypal' action='https://www.paypal.com/cgi-bin/webscr' method='post'>"
-                        . "<input type='hidden' name='business' value='" . $orderinfo['paypal_business'] . "'>"
+                        . "<input type='hidden' name='tenant' value='" . $orderinfo['paypal_business'] . "'>"
                         . "<input type='hidden' name='cmd' value='_cart'>"
                         . "<input type='hidden' name='add' value='1'>"
                         . "<input type='hidden' name='item_name' value='" . $item['title'] . "'>"
@@ -231,7 +231,7 @@ function ciniki_web_generatePageWritings($ciniki, $settings) {
                         . "<img alt='' border='0' width='1' height='1' src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif' >"
                         . "</form>";
                     $page_content .= "<form style='display:inline-block;width:10em;' target='paypal' action='https://www.paypal.com/cgi-bin/webscr' method='post'>"
-                        . "<input type='hidden' name='business' value='" . $orderinfo['paypal_business'] . "'>"
+                        . "<input type='hidden' name='tenant' value='" . $orderinfo['paypal_business'] . "'>"
                         . "<input type='hidden' name='cmd' value='_cart'>"
                         . "<input type='hidden' name='display' value='1'>"
                         . "<input type='image' name='submit' border='0' src='https://www.paypalobjects.com/en_US/i/btn/btn_viewcart_LG.gif' alt='PayPal - The safer, easier way to pay online'>"
@@ -269,7 +269,7 @@ function ciniki_web_generatePageWritings($ciniki, $settings) {
         // Get the list of categories
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'writingcatalog', 'web', 'writingList');
-        $rc = ciniki_writingcatalog_web_writingList($ciniki, $settings, $ciniki['request']['business_id'], array());
+        $rc = ciniki_writingcatalog_web_writingList($ciniki, $settings, $ciniki['request']['tnid'], array());
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }

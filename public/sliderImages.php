@@ -7,7 +7,7 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:         The ID of the business to add the slider image to.
+// tnid:         The ID of the tenant to add the slider image to.
 // slider_image_id:     The ID of the slider image to get.
 //
 // Returns
@@ -19,7 +19,7 @@ function ciniki_web_sliderImages($ciniki) {
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'images'=>array('required'=>'yes', 'blank'=>'no', 'type'=>'idlist', 'name'=>'Image'),
         )); 
     if( $rc['stat'] != 'ok' ) { 
@@ -29,10 +29,10 @@ function ciniki_web_sliderImages($ciniki) {
 
     //  
     // Make sure this module is activated, and
-    // check permission to run this function for this business
+    // check permission to run this function for this tenant
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
-    $rc = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.sliderImages'); 
+    $rc = ciniki_web_checkAccess($ciniki, $args['tnid'], 'ciniki.web.sliderImages'); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }   
@@ -43,7 +43,7 @@ function ciniki_web_sliderImages($ciniki) {
     $images = array();
     ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'loadCacheThumbnail');
     foreach($args['images'] as $image_id) {
-        $rc = ciniki_images_loadCacheThumbnail($ciniki, $args['business_id'], $image_id, 75);
+        $rc = ciniki_images_loadCacheThumbnail($ciniki, $args['tnid'], $image_id, 75);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }

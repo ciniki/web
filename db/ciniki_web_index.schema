@@ -1,13 +1,13 @@
 #
 # Description
 # -----------
-# This table stores the index for a business.
+# This table stores the index for a tenant.
 #
 # Fields
 # ------
 # id:               The ID assigned to the page.
 # uuid:             The Universal Unique ID.
-# business_id:      The business the page is attached to.
+# tnid:             The tenant the page is attached to.
 #
 # label:            The label for this entry, used to group entries.
 # title:            The title for the indexed object.
@@ -36,7 +36,7 @@
 create table ciniki_web_index (
     id int not null auto_increment,
     uuid char(36) not null,
-    business_id int not null,
+    tnid int not null,
     label varchar(100) not null,
     title varchar(250) not null,
     subtitle varchar(250) not null,
@@ -53,7 +53,7 @@ create table ciniki_web_index (
     date_added datetime not null,
     last_updated datetime not null,
     primary key (id),
-    unique index (business_id, object, object_id),
+    unique index (tnid, object, object_id),
     index (primary_words, secondary_words, tertiary_words),
-    index sync (business_id, uuid, last_updated)
+    index sync (tnid, uuid, last_updated)
 ) ENGINE='InnoDB', COMMENT='v1.01', CHARACTER SET latin1;

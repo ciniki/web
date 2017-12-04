@@ -12,7 +12,7 @@
 // Returns
 // -------
 //
-function ciniki_web_processGalleryImage(&$ciniki, $settings, $business_id, $args) {
+function ciniki_web_processGalleryImage(&$ciniki, $settings, $tnid, $args) {
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');

@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_web_indexUpdateModule(&$ciniki, $business_id, $module) {
+function ciniki_web_indexUpdateModule(&$ciniki, $tnid, $module) {
    
     list($pkg, $mod) = explode('.', $module);
 
@@ -21,7 +21,7 @@ function ciniki_web_indexUpdateModule(&$ciniki, $business_id, $module) {
     // For example, ciniki.customers.dealers
     //
     if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.web', 0x0200) ) {
-        $rc = ciniki_web_indexModuleBaseURL($ciniki, $business_id, $module);
+        $rc = ciniki_web_indexModuleBaseURL($ciniki, $tnid, $module);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -34,14 +34,14 @@ function ciniki_web_indexUpdateModule(&$ciniki, $business_id, $module) {
     $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'hooks', 'webOptions');
     if( $rc['stat'] == 'ok' ) {
         $fn = $rc['function_call'];
-        $rc = $fn($ciniki, $business_id, array());
+        $rc = $fn($ciniki, $tnid, array());
         if( $rc['stat'] == 'ok' && isset($rc['pages']) ) {
             $pages = $rc['pages'];
             foreach($pages as $object => $page) {
                 //
                 // Check for a base_url for the object
                 //
-                $rc = ciniki_web_indexObjectBaseURL($ciniki, $business_id, $object);
+                $rc = ciniki_web_indexObjectBaseURL($ciniki, $tnid, $object);
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;
                 }
@@ -59,7 +59,7 @@ function ciniki_web_indexUpdateModule(&$ciniki, $business_id, $module) {
     $index_objects = array();
     $strsql = "SELECT id, uuid, primary_image_id, object, object_id, UNIX_TIMESTAMP(last_updated) AS last_updated "
         . "FROM ciniki_web_index "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "AND object LIKE '" . ciniki_core_dbQuote($ciniki, $module) . ".%' "
         . "";
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'object');
@@ -77,7 +77,7 @@ function ciniki_web_indexUpdateModule(&$ciniki, $business_id, $module) {
     $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'hooks', 'webIndexList');
     if( $rc['stat'] == 'ok' ) {
         $fn = $rc['function_call'];
-        $rc = $fn($ciniki, $business_id, array());
+        $rc = $fn($ciniki, $tnid, array());
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -88,17 +88,17 @@ function ciniki_web_indexUpdateModule(&$ciniki, $business_id, $module) {
         //
         // No webIndexList for module, delete anything that exists
         //
-        $rc = ciniki_web_indexDeleteModule($ciniki, $business_id, $module);
+        $rc = ciniki_web_indexDeleteModule($ciniki, $tnid, $module);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
     }
 
     //
-    // Get the business uuid
+    // Get the tenant uuid
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'cacheDir');
-    $rc = ciniki_web_cacheDir($ciniki, $business_id);
+    $rc = ciniki_web_cacheDir($ciniki, $tnid);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -119,7 +119,7 @@ function ciniki_web_indexUpdateModule(&$ciniki, $business_id, $module) {
                 }
             }
 
-            $rc = ciniki_core_objectDelete($ciniki, $business_id, 'ciniki.web.index', $object['id'], $object['uuid'], 0x07);
+            $rc = ciniki_core_objectDelete($ciniki, $tnid, 'ciniki.web.index', $object['id'], $object['uuid'], 0x07);
             // Don't fail on delete error
 
         }
@@ -135,7 +135,7 @@ function ciniki_web_indexUpdateModule(&$ciniki, $business_id, $module) {
         } elseif( isset($object_base_urls[$object['object']]) ) {
             $args['base_url'] = $object_base_urls[$object['object']];
         }
-        $rc = ciniki_web_indexUpdateObject($ciniki, $business_id, $args);
+        $rc = ciniki_web_indexUpdateObject($ciniki, $tnid, $args);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }

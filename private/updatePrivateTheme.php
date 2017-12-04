@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This function updates the theme files in the cache for the business. It will also
+// This function updates the theme files in the cache for the tenant. It will also
 // update any settings if required.
 //
 // Arguments
@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, $settings, $theme_id) {
+function ciniki_web_updatePrivateTheme(&$ciniki, $tnid, $settings, $theme_id) {
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
     //
@@ -20,7 +20,7 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, $settings, $theme
     if( !isset($settings['site-privatetheme-permalink']) || $settings['site-privatetheme-permalink'] == '' ) {
         $strsql = "SELECT id, permalink "
             . "FROM ciniki_web_themes "
-            . "WHERE ciniki_web_themes.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+            . "WHERE ciniki_web_themes.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . "AND ciniki_web_themes.id = '" . ciniki_core_dbQuote($ciniki, $theme_id) . "' "
             . "ORDER BY date_added DESC "
             . "LIMIT 1 "
@@ -30,12 +30,12 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, $settings, $theme
             return $rc;
         }
         if( isset($rc['theme']) ) {
-            $theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/theme-' . $rc['theme']['permalink'];
+            $theme_cache_dir = $ciniki['tenant']['web_cache_dir'] . '/theme-' . $rc['theme']['permalink'];
         } else {
             return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.129', 'msg'=>'No theme specified'));
         }
     } else {
-        $theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/theme-' . $settings['site-privatetheme-permalink'];
+        $theme_cache_dir = $ciniki['tenant']['web_cache_dir'] . '/theme-' . $settings['site-privatetheme-permalink'];
     }
     if( !file_exists($theme_cache_dir) ) {
         mkdir($theme_cache_dir, 0755, true);
@@ -46,7 +46,7 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, $settings, $theme
     //
     $strsql = "SELECT id, content_type, media, content "
         . "FROM ciniki_web_theme_content "
-        . "WHERE ciniki_web_theme_content.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "WHERE ciniki_web_theme_content.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "AND ciniki_web_theme_content.theme_id = '" . ciniki_core_dbQuote($ciniki, $theme_id) . "' "
         . "AND ciniki_web_theme_content.status = 10 "
         . "AND (content_type = 'css' OR content_type = 'js') "
@@ -126,10 +126,10 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, $settings, $theme
         . "ciniki_images.image, "
         . "UNIX_TIMESTAMP(ciniki_images.last_updated) AS last_updated "
         . "FROM ciniki_web_theme_images, ciniki_images "
-        . "WHERE ciniki_web_theme_images.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "WHERE ciniki_web_theme_images.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "AND ciniki_web_theme_images.theme_id = '" . ciniki_core_dbQuote($ciniki, $theme_id) . "' "
         . "AND ciniki_web_theme_images.image_id = ciniki_images.id "
-        . "AND ciniki_images.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "AND ciniki_images.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "";
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'image');
     if( $rc['stat'] != 'ok' ) {
@@ -145,7 +145,7 @@ function ciniki_web_updatePrivateTheme(&$ciniki, $business_id, $settings, $theme
                 // Load the image from the database
                 //
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'loadImage');
-                $rc = ciniki_images_loadImage($ciniki, $ciniki['request']['business_id'], $img['id'], 'original');
+                $rc = ciniki_images_loadImage($ciniki, $ciniki['request']['tnid'], $img['id'], 'original');
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;
                 }

@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This function will generate the members page for the business.
+// This function will generate the members page for the tenant.
 //
 // Arguments
 // ---------
@@ -18,13 +18,13 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
     // Check if a file was specified to be downloaded
     //
     $download_err = '';
-    if( isset($ciniki['business']['modules']['ciniki.info'])
+    if( isset($ciniki['tenant']['modules']['ciniki.info'])
         && isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'download'
         && isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' 
         && isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' 
         ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'fileDownload');
-        $rc = ciniki_info_web_fileDownload($ciniki, $ciniki['request']['business_id'], 
+        $rc = ciniki_info_web_fileDownload($ciniki, $ciniki['request']['tnid'], 
             $ciniki['request']['uri_split'][1], '',
             $ciniki['request']['uri_split'][2]);
         if( $rc['stat'] == 'ok' ) {
@@ -76,9 +76,9 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
 
         ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'memberList');
         if( isset($settings['page-members-list-format']) && $settings['page-members-list-format'] == 'thumbnail-list' ) {
-            $rc = ciniki_customers_web_memberList($ciniki, $settings, $ciniki['request']['business_id'], array('category'=>$category_permalink, 'format'=>'list'));
+            $rc = ciniki_customers_web_memberList($ciniki, $settings, $ciniki['request']['tnid'], array('category'=>$category_permalink, 'format'=>'list'));
         } else {
-            $rc = ciniki_customers_web_memberList($ciniki, $settings, $ciniki['request']['business_id'], array('category'=>$category_permalink, 'format'=>'2dlist'));
+            $rc = ciniki_customers_web_memberList($ciniki, $settings, $ciniki['request']['tnid'], array('category'=>$category_permalink, 'format'=>'2dlist'));
         }
         if( $rc['stat'] != 'ok' ) {
             return $rc;
@@ -100,7 +100,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
             $base_url = $ciniki['request']['base_url'] . "/members";
             if( isset($settings['page-members-list-format']) && $settings['page-members-list-format'] == 'thumbnail-list' ) {
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockThumbnailList');
-                $rc = ciniki_web_processBlockThumbnailList($ciniki, $settings, $ciniki['request']['business_id'], array(
+                $rc = ciniki_web_processBlockThumbnailList($ciniki, $settings, $ciniki['request']['tnid'], array(
                     'base_url'=>$base_url,
                     'list'=>$members,
                     ));
@@ -140,7 +140,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'memberDetails');
         $rc = ciniki_customers_web_memberDetails($ciniki, $settings, 
-            $ciniki['request']['business_id'], $member_permalink);
+            $ciniki['request']['tnid'], $member_permalink);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -252,7 +252,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
         //
         $member_permalink = $ciniki['request']['uri_split'][0];
         $rc = ciniki_customers_web_memberDetails($ciniki, $settings, 
-            $ciniki['request']['business_id'], $member_permalink);
+            $ciniki['request']['tnid'], $member_permalink);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -389,13 +389,13 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
         if( isset($settings['page-members-categories-display']) 
             && ($settings['page-members-categories-display'] == 'wordlist'
                 || $settings['page-members-categories-display'] == 'wordcloud' )
-            && isset($ciniki['business']['modules']['ciniki.customers']['flags']) 
-            && ($ciniki['business']['modules']['ciniki.customers']['flags']&0x04) > 0 ) {
+            && isset($ciniki['tenant']['modules']['ciniki.customers']['flags']) 
+            && ($ciniki['tenant']['modules']['ciniki.customers']['flags']&0x04) > 0 ) {
             //
             // Display the list of categories
             //
 //          ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'memberCategories');
-//          $rc = ciniki_customers_web_memberCategories($ciniki, $settings, $ciniki['request']['business_id']);
+//          $rc = ciniki_customers_web_memberCategories($ciniki, $settings, $ciniki['request']['tnid']);
 //          if( $rc['stat'] != 'ok' ) {
 //              return $rc;
 //          }
@@ -403,7 +403,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
             
             ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'tagCloud');
             $base_url = $ciniki['request']['base_url'] . '/members/category';
-            $rc = ciniki_customers_web_tagCloud($ciniki, $settings, $ciniki['request']['business_id'], 40);
+            $rc = ciniki_customers_web_tagCloud($ciniki, $settings, $ciniki['request']['tnid'], 40);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -448,9 +448,9 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'memberList');
             if( isset($settings['page-members-list-format']) && $settings['page-members-list-format'] == 'thumbnail-list' ) {
-                $rc = ciniki_customers_web_memberList($ciniki, $settings, $ciniki['request']['business_id'], array('format'=>'list'));
+                $rc = ciniki_customers_web_memberList($ciniki, $settings, $ciniki['request']['tnid'], array('format'=>'list'));
             } else {
-                $rc = ciniki_customers_web_memberList($ciniki, $settings, $ciniki['request']['business_id'], array('format'=>'2dlist'));
+                $rc = ciniki_customers_web_memberList($ciniki, $settings, $ciniki['request']['tnid'], array('format'=>'2dlist'));
             }
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
@@ -467,7 +467,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
                 if( isset($settings['page-members-list-format']) && $settings['page-members-list-format'] == 'thumbnail-list' ) {
                     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockThumbnailList');
 //                    print "<pre>" . print_r($members, true) . "</pre>";
-                    $rc = ciniki_web_processBlockThumbnailList($ciniki, $settings, $ciniki['request']['business_id'], array(
+                    $rc = ciniki_web_processBlockThumbnailList($ciniki, $settings, $ciniki['request']['tnid'], array(
                         'base_url'=>$base_url,
                         'list'=>$members,
                         ));
@@ -512,10 +512,10 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'pageDetails');
         if( isset($add_membership_info) && $add_membership_info == 'yes' ) {
-            $rc = ciniki_info_web_pageDetails($ciniki, $settings, $ciniki['request']['business_id'], 
+            $rc = ciniki_info_web_pageDetails($ciniki, $settings, $ciniki['request']['tnid'], 
                 array('content_type'=>'7'));
         } elseif( isset($add_application_info) && $add_application_info == 'yes' ) {
-            $rc = ciniki_info_web_pageDetails($ciniki, $settings, $ciniki['request']['business_id'], 
+            $rc = ciniki_info_web_pageDetails($ciniki, $settings, $ciniki['request']['tnid'], 
                 array('content_type'=>'17'));
         }
         if( $rc['stat'] != 'ok' ) {
@@ -562,7 +562,7 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
         // Check if membership info should be displayed here
         //
 //      ciniki_core_loadMethod($ciniki, 'ciniki', 'artclub', 'web', 'membershipDetails');
-//      $rc = ciniki_artclub_web_membershipDetails($ciniki, $settings, $ciniki['request']['business_id']);
+//      $rc = ciniki_artclub_web_membershipDetails($ciniki, $settings, $ciniki['request']['tnid']);
 //      if( $rc['stat'] != 'ok' ) {
 //          return $rc;
 //      }

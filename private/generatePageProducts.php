@@ -18,13 +18,13 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
     // Check if a file was specified to be downloaded
     //
     $download_err = '';
-    if( isset($ciniki['business']['modules']['ciniki.products'])
+    if( isset($ciniki['tenant']['modules']['ciniki.products'])
         && isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'product'
         && isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != ''
         && isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] == 'download'
         && isset($ciniki['request']['uri_split'][3]) && $ciniki['request']['uri_split'][3] != '' ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'products', 'web', 'fileDownload');
-        $rc = ciniki_products_web_fileDownload($ciniki, $ciniki['request']['business_id'], 
+        $rc = ciniki_products_web_fileDownload($ciniki, $ciniki['request']['tnid'], 
             $ciniki['request']['uri_split'][1], $ciniki['request']['uri_split'][3]);
         if( $rc['stat'] == 'ok' ) {
             header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
@@ -66,26 +66,26 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
     // Setup the last_change date of the products module, or if images or web has been updated sooner
     //
     $cache_file = '';
-    $last_change = $ciniki['business']['modules']['ciniki.products']['last_change'];
-    if( isset($ciniki['business']['modules']['ciniki.images']['last_change']) 
-        && $ciniki['business']['modules']['ciniki.images']['last_change'] > $last_change ) {
-        $last_change = $ciniki['business']['modules']['ciniki.images']['last_change'];
+    $last_change = $ciniki['tenant']['modules']['ciniki.products']['last_change'];
+    if( isset($ciniki['tenant']['modules']['ciniki.images']['last_change']) 
+        && $ciniki['tenant']['modules']['ciniki.images']['last_change'] > $last_change ) {
+        $last_change = $ciniki['tenant']['modules']['ciniki.images']['last_change'];
     }
-    if( isset($ciniki['business']['modules']['ciniki.web']['last_change']) 
-        && $ciniki['business']['modules']['ciniki.web']['last_change'] > $last_change ) {
-        $last_change = $ciniki['business']['modules']['ciniki.web']['last_change'];
+    if( isset($ciniki['tenant']['modules']['ciniki.web']['last_change']) 
+        && $ciniki['tenant']['modules']['ciniki.web']['last_change'] > $last_change ) {
+        $last_change = $ciniki['tenant']['modules']['ciniki.web']['last_change'];
     }
 
     //
     // Check for cached content
     //
     $cache_update = 'yes';
-    if( isset($ciniki['business']['cache_dir']) && $ciniki['business']['cache_dir'] != '' 
+    if( isset($ciniki['tenant']['cache_dir']) && $ciniki['tenant']['cache_dir'] != '' 
         && (!isset($ciniki['config']['ciniki.web']['cache']) 
             || $ciniki['config']['ciniki.web']['cache'] != 'off') 
         ) {
         $pull_from_cache = 'yes';
-        $cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products/';
+        $cache_file = $ciniki['tenant']['cache_dir'] . '/ciniki.web/products/';
         $depth = 2;
         if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'product' ) {
             $depth = 1;
@@ -127,13 +127,13 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
         //
         // Check for cached content
         //
-        if( isset($ciniki['business']['cache_dir']) && $ciniki['business']['cache_dir'] != '' ) {
+        if( isset($ciniki['tenant']['cache_dir']) && $ciniki['tenant']['cache_dir'] != '' ) {
             if( isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] == 'gallery'
                 && isset($ciniki['request']['uri_split'][3]) && $ciniki['request']['uri_split'][3] != '' 
                 ) {
-                $cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products_p_' . $product_permalink . '_g_' . $ciniki['request']['uri_split'][3];
+                $cache_file = $ciniki['tenant']['cache_dir'] . '/ciniki.web/products_p_' . $product_permalink . '_g_' . $ciniki['request']['uri_split'][3];
             } else {
-                $cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products_p_' . $product_permalink;
+                $cache_file = $ciniki['tenant']['cache_dir'] . '/ciniki.web/products_p_' . $product_permalink;
             }
             // Check if no changes have been made since last cache file write
             if( file_exists($cache_file) && filemtime($cache_file) > $last_change ) {
@@ -151,7 +151,7 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
         //
         // Get the product information
         //
-        $rc = ciniki_products_web_productDetails($ciniki, $settings, $ciniki['request']['business_id'], 
+        $rc = ciniki_products_web_productDetails($ciniki, $settings, $ciniki['request']['tnid'], 
             array('product_permalink'=>$product_permalink));
         if( $rc['stat'] != 'ok' ) {
             return $rc;
@@ -174,7 +174,7 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
             $image_permalink = $ciniki['request']['uri_split'][3];
 //          $ciniki['response']['head']['links']['canonical']['href'] .= '/gallery/' . $image_permalink;
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processGalleryImage');
-            $rc = ciniki_web_processGalleryImage($ciniki, $settings, $ciniki['request']['business_id'],
+            $rc = ciniki_web_processGalleryImage($ciniki, $settings, $ciniki['request']['tnid'],
                 array('item'=>$product,
                     'gallery_url'=>$ciniki['request']['base_url'] . '/products/product/' . $product_permalink . '/gallery',
                     'article_title'=>"<a href='" . $ciniki['request']['base_url'] 
@@ -197,7 +197,7 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
                 . "<div class='entry-content'>";
 
             $base_url = $ciniki['request']['base_url'] . "/products/product/" . $product_permalink;
-            $rc = ciniki_web_processProduct($ciniki, $settings, $ciniki['request']['business_id'], 
+            $rc = ciniki_web_processProduct($ciniki, $settings, $ciniki['request']['tnid'], 
                 $base_url, $product, array('title'=>$page_title, 'tags'=>$product['social-tags']));
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
@@ -223,13 +223,13 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
         //
         // Check for cached content
         //
-        if( isset($ciniki['business']['cache_dir']) && $ciniki['business']['cache_dir'] != '' ) {
+        if( isset($ciniki['tenant']['cache_dir']) && $ciniki['tenant']['cache_dir'] != '' ) {
             if( isset($ciniki['request']['uri_split'][4]) && $ciniki['request']['uri_split'][4] == 'gallery'
                 && isset($ciniki['request']['uri_split'][5]) && $ciniki['request']['uri_split'][5] != '' 
                 ) {
-                $cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products_c_' . $category_permalink . '_p_' . $product_permalink . '_g_' . $ciniki['request']['uri_split'][5];
+                $cache_file = $ciniki['tenant']['cache_dir'] . '/ciniki.web/products_c_' . $category_permalink . '_p_' . $product_permalink . '_g_' . $ciniki['request']['uri_split'][5];
             } else {
-                $cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products_c_' . $category_permalink . '_p_' . $product_permalink;
+                $cache_file = $ciniki['tenant']['cache_dir'] . '/ciniki.web/products_c_' . $category_permalink . '_p_' . $product_permalink;
             }
             // Check if no changes have been made since last cache file write
             if( file_exists($cache_file) && filemtime($cache_file) > $last_change ) {
@@ -247,7 +247,7 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
         //
         // Get the product information
         //
-        $rc = ciniki_products_web_productDetails($ciniki, $settings, $ciniki['request']['business_id'], 
+        $rc = ciniki_products_web_productDetails($ciniki, $settings, $ciniki['request']['tnid'], 
             array('product_permalink'=>$product_permalink, 
                 'category_permalink'=>$category_permalink,
                 ));
@@ -280,7 +280,7 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
             $image_permalink = $ciniki['request']['uri_split'][5];
             $ciniki['response']['head']['links']['canonical']['href'] .= '/gallery/' . $image_permalink;
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processGalleryImage');
-            $rc = ciniki_web_processGalleryImage($ciniki, $settings, $ciniki['request']['business_id'],
+            $rc = ciniki_web_processGalleryImage($ciniki, $settings, $ciniki['request']['tnid'],
                 array('item'=>$product,
                     'gallery_url'=>$ciniki['request']['base_url'] . "/products/category/$category_permalink/product/$product_permalink/gallery",
                     'article_title'=>$article_title .= " - <a href='" . $ciniki['request']['base_url'] 
@@ -307,7 +307,7 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
             //
             $base_url = $ciniki['request']['base_url'] . "/products/category/$category_permalink"
                 . "/product/" . $product_permalink;
-            $rc = ciniki_web_processProduct($ciniki, $settings, $ciniki['request']['business_id'], 
+            $rc = ciniki_web_processProduct($ciniki, $settings, $ciniki['request']['tnid'], 
                 $base_url, $product, array('title'=>$page_title, 'tags'=>$product['social-tags']));
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
@@ -336,13 +336,13 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
         //
         // Check for cached content
         //
-        if( isset($ciniki['business']['cache_dir']) && $ciniki['business']['cache_dir'] != '' ) {
+        if( isset($ciniki['tenant']['cache_dir']) && $ciniki['tenant']['cache_dir'] != '' ) {
             if( isset($ciniki['request']['uri_split'][5]) && $ciniki['request']['uri_split'][5] == 'gallery'
                 && isset($ciniki['request']['uri_split'][6]) && $ciniki['request']['uri_split'][6] != '' 
                 ) {
-                $cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products_c_' . $category_permalink . '_s_' . $subcategory_permalink . '_p_' . $product_permalink . '_g_' . $ciniki['request']['uri_split'][6];
+                $cache_file = $ciniki['tenant']['cache_dir'] . '/ciniki.web/products_c_' . $category_permalink . '_s_' . $subcategory_permalink . '_p_' . $product_permalink . '_g_' . $ciniki['request']['uri_split'][6];
             } else {
-                $cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products_c_' . $category_permalink . '_s_' . $subcategory_permalink . '_p_' . $product_permalink;
+                $cache_file = $ciniki['tenant']['cache_dir'] . '/ciniki.web/products_c_' . $category_permalink . '_s_' . $subcategory_permalink . '_p_' . $product_permalink;
             }
             // Check if no changes have been made since last cache file write
             if( file_exists($cache_file) && filemtime($cache_file) > $last_change ) {
@@ -360,7 +360,7 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
         //
         // Get the product information
         //
-        $rc = ciniki_products_web_productDetails($ciniki, $settings, $ciniki['request']['business_id'], 
+        $rc = ciniki_products_web_productDetails($ciniki, $settings, $ciniki['request']['tnid'], 
             array('product_permalink'=>$product_permalink, 
                 'category_permalink'=>$category_permalink,
                 'subcategory_permalink'=>$subcategory_permalink,
@@ -399,7 +399,7 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
             $image_permalink = $ciniki['request']['uri_split'][6];
             $ciniki['response']['head']['links']['canonical']['href'] .= '/gallery/' . $image_permalink;
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processGalleryImage');
-            $rc = ciniki_web_processGalleryImage($ciniki, $settings, $ciniki['request']['business_id'],
+            $rc = ciniki_web_processGalleryImage($ciniki, $settings, $ciniki['request']['tnid'],
                 array('item'=>$product,
                     'gallery_url'=>$ciniki['request']['base_url'] . "/products/category/$category_permalink/$subcategory_permalink/product/$product_permalink/gallery",
                     'article_title'=>$article_title .= " - <a href='" . $ciniki['request']['base_url'] 
@@ -428,7 +428,7 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
             $base_url = $ciniki['request']['base_url'] 
                 . "/products/category/$category_permalink/$subcategory_permalink" 
                 . "/product/" . $product_permalink;
-            $rc = ciniki_web_processProduct($ciniki, $settings, $ciniki['request']['business_id'], 
+            $rc = ciniki_web_processProduct($ciniki, $settings, $ciniki['request']['tnid'], 
                 $base_url, $product, array('title'=>$page_title, 'tags'=>$product['social-tags']));
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
@@ -453,8 +453,8 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
         //
         // Check for cached content
         //
-        if( isset($ciniki['business']['cache_dir']) && $ciniki['business']['cache_dir'] != '' ) {
-            $cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products_c_' . $category_permalink . '_s_' . $subcategory_permalink;
+        if( isset($ciniki['tenant']['cache_dir']) && $ciniki['tenant']['cache_dir'] != '' ) {
+            $cache_file = $ciniki['tenant']['cache_dir'] . '/ciniki.web/products_c_' . $category_permalink . '_s_' . $subcategory_permalink;
             // Check if no changes have been made since last cache file write
             if( file_exists($cache_file) && filemtime($cache_file) > $last_change ) {
                 $content = file_get_contents($cache_file);
@@ -472,7 +472,7 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
         //
         // Get the details for a category
         //
-        $rc = ciniki_products_web_subcategoryDetails($ciniki, $settings, $ciniki['request']['business_id'],
+        $rc = ciniki_products_web_subcategoryDetails($ciniki, $settings, $ciniki['request']['tnid'],
             array('category_permalink'=>$category_permalink, 'subcategory_permalink'=>$subcategory_permalink));
         if( $rc['stat'] != 'ok' ) {
             return $rc;
@@ -563,8 +563,8 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
         //
         // Check for cached content
         //
-        if( isset($ciniki['business']['cache_dir']) && $ciniki['business']['cache_dir'] != '' ) {
-            $cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/products_c_' . $category_permalink;
+        if( isset($ciniki['tenant']['cache_dir']) && $ciniki['tenant']['cache_dir'] != '' ) {
+            $cache_file = $ciniki['tenant']['cache_dir'] . '/ciniki.web/products_c_' . $category_permalink;
             // Check if no changes have been made since last cache file write
             if( file_exists($cache_file) && filemtime($cache_file) > $last_change ) {
                 $content = file_get_contents($cache_file);
@@ -582,7 +582,7 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
         //
         // Get the details for a category
         //
-        $rc = ciniki_products_web_categoryDetails($ciniki, $settings, $ciniki['request']['business_id'],
+        $rc = ciniki_products_web_categoryDetails($ciniki, $settings, $ciniki['request']['tnid'],
             array('category_permalink'=>$category_permalink));
         if( $rc['stat'] != 'ok' ) {
             return $rc;
@@ -769,7 +769,7 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
     elseif( $page_content == '' ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
         $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 
-            'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-products');
+            'tnid', $ciniki['request']['tnid'], 'ciniki.web', 'content', 'page-products');
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -801,7 +801,7 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
             && $settings['page-products-categories-format'] == 'list' 
             ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'products', 'web', 'categoryList');
-            $rc = ciniki_products_web_categoryList($ciniki, $settings, $ciniki['request']['business_id']); 
+            $rc = ciniki_products_web_categoryList($ciniki, $settings, $ciniki['request']['tnid']); 
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -819,7 +819,7 @@ function ciniki_web_generatePageProducts(&$ciniki, $settings) {
             }
         } else {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'products', 'web', 'categories');
-            $rc = ciniki_products_web_categories($ciniki, $settings, $ciniki['request']['business_id']); 
+            $rc = ciniki_products_web_categories($ciniki, $settings, $ciniki['request']['tnid']); 
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }

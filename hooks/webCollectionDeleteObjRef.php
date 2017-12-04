@@ -10,19 +10,19 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:             The ID of the business to get the users for.
+// tnid:             The ID of the tenant to get the users for.
 //
 // Returns
 // -------
 //
-function ciniki_web_hooks_webCollectionDeleteObjRef($ciniki, $business_id, $args) {
+function ciniki_web_hooks_webCollectionDeleteObjRef($ciniki, $tnid, $args) {
 
     if( isset($args['object']) && isset($args['object_id']) && $args['object_id'] != '' ) {
         $strsql = "SELECT id, uuid "
             . "FROM ciniki_web_collection_objrefs "
             . "WHERE object = '" . ciniki_core_dbQuote($ciniki, $args['object']) . "' "
             . "AND object_id = '" . ciniki_core_dbQuote($ciniki, $args['object_id']) . "' "
-            . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+            . "AND tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . "";
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
         $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'ref');
@@ -35,7 +35,7 @@ function ciniki_web_hooks_webCollectionDeleteObjRef($ciniki, $business_id, $args
         $refs = $rc['rows'];
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectDelete');
         foreach($refs as $ref) {
-            $rc = ciniki_core_objectDelete($ciniki, $business_id, 'ciniki.web.collection_objref', 
+            $rc = ciniki_core_objectDelete($ciniki, $tnid, 'ciniki.web.collection_objref', 
                 $ref['id'], $ref['uuid'], 0x04);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;

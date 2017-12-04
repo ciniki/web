@@ -7,20 +7,20 @@
 // Arguments
 // ---------
 // ciniki:
-// business_id:     The ID of the business to get events for.
+// tnid:     The ID of the tenant to get events for.
 //
 // Returns
 // -------
 //
-function ciniki_web_hooks_uiSettings($ciniki, $business_id, $args) {
+function ciniki_web_hooks_uiSettings($ciniki, $tnid, $args) {
 
     $settings = array();
 
     //
     // Get the base url for their website
     //
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'lookupBusinessURL');
-    $rc = ciniki_web_lookupBusinessURL($ciniki, $business_id);
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'lookupTenantURL');
+    $rc = ciniki_web_lookupTenantURL($ciniki, $tnid);
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }
@@ -31,16 +31,16 @@ function ciniki_web_hooks_uiSettings($ciniki, $business_id, $args) {
     //
     // Get the sitename if no domain is specified
     //
-    $strsql = "SELECT sitename FROM ciniki_businesses "
-        . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+    $strsql = "SELECT sitename FROM ciniki_tenants "
+        . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "";
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
-    $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'business');
+    $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.tenants', 'tenant');
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
-    if( isset($rc['business']) ) {
-        $settings['sitename'] = $rc['business']['sitename'];
+    if( isset($rc['tenant']) ) {
+        $settings['sitename'] = $rc['tenant']['sitename'];
     }
 
     $rsp = array('stat'=>'ok', 'settings'=>$settings, 'menu_items'=>array());  
@@ -48,7 +48,7 @@ function ciniki_web_hooks_uiSettings($ciniki, $business_id, $args) {
     //
     // Check permissions for what menu items should be available
     //
-    if( isset($ciniki['business']['modules']['ciniki.web'])
+    if( isset($ciniki['tenant']['modules']['ciniki.web'])
         && (isset($args['permissions']['owners'])
             || isset($args['permissions']['employees'])
             || isset($args['permissions']['resellers'])

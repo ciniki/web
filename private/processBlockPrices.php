@@ -11,15 +11,15 @@
 // Returns
 // -------
 //
-function ciniki_web_processBlockPrices(&$ciniki, $settings, $business_id, $block) {
+function ciniki_web_processBlockPrices(&$ciniki, $settings, $tnid, $block) {
 
     $content = '';
 
     //
-    // Get business/user settings
+    // Get tenant/user settings
     //
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'intlSettings');
-    $rc = ciniki_businesses_intlSettings($ciniki, $business_id);
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'private', 'intlSettings');
+    $rc = ciniki_tenants_intlSettings($ciniki, $tnid);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -118,8 +118,8 @@ function ciniki_web_processBlockPrices(&$ciniki, $settings, $business_id, $block
             //
             elseif( isset($price['cart']) && $price['cart'] == 'yes' 
                 && isset($settings['page-cart-active']) && $settings['page-cart-active'] == 'yes'
-                && isset($ciniki['business']['modules']['ciniki.sapos']) 
-                && ($ciniki['business']['modules']['ciniki.sapos']['flags']&0x08) > 0 
+                && isset($ciniki['tenant']['modules']['ciniki.sapos']) 
+                && ($ciniki['tenant']['modules']['ciniki.sapos']['flags']&0x08) > 0 
                 ) {
                 $content .= "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' method='POST'>";
                 $content .= "<input type='hidden' name='action' value='add'/>";

@@ -12,7 +12,7 @@
 // Returns
 // -------
 //
-function ciniki_web_processBlockTagCloud($ciniki, $settings, $business_id, $block) {
+function ciniki_web_processBlockTagCloud($ciniki, $settings, $tnid, $block) {
 
     if( !isset($block['tags']) ) {
         return array('stat'=>'ok', 'content'=>'');

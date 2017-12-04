@@ -15,7 +15,7 @@ function ciniki_web_sliderAdd(&$ciniki) {
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'name'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Name'), 
         'size'=>array('required'=>'no', 'default'=>'medium', 'blank'=>'no', 'name'=>'Size'), 
         'effect'=>array('required'=>'no', 'default'=>'slide', 'blank'=>'yes', 'name'=>'Effect'), 
@@ -32,10 +32,10 @@ function ciniki_web_sliderAdd(&$ciniki) {
 
     //  
     // Make sure this module is activated, and
-    // check permission to run this function for this business
+    // check permission to run this function for this tenant
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
-    $rc = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.sliderAdd'); 
+    $rc = ciniki_web_checkAccess($ciniki, $args['tnid'], 'ciniki.web.sliderAdd'); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     } 
@@ -53,7 +53,7 @@ function ciniki_web_sliderAdd(&$ciniki) {
     // Add the slider to the database
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectAdd');
-    $rc = ciniki_core_objectAdd($ciniki, $args['business_id'], 'ciniki.web.slider', $args, 0x04);
+    $rc = ciniki_core_objectAdd($ciniki, $args['tnid'], 'ciniki.web.slider', $args, 0x04);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -82,7 +82,7 @@ function ciniki_web_sliderAdd(&$ciniki) {
                 'start_date'=>'',
                 'end_date'=>'',
                 );
-            $rc = ciniki_core_objectAdd($ciniki, $args['business_id'], 'ciniki.web.slider_image', $i_args, 0x04);
+            $rc = ciniki_core_objectAdd($ciniki, $args['tnid'], 'ciniki.web.slider_image', $i_args, 0x04);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -99,11 +99,11 @@ function ciniki_web_sliderAdd(&$ciniki) {
     }
 
     //
-    // Update the last_change date in the business modules
+    // Update the last_change date in the tenant modules
     // Ignore the result, as we don't want to stop user updates if this fails.
     //
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
-    ciniki_businesses_updateModuleChangeDate($ciniki, $args['business_id'], 'ciniki', 'web');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'private', 'updateModuleChangeDate');
+    ciniki_tenants_updateModuleChangeDate($ciniki, $args['tnid'], 'ciniki', 'web');
 
     return $rsp;
 }

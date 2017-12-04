@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This function will generate the film schedule page for the business.
+// This function will generate the film schedule page for the tenant.
 //
 // Arguments
 // ---------
@@ -18,12 +18,12 @@ function ciniki_web_generatePageFilmSchedule($ciniki, $settings) {
     // Check if a file was specified to be downloaded
     //
     $download_err = '';
-    if( isset($ciniki['business']['modules']['ciniki.filmschedule'])
+    if( isset($ciniki['tenant']['modules']['ciniki.filmschedule'])
         && isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != ''
         && isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] == 'download'
         && isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'filmschedule', 'web', 'fileDownload');
-        $rc = ciniki_filmschedule_web_fileDownload($ciniki, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][0], $ciniki['request']['uri_split'][2]);
+        $rc = ciniki_filmschedule_web_fileDownload($ciniki, $ciniki['request']['tnid'], $ciniki['request']['uri_split'][0], $ciniki['request']['uri_split'][2]);
         if( $rc['stat'] == 'ok' ) {
             header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
             header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
@@ -85,7 +85,7 @@ function ciniki_web_generatePageFilmSchedule($ciniki, $settings) {
         // and prev from the list of images returned
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'filmschedule', 'web', 'eventDetails');
-        $rc = ciniki_filmschedule_web_eventDetails($ciniki, $settings, $ciniki['request']['business_id'], $event_permalink);
+        $rc = ciniki_filmschedule_web_eventDetails($ciniki, $settings, $ciniki['request']['tnid'], $event_permalink);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -223,7 +223,7 @@ function ciniki_web_generatePageFilmSchedule($ciniki, $settings) {
         //
         $event_permalink = $ciniki['request']['uri_split'][0];
         $ciniki['response']['head']['og']['url'] .= '/' . $event_permalink;
-        $rc = ciniki_filmschedule_web_eventDetails($ciniki, $settings, $ciniki['request']['business_id'], $event_permalink);
+        $rc = ciniki_filmschedule_web_eventDetails($ciniki, $settings, $ciniki['request']['tnid'], $event_permalink);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -370,7 +370,7 @@ function ciniki_web_generatePageFilmSchedule($ciniki, $settings) {
         $upcoming_title = 'Upcoming ' . $page_name;
         $past_title = 'Past '. $page_name;
 
-        $rc = ciniki_filmschedule_web_eventList($ciniki, $settings, $ciniki['request']['business_id'], 
+        $rc = ciniki_filmschedule_web_eventList($ciniki, $settings, $ciniki['request']['tnid'], 
             array('type'=>'upcoming'));
         if( $rc['stat'] != 'ok' ) {
             return $rc;
@@ -415,7 +415,7 @@ function ciniki_web_generatePageFilmSchedule($ciniki, $settings) {
             // Generate the content of the page
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'filmschedule', 'web', 'eventList');
-            $rc = ciniki_filmschedule_web_eventList($ciniki, $settings, $ciniki['request']['business_id'], 
+            $rc = ciniki_filmschedule_web_eventList($ciniki, $settings, $ciniki['request']['tnid'], 
                 array('type'=>'past', 'limit'=>'10'));
             if( $rc['stat'] != 'ok' ) {
                 return $rc;

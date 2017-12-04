@@ -13,7 +13,7 @@
 // Returns
 // -------
 //
-function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $module_page, $args) {
+function ciniki_web_processModuleRequest(&$ciniki, $settings, $tnid, $module_page, $args) {
 
     //
     // Split the module into pieces
@@ -25,9 +25,9 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
     $args['module_page'] = $module_page;
 
     //
-    // Check the module is enabled for the business
+    // Check the module is enabled for the tenant
     //
-    if( !isset($ciniki['business']['modules'][$module]) ) {
+    if( !isset($ciniki['tenant']['modules'][$module]) ) {
         return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.124', 'msg'=>"I'm sorry, but the page you requested does not exist."));
     }
 
@@ -39,7 +39,7 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
         return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.125', 'msg'=>"I'm sorry, but the page you requested does not exist."));
     }
     $fn = $rc['function_call'];
-    $rc = $fn($ciniki, $settings, $ciniki['request']['business_id'], $args);
+    $rc = $fn($ciniki, $settings, $ciniki['request']['tnid'], $args);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -142,7 +142,7 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
         }
         if( isset($page['breadcrumbs']) ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBreadcrumbs');
-            $rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $business_id, $page['breadcrumbs']);
+            $rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $tnid, $page['breadcrumbs']);
             if( $rc['stat'] == 'ok' ) {
                 $rsp['content'] .= $rc['content'];
             }
@@ -174,7 +174,7 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
         //
         if( isset($page['article_header_share_buttons']) && $page['article_header_share_buttons'] == 'yes' ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockShareButtons');
-            $rc = ciniki_web_processBlockShareButtons($ciniki, $settings, $business_id, array('pagetitle'=>$page['title']));
+            $rc = ciniki_web_processBlockShareButtons($ciniki, $settings, $tnid, array('pagetitle'=>$page['title']));
             if( $rc['content'] != '' ) {
                 $rsp['content'] .= $rc['content'];
             }
@@ -200,7 +200,7 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlocks');
     if( isset($page['blocks']) ) {
-        $rc = ciniki_web_processBlocks($ciniki, $settings, $business_id, $page['blocks']);
+        $rc = ciniki_web_processBlocks($ciniki, $settings, $tnid, $page['blocks']);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -220,7 +220,7 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $business_id, $mod
     if( isset($page['sidebar']) && count($page['sidebar']) > 0 ) {
         $rsp['content'] .= "<aside class='col-right-narrow'>";
         $rsp['content'] .= "<div class='aside-content'>";
-        $rc = ciniki_web_processBlocks($ciniki, $settings, $business_id, $page['sidebar']);
+        $rc = ciniki_web_processBlocks($ciniki, $settings, $tnid, $page['sidebar']);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }

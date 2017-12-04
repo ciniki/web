@@ -16,7 +16,7 @@ function ciniki_web_sliderImageAdd(&$ciniki) {
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'slider_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Slider'), 
         'image_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Image'),
         'sequence'=>array('required'=>'no', 'default'=>'0', 'blank'=>'yes', 'name'=>'Sequence'), 
@@ -37,10 +37,10 @@ function ciniki_web_sliderImageAdd(&$ciniki) {
 
     //  
     // Make sure this module is activated, and
-    // check permission to run this function for this business
+    // check permission to run this function for this tenant
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
-    $rc = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.sliderImageAdd'); 
+    $rc = ciniki_web_checkAccess($ciniki, $args['tnid'], 'ciniki.web.sliderImageAdd'); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     } 
@@ -53,7 +53,7 @@ function ciniki_web_sliderImageAdd(&$ciniki) {
         $strsql = "SELECT MAX(sequence) AS sequence "
             . "FROM ciniki_web_slider_images "
             . "WHERE slider_id = '" . ciniki_core_dbQuote($ciniki, $args['slider_id']) . "' "
-            . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+            . "AND tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
             . "";
         $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'max');
         if( $rc['stat'] != 'ok' ) {
@@ -68,6 +68,6 @@ function ciniki_web_sliderImageAdd(&$ciniki) {
     // Add the slider image to the database
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectAdd');
-    return ciniki_core_objectAdd($ciniki, $args['business_id'], 'ciniki.web.slider_image', $args, 0x07);
+    return ciniki_core_objectAdd($ciniki, $args['tnid'], 'ciniki.web.slider_image', $args, 0x07);
 }
 ?>

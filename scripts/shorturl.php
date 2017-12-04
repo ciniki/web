@@ -5,7 +5,7 @@
 // This script will deliver the website for clients,
 // or the default page for main domain.
 //
-// All web requests for business websites are funnelled through this script.
+// All web requests for tenant websites are funnelled through this script.
 //
 
 
@@ -51,7 +51,7 @@ $uri = preg_replace('/^\//', '', $_SERVER['REQUEST_URI']);
 if( $uri == '' ) {
     print_error(NULL, "Not Found");
 }
-$strsql = "SELECT id, business_id, furl FROM ciniki_web_shorturls "
+$strsql = "SELECT id, tnid, furl FROM ciniki_web_shorturls "
     . "WHERE surl = '" . ciniki_core_dbQuote($ciniki, $uri) . "' "
     . "";
 $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'url');

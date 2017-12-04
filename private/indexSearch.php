@@ -10,7 +10,7 @@
 // Returns
 // -------
 //
-function ciniki_web_indexSearch(&$ciniki, $settings, $business_id, $search_str, $limit) {
+function ciniki_web_indexSearch(&$ciniki, $settings, $tnid, $search_str, $limit) {
     
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'makeKeywords');
     $words = ciniki_core_makeKeywords($ciniki, $search_str, true);
@@ -42,7 +42,7 @@ function ciniki_web_indexSearch(&$ciniki, $settings, $business_id, $search_str, 
     //
     $strsql = "SELECT id, label, title, subtitle, meta, primary_image_id, synopsis, object, url "
         . "FROM ciniki_web_index "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . $primary_sql
         . "ORDER BY weight DESC "
         . "LIMIT $limit "
@@ -61,7 +61,7 @@ function ciniki_web_indexSearch(&$ciniki, $settings, $business_id, $search_str, 
     if( count($results) < $limit ) {
         $strsql = "SELECT id, label, title, subtitle, meta, primary_image_id, synopsis, object, url "
             . "FROM ciniki_web_index "
-            . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+            . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . $secondary_sql
             . "ORDER BY weight DESC "
             . "LIMIT $limit "
@@ -80,7 +80,7 @@ function ciniki_web_indexSearch(&$ciniki, $settings, $business_id, $search_str, 
     if( count($results) < $limit ) {
         $strsql = "SELECT id, label, title, subtitle, meta, primary_image_id, synopsis, object, url "
             . "FROM ciniki_web_index "
-            . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+            . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . $tertiary_sql
             . "ORDER BY weight DESC "
             . "LIMIT $limit "
@@ -100,8 +100,8 @@ function ciniki_web_indexSearch(&$ciniki, $settings, $business_id, $search_str, 
         //
         if( $result['primary_image_id'] > 0 ) {
 //            $result['primary_image_url'] = 'http://' . $ciniki['request']['domain'] . $ciniki['request']['cache_url'] 
-//                . sprintf("/%02d/%07d/search/%010d.jpg", $business_id, $business_id, $result['primary_image_id']);
-            $result['primary_image_url'] = $ciniki['business']['web_cache_url'] . sprintf("/search/%012d.jpg", $result['primary_image_id']);
+//                . sprintf("/%02d/%07d/search/%010d.jpg", $tnid, $tnid, $result['primary_image_id']);
+            $result['primary_image_url'] = $ciniki['tenant']['web_cache_url'] . sprintf("/search/%012d.jpg", $result['primary_image_id']);
         } else {
             $result['primary_image_url'] = '';
         }

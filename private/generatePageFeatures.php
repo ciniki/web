@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This function will generate the members page for the business.
+// This function will generate the members page for the tenant.
 //
 // Arguments
 // ---------
@@ -26,7 +26,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
     // Get the list of categories
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'marketing', 'web', 'categoryList');
-    $rc = ciniki_marketing_web_categoryList($ciniki, $settings, $ciniki['request']['business_id'], array());
+    $rc = ciniki_marketing_web_categoryList($ciniki, $settings, $ciniki['request']['tnid'], array());
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -65,7 +65,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
         $category_permalink = $ciniki['request']['uri_split'][1];
 
         ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'memberList');
-        $rc = ciniki_customers_web_memberList($ciniki, $settings, $ciniki['request']['business_id'],
+        $rc = ciniki_customers_web_memberList($ciniki, $settings, $ciniki['request']['tnid'],
             array('category'=>$category_permalink, 'format'=>'2dlist'));
         if( $rc['stat'] != 'ok' ) {
             return $rc;
@@ -121,7 +121,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'marketing', 'web', 'featureDetails');
         $rc = ciniki_marketing_web_featureDetails($ciniki, $settings, 
-            $ciniki['request']['business_id'], $current_category['id'], $feature_permalink);
+            $ciniki['request']['tnid'], $current_category['id'], $feature_permalink);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -236,7 +236,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
         // Get the feature information
         //
         $rc = ciniki_marketing_web_featureDetails($ciniki, $settings, 
-            $ciniki['request']['business_id'], $current_category['id'], $feature_permalink);
+            $ciniki['request']['tnid'], $current_category['id'], $feature_permalink);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -302,7 +302,7 @@ function ciniki_web_generatePageFeatures($ciniki, $settings) {
         } elseif( $default_category != NULL ) {
             $selected_category = $default_category;
         }
-        $rc = ciniki_marketing_web_featureList($ciniki, $settings, $ciniki['request']['business_id'], 
+        $rc = ciniki_marketing_web_featureList($ciniki, $settings, $ciniki['request']['tnid'], 
             array('category_id'=>($selected_category!=NULL?$selected_category['id']:'')));
         if( $rc['stat'] != 'ok' ) {
             return $rc;

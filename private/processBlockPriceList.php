@@ -12,7 +12,7 @@
 // Returns
 // -------
 //
-function ciniki_web_processBlockPriceList(&$ciniki, $settings, $business_id, $block) {
+function ciniki_web_processBlockPriceList(&$ciniki, $settings, $tnid, $block) {
 
     $content = '';
 
@@ -47,7 +47,7 @@ function ciniki_web_processBlockPriceList(&$ciniki, $settings, $business_id, $bl
         $list_content .= "</div>";
 
         if( isset($item['prices']) ) {
-            $rc = ciniki_web_cartSetupPrices($ciniki, $settings, $business_id, $item['prices']);
+            $rc = ciniki_web_cartSetupPrices($ciniki, $settings, $tnid, $item['prices']);
             if( $rc['stat'] == 'ok' && $rc['content'] != '' ) {
                 $found_prices = 'yes';
                 $list_content .= $rc['content'];

@@ -7,7 +7,7 @@
 # ------
 # id:               The ID of the web page image.
 # uuid:             The Universal Unique ID.
-# business_id:      The ID of the business the page is attached to.
+# tnid:             The ID of the tenant the page is attached to.
 #
 # page_id:          The ID of the content from the ciniki_web_pages table.
 # 
@@ -33,7 +33,7 @@
 create table ciniki_web_page_images (
     id int not null auto_increment,
     uuid char(36) not null,
-    business_id int not null,
+    tnid int not null,
     page_id int not null,
     name varchar(200) not null,
     permalink varchar(200) not null,
@@ -45,5 +45,5 @@ create table ciniki_web_page_images (
     last_updated datetime not null,
     primary key (id),
     index (page_id, name),
-    index (business_id, uuid, last_updated)
+    index (tnid, uuid, last_updated)
 ) ENGINE='InnoDB', COMMENT='v1.01';

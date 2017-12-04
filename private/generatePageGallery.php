@@ -27,7 +27,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
     $tags = array();
     $submenu = array();
     $uri_split = $ciniki['request']['uri_split'];
-    if( isset($ciniki['business']['modules']['ciniki.artcatalog']) ) {
+    if( isset($ciniki['tenant']['modules']['ciniki.artcatalog']) ) {
         $ciniki['response']['head']['og']['url'] = $ciniki['request']['domain_base_url'] . '/gallery';
         if( isset($settings['page-gallery-artcatalog-split']) 
             && $settings['page-gallery-artcatalog-split'] == 'yes' ) {
@@ -51,13 +51,13 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
         $pkg = 'ciniki';
         $mod = 'artcatalog';
         $category_uri_component = 'category';
-        $last_change = $ciniki['business']['modules']['ciniki.artcatalog']['last_change'];
-    } elseif( isset($ciniki['business']['modules']['ciniki.gallery']) ) {
+        $last_change = $ciniki['tenant']['modules']['ciniki.artcatalog']['last_change'];
+    } elseif( isset($ciniki['tenant']['modules']['ciniki.gallery']) ) {
         $pkg = 'ciniki';
         $mod = 'gallery';
         $category_uri_component = 'album';
         $ciniki['response']['head']['og']['url'] = $ciniki['request']['domain_base_url'] . '/gallery';
-        $last_change = $ciniki['business']['modules']['ciniki.gallery']['last_change'];
+        $last_change = $ciniki['tenant']['modules']['ciniki.gallery']['last_change'];
         //
         // Check if categories enabled, get the list and display as submenu
         //
@@ -66,7 +66,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'makePermalink');
             $strsql = "SELECT DISTINCT category "
                 . "FROM ciniki_gallery_albums "
-                . "WHERE ciniki_gallery_albums.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+                . "WHERE ciniki_gallery_albums.tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
                 . "AND category <> '' "
                 . "ORDER BY category "
                 . "";
@@ -100,13 +100,13 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
     // or images used.  Not the most accurate way to determine if the cache needs to be refreshed,
     // but better than missing something.
     //
-    if( isset($ciniki['business']['modules']['ciniki.images']['last_change']) 
-        && $ciniki['business']['modules']['ciniki.images']['last_change'] > $last_change ) {
-        $last_change = $ciniki['business']['modules']['ciniki.images']['last_change'];
+    if( isset($ciniki['tenant']['modules']['ciniki.images']['last_change']) 
+        && $ciniki['tenant']['modules']['ciniki.images']['last_change'] > $last_change ) {
+        $last_change = $ciniki['tenant']['modules']['ciniki.images']['last_change'];
     }
-    if( isset($ciniki['business']['modules']['ciniki.web']['last_change']) 
-        && $ciniki['business']['modules']['ciniki.web']['last_change'] > $last_change ) {
-        $last_change = $ciniki['business']['modules']['ciniki.web']['last_change'];
+    if( isset($ciniki['tenant']['modules']['ciniki.web']['last_change']) 
+        && $ciniki['tenant']['modules']['ciniki.web']['last_change'] > $last_change ) {
+        $last_change = $ciniki['tenant']['modules']['ciniki.web']['last_change'];
     }
 
     //
@@ -145,7 +145,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
         //
         ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'imageDetails');
         $imageDetails = $pkg . '_' . $mod . '_web_imageDetails';
-        $rc = $imageDetails($ciniki, $settings, $ciniki['request']['business_id'], $image_permalink);
+        $rc = $imageDetails($ciniki, $settings, $ciniki['request']['tnid'], $image_permalink);
         if( $rc['stat'] != 'ok' ) {
             return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.60', 'msg'=>"I'm sorry, but we can't seem to find the image your requested.", $rc['err']));
         }
@@ -187,7 +187,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
         }
 
 //      ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'shortenURL');
-//      $surl = ciniki_web_shortenURL($ciniki, $settings, $ciniki['request']['business_id'], 
+//      $surl = ciniki_web_shortenURL($ciniki, $settings, $ciniki['request']['tnid'], 
 //          $ciniki['response']['head']['og']['url']);
 //      
         //
@@ -195,7 +195,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
         //
         ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'albumDetails');
         $albumDetails = $pkg . '_' . $mod . '_web_albumDetails';
-        $rc = $albumDetails($ciniki, $settings, $ciniki['request']['business_id'], array(
+        $rc = $albumDetails($ciniki, $settings, $ciniki['request']['tnid'], array(
             'type'=>$uri_split[0], 
             'type_name'=>urldecode($uri_split[1]), // Permalink for ciniki.gallery
             'artcatalog_type'=>$artcatalog_type));
@@ -221,7 +221,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
         if( $uri_split[0] == 'latest' ) {
             ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'galleryNextPrev');
             $galleryNextPrev = $pkg . '_' . $mod . '_web_galleryNextPrev';
-            $rc = $galleryNextPrev($ciniki, $settings, $ciniki['request']['business_id'], array(
+            $rc = $galleryNextPrev($ciniki, $settings, $ciniki['request']['tnid'], array(
                 'permalink'=>$image_permalink,
                 'img'=>$img,
                 'type'=>'latest',
@@ -240,7 +240,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
         } else {
             ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'galleryNextPrev');
             $galleryNextPrev = $pkg . '_' . $mod . '_web_galleryNextPrev';
-            $rc = $galleryNextPrev($ciniki, $settings, $ciniki['request']['business_id'], array(
+            $rc = $galleryNextPrev($ciniki, $settings, $ciniki['request']['tnid'], array(
                 'permalink'=>$image_permalink,
                 'img'=>$img,
                 'type'=>$category_uri_component,
@@ -404,7 +404,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
         //
         ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'categoryImages');
         $categoryImages = $pkg . '_' . $mod . '_web_categoryImages';
-        $rc = $categoryImages($ciniki, $settings, $ciniki['request']['business_id'], array(
+        $rc = $categoryImages($ciniki, $settings, $ciniki['request']['tnid'], array(
             'type'=>$uri_split[0], 
             'type_name'=>urldecode($uri_split[1]), // Permalink for ciniki.gallery
             'artcatalog_type'=>$artcatalog_type));
@@ -454,8 +454,8 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
         //
         // Check for cached content
         //
-        if( isset($ciniki['business']['cache_dir']) && $ciniki['business']['cache_dir'] != '' ) {
-            $cache_file = $ciniki['business']['cache_dir'] . '/ciniki.web/gallery';
+        if( isset($ciniki['tenant']['cache_dir']) && $ciniki['tenant']['cache_dir'] != '' ) {
+            $cache_file = $ciniki['tenant']['cache_dir'] . '/ciniki.web/gallery';
             if( isset($atype) && $atype != '' ) {
                 $cache_file .= '-' . $atype;
             }
@@ -471,8 +471,8 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
         }
 
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
-        $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', 
-            $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-gallery');
+        $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'tnid', 
+            $ciniki['request']['tnid'], 'ciniki.web', 'content', 'page-gallery');
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -493,9 +493,9 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
         ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'categories');
         $categories = $pkg . '_' . $mod . '_web_categories';
         if( isset($selected_category) ) {
-            $rc = $categories($ciniki, $settings, $ciniki['request']['business_id'], array('artcatalog_type'=>$artcatalog_type, 'category'=>$selected_category)); 
+            $rc = $categories($ciniki, $settings, $ciniki['request']['tnid'], array('artcatalog_type'=>$artcatalog_type, 'category'=>$selected_category)); 
         } else {
-            $rc = $categories($ciniki, $settings, $ciniki['request']['business_id'], array('artcatalog_type'=>$artcatalog_type)); 
+            $rc = $categories($ciniki, $settings, $ciniki['request']['tnid'], array('artcatalog_type'=>$artcatalog_type)); 
         }
         if( $rc['stat'] != 'ok' ) {
             return $rc;
@@ -511,7 +511,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
             }
             ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'categoryImages');
             $categoryImages = $pkg . '_' . $mod . '_web_categoryImages';
-            $rc = $categoryImages($ciniki, $settings, $ciniki['request']['business_id'], array(
+            $rc = $categoryImages($ciniki, $settings, $ciniki['request']['tnid'], array(
                 'type'=>$category_uri_component, 'type_name'=>'', 
                 'artcatalog_type'=>$artcatalog_type));
             if( $rc['stat'] != 'ok' ) {
@@ -554,7 +554,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
                 $base_url .= '/category';
 
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockImageList');
-                $rc = ciniki_web_processBlockImageList($ciniki, $settings, $ciniki['request']['business_id'], array(
+                $rc = ciniki_web_processBlockImageList($ciniki, $settings, $ciniki['request']['tnid'], array(
                     'type'=>'imagelist',
                     'base_url'=>$base_url,
                     'notitle'=>'yes',

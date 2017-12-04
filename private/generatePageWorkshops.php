@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This function will generate the workshops page for the business.
+// This function will generate the workshops page for the tenant.
 //
 // Arguments
 // ---------
@@ -18,12 +18,12 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
     // Check if a file was specified to be downloaded
     //
     $download_err = '';
-    if( isset($ciniki['business']['modules']['ciniki.workshops'])
+    if( isset($ciniki['tenant']['modules']['ciniki.workshops'])
         && isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != ''
         && isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] == 'download'
         && isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'workshops', 'web', 'fileDownload');
-        $rc = ciniki_workshops_web_fileDownload($ciniki, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][0], $ciniki['request']['uri_split'][2]);
+        $rc = ciniki_workshops_web_fileDownload($ciniki, $ciniki['request']['tnid'], $ciniki['request']['uri_split'][0], $ciniki['request']['uri_split'][2]);
         if( $rc['stat'] == 'ok' ) {
             header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
             header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
@@ -79,7 +79,7 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
         // and prev from the list of images returned
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'workshops', 'web', 'workshopDetails');
-        $rc = ciniki_workshops_web_workshopDetails($ciniki, $settings, $ciniki['request']['business_id'], $workshop_permalink);
+        $rc = ciniki_workshops_web_workshopDetails($ciniki, $settings, $ciniki['request']['tnid'], $workshop_permalink);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -196,7 +196,7 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
         $workshop_permalink = $ciniki['request']['uri_split'][0];
         $ciniki['response']['head']['og']['url'] .= '/' . $workshop_permalink;
         $rc = ciniki_workshops_web_workshopDetails($ciniki, $settings, 
-            $ciniki['request']['business_id'], $workshop_permalink);
+            $ciniki['request']['tnid'], $workshop_permalink);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -336,7 +336,7 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'workshops', 'web', 'workshopList');
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processWorkshops');
-        $rc = ciniki_workshops_web_workshopList($ciniki, $settings, $ciniki['request']['business_id'], 'upcoming', 0);
+        $rc = ciniki_workshops_web_workshopList($ciniki, $settings, $ciniki['request']['tnid'], 'upcoming', 0);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -370,7 +370,7 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
             // Generate the content of the page
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'workshops', 'web', 'workshopList');
-            $rc = ciniki_workshops_web_workshopList($ciniki, $settings, $ciniki['request']['business_id'], 'past', 10);
+            $rc = ciniki_workshops_web_workshopList($ciniki, $settings, $ciniki['request']['tnid'], 'past', 10);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }

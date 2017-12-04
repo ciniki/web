@@ -2,13 +2,13 @@
 //
 // Description
 // -----------
-// This method will return the list of website private theme for a business.
+// This method will return the list of website private theme for a tenant.
 //
 // Arguments
 // ---------
 // api_key:
 // auth_token:
-// business_id:     The ID of the business to get private theme list for.
+// tnid:     The ID of the tenant to get private theme list for.
 //
 // Returns
 // -------
@@ -19,7 +19,7 @@ function ciniki_web_privateThemeList($ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         ));
     if( $rc['stat'] != 'ok' ) {
         return $rc;
@@ -27,10 +27,10 @@ function ciniki_web_privateThemeList($ciniki) {
     $args = $rc['args'];
 
     //  
-    // Check access to business_id as owner, or sys admin. 
+    // Check access to tnid as owner, or sys admin. 
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
-    $ac = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.privateThemeList');
+    $ac = ciniki_web_checkAccess($ciniki, $args['tnid'], 'ciniki.web.privateThemeList');
     if( $ac['stat'] != 'ok' ) { 
         return $ac;
     }   
@@ -50,7 +50,7 @@ function ciniki_web_privateThemeList($ciniki) {
     //
     $strsql = "SELECT id, name, status, status AS status_text "
         . "FROM ciniki_web_themes "
-        . "WHERE ciniki_web_themes.business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+        . "WHERE ciniki_web_themes.tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
         . "ORDER BY ciniki_web_themes.name "
         . "";
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryTree');

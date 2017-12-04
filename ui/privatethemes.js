@@ -1,5 +1,5 @@
 //
-// The app to manage web options for a business
+// The app to manage web options for a tenant
 //
 function ciniki_web_privatethemes() {
     this.init = function() {
@@ -67,15 +67,15 @@ function ciniki_web_privatethemes() {
                 }},
             'footer':{'label':'Footer', 'aside':'yes', 'fields':{
                 'footer-menu':{'label':'Menu', 'type':'toggle', 
-                    'visible':function() {return (M.curBusiness.modules['ciniki.web'].flags&0x0200)>0?'yes':'no';},
+                    'visible':function() {return (M.curTenant.modules['ciniki.web'].flags&0x0200)>0?'yes':'no';},
                     'default':'no', 'toggles':{'no':'No', 'yes':'Yes'}
                     },
                 'footer-menu-signin':{'label':'Menu Signin', 'type':'toggle', 
-                    'visible':function() {return (M.curBusiness.modules['ciniki.web'].flags&0x0200)>0?'yes':'no';},
+                    'visible':function() {return (M.curTenant.modules['ciniki.web'].flags&0x0200)>0?'yes':'no';},
                     'default':'no', 'toggles':{'no':'No', 'yes':'Yes'}
                     },
                 'footer-menu-signin-text':{'label':'Signin Label', 'type':'text',
-                    'visible':function() {return (M.curBusiness.modules['ciniki.web'].flags&0x0200)>0?'yes':'no';},
+                    'visible':function() {return (M.curTenant.modules['ciniki.web'].flags&0x0200)>0?'yes':'no';},
                     },
                 'footer-layout':{'label':'Layout', 'type':'select', 'options':{
                     'social-links-copyright':'Social - Links - Copyright', 
@@ -112,7 +112,7 @@ function ciniki_web_privatethemes() {
                 }},
         };
         this.edit.fieldHistoryArgs = function(s, i) {
-            return {'method':'ciniki.web.privateThemeHistory', 'args':{'business_id':M.curBusinessID, 
+            return {'method':'ciniki.web.privateThemeHistory', 'args':{'tnid':M.curTenantID, 
                 'theme_id':this.theme_id, 'field':i}};
         }
         this.edit.fieldValue = this.fieldValue;
@@ -138,7 +138,7 @@ function ciniki_web_privatethemes() {
         this.edit.addDropImage = function(iid) {
             if( M.ciniki_web_privatethemes.edit.theme_id > 0 ) {
                 var rsp = M.api.getJSON('ciniki.web.privateThemeImageAdd', 
-                    {'business_id':M.curBusinessID, 'image_id':iid, 'theme_id':M.ciniki_web_privatethemes.edit.theme_id});
+                    {'tnid':M.curTenantID, 'image_id':iid, 'theme_id':M.ciniki_web_privatethemes.edit.theme_id});
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -151,7 +151,7 @@ function ciniki_web_privatethemes() {
         };
         this.edit.addDropImageRefresh = function() {
             if( M.ciniki_web_privatethemes.edit.theme_id > 0 ) {
-                M.api.getJSONCb('ciniki.web.privateThemeGet', {'business_id':M.curBusinessID, 
+                M.api.getJSONCb('ciniki.web.privateThemeGet', {'tnid':M.curTenantID, 
                     'theme_id':M.ciniki_web_privatethemes.edit.theme_id, 'images':'yes'}, function(rsp) {
                         if( rsp.stat != 'ok' ) {
                             M.api.err(rsp);
@@ -163,7 +163,7 @@ function ciniki_web_privatethemes() {
                         p.show();
                     });
             } else if( M.ciniki_web_privatethemes.edit.additional_images.length > 0 ) {
-                M.api.getJSONCb('ciniki.web.privateThemeImages', {'business_id':M.curBusinessID, 
+                M.api.getJSONCb('ciniki.web.privateThemeImages', {'tnid':M.curTenantID, 
                     'images':M.ciniki_web_privatethemes.edit.additional_images.join(',')}, function(rsp) {
                         if( rsp.stat != 'ok' ) {
                             M.api.err(rsp);
@@ -183,7 +183,7 @@ function ciniki_web_privatethemes() {
             return true;
         };
         this.edit.updateCSSHREF = function() {
-            M.api.getJSONCb('ciniki.web.privateThemeGet', {'business_id':M.curBusinessID, 'theme_id':this.theme_id, 'content':'yes'}, function(rsp) {
+            M.api.getJSONCb('ciniki.web.privateThemeGet', {'tnid':M.curTenantID, 'theme_id':this.theme_id, 'content':'yes'}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -195,7 +195,7 @@ function ciniki_web_privatethemes() {
             });
         };
         this.edit.updateCSS = function() {
-            M.api.getJSONCb('ciniki.web.privateThemeGet', {'business_id':M.curBusinessID, 'theme_id':this.theme_id, 'content':'yes'}, function(rsp) {
+            M.api.getJSONCb('ciniki.web.privateThemeGet', {'tnid':M.curTenantID, 'theme_id':this.theme_id, 'content':'yes'}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -207,7 +207,7 @@ function ciniki_web_privatethemes() {
             });
         };
         this.edit.updateJS = function() {
-            M.api.getJSONCb('ciniki.web.privateThemeGet', {'business_id':M.curBusinessID, 'theme_id':this.theme_id, 'content':'yes'}, function(rsp) {
+            M.api.getJSONCb('ciniki.web.privateThemeGet', {'tnid':M.curTenantID, 'theme_id':this.theme_id, 'content':'yes'}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -252,7 +252,7 @@ function ciniki_web_privatethemes() {
                 }},
         };
         this.content.fieldHistoryArgs = function(s, i) {
-            return {'method':'ciniki.web.privateThemeContentHistory', 'args':{'business_id':M.curBusinessID, 
+            return {'method':'ciniki.web.privateThemeContentHistory', 'args':{'tnid':M.curTenantID, 
                 'content_id':this.content_id, 'field':i}};
         }
         this.content.fieldValue = this.fieldValue;
@@ -292,7 +292,7 @@ function ciniki_web_privatethemes() {
             return ''; 
         };
         this.image.fieldHistoryArgs = function(s, i) {
-            return {'method':'ciniki.web.privateThemeImageHistory', 'args':{'business_id':M.curBusinessID, 
+            return {'method':'ciniki.web.privateThemeImageHistory', 'args':{'tnid':M.curTenantID, 
                 'theme_image_id':this.theme_image_id, 'field':i}};
         };
         this.image.addDropImage = function(iid) {
@@ -327,7 +327,7 @@ function ciniki_web_privatethemes() {
     this.showMenu = function(cb) {
         this.menu.reset();
 
-        M.api.getJSONCb('ciniki.web.privateThemeList', {'business_id':M.curBusinessID}, function(rsp) {
+        M.api.getJSONCb('ciniki.web.privateThemeList', {'tnid':M.curTenantID}, function(rsp) {
             if( rsp.stat != 'ok' ) {
                 M.api.err(rsp);
                 return false;
@@ -343,7 +343,7 @@ function ciniki_web_privatethemes() {
         if( tid != null ) { this.edit.theme_id = tid; }
         if( this.edit.theme_id > 0 ) {
             this.edit.sections._buttons.buttons.delete.visible = 'yes';
-            M.api.getJSONCb('ciniki.web.privateThemeGet', {'business_id':M.curBusinessID, 
+            M.api.getJSONCb('ciniki.web.privateThemeGet', {'tnid':M.curTenantID, 
                 'theme_id':this.edit.theme_id, 'content':'yes', 'images':'yes', 'settings':'yes'}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
@@ -377,7 +377,7 @@ function ciniki_web_privatethemes() {
             var c = this.edit.serializeForm('no');
             if( c != '' ) {
                 M.api.postJSONCb('ciniki.web.privateThemeUpdate', 
-                    {'business_id':M.curBusinessID, 'theme_id':this.edit.theme_id}, c, function(rsp) {
+                    {'tnid':M.curTenantID, 'theme_id':this.edit.theme_id}, c, function(rsp) {
                         if( rsp.stat != 'ok' ) {
                             M.api.err(rsp);
                             return false;
@@ -397,7 +397,7 @@ function ciniki_web_privatethemes() {
             if( this.edit.additional_images.length > 0 ) {
                 c += '&images=' + this.edit.additional_images.join(',');
             }
-            M.api.postJSONCb('ciniki.web.privateThemeAdd', {'business_id':M.curBusinessID}, c, function(rsp) {
+            M.api.postJSONCb('ciniki.web.privateThemeAdd', {'tnid':M.curTenantID}, c, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -409,7 +409,7 @@ function ciniki_web_privatethemes() {
 
     this.themeDelete = function() {
         if( confirm('Are you sure you want to this theme?') ) {
-            var rsp = M.api.getJSONCb('ciniki.web.privateThemeDelete', {'business_id':M.curBusinessID, 'theme_id':this.edit.theme_id}, 
+            var rsp = M.api.getJSONCb('ciniki.web.privateThemeDelete', {'tnid':M.curTenantID, 'theme_id':this.edit.theme_id}, 
                 function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
@@ -432,7 +432,7 @@ function ciniki_web_privatethemes() {
             if( this.edit.additional_images.length > 0 ) {
                 c += '&images=' + this.edit.additional_images.join(',');
             }
-            M.api.postJSONCb('ciniki.web.privateThemeAdd', {'business_id':M.curBusinessID}, c, function(rsp) {
+            M.api.postJSONCb('ciniki.web.privateThemeAdd', {'tnid':M.curTenantID}, c, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -442,7 +442,7 @@ function ciniki_web_privatethemes() {
         }
         // Get the content to edit
         if( cid != null ) { this.content.content_id = cid; }
-        var args = {'business_id':M.curBusinessID, 'content_id':this.content.content_id};
+        var args = {'tnid':M.curTenantID, 'content_id':this.content.content_id};
         if( this.content.content_id > 0 ) {
             this.content.sections._buttons.buttons.delete.visible = 'yes';
         } else {
@@ -468,7 +468,7 @@ function ciniki_web_privatethemes() {
             var c = this.content.serializeForm('no');
             if( c != '' ) {
                 M.api.postJSONCb('ciniki.web.privateThemeContentUpdate', 
-                    {'business_id':M.curBusinessID, 'content_id':this.content.content_id}, c, function(rsp) {
+                    {'tnid':M.curTenantID, 'content_id':this.content.content_id}, c, function(rsp) {
                         if( rsp.stat != 'ok' ) {
                             M.api.err(rsp);
                             return false;
@@ -488,7 +488,7 @@ function ciniki_web_privatethemes() {
             }
             var c = this.content.serializeForm('yes');
             c += '&theme_id=' + this.content.theme_id;
-            M.api.postJSONCb('ciniki.web.privateThemeContentAdd', {'business_id':M.curBusinessID, 'theme_id':this.content.theme_id}, c, function(rsp) {
+            M.api.postJSONCb('ciniki.web.privateThemeContentAdd', {'tnid':M.curTenantID, 'theme_id':this.content.theme_id}, c, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -500,7 +500,7 @@ function ciniki_web_privatethemes() {
 
     this.contentDelete = function() {
         if( confirm('Are you sure you want to this content?') ) {
-            var rsp = M.api.getJSONCb('ciniki.web.privateThemeContentDelete', {'business_id':M.curBusinessID, 'content_id':this.content.content_id}, 
+            var rsp = M.api.getJSONCb('ciniki.web.privateThemeContentDelete', {'tnid':M.curTenantID, 'content_id':this.content.content_id}, 
                 function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
@@ -516,7 +516,7 @@ function ciniki_web_privatethemes() {
         if( tid != null ) { this.image.theme_id = tid; }
         if( this.image.theme_image_id > 0 ) {
             var rsp = M.api.getJSONCb('ciniki.web.privateThemeImageGet', 
-                {'business_id':M.curBusinessID, 'theme_image_id':this.image.theme_image_id}, function(rsp) {
+                {'tnid':M.curTenantID, 'theme_image_id':this.image.theme_image_id}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;
@@ -541,7 +541,7 @@ function ciniki_web_privatethemes() {
             var c = this.image.serializeFormData('no');
             if( c != '' ) {
                 var rsp = M.api.postJSONFormData('ciniki.web.privateThemeImageUpdate', 
-                    {'business_id':M.curBusinessID, 
+                    {'tnid':M.curTenantID, 
                     'theme_image_id':this.image.theme_image_id}, c,
                         function(rsp) {
                             if( rsp.stat != 'ok' ) {
@@ -557,7 +557,7 @@ function ciniki_web_privatethemes() {
         } else {
             var c = this.image.serializeFormData('yes');
             var rsp = M.api.postJSONFormData('ciniki.web.privateThemeImageAdd', 
-                {'business_id':M.curBusinessID, 'theme_id':this.image.theme_id}, c,
+                {'tnid':M.curTenantID, 'theme_id':this.image.theme_id}, c,
                     function(rsp) {
                         if( rsp.stat != 'ok' ) {
                             M.api.err(rsp);
@@ -571,7 +571,7 @@ function ciniki_web_privatethemes() {
 
     this.imageDelete = function() {
         if( confirm('Are you sure you want to delete this image?') ) {
-            var rsp = M.api.getJSONCb('ciniki.web.privateThemeImageDelete', {'business_id':M.curBusinessID, 
+            var rsp = M.api.getJSONCb('ciniki.web.privateThemeImageDelete', {'tnid':M.curTenantID, 
                 'theme_image_id':this.image.theme_image_id}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);

@@ -31,7 +31,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     $content .= "<!DOCTYPE html>\n"
         . "<html>\n"
         . "<head>\n"
-        . "<title>" . $ciniki['business']['details']['name'];
+        . "<title>" . $ciniki['tenant']['details']['name'];
     if( $title != '' ) {
         $content .= " - " . $title;
     }
@@ -39,7 +39,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
         . "<link rel='icon' href='/ciniki-mods/core/ui/themes/default/img/favicon.png' type='image/png' />\n"
         . "";
 
-    if( isset($ciniki['business']['modules']['ciniki.web']['flags']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x0100) > 0 
+    if( isset($ciniki['tenant']['modules']['ciniki.web']['flags']) && ($ciniki['tenant']['modules']['ciniki.web']['flags']&0x0100) > 0 
         && isset($settings['site-privatetheme-id']) && $settings['site-privatetheme-id'] > 0 
         ) {
         //
@@ -47,12 +47,12 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
         //
         if( !isset($settings['site-privatetheme-permalink'])
             || $settings['site-privatetheme-permalink'] == ''
-            || !file_exists($ciniki['business']['web_cache_dir'] . '/theme-' . $settings['site-privatetheme-permalink']) 
+            || !file_exists($ciniki['tenant']['web_cache_dir'] . '/theme-' . $settings['site-privatetheme-permalink']) 
             || !isset($settings['site-privatetheme-last-updated']) 
-            || filemtime($ciniki['business']['web_cache_dir'] . '/theme-' . $settings['site-privatetheme-permalink']) < $settings['site-privatetheme-last-updated']
+            || filemtime($ciniki['tenant']['web_cache_dir'] . '/theme-' . $settings['site-privatetheme-permalink']) < $settings['site-privatetheme-last-updated']
             ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'updatePrivateTheme');
-            $rc = ciniki_web_updatePrivateTheme($ciniki, $ciniki['request']['business_id'], $settings, (isset($settings['site-privatetheme-id'])?$settings['site-privatetheme-id']:0));
+            $rc = ciniki_web_updatePrivateTheme($ciniki, $ciniki['request']['tnid'], $settings, (isset($settings['site-privatetheme-id'])?$settings['site-privatetheme-id']:0));
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -67,7 +67,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
             . "ciniki_web_theme_content.content "
             . "FROM ciniki_web_theme_content "
             . "WHERE ciniki_web_theme_content.theme_id = '" . ciniki_core_dbQuote($ciniki, $settings['site-privatetheme-id']) . "' "
-            . "AND ciniki_web_theme_content.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+            . "AND ciniki_web_theme_content.tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
             . "AND ciniki_web_theme_content.content_type = 'csshref' "
             . "AND ciniki_web_theme_content.status = 10 "
             . "ORDER BY ciniki_web_theme_content.media, ciniki_web_theme_content.sequence "
@@ -193,11 +193,11 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     //
     // Check for private theme files
     //
-    if( isset($ciniki['business']['modules']['ciniki.web']['flags']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x0100) > 0 
+    if( isset($ciniki['tenant']['modules']['ciniki.web']['flags']) && ($ciniki['tenant']['modules']['ciniki.web']['flags']&0x0100) > 0 
         && isset($settings['site-privatetheme-permalink']) && $settings['site-privatetheme-permalink'] != '' 
         ) {
-        $theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/theme-' . $settings['site-privatetheme-permalink'];
-        $theme_cache_url = $ciniki['business']['web_cache_url'] . '/theme-' . $settings['site-privatetheme-permalink'];
+        $theme_cache_dir = $ciniki['tenant']['web_cache_dir'] . '/theme-' . $settings['site-privatetheme-permalink'];
+        $theme_cache_url = $ciniki['tenant']['web_cache_url'] . '/theme-' . $settings['site-privatetheme-permalink'];
         //
         // Include the private theme files
         //
@@ -262,7 +262,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     // Check for header Open Graph (Facebook) object information, for better linking into facebook
     //
     if( isset($ciniki['response']['head']['og']) ) {
-        $og_site_name = $ciniki['business']['details']['name'];
+        $og_site_name = $ciniki['tenant']['details']['name'];
         foreach($ciniki['response']['head']['og'] as $og_type => $og_value) {
             if( $og_value != '' ) {
                 if( $og_type == 'description' ) {
@@ -278,7 +278,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
             $content .= "<meta property=\"og:site_name\" content=\"" . preg_replace('/"/', "\'", $og_site_name) . "\"/>\n";
         }
         if( $ciniki['response']['head']['og']['title'] == '' ) {
-            $content .= '<meta property="og:title" content="' . $ciniki['business']['details']['name'] . ' - ' . $title . '"/>' . "\n";
+            $content .= '<meta property="og:title" content="' . $ciniki['tenant']['details']['name'] . ' - ' . $title . '"/>' . "\n";
         }
     }
 
@@ -456,29 +456,29 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     //
     $signin_content = '';
     if( !isset($settings['page-account-header-buttons']) || $settings['page-account-header-buttons'] == 'yes' ) {
-        if( $ciniki['request']['business_id'] == $ciniki['config']['ciniki.core']['master_business_id'] 
+        if( $ciniki['request']['tnid'] == $ciniki['config']['ciniki.core']['master_tnid'] 
             && isset($ciniki['config']['ciniki.core']['manage.url']) 
             && $ciniki['config']['ciniki.core']['manage.url'] != '' 
             ) {
-            // Master business signin
+            // Master tenant signin
 //          $signin_content .= "<div class='signin'><div class='signin-wrapper'>";
             $signin_content .= "<span><a rel='nofollow' "
                 . "href='" . $ciniki['config']['ciniki.core']['manage.url'] . "'>"
                 . "Sign in</a></span>";
 //          $signin_content .= "</div></div>\n";
         } 
-        // Display a cart and/or customer signin for regular businesses
-        elseif( $ciniki['request']['business_id'] != $ciniki['config']['ciniki.core']['master_business_id']
+        // Display a cart and/or customer signin for regular tenants
+        elseif( $ciniki['request']['tnid'] != $ciniki['config']['ciniki.core']['master_tnid']
             && isset($settings['page-account-active']) && $settings['page-account-active'] == 'yes'
-            && isset($ciniki['business']['modules']['ciniki.customers'])
+            && isset($ciniki['tenant']['modules']['ciniki.customers'])
 //            && ((isset($settings['page-downloads-customers']) && $settings['page-downloads-customers'] == 'yes')
 //                // Add check for members blog
 //                || (isset($settings['page-cart-active']) && $settings['page-cart-active'] == 'yes')
 //                || (isset($settings['page-subscriptions-public']) && $settings['page-subscriptions-public'] == 'yes')
-//                || (isset($ciniki['business']['modules']['ciniki.blog']) && ($ciniki['business']['modules']['ciniki.blog']['flags']&0x0100) > 0) // Used if there are other pages that allow customer only content
+//                || (isset($ciniki['tenant']['modules']['ciniki.blog']) && ($ciniki['tenant']['modules']['ciniki.blog']['flags']&0x0100) > 0) // Used if there are other pages that allow customer only content
 //            )) {
             ) {
-            // Regular business signin
+            // Regular tenant signin
 //          $signin_content .= "<div class='signin'><div class='signin-wrapper'>";
             // Check for a cart
             if( $shopping_cart != '' ) {
@@ -548,7 +548,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
         $page_container_class .= 'signin';
     }
     if( isset($settings['site-logo-display']) && $settings['site-logo-display'] == 'yes' 
-        && isset($ciniki['business']['details']['logo_id']) && $ciniki['business']['details']['logo_id'] > 0 ) {
+        && isset($ciniki['tenant']['details']['logo_id']) && $ciniki['tenant']['details']['logo_id'] > 0 ) {
         if( $page_container_class != '' ) { $page_container_class .= " "; }
         $page_container_class .= 'logo';
     }
@@ -625,19 +625,19 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
         $hgroup .= "<hgroup>\n";
         if( isset($page_home_image) && $page_home_image['stat'] == 'ok' ) {
             $hgroup .= "<div class='title-logo'>"
-                . "<a href='" . $page_home_url . "' title='" . $ciniki['business']['details']['name'] 
+                . "<a href='" . $page_home_url . "' title='" . $ciniki['tenant']['details']['name'] 
                 . "' rel='home'><img alt='Home' src='" . $page_home_image['url'] . "' /></a>"
                 . "</div>";
         }
-        if( isset($ciniki['business']['details']['tagline']) && $ciniki['business']['details']['tagline'] != '' ) {
+        if( isset($ciniki['tenant']['details']['tagline']) && $ciniki['tenant']['details']['tagline'] != '' ) {
             $hgroup .= "<div class='title-block'>";
         } else {
             $hgroup .= "<div class='title-block no-tagline'>";
         }
         $hgroup .= "<h1 id='site-title'>";
-        $hgroup .= "<span class='title'><a href='" . $page_home_url . "' title='" . $ciniki['business']['details']['name'] . "' rel='home'>" . $ciniki['business']['details']['name'] . "</a></span></h1>\n";
-        if( isset($ciniki['business']['details']['tagline']) && $ciniki['business']['details']['tagline'] != '' ) {
-            $hgroup .= "<h2 id='site-description'>" . $ciniki['business']['details']['tagline'] . "</h2>\n";
+        $hgroup .= "<span class='title'><a href='" . $page_home_url . "' title='" . $ciniki['tenant']['details']['name'] . "' rel='home'>" . $ciniki['tenant']['details']['name'] . "</a></span></h1>\n";
+        if( isset($ciniki['tenant']['details']['tagline']) && $ciniki['tenant']['details']['tagline'] != '' ) {
+            $hgroup .= "<h2 id='site-description'>" . $ciniki['tenant']['details']['tagline'] . "</h2>\n";
         }
         $hgroup .= "</div>";
 
@@ -657,7 +657,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
         $hgroup .= "</hgroup>\n";
     } else {
         $hgroup .= "<hgroup class='header-image'>\n";
-        $hgroup .= "<span><a href='" . $page_home_url . "' title='" . $ciniki['business']['details']['name'] . "' rel='home'>";
+        $hgroup .= "<span><a href='" . $page_home_url . "' title='" . $ciniki['tenant']['details']['name'] . "' rel='home'>";
             if( isset($page_home_image) && $page_home_image['stat'] == 'ok' ) {
                 $hgroup .= "<img alt='Home' src='" . $page_home_image['url'] . "' />";
             }
@@ -671,10 +671,10 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     //
     // Get any pages if enables
     //
-    if( isset($ciniki['business']['modules']['ciniki.web']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x40) == 0x40) {
+    if( isset($ciniki['tenant']['modules']['ciniki.web']) && ($ciniki['tenant']['modules']['ciniki.web']['flags']&0x40) == 0x40) {
         $strsql = "SELECT id, title, permalink, flags, page_type, page_redirect_url, page_module, menu_flags "
             . "FROM ciniki_web_pages "
-            . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+            . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
             . "AND parent_id = 0 "
             . "AND (flags&0x01) = 1 "   // Active pages
             . "ORDER BY sequence, (menu_flags&0x02), title "
@@ -705,7 +705,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuoteIDs');
                 $strsql = "SELECT id, parent_id, title, permalink, flags, page_type, page_redirect_url, page_module, menu_flags "
                     . "FROM ciniki_web_pages "
-                    . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+                    . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
                     . "AND parent_id IN (" . ciniki_core_dbQuoteIDs($ciniki, array_keys($pages)) . ") "
                     . "AND (flags&0x01) = 1 "   // Active pages
                     . "ORDER BY parent_id, sequence, title "
@@ -735,7 +735,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
                         $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'subMenuItems');
                         if( $rc['stat'] == 'ok' ) {
                             $fn = $rc['function_call'];
-                            $rc = $fn($ciniki, $settings, $ciniki['request']['business_id'], array());
+                            $rc = $fn($ciniki, $settings, $ciniki['request']['tnid'], array());
                             if( $rc['stat'] == 'ok' ) {
                                 $pages[$page_id]['subpages'] = $rc['submenu'];
                             }
@@ -780,12 +780,12 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
                     $account_page['title'] = 'Account';
             
                     $account_submenu = array();
-                    foreach($ciniki['business']['modules'] as $module => $m) {
+                    foreach($ciniki['tenant']['modules'] as $module => $m) {
                         list($pkg, $mod) = explode('.', $module);
                         $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'accountSubMenuItems');
                         if( $rc['stat'] == 'ok' ) {
                             $fn = $rc['function_call'];
-                            $rc = $fn($ciniki, $settings, $ciniki['request']['business_id']);
+                            $rc = $fn($ciniki, $settings, $ciniki['request']['tnid']);
                             if( $rc['stat'] == 'ok' && isset($rc['submenu']) ) {
                                 $account_submenu = array_merge($account_submenu, $rc['submenu']);
                             }
@@ -822,7 +822,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     // If the theme specifies a header menu button, then setup the javascript for it as well.
     //
     if( isset($settings['theme']['header-search-button']) && $settings['theme']['header-search-button'] == 'yes' 
-        && isset($ciniki['business']['modules']['ciniki.web']['flags']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x4000) > 0
+        && isset($ciniki['tenant']['modules']['ciniki.web']['flags']) && ($ciniki['tenant']['modules']['ciniki.web']['flags']&0x4000) > 0
         ) {
         $content .= "<a href='" . $ciniki['request']['base_url'] . '/search' . "' id='main-search-button' class='menu-toggle'><i class='fa fa-search'></i></a>";
     }
@@ -852,7 +852,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     //
     // Check if pages flags and pages menu flag is NOT set for web module
     //
-    if( !isset($ciniki['business']['modules']['ciniki.web']['flags']) || ($ciniki['business']['modules']['ciniki.web']['flags']&0x0200) == 0 ) {
+    if( !isset($ciniki['tenant']['modules']['ciniki.web']['flags']) || ($ciniki['tenant']['modules']['ciniki.web']['flags']&0x0200) == 0 ) {
         $content .= "<li class='menu-item" . ($ciniki['request']['page']=='home'?' menu-item-selected':'') . "'>"
             . "<a href='" . $page_home_url . "'>";
             if( isset($settings['page-home-menu-title']) && $settings['page-home-menu-title'] != '' ) {
@@ -888,8 +888,8 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
         //
         // Check for other package pages
         //
-        if( isset($ciniki['business']['pages']) && count($ciniki['business']['pages']) > 0 ) {
-            foreach($ciniki['business']['pages'] as $permalink => $page) {
+        if( isset($ciniki['tenant']['pages']) && count($ciniki['tenant']['pages']) > 0 ) {
+            foreach($ciniki['tenant']['pages'] as $permalink => $page) {
                 if( $page['active'] == 'yes' ) {
                     $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']==$page['permalink']?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/" . $page['permalink'] . "'>" . $page['title'] . "</a>";
                     $content .= "</li>";
@@ -1062,7 +1062,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
         }
         if( isset($settings['page-fatt-active']) && $settings['page-fatt-active'] == 'yes' ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'fatt', 'web', 'menuItems');
-            $rc = ciniki_fatt_web_menuItems($ciniki, $settings, $ciniki['request']['business_id'], array());
+            $rc = ciniki_fatt_web_menuItems($ciniki, $settings, $ciniki['request']['tnid'], array());
             if( $rc['stat'] == 'ok' ) {
                 foreach($rc['menu'] as $item) {
                     $content .= "<li class='menu-item$hide_menu_class" . ((isset($item['selected'])&&$item['selected']=='yes')?' menu-item-selected':'') . "'>"
@@ -1173,8 +1173,8 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
         // Check if member news is enabled, and the member has logged in
         //
         if( isset($settings['page-memberblog-active']) && $settings['page-memberblog-active'] == 'yes' 
-            && isset($ciniki['business']['modules']['ciniki.blog'])
-            && ($ciniki['business']['modules']['ciniki.blog']['flags']&0x0100) > 0 
+            && isset($ciniki['tenant']['modules']['ciniki.blog'])
+            && ($ciniki['tenant']['modules']['ciniki.blog']['flags']&0x0100) > 0 
             // Customer is logged in, or menu item should always be displayed
             && (isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0
                 || (isset($settings['page-memberblog-menu-active']) && $settings['page-memberblog-menu-active'] == 'yes')
@@ -1194,12 +1194,12 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     //
     // Check for any pages
     //
-    if( isset($ciniki['business']['modules']['ciniki.web']) 
-        && ($ciniki['business']['modules']['ciniki.web']['flags']&0x40) == 0x40 && isset($pages) ) {
+    if( isset($ciniki['tenant']['modules']['ciniki.web']) 
+        && ($ciniki['tenant']['modules']['ciniki.web']['flags']&0x40) == 0x40 && isset($pages) ) {
         $i = 0;
     
         if( isset($settings['page-home-active']) && $settings['page-home-active'] == 'yes' 
-            && ($ciniki['business']['modules']['ciniki.web']['flags']&0x0200) > 0 
+            && ($ciniki['tenant']['modules']['ciniki.web']['flags']&0x0200) > 0 
             ) {
             $content .= "<li class='menu-item" . ($ciniki['request']['page']=='home'?' menu-item-selected':'') . "'>"
                 . "<a href='" . $page_home_url . "'>";
@@ -1283,7 +1283,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
         }
     }
 
-    if( !isset($ciniki['business']['modules']['ciniki.web']['flags']) || ($ciniki['business']['modules']['ciniki.web']['flags']&0x0200) == 0 ) {
+    if( !isset($ciniki['tenant']['modules']['ciniki.web']['flags']) || ($ciniki['tenant']['modules']['ciniki.web']['flags']&0x0200) == 0 ) {
         if( isset($settings['page-blog-active']) && $settings['page-blog-active'] == 'yes' ) {
             $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='blog'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/blog'>";
             if( isset($settings['page-blog-name']) && $settings['page-blog-name'] != '' ) {
@@ -1311,7 +1311,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
         // Check if membersonly area is enabled, and the member has logged in
         //
         if( isset($settings['page-membersonly-active']) && $settings['page-membersonly-active'] == 'yes' 
-            && isset($ciniki['business']['modules']['ciniki.membersonly'])
+            && isset($ciniki['tenant']['modules']['ciniki.membersonly'])
             // Customer is logged in, or menu item should always be displayed
             && (isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0
                 || (isset($settings['page-membersonly-menu-active']) && $settings['page-membersonly-menu-active'] == 'yes')
@@ -1355,7 +1355,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     // Check if membersonly area is enabled, and the member has logged in
     //
     if( isset($settings['page-membersonly-active']) && $settings['page-membersonly-active'] == 'yes' 
-        && isset($ciniki['business']['modules']['ciniki.membersonly'])
+        && isset($ciniki['tenant']['modules']['ciniki.membersonly'])
         // Customer is logged in, or menu item should always be displayed
         && (isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0
             || (isset($settings['page-membersonly-menu-active']) && $settings['page-membersonly-menu-active'] == 'yes')

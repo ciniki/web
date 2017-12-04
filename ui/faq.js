@@ -1,5 +1,5 @@
 //
-// The app to manage web options for a business
+// The app to manage web options for a tenant
 //
 function ciniki_web_faq() {
     
@@ -11,7 +11,7 @@ function ciniki_web_faq() {
         // Global functions for history and field value
         //
         this.fieldHistoryArgs = function(s, i) {
-            return {'method':'ciniki.web.pageSettingsHistory','args':{'business_id':M.curBusinessID, 'field':i}};
+            return {'method':'ciniki.web.pageSettingsHistory','args':{'tnid':M.curTenantID, 'field':i}};
         }
         this.fieldValue = function(s, i, d) { 
             if( this.data[i] == null ) { return ''; }
@@ -65,7 +65,7 @@ function ciniki_web_faq() {
         };
         this.edit.liveSearchCb = function(s, i, value) {
             if( i == 'category' ) {
-                var rsp = M.api.getJSONBgCb('ciniki.web.faqSearchCategory', {'business_id':M.curBusinessID, 'field':i, 'start_needle':value, 'limit':15},
+                var rsp = M.api.getJSONBgCb('ciniki.web.faqSearchCategory', {'tnid':M.curTenantID, 'field':i, 'start_needle':value, 'limit':15},
                     function(rsp) {
                         M.ciniki_web_faq.edit.liveSearchShow(s, i, M.gE(M.ciniki_web_faq.edit.panelUID + '_' + i), rsp.results);
                     });
@@ -85,7 +85,7 @@ function ciniki_web_faq() {
             this.removeLiveSearch(s, fid);
         };
         this.edit.fieldHistoryArgs = function(s, i) {
-            return {'method':'ciniki.web.faqHistory', 'args':{'business_id':M.curBusinessID, 
+            return {'method':'ciniki.web.faqHistory', 'args':{'tnid':M.curTenantID, 
                 'faq_id':this.faq_id, 'field':i}};
         }
         this.edit.fieldValue = this.fieldValue;
@@ -116,7 +116,7 @@ function ciniki_web_faq() {
         this.main.reset();
 
         var rsp = M.api.getJSONCb('ciniki.web.pageSettingsGet', 
-            {'business_id':M.curBusinessID, 'page':'faq', 'content':'yes'}, function(rsp) {
+            {'tnid':M.curTenantID, 'page':'faq', 'content':'yes'}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -127,7 +127,7 @@ function ciniki_web_faq() {
     }
 
     this.showMainFinish = function(cb) {
-        var rsp = M.api.getJSONCb('ciniki.web.faqList', {'business_id':M.curBusinessID}, function(rsp) {
+        var rsp = M.api.getJSONCb('ciniki.web.faqList', {'tnid':M.curTenantID}, function(rsp) {
             if( rsp.stat != 'ok' ) {
                 M.api.err(rsp);
                 return false;
@@ -170,7 +170,7 @@ function ciniki_web_faq() {
         var c = this.main.serializeForm('no');
         if( c != '' ) {
             var rsp = M.api.postJSONCb('ciniki.web.siteSettingsUpdate', 
-                {'business_id':M.curBusinessID}, c, function(rsp) {
+                {'tnid':M.curTenantID}, c, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;
@@ -189,7 +189,7 @@ function ciniki_web_faq() {
         if( this.edit.faq_id > 0 ) {
             this.edit.sections._buttons.buttons.delete.visible = 'yes';
             var rsp = M.api.getJSONCb('ciniki.web.faqGet', 
-                {'business_id':M.curBusinessID, 'faq_id':this.edit.faq_id}, 
+                {'tnid':M.curTenantID, 'faq_id':this.edit.faq_id}, 
                 function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
@@ -217,7 +217,7 @@ function ciniki_web_faq() {
             var c = this.edit.serializeForm('no');
             if( c != '' ) {
                 var rsp = M.api.postJSONCb('ciniki.web.faqUpdate', 
-                    {'business_id':M.curBusinessID, 'faq_id':this.edit.faq_id}, c, function(rsp) {
+                    {'tnid':M.curTenantID, 'faq_id':this.edit.faq_id}, c, function(rsp) {
                         if( rsp.stat != 'ok' ) {
                             M.api.err(rsp);
                             return false;
@@ -229,7 +229,7 @@ function ciniki_web_faq() {
             }
         } else {
             var c = this.edit.serializeForm('yes');
-            var rsp = M.api.postJSONCb('ciniki.web.faqAdd', {'business_id':M.curBusinessID}, c, 
+            var rsp = M.api.postJSONCb('ciniki.web.faqAdd', {'tnid':M.curTenantID}, c, 
                 function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
@@ -242,7 +242,7 @@ function ciniki_web_faq() {
 
     this.deleteFAQ = function() {
         if( confirm('Are you sure you want to this question?') ) {
-            var rsp = M.api.getJSONCb('ciniki.web.faqDelete', {'business_id':M.curBusinessID, 
+            var rsp = M.api.getJSONCb('ciniki.web.faqDelete', {'tnid':M.curTenantID, 
                 'faq_id':this.edit.faq_id}, 
                 function(rsp) {
                     if( rsp.stat != 'ok' ) {

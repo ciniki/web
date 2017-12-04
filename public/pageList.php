@@ -8,7 +8,7 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:     The ID of the business to get testimonials for.
+// tnid:     The ID of the tenant to get testimonials for.
 //
 // Returns
 // -------
@@ -19,7 +19,7 @@ function ciniki_web_pageList($ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         ));
     if( $rc['stat'] != 'ok' ) {
         return $rc;
@@ -27,10 +27,10 @@ function ciniki_web_pageList($ciniki) {
     $args = $rc['args'];
     
     //  
-    // Check access to business_id as owner, or sys admin. 
+    // Check access to tnid as owner, or sys admin. 
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
-    $rc = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.pageList');
+    $rc = ciniki_web_checkAccess($ciniki, $args['tnid'], 'ciniki.web.pageList');
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }
@@ -41,7 +41,7 @@ function ciniki_web_pageList($ciniki) {
     //
     $strsql = "SELECT id, title "
         . "FROM ciniki_web_pages "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
         . "AND parent_id = 0 "
         . "ORDER BY sequence, title "
         . "";

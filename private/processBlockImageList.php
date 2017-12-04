@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_web_processBlockImageList(&$ciniki, $settings, $business_id, $block) {
+function ciniki_web_processBlockImageList(&$ciniki, $settings, $tnid, $block) {
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
@@ -207,7 +207,7 @@ function ciniki_web_processBlockImageList(&$ciniki, $settings, $business_id, $bl
         }
 
         if( isset($block['prices']) && $block['prices'] == 'yes' && isset($item['prices']) && count($item['prices']) > 0 ) {
-            $rc = ciniki_web_cartSetupPrices($ciniki, $settings, $business_id, $item['prices']);
+            $rc = ciniki_web_cartSetupPrices($ciniki, $settings, $tnid, $item['prices']);
             if( $rc['stat'] == 'ok' && $rc['content'] != '' ) {
                 $content .= "<div class='image-list-item-prices'>" . $rc['content'] . "</div>";
             }

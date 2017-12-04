@@ -12,7 +12,7 @@
 // Returns
 // -------
 //
-function ciniki_web_processBlocks(&$ciniki, $settings, $business_id, $blocks) {
+function ciniki_web_processBlocks(&$ciniki, $settings, $tnid, $blocks) {
 
     $rsp = array('stat'=>'ok', 'content'=>'');
 
@@ -72,7 +72,7 @@ function ciniki_web_processBlocks(&$ciniki, $settings, $business_id, $blocks) {
             $rc = ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', $processor);
             if( $rc['stat'] == 'ok' ) {
                 $fn = "ciniki_web_$processor";
-                $rc = $fn($ciniki, $settings, $business_id, $block);
+                $rc = $fn($ciniki, $settings, $tnid, $block);
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;
                 }

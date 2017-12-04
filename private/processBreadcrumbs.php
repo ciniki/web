@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_web_processBreadcrumbs(&$ciniki, $settings, $business_id, $breadcrumbs) {
+function ciniki_web_processBreadcrumbs(&$ciniki, $settings, $tnid, $breadcrumbs) {
 
     $content = '';
 

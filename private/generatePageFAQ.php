@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This function will generate the faq page for the business.
+// This function will generate the faq page for the tenant.
 //
 // Arguments
 // ---------
@@ -40,7 +40,7 @@ function ciniki_web_generatePageFAQ($ciniki, $settings) {
         . "ciniki_web_faqs.question, "
         . "ciniki_web_faqs.answer "
         . "FROM ciniki_web_faqs "
-        . "WHERE ciniki_web_faqs.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+        . "WHERE ciniki_web_faqs.tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
         . "AND (ciniki_web_faqs.flags&0x01) = 0 "
         . "ORDER BY ciniki_web_faqs.category "
         . "";

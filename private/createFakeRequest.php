@@ -13,13 +13,13 @@
 // Returns
 // -------
 //
-function ciniki_web_createFakeRequest($ciniki, $business_id) {
+function ciniki_web_createFakeRequest($ciniki, $tnid) {
 
     //
-    // Get the web settings for the business
+    // Get the web settings for the tenant
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'settings');
-    $rc = ciniki_web_settings($ciniki, $business_id);
+    $rc = ciniki_web_settings($ciniki, $tnid);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -28,27 +28,27 @@ function ciniki_web_createFakeRequest($ciniki, $business_id) {
     $web_ciniki = array('config'=>$ciniki['config'], 'databases'=>$ciniki['databases']);
 
     //
-    // Get the business uuid
+    // Get the tenant uuid
     //
     $strsql = "SELECT uuid, sitename "
-        . "FROM ciniki_businesses "
-        . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "FROM ciniki_tenants "
+        . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "";
-    $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'business');
+    $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.tenants', 'tenant');
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
-    if( !isset($rc['business']) ) {
-        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.11', 'msg'=>'Business not found'));
+    if( !isset($rc['tenant']) ) {
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.11', 'msg'=>'Tenant not found'));
     }
-    $business = $rc['business'];
-    $web_ciniki['business'] = array('uuid'=>$rc['business']['uuid']);
-    $web_ciniki['business']['cache_dir'] = $ciniki['config']['ciniki.core']['cache_dir'] . '/'
-        . $business['uuid'][0] . '/' . $business['uuid'];
-    $web_ciniki['business']['modules'] = $ciniki['business']['modules'];
+    $tenant = $rc['tenant'];
+    $web_ciniki['tenant'] = array('uuid'=>$rc['tenant']['uuid']);
+    $web_ciniki['tenant']['cache_dir'] = $ciniki['config']['ciniki.core']['cache_dir'] . '/'
+        . $tenant['uuid'][0] . '/' . $tenant['uuid'];
+    $web_ciniki['tenant']['modules'] = $ciniki['tenant']['modules'];
 
     $web_ciniki['request'] = array(
-        'business_id'=>$business_id,
+        'tnid'=>$tnid,
         'page'=>'', 
         'args'=>array(),
         'cache_dir'=>$ciniki['config']['ciniki.core']['modules_dir'] . '/web/cache',
@@ -60,16 +60,16 @@ function ciniki_web_createFakeRequest($ciniki, $business_id) {
         );
 
     //
-    // Get the primary domain for the business
+    // Get the primary domain for the tenant
     //
     $strsql = "SELECT domain "
-        . "FROM ciniki_business_domains "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "FROM ciniki_tenant_domains "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "AND status = 1 "
         . "ORDER BY flags DESC "
         . "LIMIT 1 "
         . "";
-    $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'domain');
+    $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.tenants', 'domain');
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -84,9 +84,9 @@ function ciniki_web_createFakeRequest($ciniki, $business_id) {
         //
         $master_domain = $ciniki['config']['ciniki.web']['master.domain'];
         $web_ciniki['request']['domain'] = $master_domain;
-        $web_ciniki['request']['domain_base_url'] = 'http://' . $master_domain . '/' . $business['sitename'];
-        $web_ciniki['request']['ssl_domain_base_url'] = 'http://' . $master_domain . '/' . $business['sitename'];
-        $web_ciniki['request']['base_url'] = '/' . $business['sitename'];
+        $web_ciniki['request']['domain_base_url'] = 'http://' . $master_domain . '/' . $tenant['sitename'];
+        $web_ciniki['request']['ssl_domain_base_url'] = 'http://' . $master_domain . '/' . $tenant['sitename'];
+        $web_ciniki['request']['base_url'] = '/' . $tenant['sitename'];
     }
     $web_ciniki['request']['cache_url'] = 'http://' . $web_ciniki['request']['domain'] . '/ciniki-web-cache';
     $web_ciniki['request']['layout_url'] = 'http://' . $web_ciniki['request']['domain'] . '/ciniki-web-layouts';

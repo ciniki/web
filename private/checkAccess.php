@@ -3,23 +3,23 @@
 // Description
 // ===========
 // This function will check the user has access to the web module public methods, and 
-// return a list of other modules enabled for the business.
+// return a list of other modules enabled for the tenant.
 //
 // Arguments
 // =========
 // ciniki:
-// business_id:         The ID of the business the request is for.
+// tnid:         The ID of the tenant the request is for.
 // method:              The method being requested.
 // 
 // Returns
 // =======
 //
-function ciniki_web_checkAccess(&$ciniki, $business_id, $method) {
+function ciniki_web_checkAccess(&$ciniki, $tnid, $method) {
     //
-    // Check if the business is active and the module is enabled
+    // Check if the tenant is active and the module is enabled
     //
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'checkModuleAccess');
-    $rc = ciniki_businesses_checkModuleAccess($ciniki, $business_id, 'ciniki', 'web');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'private', 'checkModuleAccess');
+    $rc = ciniki_tenants_checkModuleAccess($ciniki, $tnid, 'ciniki', 'web');
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -35,16 +35,16 @@ function ciniki_web_checkAccess(&$ciniki, $business_id, $method) {
     }
 
     //
-    // Not all methods are available to business owners
+    // Not all methods are available to tenant owners
     //
 
     //
-    // Users who are an owner or employee of a business can see the business 
+    // Users who are an owner or employee of a tenant can see the tenant 
     // FIXME: Add proper methods here
     if( $method == 'ciniki.web.siteSettings' 
         || $method == 'ciniki.web.pageSettingsGet'
         || $method == 'ciniki.web.pageSettingsHistory'
-        || $method == 'ciniki.web.businessUsers'
+        || $method == 'ciniki.web.tenantUsers'
         || $method == 'ciniki.web.siteSettingsGet'
         || $method == 'ciniki.web.siteSettingsUpdate'
         || $method == 'ciniki.web.pageAdd'
@@ -111,15 +111,15 @@ function ciniki_web_checkAccess(&$ciniki, $business_id, $method) {
         || $method == 'ciniki.web.collectionList'
         || $method == 'ciniki.web.collectionUpdate'
         ) {
-        $strsql = "SELECT business_id, user_id FROM ciniki_business_users "
-            . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        $strsql = "SELECT tnid, user_id FROM ciniki_tenant_users "
+            . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . "AND user_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['session']['user']['id']) . "' "
             . "AND package = 'ciniki' "
             . "AND status = 10 "
             . "AND (permission_group = 'owners' OR permission_group = 'employees' OR permission_group = 'resellers' ) "
             . "";
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
-        $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'user');
+        $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.tenants', 'user');
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -138,15 +138,15 @@ function ciniki_web_checkAccess(&$ciniki, $business_id, $method) {
     if( $method == 'ciniki.web.clearContentCache' 
         || $method == 'ciniki.web.clearImageCache'
         ) {
-        $strsql = "SELECT business_id, user_id FROM ciniki_business_users "
-            . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        $strsql = "SELECT tnid, user_id FROM ciniki_tenant_users "
+            . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . "AND user_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['session']['user']['id']) . "' "
             . "AND package = 'ciniki' "
             . "AND status = 10 "
             . "AND (permission_group = 'resellers' ) "
             . "";
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
-        $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'user');
+        $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.tenants', 'user');
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }

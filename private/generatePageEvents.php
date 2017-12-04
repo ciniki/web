@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This function will generate the events page for the business.
+// This function will generate the events page for the tenant.
 //
 // Arguments
 // ---------
@@ -17,12 +17,12 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
     // Check if a file was specified to be downloaded
     //
     $download_err = '';
-    if( isset($ciniki['business']['modules']['ciniki.events'])
+    if( isset($ciniki['tenant']['modules']['ciniki.events'])
         && isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != ''
         && isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] == 'download'
         && isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'fileDownload');
-        $rc = ciniki_events_web_fileDownload($ciniki, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][0], $ciniki['request']['uri_split'][2]);
+        $rc = ciniki_events_web_fileDownload($ciniki, $ciniki['request']['tnid'], $ciniki['request']['uri_split'][0], $ciniki['request']['uri_split'][2]);
         if( $rc['stat'] == 'ok' ) {
             header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
             header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
@@ -97,7 +97,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'eventDetails');
         $rc = ciniki_events_web_eventDetails($ciniki, $settings, 
-            $ciniki['request']['business_id'], $event_permalink);
+            $ciniki['request']['tnid'], $event_permalink);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -236,7 +236,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
         $event_permalink = $ciniki['request']['uri_split'][0];
         $ciniki['response']['head']['og']['url'] .= '/' . $event_permalink;
         $rc = ciniki_events_web_eventDetails($ciniki, $settings, 
-            $ciniki['request']['business_id'], $event_permalink);
+            $ciniki['request']['tnid'], $event_permalink);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -316,7 +316,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
         //
         if( isset($event['prices']) && count($event['prices']) > 0 ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'cartSetupPrices');
-            $rc = ciniki_web_cartSetupPrices($ciniki, $settings, $ciniki['request']['business_id'], 
+            $rc = ciniki_web_cartSetupPrices($ciniki, $settings, $ciniki['request']['tnid'], 
                 $event['prices']);
             if( $rc['stat'] != 'ok' ) {
                 error_log("Error in formatting prices.");
@@ -441,13 +441,13 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
         //
         // If categories are enabled, and no category specified
         //
-        if( ($ciniki['business']['modules']['ciniki.events']['flags']&0x10) > 0 
+        if( ($ciniki['tenant']['modules']['ciniki.events']['flags']&0x10) > 0 
             && isset($settings['page-events-categories-display'])
             && $settings['page-events-categories-display'] != 'off'
             && $tag_permalink == ''
             ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'tags');
-            $rc = ciniki_events_web_tags($ciniki, $settings, $ciniki['request']['business_id'], '10');
+            $rc = ciniki_events_web_tags($ciniki, $settings, $ciniki['request']['tnid'], '10');
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -471,7 +471,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
         //
         // Check if there is content for the landing page
         //
-        if( ($ciniki['business']['modules']['ciniki.events']['flags']&0x10) > 0 
+        if( ($ciniki['tenant']['modules']['ciniki.events']['flags']&0x10) > 0 
             && isset($settings['page-events-categories-display'])
             && $settings['page-events-categories-display'] != 'off'
             && isset($settings['page-events-content'])
@@ -513,7 +513,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
             //
             // Get the events
             //
-            $rc = ciniki_events_web_eventList($ciniki, $settings, $ciniki['request']['business_id'], 
+            $rc = ciniki_events_web_eventList($ciniki, $settings, $ciniki['request']['tnid'], 
                 array('type'=>'upcoming', 'tag_type'=>$tag_type, 'tag_permalink'=>$tag_permalink));
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
@@ -530,7 +530,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
 
             if( $tag_permalink != '' ) {
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'tagDetails');
-                $rc = ciniki_events_web_tagDetails($ciniki, $settings, $ciniki['request']['business_id'], 
+                $rc = ciniki_events_web_tagDetails($ciniki, $settings, $ciniki['request']['tnid'], 
                     $tag_type, $tag_permalink);
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;
@@ -654,7 +654,7 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
                 // Generate the content of the page
                 //
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'eventList');
-                $rc = ciniki_events_web_eventList($ciniki, $settings, $ciniki['request']['business_id'], 
+                $rc = ciniki_events_web_eventList($ciniki, $settings, $ciniki['request']['tnid'], 
                     array('type'=>'past', 'limit'=>'10', 'tag_type'=>$tag_type, 'tag_permalink'=>$tag_permalink));
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;
@@ -693,13 +693,13 @@ function ciniki_web_generatePageEvents($ciniki, $settings) {
     //
     // Decide what items should be in the submenu
     //
-    if( ($ciniki['business']['modules']['ciniki.events']['flags']&0x10) > 0 
+    if( ($ciniki['tenant']['modules']['ciniki.events']['flags']&0x10) > 0 
         && isset($settings['page-events-categories-display'])
         && $settings['page-events-categories-display'] == 'submenu'
         ) {
         if( !isset($categories) ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'tags');
-            $rc = ciniki_events_web_tags($ciniki, $settings, $ciniki['request']['business_id'], '10');
+            $rc = ciniki_events_web_tags($ciniki, $settings, $ciniki['request']['tnid'], '10');
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }

@@ -22,7 +22,7 @@ function ciniki_web_processMembersonlyURI(&$ciniki, $settings, $depth, $base_url
     //
     if( isset($ciniki['request']['uri_split'][$depth]) && $ciniki['request']['uri_split'][$depth] != '' ) {
         $page_permalink = $ciniki['request']['uri_split'][$depth];
-        $rc = ciniki_membersonly_web_pageDetails($ciniki, $settings, $ciniki['request']['business_id'], 
+        $rc = ciniki_membersonly_web_pageDetails($ciniki, $settings, $ciniki['request']['tnid'], 
             array('permalink'=>$page_permalink, 'parent_id'=>$parent_id));
         if( $rc['stat'] != 'ok' && $rc['stat'] != '404' ) {
             return $rc;
@@ -30,7 +30,7 @@ function ciniki_web_processMembersonlyURI(&$ciniki, $settings, $depth, $base_url
         if( $rc['stat'] == '404' ) {
             if( $depth == 0 ) {
                 // Get the root page
-                $rc = ciniki_membersonly_web_pageDetails($ciniki, $settings, $ciniki['request']['business_id'], 
+                $rc = ciniki_membersonly_web_pageDetails($ciniki, $settings, $ciniki['request']['tnid'], 
                     array('page_id'=>$parent_id, 'parent_id'=>0));
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;
@@ -63,7 +63,7 @@ function ciniki_web_processMembersonlyURI(&$ciniki, $settings, $depth, $base_url
             && $ciniki['request']['uri_split'][($depth+2)] != '' 
             ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processGalleryImage');
-            return ciniki_web_processGalleryImage($ciniki, $settings, $ciniki['request']['business_id'],
+            return ciniki_web_processGalleryImage($ciniki, $settings, $ciniki['request']['tnid'],
                 array('item'=>$page, 
                     'article_title'=>$page['title'],
                     'image_permalink'=>$ciniki['request']['uri_split'][($depth+2)]));
@@ -78,7 +78,7 @@ function ciniki_web_processMembersonlyURI(&$ciniki, $settings, $depth, $base_url
             && $ciniki['request']['uri_split'][($depth+2)] != '' 
             ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'membersonly', 'web', 'fileDownload');
-            $rc = ciniki_membersonly_web_fileDownload($ciniki, $ciniki['request']['business_id'], 
+            $rc = ciniki_membersonly_web_fileDownload($ciniki, $ciniki['request']['tnid'], 
                 $page['id'], $ciniki['request']['uri_split'][($depth+2)]);
             if( $rc['stat'] == 'ok' ) {
                 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");

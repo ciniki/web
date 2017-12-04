@@ -9,7 +9,7 @@
 // Returns
 // -------
 //
-function ciniki_web_collectionList($ciniki, $business_id) {
+function ciniki_web_collectionList($ciniki, $tnid) {
 
     //
     // Query for the collections
@@ -24,9 +24,9 @@ function ciniki_web_collectionList($ciniki, $business_id) {
         . "FROM ciniki_web_collections "
         . "LEFT JOIN ciniki_web_collection_objrefs ON ( "
             . "ciniki_web_collections.id = ciniki_web_collection_objrefs.collection_id "
-            . "AND ciniki_web_collections.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+            . "AND ciniki_web_collections.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . ") "
-        . "WHERE ciniki_web_collections.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "WHERE ciniki_web_collections.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "AND ciniki_web_collections.status = 10 " // Active and visible on website
         . "GROUP BY ciniki_web_collections.id "
         . "ORDER BY ciniki_web_collections.sequence, ciniki_web_collections.name "

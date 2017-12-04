@@ -2,22 +2,22 @@
 //
 // Description
 // -----------
-// This function will return the web cache dir for a business.
+// This function will return the web cache dir for a tenant.
 //
 // Arguments
 // ---------
 // api_key:
 // auth_token:
-// business_id:         The ID of the business to get the details for.
+// tnid:         The ID of the tenant to get the details for.
 // keys:                The comma delimited list of keys to lookup values for.
 //
 // Returns
 // -------
 // <details>
-//      <business name='' tagline='' />
+//      <tenant name='' tagline='' />
 // </details>
 //
-function ciniki_web_cacheDir(&$ciniki, $business_id) {
+function ciniki_web_cacheDir(&$ciniki, $tnid) {
     $rsp = array('stat'=>'ok', 'details'=>array());
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
@@ -30,52 +30,52 @@ function ciniki_web_cacheDir(&$ciniki, $business_id) {
     }
 
     //
-    // Determine the business_id
+    // Determine the tnid
     //
-    if( $business_id == 0 ) {
+    if( $tnid == 0 ) {
         $cache_dir = $base_cache_dir . '/0/0' ;
     }
 
     //
     // If previously requested, use from settings
     //
-    elseif( isset($ciniki['business']['settings']['web_cache_dir']) ) {
-        return array('stat'=>'ok', 'cache_dir'=>$ciniki['business']['settings']['web_cache_dir']);
+    elseif( isset($ciniki['tenant']['settings']['web_cache_dir']) ) {
+        return array('stat'=>'ok', 'cache_dir'=>$ciniki['tenant']['settings']['web_cache_dir']);
     }
 
     //
     // Nothing requested, setup cache dir
     //
-    elseif( $business_id > 0 ) {
+    elseif( $tnid > 0 ) {
         $strsql = "SELECT uuid "
-            . "FROM ciniki_businesses "
-            . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' ";
-        $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'business');
+            . "FROM ciniki_tenants "
+            . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' ";
+        $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.tenants', 'tenant');
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
-        if( !isset($rc['business']) ) {
-            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.6', 'msg'=>'Unable to get business details'));
+        if( !isset($rc['tenant']) ) {
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.6', 'msg'=>'Unable to get tenant details'));
         }
 
-        $business_uuid = $rc['business']['uuid'];
+        $tenant_uuid = $rc['tenant']['uuid'];
 
-        $cache_dir = $base_cache_dir . '/' . $business_uuid[0] . '/' . $business_uuid;
+        $cache_dir = $base_cache_dir . '/' . $tenant_uuid[0] . '/' . $tenant_uuid;
 
         //
         // Save settings in $ciniki cache for faster access
         //
-        if( !isset($ciniki['business']) ) {
-            $ciniki['business'] = array('settings'=>array('web_cache_dir'=>$cache_dir));
+        if( !isset($ciniki['tenant']) ) {
+            $ciniki['tenant'] = array('settings'=>array('web_cache_dir'=>$cache_dir));
         } 
-        elseif( !isset($ciniki['business']['settings']) ) {
-            $ciniki['business']['settings'] = array('web_cache_dir'=>$cache_dir);
+        elseif( !isset($ciniki['tenant']['settings']) ) {
+            $ciniki['tenant']['settings'] = array('web_cache_dir'=>$cache_dir);
         } 
         else {
-            $ciniki['business']['settings']['web_cache_dir'] = $cache_dir;
+            $ciniki['tenant']['settings']['web_cache_dir'] = $cache_dir;
         }
     } else {
-        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.7', 'msg'=>'Unable to get business cache directory'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.7', 'msg'=>'Unable to get tenant cache directory'));
     }
 
     return array('stat'=>'ok', 'cache_dir'=>$cache_dir);

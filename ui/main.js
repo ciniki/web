@@ -1,5 +1,5 @@
 //
-// The app to manage web options for a business
+// The app to manage web options for a tenant
 //
 function ciniki_web_main() {
     
@@ -124,11 +124,11 @@ function ciniki_web_main() {
                 'header':{'label':'Header', 'fn':'M.ciniki_web_main.showHeader(\'M.ciniki_web_main.showMenu();\');'},
                 'footer':{'label':'Footer', 'fn':'M.ciniki_web_main.showFooter(\'M.ciniki_web_main.showMenu();\');'},
                 'mylivechat':{'label':'My Live Chat', 
-                    'visible':function() { return (M.curBusiness.modules['ciniki.web'].flags&0x02000000)>0?'yes':'no';}, 
+                    'visible':function() { return (M.curTenant.modules['ciniki.web'].flags&0x02000000)>0?'yes':'no';}, 
                     'fn':'M.ciniki_web_main.showMyLiveChat(\'M.ciniki_web_main.showMenu();\');',
                     },
                 'redirects':{'label':'Redirects', 
-                    'visible':function() { return (M.curBusiness.modules['ciniki.web'].flags&0x04000000)>0?'yes':'no';}, 
+                    'visible':function() { return (M.curTenant.modules['ciniki.web'].flags&0x04000000)>0?'yes':'no';}, 
                     'fn':'M.startApp(\'ciniki.web.redirects\',null,\'M.ciniki_web_main.showMenu();\');',
                     },
                 }},
@@ -188,7 +188,7 @@ function ciniki_web_main() {
                 if( d.page.id != null && d.page.id > 0 ) {
                     return 'M.startApp(\'ciniki.web.pages\',null,\'M.ciniki_web_main.showMenu();\',\'mc\',{\'page_id\':\'' + d.page.id + '\',\'parent_id\':0});';
                 }
-//              if( d.page.name == 'about' && M.curBusiness.modules['ciniki.artgallery'] != null ) {
+//              if( d.page.name == 'about' && M.curTenant.modules['ciniki.artgallery'] != null ) {
 //                  return 'M.ciniki_web_main.showPage(\'M.ciniki_web_main.showMenu();\',\'aboutmenu\');'; 
 //              }
                 if( d.page.name == 'about' ) {
@@ -208,7 +208,7 @@ function ciniki_web_main() {
         // Global functions for history and field value
         //
         this.fieldHistoryArgs = function(s, i) {
-            return {'method':'ciniki.web.pageSettingsHistory', 'args':{'business_id':M.curBusinessID, 'field':i}};
+            return {'method':'ciniki.web.pageSettingsHistory', 'args':{'tnid':M.curTenantID, 'field':i}};
         }
         this.fieldValue = function(s, i, d) { 
             if( this.data[i] == null ) { return ''; }
@@ -277,13 +277,13 @@ function ciniki_web_main() {
                 }},
             'options':{'label':'Options', 'fields':{
                 'site-header-image-size':{'label':'Image Size', 'type':'select', 'default':'medium', 'options':this.headerImageSize},
-                'site-header-title':{'label':'Display Business Name', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles, 'editFn':'M.startApp(\'ciniki.businesses.info\',null,\'M.ciniki_web_main.header.show();\');'},
+                'site-header-title':{'label':'Display Tenant Name', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles, 'editFn':'M.startApp(\'ciniki.tenants.info\',null,\'M.ciniki_web_main.header.show();\');'},
                 }},
-            '_landingpage1':{'label':'Landing Page', 'active':function() {return (M.curBusiness.modules['ciniki.landingpages']!=null?'yes':'no');}, 'fields':{
+            '_landingpage1':{'label':'Landing Page', 'active':function() {return (M.curTenant.modules['ciniki.landingpages']!=null?'yes':'no');}, 'fields':{
                 'site-header-landingpage1-title':{'label':'Title', 'type':'text'},
                 'site-header-landingpage1-permalink':{'label':'Landing Page', 'type':'select', 'options':this.landingpages},
                 }},
-            '_content':{'label':'Header Address', 'active':function() {return (M.curBusiness.modules['ciniki.web'].flags&0x10000)>0?'yes':'no';}, 'fields':{
+            '_content':{'label':'Header Address', 'active':function() {return (M.curTenant.modules['ciniki.web'].flags&0x10000)>0?'yes':'no';}, 'fields':{
                 'site-header-address':{'label':'', 'hidelabel':'yes', 'hint':'', 'type':'textarea', 'size':'medium'},
                 }},
             '_save':{'label':'', 'buttons':{
@@ -335,16 +335,16 @@ function ciniki_web_main() {
             'mc', 'medium', 'sectioned', 'ciniki.web.main.footer');
         this.footer.data = {};
         this.footer.sections = {
-            '_message':{'label':'Message', 'active':function() { return ((M.curBusiness.modules['ciniki.web'].flags&0x100000)>0?'yes':'no');}, 'fields':{
+            '_message':{'label':'Message', 'active':function() { return ((M.curTenant.modules['ciniki.web'].flags&0x100000)>0?'yes':'no');}, 'fields':{
                 'site-footer-message':{'label':'', 'type':'textarea', 'size':'medium', 'hidelabel':'yes'},
                 }},
             'options':{'label':'Options', 'fields':{
-                'site-footer-copyright-name':{'label':'Copyright Name', 'type':'text', 'hint':M.curBusiness.name},
+                'site-footer-copyright-name':{'label':'Copyright Name', 'type':'text', 'hint':M.curTenant.name},
                 }},
             '_copyright':{'label':'Copyright Message', 'fields':{
                 'site-footer-copyright-message':{'label':'', 'type':'textarea', 'size':'medium', 'hidelabel':'yes'},
                 }},
-            '_landingpage1':{'label':'Landing Page', 'active':function() {return (M.curBusiness.modules['ciniki.landingpages']!=null?'yes':'no');}, 'fields':{
+            '_landingpage1':{'label':'Landing Page', 'active':function() {return (M.curTenant.modules['ciniki.landingpages']!=null?'yes':'no');}, 'fields':{
                 'site-footer-landingpage1-title':{'label':'Title', 'type':'text'},
                 'site-footer-landingpage1-permalink':{'label':'Landing Page', 'type':'select', 'options':this.landingpages},
                 }},
@@ -369,7 +369,7 @@ function ciniki_web_main() {
         //
         // The options and information for the logo page
         //
-//      this.logo = new M.panel('Business Logo',
+//      this.logo = new M.panel('Tenant Logo',
 //          'ciniki_web_main', 'logo',
 //          'mc', 'medium', 'sectioned', 'ciniki.web.main.logo');
 //      this.logo.data = {};
@@ -824,15 +824,15 @@ function ciniki_web_main() {
             'options':{'label':'', 'fields':{
                 'page-contact-active':{'label':'Display Contact Page', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 }},
-            '_display':{'label':'Business Information', 'fields':{
-                'page-contact-business-name-display':{'label':'Business Name', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':'', 'editFn':'M.startApp(\'ciniki.businesses.info\',null,\'M.ciniki_web_main.contact.show();\');'},
-                'page-contact-person-name-display':{'label':'Contact Name', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':'', 'editFn':'M.startApp(\'ciniki.businesses.info\',null,\'M.ciniki_web_main.contact.show();\');'},
-                'page-contact-address-display':{'label':'Address', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':'', 'editFn':'M.startApp(\'ciniki.businesses.info\',null,\'M.ciniki_web_main.contact.show();\');'},
-                'page-contact-phone-display':{'label':'Phone', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':'', 'editFn':'M.startApp(\'ciniki.businesses.info\',null,\'M.ciniki_web_main.contact.show();\');'},
-                'page-contact-fax-display':{'label':'Fax', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':'', 'editFn':'M.startApp(\'ciniki.businesses.info\',null,\'M.ciniki_web_main.contact.show();\');'},
-                'page-contact-email-display':{'label':'Email', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':'', 'editFn':'M.startApp(\'ciniki.businesses.info\',null,\'M.ciniki_web_main.contact.show();\');'},
+            '_display':{'label':'Tenant Information', 'fields':{
+                'page-contact-tenant-name-display':{'label':'Tenant Name', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':'', 'editFn':'M.startApp(\'ciniki.tenants.info\',null,\'M.ciniki_web_main.contact.show();\');'},
+                'page-contact-person-name-display':{'label':'Contact Name', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':'', 'editFn':'M.startApp(\'ciniki.tenants.info\',null,\'M.ciniki_web_main.contact.show();\');'},
+                'page-contact-address-display':{'label':'Address', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':'', 'editFn':'M.startApp(\'ciniki.tenants.info\',null,\'M.ciniki_web_main.contact.show();\');'},
+                'page-contact-phone-display':{'label':'Phone', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':'', 'editFn':'M.startApp(\'ciniki.tenants.info\',null,\'M.ciniki_web_main.contact.show();\');'},
+                'page-contact-fax-display':{'label':'Fax', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':'', 'editFn':'M.startApp(\'ciniki.tenants.info\',null,\'M.ciniki_web_main.contact.show();\');'},
+                'page-contact-email-display':{'label':'Email', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':'', 'editFn':'M.startApp(\'ciniki.tenants.info\',null,\'M.ciniki_web_main.contact.show();\');'},
                 }},
-            '_users':{'label':'Business Employees', 'active':'no', 'fields':{
+            '_users':{'label':'Tenant Employees', 'active':'no', 'fields':{
                 }},
             '_users_display':{'label':'', 'active':'no', 'fields':{
                 'page-contact-bios-display':{'label':'Employee List', 'type':'multitoggle', 'default':'list', 'toggles':{'list':'2 Column', 'cilist':'3 Column'}, 'hint':''},
@@ -860,18 +860,18 @@ function ciniki_web_main() {
                 'page-contact-form-submitted-message':{'label':'Thank you message', 'hidelabel':'yes', 'type':'textarea', 'size':'small'},
                 }},
             '_mailchimp':{'label':'Mailchimp', 
-                'active':function() {return (M.curBusiness.modules['ciniki.web'].flags&0x01000000)>0?'yes':'no';}, 
+                'active':function() {return (M.curTenant.modules['ciniki.web'].flags&0x01000000)>0?'yes':'no';}, 
                 'fields':{
                     'page-contact-mailchimp-signup':{'label':'Enable Mailchimp', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles, 'hint':''},
                     'page-contact-mailchimp-submit-url':{'label':'Submit URL', 'type':'text'},
                 }},
             '_subscriptions':{'label':'Mailing List Signup', 
-                'active':function() {return (M.curBusiness.modules['ciniki.subscriptions'])?'yes':'no';}, 
+                'active':function() {return (M.curTenant.modules['ciniki.subscriptions'])?'yes':'no';}, 
                 'fields':{
                     'page-contact-subscriptions-signup':{'label':'Enable Signups', 'type':'toggle', 'default':'no', 'toggles':this.activeToggles, 'hint':''},
                 }},
             '_subscriptions_message':{'label':'Mailing List Intro', 
-                'active':function() {return (M.curBusiness.modules['ciniki.subscriptions'])?'yes':'no';}, 
+                'active':function() {return (M.curTenant.modules['ciniki.subscriptions'])?'yes':'no';}, 
                 'fields':{
                     'page-contact-subscriptions-intro-message':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'small'},
                 }},
@@ -890,7 +890,7 @@ function ciniki_web_main() {
                 var script = document.createElement("script");
                 script.id = 'googlemaps_js';
                 script.type = "text/javascript";
-                script.src = "https://maps.googleapis.com/maps/api/js?key=" + M.curBusiness.settings['googlemapsapikey'] + "&sensor=false&callback=M.ciniki_web_main.contact.lookupGoogleLatLong";
+                script.src = "https://maps.googleapis.com/maps/api/js?key=" + M.curTenant.settings['googlemapsapikey'] + "&sensor=false&callback=M.ciniki_web_main.contact.lookupGoogleLatLong";
                 document.body.appendChild(script);
             } else {
                 this.lookupGoogleLatLong();
@@ -898,7 +898,7 @@ function ciniki_web_main() {
         };
 
         this.contact.lookupGoogleLatLong = function() {
-            var address = this.business_address;
+            var address = this.tenant_address;
             var geocoder = new google.maps.Geocoder();
             geocoder.geocode( { 'address': address}, function(results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
@@ -1930,7 +1930,7 @@ function ciniki_web_main() {
                     'active':function() { return M.modFlagSet('ciniki.customers', 0x200000); },
                     'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-account-header-buttons':{'label':'Header Buttons', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
-                'page-account-sidebar':{'label':'Sidebar', 'visible':function() {return (M.curBusiness.modules['ciniki.web'].flags&0x0100)?'yes':'no';},
+                'page-account-sidebar':{'label':'Sidebar', 'visible':function() {return (M.curTenant.modules['ciniki.web'].flags&0x0100)?'yes':'no';},
                     'type':'multitoggle', 'default':'no', 'toggles':{'no':'No', 'left':'Left', 'right':'Right'}},
                 'page-account-header-signin-text':{'label':'Signin Text', 'type':'text', 'size':'small'},
                 'page-account-password-change':{'label':'Change Password', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
@@ -2141,7 +2141,7 @@ function ciniki_web_main() {
         };
     this.hplink.fieldValue = function(s, i, d) { return this.data[i]; }
     this.hplink.fieldHistoryArgs = function(s, i) {
-        return {'method':'ciniki.web.hplinkHistory', 'args':{'business_id':M.curBusinessID, 'hplink_id':this.hplink_id, 'field':i}};
+        return {'method':'ciniki.web.hplinkHistory', 'args':{'tnid':M.curTenantID, 'hplink_id':this.hplink_id, 'field':i}};
     }
     this.hplink.cellValue = function(s, i, j, d) { 
         if( s == 'hplinks' ) {
@@ -2161,7 +2161,7 @@ function ciniki_web_main() {
         if( hid != null ) { this.hplink_id = hid; }
         if( pid != null ) { this.parent_id = pid; }
         if( list != null ) { this.nplist = list; }
-        M.api.getJSONCb('ciniki.web.hplinkGet', {'business_id':M.curBusinessID, 'hplink_id':this.hplink_id}, function(rsp) {
+        M.api.getJSONCb('ciniki.web.hplinkGet', {'tnid':M.curTenantID, 'hplink_id':this.hplink_id}, function(rsp) {
             if( rsp.stat != 'ok' ) {
                 M.api.err(rsp);
                 return false;
@@ -2185,7 +2185,7 @@ function ciniki_web_main() {
         if( this.hplink_id > 0 ) {
             var c = this.serializeForm('no');
             if( c != '' ) {
-                M.api.postJSONCb('ciniki.web.hplinkUpdate', {'business_id':M.curBusinessID, 'hplink_id':this.hplink_id}, c, function(rsp) {
+                M.api.postJSONCb('ciniki.web.hplinkUpdate', {'tnid':M.curTenantID, 'hplink_id':this.hplink_id}, c, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;
@@ -2197,7 +2197,7 @@ function ciniki_web_main() {
             }
         } else {
             var c = this.serializeForm('yes');
-            M.api.postJSONCb('ciniki.web.hplinkAdd', {'business_id':M.curBusinessID}, c, function(rsp) {
+            M.api.postJSONCb('ciniki.web.hplinkAdd', {'tnid':M.curTenantID}, c, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -2209,7 +2209,7 @@ function ciniki_web_main() {
     }
     this.hplink.remove = function() {
         if( confirm('Are you sure you want to remove hplink?') ) {
-            M.api.getJSONCb('ciniki.web.hplinkDelete', {'business_id':M.curBusinessID, 'hplink_id':this.hplink_id}, function(rsp) {
+            M.api.getJSONCb('ciniki.web.hplinkDelete', {'tnid':M.curTenantID, 'hplink_id':this.hplink_id}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -2253,14 +2253,14 @@ function ciniki_web_main() {
         //
         // Setup active fields
         //
-        if( M.curBusiness.modules['ciniki.links'] != null ) {
+        if( M.curTenant.modules['ciniki.links'] != null ) {
             this.links.sections.options.fields['page-links-categories-format'].active = 
-                ((M.curBusiness.modules['ciniki.links'].flags&0x01)>0?'yes':'no');
+                ((M.curTenant.modules['ciniki.links'].flags&0x01)>0?'yes':'no');
             this.links.sections.options.fields['page-links-tags-format'].active = 
-                ((M.curBusiness.modules['ciniki.links'].flags&0x02)>0?'yes':'no');
+                ((M.curTenant.modules['ciniki.links'].flags&0x02)>0?'yes':'no');
         }
-        if( M.curBusiness.modules['ciniki.web'] != null ) {
-            if( (M.curBusiness.modules['ciniki.web'].flags&0x04) > 0 ) {
+        if( M.curTenant.modules['ciniki.web'] != null ) {
+            if( (M.curTenant.modules['ciniki.web'].flags&0x04) > 0 ) {
                 this.contact.sections._contact_form.active = 'yes';
                 this.contact.sections._contact_form_intro_message.active = 'yes';
                 this.contact.sections._contact_form_submitted_message.active = 'yes';
@@ -2269,52 +2269,52 @@ function ciniki_web_main() {
                 this.contact.sections._contact_form_intro_message.active = 'no';
                 this.contact.sections._contact_form_submitted_message.active = 'no';
             }
-            if( (M.curBusiness.modules['ciniki.web'].flags&0x08) > 0 ) {
+            if( (M.curTenant.modules['ciniki.web'].flags&0x08) > 0 ) {
                 this.menu.sections.advanced.list.collections.visible = 'yes';
                 this.home.sections._collections.active = 'yes';
             } else {
                 this.menu.sections.advanced.list.collections.visible = 'no';
                 this.home.sections._collections.active = 'no';
             }
-            if( (M.curBusiness.modules['ciniki.web'].flags&0x10) > 0 ) {
+            if( (M.curTenant.modules['ciniki.web'].flags&0x10) > 0 ) {
                 this.home.sections._quicklinks.active = 'yes';
             } else {
                 this.home.sections._quicklinks.active = 'no';
             }
-            if( (M.curBusiness.modules['ciniki.web'].flags&0x40) > 0 ) {
+            if( (M.curTenant.modules['ciniki.web'].flags&0x40) > 0 ) {
                 this.menu.sections.pages.addTxt = 'Add Page';
             } else {
                 this.menu.sections.pages.addTxt = '';
             }
-            if( (M.curBusiness.modules['ciniki.web'].flags&0x0100) > 0 ) {
+            if( (M.curTenant.modules['ciniki.web'].flags&0x0100) > 0 ) {
                 this.menu.sections.advanced.list.privatethemes.visible = 'yes';
             } else {
                 this.menu.sections.advanced.list.privatethemes.visible = 'no';
             }
-            this.home.sections._content_layout.active = ((M.curBusiness.modules['ciniki.web'].flags&0x0800)>0?'yes':'no');
+            this.home.sections._content_layout.active = ((M.curTenant.modules['ciniki.web'].flags&0x0800)>0?'yes':'no');
         }
-        this.home.sections._slideshow.active=(M.curBusiness.modules['ciniki.artcatalog']!=null)?'yes':'no';
-        this.home.sections._memberslideshow.active=(M.curBusiness.modules['ciniki.customers']!=null&&(M.curBusiness.modules['ciniki.customers'].flags&0x02)>0)?'yes':'no';
-        this.home.sections._artcatalog.active=(M.curBusiness.modules['ciniki.artcatalog']!=null)?'yes':'no';
-        this.home.sections._gallery.active=(M.curBusiness.modules['ciniki.gallery']!=null)?'yes':'no';
-        this.home.sections._recipes.active=(M.curBusiness.modules['ciniki.recipes']!=null)?'yes':'no';
-        this.home.sections._events.active=(M.curBusiness.modules['ciniki.events']!=null)?'yes':'no';
-        this.home.sections._filmschedule.active=(M.curBusiness.modules['ciniki.filmschedule']!=null)?'yes':'no';
-        this.home.sections._products.active=(M.curBusiness.modules['ciniki.products']!=null)?'yes':'no';
-        this.home.sections._writings.active=(M.curBusiness.modules['ciniki.writingcatalog']!=null)?'yes':'no';
-        this.home.sections._workshops.active = (M.curBusiness.modules['ciniki.workshops']!=null)?'yes':'no';
-        this.home.sections._artgalleryexhibitions.active=(M.curBusiness.modules['ciniki.artgallery']!=null)?'yes':'no';
-//        this.home.sections._seo.active=((M.curBusiness.modules['ciniki.web'].flags&0x8000)>0)?'yes':'no';
+        this.home.sections._slideshow.active=(M.curTenant.modules['ciniki.artcatalog']!=null)?'yes':'no';
+        this.home.sections._memberslideshow.active=(M.curTenant.modules['ciniki.customers']!=null&&(M.curTenant.modules['ciniki.customers'].flags&0x02)>0)?'yes':'no';
+        this.home.sections._artcatalog.active=(M.curTenant.modules['ciniki.artcatalog']!=null)?'yes':'no';
+        this.home.sections._gallery.active=(M.curTenant.modules['ciniki.gallery']!=null)?'yes':'no';
+        this.home.sections._recipes.active=(M.curTenant.modules['ciniki.recipes']!=null)?'yes':'no';
+        this.home.sections._events.active=(M.curTenant.modules['ciniki.events']!=null)?'yes':'no';
+        this.home.sections._filmschedule.active=(M.curTenant.modules['ciniki.filmschedule']!=null)?'yes':'no';
+        this.home.sections._products.active=(M.curTenant.modules['ciniki.products']!=null)?'yes':'no';
+        this.home.sections._writings.active=(M.curTenant.modules['ciniki.writingcatalog']!=null)?'yes':'no';
+        this.home.sections._workshops.active = (M.curTenant.modules['ciniki.workshops']!=null)?'yes':'no';
+        this.home.sections._artgalleryexhibitions.active=(M.curTenant.modules['ciniki.artgallery']!=null)?'yes':'no';
+//        this.home.sections._seo.active=((M.curTenant.modules['ciniki.web'].flags&0x8000)>0)?'yes':'no';
 
-        if( M.curBusiness.modules['ciniki.blog'] != null ) {
-            if( (M.curBusiness.modules['ciniki.blog'].flags&0x01) > 0 ) {
+        if( M.curTenant.modules['ciniki.blog'] != null ) {
+            if( (M.curTenant.modules['ciniki.blog'].flags&0x01) > 0 ) {
                 this.home.sections._blog.active = 'yes';
             } else {
                 this.home.sections._blog.active = 'no';
             }
         }
-        if( M.curBusiness.modules['ciniki.events'] != null ) {
-            if( (M.curBusiness.modules['ciniki.events'].flags&0x10) > 0 ) {
+        if( M.curTenant.modules['ciniki.events'] != null ) {
+            if( (M.curTenant.modules['ciniki.events'].flags&0x10) > 0 ) {
                 this.events.sections.options.fields['page-events-categories-display'].active = 'yes';
                 this.events.sections._image.active = 'yes';
                 this.events.sections._image_caption.active = 'yes';
@@ -2341,7 +2341,7 @@ function ciniki_web_main() {
         //
         // Setup for sponsors
         //
-        if( M.modOn('ciniki.sponsors') && (M.curBusiness.modules['ciniki.sponsors'].flags&0x02) ) {
+        if( M.modOn('ciniki.sponsors') && (M.curTenant.modules['ciniki.sponsors'].flags&0x02) ) {
             this.home.sections.sponsors.visible = 'yes';
         } else {
             this.home.sections.sponsors.visible = 'no';
@@ -2351,16 +2351,16 @@ function ciniki_web_main() {
         //
         // Setup the gallery sort fields
         //
-        if( M.curBusiness.modules['ciniki.gallery'] != null ) {
+        if( M.curTenant.modules['ciniki.gallery'] != null ) {
             var options = {
                 'name-asc':'Name A-Z',
                 'name-desc':'Name Z-A',
             };
-            if( (M.curBusiness.modules['ciniki.gallery'].flags&0x01) > 0 ) {
+            if( (M.curTenant.modules['ciniki.gallery'].flags&0x01) > 0 ) {
                 options['sequence-asc'] = 'Sequence, 1-999';
                 options['sequence-desc'] = 'Sequence, 999-1';
             }
-            if( (M.curBusiness.modules['ciniki.gallery'].flags&0x02) > 0 ) {
+            if( (M.curTenant.modules['ciniki.gallery'].flags&0x02) > 0 ) {
                 options['startdate-desc'] = 'Date, newest first';
                 options['startdate-asc'] ='Date, oldest first';
             }
@@ -2378,7 +2378,7 @@ function ciniki_web_main() {
         // If the user is a sysadmin, then add the clear web cache button
         // This may become available to users, but might be too complicated
         //
-        if( M.userPerms&0x01 == 0x01 || M.curBusiness.permissions.resellers != null ) {
+        if( M.userPerms&0x01 == 0x01 || M.curTenant.permissions.resellers != null ) {
             this.menu.size = 'medium mediumaside';
             this.menu.sections._url.aside = 'yes';
             this.menu.sections.settings.aside = 'yes';
@@ -2409,7 +2409,7 @@ function ciniki_web_main() {
         //
         // Load domain list
         //
-        var rsp = M.api.getJSONCb('ciniki.web.siteSettings', {'business_id':M.curBusinessID}, function(rsp) {
+        var rsp = M.api.getJSONCb('ciniki.web.siteSettings', {'tnid':M.curTenantID}, function(rsp) {
             if( rsp.stat != 'ok' ) {
                 M.api.err(rsp);
                 return false;
@@ -2504,7 +2504,7 @@ function ciniki_web_main() {
     };
 
     this.showMyLiveChat = function(cb) {
-        M.api.getJSONCb('ciniki.web.siteSettingsGet', {'business_id':M.curBusinessID}, function(rsp) {
+        M.api.getJSONCb('ciniki.web.siteSettingsGet', {'tnid':M.curTenantID}, function(rsp) {
             if( rsp.stat != 'ok' ) {
                 M.api.err(rsp);
                 return false;
@@ -2528,7 +2528,7 @@ function ciniki_web_main() {
         }
 
         if( page == 'coursestype' && subpage != null ) {
-            M.api.getJSONCb('ciniki.web.pageSettingsGet', {'business_id':M.curBusinessID, 'page':'courses-' + subpage, 'content':'yes'}, function(rsp) {
+            M.api.getJSONCb('ciniki.web.pageSettingsGet', {'tnid':M.curTenantID, 'page':'courses-' + subpage, 'content':'yes'}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -2536,7 +2536,7 @@ function ciniki_web_main() {
                 M.ciniki_web_main.showPageFinish(cb, page, subpage, subpagetitle, rsp);
             });
         } else if( page == 'coursesregistration' ) {
-            M.api.getJSONCb('ciniki.web.pageSettingsGet', {'business_id':M.curBusinessID, 'page':'courses-registration', 'content':'yes'}, function(rsp) {
+            M.api.getJSONCb('ciniki.web.pageSettingsGet', {'tnid':M.curTenantID, 'page':'courses-registration', 'content':'yes'}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -2544,7 +2544,7 @@ function ciniki_web_main() {
                 M.ciniki_web_main.showPageFinish(cb, page, subpage, subpagetitle, rsp);
             });
         } else if( page == 'layout' ) {
-            M.api.getJSONCb('ciniki.web.pageSettingsGet', {'business_id':M.curBusinessID, 'page':'home', 'content':'yes'}, function(rsp) {
+            M.api.getJSONCb('ciniki.web.pageSettingsGet', {'tnid':M.curTenantID, 'page':'home', 'content':'yes'}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -2552,7 +2552,7 @@ function ciniki_web_main() {
                 M.ciniki_web_main.showPageFinish(cb, page, subpage, subpagetitle, rsp);
             });
         } else {
-            M.api.getJSONCb('ciniki.web.pageSettingsGet', {'business_id':M.curBusinessID, 'page':page, 'content':'yes', 'sponsors':'yes'}, function(rsp) {
+            M.api.getJSONCb('ciniki.web.pageSettingsGet', {'tnid':M.curTenantID, 'page':page, 'content':'yes', 'sponsors':'yes'}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -2571,7 +2571,7 @@ function ciniki_web_main() {
         }
 
         if( page == 'contact' ) {
-            this.contact.business_address = rsp.business_address;
+            this.contact.tenant_address = rsp.tenant_address;
             this.showContact(cb);
         } else if( page == 'home' ) {
             if( this[page].data != null && this[page].data['page-home-gallery-slider-size'] == null ) {
@@ -2581,7 +2581,7 @@ function ciniki_web_main() {
                 this[page].data['page-home-membergallery-slider-size'] = 'xlarge';
             }
             this.home.sections._imagetabs.selected = 1;
-            if( (M.curBusiness.modules['ciniki.web'].flags&0x02) > 0 ) {
+            if( (M.curTenant.modules['ciniki.web'].flags&0x02) > 0 ) {
                 this.home.sections._slider.active = 'yes';
                 this.home.sections._slider_buttons.visible = 'yes';
                 this.home.sections._slider.fields['page-home-slider'].active = 'yes';
@@ -2600,14 +2600,14 @@ function ciniki_web_main() {
             if( rsp.hplinks != null ) {
                 this.home.data.hplinks = rsp.hplinks;
             }
-//          if( M.curBusiness.modules['ciniki.artcatalog'] != null ) {
+//          if( M.curTenant.modules['ciniki.artcatalog'] != null ) {
 //              this.home.sections.options.fields['page-home-gallery-slider-type'].active = 'yes';
 //              this.home.sections.options.fields['page-home-gallery-slider-size'].active = 'yes';
 //              this.home.sections.options.fields['page-home-gallery-latest'].active = 'yes';
 //              this.home.sections.options.fields['page-home-gallery-latest-title'].active = 'yes';
 //              this.home.sections.options.fields['page-home-gallery-random'].active = 'yes';
 //              this.home.sections.options.fields['page-home-gallery-random-title'].active = 'yes';
-//          } else if( M.curBusiness.modules['ciniki.products'] != null ) {
+//          } else if( M.curTenant.modules['ciniki.products'] != null ) {
 //              this.home.sections.options.fields['page-home-gallery-slider-type'].active = 'no';
 //              this.home.sections.options.fields['page-home-gallery-slider-size'].active = 'no';
 //              this.home.sections.options.fields['page-home-gallery-slider'].active = 'no';
@@ -2621,7 +2621,7 @@ function ciniki_web_main() {
 //              this.home.sections.options.fields['page-home-gallery-random'].active = 'no';
 //              this.home.sections.options.fields['page-home-gallery-random-title'].active = 'no';
 //          }
-//          this.home.sections.options.fields['page-home-upcoming-artgalleryexhibitions'].active = (M.curBusiness.modules['ciniki.artgallery']!=null)?'yes':'no';
+//          this.home.sections.options.fields['page-home-upcoming-artgalleryexhibitions'].active = (M.curTenant.modules['ciniki.artgallery']!=null)?'yes':'no';
             this[page].refresh();
             this[page].show(cb);
         } else if( page == 'events' ) {
@@ -2633,7 +2633,7 @@ function ciniki_web_main() {
             this[page].refresh();
             this[page].show(cb);
         } else if( page == 'gallery' ) {
-            if( M.curBusiness.modules['ciniki.artcatalog'] != null ) {
+            if( M.curTenant.modules['ciniki.artcatalog'] != null ) {
                 this.gallery.sections.options.fields['page-gallery-artcatalog-split'].active = 'yes';
                 this.gallery.sections.options.fields['page-gallery-artcatalog-format'].active = 'yes';
                 this.gallery.sections.social.fields['page-gallery-share-buttons'].active = 'yes';
@@ -2647,17 +2647,17 @@ function ciniki_web_main() {
             this[page].refresh();
             this[page].show(cb);
         } else if( page == 'members' ) {
-            this.members.sections.options.fields['page-members-membership-details'].active=(M.curBusiness.modules['ciniki.info']!=null&&(M.curBusiness.modules['ciniki.info'].flags&0x40)>0)?'yes':'no';
-            this.members.sections.options.fields['page-members-categories-display'].active=(M.curBusiness.modules['ciniki.customers']!=null&&(M.curBusiness.modules['ciniki.customers'].flags&0x04)>0)?'yes':'no';
+            this.members.sections.options.fields['page-members-membership-details'].active=(M.curTenant.modules['ciniki.info']!=null&&(M.curTenant.modules['ciniki.info'].flags&0x40)>0)?'yes':'no';
+            this.members.sections.options.fields['page-members-categories-display'].active=(M.curTenant.modules['ciniki.customers']!=null&&(M.curTenant.modules['ciniki.customers'].flags&0x04)>0)?'yes':'no';
             this[page].refresh();
             this[page].show(cb);
         } else if( page == 'account' ) {
-//          if( M.curBusiness.modules['ciniki.subscriptions'] != null ) {
+//          if( M.curTenant.modules['ciniki.subscriptions'] != null ) {
 //              this.account.sections.subscriptions.active = 'yes';
 //          } else {
 //              this.account.sections.subscriptions.active = 'no';
 //          }
-            if( M.curBusiness.modules['ciniki.sapos'] != null ) {
+            if( M.curTenant.modules['ciniki.sapos'] != null ) {
                 this.account.sections.options.fields['page-account-invoices-list'].active = 'yes';
                 this.account.sections.options.fields['page-account-invoices-view-details'].active = 'yes';
                 this.account.sections.options.fields['page-account-invoices-view-pdf'].active = 'yes';
@@ -2672,17 +2672,17 @@ function ciniki_web_main() {
             }
             // Setup the redirects
 //            var popts = {'':'Nowhere', '/':'Home', 'back':'Previous Page'};
-//          if( M.curBusiness.modules['ciniki.artcatalog'] != null ) { popts['/gallery'] = 'Gallery'; }
-//          if( M.curBusiness.modules['ciniki.gallery'] != null ) { popts['/gallery'] = 'Gallery'; }
-//            if( M.curBusiness.modules['ciniki.blog'] != null 
-//                && (M.curBusiness.modules['ciniki.blog'].flags&0x100) > 0) { popts['/memberblog'] = 'Member Blog'; }
-//            if( M.curBusiness.modules['ciniki.membersonly'] != null ) { popts['/membersonly'] = 'Members Only'; }
+//          if( M.curTenant.modules['ciniki.artcatalog'] != null ) { popts['/gallery'] = 'Gallery'; }
+//          if( M.curTenant.modules['ciniki.gallery'] != null ) { popts['/gallery'] = 'Gallery'; }
+//            if( M.curTenant.modules['ciniki.blog'] != null 
+//                && (M.curTenant.modules['ciniki.blog'].flags&0x100) > 0) { popts['/memberblog'] = 'Member Blog'; }
+//            if( M.curTenant.modules['ciniki.membersonly'] != null ) { popts['/membersonly'] = 'Members Only'; }
 //            this.account.sections.redirect.fields['page-account-signin-redirect'].options = popts;
             this[page].refresh();
             this[page].show(cb);
         } else if( page == 'exhibitions' ) {
             var rsp = M.api.getJSONCb('ciniki.exhibitions.exhibitionList', 
-                {'business_id':M.curBusinessID}, function(rsp) {
+                {'tnid':M.curTenantID}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;
@@ -2720,7 +2720,7 @@ function ciniki_web_main() {
     };
 
     this.updateSponsors = function(page) {
-        M.api.getJSONCb('ciniki.web.pageSettingsGet', {'business_id':M.curBusinessID, 'page':page, 'sponsors':'yes'}, function(rsp) {
+        M.api.getJSONCb('ciniki.web.pageSettingsGet', {'tnid':M.curTenantID, 'page':page, 'sponsors':'yes'}, function(rsp) {
             if( rsp.stat != 'ok' ) {
                 M.api.err(rsp);
                 return false;
@@ -2771,7 +2771,7 @@ function ciniki_web_main() {
 
 
         M.api.getJSONCb('ciniki.web.pageSettingsGet', 
-            {'business_id':M.curBusinessID, 'page':page, 'content':'yes'}, function(rsp) {
+            {'tnid':M.curTenantID, 'page':page, 'content':'yes'}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -2785,9 +2785,9 @@ function ciniki_web_main() {
     };
 
     this.showContact = function(cb) {
-        // Get the user associated with this business
+        // Get the user associated with this tenant
         this.contact.sections._users.active = 'no';
-        var rsp = M.api.getJSONCb('ciniki.web.businessUsers', {'business_id':M.curBusinessID}, function(rsp) {
+        var rsp = M.api.getJSONCb('ciniki.web.tenantUsers', {'tnid':M.curTenantID}, function(rsp) {
             if( rsp.stat != 'ok' ) {
                 M.api.err(rsp);
                 return false;
@@ -2800,7 +2800,7 @@ function ciniki_web_main() {
                     var u = rsp.users[i].user;
                     p.sections._users.fields['page-contact-user-display-flags-' + u.id] = {
                         'label':u.firstname + ' ' + u.lastname, 
-                        'editFn':'M.startApp(\'ciniki.businesses.users\',null,\'M.ciniki_web_main.contact.show();\',\'mc\',{\'user_id\':\'' + u.id + '\'});',
+                        'editFn':'M.startApp(\'ciniki.tenants.users\',null,\'M.ciniki_web_main.contact.show();\',\'mc\',{\'user_id\':\'' + u.id + '\'});',
                         'type':'flags', 'join':'yes', 'flags':M.ciniki_web_main.userFlags,
                         };
                 }
@@ -2816,11 +2816,11 @@ function ciniki_web_main() {
 
     this.showCourses = function(cb) {
         this.courses.sections.options.fields['page-courses-catalog-download-active'].active = 'no';
-        if( M.curBusiness.modules['ciniki.courses'].flags != null 
-            && (M.curBusiness.modules['ciniki.courses'].flags&0x02) == 0x02) {
+        if( M.curTenant.modules['ciniki.courses'].flags != null 
+            && (M.curTenant.modules['ciniki.courses'].flags&0x02) == 0x02) {
             // If they have instructors, they might want course catalog
             var rsp = M.api.getJSONCb('ciniki.courses.fileList',
-                {'business_id':M.curBusinessID, 'type':'2'}, function(rsp) {
+                {'tnid':M.curTenantID, 'type':'2'}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;
@@ -2838,7 +2838,7 @@ function ciniki_web_main() {
     this.showCoursesFinish = function(cb) {
         // Get the course types incase we need a submenu
         var rsp = M.api.getJSONCb('ciniki.courses.courseTypes',
-            {'business_id':M.curBusinessID}, function(rsp) {
+            {'tnid':M.curTenantID}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -2860,7 +2860,7 @@ function ciniki_web_main() {
 
     this.showSiteSettings = function(cb, page) {
         var rsp = M.api.getJSONCb('ciniki.web.siteSettingsGet', 
-            {'business_id':M.curBusinessID, 'content':'yes'}, function(rsp) {
+            {'tnid':M.curTenantID, 'content':'yes'}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -2875,7 +2875,7 @@ function ciniki_web_main() {
         if( cb == null ) { cb = 'M.ciniki_web_main[\'' + page + '\'].close();'; }
         var c = this[page].serializeForm('no');
         if( c != '' ) {
-            M.api.postJSONCb('ciniki.web.siteSettingsUpdate', {'business_id':M.curBusinessID}, c, function(rsp) {
+            M.api.postJSONCb('ciniki.web.siteSettingsUpdate', {'tnid':M.curTenantID}, c, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -2889,7 +2889,7 @@ function ciniki_web_main() {
 
     this.clearCache = function(page) {
         if( confirm('Are you sure you wish to clear the web cache?') ) {
-            var rsp = M.api.getJSONCb('ciniki.web.clearCache', {'business_id':M.curBusinessID}, function(rsp) {
+            var rsp = M.api.getJSONCb('ciniki.web.clearCache', {'tnid':M.curTenantID}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -2901,7 +2901,7 @@ function ciniki_web_main() {
 
     this.clearContentCache = function(page) {
         if( confirm('Are you sure you wish to clear the web cache?') ) {
-            var rsp = M.api.getJSONCb('ciniki.web.clearContentCache', {'business_id':M.curBusinessID}, function(rsp) {
+            var rsp = M.api.getJSONCb('ciniki.web.clearContentCache', {'tnid':M.curTenantID}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -2912,7 +2912,7 @@ function ciniki_web_main() {
     };
 
     this.updateIndex = function(page) {
-        var rsp = M.api.getJSONCb('ciniki.web.indexUpdateNow', {'business_id':M.curBusinessID}, function(rsp) {
+        var rsp = M.api.getJSONCb('ciniki.web.indexUpdateNow', {'tnid':M.curTenantID}, function(rsp) {
             if( rsp.stat != 'ok' ) {
                 M.api.err(rsp);
                 return false;
@@ -2923,7 +2923,7 @@ function ciniki_web_main() {
 
     this.makeFeatured = function() {
         var rsp = M.api.getJSONCb('ciniki.web.siteSettingsUpdate', 
-            {'business_id':M.curBusinessID, 'site-featured':'yes'}, function(rsp) {
+            {'tnid':M.curTenantID, 'site-featured':'yes'}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -2934,7 +2934,7 @@ function ciniki_web_main() {
 
     this.removeFeatured = function() {
         var rsp = M.api.getJSONCb('ciniki.web.siteSettingsUpdate', 
-            {'business_id':M.curBusinessID, 'site-featured':'no'}, function(rsp) {
+            {'tnid':M.curTenantID, 'site-featured':'no'}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;

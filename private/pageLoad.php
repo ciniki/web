@@ -9,7 +9,7 @@
 // Returns
 // -------
 //
-function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
+function ciniki_web_pageLoad($ciniki, $settings, $tnid, $args) {
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
 
@@ -20,7 +20,7 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
         && isset($args['parent_id']) ) {
         $strsql = "SELECT id, title, flags, permalink "
             . "FROM ciniki_web_pages "
-            . "WHERE ciniki_web_pages.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+            . "WHERE ciniki_web_pages.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . "AND ciniki_web_pages.parent_id = '" . ciniki_core_dbQuote($ciniki, $args['parent_id']) . "' "
             . "AND ciniki_web_pages.permalink = '" . ciniki_core_dbQuote($ciniki, $args['intermediate_permalink']) . "' "
             . "AND (ciniki_web_pages.flags&0x01) = 0x01 "
@@ -38,7 +38,7 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
         $strsql = "SELECT id, title, permalink "
             . "FROM ciniki_web_pages "
             . "WHERE parent_id = '" . ciniki_core_dbQuote($ciniki, $page['id']) . "' "
-            . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+            . "AND tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . "";
         if( isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 ) {
             $strsql .= "AND (flags&0x01) = 0x01 "; // Public and private pages
@@ -66,11 +66,11 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
         //
         // Get any sponsors for this page, and that references for sponsors is enabled
         //
-        if( isset($ciniki['business']['modules']['ciniki.sponsors']) 
-            && ($ciniki['business']['modules']['ciniki.sponsors']['flags']&0x02) == 0x02
+        if( isset($ciniki['tenant']['modules']['ciniki.sponsors']) 
+            && ($ciniki['tenant']['modules']['ciniki.sponsors']['flags']&0x02) == 0x02
             ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'sponsors', 'web', 'sponsorRefList');
-            $rc = ciniki_sponsors_web_sponsorRefList($ciniki, $settings, $business_id, 
+            $rc = ciniki_sponsors_web_sponsorRefList($ciniki, $settings, $tnid, 
                 'ciniki.web.page', $page['id']);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
@@ -108,10 +108,10 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
         . "FROM ciniki_web_pages "
         . "LEFT JOIN ciniki_web_page_images ON ("
             . "ciniki_web_pages.id = ciniki_web_page_images.page_id "
-            . "AND ciniki_web_pages.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+            . "AND ciniki_web_pages.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . "AND (ciniki_web_page_images.webflags&0x01) = 0 "
             . ") "
-        . "WHERE ciniki_web_pages.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "WHERE ciniki_web_pages.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "AND (ciniki_web_pages.flags&0x01) = 0x01 "
         . "";
     //
@@ -149,7 +149,7 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
     //
     $strsql = "SELECT id, name, extension, permalink, description "
         . "FROM ciniki_web_page_files "
-        . "WHERE ciniki_web_page_files.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "WHERE ciniki_web_page_files.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "AND ciniki_web_page_files.page_id = '" . ciniki_core_dbQuote($ciniki, $page['id']) . "' "
         . "";
     if( ($page['flags']&0x1000) == 0x1000 ) {
@@ -179,7 +179,7 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
         . "IF(content<>'','yes','no') AS is_details "
         . "FROM ciniki_web_pages "
         . "WHERE parent_id = '" . ciniki_core_dbQuote($ciniki, $page['id']) . "' "
-        . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "AND tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "";
     if( isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 ) {
         $strsql .= "AND (flags&0x01) = 0x01 "; // Public and private pages
@@ -219,11 +219,11 @@ function ciniki_web_pageLoad($ciniki, $settings, $business_id, $args) {
     //
     // Get any sponsors for this page, and that references for sponsors is enabled
     //
-    if( isset($ciniki['business']['modules']['ciniki.sponsors']) 
-        && ($ciniki['business']['modules']['ciniki.sponsors']['flags']&0x02) == 0x02
+    if( isset($ciniki['tenant']['modules']['ciniki.sponsors']) 
+        && ($ciniki['tenant']['modules']['ciniki.sponsors']['flags']&0x02) == 0x02
         ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'sponsors', 'web', 'sponsorRefList');
-        $rc = ciniki_sponsors_web_sponsorRefList($ciniki, $settings, $business_id, 
+        $rc = ciniki_sponsors_web_sponsorRefList($ciniki, $settings, $tnid, 
             'ciniki.web.page', $page['id']);
         if( $rc['stat'] != 'ok' ) {
             return $rc;

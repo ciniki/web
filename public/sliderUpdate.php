@@ -7,7 +7,7 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:         The ID of the business to add the image to.
+// tnid:         The ID of the tenant to add the image to.
 // name:                The name of the slider.  
 //
 // Returns
@@ -20,7 +20,7 @@ function ciniki_web_sliderUpdate(&$ciniki) {
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'slider_id'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Slider'), 
         'name'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Name'), 
         'size'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Size'), 
@@ -36,10 +36,10 @@ function ciniki_web_sliderUpdate(&$ciniki) {
 
     //  
     // Make sure this module is activated, and
-    // check permission to run this function for this business
+    // check permission to run this function for this tenant
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
-    $rc = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.sliderUpdate'); 
+    $rc = ciniki_web_checkAccess($ciniki, $args['tnid'], 'ciniki.web.sliderUpdate'); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }
@@ -48,6 +48,6 @@ function ciniki_web_sliderUpdate(&$ciniki) {
     // Update the slider in the database
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectUpdate');
-    return ciniki_core_objectUpdate($ciniki, $args['business_id'], 'ciniki.web.slider', $args['slider_id'], $args);
+    return ciniki_core_objectUpdate($ciniki, $args['tnid'], 'ciniki.web.slider', $args['slider_id'], $args);
 }
 ?>

@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_web_processBlockFormMessage($ciniki, $settings, $business_id, $block) {
+function ciniki_web_processBlockFormMessage($ciniki, $settings, $tnid, $block) {
 
     if( !isset($block['message']) ) {
         return array('stat'=>'ok', 'content'=>'');

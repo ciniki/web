@@ -12,7 +12,7 @@
 // Returns
 // -------
 //
-function ciniki_web_processBlockPriceCards($ciniki, $settings, $business_id, $block) {
+function ciniki_web_processBlockPriceCards($ciniki, $settings, $tnid, $block) {
 
     if( !isset($block['cards']) ) {
         return array('stat'=>'ok', 'content'=>'');

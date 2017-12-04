@@ -12,13 +12,13 @@
 // Returns
 // -------
 //
-function ciniki_web_generateModulePage(&$ciniki, $settings, $business_id, $module) {
+function ciniki_web_generateModulePage(&$ciniki, $settings, $tnid, $module) {
 
     //
     // Process the module request
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processModuleRequest');
-    $rc = ciniki_web_processModuleRequest($ciniki, $settings, $ciniki['request']['business_id'], $module, 
+    $rc = ciniki_web_processModuleRequest($ciniki, $settings, $ciniki['request']['tnid'], $module, 
         array(
             'uri_split'=>$ciniki['request']['uri_split'],
             'base_url'=>$ciniki['request']['base_url'] . '/' . $ciniki['request']['page'],
@@ -81,7 +81,7 @@ function ciniki_web_generateModulePage(&$ciniki, $settings, $business_id, $modul
             }
             if( isset($settings['theme']['header-breadcrumbs']) && $settings['theme']['header-breadcrumbs'] == 'yes' && isset($pg['breadcrumbs']) ) {
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBreadcrumbs');
-                $rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $ciniki['request']['business_id'], $pg['breadcrumbs']);
+                $rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $ciniki['request']['tnid'], $pg['breadcrumbs']);
                 if( $rc['stat'] == 'ok' ) {
                     $content .= $rc['content'];
                 }

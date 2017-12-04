@@ -2,13 +2,13 @@
 //
 // Description
 // -----------
-// This method will update the web index for a business.
+// This method will update the web index for a tenant.
 //
 // Arguments
 // ---------
 // api_key:
 // auth_token:
-// business_id:     The ID of the business to clear the cache for.
+// tnid:     The ID of the tenant to clear the cache for.
 //
 // Returns
 // -------
@@ -20,7 +20,7 @@ function ciniki_web_indexUpdateNow($ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         ));
     if( $rc['stat'] != 'ok' ) {
         return $rc;
@@ -28,15 +28,15 @@ function ciniki_web_indexUpdateNow($ciniki) {
     $args = $rc['args'];
     
     //
-    // Check access to business_id as owner
+    // Check access to tnid as owner
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
-    $rc = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.indexUpdateNow');
+    $rc = ciniki_web_checkAccess($ciniki, $args['tnid'], 'ciniki.web.indexUpdateNow');
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'indexUpdate');
-    return ciniki_web_indexUpdate($ciniki, $args['business_id']);
+    return ciniki_web_indexUpdate($ciniki, $args['tnid']);
 }
 ?>

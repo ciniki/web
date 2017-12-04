@@ -39,11 +39,11 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
     //
     // Check if there are any sponsors
     //
-    if( isset($ciniki['business']['modules']['ciniki.sponsors']) 
-        && ($ciniki['business']['modules']['ciniki.sponsors']['flags']&0x02) == 0x02
+    if( isset($ciniki['tenant']['modules']['ciniki.sponsors']) 
+        && ($ciniki['tenant']['modules']['ciniki.sponsors']['flags']&0x02) == 0x02
         ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'sponsors', 'web', 'sponsorRefList');
-        $rc = ciniki_sponsors_web_sponsorRefList($ciniki, $settings, $ciniki['request']['business_id'], 'ciniki.web.page', 'footer');
+        $rc = ciniki_sponsors_web_sponsorRefList($ciniki, $settings, $ciniki['request']['tnid'], 'ciniki.web.page', 'footer');
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -62,7 +62,7 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
     //
     // Check if there is a pre footer message
     //
-    if( isset($ciniki['business']['modules']['ciniki.web']['flags']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x100000) > 0 
+    if( isset($ciniki['tenant']['modules']['ciniki.web']['flags']) && ($ciniki['tenant']['modules']['ciniki.web']['flags']&0x100000) > 0 
         && isset($settings['site-footer-message']) && $settings['site-footer-message'] != '' 
         ) {
         $rc = ciniki_web_processContent($ciniki, $settings, $settings['site-footer-message']);  
@@ -202,7 +202,7 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
     if( isset($settings['theme']['footer-copyright-message']) && $settings['theme']['footer-copyright-message'] != '' ) {
         $copyright .= "<span class='copyright'>" . preg_replace('/{_year_}/', date('Y'), $settings['theme']['footer-copyright-message']) . "</span><br/>";
     } else {
-        $copyright .= "<span class='copyright'>All content &copy; Copyright " . date('Y') . " by " . ((isset($settings['site-footer-copyright-name']) && $settings['site-footer-copyright-name'] != '')?$settings['site-footer-copyright-name']:$ciniki['business']['details']['name']) . ".</span><br/>";
+        $copyright .= "<span class='copyright'>All content &copy; Copyright " . date('Y') . " by " . ((isset($settings['site-footer-copyright-name']) && $settings['site-footer-copyright-name'] != '')?$settings['site-footer-copyright-name']:$ciniki['tenant']['details']['name']) . ".</span><br/>";
     }
     if( isset($settings['site-footer-copyright-message']) && $settings['site-footer-copyright-message'] != '' ) {
         $rc = ciniki_web_processContent($ciniki, $settings, $settings['site-footer-copyright-message'], 'copyright');   
@@ -219,7 +219,7 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
         $copyright .= "<span class='copyright'>" . file_get_contents($ciniki['request']['theme_dir'] . '/' . $settings['site-theme'] . '/copyright.html') . "</span><br/>";
     }
 
-    if( isset($ciniki['config']['ciniki.web']['poweredby.url']) && $ciniki['config']['ciniki.web']['poweredby.url'] != '' && $ciniki['config']['ciniki.core']['master_business_id'] != $ciniki['request']['business_id'] ) {
+    if( isset($ciniki['config']['ciniki.web']['poweredby.url']) && $ciniki['config']['ciniki.web']['poweredby.url'] != '' && $ciniki['config']['ciniki.core']['master_tnid'] != $ciniki['request']['tnid'] ) {
         $copyright .= "<span class='poweredby'>Powered by <a href='" . $ciniki['config']['ciniki.web']['poweredby.url'] . "'>" . $ciniki['config']['ciniki.web']['poweredby.name'] . "</a></span>";
     }
 
@@ -244,12 +244,12 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
     $links = '';
     $content_types = array();
     if( isset($settings['theme']['footer-subscription-agreement']) && $settings['theme']['footer-subscription-agreement'] == 'popup' 
-        && isset($ciniki['business']['modules']['ciniki.info']['flags']) && ($ciniki['business']['modules']['ciniki.info']['flags']&0x02000000) > 0
+        && isset($ciniki['tenant']['modules']['ciniki.info']['flags']) && ($ciniki['tenant']['modules']['ciniki.info']['flags']&0x02000000) > 0
         ) {
         $content_types[] = '26';
     }
     if( isset($settings['theme']['footer-privacy-policy']) && $settings['theme']['footer-privacy-policy'] == 'popup' 
-        && isset($ciniki['business']['modules']['ciniki.info']['flags']) && ($ciniki['business']['modules']['ciniki.info']['flags']&0x8000) > 0 
+        && isset($ciniki['tenant']['modules']['ciniki.info']['flags']) && ($ciniki['tenant']['modules']['ciniki.info']['flags']&0x8000) > 0 
         ) {
         $content_types[] = '16';
     }
@@ -292,7 +292,7 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
         //
         $strsql = "SELECT content_type, title, permalink, content "
             . "FROM ciniki_info_content "
-            . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+            . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
             . "AND content_type IN (" . ciniki_core_dbQuoteIDs($ciniki, $content_types) . ") "
             . "ORDER BY content_type DESC "
             . "";

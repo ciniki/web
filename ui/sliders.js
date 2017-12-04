@@ -1,5 +1,5 @@
 //
-// The app to manage web options for a business
+// The app to manage web options for a tenant
 //
 function ciniki_web_sliders() {
     this.sizeOptions = {
@@ -29,7 +29,7 @@ function ciniki_web_sliders() {
         // Global functions for history and field value
         //
         this.fieldHistoryArgs = function(s, i) {
-            return {'method':'ciniki.web.pageSettingsHistory','args':{'business_id':M.curBusinessID, 'field':i}};
+            return {'method':'ciniki.web.pageSettingsHistory','args':{'tnid':M.curTenantID, 'field':i}};
         }
         this.fieldValue = function(s, i, d) { 
             if( this.data[i] == null ) { return ''; }
@@ -93,7 +93,7 @@ function ciniki_web_sliders() {
                 }},
         };
         this.edit.fieldHistoryArgs = function(s, i) {
-            return {'method':'ciniki.web.sliderHistory', 'args':{'business_id':M.curBusinessID, 
+            return {'method':'ciniki.web.sliderHistory', 'args':{'tnid':M.curTenantID, 
                 'slider_id':this.slider_id, 'field':i}};
         }
         this.edit.fieldValue = this.fieldValue;
@@ -103,7 +103,7 @@ function ciniki_web_sliders() {
         this.edit.addDropImage = function(iid) {
             if( M.ciniki_web_sliders.edit.slider_id > 0 ) {
                 var rsp = M.api.getJSON('ciniki.web.sliderImageAdd', 
-                    {'business_id':M.curBusinessID, 'image_id':iid, 
+                    {'tnid':M.curTenantID, 'image_id':iid, 
                     'slider_id':M.ciniki_web_sliders.edit.slider_id});
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
@@ -117,7 +117,7 @@ function ciniki_web_sliders() {
         };
         this.edit.addDropImageRefresh = function() {
             if( M.ciniki_web_sliders.edit.slider_id > 0 ) {
-                M.api.getJSONCb('ciniki.web.sliderGet', {'business_id':M.curBusinessID, 
+                M.api.getJSONCb('ciniki.web.sliderGet', {'tnid':M.curTenantID, 
                     'slider_id':M.ciniki_web_sliders.edit.slider_id, 'images':'yes'}, function(rsp) {
                         if( rsp.stat != 'ok' ) {
                             M.api.err(rsp);
@@ -129,7 +129,7 @@ function ciniki_web_sliders() {
                         p.show();
                     });
             } else if( M.ciniki_web_sliders.edit.additional_images.length > 0 ) {
-                M.api.getJSONCb('ciniki.web.sliderImages', {'business_id':M.curBusinessID, 
+                M.api.getJSONCb('ciniki.web.sliderImages', {'tnid':M.curTenantID, 
                     'images':M.ciniki_web_sliders.edit.additional_images.join(',')}, function(rsp) {
                         if( rsp.stat != 'ok' ) {
                             M.api.err(rsp);
@@ -175,7 +175,7 @@ function ciniki_web_sliders() {
     this.showMain = function(cb) {
         this.main.reset();
 
-        M.api.getJSONCb('ciniki.web.sliderList', {'business_id':M.curBusinessID}, function(rsp) {
+        M.api.getJSONCb('ciniki.web.sliderList', {'tnid':M.curTenantID}, function(rsp) {
             if( rsp.stat != 'ok' ) {
                 M.api.err(rsp);
                 return false;
@@ -191,7 +191,7 @@ function ciniki_web_sliders() {
         if( sid != null ) { this.edit.slider_id = sid; }
         if( this.edit.slider_id > 0 ) {
             this.edit.sections._buttons.buttons.delete.visible = 'yes';
-            M.api.getJSONCb('ciniki.web.sliderGet', {'business_id':M.curBusinessID, 
+            M.api.getJSONCb('ciniki.web.sliderGet', {'tnid':M.curTenantID, 
                 'slider_id':this.edit.slider_id}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
@@ -228,7 +228,7 @@ function ciniki_web_sliders() {
                 c += '&images=' + this.edit.additional_images.join(',');
             }
             M.api.postJSONCb('ciniki.web.sliderAdd', 
-                {'business_id':M.curBusinessID}, c, function(rsp) {
+                {'tnid':M.curTenantID}, c, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;
@@ -252,7 +252,7 @@ function ciniki_web_sliders() {
             var c = this.edit.serializeForm('no');
             if( c != '' ) {
                 M.api.postJSONCb('ciniki.web.sliderUpdate', 
-                    {'business_id':M.curBusinessID, 'slider_id':this.edit.slider_id}, c, function(rsp) {
+                    {'tnid':M.curTenantID, 'slider_id':this.edit.slider_id}, c, function(rsp) {
                         if( rsp.stat != 'ok' ) {
                             M.api.err(rsp);
                             return false;
@@ -273,7 +273,7 @@ function ciniki_web_sliders() {
                 c += '&images=' + this.edit.additional_images.join(',');
             }
             M.api.postJSONCb('ciniki.web.sliderAdd', 
-                {'business_id':M.curBusinessID}, c, function(rsp) {
+                {'tnid':M.curTenantID}, c, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;
@@ -285,7 +285,7 @@ function ciniki_web_sliders() {
 
     this.deleteSlider = function() {
         if( confirm('Are you sure you want to this slider?') ) {
-            var rsp = M.api.getJSONCb('ciniki.web.sliderDelete', {'business_id':M.curBusinessID, 
+            var rsp = M.api.getJSONCb('ciniki.web.sliderDelete', {'tnid':M.curTenantID, 
                 'slider_id':this.edit.slider_id}, 
                 function(rsp) {
                     if( rsp.stat != 'ok' ) {

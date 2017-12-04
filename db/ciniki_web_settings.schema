@@ -35,12 +35,12 @@
 # - site-privatetheme-updated       = The last updated time the theme was updated in the database
 # - site-privatetheme-active        = The permalink of the current active theme
 #
-# Featured on master business homepage
+# Featured on master tenant homepage
 # - site-featured = yes
 #
 # Fields
 # ------
-# business_id:      The business the domain is part of.
+# tnid:             The tenant the domain is part of.
 #
 # detail_key:       The decimal notated index key to the setting value.
 #
@@ -50,10 +50,10 @@
 # last_updated:     The date and time the domain was last updated.
 #
 create table ciniki_web_settings (
-    business_id int not null,
+    tnid int not null,
     detail_key varchar(255) not null,
     detail_value varchar(20000) not null,
     date_added datetime not null,
     last_updated datetime not null,
-    primary key (business_id, detail_key)
+    primary key (tnid, detail_key)
 ) ENGINE=InnoDB, COMMENT='v1.02';

@@ -30,7 +30,7 @@ function ciniki_web_getImage($ciniki) {
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'image_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Image'), 
         'version'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Version'),
         'maxlength'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Maximum Length'),
@@ -42,15 +42,15 @@ function ciniki_web_getImage($ciniki) {
 
     //  
     // Make sure this module is activated, and 
-    // check session user permission to run this function for this business
+    // check session user permission to run this function for this tenant
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
-    $rc = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.getImage', array()); 
+    $rc = ciniki_web_checkAccess($ciniki, $args['tnid'], 'ciniki.web.getImage', array()); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }
     
     ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'getImage');
-    return ciniki_images_getImage($ciniki, $args['business_id'], $args['image_id'], $args['version'], $args['maxlength']);
+    return ciniki_images_getImage($ciniki, $args['tnid'], $args['image_id'], $args['version'], $args['maxlength']);
 }
 ?>

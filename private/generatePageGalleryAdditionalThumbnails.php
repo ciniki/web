@@ -34,14 +34,14 @@ function ciniki_web_generatePageGalleryAdditionalThumbnails($ciniki, $settings, 
         //
         // Check for cached file, if not generate
         //
-//      $img_filename = $ciniki['request']['cache_dir'] . '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/' 
-//          . sprintf('%07d', $ciniki['request']['business_id'])
+//      $img_filename = $ciniki['request']['cache_dir'] . '/' . sprintf('%02d', ($ciniki['request']['tnid']%100)) . '/' 
+//          . sprintf('%07d', $ciniki['request']['tnid'])
 //          . '/t' . $maxlength . '/' . sprintf('%010d', $img['image_id']) . '.jpg';
-//      $img_url = $ciniki['request']['cache_url'] . '/' . sprintf('%02d', ($ciniki['request']['business_id']%100)) . '/' 
-//          . sprintf('%07d', $ciniki['request']['business_id']) 
+//      $img_url = $ciniki['request']['cache_url'] . '/' . sprintf('%02d', ($ciniki['request']['tnid']%100)) . '/' 
+//          . sprintf('%07d', $ciniki['request']['tnid']) 
 //          . '/t' . $maxlength . '/' . sprintf('%010d', $img['image_id']) . '.jpg';
-        $img_filename = $ciniki['business']['web_cache_dir'] . '/t' . $maxlength . '/' . sprintf('%010d', $img['image_id']) . '.jpg';
-        $img_url = $ciniki['business']['web_cache_url'] . '/t' . $maxlength . '/' . sprintf('%010d', $img['image_id']) . '.jpg';
+        $img_filename = $ciniki['tenant']['web_cache_dir'] . '/t' . $maxlength . '/' . sprintf('%010d', $img['image_id']) . '.jpg';
+        $img_url = $ciniki['tenant']['web_cache_url'] . '/t' . $maxlength . '/' . sprintf('%010d', $img['image_id']) . '.jpg';
 
         //
         // If the image file doesn't exist on disk, create it, or if it's been updated in the database since creation
@@ -53,7 +53,7 @@ function ciniki_web_generatePageGalleryAdditionalThumbnails($ciniki, $settings, 
             // Load the image from the database
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'loadImage');
-            $rc = ciniki_images_loadImage($ciniki, $ciniki['request']['business_id'], $img['image_id'], 'thumbnail');
+            $rc = ciniki_images_loadImage($ciniki, $ciniki['request']['tnid'], $img['image_id'], 'thumbnail');
             if( $rc['stat'] != 'ok' ) {
                 return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.62', 'msg'=>'Unable to generate image: ' . $img['image_id'], 'err'=>$rc['err']));
             }

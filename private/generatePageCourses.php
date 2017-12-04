@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This function will generate the courses page for the business.
+// This function will generate the courses page for the tenant.
 //
 // Arguments
 // ---------
@@ -19,11 +19,11 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
     // Check if a file was specified to be downloaded
     //
     $download_err = '';
-    if( isset($ciniki['business']['modules']['ciniki.courses'])
+    if( isset($ciniki['tenant']['modules']['ciniki.courses'])
         && isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'download'
         && isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'courses', 'web', 'fileDownload');
-        $rc = ciniki_courses_web_fileDownload($ciniki, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][1]);
+        $rc = ciniki_courses_web_fileDownload($ciniki, $ciniki['request']['tnid'], $ciniki['request']['uri_split'][1]);
         if( $rc['stat'] == 'ok' ) {
             header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
             header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
@@ -64,9 +64,9 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
     //
     $submenu = array();
     $first_course_type = '';
-    if( isset($ciniki['business']['modules']['ciniki.courses']) ) {
+    if( isset($ciniki['tenant']['modules']['ciniki.courses']) ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'courses', 'web', 'courseTypes');
-        $rc = ciniki_courses_web_courseTypes($ciniki, $settings, $ciniki['request']['business_id']);
+        $rc = ciniki_courses_web_courseTypes($ciniki, $settings, $ciniki['request']['tnid']);
         if( $rc['stat'] == 'ok' ) {
             if( count($rc['types']) > 1 ) {
                 foreach($rc['types'] as $cid => $type) {
@@ -82,7 +82,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
                 $first_course_type = $first_type['name'];
             }
         }
-        if( ($ciniki['business']['modules']['ciniki.courses']['flags']&0x02) == 0x02 ) {
+        if( ($ciniki['tenant']['modules']['ciniki.courses']['flags']&0x02) == 0x02 ) {
             $submenu['instructors'] = array('name'=>'Instructors', 'url'=>$ciniki['request']['base_url'] . '/courses/instructors');
         }
         if( isset($settings['page-courses-registration-active']) && $settings['page-courses-registration-active'] == 'yes' ) {
@@ -112,7 +112,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'courses', 'web', 'instructorDetails');
         $rc = ciniki_courses_web_instructorDetails($ciniki, $settings, 
-            $ciniki['request']['business_id'], $instructor_permalink);
+            $ciniki['request']['tnid'], $instructor_permalink);
         if( $rc['stat'] != 'ok' ) {
             return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.31', 'msg'=>"I'm sorry, but we can't seem to find the image you requested.", $rc['err']));
         }
@@ -222,7 +222,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
         //
         $instructor_permalink = $ciniki['request']['uri_split'][1];
         $rc = ciniki_courses_web_instructorDetails($ciniki, $settings, 
-            $ciniki['request']['business_id'], $instructor_permalink);
+            $ciniki['request']['tnid'], $instructor_permalink);
         if( $rc['stat'] != 'ok' ) {
             return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.34', 'msg'=>"I'm sorry, but we can't find the instructor you requested.", $rc['err']));
         }
@@ -293,7 +293,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
     //
     elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'instructors' ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'courses', 'web', 'instructorList');
-        $rc = ciniki_courses_web_instructorList($ciniki, $settings, $ciniki['request']['business_id'], 0);
+        $rc = ciniki_courses_web_instructorList($ciniki, $settings, $ciniki['request']['tnid'], 0);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -366,15 +366,15 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
         $course_permalink = $ciniki['request']['uri_split'][1];
         $offering_permalink = $ciniki['request']['uri_split'][2];
         $rc = ciniki_courses_web_courseOfferingDetails($ciniki, $settings, 
-            $ciniki['request']['business_id'], $course_permalink, $offering_permalink);
+            $ciniki['request']['tnid'], $course_permalink, $offering_permalink);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
         $offering = $rc['offering'];
         $page_title = $offering['name'];
-        if( ($ciniki['business']['modules']['ciniki.courses']['flags']&0x01) == 0x01 && $offering['code'] != '' ) {
+        if( ($ciniki['tenant']['modules']['ciniki.courses']['flags']&0x01) == 0x01 && $offering['code'] != '' ) {
             $page_title = $offering['code'] . ' - ' . $offering['name'];
-        } elseif( ($ciniki['business']['modules']['ciniki.courses']['flags']&0x20) == 0x20 && $offering['offering_code'] != '' ) {
+        } elseif( ($ciniki['tenant']['modules']['ciniki.courses']['flags']&0x20) == 0x20 && $offering['offering_code'] != '' ) {
             $page_title = $offering['offering_code'] . ' - ' . $offering['name'];
         }
         if( isset($settings['page-courses-level-display']) 
@@ -418,7 +418,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
         //
         if( isset($offering['prices']) && count($offering['prices']) > 0 ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'cartSetupPrices');
-            $rc = ciniki_web_cartSetupPrices($ciniki, $settings, $ciniki['request']['business_id'], $offering['prices']);
+            $rc = ciniki_web_cartSetupPrices($ciniki, $settings, $ciniki['request']['tnid'], $offering['prices']);
             if( $rc['stat'] != 'ok' ) {
                 error_log("Error in formatting prices.");
             } else {
@@ -452,7 +452,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
         //
         // The files for a course offering
         //
-        if( ($ciniki['business']['modules']['ciniki.courses']['flags']&0x08) == 0x08 ) {
+        if( ($ciniki['tenant']['modules']['ciniki.courses']['flags']&0x08) == 0x08 ) {
             if( isset($offering['files']) ) {
                 $page_content .= "<h2>Files</h2>";
                 foreach($offering['files'] as $fid => $file) {
@@ -468,9 +468,9 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
         //
         // The instructors for a course offering
         //
-        if( ($ciniki['business']['modules']['ciniki.courses']['flags']&0x02) == 0x02 ) {
+        if( ($ciniki['tenant']['modules']['ciniki.courses']['flags']&0x02) == 0x02 ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'courses', 'web', 'instructorList');
-            $rc = ciniki_courses_web_instructorList($ciniki, $settings, $ciniki['request']['business_id'], $offering['id']);
+            $rc = ciniki_courses_web_instructorList($ciniki, $settings, $ciniki['request']['tnid'], $offering['id']);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -535,7 +535,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
         // Check if membership info should be displayed here
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'courses', 'web', 'registrationDetails');
-        $rc = ciniki_courses_web_registrationDetails($ciniki, $settings, $ciniki['request']['business_id']);
+        $rc = ciniki_courses_web_registrationDetails($ciniki, $settings, $ciniki['request']['tnid']);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -552,7 +552,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
                     return $rc;
                 }
                 $page_content .= "<aside><div class='image-wrap'>"
-                    . "<div class='image'><img title='' alt='" . $ciniki['business']['details']['name'] . "' src='" . $rc['url'] . "' /></div>";
+                    . "<div class='image'><img title='' alt='" . $ciniki['tenant']['details']['name'] . "' src='" . $rc['url'] . "' /></div>";
                 if( isset($settings["page-courses-registration-image-caption"]) && $settings["page-courses-registration-image-caption"] != '' ) {
                     $page_content .= "<div class='image-caption'>" . $settings["page-courses-registration-image-caption"] . "</div>";
                 }
@@ -613,7 +613,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
         }
         // Load any content for this page
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
-        $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', "page-courses$type_name");
+        $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'tnid', $ciniki['request']['tnid'], 'ciniki.web', 'content', "page-courses$type_name");
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -634,7 +634,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
     //          || ()   -- future files
                 ) {
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'courses', 'web', 'files');
-                $rc = ciniki_courses_web_files($ciniki, $settings, $ciniki['request']['business_id']);
+                $rc = ciniki_courses_web_files($ciniki, $settings, $ciniki['request']['tnid']);
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;
                 }
@@ -660,7 +660,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
                 if( $program_url != '' ) {
                     $page_content .= "<a target='_blank' href='$program_url' title='$program_url_title'>";
                 }
-                $page_content .= "<img title='' alt='" . $ciniki['business']['details']['name'] . "' src='" . $rc['url'] . "' />";
+                $page_content .= "<img title='' alt='" . $ciniki['tenant']['details']['name'] . "' src='" . $rc['url'] . "' />";
                 if( $program_url != '' ) {
                     $page_content .= "</a>";
                 }
@@ -684,7 +684,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
     //          || ()   -- future files
                 ) {
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'courses', 'web', 'files');
-                $rc = ciniki_courses_web_files($ciniki, $settings, $ciniki['request']['business_id']);
+                $rc = ciniki_courses_web_files($ciniki, $settings, $ciniki['request']['tnid']);
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;
                 }
@@ -712,13 +712,13 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
             if( $type == 'past' ) {
                 if( $settings['page-courses-current-active'] == 'yes' ) {
                     // If displaying the current list, then show past as purely past.
-                    $rc = ciniki_courses_web_courseList($ciniki, $settings, $ciniki['request']['business_id'], $coursetype, $type);
+                    $rc = ciniki_courses_web_courseList($ciniki, $settings, $ciniki['request']['tnid'], $coursetype, $type);
                 } else {
                     // Otherwise, include current courses in the past
-                    $rc = ciniki_courses_web_courseList($ciniki, $settings, $ciniki['request']['business_id'], $coursetype, 'currentpast');
+                    $rc = ciniki_courses_web_courseList($ciniki, $settings, $ciniki['request']['tnid'], $coursetype, 'currentpast');
                 }
             } else {
-                $rc = ciniki_courses_web_courseList($ciniki, $settings, $ciniki['request']['business_id'], $coursetype, $type);
+                $rc = ciniki_courses_web_courseList($ciniki, $settings, $ciniki['request']['tnid'], $coursetype, $type);
             }
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
@@ -768,9 +768,9 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
                         } else {
                             $offering_url = '';
                         }
-                        if( ($ciniki['business']['modules']['ciniki.courses']['flags']&0x01) == 0x01 && $offering['code'] != '' ) {
+                        if( ($ciniki['tenant']['modules']['ciniki.courses']['flags']&0x01) == 0x01 && $offering['code'] != '' ) {
                             $offering_name = $offering['code'] . ' - ' . $offering['name'];
-                        } elseif( ($ciniki['business']['modules']['ciniki.courses']['flags']&0x20) == 0x20 && $offering['offering_code'] != '' ) {
+                        } elseif( ($ciniki['tenant']['modules']['ciniki.courses']['flags']&0x20) == 0x20 && $offering['offering_code'] != '' ) {
                             $offering_name = $offering['offering_code'] . ' - ' . $offering['name'];
                         } else {
                             $offering_name = $offering['name'];
@@ -815,7 +815,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
         if( count($submenu) == 1 
             && isset($settings['page-courses-registration-active']) && $settings['page-courses-registration-active'] == 'yes' ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'courses', 'web', 'registrationDetails');
-            $rc = ciniki_courses_web_registrationDetails($ciniki, $settings, $ciniki['request']['business_id']);
+            $rc = ciniki_courses_web_registrationDetails($ciniki, $settings, $ciniki['request']['tnid']);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -844,7 +844,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
                     if( $program_url != '' ) {
                         $page_content .= "<a target='_blank' href='$program_url' title='$program_url_title'>";
                     }
-                    $page_content .= "<img title='' alt='" . $ciniki['business']['details']['name'] . "' src='" . $rc['url'] . "' />";
+                    $page_content .= "<img title='' alt='" . $ciniki['tenant']['details']['name'] . "' src='" . $rc['url'] . "' />";
                     if( $program_url != '' ) {
                         $page_content .= "</a>";
                     }

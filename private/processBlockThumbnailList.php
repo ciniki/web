@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_web_processBlockThumbnailList(&$ciniki, $settings, $business_id, $block) {
+function ciniki_web_processBlockThumbnailList(&$ciniki, $settings, $tnid, $block) {
 
     if( !isset($block['list']) ) {
         return array('stat'=>'ok', 'content'=>'');

@@ -7,7 +7,7 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:         The ID of the business to add the slider image to.
+// tnid:         The ID of the tenant to add the slider image to.
 // slider_image_id:     The ID of the slider image to get.
 //
 // Returns
@@ -19,7 +19,7 @@ function ciniki_web_sliderGet($ciniki) {
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'slider_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Slider'),
         )); 
     if( $rc['stat'] != 'ok' ) { 
@@ -29,10 +29,10 @@ function ciniki_web_sliderGet($ciniki) {
 
     //  
     // Make sure this module is activated, and
-    // check permission to run this function for this business
+    // check permission to run this function for this tenant
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
-    $rc = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.sliderGet'); 
+    $rc = ciniki_web_checkAccess($ciniki, $args['tnid'], 'ciniki.web.sliderGet'); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }   
@@ -41,7 +41,7 @@ function ciniki_web_sliderGet($ciniki) {
     // Load the object
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectGet');
-    $rc = ciniki_core_objectGet($ciniki, $args['business_id'], 'ciniki.web.slider', $args['slider_id']);
+    $rc = ciniki_core_objectGet($ciniki, $args['tnid'], 'ciniki.web.slider', $args['slider_id']);
     if( $rc['stat'] != 'ok' ) {
         return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.170', 'msg'=>'Unable to find the slider image you requested.', 'err'=>$rc['err']));
     }
@@ -52,7 +52,7 @@ function ciniki_web_sliderGet($ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'images', 'private', 'loadCacheThumbnail');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectGetSubs');
-    $rc = ciniki_core_objectGetSubs($ciniki, $args['business_id'], 'ciniki.web.slider', $args['slider_id'], 'ciniki.web.slider_image');
+    $rc = ciniki_core_objectGetSubs($ciniki, $args['tnid'], 'ciniki.web.slider', $args['slider_id'], 'ciniki.web.slider_image');
     if( $rc['stat'] != 'ok' ) {
         return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.171', 'msg'=>'Unable to find the slider image you requested.', 'err'=>$rc['err']));
     }
@@ -61,7 +61,7 @@ function ciniki_web_sliderGet($ciniki) {
         $slider['images'] = array();
         foreach($images as $sid => $image) {
             $image = $image['image'];
-            $rc = ciniki_images_loadCacheThumbnail($ciniki, $args['business_id'], $image['image_id'], 75);
+            $rc = ciniki_images_loadCacheThumbnail($ciniki, $args['tnid'], $image['image_id'], 75);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }

@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// Product cards will display a list of "cards", typically about the shape of a vertical business card, containing the name and 1 or more price options.
+// Product cards will display a list of "cards", typically about the shape of a vertical tenant card, containing the name and 1 or more price options.
 //
 // Arguments
 // ---------
@@ -12,7 +12,7 @@
 // Returns
 // -------
 //
-function ciniki_web_processBlockProductCards($ciniki, $settings, $business_id, $block) {
+function ciniki_web_processBlockProductCards($ciniki, $settings, $tnid, $block) {
 
     if( !isset($block['cards']) ) {
         return array('stat'=>'ok', 'content'=>'');

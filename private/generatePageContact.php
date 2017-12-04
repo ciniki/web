@@ -28,12 +28,12 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
     $contact_form_errors = '';
     $contact_form_success = '';
 
-    if( isset($ciniki['business']['modules']['ciniki.web']['flags'])
-        && ($ciniki['business']['modules']['ciniki.web']['flags']&0x04) > 0 
+    if( isset($ciniki['tenant']['modules']['ciniki.web']['flags'])
+        && ($ciniki['tenant']['modules']['ciniki.web']['flags']&0x04) > 0 
         && isset($_POST['contact-form-name']) 
         ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContactForm');
-        $rc = ciniki_web_processContactForm($ciniki, $settings, $ciniki['request']['business_id']);
+        $rc = ciniki_web_processContactForm($ciniki, $settings, $ciniki['request']['tnid']);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -80,8 +80,8 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
                 //  Email the owners a bug was added to the system.
                 //
                 $strsql = "SELECT user_id "
-                    . "FROM ciniki_business_users "
-                    . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+                    . "FROM ciniki_tenant_users "
+                    . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
                     . "AND package = 'ciniki' "
                     . "AND (permission_group = 'owners') "
                     . "";
@@ -107,10 +107,10 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
     }
 
     //
-    // Check which parts of the business contact information to display automatically
+    // Check which parts of the tenant contact information to display automatically
     //
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'web', 'contact');
-    $rc = ciniki_businesses_web_contact($ciniki, $settings, $ciniki['request']['business_id']);
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'web', 'contact');
+    $rc = ciniki_tenants_web_contact($ciniki, $settings, $ciniki['request']['tnid']);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -118,13 +118,13 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
     $contact_users = $rc['users'];
 
     $contact_content = '';
-    if( isset($settings['page-contact-business-name-display']) && $settings['page-contact-business-name-display'] == 'yes' 
-        && isset($contact_details['contact.business.name']) && $contact_details['contact.business.name'] != '' ) {
-        $contact_content .= "<span class='contact-title'>" . $contact_details['contact.business.name'] . "</span><br/>\n";
+    if( isset($settings['page-contact-tenant-name-display']) && $settings['page-contact-tenant-name-display'] == 'yes' 
+        && isset($contact_details['contact.tenant.name']) && $contact_details['contact.tenant.name'] != '' ) {
+        $contact_content .= "<span class='contact-title'>" . $contact_details['contact.tenant.name'] . "</span><br/>\n";
     }
     if( isset($settings['page-contact-person-name-display']) && $settings['page-contact-person-name-display'] == 'yes' 
         && isset($contact_details['contact.person.name']) && $contact_details['contact.person.name'] != '' ) {
-        if( !isset($settings['page-contact-business-name-display']) || $settings['page-contact-business-name-display'] != 'yes' ) {
+        if( !isset($settings['page-contact-tenant-name-display']) || $settings['page-contact-tenant-name-display'] != 'yes' ) {
             $contact_content .= "<span class='contact-title'>" . $contact_details['contact.person.name'] . "</span><br/>\n";
         } else {
             $contact_content .= $contact_details['contact.person.name'] . "<br/>\n";
@@ -184,7 +184,7 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
     // Generate the content of the page
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
-    $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-contact');
+    $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'tnid', $ciniki['request']['tnid'], 'ciniki.web', 'content', 'page-contact');
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -269,8 +269,8 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
     //
     // Check if contact form should be displayed
     //
-    if( isset($ciniki['business']['modules']['ciniki.web']['flags'])
-        && ($ciniki['business']['modules']['ciniki.web']['flags']&0x04) > 0 
+    if( isset($ciniki['tenant']['modules']['ciniki.web']['flags'])
+        && ($ciniki['tenant']['modules']['ciniki.web']['flags']&0x04) > 0 
         ) {
         if( isset($settings['page-contact-form-display']) 
             && $settings['page-contact-form-display'] == 'yes' 
@@ -371,14 +371,14 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
     //
     // Check if any public subscription lists which could be signed up for
     //
-    if( isset($ciniki['business']['modules']['ciniki.subscriptions']) 
+    if( isset($ciniki['tenant']['modules']['ciniki.subscriptions']) 
         && isset($settings['page-contact-subscriptions-signup']) && $settings['page-contact-subscriptions-signup'] == 'yes'
         ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'subscriptions', 'web', 'subscriptionManager');
-        $rc = ciniki_subscriptions_web_subscriptionManager($ciniki, $settings, $ciniki['request']['business_id']);
+        $rc = ciniki_subscriptions_web_subscriptionManager($ciniki, $settings, $ciniki['request']['tnid']);
         if( $rc['stat'] == 'ok' && isset($rc['blocks']) ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlocks');
-            $rc = ciniki_web_processBlocks($ciniki, $settings, $ciniki['request']['business_id'], $rc['blocks']);
+            $rc = ciniki_web_processBlocks($ciniki, $settings, $ciniki['request']['tnid'], $rc['blocks']);
             if( $rc['stat'] == 'ok' && isset($rc['content']) ) {
                 $content .= $rc['content'];
             }

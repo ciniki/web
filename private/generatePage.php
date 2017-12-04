@@ -16,7 +16,7 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
     //
     // Check if module has generatePage.php override
     //
-    if( isset($ciniki['business']['modules']['ciniki.landingpages']) && $ciniki['request']['page'] == 'landingpage' ) {
+    if( isset($ciniki['tenant']['modules']['ciniki.landingpages']) && $ciniki['request']['page'] == 'landingpage' ) {
         $rc = ciniki_core_loadMethod($ciniki, 'ciniki', 'landingpages', 'web', 'generatePage');
         if( $rc['stat'] != 'ok' ) {
             return $rc;
@@ -49,7 +49,7 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
         $uri_depth = $i-1;
         if( $i == ($depth-1) ) {
             // Last Page
-            $rc = ciniki_web_pageLoad($ciniki, $settings, $ciniki['request']['business_id'], 
+            $rc = ciniki_web_pageLoad($ciniki, $settings, $ciniki['request']['tnid'], 
                 array('permalink'=>$request_pages[$i], 'parent_id'=>$prev_parent_id));
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
@@ -83,7 +83,7 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
             }
         } else {
             // Intermediate page, need title and id only
-            $rc = ciniki_web_pageLoad($ciniki, $settings, $ciniki['request']['business_id'], 
+            $rc = ciniki_web_pageLoad($ciniki, $settings, $ciniki['request']['tnid'], 
                 array('intermediate_permalink'=>$request_pages[$i], 'parent_id'=>$prev_parent_id));
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
@@ -104,7 +104,7 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
             if( !isset($rc['page']['children'])
                 || !isset($rc['page']['children'][$request_pages[$i+1]]) ) {
                 // Load full page details
-                $rc = ciniki_web_pageLoad($ciniki, $settings, $ciniki['request']['business_id'], 
+                $rc = ciniki_web_pageLoad($ciniki, $settings, $ciniki['request']['tnid'], 
                     array('permalink'=>$request_pages[$i], 'parent_id'=>$prev_parent_id));
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;
@@ -164,7 +164,7 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
         for($i = 0; $i < $page['depth']; $i++) {
             array_shift($uri_split);
         }
-        $rc = ciniki_web_processModuleRequest($ciniki, $settings, $ciniki['request']['business_id'], $page['page_module'],
+        $rc = ciniki_web_processModuleRequest($ciniki, $settings, $ciniki['request']['tnid'], $page['page_module'],
             array(
                 'uri_split'=>$uri_split,
                 'base_url'=>$base_url,
@@ -207,7 +207,7 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
             $page_content .= "<header class='entry-title'><h1 class='entry-title'>" . $page['title'] . "</h1>";
             if( isset($breadcrumbs) ) {
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBreadcrumbs');
-                $rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $ciniki['request']['business_id'], $breadcrumbs);
+                $rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $ciniki['request']['tnid'], $breadcrumbs);
                 if( $rc['stat'] == 'ok' ) {
                     $page_content .= $rc['content'];
                 }
@@ -227,7 +227,7 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
         //
         $result_content = '';
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processPageForms');
-        $rc = ciniki_web_processPageForms($ciniki, $settings, $ciniki['request']['business_id']);
+        $rc = ciniki_web_processPageForms($ciniki, $settings, $ciniki['request']['tnid']);
         if( $rc['stat'] != 'ok' ) {
             $result_content .= "<div class='form-result-message form-error-message'><div class='form-message-wrapper'><p>Error processing request</p></div></div>";
         }
@@ -298,10 +298,10 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
                 . "ciniki_web_page_files.extension, "
                 . "ciniki_web_page_files.binary_content "
                 . "FROM ciniki_web_pages, ciniki_web_page_files "
-                . "WHERE ciniki_web_pages.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+                . "WHERE ciniki_web_pages.tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
                 . "AND ciniki_web_pages.permalink = '" . ciniki_core_dbQuote($ciniki, $page['permalink']) . "' "
                 . "AND ciniki_web_pages.id = ciniki_web_page_files.page_id "
-                . "AND ciniki_web_page_files.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+                . "AND ciniki_web_page_files.tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
                 . "AND CONCAT_WS('.', ciniki_web_page_files.permalink, ciniki_web_page_files.extension) = '" . ciniki_core_dbQuote($ciniki, $file_permalink) . "' "
                 . "";
             $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'file');
@@ -318,7 +318,7 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
             // Load the file contents
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'storageFileLoad');
-            $rc = ciniki_core_storageFileLoad($ciniki, $ciniki['request']['business_id'], 'ciniki.web.page_file', array('subdir'=>'pagefiles', 'uuid'=>$file['uuid']));
+            $rc = ciniki_core_storageFileLoad($ciniki, $ciniki['request']['tnid'], 'ciniki.web.page_file', array('subdir'=>'pagefiles', 'uuid'=>$file['uuid']));
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -352,7 +352,7 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
             $article_title .= ($article_title!=''?' - ':'') . "<a href='$base_url'>" . $page['title'] . "</a>";
             
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processGalleryImage');
-            $rc = ciniki_web_processGalleryImage($ciniki, $settings, $ciniki['request']['business_id'], array(
+            $rc = ciniki_web_processGalleryImage($ciniki, $settings, $ciniki['request']['tnid'], array(
                 'item'=>$page,
                 'gallery_url'=>$base_url . '/gallery',
                 'article_title'=>$article_title,
@@ -407,7 +407,7 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
             }
             if( isset($settings['theme']['header-breadcrumbs']) && $settings['theme']['header-breadcrumbs'] == 'yes' && isset($breadcrumbs) ) {
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBreadcrumbs');
-                $rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $ciniki['request']['business_id'], $breadcrumbs);
+                $rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $ciniki['request']['tnid'], $breadcrumbs);
                 if( $rc['stat'] == 'ok' ) {
                     $content .= $rc['content'];
                 }

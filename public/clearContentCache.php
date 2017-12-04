@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This method will clear the web cache for a business.  All files in the cache will
+// This method will clear the web cache for a tenant.  All files in the cache will
 // get recreated the next time they are required.  This will slow down page loads,
 // and should be done sparingly, if at all.
 //
@@ -10,7 +10,7 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:     The ID of the business to clear the cache for.
+// tnid:     The ID of the tenant to clear the cache for.
 //
 // Returns
 // -------
@@ -22,7 +22,7 @@ function ciniki_web_clearContentCache($ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         ));
     if( $rc['stat'] != 'ok' ) {
         return $rc;
@@ -30,37 +30,37 @@ function ciniki_web_clearContentCache($ciniki) {
     $args = $rc['args'];
     
     //
-    // Check access to business_id as owner
+    // Check access to tnid as owner
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
-    $ac = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.clearContentCache');
+    $ac = ciniki_web_checkAccess($ciniki, $args['tnid'], 'ciniki.web.clearContentCache');
     if( $ac['stat'] != 'ok' ) {
         return $ac;
     }
 
     //
-    // Get the UUID for the business
+    // Get the UUID for the tenant
     //
-    $strsql = "SELECT uuid FROM ciniki_businesses "
-        . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+    $strsql = "SELECT uuid FROM ciniki_tenants "
+        . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
         . "";
-    $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'business');
+    $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.tenants', 'tenant');
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }
-    if( !isset($rc['business']) ) {
-        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.130', 'msg'=>'Business does not exist'));
+    if( !isset($rc['tenant']) ) {
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.130', 'msg'=>'Tenant does not exist'));
     }
-    $uuid = $rc['business']['uuid'];
+    $uuid = $rc['tenant']['uuid'];
 
     //
-    // Remove the business cache directory
+    // Remove the tenant cache directory
     //
-    $business_cache_dir = $ciniki['config']['ciniki.core']['cache_dir'] 
+    $tenant_cache_dir = $ciniki['config']['ciniki.core']['cache_dir'] 
         . '/' . $uuid[0] . '/' . $uuid . '/ciniki.web';
-    if( file_exists($business_cache_dir) ) {
+    if( file_exists($tenant_cache_dir) ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'recursiveRmdir');
-        $rc = ciniki_core_recursiveRmdir($ciniki, $business_cache_dir);
+        $rc = ciniki_core_recursiveRmdir($ciniki, $tenant_cache_dir);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }

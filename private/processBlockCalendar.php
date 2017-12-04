@@ -12,7 +12,7 @@
 // Returns
 // -------
 //
-function ciniki_web_processBlockCalendar($ciniki, $settings, $business_id, $block) {
+function ciniki_web_processBlockCalendar($ciniki, $settings, $tnid, $block) {
 
     //
     // Check to make sure the start and end date are set. This allows the calendar to 

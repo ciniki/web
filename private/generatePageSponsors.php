@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This function will generate the exhibition sponsors page for the business.
+// This function will generate the exhibition sponsors page for the tenant.
 //
 // Arguments
 // ---------
@@ -31,7 +31,7 @@ function ciniki_web_generatePageSponsors($ciniki, $settings) {
         && isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' 
         ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'fileDownload');
-        $rc = ciniki_info_web_fileDownload($ciniki, $ciniki['request']['business_id'], 'sponsorship', '', $ciniki['request']['uri_split'][2]);
+        $rc = ciniki_info_web_fileDownload($ciniki, $ciniki['request']['tnid'], 'sponsorship', '', $ciniki['request']['uri_split'][2]);
         if( $rc['stat'] == 'ok' ) {
             header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
             header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
@@ -56,10 +56,10 @@ function ciniki_web_generatePageSponsors($ciniki, $settings) {
     }
 
     $page_title = "Sponsors";
-    if( isset($ciniki['business']['modules']['ciniki.sponsors']) ) {
+    if( isset($ciniki['tenant']['modules']['ciniki.sponsors']) ) {
         $pkg = 'ciniki';
         $mod = 'sponsors';
-    } elseif( isset($ciniki['business']['modules']['ciniki.exhibitions']) ) {
+    } elseif( isset($ciniki['tenant']['modules']['ciniki.exhibitions']) ) {
         $pkg = 'ciniki';
         $mod = 'exhibitions';
     } else {
@@ -75,7 +75,7 @@ function ciniki_web_generatePageSponsors($ciniki, $settings) {
         && isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'sponsorship'
         ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'pageDetails');
-        $rc = ciniki_info_web_pageDetails($ciniki, $settings, $ciniki['request']['business_id'], array('permalink'=>'sponsorship'));
+        $rc = ciniki_info_web_pageDetails($ciniki, $settings, $ciniki['request']['tnid'], array('permalink'=>'sponsorship'));
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -92,7 +92,7 @@ function ciniki_web_generatePageSponsors($ciniki, $settings) {
     } else {
         ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'sponsorList');
         $sponsorList = $pkg . '_' . $mod . '_web_sponsorList';
-        $rc = $sponsorList($ciniki, $settings, $ciniki['request']['business_id']);
+        $rc = $sponsorList($ciniki, $settings, $ciniki['request']['tnid']);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }

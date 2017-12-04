@@ -8,7 +8,7 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:         The ID of the business to get the history for.
+// tnid:         The ID of the tenant to get the history for.
 // slider_image_id:     The ID of the slider image to get the history for.
 // field:               The field to get the history for.
 //
@@ -29,7 +29,7 @@ function ciniki_web_sliderImageHistory($ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'slider_image_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Image'), 
         'field'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Field'), 
         ));
@@ -39,10 +39,10 @@ function ciniki_web_sliderImageHistory($ciniki) {
     $args = $rc['args'];
     
     //
-    // Check access to business_id as owner, or sys admin
+    // Check access to tnid as owner, or sys admin
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
-    $rc = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.sliderImageHistory');
+    $rc = ciniki_web_checkAccess($ciniki, $args['tnid'], 'ciniki.web.sliderImageHistory');
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -50,11 +50,11 @@ function ciniki_web_sliderImageHistory($ciniki) {
     if( $args['field'] == 'start_date' || $args['field'] == 'end_date' ) {
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbGetModuleHistoryReformat');
     return ciniki_core_dbGetModuleHistoryReformat($ciniki, 'ciniki.web', 'ciniki_web_history', 
-        $args['business_id'], 'ciniki_web_slider_images', $args['slider_image_id'], $args['field'], 'utcdatetime');
+        $args['tnid'], 'ciniki_web_slider_images', $args['slider_image_id'], $args['field'], 'utcdatetime');
     }
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbGetModuleHistory');
     return ciniki_core_dbGetModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', 
-        $args['business_id'], 'ciniki_web_slider_images', $args['slider_image_id'], $args['field']);
+        $args['tnid'], 'ciniki_web_slider_images', $args['slider_image_id'], $args['field']);
 }
 ?>

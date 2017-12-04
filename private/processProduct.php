@@ -12,7 +12,7 @@
 // Returns
 // -------
 //
-function ciniki_web_processProduct(&$ciniki, $settings, $business_id, $base_url, $product, $args) {
+function ciniki_web_processProduct(&$ciniki, $settings, $tnid, $base_url, $product, $args) {
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
@@ -61,7 +61,7 @@ function ciniki_web_processProduct(&$ciniki, $settings, $business_id, $base_url,
     //
     if( isset($product['audio']) && count($product['audio']) > 0 ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processAudio');
-        $rc = ciniki_web_processAudio($ciniki, $settings, $business_id, $product['audio'], array());
+        $rc = ciniki_web_processAudio($ciniki, $settings, $tnid, $product['audio'], array());
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -97,7 +97,7 @@ function ciniki_web_processProduct(&$ciniki, $settings, $business_id, $base_url,
     //
     if( isset($product['prices']) && count($product['prices']) > 0 ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'cartSetupPrices');
-        $rc = ciniki_web_cartSetupPrices($ciniki, $settings, $business_id, $product['prices']);
+        $rc = ciniki_web_cartSetupPrices($ciniki, $settings, $tnid, $product['prices']);
         if( $rc['stat'] != 'ok' ) {
             error_log("Error in formatting prices.");
         } else {

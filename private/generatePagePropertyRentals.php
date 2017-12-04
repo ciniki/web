@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This function will generate the classes page for the business.
+// This function will generate the classes page for the tenant.
 //
 // Arguments
 // ---------
@@ -57,7 +57,7 @@ function ciniki_web_generatePagePropertyRentals($ciniki, $settings) {
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'propertyrentals', 'web', 'propertyDetails');
         $rc = ciniki_propertyrentals_web_propertyDetails($ciniki, $settings, 
-            $ciniki['request']['business_id'], $property_permalink);
+            $ciniki['request']['tnid'], $property_permalink);
         if( $rc['stat'] != 'ok' ) {
             return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.78', 'msg'=>"I'm sorry, but we can't seem to find the image you requested.", $rc['err']));
         }
@@ -175,7 +175,7 @@ function ciniki_web_generatePagePropertyRentals($ciniki, $settings) {
         //
         // Get the property information
         //
-        $rc = ciniki_propertyrentals_web_propertyDetails($ciniki, $settings, $ciniki['request']['business_id'], $permalink);
+        $rc = ciniki_propertyrentals_web_propertyDetails($ciniki, $settings, $ciniki['request']['tnid'], $permalink);
         if( $rc['stat'] != 'ok' ) {
             return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.81', 'msg'=>"I'm sorry, but we can't find the property you requested.", $rc['err']));
         }
@@ -258,7 +258,7 @@ function ciniki_web_generatePagePropertyRentals($ciniki, $settings) {
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'classes', 'web', 'pageInfo');
         $rc = ciniki_classes_web_pageInfo($ciniki, $settings, 
-            $ciniki['request']['business_id'], 'category-' . $category_permalink);
+            $ciniki['request']['tnid'], 'category-' . $category_permalink);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -299,13 +299,13 @@ function ciniki_web_generatePagePropertyRentals($ciniki, $settings) {
         //
         // If only categories defined
         //
-        if( ($ciniki['business']['modules']['ciniki.classes']['flags']&0x02) > 0 ) {
+        if( ($ciniki['tenant']['modules']['ciniki.classes']['flags']&0x02) > 0 ) {
             //
             // Get the list of classes
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'classes', 'web', 'classList');
             $rc = ciniki_classes_web_classList($ciniki, $settings, 
-                $ciniki['request']['business_id'], array('category'=>$category_permalink));
+                $ciniki['request']['tnid'], array('category'=>$category_permalink));
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -331,7 +331,7 @@ function ciniki_web_generatePagePropertyRentals($ciniki, $settings) {
             // Get the list of classes
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'classes', 'web', 'classList');
-            $rc = ciniki_classes_web_classList($ciniki, $settings, $ciniki['request']['business_id'], array());
+            $rc = ciniki_classes_web_classList($ciniki, $settings, $ciniki['request']['tnid'], array());
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -368,7 +368,7 @@ function ciniki_web_generatePagePropertyRentals($ciniki, $settings) {
         }
 /*      ciniki_core_loadMethod($ciniki, 'ciniki', 'propertyrentals', 'web', 'propertyList');
         $rc = ciniki_classes_web_pageInfo($ciniki, $settings, 
-            $ciniki['request']['business_id'], 'introduction');
+            $ciniki['request']['tnid'], 'introduction');
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -409,7 +409,7 @@ function ciniki_web_generatePagePropertyRentals($ciniki, $settings) {
         // Get the list of classes
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'propertyrentals', 'web', 'properties');
-        $rc = ciniki_propertyrentals_web_properties($ciniki, $settings, $ciniki['request']['business_id'], array('status'=>$status));
+        $rc = ciniki_propertyrentals_web_properties($ciniki, $settings, $ciniki['request']['tnid'], array('status'=>$status));
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -441,9 +441,9 @@ function ciniki_web_generatePagePropertyRentals($ciniki, $settings) {
     // If categories and sub-categories are enabled, then create the submenu of categories
     //
     $submenu = array();
-    if( ($ciniki['business']['modules']['ciniki.propertyrentals']['flags']&0x01) > 0 ) {
+    if( ($ciniki['tenant']['modules']['ciniki.propertyrentals']['flags']&0x01) > 0 ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'propertyrentals', 'web', 'categories');
-        $rc = ciniki_propertyrentals_web_categories($ciniki, $settings, $ciniki['request']['business_id']);
+        $rc = ciniki_propertyrentals_web_categories($ciniki, $settings, $ciniki['request']['tnid']);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }

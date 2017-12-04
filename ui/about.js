@@ -1,5 +1,5 @@
 //
-// The app to manage web options for a business
+// The app to manage web options for a tenant
 //
 function ciniki_web_about() {
     
@@ -47,7 +47,7 @@ function ciniki_web_about() {
         // Global functions for history and field value
         //
         this.fieldHistoryArgs = function(s, i) {
-            return {'method':'ciniki.web.pageSettingsHistory', 'args':{'business_id':M.curBusinessID, 'field':i}};
+            return {'method':'ciniki.web.pageSettingsHistory', 'args':{'tnid':M.curTenantID, 'field':i}};
         }
         this.fieldValue = function(s, i, d) { 
             if( this.data[i] == null ) { return ''; }
@@ -68,7 +68,7 @@ function ciniki_web_about() {
                 }},
 //          'subpages':{'label':'', 'active':'no', 'fields':{}},
             'subpagesedit':{'label':'', 'active':'no', 'list':{}},
-            '_users':{'label':'Business Employees', 'visible':'no', 'active':'no', 'fields':{
+            '_users':{'label':'Tenant Employees', 'visible':'no', 'active':'no', 'fields':{
                 }},
             '_users_display':{'label':'', 'visible':'no', 'active':'no', 'fields':{
                 'page-about-bios-title':{'label':'Title', 'type':'text', 'hint':''},
@@ -109,7 +109,7 @@ function ciniki_web_about() {
     this.showPage = function(cb) {
         this.page.reset();
         var rsp = M.api.getJSONCb('ciniki.web.pageSettingsGet', 
-            {'business_id':M.curBusinessID, 'page':'about', 'content':'yes'}, function(rsp) {
+            {'tnid':M.curTenantID, 'page':'about', 'content':'yes'}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -121,7 +121,7 @@ function ciniki_web_about() {
 
     this.showPageFinish = function(cb, page, rsp) {
         var p = this.page;
-        var flags = M.curBusiness.modules['ciniki.info'].flags;
+        var flags = M.curTenant.modules['ciniki.info'].flags;
 //      var options = {};
         var spgs = M.ciniki_web_about.subpages;
         p.sections.subpagesedit.list = {'_':{'label':'Edit About Page', 'fn':'M.ciniki_web_about.editInfo(\'1\');'}};
@@ -141,11 +141,11 @@ function ciniki_web_about() {
             }
         }
 
-        // Get the user associated with this business
+        // Get the user associated with this tenant
         this.page.sections._users.visible = 'no';
         this.page.sections._users_display.visible = 'no';
-        if( M.curBusiness.modules['ciniki.businesses']!=null && (M.curBusiness.modules['ciniki.businesses'].flags&0x01) == 1 ) {
-            M.api.getJSONCb('ciniki.web.businessUsers', {'business_id':M.curBusinessID}, function(rsp) {
+        if( M.curTenant.modules['ciniki.tenants']!=null && (M.curTenant.modules['ciniki.tenants'].flags&0x01) == 1 ) {
+            M.api.getJSONCb('ciniki.web.tenantUsers', {'tnid':M.curTenantID}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -159,7 +159,7 @@ function ciniki_web_about() {
                         var u = rsp.users[i].user;
                         p.sections._users.fields['page-about-user-display-flags-' + u.id] = {
                             'label':u.firstname + ' ' + u.lastname, 'type':'flags', 'join':'yes', 'flags':M.ciniki_web_about.userFlags,
-                            'editFn':'M.startApp(\'ciniki.businesses.users\',null,\'M.ciniki_web_about.page.show();\',\'mc\',{\'user_id\':\'' + u.id + '\'});',
+                            'editFn':'M.startApp(\'ciniki.tenants.users\',null,\'M.ciniki_web_about.page.show();\',\'mc\',{\'user_id\':\'' + u.id + '\'});',
                             };
                     }
                     p.sections._users_display.visible = 'yes';
@@ -190,7 +190,7 @@ function ciniki_web_about() {
     this.savePage = function() {
         var c = this.page.serializeForm('no');
         if( c != '' ) {
-            M.api.postJSONCb('ciniki.web.siteSettingsUpdate', {'business_id':M.curBusinessID}, c, function(rsp) {
+            M.api.postJSONCb('ciniki.web.siteSettingsUpdate', {'tnid':M.curTenantID}, c, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;

@@ -15,18 +15,18 @@
 // Arguments
 // ---------
 // ciniki:
-// business_id:         The ID of the business to update the contact information for.
+// tnid:         The ID of the tenant to update the contact information for.
 //
 // Returns
 // -------
 //
-function ciniki_web_updateUserDisplay($ciniki, $business_id) {
+function ciniki_web_updateUserDisplay($ciniki, $tnid) {
     //
     // Check for the contact page settings
     //
     $strsql = "SELECT COUNT(*) AS num_users "
         . "FROM ciniki_web_settings "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "AND detail_key LIKE 'page-contact-user-display-flags%' "
         . "AND detail_value > 0 "
         . "";
@@ -46,7 +46,7 @@ function ciniki_web_updateUserDisplay($ciniki, $business_id) {
     //
     $strsql = "SELECT detail_value "
         . "FROM ciniki_web_settings "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "AND detail_key = 'page-contact-user-display' "
         . "";
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'setting');
@@ -61,8 +61,8 @@ function ciniki_web_updateUserDisplay($ciniki, $business_id) {
     
     $field = 'page-contact-user-display';
     if( $current_value != $detail_value ) {
-        $strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) "
-            . "VALUES ('" . ciniki_core_dbQuote($ciniki, $business_id) . "'"
+        $strsql = "INSERT INTO ciniki_web_settings (tnid, detail_key, detail_value, date_added, last_updated) "
+            . "VALUES ('" . ciniki_core_dbQuote($ciniki, $tnid) . "'"
             . ", '" . ciniki_core_dbQuote($ciniki, $field) . "' "
             . ", '" . ciniki_core_dbQuote($ciniki, $detail_value) . "'"
             . ", UTC_TIMESTAMP(), UTC_TIMESTAMP()) "
@@ -73,7 +73,7 @@ function ciniki_web_updateUserDisplay($ciniki, $business_id) {
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
-        ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $business_id, 
+        ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $tnid, 
             2, 'ciniki_web_settings', $field, 'detail_value', $detail_value);
     }
 
@@ -82,7 +82,7 @@ function ciniki_web_updateUserDisplay($ciniki, $business_id) {
     //
     $strsql = "SELECT COUNT(*) AS num_users "
         . "FROM ciniki_web_settings "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "AND detail_key LIKE 'page-about-user-display-flags%' "
         . "AND detail_value > 0 "
         . "";
@@ -102,7 +102,7 @@ function ciniki_web_updateUserDisplay($ciniki, $business_id) {
     //
     $strsql = "SELECT detail_value "
         . "FROM ciniki_web_settings "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "AND detail_key = 'page-about-user-display' "
         . "";
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'setting');
@@ -117,8 +117,8 @@ function ciniki_web_updateUserDisplay($ciniki, $business_id) {
     
     $field = 'page-about-user-display';
     if( $current_value != $detail_value ) {
-        $strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) "
-            . "VALUES ('" . ciniki_core_dbQuote($ciniki, $business_id) . "'"
+        $strsql = "INSERT INTO ciniki_web_settings (tnid, detail_key, detail_value, date_added, last_updated) "
+            . "VALUES ('" . ciniki_core_dbQuote($ciniki, $tnid) . "'"
             . ", '" . ciniki_core_dbQuote($ciniki, $field) . "' "
             . ", '" . ciniki_core_dbQuote($ciniki, $detail_value) . "'"
             . ", UTC_TIMESTAMP(), UTC_TIMESTAMP()) "
@@ -129,16 +129,16 @@ function ciniki_web_updateUserDisplay($ciniki, $business_id) {
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
-        ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $business_id, 
+        ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $tnid, 
             2, 'ciniki_web_settings', $field, 'detail_value', $detail_value);
     }
 
     //
-    // Update the last_change date in the business modules
+    // Update the last_change date in the tenant modules
     // Ignore the result, as we don't want to stop user updates if this fails.
     //
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
-    ciniki_businesses_updateModuleChangeDate($ciniki, $business_id, 'ciniki', 'web');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'private', 'updateModuleChangeDate');
+    ciniki_tenants_updateModuleChangeDate($ciniki, $tnid, 'ciniki', 'web');
 
     return array('stat'=>'ok');
 }

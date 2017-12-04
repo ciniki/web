@@ -2,22 +2,22 @@
 //
 // Description
 // -----------
-// This function will return the list of web settings for a business.
+// This function will return the list of web settings for a tenant.
 //
 // Arguments
 // ---------
 // ciniki:
-// business_id:     The ID of the business to get the web settings for.
+// tnid:     The ID of the tenant to get the web settings for.
 //
 // Returns
 // -------
 //
-function ciniki_web_settings($ciniki, $business_id) {
+function ciniki_web_settings($ciniki, $tnid) {
     //
     // Load settings from the database
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQuery');
-    $rc = ciniki_core_dbDetailsQuery($ciniki, 'ciniki_web_settings', 'business_id', $business_id, 'ciniki.web', 'settings', '');
+    $rc = ciniki_core_dbDetailsQuery($ciniki, 'ciniki_web_settings', 'tnid', $tnid, 'ciniki.web', 'settings', '');
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -47,13 +47,13 @@ function ciniki_web_settings($ciniki, $business_id) {
     //
     // Check if private theme is enabled and load any settings for the private theme
     //
-    if( isset($ciniki['business']['modules']['ciniki.web']['flags']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x0100) > 0 ) {
+    if( isset($ciniki['tenant']['modules']['ciniki.web']['flags']) && ($ciniki['tenant']['modules']['ciniki.web']['flags']&0x0100) > 0 ) {
         //
         // Check if theme id set for private theme
         //
         $strsql = "SELECT id, permalink, last_updated "
             . "FROM ciniki_web_themes "
-            . "WHERE ciniki_web_themes.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+            . "WHERE ciniki_web_themes.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . "";
         if( isset($settings['site-privatetheme-id']) ) {
             $strsql .= "AND ciniki_web_themes.id = '" . ciniki_core_dbQuote($ciniki, $settings['site-privatetheme-id']) . "' ";
@@ -82,7 +82,7 @@ function ciniki_web_settings($ciniki, $business_id) {
         if( isset($settings['site-privatetheme-id']) && $settings['site-privatetheme-id'] > 0 ) {
             $strsql = "SELECT detail_key, detail_value "
                 . "FROM ciniki_web_theme_settings "
-                . "WHERE ciniki_web_theme_settings.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+                . "WHERE ciniki_web_theme_settings.tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
                 . "AND ciniki_web_theme_settings.theme_id = '" . ciniki_core_dbQuote($ciniki, $settings['site-privatetheme-id']) . "' "
                 . "";
             ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQueryList2');

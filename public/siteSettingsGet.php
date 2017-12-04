@@ -8,7 +8,7 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:     The ID of the business to get the site settings for.
+// tnid:     The ID of the tenant to get the site settings for.
 // content:         (optional) Should the site content be returned as well. (yes or no)
 //
 // Returns
@@ -24,7 +24,7 @@ function ciniki_web_siteSettingsGet($ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'),
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'),
         'content'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Content'),
         ));
     if( $rc['stat'] != 'ok' ) {
@@ -33,10 +33,10 @@ function ciniki_web_siteSettingsGet($ciniki) {
     $args = $rc['args'];
 
     //
-    // Check access to business_id as owner, and load module list
+    // Check access to tnid as owner, and load module list
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
-    $ac = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.siteSettingsGet');
+    $ac = ciniki_web_checkAccess($ciniki, $args['tnid'], 'ciniki.web.siteSettingsGet');
     if( $ac['stat'] != 'ok' ) {
         return $ac;
     }
@@ -45,7 +45,7 @@ function ciniki_web_siteSettingsGet($ciniki) {
     // Get the settings from the database
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
-    $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_settings', 'business_id', $args['business_id'], 'ciniki.web', 'settings', 'site');
+    $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_settings', 'tnid', $args['tnid'], 'ciniki.web', 'settings', 'site');
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -59,7 +59,7 @@ function ciniki_web_siteSettingsGet($ciniki) {
     // If requested, also get the site content
     //
     if( isset($args['content']) && $args['content'] == 'yes' ) {
-        $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $args['business_id'], 'ciniki.web', 'content', 'site');
+        $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'tnid', $args['tnid'], 'ciniki.web', 'content', 'site');
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }

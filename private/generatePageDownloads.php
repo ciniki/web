@@ -21,7 +21,7 @@ function ciniki_web_generatePageDownloads($ciniki, $settings) {
     $download_err = '';
     if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'filedepot', 'web', 'download');
-        $rc = ciniki_filedepot_web_download($ciniki, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][0]);
+        $rc = ciniki_filedepot_web_download($ciniki, $ciniki['request']['tnid'], $ciniki['request']['uri_split'][0]);
         if( $rc['stat'] == 'ok' ) {
             header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
             header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
@@ -76,7 +76,7 @@ function ciniki_web_generatePageDownloads($ciniki, $settings) {
     // Generate the content of the page
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
-    $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-downloads');
+    $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'tnid', $ciniki['request']['tnid'], 'ciniki.web', 'content', 'page-downloads');
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -104,7 +104,7 @@ function ciniki_web_generatePageDownloads($ciniki, $settings) {
     // Get the list of downloads to be displayed
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'filedepot', 'web', 'list');
-    $rc = ciniki_filedepot_web_list($ciniki, $ciniki['request']['business_id']);
+    $rc = ciniki_filedepot_web_list($ciniki, $ciniki['request']['tnid']);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }

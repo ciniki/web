@@ -69,10 +69,10 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
     ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartLoad');
 
     //
-    // Get business/user settings
+    // Get tenant/user settings
     //
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'intlSettings');
-    $rc = ciniki_businesses_intlSettings($ciniki, $ciniki['request']['business_id']);
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'private', 'intlSettings');
+    $rc = ciniki_tenants_intlSettings($ciniki, $ciniki['request']['tnid']);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -81,20 +81,20 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
     $intl_currency = $rc['settings']['intl-default-currency'];
 
     //
-    // Load the business modules
+    // Load the tenant modules
     //
     $modules = array();
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'getActiveModules');
-    $rc = ciniki_businesses_getActiveModules($ciniki, $ciniki['request']['business_id']);
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'private', 'getActiveModules');
+    $rc = ciniki_tenants_getActiveModules($ciniki, $ciniki['request']['tnid']);
     if( $rc['stat'] == 'ok' ) {
         $modules = $rc['modules'];
     }
 
     //
-    // Load the business settings
+    // Load the tenant settings
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
-    $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_sapos_settings', 'business_id', $ciniki['request']['business_id'], 'ciniki.sapos', 'settings', '');
+    $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_sapos_settings', 'tnid', $ciniki['request']['tnid'], 'ciniki.sapos', 'settings', '');
     if( $rc['stat'] != 'ok' ) {
         return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.15', 'msg'=>'Unable to load settings', 'err'=>$rc['err']));
     }
@@ -118,7 +118,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
     //
     if( isset($_POST['action']) && $_POST['action'] == 'signin' ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'auth');
-        $rc = ciniki_customers_web_auth($ciniki, $settings, $ciniki['request']['business_id'], $_POST['email'], $_POST['password']);
+        $rc = ciniki_customers_web_auth($ciniki, $settings, $ciniki['request']['tnid'], $_POST['email'], $_POST['password']);
         if( $rc['stat'] != 'ok' ) {
             $signinerrors = "Unable to authenticate, please try again or click Forgot your password to get a new one.";
             $display_signup = 'yes';
@@ -131,12 +131,12 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
             //
             // Check for any module information that should be loaded into the session
             //
-            foreach($ciniki['business']['modules'] as $module => $m) {
+            foreach($ciniki['tenant']['modules'] as $module => $m) {
                 list($pkg, $mod) = explode('.', $module);
                 $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'accountSessionLoad');
                 if( $rc['stat'] == 'ok' ) {
                     $fn = $rc['function_call'];
-                    $rc = $fn($ciniki, $settings, $ciniki['request']['business_id']);
+                    $rc = $fn($ciniki, $settings, $ciniki['request']['tnid']);
                     if( $rc['stat'] != 'ok' ) {
                         return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.24', 'msg'=>'Unable to load account information', 'err'=>$rc['err']));
                     }
@@ -168,7 +168,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
             $display_cart = 'no';
         } else {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'changeTempPassword');
-            $rc = ciniki_customers_web_changeTempPassword($ciniki, $ciniki['request']['business_id'], $_POST['email'], $_POST['temppassword'], $_POST['newpassword']);
+            $rc = ciniki_customers_web_changeTempPassword($ciniki, $ciniki['request']['tnid'], $_POST['email'], $_POST['temppassword'], $_POST['newpassword']);
             if( $rc['stat'] != 'ok' ) {
                 $signinerrors = "Sorry, we were unable to set your new password.  Please try again or call us for help.";
                 $display_signup = 'yes';
@@ -212,7 +212,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
             // Check if email address already exists
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'hooks', 'customerLookup');
-            $rc = ciniki_customers_hooks_customerLookup($ciniki, $ciniki['request']['business_id'], array('email'=>$_POST['email_address']));
+            $rc = ciniki_customers_hooks_customerLookup($ciniki, $ciniki['request']['tnid'], array('email'=>$_POST['email_address']));
             if( $rc['stat'] != 'noexist' ) {
                 $signinerrors = "There is already an account for that email address, please use the Forgot Password link to recover your password.";
             }
@@ -227,7 +227,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
             unset($args['phone']);
 
             ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'customerAdd');
-            $rc = ciniki_customers_web_customerAdd($ciniki, $ciniki['request']['business_id'], $args);
+            $rc = ciniki_customers_web_customerAdd($ciniki, $ciniki['request']['tnid'], $args);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -237,7 +237,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
             // Once the account is created, authenticate
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'auth');
-            $rc = ciniki_customers_web_auth($ciniki, $settings, $ciniki['request']['business_id'], $args['email_address'], $args['password']);
+            $rc = ciniki_customers_web_auth($ciniki, $settings, $ciniki['request']['tnid'], $args['email_address'], $args['password']);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -246,7 +246,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
             // Attach to cart
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartCustomerUpdate');
-            $rc = ciniki_sapos_web_cartCustomerUpdate($ciniki, $settings, $ciniki['request']['business_id']);
+            $rc = ciniki_sapos_web_cartCustomerUpdate($ciniki, $settings, $ciniki['request']['tnid']);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -264,7 +264,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
     //
     // Check if a cart already exists
     //
-    $rc = ciniki_sapos_web_cartLoad($ciniki, $settings, $ciniki['request']['business_id']);
+    $rc = ciniki_sapos_web_cartLoad($ciniki, $settings, $ciniki['request']['tnid']);
     if( $rc['stat'] == 'noexist' ) {
         $cart = NULL;
         $_SESSION['cart']['sapos_id'] = 0;
@@ -309,7 +309,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         if( $cart == NULL ) {
             // Create a shopping cart
             ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartCreate');
-            $rc = ciniki_sapos_web_cartCreate($ciniki, $settings, $ciniki['request']['business_id'], array());
+            $rc = ciniki_sapos_web_cartCreate($ciniki, $settings, $ciniki['request']['tnid'], array());
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -337,7 +337,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                         //
 //                      if( $item['quantity'] != $_POST['quantity'] ) {
                         ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartItemUpdate');
-                        $rc = ciniki_sapos_web_cartItemUpdate($ciniki, $settings, $ciniki['request']['business_id'],
+                        $rc = ciniki_sapos_web_cartItemUpdate($ciniki, $settings, $ciniki['request']['tnid'],
                             array('item_id'=>$item['id'], 'quantity'=>$item['quantity'] + $_POST['quantity']));
                         if( $rc['stat'] != 'ok' ) {
                             return $rc;
@@ -354,7 +354,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         //
         if( $item_exists == 'no' ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartItemAdd');
-            $rc = ciniki_sapos_web_cartItemAdd($ciniki, $settings, $ciniki['request']['business_id'],
+            $rc = ciniki_sapos_web_cartItemAdd($ciniki, $settings, $ciniki['request']['tnid'],
                 array('object'=>$_POST['object'],
                     'object_id'=>$_POST['object_id'],
                     'price_id'=>(isset($_POST['price_id'])?$_POST['price_id']:0),
@@ -374,7 +374,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         //
         // Incase redirect fails, Load the updated cart
         //
-        $rc = ciniki_sapos_web_cartLoad($ciniki, $settings, $ciniki['request']['business_id']);
+        $rc = ciniki_sapos_web_cartLoad($ciniki, $settings, $ciniki['request']['tnid']);
         if( $rc['stat'] != 'ok' ) { 
             return $rc;
         }
@@ -400,7 +400,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         if( count($update_args) > 0 ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartUpdate');
             $rc = ciniki_sapos_web_cartUpdate($ciniki, $settings, 
-                $ciniki['request']['business_id'], $update_args);
+                $ciniki['request']['tnid'], $update_args);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -413,14 +413,14 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                     if( $new_quantity <= 0 ) {
                         ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartItemDelete');
                         $rc = ciniki_sapos_web_cartItemDelete($ciniki, $settings, 
-                            $ciniki['request']['business_id'],
+                            $ciniki['request']['tnid'],
                             array('item_id'=>$item['id']));
                         if( $rc['stat'] != 'ok' ) {
                             return $rc;
                         }
                     } else {
                         ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartItemUpdate');
-                        $rc = ciniki_sapos_web_cartItemUpdate($ciniki, $settings, $ciniki['request']['business_id'],
+                        $rc = ciniki_sapos_web_cartItemUpdate($ciniki, $settings, $ciniki['request']['tnid'],
                             array('item_id'=>$item['id'], 'quantity'=>$new_quantity));
                         if( $rc['stat'] != 'ok' ) {
                             return $rc;
@@ -433,7 +433,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                     $new_student_id = intval($_POST['student_' . $item['id']]);
                     if( $new_student_id != $item['student_id'] ) {
                         ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartItemUpdate');
-                        $rc = ciniki_sapos_web_cartItemUpdate($ciniki, $settings, $ciniki['request']['business_id'],
+                        $rc = ciniki_sapos_web_cartItemUpdate($ciniki, $settings, $ciniki['request']['tnid'],
                             array('item_id'=>$item['id'], 'student_id'=>$new_student_id));
                         if( $rc['stat'] != 'ok' ) {
                             return $rc;
@@ -454,7 +454,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         //
         // Incase redirect fails, or submiting an order, Load the updated cart
         //
-        $rc = ciniki_sapos_web_cartLoad($ciniki, $settings, $ciniki['request']['business_id']);
+        $rc = ciniki_sapos_web_cartLoad($ciniki, $settings, $ciniki['request']['tnid']);
         if( $rc['stat'] != 'ok' ) { 
             return $rc;
         }
@@ -472,7 +472,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         && $ciniki['session']['customer']['dealer_status'] < 60 
         ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'checkOrder');
-        $rc = ciniki_sapos_web_checkOrder($ciniki, $settings, $ciniki['request']['business_id'], $cart);
+        $rc = ciniki_sapos_web_checkOrder($ciniki, $settings, $ciniki['request']['tnid'], $cart);
         if( $rc['stat'] == 'warn' ) {
             $cart_err_msg .= "<p class='wide cart-error'>" . $rc['err']['msg'] . "</p>";
             $display_cart = 'yes';
@@ -492,7 +492,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         && $ciniki['session']['customer']['dealer_status'] < 60 
         ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'submitOrder');
-        $rc = ciniki_sapos_web_submitOrder($ciniki, $settings, $ciniki['request']['business_id'], $cart);
+        $rc = ciniki_sapos_web_submitOrder($ciniki, $settings, $ciniki['request']['tnid'], $cart);
         if( $rc['stat'] == 'warn' ) {
             $cart_err_msg .= "<p class='wide cart-error'>" . $rc['err']['msg'] . "</p>";
             $display_cart = 'yes';
@@ -509,23 +509,23 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                 && isset($cart['customer']['emails'][0]['email']['address'])
                 ) {
                 //
-                // Load business details
+                // Load tenant details
                 //
-                ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'businessDetails');
-                $rc = ciniki_businesses_businessDetails($ciniki, $ciniki['request']['business_id']);
+                ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'private', 'tenantDetails');
+                $rc = ciniki_tenants_tenantDetails($ciniki, $ciniki['request']['tnid']);
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;
                 }
-                $business_details = array();
+                $tenant_details = array();
                 if( isset($rc['details']) && is_array($rc['details']) ) {   
-                    $business_details = $rc['details'];
+                    $tenant_details = $rc['details'];
                 }
 
                 //
                 // Load the invoice settings
                 //
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
-                $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_sapos_settings', 'business_id', $ciniki['request']['business_id'],
+                $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_sapos_settings', 'tnid', $ciniki['request']['tnid'],
                     'ciniki.sapos', 'settings', 'invoice');
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;
@@ -543,7 +543,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                     return $rc;
                 }
                 $fn = $rc['function_call'];
-                $rc = $fn($ciniki, $ciniki['request']['business_id'], $cart['id'], $business_details, $sapos_settings, 'email');
+                $rc = $fn($ciniki, $ciniki['request']['tnid'], $cart['id'], $tenant_details, $sapos_settings, 'email');
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;
                 }
@@ -565,7 +565,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                 }   
                 $ciniki['emailqueue'][] = array('to'=>$invoice['customer']['emails'][0]['email']['address'],
                     'to_name'=>(isset($invoice['customer']['display_name'])?$invoice['customer']['display_name']:''),
-                    'business_id'=>$ciniki['request']['business_id'],
+                    'tnid'=>$ciniki['request']['tnid'],
                     'subject'=>$subject,
                     'textmsg'=>$textmsg,
                     'attachments'=>array(array('string'=>$pdf->Output('invoice', 'S'), 'filename'=>$filename)),
@@ -585,7 +585,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
     elseif( isset($_POST['action']) && $_POST['action'] == 'forgot' ) {
         $url = $ciniki['request']['ssl_domain_base_url'] . '/cart/passwordreset';
         ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'passwordRequestReset');
-        $rc = ciniki_customers_web_passwordRequestReset($ciniki, $ciniki['request']['business_id'], $_POST['email'], $url);
+        $rc = ciniki_customers_web_passwordRequestReset($ciniki, $ciniki['request']['tnid'], $_POST['email'], $url);
         if( $rc['stat'] != 'ok' ) {
             $signinerrors = "You must enter a valid email address to get a new password.";
         } else {
@@ -637,7 +637,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         // Load paypal settings
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'paypalExpressCheckoutSet');
-        $rc = ciniki_sapos_web_paypalExpressCheckoutSet($ciniki, $ciniki['request']['business_id'], array(
+        $rc = ciniki_sapos_web_paypalExpressCheckoutSet($ciniki, $ciniki['request']['tnid'], array(
             'amount'=>$cart['total_amount'],
             'type'=>'Sale',
             'returnurl'=>$ciniki['request']['ssl_domain_base_url'] . '/cart/pesuccess',
@@ -663,7 +663,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         // Load stripe settings
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'paypalExpressCheckoutSet');
-        $rc = ciniki_sapos_web_paypalExpressCheckoutSet($ciniki, $ciniki['request']['business_id'], array(
+        $rc = ciniki_sapos_web_paypalExpressCheckoutSet($ciniki, $ciniki['request']['tnid'], array(
             'amount'=>$cart['total_amount'],
             'type'=>'Sale',
             'returnurl'=>$ciniki['request']['ssl_domain_base_url'] . '/cart/pesuccess',
@@ -690,7 +690,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         // Get the paypal payment information
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'paypalExpressCheckoutGet');
-        $rc = ciniki_sapos_web_paypalExpressCheckoutGet($ciniki, $ciniki['request']['business_id'], array(
+        $rc = ciniki_sapos_web_paypalExpressCheckoutGet($ciniki, $ciniki['request']['tnid'], array(
             'token'=>$_GET['token'],
             ));
         if( $rc['stat'] != 'ok' ) {
@@ -716,7 +716,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         // Get the paypal payment information
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'paypalExpressCheckoutDo');
-        $rc = ciniki_sapos_web_paypalExpressCheckoutDo($ciniki, $ciniki['request']['business_id'], array(
+        $rc = ciniki_sapos_web_paypalExpressCheckoutDo($ciniki, $ciniki['request']['tnid'], array(
             'invoice_id'=>$cart['id'],
             'type'=>'Sale',
             'amount'=>$cart['total_amount'],
@@ -731,7 +731,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 
         if( !isset($carterrors) || $carterrors == '' ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartPaymentReceived');
-            $rc = ciniki_sapos_web_cartPaymentReceived($ciniki, $settings, $ciniki['request']['business_id'], $cart);
+            $rc = ciniki_sapos_web_cartPaymentReceived($ciniki, $settings, $ciniki['request']['tnid'], $cart);
             if( $rc['stat'] != 'ok' ) {
                 $carterrors = "We have received your payment, thank you. There was a problem processing your order, so have notified the approriate people to look into it.";
                 error_log('ERR-CART: ' . print_r($rc['err']));
@@ -1023,7 +1023,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         //
         $inv = 'no';
         $codes = 'no';
-        if( isset($ciniki['business']['modules']['ciniki.sapos']['flags']) && ($ciniki['business']['modules']['ciniki.sapos']['flags']&0x0400) == 0x0400 ) {
+        if( isset($ciniki['tenant']['modules']['ciniki.sapos']['flags']) && ($ciniki['tenant']['modules']['ciniki.sapos']['flags']&0x0400) == 0x0400 ) {
             $codes = 'yes';
         }
         if( isset($settings['page-cart-inventory-customersj-display']) 
@@ -1190,7 +1190,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                 $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'sapos', 'cartItemsDetails');
                 if( $rc['stat'] == 'ok') {
                     $fn = $pkg . '_' . $mod . '_sapos_cartItemsDetails';
-                    $rc = $fn($ciniki, $ciniki['request']['business_id'], array(
+                    $rc = $fn($ciniki, $ciniki['request']['tnid'], array(
                         'object'=>$o, 'object_ids'=>$object_ids));
                     if( isset($rc['details']) ) {
                         foreach($rc['details'] as $detail) {
@@ -1204,7 +1204,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                 //
                 // Get the number reserved
                 //
-                $rc = ciniki_sapos_getReservedQuantities($ciniki, $ciniki['request']['business_id'], 
+                $rc = ciniki_sapos_getReservedQuantities($ciniki, $ciniki['request']['tnid'], 
                     $o, $object_ids, $cart['id']);
                 if( isset($rc['quantities']) ) {
                     foreach($rc['quantities'] as $quantity) {
@@ -1227,7 +1227,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
             $strsql = "SELECT id, display_name "
                 . "FROM ciniki_customers "
                 . "WHERE parent_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['session']['customer']['id']) . "' "
-                . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+                . "AND tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
                 . "";
             $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.customers', 'child');
             if( $rc['stat'] != 'ok' ) {

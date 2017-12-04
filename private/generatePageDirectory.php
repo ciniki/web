@@ -18,12 +18,12 @@ function ciniki_web_generatePageDirectory($ciniki, $settings) {
     // Check if a file was specified to be downloaded
     //
     $download_err = '';
-    if( isset($ciniki['business']['modules']['ciniki.directory'])
+    if( isset($ciniki['tenant']['modules']['ciniki.directory'])
         && isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != ''
         && isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] == 'download'
         && isset($ciniki['request']['uri_split'][2]) && $ciniki['request']['uri_split'][2] != '' ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'directory', 'web', 'fileDownload');
-        $rc = ciniki_directory_web_fileDownload($ciniki, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][0], $ciniki['request']['uri_split'][2]);
+        $rc = ciniki_directory_web_fileDownload($ciniki, $ciniki['request']['tnid'], $ciniki['request']['uri_split'][0], $ciniki['request']['uri_split'][2]);
         if( $rc['stat'] == 'ok' ) {
             header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
             header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
@@ -77,7 +77,7 @@ function ciniki_web_generatePageDirectory($ciniki, $settings) {
         // Check if this is an entry
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'directory', 'web', 'entryDetails');
-        $rc = ciniki_directory_web_entryDetails($ciniki, $settings, $ciniki['request']['business_id'], $entry_permalink);
+        $rc = ciniki_directory_web_entryDetails($ciniki, $settings, $ciniki['request']['tnid'], $entry_permalink);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -87,7 +87,7 @@ function ciniki_web_generatePageDirectory($ciniki, $settings) {
         $page_title .= ' - ' . $entry['title'];
 
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processGalleryImage');
-        $rc = ciniki_web_processGalleryImage($ciniki, $settings, $ciniki['request']['business_id'], array(
+        $rc = ciniki_web_processGalleryImage($ciniki, $settings, $ciniki['request']['tnid'], array(
             'item'=>$entry,
             'gallery_url'=>"$base_url/$entry_permalink/gallery",
             'article_title'=>$article_title,
@@ -109,7 +109,7 @@ function ciniki_web_generatePageDirectory($ciniki, $settings) {
         // Check if this is an entry
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'directory', 'web', 'entryDetails');
-        $rc = ciniki_directory_web_entryDetails($ciniki, $settings, $ciniki['request']['business_id'], $category);
+        $rc = ciniki_directory_web_entryDetails($ciniki, $settings, $ciniki['request']['tnid'], $category);
         if( $rc['stat'] != 'ok' && $rc['stat'] != '404' ) {
             return $rc;
         }
@@ -132,7 +132,7 @@ function ciniki_web_generatePageDirectory($ciniki, $settings) {
             // Get the list of links to be displayed
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'directory', 'web', 'list');
-            $rc = ciniki_directory_web_list($ciniki, $ciniki['request']['business_id'], $category);
+            $rc = ciniki_directory_web_list($ciniki, $ciniki['request']['tnid'], $category);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -175,7 +175,7 @@ function ciniki_web_generatePageDirectory($ciniki, $settings) {
         // Get the list of entries to be displayed
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'directory', 'web', 'list');
-        $rc = ciniki_directory_web_list($ciniki, $ciniki['request']['business_id'], '');
+        $rc = ciniki_directory_web_list($ciniki, $ciniki['request']['tnid'], '');
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -201,7 +201,7 @@ function ciniki_web_generatePageDirectory($ciniki, $settings) {
     else {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'directory', 'web', 'tagCloud');
         $base_url = $ciniki['request']['base_url'] . '/directory';
-        $rc = ciniki_directory_web_tagCloud($ciniki, $settings, $ciniki['request']['business_id']);
+        $rc = ciniki_directory_web_tagCloud($ciniki, $settings, $ciniki['request']['tnid']);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }

@@ -41,7 +41,7 @@ function ciniki_web_generateMasterIndex(&$ciniki, $settings) {
     // Generate the content of the page
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
-    $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-home');
+    $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'tnid', $ciniki['request']['tnid'], 'ciniki.web', 'content', 'page-home');
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -108,29 +108,29 @@ function ciniki_web_generateMasterIndex(&$ciniki, $settings) {
         . "";
 
     //
-    // Grab the list of businesses from the database and display
+    // Grab the list of tenants from the database and display
     //
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'web', 'featured');
-    $rc = ciniki_businesses_web_featured($ciniki, $settings);
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'web', 'featured');
+    $rc = ciniki_tenants_web_featured($ciniki, $settings);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
-    $businesses = $rc['businesses'];
-    if( count($businesses) > 0 ) {
+    $tenants = $rc['tenants'];
+    if( count($tenants) > 0 ) {
         $content .= "<article class='page'>\n"
-            . "<header class='entry-title'><h1 class='entry-title'>Featured Businesses</h1></header>\n"
+            . "<header class='entry-title'><h1 class='entry-title'>Featured Tenants</h1></header>\n"
             . "<div class='entry-content'>"
             . "<div class='button-list'>"
             . "";
-        foreach($businesses as $bnum => $b) {
-            $business = $b['business'];
-            if( isset($business['domain']) && $business['domain'] != '' ) {
-                $url = "http://" . $business['domain'] . "";
+        foreach($tenants as $bnum => $b) {
+            $tenant = $b['tenant'];
+            if( isset($tenant['domain']) && $tenant['domain'] != '' ) {
+                $url = "http://" . $tenant['domain'] . "";
             } else {
-                $url = "http://" . $ciniki['config']['ciniki.web']['master.domain'] . "/" . $business['sitename'];
+                $url = "http://" . $ciniki['config']['ciniki.web']['master.domain'] . "/" . $tenant['sitename'];
             }
             $content .= "<div class='button-list-wrap'><div class='button-list-button'>"
-                . "<a target='_blank' title='" . $business['name'] . "' alt='" . $business['name'] . "' href='$url'><span>" . $business['name'] . "</span></a>"
+                . "<a target='_blank' title='" . $tenant['name'] . "' alt='" . $tenant['name'] . "' href='$url'><span>" . $tenant['name'] . "</span></a>"
                 . "</div></div>"
                 . "\n";
         }
@@ -144,13 +144,13 @@ function ciniki_web_generateMasterIndex(&$ciniki, $settings) {
     //
     // List any upcoming events
     //
-    if( isset($ciniki['business']['modules']['ciniki.events']) 
+    if( isset($ciniki['tenant']['modules']['ciniki.events']) 
         && $settings['page-events-active'] == 'yes' ) {
         //
         // Load and parse the events
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'eventList');
-        $rc = ciniki_events_web_eventList($ciniki, $ciniki['request']['business_id'], 'upcoming', 3);
+        $rc = ciniki_events_web_eventList($ciniki, $ciniki['request']['tnid'], 'upcoming', 3);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }

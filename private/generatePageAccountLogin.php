@@ -13,7 +13,7 @@
 // Returns
 // -------
 //
-function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, $breadcrumbs) {
+function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $tnid, $breadcrumbs) {
 
     //
     // Check if the customer is logged in
@@ -55,7 +55,7 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
             && isset($_POST['password']) && $_POST['password'] != '' 
             ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'auth');
-            $rc = ciniki_customers_web_auth($ciniki, $settings, $business_id, $_POST['email'], $_POST['password']);
+            $rc = ciniki_customers_web_auth($ciniki, $settings, $tnid, $_POST['email'], $_POST['password']);
             if( $rc['stat'] != 'ok' ) {
                 $blocks[] = array('type'=>'formmessage', 'level'=>'error', 
                     'message'=>"Unable to authenticate, please try again or click Forgot your password to get a new one");
@@ -66,12 +66,12 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
                 //
                 // Check for any module information that should be loaded into the session
                 //
-                foreach($ciniki['business']['modules'] as $module => $m) {
+                foreach($ciniki['tenant']['modules'] as $module => $m) {
                     list($pkg, $mod) = explode('.', $module);
                     $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'accountSessionLoad');
                     if( $rc['stat'] == 'ok' ) {
                         $fn = $rc['function_call'];
-                        $rc = $fn($ciniki, $settings, $business_id);
+                        $rc = $fn($ciniki, $settings, $tnid);
                         if( $rc['stat'] != 'ok' ) {
                             return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.192', 'msg'=>'Unable to load account information', 'err'=>$rc['err']));
                         }
@@ -121,7 +121,7 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
         if( isset($_POST['email']) && $_POST['email'] != '' ) {
             $url = $ciniki['request']['ssl_domain_base_url'] . '/account/passwordreset';
             ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'passwordRequestReset');
-            $rc = ciniki_customers_web_passwordRequestReset($ciniki, $business_id, $_POST['email'], $url);
+            $rc = ciniki_customers_web_passwordRequestReset($ciniki, $tnid, $_POST['email'], $url);
             if( $rc['stat'] != 'ok' ) {
                 $blocks[] = array('type'=>'formmessage', 'level'=>'error', 'message'=>"You must enter a valid email address to get a new password.");
                 $display_form = 'forgot';
@@ -151,7 +151,7 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
             $display_form = 'reset';
         } else {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'changeTempPassword');
-            $rc = ciniki_customers_web_changeTempPassword($ciniki, $business_id, 
+            $rc = ciniki_customers_web_changeTempPassword($ciniki, $tnid, 
                 $_POST['email'], $_POST['temppassword'], $_POST['newpassword']);
             if( $rc['stat'] != 'ok' ) {
                 $blocks[] = array('type'=>'formmessage', 'level'=>'error', 'message'=>"Unable to set your new password, please try again.");
@@ -302,7 +302,7 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
         }
         if( isset($settings['theme']['header-breadcrumbs']) && $settings['theme']['header-breadcrumbs'] == 'yes' && isset($breadcrumbs) ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBreadcrumbs');
-            $rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $business_id, $breadcrumbs);
+            $rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $tnid, $breadcrumbs);
             if( $rc['stat'] == 'ok' ) {
                 $page_content .= $rc['content'];
             }
@@ -317,7 +317,7 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $business_id, 
     // Process the blocks of content
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlocks');
-    $rc = ciniki_web_processBlocks($ciniki, $settings, $business_id, $blocks);
+    $rc = ciniki_web_processBlocks($ciniki, $settings, $tnid, $blocks);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }

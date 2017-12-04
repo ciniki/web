@@ -9,7 +9,7 @@
 // Returns
 // -------
 //
-function ciniki_web_collectionObjSettingsGet($ciniki, $business_id, $collection_id) {
+function ciniki_web_collectionObjSettingsGet($ciniki, $tnid, $collection_id) {
 
     //
     // Get the list of objects
@@ -17,7 +17,7 @@ function ciniki_web_collectionObjSettingsGet($ciniki, $business_id, $collection_
     $strsql = "SELECT id, object, title, sequence, num_items, more "
         . "FROM ciniki_web_collection_objs "
         . "WHERE collection_id = '" . ciniki_core_dbQuote($ciniki, $collection_id) . "' "
-        . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "AND tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "";
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
     $rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.web', array(

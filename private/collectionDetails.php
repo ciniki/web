@@ -9,7 +9,7 @@
 // Returns
 // -------
 //
-function ciniki_web_collectionDetails($ciniki, $business_id, $collection_permalink) {
+function ciniki_web_collectionDetails($ciniki, $tnid, $collection_permalink) {
 
     //
     // Query for the collections
@@ -32,9 +32,9 @@ function ciniki_web_collectionDetails($ciniki, $business_id, $collection_permali
         . "FROM ciniki_web_collections "
         . "LEFT JOIN ciniki_web_collection_objs ON ("
             . "ciniki_web_collections.id = ciniki_web_collection_objs.collection_id "
-            . "AND ciniki_web_collection_objs.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+            . "AND ciniki_web_collection_objs.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . ") "
-        . "WHERE ciniki_web_collections.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "WHERE ciniki_web_collections.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "AND ciniki_web_collections.permalink = '" . ciniki_core_dbQuote($ciniki, $collection_permalink) . "' "
         . "AND ciniki_web_collections.status = 10 " // Active and visible on website
         . "ORDER BY ciniki_web_collections.id, ciniki_web_collection_objs.sequence ASC"
@@ -67,7 +67,7 @@ function ciniki_web_collectionDetails($ciniki, $business_id, $collection_permali
     $strsql = "SELECT object, COUNT(id) AS num_items "
         . "FROM ciniki_web_collection_objrefs "
         . "WHERE ciniki_web_collection_objrefs.collection_id = '" . ciniki_core_dbQuote($ciniki, $collection['id']) . "' "
-        . "AND ciniki_web_collection_objrefs.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "AND ciniki_web_collection_objrefs.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "GROUP BY object "
         . "";
     $rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.web', array(

@@ -13,7 +13,7 @@
 // Returns
 // -------
 //
-function ciniki_web_generatePageAccountSwitch(&$ciniki, $settings, $business_id, $customer_id) {
+function ciniki_web_generatePageAccountSwitch(&$ciniki, $settings, $tnid, $customer_id) {
 
     //
     // Make sure the new account exists
@@ -32,12 +32,12 @@ function ciniki_web_generatePageAccountSwitch(&$ciniki, $settings, $business_id,
     //
     // call each modules session unload
     //
-    foreach($ciniki['business']['modules'] as $module => $m) {
+    foreach($ciniki['tenant']['modules'] as $module => $m) {
         list($pkg, $mod) = explode('.', $module);
         $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'accountSessionUnload');
         if( $rc['stat'] == 'ok' ) {
             $fn = $rc['function_call'];
-            $rc = $fn($ciniki, $settings, $business_id);
+            $rc = $fn($ciniki, $settings, $tnid);
             if( $rc['stat'] != 'ok' ) {
                 return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.17', 'msg'=>'Unable to unload account information', 'err'=>$rc['err']));
             }
@@ -53,12 +53,12 @@ function ciniki_web_generatePageAccountSwitch(&$ciniki, $settings, $business_id,
     //
     // Call each modules session load for the new user
     //
-    foreach($ciniki['business']['modules'] as $module => $m) {
+    foreach($ciniki['tenant']['modules'] as $module => $m) {
         list($pkg, $mod) = explode('.', $module);
         $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'accountSessionLoad');
         if( $rc['stat'] == 'ok' ) {
             $fn = $rc['function_call'];
-            $rc = $fn($ciniki, $settings, $business_id);
+            $rc = $fn($ciniki, $settings, $tnid);
             if( $rc['stat'] != 'ok' ) {
                 return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.18', 'msg'=>'Unable to load account information', 'err'=>$rc['err']));
             }

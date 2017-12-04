@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_web_hooks_indexObject($ciniki, $business_id, $args) {
+function ciniki_web_hooks_indexObject($ciniki, $tnid, $args) {
     
     if( !isset($args['object']) || $args['object'] == '' ) {
         return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.1', 'msg'=>'No object specified'));
@@ -37,12 +37,12 @@ function ciniki_web_hooks_indexObject($ciniki, $business_id, $args) {
     //
     // Load INTL settings
     //
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'intlSettings');
-    $rc = ciniki_businesses_intlSettings($ciniki, $business_id);
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'private', 'intlSettings');
+    $rc = ciniki_tenants_intlSettings($ciniki, $tnid);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
 
-    return ciniki_web_indexUpdateObject($ciniki, $business_id, $args);
+    return ciniki_web_indexUpdateObject($ciniki, $tnid, $args);
 }
 ?>

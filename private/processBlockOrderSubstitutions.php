@@ -11,16 +11,16 @@
 // Returns
 // -------
 //
-function ciniki_web_processBlockOrderSubstitutions(&$ciniki, $settings, $business_id, $block) {
+function ciniki_web_processBlockOrderSubstitutions(&$ciniki, $settings, $tnid, $block) {
 
     $content = '';
     $show_prices = 'no';
 
     //
-    // Get business/user settings
+    // Get tenant/user settings
     //
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'intlSettings');
-    $rc = ciniki_businesses_intlSettings($ciniki, $business_id);
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'private', 'intlSettings');
+    $rc = ciniki_tenants_intlSettings($ciniki, $tnid);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }

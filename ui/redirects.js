@@ -54,7 +54,7 @@ function ciniki_web_redirects() {
             };  
         this.edit.fieldValue = function(s, i, d) { return this.data[i]; }
         this.edit.fieldHistoryArgs = function(s, i) {
-            return {'method':'ciniki.web.redirectHistory', 'args':{'business_id':M.curBusinessID, 
+            return {'method':'ciniki.web.redirectHistory', 'args':{'tnid':M.curTenantID, 
                 'redirect_id':this.redirect_id, 'field':i}};
         }
         this.edit.addButton('save', 'Save', 'M.ciniki_web_redirects.redirectSave();');
@@ -84,7 +84,7 @@ function ciniki_web_redirects() {
 
     this.menuShow = function(cb) {
         this.menu.data = {};
-        M.api.getJSONCb('ciniki.web.redirectList', {'business_id':M.curBusinessID}, function(rsp) {
+        M.api.getJSONCb('ciniki.web.redirectList', {'tnid':M.curTenantID}, function(rsp) {
             if( rsp.stat != 'ok' ) {
                 M.api.err(rsp);
                 return false;
@@ -100,7 +100,7 @@ function ciniki_web_redirects() {
         this.edit.reset();
         if( rid != null ) { this.edit.redirect_id = rid; }
         this.edit.sections._buttons.buttons.delete.visible = (this.edit.redirect_id>0?'yes':'no');
-        M.api.getJSONCb('ciniki.web.redirectGet', {'business_id':M.curBusinessID, 'redirect_id':this.edit.redirect_id}, function(rsp) {
+        M.api.getJSONCb('ciniki.web.redirectGet', {'tnid':M.curTenantID, 'redirect_id':this.edit.redirect_id}, function(rsp) {
             if( rsp.stat != 'ok' ) {
                 M.api.err(rsp);
                 return false;
@@ -116,7 +116,7 @@ function ciniki_web_redirects() {
         if( this.edit.redirect_id > 0 ) {
             var c = this.edit.serializeForm('no');
             if( c != '' ) {
-                M.api.postJSONCb('ciniki.web.redirectUpdate', {'business_id':M.curBusinessID, 'redirect_id':M.ciniki_web_redirects.edit.redirect_id}, c,
+                M.api.postJSONCb('ciniki.web.redirectUpdate', {'tnid':M.curTenantID, 'redirect_id':M.ciniki_web_redirects.edit.redirect_id}, c,
                     function(rsp) {
                         if( rsp.stat != 'ok' ) {
                             M.api.err(rsp);
@@ -130,7 +130,7 @@ function ciniki_web_redirects() {
         } else {
             var c = this.edit.serializeForm('yes');
             if( c != '' ) {
-                var rsp = M.api.postJSONCb('ciniki.web.redirectAdd', {'business_id':M.curBusinessID}, c, function(rsp) {
+                var rsp = M.api.postJSONCb('ciniki.web.redirectAdd', {'tnid':M.curTenantID}, c, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;
@@ -152,7 +152,7 @@ function ciniki_web_redirects() {
     this.redirectDelete = function() {
         if( confirm("Are you sure you want to remove this redirect?") ) {
             var rsp = M.api.getJSONCb('ciniki.web.redirectDelete', 
-                {'business_id':M.curBusinessID, 'redirect_id':M.ciniki_web_redirects.edit.redirect_id}, function(rsp) {
+                {'tnid':M.curTenantID, 'redirect_id':M.ciniki_web_redirects.edit.redirect_id}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;

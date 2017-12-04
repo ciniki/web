@@ -6,13 +6,13 @@
 // Arguments
 // ---------
 // ciniki:
-// business_id:             The ID of the business to get the users for.
+// tnid:             The ID of the tenant to get the users for.
 // args:                    The arguments for the function.
 //
 // Returns
 // -------
 //
-function ciniki_web_hooks_webCollectionUpdate($ciniki, $business_id, $args) {
+function ciniki_web_hooks_webCollectionUpdate($ciniki, $tnid, $args) {
 
     if( isset($args['object']) 
         && isset($args['object_id']) && $args['object_id'] != '' 
@@ -34,7 +34,7 @@ function ciniki_web_hooks_webCollectionUpdate($ciniki, $business_id, $args) {
             . "FROM ciniki_web_collection_objrefs "
             . "WHERE object = '" . ciniki_core_dbQuote($ciniki, $args['object']) . "' "
             . "AND object_id = '" . ciniki_core_dbQuote($ciniki, $args['object_id']) . "' "
-            . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+            . "AND tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . "";
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
         $rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.web', array(
@@ -55,7 +55,7 @@ function ciniki_web_hooks_webCollectionUpdate($ciniki, $business_id, $args) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectDelete');
         foreach($cur_collections as $cur_col_id => $cur_col) {
             if( !in_array($cur_col_id, $new_collection_ids) ) {
-                $rc = ciniki_core_objectDelete($ciniki, $business_id, 'ciniki.web.collection_objref', 
+                $rc = ciniki_core_objectDelete($ciniki, $tnid, 'ciniki.web.collection_objref', 
                     $cur_col['id'], $cur_col['uuid'], 0x04);
                 if( $rc['stat'] != 'ok' ) {
                     return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.3', 'msg'=>'Unable to remove from the collection', 'err'=>$rc['err']));
@@ -69,7 +69,7 @@ function ciniki_web_hooks_webCollectionUpdate($ciniki, $business_id, $args) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectAdd');
         foreach($new_collection_ids as $new_col_id) {
             if( !isset($cur_collections[$new_col_id]) ) {
-                $rc = ciniki_core_objectAdd($ciniki, $business_id, 'ciniki.web.collection_objref', 
+                $rc = ciniki_core_objectAdd($ciniki, $tnid, 'ciniki.web.collection_objref', 
                     array('object'=>$args['object'],
                         'object_id'=>$args['object_id'],
                         'collection_id'=>$new_col_id), 0x04);

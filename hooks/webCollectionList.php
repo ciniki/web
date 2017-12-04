@@ -10,12 +10,12 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:             The ID of the business to get the users for.
+// tnid:             The ID of the tenant to get the users for.
 //
 // Returns
 // -------
 //
-function ciniki_web_hooks_webCollectionList($ciniki, $business_id, $args) {
+function ciniki_web_hooks_webCollectionList($ciniki, $tnid, $args) {
 
     $strsql = "SELECT ciniki_web_collections.id, "
         . "ciniki_web_collections.name, "
@@ -27,7 +27,7 @@ function ciniki_web_hooks_webCollectionList($ciniki, $business_id, $args) {
             . "FROM ciniki_web_collections "
             . "LEFT JOIN ciniki_web_collection_objrefs ON ("
                 . "ciniki_web_collections.id = ciniki_web_collection_objrefs.collection_id "
-                . "AND ciniki_web_collections.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+                . "AND ciniki_web_collections.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
                 . "AND ciniki_web_collection_objrefs.object = '" . ciniki_core_dbQuote($ciniki, $args['object']) . "' "
                 . "AND ciniki_web_collection_objrefs.object_id = '" . ciniki_core_dbQuote($ciniki, $args['object_id']) . "' "
                 . ") ";
@@ -36,12 +36,12 @@ function ciniki_web_hooks_webCollectionList($ciniki, $business_id, $args) {
             . "FROM ciniki_web_collections "
             . "";
     }
-    $strsql .= "WHERE ciniki_web_collections.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+    $strsql .= "WHERE ciniki_web_collections.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "AND ciniki_web_collections.status < 60 "
         . "ORDER BY ciniki_web_collections.sequence, ciniki_web_collections.name ";
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryTree');
-    $rc = ciniki_core_dbHashQueryTree($ciniki, $strsql, 'ciniki.businesses', array(
+    $rc = ciniki_core_dbHashQueryTree($ciniki, $strsql, 'ciniki.tenants', array(
         array('container'=>'collections', 'fname'=>'id', 'name'=>'collection', 
             'fields'=>array('id', 'name', 'permalink', 'sequence', 'selected'=>'active'),
             ),

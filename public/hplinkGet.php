@@ -8,7 +8,7 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:         The ID of the business the home page link is attached to.
+// tnid:         The ID of the tenant the home page link is attached to.
 // hplink_id:          The ID of the home page link to get the details for.
 //
 // Returns
@@ -20,7 +20,7 @@ function ciniki_web_hplinkGet($ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'),
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'),
         'hplink_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Home Page Link'),
         ));
     if( $rc['stat'] != 'ok' ) {
@@ -30,19 +30,19 @@ function ciniki_web_hplinkGet($ciniki) {
 
     //
     // Make sure this module is activated, and
-    // check permission to run this function for this business
+    // check permission to run this function for this tenant
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
-    $rc = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.hplinkGet');
+    $rc = ciniki_web_checkAccess($ciniki, $args['tnid'], 'ciniki.web.hplinkGet');
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
 
     //
-    // Load business settings
+    // Load tenant settings
     //
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'intlSettings');
-    $rc = ciniki_businesses_intlSettings($ciniki, $args['business_id']);
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'private', 'intlSettings');
+    $rc = ciniki_tenants_intlSettings($ciniki, $args['tnid']);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -77,7 +77,7 @@ function ciniki_web_hplinkGet($ciniki) {
             . "ciniki_web_hplinks.sequence, "
             . "ciniki_web_hplinks.image_id "
             . "FROM ciniki_web_hplinks "
-            . "WHERE ciniki_web_hplinks.business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+            . "WHERE ciniki_web_hplinks.tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
             . "AND ciniki_web_hplinks.id = '" . ciniki_core_dbQuote($ciniki, $args['hplink_id']) . "' "
             . "";
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryArrayTree');
@@ -104,7 +104,7 @@ function ciniki_web_hplinkGet($ciniki) {
             . "ciniki_web_hplinks.sequence, "
             . "ciniki_web_hplinks.image_id "
             . "FROM ciniki_web_hplinks "
-            . "WHERE ciniki_web_hplinks.business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+            . "WHERE ciniki_web_hplinks.tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
             . "AND ciniki_web_hplinks.parent_id = '" . ciniki_core_dbQuote($ciniki, $args['hplink_id']) . "' "
             . "";
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryArrayTree');
@@ -133,7 +133,7 @@ function ciniki_web_hplinkGet($ciniki) {
         . "ciniki_web_hplinks.sequence, "
         . "ciniki_web_hplinks.image_id "
         . "FROM ciniki_web_hplinks "
-        . "WHERE ciniki_web_hplinks.business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+        . "WHERE ciniki_web_hplinks.tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
         . "AND ciniki_web_hplinks.parent_id = 0 "
         . "";
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryArrayTree');

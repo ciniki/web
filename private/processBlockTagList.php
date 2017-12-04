@@ -12,7 +12,7 @@
 // Returns
 // -------
 //
-function ciniki_web_processBlockTagList($ciniki, $settings, $business_id, $block) {
+function ciniki_web_processBlockTagList($ciniki, $settings, $tnid, $block) {
 
     if( !isset($block['tags']) || count($block['tags']) == 0 ) {
         return array('stat'=>'ok', 'content'=>'');

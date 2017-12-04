@@ -52,7 +52,7 @@ function ciniki_web_generateShopIndex(&$ciniki, $settings) {
     // Generate the content of the page
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
-    $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-shop');
+    $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'tnid', $ciniki['request']['tnid'], 'ciniki.web', 'content', 'page-shop');
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }

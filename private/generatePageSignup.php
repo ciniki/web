@@ -51,7 +51,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
     $page_title = 'Sign Up';
     $display_page = 'form';     // Default to displaying the form
 
-    $invalid_business_names = array('home', 'about', 'events', 'links', 'contact',
+    $invalid_tenant_names = array('home', 'about', 'events', 'links', 'contact',
         'admin', 'manage', 'signup', 'api', 'documentation', 'logout', 'login', 'signin',
         'plans', 'plan', 'sysadmin', 'ciniki', 'ciniki-ca', 'ciniki ca',
         'downloads', 'exhibitions', 'exhibits', 'members', 'sponsors', 'studiotour', 'newsletters', 
@@ -65,7 +65,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
     $plan_err = '';
     $firstname_err = '';
     $lastname_err = '';
-    $business_name_err = '';
+    $tenant_name_err = '';
     $email_address_err = '';
     $username_err = '';
     $password_err = '';
@@ -90,21 +90,21 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
     // Grab the content required for the page
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
-    $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-signup');
+    $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'tnid', $ciniki['request']['tnid'], 'ciniki.web', 'content', 'page-signup');
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
     $page_details = $rc['content'];
 
     //
-    // User clicked verification link, create the business, and display the success message
+    // User clicked verification link, create the tenant, and display the success message
     //
     if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'verify' ) {
         //
         // FIXME: Grab signup information from database
         //
         $strsql = "SELECT signup_data, date_added "
-            . "FROM ciniki_core_business_signups "
+            . "FROM ciniki_core_tenant_signups "
             . "WHERE signup_key = '" . ciniki_core_dbQuote($ciniki, $_GET['t']) . "' "
             . "";
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
@@ -124,7 +124,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
     //      session_start();
             if( !isset($signup['firstname']) 
                 || !isset($signup['lastname']) 
-                || !isset($signup['business_name']) 
+                || !isset($signup['tenant_name']) 
                 || !isset($signup['sitename']) 
                 || !isset($signup['email_address']) 
                 || !isset($signup['username']) 
@@ -162,10 +162,10 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionCommit');
             ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbInsert');
             ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbAddModuleHistory');
-            $rc = ciniki_core_dbTransactionStart($ciniki, 'ciniki.businesses');
+            $rc = ciniki_core_dbTransactionStart($ciniki, 'ciniki.tenants');
             if( $rc['stat'] != 'ok' ) { 
-                ciniki_core_dbTransactionRollback($ciniki, 'ciniki.businesses');
-                $page_error = "We seem to have hit a snag, and were unable to setup your business.  Please try again and if "
+                ciniki_core_dbTransactionRollback($ciniki, 'ciniki.tenants');
+                $page_error = "We seem to have hit a snag, and were unable to setup your tenant.  Please try again and if "
                     . "you continue to have problems, contact support.";
                 $err = 23;
             }   
@@ -191,8 +191,8 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
                 . "UTC_TIMESTAMP())";
             $rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.users');
             if( $rc['stat'] != 'ok' ) { 
-                ciniki_core_dbTransactionRollback($ciniki, 'ciniki.businesses');
-                $page_error = "We seem to have hit a snag, and were unable to setup your business.  Please try again and if "
+                ciniki_core_dbTransactionRollback($ciniki, 'ciniki.tenants');
+                $page_error = "We seem to have hit a snag, and were unable to setup your tenant.  Please try again and if "
                     . "you continue to have problems, contact support.";
                 $err = 25;
             } else {
@@ -205,89 +205,89 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
         }
 
         //
-        // Create business
+        // Create tenant
         //
-        $business_id = 0;
+        $tnid = 0;
         if( $err == 0 ) {
-            $strsql = "INSERT INTO ciniki_businesses (uuid, name, sitename, status, reseller_id, date_added, last_updated) VALUES ("
+            $strsql = "INSERT INTO ciniki_tenants (uuid, name, sitename, status, reseller_id, date_added, last_updated) VALUES ("
                 . "UUID(), "
-                . "'" . ciniki_core_dbQuote($ciniki, $signup['business_name']) . "' "
+                . "'" . ciniki_core_dbQuote($ciniki, $signup['tenant_name']) . "' "
                 . ", '" . ciniki_core_dbQuote($ciniki, $signup['sitename']) . "' "
                 . ", 1 "
-                . ", '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_business_id']) . "' "
+                . ", '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_tnid']) . "' "
                 . ", UTC_TIMESTAMP(), UTC_TIMESTAMP())";
-            $rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.businesses');
+            $rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.tenants');
             if( $rc['stat'] != 'ok' ) { 
-                ciniki_core_dbTransactionRollback($ciniki, 'ciniki.businesses');
-                $page_error = "We seem to have hit a snag, and were unable to setup your business.  Please try again and if "
+                ciniki_core_dbTransactionRollback($ciniki, 'ciniki.tenants');
+                $page_error = "We seem to have hit a snag, and were unable to setup your tenant.  Please try again and if "
                     . "you continue to have problems, contact support.";
                 $err = 22;
             }
             if( !isset($rc['insert_id']) || $rc['insert_id'] < 1 ) {
-                ciniki_core_dbTransactionRollback($ciniki, 'ciniki.businesses');
-                $page_error = "We seem to have hit a snag, and were unable to setup your business.  Please try again and if "
+                ciniki_core_dbTransactionRollback($ciniki, 'ciniki.tenants');
+                $page_error = "We seem to have hit a snag, and were unable to setup your tenant.  Please try again and if "
                     . "you continue to have problems, contact support.";
                 $err = 4;
             } else {
-                $business_id = $rc['insert_id'];
-                ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.businesses', 'ciniki_business_history', $business_id, 
-                    1, 'ciniki_businesses', '', 'name', $signup['business_name']);
-                ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.businesses', 'ciniki_business_history', $business_id, 
-                    1, 'ciniki_businesses', '', 'sitename', $signup['sitename']);
+                $tnid = $rc['insert_id'];
+                ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.tenants', 'ciniki_tenant_history', $tnid, 
+                    1, 'ciniki_tenants', '', 'name', $signup['tenant_name']);
+                ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.tenants', 'ciniki_tenant_history', $tnid, 
+                    1, 'ciniki_tenants', '', 'sitename', $signup['sitename']);
             }
         }
 
         //
-        // Setup business contact
+        // Setup tenant contact
         //
         if( $err == 0 ) {
-            $strsql = "INSERT INTO ciniki_business_details (business_id, detail_key, detail_value, date_added, last_updated) "
-                . "VALUES ('" . ciniki_core_dbQuote($ciniki, $business_id) . "', "
+            $strsql = "INSERT INTO ciniki_tenant_details (tnid, detail_key, detail_value, date_added, last_updated) "
+                . "VALUES ('" . ciniki_core_dbQuote($ciniki, $tnid) . "', "
                 . "'contact.person.name', "
                 . "'" . ciniki_core_dbQuote($ciniki, $signup['firstname'] . " " . $signup['lastname']) . "', "
                 . "UTC_TIMESTAMP(), UTC_TIMESTAMP()) ";
-            $rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.businesses');
+            $rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.tenants');
             if( $rc['stat'] != 'ok' ) {
-                ciniki_core_dbTransactionRollback($ciniki, 'ciniki.businesses');
-                $page_error = "We seem to have hit a snag, and were unable to setup your business.  Please try again and if "
+                ciniki_core_dbTransactionRollback($ciniki, 'ciniki.tenants');
+                $page_error = "We seem to have hit a snag, and were unable to setup your tenant.  Please try again and if "
                     . "you continue to have problems, contact support.";
                 $err = 5;
             } else {
-                ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.businesses', 'ciniki_business_history', $business_id, 
-                    1, 'ciniki_business_details', 'contact.person.name', 'detail_value', $signup['firstname'] . " " . $signup['lastname']);
+                ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.tenants', 'ciniki_tenant_history', $tnid, 
+                    1, 'ciniki_tenant_details', 'contact.person.name', 'detail_value', $signup['firstname'] . " " . $signup['lastname']);
             }
         }
         if( $err == 0 ) {
-            $strsql = "INSERT INTO ciniki_business_details (business_id, detail_key, detail_value, date_added, last_updated) "
-                . "VALUES ('" . ciniki_core_dbQuote($ciniki, $business_id) . "', "
+            $strsql = "INSERT INTO ciniki_tenant_details (tnid, detail_key, detail_value, date_added, last_updated) "
+                . "VALUES ('" . ciniki_core_dbQuote($ciniki, $tnid) . "', "
                 . "'contact.email.address', "
                 . "'" . ciniki_core_dbQuote($ciniki, $signup['email_address']) . "', "
                 . "UTC_TIMESTAMP(), UTC_TIMESTAMP()) ";
-            $rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.businesses');
+            $rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.tenants');
             if( $rc['stat'] != 'ok' ) {
-                ciniki_core_dbTransactionRollback($ciniki, 'ciniki.businesses');
-                $page_error = "We seem to have hit a snag, and were unable to setup your business.  Please try again and if "
+                ciniki_core_dbTransactionRollback($ciniki, 'ciniki.tenants');
+                $page_error = "We seem to have hit a snag, and were unable to setup your tenant.  Please try again and if "
                     . "you continue to have problems, contact support.";
                 $err = 6;
             } else {
-                ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.businesses', 'ciniki_business_history', $business_id, 
-                    1, 'ciniki_business_details', 'contact.email.address', 'detail_value', $signup['email_address']);
+                ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.tenants', 'ciniki_tenant_history', $tnid, 
+                    1, 'ciniki_tenant_details', 'contact.email.address', 'detail_value', $signup['email_address']);
             }
         }
 
         //
-        // Add business owner
+        // Add tenant owner
         //
         if( $err == 0 ) {
-            $strsql = "INSERT INTO ciniki_business_users (business_id, user_id, "
+            $strsql = "INSERT INTO ciniki_tenant_users (tnid, user_id, "
                 . "package, permission_group, status, date_added, last_updated) VALUES ("
-                . "'" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+                . "'" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
                 . ", '" . ciniki_core_dbQuote($ciniki, $user_id) . "' "
                 . ", 'ciniki', 'owners', 10, UTC_TIMESTAMP(), UTC_TIMESTAMP())";
-            $rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.businesses');
+            $rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.tenants');
             if( $rc['stat'] != 'ok' ) {
-                ciniki_core_dbTransactionRollback($ciniki, 'ciniki.businesses');
-                $page_error = "We seem to have hit a snag, and were unable to setup your business.  Please try again and if "
+                ciniki_core_dbTransactionRollback($ciniki, 'ciniki.tenants');
+                $page_error = "We seem to have hit a snag, and were unable to setup your tenant.  Please try again and if "
                     . "you continue to have problems, contact support.";
                 $err = 21;
             } 
@@ -301,23 +301,23 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
             foreach($modules as $module) {
                 list($pmod,$flags) = explode(':', $module);
                 $mod = explode('.', $pmod);
-                $strsql = "INSERT INTO ciniki_business_modules (business_id, "
+                $strsql = "INSERT INTO ciniki_tenant_modules (tnid, "
                     . "package, module, status, flags, ruleset, date_added, last_updated, last_change) VALUES ("
-                    . "'" . ciniki_core_dbQuote($ciniki, $business_id) . "', "
+                    . "'" . ciniki_core_dbQuote($ciniki, $tnid) . "', "
                     . "'" . ciniki_core_dbQuote($ciniki, $mod[0]) . "', "
                     . "'" . ciniki_core_dbQuote($ciniki, $mod[1]) . "', "
                     . "1, "
                     . "'" . ciniki_core_dbQuote($ciniki, $flags) . "', "
                     . "'', UTC_TIMESTAMP(), UTC_TIMESTAMP(), UTC_TIMESTAMP())";
-                $rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.businesses');
+                $rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.tenants');
                 if( $rc['stat'] != 'ok' ) {
-                    ciniki_core_dbTransactionRollback($ciniki, 'ciniki.businesses');
-                    $page_error = "We seem to have hit a snag, and were unable to setup your business.  Please try again and if "
+                    ciniki_core_dbTransactionRollback($ciniki, 'ciniki.tenants');
+                    $page_error = "We seem to have hit a snag, and were unable to setup your tenant.  Please try again and if "
                         . "you continue to have problems, contact support.";
                     $err = 7;
                 }
                 //
-                // Check if there is an initialization script for the module when the business is enabled
+                // Check if there is an initialization script for the module when the tenant is enabled
                 //
                 if( $mod[0] == 'ciniki' 
                     && file_exists($ciniki['config']['ciniki.core']['modules_dir'] . '/' . $mod[1] . '/private/moduleInitialize.php') 
@@ -325,7 +325,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
                     ciniki_core_loadMethod($ciniki, 'ciniki', '' . $mod[1] . '', 'private', 'moduleInitialize');
                     $method_function = $mod[0] . '_' . $mod[1] . '_moduleInitialize';
                     if( is_callable($method_function) ) {
-                        $method_function($ciniki, $business_id);
+                        $method_function($ciniki, $tnid);
                     }
                 }
             }
@@ -335,19 +335,19 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
         // Setup subscription
         //
         if( $err == 0 ) {
-            $strsql = "INSERT INTO ciniki_business_subscriptions (business_id, status, "
+            $strsql = "INSERT INTO ciniki_tenant_subscriptions (tnid, status, "
                 . "signup_date, trial_start_date, trial_days, currency, "
                 . "monthly, discount_percent, discount_amount, payment_type, payment_frequency, "
                 . "date_added, last_updated) VALUES ("
-                . "'" . ciniki_core_dbQuote($ciniki, $business_id) . "', "
+                . "'" . ciniki_core_dbQuote($ciniki, $tnid) . "', "
                 . "2, UTC_TIMESTAMP(), UTC_TIMESTAMP(), '60', 'USD', "
                 . "'" . ciniki_core_dbQuote($ciniki, $signup['plan_monthly']) . "', "
                 . "0, 0, 'paypal', 10, "
                 . "UTC_TIMESTAMP(), UTC_TIMESTAMP())";
-            $rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.businesses');
+            $rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.tenants');
             if( $rc['stat'] != 'ok' ) {
-                ciniki_core_dbTransactionRollback($ciniki, 'ciniki.businesses');
-                $page_error = "We seem to have hit a snag, and were unable to setup your business.  Please try again and if "
+                ciniki_core_dbTransactionRollback($ciniki, 'ciniki.tenants');
+                $page_error = "We seem to have hit a snag, and were unable to setup your tenant.  Please try again and if "
                     . "you continue to have problems, contact support.";
                 $err = 8;
             } 
@@ -357,20 +357,20 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
         // Commit, and display success message
         //
         if( $err == 0 ) {
-            ciniki_core_dbTransactionCommit($ciniki, 'ciniki.businesses');
+            ciniki_core_dbTransactionCommit($ciniki, 'ciniki.tenants');
 
             //
-            // Update the last_change date in the business modules
+            // Update the last_change date in the tenant modules
             // Ignore the result, as we don't want to stop user updates if this fails.
             //
-            ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
-            ciniki_businesses_updateModuleChangeDate($ciniki, $business_id, 'ciniki', 'businesses');
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'private', 'updateModuleChangeDate');
+            ciniki_tenants_updateModuleChangeDate($ciniki, $tnid, 'ciniki', 'tenants');
 
             //
-            // Load the business mail template
+            // Load the tenant mail template
             //
-            ciniki_core_loadMethod($ciniki, 'ciniki', 'mail', 'private', 'loadBusinessTemplate');
-            $rc = ciniki_mail_loadBusinessTemplate($ciniki, $ciniki['config']['ciniki.core']['master_business_id'], array('title'=>'Welcome'));
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'mail', 'private', 'loadTenantTemplate');
+            $rc = ciniki_mail_loadTenantTemplate($ciniki, $ciniki['config']['ciniki.core']['master_tnid'], array('title'=>'Welcome'));
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -384,7 +384,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
             $manager_url = $ciniki['config']['ciniki.core']['manage.url'];
             $msg = "<tr><td style='" . $theme['td_body'] . "'>"
                 . "<p style='" . $theme['p'] . "'>"
-                . 'Thank you for choosing the Ciniki platform to manage your business. '
+                . 'Thank you for choosing the Ciniki platform to manage your tenant. '
                 . "Please save this email for future reference.  We've included some important information and links below."
                 . "</p>\n\n<p style='" . $theme['p'] . "'>"
                 . "To get started, you can login at <a style='" . $theme['a'] . "' href='$manager_url'>$manager_url</a> with your email address and the password shown below."
@@ -417,16 +417,16 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
                 );
 
             //
-            // Email a notification to the owners of the master business
+            // Email a notification to the owners of the master tenant
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQueryList');
     
-            $strsql = "SELECT user_id FROM ciniki_business_users "
-                . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_business_id']) . "' "
+            $strsql = "SELECT user_id FROM ciniki_tenant_users "
+                . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_tnid']) . "' "
                 . "AND permission_group = 'owners' "
                 . "AND status = 10 "
                 . "";
-            $rc = ciniki_core_dbQueryList($ciniki, $strsql, 'ciniki.businesses', 'user_ids', 'user_id');
+            $rc = ciniki_core_dbQueryList($ciniki, $strsql, 'ciniki.tenants', 'user_ids', 'user_id');
             if( $rc['stat'] == 'ok' ) {
                 foreach($rc['user_ids'] as $uid) {
                     // 
@@ -434,8 +434,8 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
                     //
                     if( $uid != $ciniki['session']['user']['id'] ) {
                         $ciniki['emailqueue'][] = array('user_id'=>$uid,
-                            'subject'=>'Sign Up: ' . $signup['business_name'],
-                            'textmsg'=>"New business added: " . $signup['business_name'] . "\n"
+                            'subject'=>'Sign Up: ' . $signup['tenant_name'],
+                            'textmsg'=>"New tenant added: " . $signup['tenant_name'] . "\n"
                                 . "User: " . $signup['firstname'] . " " . $signup['lastname'] . "\n"
                                 . "Email: " . $signup['email_address'] . "\n"
                                 . "\n\n"
@@ -458,7 +458,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
             //
             // Remove the entry from the signup table
             //
-            $strsql = "DELETE FROM ciniki_core_business_signups "
+            $strsql = "DELETE FROM ciniki_core_tenant_signups "
                 . "WHERE signup_key = '" . ciniki_core_dbQuote($ciniki, $_GET['t']) . "' "
                 . "";
             ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDelete');
@@ -489,18 +489,18 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
             $lastname_err = 'You must specify a last name.';
             $err = 11;
         }
-        if( !isset($_POST['business_name']) || $_POST['business_name'] == '' || strlen($_POST['business_name']) < 2 ) {
-            $business_name_err = 'You must specify a business name.';
+        if( !isset($_POST['tenant_name']) || $_POST['tenant_name'] == '' || strlen($_POST['tenant_name']) < 2 ) {
+            $tenant_name_err = 'You must specify a tenant name.';
             $err = 12;
         }
-        // Check for invalid business names
-        if( in_array(strtolower($_POST['business_name']), $invalid_business_names) ) {
-            $business_name_err = "This business name is restricted, please choose another.";
+        // Check for invalid tenant names
+        if( in_array(strtolower($_POST['tenant_name']), $invalid_tenant_names) ) {
+            $tenant_name_err = "This tenant name is restricted, please choose another.";
             $err = 13;
         }
-        $sitename = preg_replace('/[^a-z0-9\-_]/', '', strtolower($_POST['business_name']));
-        if( in_array($sitename, $invalid_business_names) ) {
-            $business_name_err = "The business name you choose is restricted, please choose another.";
+        $sitename = preg_replace('/[^a-z0-9\-_]/', '', strtolower($_POST['tenant_name']));
+        if( in_array($sitename, $invalid_tenant_names) ) {
+            $tenant_name_err = "The tenant name you choose is restricted, please choose another.";
             $err = 14;
         }
         if( !isset($_POST['email_address']) || $_POST['email_address'] == '' ) {
@@ -533,20 +533,20 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
         }
 
         //
-        // Check the business name or sitename does not already exist
+        // Check the tenant name or sitename does not already exist
         //
         $strsql = "SELECT id "
-            . "FROM ciniki_businesses "
-            . "WHERE name = '" . ciniki_core_dbQuote($ciniki, $_POST['business_name']) . "' "
+            . "FROM ciniki_tenants "
+            . "WHERE name = '" . ciniki_core_dbQuote($ciniki, $_POST['tenant_name']) . "' "
             . "OR sitename = '" . ciniki_core_dbQuote($ciniki, $sitename) . "' "
             . "";
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
-        $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'business');
+        $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.tenants', 'tenant');
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
-        if( isset($rc['business']) ) {
-            $business_name_err = "We're sorry, but this business already exists.  Please choose another name";
+        if( isset($rc['tenant']) ) {
+            $tenant_name_err = "We're sorry, but this tenant already exists.  Please choose another name";
             $err = 17;
         }
 
@@ -575,7 +575,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
                     . "FROM ciniki_users "
                     . "WHERE username = '" . ciniki_core_dbQuote($ciniki, $uname) . "' "
                     . "";
-                $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'user');
+                $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.tenants', 'user');
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;
                 }
@@ -613,7 +613,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
                 . "WHERE username = '" . ciniki_core_dbQuote($ciniki, $username) . "' "
                 . "OR email = '" . ciniki_core_dbQuote($ciniki, $_POST['email_address']) . "' "
                 . "";
-            $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'user');
+            $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.tenants', 'user');
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -634,7 +634,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
                         . "WHERE email = '" . ciniki_core_dbQuote($ciniki, $_POST['email_address']) . "' "
                         . "AND password = SHA1('" . ciniki_core_dbQuote($ciniki, $password) . "') "
                         . "";
-                    $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'user');
+                    $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.tenants', 'user');
                     if( $rc['stat'] != 'ok' ) {
                         return $rc;
                     }
@@ -656,12 +656,12 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
         if( $err == 0 ) {
 //          session_start();
             $strsql = "SELECT id, name, monthly, trial_days, modules "
-                . "FROM ciniki_business_plans "
+                . "FROM ciniki_tenant_plans "
                 . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $_POST['plan']) . "' "
-                . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_business_id']) . "' "
+                . "AND tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_tnid']) . "' "
                 . "AND (flags&0x01) = 1 "
                 . "";
-            $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'plan');
+            $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.tenants', 'plan');
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -685,7 +685,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
         if( $err == 0 ) {
             $signup['firstname'] = $_POST['firstname'];
             $signup['lastname'] = $_POST['lastname'];
-            $signup['business_name'] = $_POST['business_name'];
+            $signup['tenant_name'] = $_POST['tenant_name'];
             $signup['sitename'] = $sitename;
             $signup['email_address'] = $_POST['email_address'];
 //          $signup['username'] = $_POST['username'];
@@ -697,7 +697,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
             $signup['key'] = md5(date('Y-m-d-H-i-s') . rand()); 
 //          $_SESSION['firstname'] = $_POST['firstname'];
 //          $_SESSION['lastname'] = $_POST['lastname'];
-//          $_SESSION['business_name'] = $_POST['business_name'];
+//          $_SESSION['tenant_name'] = $_POST['tenant_name'];
 //          $_SESSION['sitename'] = $sitename;
 //          $_SESSION['email_address'] = $_POST['email_address'];
 //          $_SESSION['username'] = $_POST['username'];
@@ -705,11 +705,11 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 //          $_SESSION['user_id'] = $user_id;
 //          $_SESSION['time'] = time();
 //          $_SESSION['key'] = md5(date('Y-m-d-H-i-s') . rand());   
-            $strsql = "INSERT INTO ciniki_core_business_signups ("
-                . "uuid, business_id, signup_key, signup_data, "
+            $strsql = "INSERT INTO ciniki_core_tenant_signups ("
+                . "uuid, tnid, signup_key, signup_data, "
                 . "date_added, last_updated) VALUES ("
                 . "UUID(), " 
-                . "'" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_business_id']) . "', "
+                . "'" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_tnid']) . "', "
                 . "'" . ciniki_core_dbQuote($ciniki, $signup['key']) . "', "
                 . "'" . ciniki_core_dbQuote($ciniki, serialize($signup)) . "', "
                 . "UTC_TIMESTAMP(), UTC_TIMESTAMP() "
@@ -727,10 +727,10 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
             $verify_url = $verify_base_url . "?t=" . $signup['key'];
         
             //
-            // Load the business mail template
+            // Load the tenant mail template
             //
-            ciniki_core_loadMethod($ciniki, 'ciniki', 'mail', 'private', 'loadBusinessTemplate');
-            $rc = ciniki_mail_loadBusinessTemplate($ciniki, $ciniki['config']['ciniki.core']['master_business_id'], array('title'=>'Email Verification'));
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'mail', 'private', 'loadTenantTemplate');
+            $rc = ciniki_mail_loadTenantTemplate($ciniki, $ciniki['config']['ciniki.core']['master_tnid'], array('title'=>'Email Verification'));
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -743,13 +743,13 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
             $subject = "Email verification";
             $htmlmsg = $template['html_header']
                 . "<tr><td style='" . $theme['td_body'] . "'>"
-                . "<p style='" . $theme['p'] . "'>Please click on the following link to verify your email address and your business will be setup in Ciniki.</p>"
+                . "<p style='" . $theme['p'] . "'>Please click on the following link to verify your email address and your tenant will be setup in Ciniki.</p>"
                 . "<p style='" . $theme['p'] . "'><a style='" . $theme['a'] . "' href='$verify_url'>$verify_url</a></p>"
                 . "</td></tr>"
                 . $template['html_footer']
                 . "";
             $textmsg = $template['text_header']
-                . "Please click on the following link to verify your email address and your business will be setup in Ciniki."
+                . "Please click on the following link to verify your email address and your tenant will be setup in Ciniki."
                 . "\n\n"
                 . "$verify_url"
                 . "\n\n"
@@ -764,7 +764,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
             error_log('WEB-SIGNUP: ' 
                 . $signup['firstname'] . ', '
                 . $signup['lastname'] . ', '
-                . $signup['business_name'] . ', '
+                . $signup['tenant_name'] . ', '
                 . $signup['sitename'] . ', '
                 . $signup['email_address'] . ', '
                 . $signup['username'] . ', '
@@ -772,16 +772,16 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
                 );
 
             //
-            // Email a notification to the owners of the master business
+            // Email a notification to the owners of the master tenant
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQueryList');
 
-            $strsql = "SELECT user_id FROM ciniki_business_users "
-                . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_business_id']) . "' "
+            $strsql = "SELECT user_id FROM ciniki_tenant_users "
+                . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_tnid']) . "' "
                 . "AND permission_group = 'owners' "
                 . "AND status = 10 "
                 . "";
-            $rc = ciniki_core_dbQueryList($ciniki, $strsql, 'ciniki.businesses', 'user_ids', 'user_id');
+            $rc = ciniki_core_dbQueryList($ciniki, $strsql, 'ciniki.tenants', 'user_ids', 'user_id');
             if( $rc['stat'] == 'ok' ) {
                 foreach($rc['user_ids'] as $uid) {
                     // 
@@ -789,9 +789,9 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
                     //
                     if( $uid != $ciniki['session']['user']['id'] ) {
                         $ciniki['emailqueue'][] = array('user_id'=>$uid,
-                            'subject'=>'Sign Up: ' . $signup['business_name'],
-                            'textmsg'=>"New business signup: \n" 
-                                . "Business Name: " . $signup['business_name'] . "\n"
+                            'subject'=>'Sign Up: ' . $signup['tenant_name'],
+                            'textmsg'=>"New tenant signup: \n" 
+                                . "Tenant Name: " . $signup['tenant_name'] . "\n"
                                 . "User: " . $signup['firstname'] . " " . $signup['lastname'] . "\n"
                                 . "Sitename: " . $signup['sitename'] . "\n"
                                 . "Email: " . $signup['email_address'] . "\n"
@@ -829,7 +829,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
         // Generate the content of the page
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
-        $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-signup');
+        $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'tnid', $ciniki['request']['tnid'], 'ciniki.web', 'content', 'page-signup');
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -862,8 +862,8 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
         if( isset($_POST['firstname']) ) { $firstname = $_POST['firstname']; }
         $lastname = '';
         if( isset($_POST['lastname']) ) { $lastname = $_POST['lastname']; }
-        $business_name = '';
-        if( isset($_POST['business_name']) ) { $business_name = $_POST['business_name']; }
+        $tenant_name = '';
+        if( isset($_POST['tenant_name']) ) { $tenant_name = $_POST['tenant_name']; }
         $sitename = '';
         if( isset($_POST['sitename']) ) { $sitename = $_POST['sitename']; }
         $email_address = '';
@@ -885,13 +885,13 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
         //
         $page_content .= "<b class='entry-title'>Choose a plan</b>";
         $strsql = "SELECT id, name, description, monthly, trial_days "
-            . "FROM ciniki_business_plans "
+            . "FROM ciniki_tenant_plans "
             . "WHERE (flags&0x01) = 1 "
-            . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_business_id']) . "' "
+            . "AND tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['config']['ciniki.core']['master_tnid']) . "' "
             . "ORDER BY sequence, name "
             . "";
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashIDQuery');
-        $rc = ciniki_core_dbHashIDQuery($ciniki, $strsql, 'ciniki.businesses', 'plans', 'id');
+        $rc = ciniki_core_dbHashIDQuery($ciniki, $strsql, 'ciniki.tenants', 'plans', 'id');
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -908,7 +908,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
         $page_content .= "</dl>";
 
         $page_content .= "<b class='entry-title'>Your information</b>";
-    // Form fields: first_name, last_name, business_name, sitename, email_address, username, password, password_again
+    // Form fields: first_name, last_name, tenant_name, sitename, email_address, username, password, password_again
         $page_content .= "<div class='input'><label for='firstname'>First Name</label><input type='text' class='text' name='firstname' value='$firstname'>";
         if( $firstname_err != '' ) {
             $page_content .= "<p class='formerror'>$firstname_err</p>";
@@ -919,11 +919,11 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
             $page_content .= "<p class='formerror'>$lastname_err</p>";
         }
         $page_content .= "</div>";
-        $page_content .= "<div class='input'><label for='business_name'>Business Name</label><input type='text' class='text' name='business_name' value='$business_name'>";
-        if( $business_name_err != '' ) {
-            $page_content .= "<p class='formerror'>$business_name_err</p>";
+        $page_content .= "<div class='input'><label for='tenant_name'>Tenant Name</label><input type='text' class='text' name='tenant_name' value='$tenant_name'>";
+        if( $tenant_name_err != '' ) {
+            $page_content .= "<p class='formerror'>$tenant_name_err</p>";
         }
-        $page_content .= "<p class='formhelp'>If you don't have a business name, just use your first and last name.</p></div>";
+        $page_content .= "<p class='formhelp'>If you don't have a tenant name, just use your first and last name.</p></div>";
 //      $page_content .= "<label for='sitename'>Site Name</label><input type='text' class='text' name='sitename' value='$sitename'>";
         $page_content .= "<div class='input'><label for='email_address'>Email</label><input type='text' class='text' name='email_address' value='$email_address'>";
         if( $email_address_err != '' ) {
@@ -947,7 +947,7 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
 //          }
             $page_content .= "</div>";
         }
-//      $page_content .= "Password must be at least 8 characters, and contain 1 number.  This password will protect your business information, so longer and more cryptic is better.</p>";
+//      $page_content .= "Password must be at least 8 characters, and contain 1 number.  This password will protect your tenant information, so longer and more cryptic is better.</p>";
 //      $page_content .= "<div class='input'><label for='password2'>Retype Password</label><input type='password' class='text' name='password2' value=''>";
         $page_content .= "<div class='input'><label for='useragrees'></label><input type='checkbox' class='' name='useragrees' value='yes'";
         if( $useragrees == 'yes' ) { $page_content .= " checked"; }

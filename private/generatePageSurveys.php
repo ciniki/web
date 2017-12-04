@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This function will generate the members page for the business.
+// This function will generate the members page for the tenant.
 //
 // Arguments
 // ---------
@@ -42,11 +42,11 @@ function ciniki_web_generatePageSurveys($ciniki, $settings) {
         if( $ciniki['request']['uri_split'][0] == 'submit' ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'surveys', 'web', 'submitAnswers');
             $rc = ciniki_surveys_web_submitAnswers($ciniki, $settings, 
-                $ciniki['request']['business_id'], $survey_permalink, $_POST);
+                $ciniki['request']['tnid'], $survey_permalink, $_POST);
         } else {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'surveys', 'web', 'inviteDetails');
             $rc = ciniki_surveys_web_inviteDetails($ciniki, $settings, 
-                $ciniki['request']['business_id'], $survey_permalink);
+                $ciniki['request']['tnid'], $survey_permalink);
         }
         $display_form = 'yes';
         // Check the response codes
@@ -109,7 +109,7 @@ function ciniki_web_generatePageSurveys($ciniki, $settings) {
 
             $page_content .= "<div class='submit'><input type='submit' class='submit' name='submit' value='Submit'></div>";
         }
-        // $page_content .= "<p class='formhelp'>If you don't have a business name, just use your first and last name.</p></div>";
+        // $page_content .= "<p class='formhelp'>If you don't have a tenant name, just use your first and last name.</p></div>";
 
         $page_content = "<article class='page'>\n"
             . "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$page_title</h1></header>\n"

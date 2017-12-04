@@ -1,5 +1,5 @@
 //
-// The app to manage web options for a business
+// The app to manage web options for a tenant
 //
 function ciniki_web_info() {
     
@@ -53,7 +53,7 @@ function ciniki_web_info() {
             return this.data[i]; 
         };
         this.page.fieldHistoryArgs = function(s, i) {
-            return {'method':'ciniki.web.pageSettingsHistory', 'args':{'business_id':M.curBusinessID, 'field':i}};
+            return {'method':'ciniki.web.pageSettingsHistory', 'args':{'tnid':M.curTenantID, 'field':i}};
         }
         this.page.addButton('save', 'Save', 'M.ciniki_web_info.savePage();');
         this.page.addClose('Cancel');
@@ -78,13 +78,13 @@ function ciniki_web_info() {
 
     this.showPage = function(cb) {
         this.page.reset();
-        M.api.getJSONCb('ciniki.web.pageSettingsGet', {'business_id':M.curBusinessID, 
+        M.api.getJSONCb('ciniki.web.pageSettingsGet', {'tnid':M.curTenantID, 
             'page':'info', 'content':'yes'}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
                 }
-                var flags = M.curBusiness.modules['ciniki.info'].flags;
+                var flags = M.curTenant.modules['ciniki.info'].flags;
                 var p = M.ciniki_web_info.page;
                 p.data = rsp.settings;
                 p.sections.subpages.fields = {};
@@ -114,7 +114,7 @@ function ciniki_web_info() {
         var c = this.page.serializeForm('no');
         if( c != '' ) {
             M.api.postJSONCb('ciniki.web.siteSettingsUpdate', 
-                {'business_id':M.curBusinessID}, c, function(rsp) {
+                {'tnid':M.curTenantID}, c, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;

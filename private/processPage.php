@@ -91,7 +91,7 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
     //
     if( $share == 'content' && isset($settings['site-social-share-buttons']) && $settings['site-social-share-buttons'] == 'yes' && ($page['flags']&0x2000) == 0 ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockShareButtons');
-        $rc = ciniki_web_processBlockShareButtons($ciniki, $settings, $ciniki['request']['business_id'], array(
+        $rc = ciniki_web_processBlockShareButtons($ciniki, $settings, $ciniki['request']['tnid'], array(
             'pagetitle'=>$page['title'],
             ));
         if( $rc['stat'] != 'ok' ) {
@@ -152,7 +152,7 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
                     }
                 }
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockImageList');
-                $rc = ciniki_web_processBlockImageList($ciniki, $settings, $ciniki['request']['business_id'], array(
+                $rc = ciniki_web_processBlockImageList($ciniki, $settings, $ciniki['request']['tnid'], array(
                     'base_url'=>$base_url . '/' . $page['permalink'],
                     'list'=>$page['children'],
                     ));
@@ -217,7 +217,7 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
     //
     if( $share == 'end' && isset($settings['site-social-share-buttons']) && $settings['site-social-share-buttons'] == 'yes' && ($page['flags']&0x2000) == 0 ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockShareButtons');
-        $rc = ciniki_web_processBlockShareButtons($ciniki, $settings, $ciniki['request']['business_id'], array(
+        $rc = ciniki_web_processBlockShareButtons($ciniki, $settings, $ciniki['request']['tnid'], array(
             'pagetitle'=>$page['title'],
             ));
         if( $rc['stat'] != 'ok' ) {

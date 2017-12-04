@@ -11,14 +11,14 @@
 // Returns
 // -------
 //
-function ciniki_web_indexDeleteModule(&$ciniki, $business_id, $module) {
+function ciniki_web_indexDeleteModule(&$ciniki, $tnid, $module) {
 
     //
     // Get the current index data
     //
     $strsql = "SELECT id, uuid "
         . "FROM ciniki_web_index "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "AND object LIKE '" . ciniki_core_dbQuote($ciniki, $module) . ".%' "
         . "";
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'object');
@@ -27,7 +27,7 @@ function ciniki_web_indexDeleteModule(&$ciniki, $business_id, $module) {
     }
     if( isset($rc['rows']) ) {
         foreach($rc['rows'] as $row) {
-            $rc = ciniki_core_objectDelete($ciniki, $business_id, 'ciniki.web.index', $row['id'], $row['uuid'], 0x07);
+            $rc = ciniki_core_objectDelete($ciniki, $tnid, 'ciniki.web.index', $row['id'], $row['uuid'], 0x07);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }

@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This file will generate a page to display the list of newsletters for a business.
+// This file will generate a page to display the list of newsletters for a tenant.
 //
 // Arguments
 // ---------
@@ -20,7 +20,7 @@ function ciniki_web_generatePageNewsletters($ciniki, $settings) {
     $download_err = '';
     if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'newsletters', 'web', 'fileDownload');
-        $rc = ciniki_newsletters_web_fileDownload($ciniki, $ciniki['request']['business_id'], $ciniki['request']['uri_split'][0]);
+        $rc = ciniki_newsletters_web_fileDownload($ciniki, $ciniki['request']['tnid'], $ciniki['request']['uri_split'][0]);
         if( $rc['stat'] == 'ok' ) {
             header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
             header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
@@ -71,7 +71,7 @@ function ciniki_web_generatePageNewsletters($ciniki, $settings) {
     // Generate the content of the page
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
-    $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-newsletters');
+    $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'tnid', $ciniki['request']['tnid'], 'ciniki.web', 'content', 'page-newsletters');
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -99,7 +99,7 @@ function ciniki_web_generatePageNewsletters($ciniki, $settings) {
     // Get the list of downloads to be displayed
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'newsletters', 'web', 'list');
-    $rc = ciniki_newsletters_web_list($ciniki, $ciniki['request']['business_id']);
+    $rc = ciniki_newsletters_web_list($ciniki, $ciniki['request']['tnid']);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }

@@ -1,5 +1,5 @@
 //
-// The app to manage web options for a business
+// The app to manage web options for a tenant
 //
 function ciniki_web_social() {
     
@@ -58,7 +58,7 @@ function ciniki_web_social() {
             return this.data[i]; 
         };
         this.main.fieldHistoryArgs = function(s, i) {
-            return {'method':'ciniki.web.pageSettingsHistory', 'args':{'business_id':M.curBusinessID, 'field':i}};
+            return {'method':'ciniki.web.pageSettingsHistory', 'args':{'tnid':M.curTenantID, 'field':i}};
         }
         this.main.addDropImage = function(iid) {
             this.setFieldValue('site-header-og-image', iid);
@@ -95,7 +95,7 @@ function ciniki_web_social() {
         }
 
         var rsp = M.api.getJSONCb('ciniki.web.siteSettingsGet', 
-            {'business_id':M.curBusinessID, 'content':'no'}, function(rsp) {
+            {'tnid':M.curTenantID, 'content':'no'}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -106,8 +106,8 @@ function ciniki_web_social() {
     }
 
     this.showMainFinish = function(cb) {
-        var rsp = M.api.getJSONCb('ciniki.businesses.getDetails', 
-            {'business_id':M.curBusinessID, 'keys':'social'}, function(rsp) {
+        var rsp = M.api.getJSONCb('ciniki.tenants.getDetails', 
+            {'tnid':M.curTenantID, 'keys':'social'}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -233,7 +233,7 @@ function ciniki_web_social() {
         // Save the web settings
         var c = this.main.serializeForm('no');
         if( c != '' ) {
-            var rsp = M.api.postJSONCb('ciniki.web.siteSettingsUpdate', {'business_id':M.curBusinessID}, c, function(rsp) {
+            var rsp = M.api.postJSONCb('ciniki.web.siteSettingsUpdate', {'tnid':M.curTenantID}, c, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -246,6 +246,6 @@ function ciniki_web_social() {
     };
 
     this.showSocialAccounts = function() {
-        this.save('M.startApp(\'ciniki.businesses.social\',null,\'M.ciniki_web_social.showMain();\');');
+        this.save('M.startApp(\'ciniki.tenants.social\',null,\'M.ciniki_web_social.showMain();\');');
     };
 };

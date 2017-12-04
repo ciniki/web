@@ -11,13 +11,13 @@
 // Returns
 // -------
 //
-function ciniki_web_indexUpdate(&$ciniki, $business_id) {
+function ciniki_web_indexUpdate(&$ciniki, $tnid) {
 
     //
     // Load INTL settings
     //
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'intlSettings');
-    $rc = ciniki_businesses_intlSettings($ciniki, $business_id);
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'private', 'intlSettings');
+    $rc = ciniki_tenants_intlSettings($ciniki, $tnid);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -27,7 +27,7 @@ function ciniki_web_indexUpdate(&$ciniki, $business_id) {
     //
     $strsql = "SELECT DISTINCT(object) "
         . "FROM ciniki_web_index "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "";
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'object');
     if( $rc['stat'] != 'ok' ) {
@@ -45,14 +45,14 @@ function ciniki_web_indexUpdate(&$ciniki, $business_id) {
     $index_modules = array_unique($index_modules);
 
     //
-    // Get the list of modules enabled for the business
+    // Get the list of modules enabled for the tenant
     //
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'hooks', 'getActiveModules');
-    $rc = ciniki_businesses_hooks_getActiveModules($ciniki, $business_id, array());
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'hooks', 'getActiveModules');
+    $rc = ciniki_tenants_hooks_getActiveModules($ciniki, $tnid, array());
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
-    $business_modules = array_keys($rc['modules']);
+    $tenant_modules = array_keys($rc['modules']);
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'indexDeleteModule');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'indexUpdateModule');
@@ -70,11 +70,11 @@ function ciniki_web_indexUpdate(&$ciniki, $business_id) {
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'checkModuleFlags');
 
     //
-    // Remove any objects where the module is no longer in the business
+    // Remove any objects where the module is no longer in the tenant
     //
     foreach($index_modules as $module) {
-        if( !in_array($module, $business_modules) ) {
-            $rc = ciniki_web_indexDeleteModule($ciniki, $business_id, $module);
+        if( !in_array($module, $tenant_modules) ) {
+            $rc = ciniki_web_indexDeleteModule($ciniki, $tnid, $module);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -84,8 +84,8 @@ function ciniki_web_indexUpdate(&$ciniki, $business_id) {
     //
     // Update the modules indexes
     //
-    foreach($business_modules as $module) {
-        $rc = ciniki_web_indexUpdateModule($ciniki, $business_id, $module);
+    foreach($tenant_modules as $module) {
+        $rc = ciniki_web_indexUpdateModule($ciniki, $tnid, $module);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }

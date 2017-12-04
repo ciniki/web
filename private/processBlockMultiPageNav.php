@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_web_processBlockMultiPageNav(&$ciniki, $settings, $business_id, $block) {
+function ciniki_web_processBlockMultiPageNav(&$ciniki, $settings, $tnid, $block) {
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processMeta');

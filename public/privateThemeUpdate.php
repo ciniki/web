@@ -7,7 +7,7 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:         The ID of the business to update the theme for.
+// tnid:         The ID of the tenant to update the theme for.
 //
 // Returns
 // -------
@@ -19,7 +19,7 @@ function ciniki_web_privateThemeUpdate(&$ciniki) {
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'theme_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Theme'), 
         'name'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Name'), 
         'permalink'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Permalink'), 
@@ -32,10 +32,10 @@ function ciniki_web_privateThemeUpdate(&$ciniki) {
 
     //  
     // Make sure this module is activated, and
-    // check permission to run this function for this business
+    // check permission to run this function for this tenant
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
-    $rc = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.privateThemeUpdate'); 
+    $rc = ciniki_web_checkAccess($ciniki, $args['tnid'], 'ciniki.web.privateThemeUpdate'); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }
@@ -51,7 +51,7 @@ function ciniki_web_privateThemeUpdate(&$ciniki) {
         //
         $strsql = "SELECT id, name, permalink "
             . "FROM ciniki_web_themes "
-            . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+            . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
             . "AND permalink = '" . ciniki_core_dbQuote($ciniki, $args['permalink']) . "' "
             . "AND id <> '" . ciniki_core_dbQuote($ciniki, $args['theme_id']) . "' "
             . "";
@@ -69,7 +69,7 @@ function ciniki_web_privateThemeUpdate(&$ciniki) {
     //
     $strsql = "SELECT id, uuid, detail_key, detail_value "
         . "FROM ciniki_web_theme_settings "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
         . "AND theme_id = '" . ciniki_core_dbQuote($ciniki, $args['theme_id']) . "' "
         . "";
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
@@ -99,7 +99,7 @@ function ciniki_web_privateThemeUpdate(&$ciniki) {
     //
     // Update the theme in the database
     //
-    $rc = ciniki_core_objectUpdate($ciniki, $args['business_id'], 'ciniki.web.theme', $args['theme_id'], $args);
+    $rc = ciniki_core_objectUpdate($ciniki, $args['tnid'], 'ciniki.web.theme', $args['theme_id'], $args);
     if( $rc['stat'] != 'ok' ) {
         ciniki_core_dbTransactionRollback($ciniki, 'ciniki.web');
         return $rc;
@@ -131,7 +131,7 @@ function ciniki_web_privateThemeUpdate(&$ciniki) {
                 //
                 // Update the setting
                 //
-                $rc = ciniki_core_objectUpdate($ciniki, $args['business_id'], 'ciniki.web.theme_setting', $settings[$field]['id'],
+                $rc = ciniki_core_objectUpdate($ciniki, $args['tnid'], 'ciniki.web.theme_setting', $settings[$field]['id'],
                     array('detail_value'=>$ciniki['request']['args'][$field]), 0x04);
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;
@@ -140,7 +140,7 @@ function ciniki_web_privateThemeUpdate(&$ciniki) {
                 //
                 // Add the setting
                 //
-                $rc = ciniki_core_objectAdd($ciniki, $args['business_id'], 'ciniki.web.theme_setting', 
+                $rc = ciniki_core_objectAdd($ciniki, $args['tnid'], 'ciniki.web.theme_setting', 
                     array('theme_id'=>$args['theme_id'], 'detail_key'=>$field, 'detail_value'=>$ciniki['request']['args'][$field]), 0x04);
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;
@@ -154,7 +154,7 @@ function ciniki_web_privateThemeUpdate(&$ciniki) {
     //
     $strsql = "UPDATE ciniki_web_themes SET last_updated = UTC_TIMESTAMP() "
         . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['theme_id']) . "' "
-        . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+        . "AND tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
         . "";
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbUpdate');
     $rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.web');
@@ -171,11 +171,11 @@ function ciniki_web_privateThemeUpdate(&$ciniki) {
     }
 
     //
-    // Update the last_change date in the business modules
+    // Update the last_change date in the tenant modules
     // Ignore the result, as we don't want to stop user updates if this fails.
     //
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
-    ciniki_businesses_updateModuleChangeDate($ciniki, $args['business_id'], 'ciniki', 'web');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'private', 'updateModuleChangeDate');
+    ciniki_tenants_updateModuleChangeDate($ciniki, $args['tnid'], 'ciniki', 'web');
 
     return array('stat'=>'ok');
 }

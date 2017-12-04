@@ -38,7 +38,7 @@ function ciniki_web_generatePageAPI($ciniki, $settings) {
         $rc = ciniki_core_loadMethod($ciniki, 'ciniki', 'products', 'web', 'searchProducts');
         if( $rc['stat'] == 'ok' ) {
             $fn = $rc['function_call'];
-            $rc = $fn($ciniki, $settings, $ciniki['request']['business_id'], array(
+            $rc = $fn($ciniki, $settings, $ciniki['request']['tnid'], array(
                 'search_str'=>$search_str,
                 'limit'=>((isset($_GET['limit'])&&$_GET['limit']!=''&&$_GET['limit']>0)?$_GET['limit']:16)));
             if( $rc['stat'] == 'ok' ) {
@@ -57,7 +57,7 @@ function ciniki_web_generatePageAPI($ciniki, $settings) {
         $search_str = urldecode($ciniki['request']['uri_split'][2]);
 
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'indexSearch');
-        $rc = ciniki_web_indexSearch($ciniki, $settings, $ciniki['request']['business_id'], $search_str, ((isset($_GET['limit'])&&$_GET['limit']>0)?$_GET['limit']:21));
+        $rc = ciniki_web_indexSearch($ciniki, $settings, $ciniki['request']['tnid'], $search_str, ((isset($_GET['limit'])&&$_GET['limit']>0)?$_GET['limit']:21));
         if( $rc['stat'] == 'ok' ) {
             $rsp = $rc;
         }
@@ -80,7 +80,7 @@ function ciniki_web_generatePageAPI($ciniki, $settings) {
                 );
             array_shift($args['uri_split']);
             array_shift($args['uri_split']);
-            $rsp = $fn($ciniki, $settings, $ciniki['request']['business_id'], $args);
+            $rsp = $fn($ciniki, $settings, $ciniki['request']['tnid'], $args);
         }
     }
 

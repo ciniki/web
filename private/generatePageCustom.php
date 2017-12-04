@@ -41,7 +41,7 @@ function ciniki_web_generatePageCustom($ciniki, $settings, $pnum) {
             return $rc;
         }
         $page_content .= "<aside><div class='image-wrap'>"
-            . "<div class='image'><img title='' alt='" . $ciniki['business']['details']['name'] . "' src='" . $rc['url'] . "' /></div>";
+            . "<div class='image'><img title='' alt='" . $ciniki['tenant']['details']['name'] . "' src='" . $rc['url'] . "' /></div>";
         if( isset($settings[$pname .'-image-caption']) && $settings[$pname .'-image-caption'] != '' ) {
             $page_content .= "<div class='image-caption'>" . $settings[$pname .'-image-caption'] . "</div>";
         }
@@ -49,7 +49,7 @@ function ciniki_web_generatePageCustom($ciniki, $settings, $pnum) {
     }
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
-    $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', $pname);
+    $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'tnid', $ciniki['request']['tnid'], 'ciniki.web', 'content', $pname);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }

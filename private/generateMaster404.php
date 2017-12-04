@@ -2,8 +2,8 @@
 //
 // Description
 // -----------
-// This function will generate a 404 error page for the master business.  This is for all
-// errors when we don't know what the business is they were requesting.
+// This function will generate a 404 error page for the master tenant.  This is for all
+// errors when we don't know what the tenant is they were requesting.
 //
 // Arguments
 // ---------
@@ -23,26 +23,26 @@ function ciniki_web_generateMaster404($ciniki, $errors) {
 
 
     //
-    // Get the details for the master business
+    // Get the details for the master tenant
     //
-    $ciniki['request']['business_id'] = $ciniki['config']['ciniki.core']['master_business_id'];
+    $ciniki['request']['tnid'] = $ciniki['config']['ciniki.core']['master_tnid'];
     $ciniki['request']['base_url'] = '';
-    require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/businesses/web/details.php');
-    $rc = ciniki_businesses_web_details($ciniki, $ciniki['config']['ciniki.core']['master_business_id']);
+    require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/tenants/web/details.php');
+    $rc = ciniki_tenants_web_details($ciniki, $ciniki['config']['ciniki.core']['master_tnid']);
     if( $rc['stat'] != 'ok' ) {
         print_error($rc, 'Website not configured.');
         exit;
     }
-    $ciniki['business']['details'] = $rc['details'];
+    $ciniki['tenant']['details'] = $rc['details'];
     if( isset($rc['details']) ) {
-        $ciniki['business']['social'] = $rc['social'];
+        $ciniki['tenant']['social'] = $rc['social'];
     }
 
     //
-    // Get the master business settings
+    // Get the master tenant settings
     //
     require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/settings.php');
-    $rc = ciniki_web_settings($ciniki, $ciniki['config']['ciniki.core']['master_business_id']);
+    $rc = ciniki_web_settings($ciniki, $ciniki['config']['ciniki.core']['master_tnid']);
     if( $rc['stat'] != 'ok' ) {
         print_error($rc, 'Website not configured.');
         exit;

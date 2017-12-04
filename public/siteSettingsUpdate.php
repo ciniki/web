@@ -4,13 +4,13 @@
 // -----------
 // This method will update any valid page settings and content in the database.
 //
-// The contact display values are taken from the business settings.
+// The contact display values are taken from the tenant settings.
 //
 // Arguments
 // ---------
 // api_key:
 // auth_token:
-// business_id:                         The ID of the business to update the settings for.
+// tnid:                         The ID of the tenant to update the settings for.
 // page-home-active:                    (optional) Display the home page (yes or no)
 // page-about-active:                   (optional) Display the about page (yes or no)
 // page-about-image:                    (optional) The image_id from the ciniki images module to be displayed on the about page.
@@ -22,23 +22,23 @@
 // page-events-past:                    (optional) Display the past events (yes or no)
 // page-links-active:                   (optional) Display the links page (yes or no)
 // page-contact-active:                 (optional) Display the contact page (yes or no)
-// page-contact-business-name-display:  (optional) Display the business name as part of the contact info (yes or no)
-// page-contact-person-name-display:    (optional) Display the business contact person name (yes or no)
-// page-contact-address-display:        (optional) Display the business address (yes or no)
-// page-contact-phone-display:          (optional) Display the business phone number (yes or no)
-// page-contact-fax-display:            (optional) Display the business fax number (yes or no)
-// page-contact-email-display:          (optional) Display the business email address (yes or no)
+// page-contact-tenant-name-display:  (optional) Display the tenant name as part of the contact info (yes or no)
+// page-contact-person-name-display:    (optional) Display the tenant contact person name (yes or no)
+// page-contact-address-display:        (optional) Display the tenant address (yes or no)
+// page-contact-phone-display:          (optional) Display the tenant phone number (yes or no)
+// page-contact-fax-display:            (optional) Display the tenant fax number (yes or no)
+// page-contact-email-display:          (optional) Display the tenant email address (yes or no)
 // page-downloads-active:               (optional) Display the download page (yes or no)
 // page-downloads-name:                 (optional) The name to be used in the menu for the downloads page.  eg (Reports, Newletters, etc)
 // page-account-active:                 (optional) Allow customers to login and display an account page (yes or no)
-// page-signup-active:                  (optional) Display a signup page, only valid for master business (ciniki.com)
-// page-api-active:                     (optional) Display api documentation, only valid for master business (ciniki.com)
+// page-signup-active:                  (optional) Display a signup page, only valid for master tenant (ciniki.com)
+// page-api-active:                     (optional) Display api documentation, only valid for master tenant (ciniki.com)
 // site-theme:                          (optional) The theme to use for the website.  (default, black)
 // site-header-image:                   (optional) The ID of the image from the ciniki images module to display in the site header.
-// site-header-title:                   (optional) Display the business name and tagline.  Allows user to turn off if they have a header image as logo.
-// site-logo-display:                   (optional) Display the business logo in the site header (yes or no)
+// site-header-title:                   (optional) Display the tenant name and tagline.  Allows user to turn off if they have a header image as logo.
+// site-logo-display:                   (optional) Display the tenant logo in the site header (yes or no)
 // site-google-analytics-account:       (optional) The google account code for google analytics.
-// site-featured:                       (optional) Display the site name as a featured site on the master business homepage (ciniki.com)
+// site-featured:                       (optional) Display the site name as a featured site on the master tenant homepage (ciniki.com)
 // page-home-content:                   (optional) The content to be displayed on the home page.
 // page-about-content:                  (optional) The content to be displayed on the about page.
 // page-contact-content:                (optional) The content to be displayed on the contact page.
@@ -59,7 +59,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'),
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'),
         ));
     if( $rc['stat'] != 'ok' ) {
         return $rc;
@@ -239,7 +239,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 //      'page-aboutawards-image-caption',
 //      'page-about-image',
 //      'page-about-image-caption',
-        'page-about-business-name-display',
+        'page-about-tenant-name-display',
         'page-about-person-name-display',
         'page-about-address-display',
         'page-about-phone-display',
@@ -404,7 +404,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-contact-form-phone',
         'page-contact-form-intro-message',
         'page-contact-form-submitted-message',
-        'page-contact-business-name-display',
+        'page-contact-tenant-name-display',
         'page-contact-person-name-display',
         'page-contact-address-display',
         'page-contact-phone-display',
@@ -552,10 +552,10 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         );
 
     //
-    // Check access to business_id as owner, and load module list
+    // Check access to tnid as owner, and load module list
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
-    $ac = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.siteSettingsUpdate');
+    $ac = ciniki_web_checkAccess($ciniki, $args['tnid'], 'ciniki.web.siteSettingsUpdate');
     if( $ac['stat'] != 'ok' ) {
         return $ac;
     }
@@ -565,8 +565,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
     // Grab the existing settings
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
-    $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_settings', 'business_id',
-        $args['business_id'], 'ciniki.web', 'settings', '');
+    $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_settings', 'tnid',
+        $args['tnid'], 'ciniki.web', 'settings', '');
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -593,7 +593,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
     //
     if( isset($modules['ciniki.courses']) ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'courses', 'web', 'courseTypes');
-        $rc = ciniki_courses_web_courseTypes($ciniki, $settings, $args['business_id']);
+        $rc = ciniki_courses_web_courseTypes($ciniki, $settings, $args['tnid']);
         if( isset($rc['types']) ) {
             foreach($rc['types'] as $type_name => $type ) {
                 $name = preg_replace('/[^a-z0-9]/', '', strtolower($type_name));
@@ -613,8 +613,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
     //
     foreach($settings_fields as $field) {
         if( isset($ciniki['request']['args'][$field]) ) {
-            $strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) "
-                . "VALUES ('" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['business_id']) . "'"
+            $strsql = "INSERT INTO ciniki_web_settings (tnid, detail_key, detail_value, date_added, last_updated) "
+                . "VALUES ('" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['tnid']) . "'"
                 . ", '" . ciniki_core_dbQuote($ciniki, $field) . "' "
                 . ", '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args'][$field]) . "'"
                 . ", UTC_TIMESTAMP(), UTC_TIMESTAMP()) "
@@ -626,7 +626,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
                 ciniki_core_dbTransactionRollback($ciniki, 'ciniki.web');
                 return $rc;
             }
-            ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $args['business_id'], 
+            ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $args['tnid'], 
                 2, 'ciniki_web_settings', $field, 'detail_value', $ciniki['request']['args'][$field]);
             $ciniki['syncqueue'][] = array('push'=>'ciniki.web.setting',
                 'args'=>array('id'=>$field));
@@ -647,7 +647,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
                     // Remove the old reference
                     //
                     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectRefClear');
-                    $rc = ciniki_core_objectRefClear($ciniki, $args['business_id'], 'ciniki.images.image', array(
+                    $rc = ciniki_core_objectRefClear($ciniki, $args['tnid'], 'ciniki.images.image', array(
                         'object'=>'ciniki.web.setting', 
                         'object_id'=>$field));
                     if( $rc['stat'] == 'fail' ) {
@@ -660,7 +660,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
                     // Add the new reference
                     //
                     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectRefAdd');
-                    $rc = ciniki_core_objectRefAdd($ciniki, $args['business_id'], 'ciniki.images.image', array(
+                    $rc = ciniki_core_objectRefAdd($ciniki, $args['tnid'], 'ciniki.images.image', array(
                         'ref_id'=>$ciniki['request']['args'][$field], 
                         'object'=>'ciniki.web.setting', 
                         'object_id'=>$field,
@@ -688,8 +688,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
             $page_number = $matches[1];
             $page_name = $matches[2];
             if( $page_name == 'content' ) {
-                $strsql = "INSERT INTO ciniki_web_content (business_id, detail_key, detail_value, date_added, last_updated) "
-                    . "VALUES ('" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['business_id']) . "'"
+                $strsql = "INSERT INTO ciniki_web_content (tnid, detail_key, detail_value, date_added, last_updated) "
+                    . "VALUES ('" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['tnid']) . "'"
                     . ", '" . ciniki_core_dbQuote($ciniki, $field) . "' "
                     . ", '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args'][$field]) . "'"
                     . ", UTC_TIMESTAMP(), UTC_TIMESTAMP()) "
@@ -701,13 +701,13 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
                     ciniki_core_dbTransactionRollback($ciniki, 'ciniki.web');
                     return $rc;
                 }
-                ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $args['business_id'], 
+                ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $args['tnid'], 
                     2, 'ciniki_web_content', $field, 'detail_value', $ciniki['request']['args'][$field]);
                 $ciniki['syncqueue'][] = array('push'=>'ciniki.web.content',
                     'args'=>array('id'=>$field));
             } else {
-                $strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) "
-                    . "VALUES ('" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['business_id']) . "'"
+                $strsql = "INSERT INTO ciniki_web_settings (tnid, detail_key, detail_value, date_added, last_updated) "
+                    . "VALUES ('" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['tnid']) . "'"
                     . ", '" . ciniki_core_dbQuote($ciniki, $field) . "' "
                     . ", '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args'][$field]) . "'"
                     . ", UTC_TIMESTAMP(), UTC_TIMESTAMP()) "
@@ -719,7 +719,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
                     ciniki_core_dbTransactionRollback($ciniki, 'ciniki.web');
                     return $rc;
                 }
-                ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $args['business_id'], 
+                ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $args['tnid'], 
                     2, 'ciniki_web_settings', $field, 'detail_value', $ciniki['request']['args'][$field]);
                 $ciniki['syncqueue'][] = array('push'=>'ciniki.web.setting',
                     'args'=>array('id'=>$field));
@@ -735,7 +735,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
                     // Remove the old reference
                     //
                     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectRefClear');
-                    $rc = ciniki_core_objectRefClear($ciniki, $args['business_id'], 'ciniki.images.image', array(
+                    $rc = ciniki_core_objectRefClear($ciniki, $args['tnid'], 'ciniki.images.image', array(
                         'object'=>'ciniki.web.setting', 
                         'object_id'=>$field));
                     if( $rc['stat'] == 'fail' ) {
@@ -748,7 +748,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
                     // Add the new reference
                     //
                     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectRefAdd');
-                    $rc = ciniki_core_objectRefAdd($ciniki, $args['business_id'], 'ciniki.images.image', array(
+                    $rc = ciniki_core_objectRefAdd($ciniki, $args['tnid'], 'ciniki.images.image', array(
                         'ref_id'=>$ciniki['request']['args'][$field], 
                         'object'=>'ciniki.web.setting', 
                         'object_id'=>$field,
@@ -770,7 +770,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
             ) {
             $rc = ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'settingChange');
             if( $rc['stat'] == 'ok' ) {
-                $rc = ciniki_customers_web_settingChange($ciniki, $args['business_id'], $field, $field_value);
+                $rc = ciniki_customers_web_settingChange($ciniki, $args['tnid'], $field, $field_value);
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;
                 }
@@ -783,13 +783,13 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-about-user-display-flags',
         );
     //
-    // Check the list of business users to see if their information should be displayed on the website
+    // Check the list of tenant users to see if their information should be displayed on the website
     //
-    $strsql = "SELECT DISTINCT ciniki_business_users.user_id AS id "
-        . "FROM ciniki_business_users "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+    $strsql = "SELECT DISTINCT ciniki_tenant_users.user_id AS id "
+        . "FROM ciniki_tenant_users "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
         . "";
-    $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.businesses', 'user');
+    $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.tenants', 'user');
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -800,8 +800,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
             foreach($user_prefix_fields as $field) {
                 $field .= "-$uid";
                 if( isset($ciniki['request']['args'][$field]) ) {
-                    $strsql = "INSERT INTO ciniki_web_settings (business_id, detail_key, detail_value, date_added, last_updated) "
-                        . "VALUES ('" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['business_id']) . "'"
+                    $strsql = "INSERT INTO ciniki_web_settings (tnid, detail_key, detail_value, date_added, last_updated) "
+                        . "VALUES ('" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['tnid']) . "'"
                         . ", '" . ciniki_core_dbQuote($ciniki, $field) . "' "
                         . ", '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args'][$field]) . "'"
                         . ", UTC_TIMESTAMP(), UTC_TIMESTAMP()) "
@@ -813,7 +813,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
                         ciniki_core_dbTransactionRollback($ciniki, 'ciniki.web');
                         return $rc;
                     }
-                    ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $args['business_id'], 
+                    ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $args['tnid'], 
                         2, 'ciniki_web_settings', $field, 'detail_value', $ciniki['request']['args'][$field]);
                     $ciniki['syncqueue'][] = array('push'=>'ciniki.web.setting',
                         'args'=>array('id'=>$field));
@@ -824,7 +824,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         // Update the page-contact-user-display field
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'updateUserDisplay');
-        $rc = ciniki_web_updateUserDisplay($ciniki, $args['business_id']);
+        $rc = ciniki_web_updateUserDisplay($ciniki, $args['tnid']);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -839,8 +839,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
     //
     foreach($content_fields as $field) {
         if( isset($ciniki['request']['args'][$field]) ) {
-            $strsql = "INSERT INTO ciniki_web_content (business_id, detail_key, detail_value, date_added, last_updated) "
-                . "VALUES ('" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['business_id']) . "'"
+            $strsql = "INSERT INTO ciniki_web_content (tnid, detail_key, detail_value, date_added, last_updated) "
+                . "VALUES ('" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['tnid']) . "'"
                 . ", '" . ciniki_core_dbQuote($ciniki, $field) . "' "
                 . ", '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args'][$field]) . "'"
                 . ", UTC_TIMESTAMP(), UTC_TIMESTAMP()) "
@@ -852,7 +852,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
                 ciniki_core_dbTransactionRollback($ciniki, 'ciniki.web');
                 return $rc;
             }
-            ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $args['business_id'], 
+            ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.web', 'ciniki_web_history', $args['tnid'], 
                 2, 'ciniki_web_content', $field, 'detail_value', $ciniki['request']['args'][$field]);
             $ciniki['syncqueue'][] = array('push'=>'ciniki.web.content',
                 'args'=>array('id'=>$field));
@@ -868,11 +868,11 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
     }
 
     //
-    // Update the last_change date in the business modules
+    // Update the last_change date in the tenant modules
     // Ignore the result, as we don't want to stop user updates if this fails.
     //
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
-    ciniki_businesses_updateModuleChangeDate($ciniki, $args['business_id'], 'ciniki', 'web');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'private', 'updateModuleChangeDate');
+    ciniki_tenants_updateModuleChangeDate($ciniki, $args['tnid'], 'ciniki', 'web');
 
     return array('stat'=>'ok');
 }

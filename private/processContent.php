@@ -90,7 +90,7 @@ function ciniki_web_processContent($ciniki, $settings, $unprocessed_content, $pc
                     // If the function exists, call function to get embed content
                     //
                     $fn = $rc['function_call'];
-                    $rc = $fn($ciniki, $settings, $ciniki['request']['business_id'], $args);
+                    $rc = $fn($ciniki, $settings, $ciniki['request']['tnid'], $args);
                     if( $rc['stat'] == 'ok' ) {
                         //
                         // Content is plain and can be substituded
@@ -103,7 +103,7 @@ function ciniki_web_processContent($ciniki, $settings, $unprocessed_content, $pc
                         //
                         elseif( isset($rc['blocks']) ) {
                             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlocks');
-                            $rc = ciniki_web_processBlocks($ciniki, $settings, $ciniki['request']['business_id'], $rc['blocks']);
+                            $rc = ciniki_web_processBlocks($ciniki, $settings, $ciniki['request']['tnid'], $rc['blocks']);
                             if( $rc['stat'] == 'ok' ) {
                                 $processed_content = str_replace($match, $rc['content'], $processed_content);
                             }

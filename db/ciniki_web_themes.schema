@@ -1,15 +1,15 @@
 #
 # Description
 # -----------
-# This table contains the private themes for a business. These themes build upon
-# existing themes to change colours or layout as required for the business. These
-# themes are only available to the business and not other Ciniki businesses.
+# This table contains the private themes for a tenant. These themes build upon
+# existing themes to change colours or layout as required for the tenant. These
+# themes are only available to the tenant and not other Ciniki tenants.
 #
 # Fields
 # ------
 # id:               The ID for the theme.
 # uuid:             The Universal Unique ID.
-# business_id:      The business the theme is part of.
+# tnid:             The tenant the theme is part of.
 #
 # name:             The name for the theme.
 # permalink:        The permalink for the theme, used in the directory structure
@@ -25,7 +25,7 @@
 create table ciniki_web_themes (
     id int not null auto_increment,
     uuid char(36) not null,
-    business_id int not null,
+    tnid int not null,
     name varchar(200) not null,
     permalink varchar(200) not null,
     status tinyint unsigned not null,
@@ -33,5 +33,5 @@ create table ciniki_web_themes (
     last_updated datetime not null,
     primary key (id),
     unique index (uuid),
-    index sync (business_id, uuid, last_updated)
+    index sync (tnid, uuid, last_updated)
 ) ENGINE='InnoDB', COMMENT='v1.01';

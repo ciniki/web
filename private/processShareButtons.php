@@ -54,7 +54,7 @@ function ciniki_web_processShareButtons(&$ciniki, $settings, $args) {
     //
     // Shorten the url
 //  ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'shortenURL');
-//  $surl = ciniki_web_shortenURL($ciniki, $settings, $ciniki['request']['business_id'],
+//  $surl = ciniki_web_shortenURL($ciniki, $settings, $ciniki['request']['tnid'],
 //      $ciniki['response']['head']['og']['url']);
     $url = $ciniki['response']['head']['og']['url'];
 
@@ -78,15 +78,15 @@ function ciniki_web_processShareButtons(&$ciniki, $settings, $args) {
     //
     // Setup twitter button
     //
-    if( isset($ciniki['business']['social']['social-twitter-business-name']) 
-        && $ciniki['business']['social']['social-twitter-business-name'] != '' ) {
-        $msg = $ciniki['business']['social']['social-twitter-business-name'] . ' - ' . strip_tags($args['title']);
+    if( isset($ciniki['tenant']['social']['social-twitter-tenant-name']) 
+        && $ciniki['tenant']['social']['social-twitter-tenant-name'] != '' ) {
+        $msg = $ciniki['tenant']['social']['social-twitter-tenant-name'] . ' - ' . strip_tags($args['title']);
     } else {
-        $msg = $ciniki['business']['details']['name'] . ' - ' . strip_tags($args['title']);
+        $msg = $ciniki['tenant']['details']['name'] . ' - ' . strip_tags($args['title']);
     }
-    if( isset($ciniki['business']['social']['social-twitter-username']) 
-        && $ciniki['business']['social']['social-twitter-username'] != '' ) {
-        $msg .= ' @' . $ciniki['business']['social']['social-twitter-username'];
+    if( isset($ciniki['tenant']['social']['social-twitter-username']) 
+        && $ciniki['tenant']['social']['social-twitter-username'] != '' ) {
+        $msg .= ' @' . $ciniki['tenant']['social']['social-twitter-username'];
     }
     $tags = array_unique($args['tags']);
     foreach($tags as $tag) {
@@ -106,7 +106,7 @@ function ciniki_web_processShareButtons(&$ciniki, $settings, $args) {
     //
     // Setup pinterest button
     //
-    $content .= "<a href='http://www.pinterest.com/pin/create/button?url=" . urlencode($ciniki['response']['head']['og']['url']) . "&media=" . urlencode($ciniki['response']['head']['og']['image']) . "&description=" . urlencode($ciniki['business']['details']['name'] . ' - ' . $args['title']) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
+    $content .= "<a href='http://www.pinterest.com/pin/create/button?url=" . urlencode($ciniki['response']['head']['og']['url']) . "&media=" . urlencode($ciniki['response']['head']['og']['image']) . "&description=" . urlencode($ciniki['tenant']['details']['name'] . ' - ' . $args['title']) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
         . "<span title='Share on Pinterest' class='socialsymbol social-pinterest'>" . $social_icons['pinterest'] . "</span>"
         . "</a>";
 

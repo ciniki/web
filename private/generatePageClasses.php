@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This function will generate the classes page for the business.
+// This function will generate the classes page for the tenant.
 //
 // Arguments
 // ---------
@@ -55,7 +55,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'classes', 'web', 'classDetails');
         $rc = ciniki_classes_web_classDetails($ciniki, $settings, 
-            $ciniki['request']['business_id'], $class_permalink);
+            $ciniki['request']['tnid'], $class_permalink);
         if( $rc['stat'] != 'ok' ) {
             return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.26', 'msg'=>"I'm sorry, but we can't seem to find the image you requested.", $rc['err']));
         }
@@ -173,7 +173,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
         // Get the class information
         //
         $rc = ciniki_classes_web_classDetails($ciniki, $settings, 
-            $ciniki['request']['business_id'], $permalink);
+            $ciniki['request']['tnid'], $permalink);
         if( $rc['stat'] != 'ok' ) {
             return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.29', 'msg'=>"I'm sorry, but we can't find the class you requested.", $rc['err']));
         }
@@ -239,7 +239,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'classes', 'web', 'pageInfo');
         $rc = ciniki_classes_web_pageInfo($ciniki, $settings, 
-            $ciniki['request']['business_id'], 'category-' . $category_permalink);
+            $ciniki['request']['tnid'], 'category-' . $category_permalink);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -280,13 +280,13 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
         //
         // If only categories defined
         //
-        if( ($ciniki['business']['modules']['ciniki.classes']['flags']&0x02) > 0 ) {
+        if( ($ciniki['tenant']['modules']['ciniki.classes']['flags']&0x02) > 0 ) {
             //
             // Get the list of classes
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'classes', 'web', 'classList');
             $rc = ciniki_classes_web_classList($ciniki, $settings, 
-                $ciniki['request']['business_id'], array('category'=>$category_permalink));
+                $ciniki['request']['tnid'], array('category'=>$category_permalink));
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -312,7 +312,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
             // Get the list of classes
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'classes', 'web', 'classList');
-            $rc = ciniki_classes_web_classList($ciniki, $settings, $ciniki['request']['business_id'], array());
+            $rc = ciniki_classes_web_classList($ciniki, $settings, $ciniki['request']['tnid'], array());
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -342,7 +342,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'classes', 'web', 'pageInfo');
         $rc = ciniki_classes_web_pageInfo($ciniki, $settings, 
-            $ciniki['request']['business_id'], 'introduction');
+            $ciniki['request']['tnid'], 'introduction');
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -384,13 +384,13 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
         // If categories and sub-categories are enabled, then list the categories
         //
         $page_content .= '';
-        if( ($ciniki['business']['modules']['ciniki.classes']['flags']&0x02) > 0 ) {
+        if( ($ciniki['tenant']['modules']['ciniki.classes']['flags']&0x02) > 0 ) {
             $page_content .= "<h2>Categories</h2>";
             //
             // Get the list of categories
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'classes', 'web', 'categoryList');
-            $rc = ciniki_classes_web_categoryList($ciniki, $settings, $ciniki['request']['business_id']);
+            $rc = ciniki_classes_web_categoryList($ciniki, $settings, $ciniki['request']['tnid']);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -408,12 +408,12 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
         //
         // If only categories defined
         //
-        elseif( ($ciniki['business']['modules']['ciniki.classes']['flags']&0x01) > 0 ) {
+        elseif( ($ciniki['tenant']['modules']['ciniki.classes']['flags']&0x01) > 0 ) {
             //
             // Get the list of classes
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'classes', 'web', 'classList');
-            $rc = ciniki_classes_web_classList($ciniki, $settings, $ciniki['request']['business_id'], array());
+            $rc = ciniki_classes_web_classList($ciniki, $settings, $ciniki['request']['tnid'], array());
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -439,7 +439,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
             // Get the list of classes
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'classes', 'web', 'classList');
-            $rc = ciniki_classes_web_classList($ciniki, $settings, $ciniki['request']['business_id'], array());
+            $rc = ciniki_classes_web_classList($ciniki, $settings, $ciniki['request']['tnid'], array());
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }

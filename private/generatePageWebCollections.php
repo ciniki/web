@@ -24,7 +24,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
     //
     // Setup facebook content defaults
     //
-    $ciniki['response']['head']['og']['title'] = $ciniki['business']['details']['name'] . '';
+    $ciniki['response']['head']['og']['title'] = $ciniki['tenant']['details']['name'] . '';
     $ciniki['response']['head']['og']['url'] = $ciniki['request']['domain_base_url'];
 
 //  $content = "<pre>" . print_r($ciniki, true) . "</pre>";
@@ -46,14 +46,14 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
         $collection_mod = $ciniki['request']['uri_split'][1];
 
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'collectionDetails');
-        $rc = ciniki_web_collectionDetails($ciniki, $ciniki['request']['business_id'], $collection_permalink);
+        $rc = ciniki_web_collectionDetails($ciniki, $ciniki['request']['tnid'], $collection_permalink);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
         $collection = $rc['collection'];
         $page_title = $collection['name'];
 
-        if( isset($ciniki['business']['modules']['ciniki.blog']) && $collection_mod == 'blog' ) {
+        if( isset($ciniki['tenant']['modules']['ciniki.blog']) && $collection_mod == 'blog' ) {
             if( isset($collection['objects']['ciniki.blog.post']) ) {
                 $cobj = $collection['objects']['ciniki.blog.post'];
             }
@@ -65,7 +65,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
             }
             // Load the list entries
             ciniki_core_loadMethod($ciniki, 'ciniki', 'blog', 'web', 'webCollectionList');
-            $rc = ciniki_blog_web_webCollectionList($ciniki, $settings, $ciniki['request']['business_id'], 
+            $rc = ciniki_blog_web_webCollectionList($ciniki, $settings, $ciniki['request']['tnid'], 
                 array('collection_id'=>$collection['id'],
                     'offset'=>(($page_post_cur-1)*$page_post_limit), 'limit'=>$page_post_limit+1), '');
             if( $rc['stat'] != 'ok' ) {
@@ -99,7 +99,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
             $page_content .= $block_content;
         } 
         
-        elseif( isset($ciniki['business']['modules']['ciniki.events']) && $collection_mod == 'events' ) {
+        elseif( isset($ciniki['tenant']['modules']['ciniki.events']) && $collection_mod == 'events' ) {
             if( isset($collection['objects']['ciniki.events.event']) ) {
                 $cobj = $collection['objects']['ciniki.events.event'];
             }
@@ -107,7 +107,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
             // Load and parse the upcoming events
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'webCollectionList');
-            $rc = ciniki_events_web_webCollectionList($ciniki, $settings, $ciniki['request']['business_id'], 
+            $rc = ciniki_events_web_webCollectionList($ciniki, $settings, $ciniki['request']['tnid'], 
                 array('type'=>'upcoming', 'collection_id'=>$collection['id']));
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
@@ -136,7 +136,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
                 // Load and parse the past events
                 //
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'webCollectionList');
-                $rc = ciniki_events_web_webCollectionList($ciniki, $settings, $ciniki['request']['business_id'], 
+                $rc = ciniki_events_web_webCollectionList($ciniki, $settings, $ciniki['request']['tnid'], 
                     array('type'=>'past', 'collection_id'=>$collection['id'], 'limit'=>25));
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;
@@ -162,7 +162,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
             $page_content .= $block_content;
         } 
         
-        elseif( isset($ciniki['business']['modules']['ciniki.workshops']) && $collection_mod == 'workshops' ) {
+        elseif( isset($ciniki['tenant']['modules']['ciniki.workshops']) && $collection_mod == 'workshops' ) {
             if( isset($collection['objects']['ciniki.workshops.workshop']) ) {
                 $cobj = $collection['objects']['ciniki.workshops.workshop'];
             }
@@ -170,7 +170,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
             // Load and parse the upcoming workshops
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'workshops', 'web', 'webCollectionList');
-            $rc = ciniki_workshops_web_webCollectionList($ciniki, $settings, $ciniki['request']['business_id'], 
+            $rc = ciniki_workshops_web_webCollectionList($ciniki, $settings, $ciniki['request']['tnid'], 
                 array('type'=>'upcoming', 'collection_id'=>$collection['id']));
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
@@ -199,7 +199,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
                 // Load and parse the past workshops
                 //
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'workshops', 'web', 'webCollectionList');
-                $rc = ciniki_workshops_web_webCollectionList($ciniki, $settings, $ciniki['request']['business_id'], 
+                $rc = ciniki_workshops_web_webCollectionList($ciniki, $settings, $ciniki['request']['tnid'], 
                     array('type'=>'past', 'collection_id'=>$collection['id'], 'limit'=>25));
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;
@@ -226,7 +226,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
             $page_content .= $block_content;
         } 
         
-        elseif( isset($ciniki['business']['modules']['ciniki.artgallery']) && $collection_mod == 'exhibitions' ) {
+        elseif( isset($ciniki['tenant']['modules']['ciniki.artgallery']) && $collection_mod == 'exhibitions' ) {
             if( isset($collection['objects']['ciniki.artgallery.exhibition']) ) {
                 $cobj = $collection['objects']['ciniki.artgallery.exhibition'];
             }
@@ -234,7 +234,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
             // Load and parse the upcoming exhibitions
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'artgallery', 'web', 'webCollectionList');
-            $rc = ciniki_artgallery_web_webCollectionList($ciniki, $settings, $ciniki['request']['business_id'], 
+            $rc = ciniki_artgallery_web_webCollectionList($ciniki, $settings, $ciniki['request']['tnid'], 
                 array('type'=>'upcoming', 'collection_id'=>$collection['id']));
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
@@ -263,7 +263,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
                 // Load and parse the past exhibitions
                 //
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'exhibitions', 'web', 'webCollectionList');
-                $rc = ciniki_artgallery_web_webCollectionList($ciniki, $settings, $ciniki['request']['business_id'], 
+                $rc = ciniki_artgallery_web_webCollectionList($ciniki, $settings, $ciniki['request']['tnid'], 
                     array('type'=>'past', 'collection_id'=>$collection['id'], 'limit'=>25));
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;
@@ -302,7 +302,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
         $collection_permalink = $ciniki['request']['uri_split'][0];
 
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'collectionDetails');
-        $rc = ciniki_web_collectionDetails($ciniki, $ciniki['request']['business_id'], $collection_permalink);
+        $rc = ciniki_web_collectionDetails($ciniki, $ciniki['request']['tnid'], $collection_permalink);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -375,7 +375,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
         //
         // Load the blog entries, if there are any attached to this collection.
         //
-        if( isset($ciniki['business']['modules']['ciniki.blog']) 
+        if( isset($ciniki['tenant']['modules']['ciniki.blog']) 
             && isset($collection['objects']['ciniki.blog.post'])
             ) {
             // Determine number to display
@@ -386,7 +386,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
             }
             // Load the list entries
             ciniki_core_loadMethod($ciniki, 'ciniki', 'blog', 'web', 'webCollectionList');
-            $rc = ciniki_blog_web_webCollectionList($ciniki, $settings, $ciniki['request']['business_id'], 
+            $rc = ciniki_blog_web_webCollectionList($ciniki, $settings, $ciniki['request']['tnid'], 
                 array('collection_id'=>$collection['id'], 'limit'=>$list_size+1), '');
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
@@ -424,7 +424,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
         //
         // Load the events
         //
-        if( isset($ciniki['business']['modules']['ciniki.events']) 
+        if( isset($ciniki['tenant']['modules']['ciniki.events']) 
             && isset($collection['objects']['ciniki.events.event'])
             ) {
             $cobj = $collection['objects']['ciniki.events.event'];
@@ -436,7 +436,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
             // Load and parse the events
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'webCollectionList');
-            $rc = ciniki_events_web_webCollectionList($ciniki, $settings, $ciniki['request']['business_id'], 
+            $rc = ciniki_events_web_webCollectionList($ciniki, $settings, $ciniki['request']['tnid'], 
                 array('type'=>'upcoming', 'collection_id'=>$collection['id'], 'limit'=>$list_size+1));
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
@@ -476,7 +476,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
         //
         // Load the exhibitions
         //
-        if( isset($ciniki['business']['modules']['ciniki.artgallery']) 
+        if( isset($ciniki['tenant']['modules']['ciniki.artgallery']) 
             && isset($collection['objects']['ciniki.artgallery.exhibition'])
             ) {
             $cobj = $collection['objects']['ciniki.artgallery.exhibition'];
@@ -488,7 +488,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
             // Load and parse the exhibitions
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'artgallery', 'web', 'webCollectionList');
-            $rc = ciniki_artgallery_web_webCollectionList($ciniki, $settings, $ciniki['request']['business_id'], 
+            $rc = ciniki_artgallery_web_webCollectionList($ciniki, $settings, $ciniki['request']['tnid'], 
                 array('collection_id'=>$collection['id'], 'type'=>'upcoming', 'limit'=>$list_size+1));
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
@@ -528,7 +528,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
         //
         // Load the workshops
         //
-        if( isset($ciniki['business']['modules']['ciniki.workshops']) 
+        if( isset($ciniki['tenant']['modules']['ciniki.workshops']) 
             && isset($collection['objects']['ciniki.workshops.workshop'])
             ) {
             $cobj = $collection['objects']['ciniki.workshops.workshop'];
@@ -540,7 +540,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
             // Load and parse the workshops
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'workshops', 'web', 'webCollectionList');
-            $rc = ciniki_workshops_web_webCollectionList($ciniki, $settings, $ciniki['request']['business_id'], 
+            $rc = ciniki_workshops_web_webCollectionList($ciniki, $settings, $ciniki['request']['tnid'], 
                 array('collection_id'=>$collection['id'], 'type'=>'upcoming', 'limit'=>$list_size+1));
             if( $rc['stat'] != 'ok' ) {
                 return $rc;

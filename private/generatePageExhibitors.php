@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This function will generate the exhibitors page for the business.
+// This function will generate the exhibitors page for the tenant.
 //
 // Arguments
 // ---------
@@ -50,7 +50,7 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'exhibitions', 'web', 'participantDetails');
         $rc = ciniki_exhibitions_web_participantDetails($ciniki, $settings, 
-            $ciniki['request']['business_id'], 
+            $ciniki['request']['tnid'], 
             $settings['page-exhibitions-exhibition'], $exhibitor_permalink);
         if( $rc['stat'] != 'ok' ) {
             return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.49', 'msg'=>"I'm sorry, but we can't seem to find the image your requested.", $rc['err']));
@@ -161,7 +161,7 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
         //
         $exhibitor_permalink = $ciniki['request']['uri_split'][0];
         $rc = ciniki_exhibitions_web_participantDetails($ciniki, $settings, 
-            $ciniki['request']['business_id'], 
+            $ciniki['request']['tnid'], 
             $settings['page-exhibitions-exhibition'], $exhibitor_permalink);
         if( $rc['stat'] != 'ok' ) {
             return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.52', 'msg'=>"I'm sorry, but we don't have any record of that exhibitor.", 'err'=>$rc['err']));;
@@ -234,7 +234,7 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
     //
     else {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'exhibitions', 'web', 'participantList');
-        $rc = ciniki_exhibitions_web_participantList($ciniki, $settings, $ciniki['request']['business_id'], $settings['page-exhibitions-exhibition'], 'exhibitor');
+        $rc = ciniki_exhibitions_web_participantList($ciniki, $settings, $ciniki['request']['tnid'], $settings['page-exhibitions-exhibition'], 'exhibitor');
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }

@@ -2,13 +2,13 @@
 //
 // Description
 // -----------
-// This method will return the list of website sliders for a business.
+// This method will return the list of website sliders for a tenant.
 //
 // Arguments
 // ---------
 // api_key:
 // auth_token:
-// business_id:     The ID of the business to get slider list for.
+// tnid:     The ID of the tenant to get slider list for.
 //
 // Returns
 // -------
@@ -19,7 +19,7 @@ function ciniki_web_sliderList($ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         ));
     if( $rc['stat'] != 'ok' ) {
         return $rc;
@@ -27,10 +27,10 @@ function ciniki_web_sliderList($ciniki) {
     $args = $rc['args'];
 
     //  
-    // Check access to business_id as owner, or sys admin. 
+    // Check access to tnid as owner, or sys admin. 
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
-    $ac = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.sliderList');
+    $ac = ciniki_web_checkAccess($ciniki, $args['tnid'], 'ciniki.web.sliderList');
     if( $ac['stat'] != 'ok' ) { 
         return $ac;
     }   
@@ -40,7 +40,7 @@ function ciniki_web_sliderList($ciniki) {
     //
     $strsql = "SELECT id, name, size, effect "
         . "FROM ciniki_web_sliders "
-        . "WHERE ciniki_web_sliders.business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+        . "WHERE ciniki_web_sliders.tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
         . "ORDER BY ciniki_web_sliders.name "
         . "";
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryTree');

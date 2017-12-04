@@ -12,7 +12,7 @@
 // Returns
 // -------
 //
-function ciniki_web_shortenURL($ciniki, $settings, $business_id, $url) {
+function ciniki_web_shortenURL($ciniki, $settings, $tnid, $url) {
 
     if( !isset($ciniki['config']['ciniki.web']['url.shorten.domain']) ) {
         return $url;    
@@ -23,7 +23,7 @@ function ciniki_web_shortenURL($ciniki, $settings, $business_id, $url) {
     //
     $strsql = "SELECT surl "
         . "FROM ciniki_web_shorturls "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "AND furl = '" . ciniki_core_dbQuote($ciniki, $url) . "' "
         . "";
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'url');
@@ -71,7 +71,7 @@ function ciniki_web_shortenURL($ciniki, $settings, $business_id, $url) {
         'surl'=>$surl,
         'furl'=>$url);
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectAdd');
-    $rc = ciniki_core_objectAdd($ciniki, $business_id, 'ciniki.web.shorturl', $args, 0x07);
+    $rc = ciniki_core_objectAdd($ciniki, $tnid, 'ciniki.web.shorturl', $args, 0x07);
     if( $rc['stat'] != 'ok' ) {
         error_log('ERR: ' . print_r($rc, true));
         return $url;

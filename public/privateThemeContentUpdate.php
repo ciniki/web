@@ -7,7 +7,7 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:         The ID of the business to update the theme content for.
+// tnid:         The ID of the tenant to update the theme content for.
 //
 // Returns
 // -------
@@ -19,7 +19,7 @@ function ciniki_web_privateThemeContentUpdate(&$ciniki) {
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'content_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Content'), 
         'name'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Name'), 
         'status'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Status'),
@@ -35,10 +35,10 @@ function ciniki_web_privateThemeContentUpdate(&$ciniki) {
 
     //  
     // Make sure this module is activated, and
-    // check permission to run this function for this business
+    // check permission to run this function for this tenant
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
-    $rc = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.privateThemeContentUpdate'); 
+    $rc = ciniki_web_checkAccess($ciniki, $args['tnid'], 'ciniki.web.privateThemeContentUpdate'); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }
@@ -48,7 +48,7 @@ function ciniki_web_privateThemeContentUpdate(&$ciniki) {
     //
     $strsql = "SELECT id, theme_id, uuid, content_type, sequence "
         . "FROM ciniki_web_theme_content "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
         . "AND id = '" . ciniki_core_dbQuote($ciniki, $args['content_id']) . "' "
         . "";
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'item');
@@ -76,7 +76,7 @@ function ciniki_web_privateThemeContentUpdate(&$ciniki) {
     // Update the theme in the database
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectUpdate');
-    $rc = ciniki_core_objectUpdate($ciniki, $args['business_id'], 'ciniki.web.theme_content', $args['content_id'], $args);
+    $rc = ciniki_core_objectUpdate($ciniki, $args['tnid'], 'ciniki.web.theme_content', $args['content_id'], $args);
     if( $rc['stat'] != 'ok' ) {
         ciniki_core_dbTransactionRollback($ciniki, 'ciniki.web');
         return $rc;
@@ -87,7 +87,7 @@ function ciniki_web_privateThemeContentUpdate(&$ciniki) {
     //
     if( isset($args['sequence']) && $item['theme_id'] > 0 ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'themeContentUpdateSequences');
-        $rc = ciniki_web_themeContentUpdateSequences($ciniki, $args['business_id'], $item['theme_id'], $item['content_type'], $args['sequence'], $item['sequence']);
+        $rc = ciniki_web_themeContentUpdateSequences($ciniki, $args['tnid'], $item['theme_id'], $item['content_type'], $args['sequence'], $item['sequence']);
         if( $rc['stat'] != 'ok' ) {
             ciniki_core_dbTransactionRollback($ciniki, 'ciniki.web');
             return $rc;
@@ -99,7 +99,7 @@ function ciniki_web_privateThemeContentUpdate(&$ciniki) {
     //
     $strsql = "UPDATE ciniki_web_themes SET last_updated = UTC_TIMESTAMP() "
         . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $item['theme_id']) . "' "
-        . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+        . "AND tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
         . "";
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbUpdate');
     $rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.web');
@@ -116,11 +116,11 @@ function ciniki_web_privateThemeContentUpdate(&$ciniki) {
     }
 
     //
-    // Update the last_change date in the business modules
+    // Update the last_change date in the tenant modules
     // Ignore the result, as we don't want to stop user updates if this fails.
     //
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
-    ciniki_businesses_updateModuleChangeDate($ciniki, $args['business_id'], 'ciniki', 'web');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'private', 'updateModuleChangeDate');
+    ciniki_tenants_updateModuleChangeDate($ciniki, $args['tnid'], 'ciniki', 'web');
 
     return array('stat'=>'ok');
 }

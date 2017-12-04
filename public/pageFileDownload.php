@@ -8,7 +8,7 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:     The ID of the business the requested file belongs to.
+// tnid:     The ID of the tenant the requested file belongs to.
 // file_id:         The ID of the file to be downloaded.
 //
 // Returns
@@ -21,7 +21,7 @@ function ciniki_web_pageFileDownload($ciniki) {
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'file_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'File'), 
         )); 
     if( $rc['stat'] != 'ok' ) { 
@@ -31,10 +31,10 @@ function ciniki_web_pageFileDownload($ciniki) {
     
     //  
     // Make sure this module is activated, and
-    // check permission to run this function for this business
+    // check permission to run this function for this tenant
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'checkAccess');
-    $rc = ciniki_web_checkAccess($ciniki, $args['business_id'], 'ciniki.web.pageFileDownload'); 
+    $rc = ciniki_web_checkAccess($ciniki, $args['tnid'], 'ciniki.web.pageFileDownload'); 
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }   
@@ -49,7 +49,7 @@ function ciniki_web_pageFileDownload($ciniki) {
         . "ciniki_web_page_files.binary_content "
         . "FROM ciniki_web_page_files "
         . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['file_id']) . "' "
-        . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+        . "AND tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
         . "";
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'file');
@@ -66,7 +66,7 @@ function ciniki_web_pageFileDownload($ciniki) {
     // Load the file contents
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'storageFileLoad');
-    $rc = ciniki_core_storageFileLoad($ciniki, $args['business_id'], 'ciniki.web.page_file', array('subdir'=>'pagefiles', 'uuid'=>$file['uuid']));
+    $rc = ciniki_core_storageFileLoad($ciniki, $args['tnid'], 'ciniki.web.page_file', array('subdir'=>'pagefiles', 'uuid'=>$file['uuid']));
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }

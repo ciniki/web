@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_web_processBlockTradingCards($ciniki, $settings, $business_id, $block) {
+function ciniki_web_processBlockTradingCards($ciniki, $settings, $tnid, $block) {
 
     if( !isset($block['cards']) ) {
         return array('stat'=>'ok', 'content'=>'');

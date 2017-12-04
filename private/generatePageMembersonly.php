@@ -90,7 +90,7 @@ function ciniki_web_generatePageMembersonly($ciniki, $settings) {
         // Check if the membersonly area is active, and the customer is signed in.  Otherwise, redirect
         // to the signin page
         //
-        if( !isset($ciniki['business']['modules']['ciniki.membersonly']) ) {
+        if( !isset($ciniki['tenant']['modules']['ciniki.membersonly']) ) {
             return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.74', 'msg'=>'Page does not exist.'));
         }
         if( !isset($settings['page-membersonly-active']) || $settings['page-membersonly-active'] != 'yes' ) {
@@ -114,7 +114,7 @@ function ciniki_web_generatePageMembersonly($ciniki, $settings) {
     // Get the list of pages, decide if we need a submenu
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'membersonly', 'web', 'pages');
-    $rc = ciniki_membersonly_web_pages($ciniki, $settings, $ciniki['request']['business_id'], array());
+    $rc = ciniki_membersonly_web_pages($ciniki, $settings, $ciniki['request']['tnid'], array());
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -158,7 +158,7 @@ function ciniki_web_generatePageMembersonly($ciniki, $settings) {
     //
     elseif( $num_pages == 1 ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'membersonly', 'web', 'pageDetails');
-        $rc = ciniki_membersonly_web_pageDetails($ciniki, $settings, $ciniki['request']['business_id'],
+        $rc = ciniki_membersonly_web_pageDetails($ciniki, $settings, $ciniki['request']['tnid'],
             array('permalink'=>$root_page['permalink']));
         if( $rc['stat'] != 'ok' ) {
             return $rc;

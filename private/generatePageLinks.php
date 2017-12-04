@@ -75,7 +75,7 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
     $stats = array('links'=>0, 'categories'=>0, 'tags'=>0);
     if( $tag_type == 0 ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'links', 'web', 'count');
-        $rc = ciniki_links_web_count($ciniki, $ciniki['request']['business_id']);
+        $rc = ciniki_links_web_count($ciniki, $ciniki['request']['tnid']);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -135,8 +135,8 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
     // If nothing requested, decide what should be displayed
     //
     if( $tag_type == 0 ) {
-        if( isset($ciniki['business']['modules']['ciniki.links']['flags'])
-            && ($ciniki['business']['modules']['ciniki.links']['flags']&0x01) > 0 
+        if( isset($ciniki['tenant']['modules']['ciniki.links']['flags'])
+            && ($ciniki['tenant']['modules']['ciniki.links']['flags']&0x01) > 0 
             && $stats['categories'] > 1
             && (($stats['links'] > 20 && $stats['categories'] > 5)
                 || ($stats['links'] > 30 && $stats['categories'] > 4)
@@ -151,8 +151,8 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
             $show_tags = 'yes';
             $show_list = 'no';
         }
-        elseif( isset($ciniki['business']['modules']['ciniki.links']['flags'])
-            && ($ciniki['business']['modules']['ciniki.links']['flags']&0x02) > 0
+        elseif( isset($ciniki['tenant']['modules']['ciniki.links']['flags'])
+            && ($ciniki['tenant']['modules']['ciniki.links']['flags']&0x02) > 0
             && $stats['tags'] > 1
             && (($stats['links'] > 20 && $stats['tags'] > 5)
                 || ($stats['links'] > 30 && $stats['tags'] > 4)
@@ -172,8 +172,8 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
     if( $tag_type == 0 ) {
         $show_tags = 'no';
         $show_list = 'yes';
-        if( isset($ciniki['business']['modules']['ciniki.links']['flags'])
-            && ($ciniki['business']['modules']['ciniki.links']['flags']&0x03) == 2 ) {
+        if( isset($ciniki['tenant']['modules']['ciniki.links']['flags'])
+            && ($ciniki['tenant']['modules']['ciniki.links']['flags']&0x03) == 2 ) {
             // Get the links organized by tag
             $tag_type = '40';
             $tag_permalink = '';
@@ -194,7 +194,7 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
         // Generate the content of the page
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbDetailsQueryDash');
-        $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'business_id', $ciniki['request']['business_id'], 'ciniki.web', 'content', 'page-links');
+        $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_web_content', 'tnid', $ciniki['request']['tnid'], 'ciniki.web', 'content', 'page-links');
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -215,7 +215,7 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
     //
     if( $show_tags == 'yes' ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'links', 'web', 'tagCloud');
-        $rc = ciniki_links_web_tagCloud($ciniki, $settings, $ciniki['request']['business_id'], array(
+        $rc = ciniki_links_web_tagCloud($ciniki, $settings, $ciniki['request']['tnid'], array(
             'tag_type'=>$tag_type,
             'permalink'=>$tag_permalink,
             ));
@@ -261,7 +261,7 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 
     if( $show_list == 'yes' ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'links', 'web', 'list');
-        $rc = ciniki_links_web_list($ciniki, $ciniki['request']['business_id'], array(
+        $rc = ciniki_links_web_list($ciniki, $ciniki['request']['tnid'], array(
             'tag_type'=>$tag_type,
             'tag_permalink'=>$tag_permalink,
             ));
@@ -345,7 +345,7 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
 
     
     $submenu = array();
-    if( isset($ciniki['business']['modules']['ciniki.links']['flags']) && ($ciniki['business']['modules']['ciniki.links']['flags']&0x03) == 0x03 ) {
+    if( isset($ciniki['tenant']['modules']['ciniki.links']['flags']) && ($ciniki['tenant']['modules']['ciniki.links']['flags']&0x03) == 0x03 ) {
         // Display the category/tags buttons
         $submenu['categories'] = array('name'=>'Categories',
             'url'=>$ciniki['request']['base_url'] . '/links/categories');

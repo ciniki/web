@@ -12,7 +12,7 @@
 // Returns
 // -------
 //
-function ciniki_web_generatePageAccountLogout(&$ciniki, $settings, $business_id, $timeout) {
+function ciniki_web_generatePageAccountLogout(&$ciniki, $settings, $tnid, $timeout) {
 
     //
     // Clear all the session information
@@ -27,7 +27,7 @@ function ciniki_web_generatePageAccountLogout(&$ciniki, $settings, $business_id,
         unset($_SESSION['login_referer']);
     }
 
-    foreach($ciniki['business']['modules'] as $module => $m) {
+    foreach($ciniki['tenant']['modules'] as $module => $m) {
         if( isset($ciniki['session'][$module]) ) {
             unset($ciniki['session'][$module]);
         }
@@ -85,7 +85,7 @@ function ciniki_web_generatePageAccountLogout(&$ciniki, $settings, $business_id,
         }
         if( isset($settings['theme']['header-breadcrumbs']) && $settings['theme']['header-breadcrumbs'] == 'yes' && isset($breadcrumbs) ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBreadcrumbs');
-            $rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $ciniki['request']['business_id'], $breadcrumbs);
+            $rc = ciniki_web_processBreadcrumbs($ciniki, $settings, $ciniki['request']['tnid'], $breadcrumbs);
             if( $rc['stat'] == 'ok' ) {
                 $page_content .= $rc['content'];
             }

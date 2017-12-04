@@ -8,7 +8,7 @@
 # ------
 # id:               The id of the question.
 # uuid:             The Universal Unique ID.
-# business_id:      The business the question is for.
+# tnid:             The tenant the question is for.
 #
 # flags:            0x01 - hidden, do not display on website, used when preparing questions.
 #                   0x02 - 
@@ -27,7 +27,7 @@
 create table ciniki_web_faqs (
     id int not null auto_increment,
     uuid char(36) not null,
-    business_id int not null,
+    tnid int not null,
     flags tinyint not null,
     category varchar(100) not null,
     question varchar(250) not null,
@@ -35,6 +35,6 @@ create table ciniki_web_faqs (
     date_added datetime not null,
     last_updated datetime not null,
     primary key (id),
-    index (business_id, uuid, last_updated)
+    index (tnid, uuid, last_updated)
 ) ENGINE=InnoDB, COMMENT='v1.01';
 

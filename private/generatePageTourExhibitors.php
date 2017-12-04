@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This function will generate the exhibitors page for the business.
+// This function will generate the exhibitors page for the tenant.
 //
 // Arguments
 // ---------
@@ -47,7 +47,7 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'exhibitions', 'web', 'participantDetails');
         $rc = ciniki_exhibitions_web_participantDetails($ciniki, $settings, 
-            $ciniki['request']['business_id'], 
+            $ciniki['request']['tnid'], 
             $settings['page-exhibitions-exhibition'], $exhibitor_permalink);
         if( $rc['stat'] != 'ok' ) {
             return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.84', 'msg'=>"I'm sorry, but we can't seem to find the image your requested.", $rc['err']));
@@ -160,7 +160,7 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
         //
         $exhibitor_permalink = $ciniki['request']['uri_split'][0];
         $rc = ciniki_exhibitions_web_participantDetails($ciniki, $settings, 
-            $ciniki['request']['business_id'], $settings['page-exhibitions-exhibition'], $exhibitor_permalink);
+            $ciniki['request']['tnid'], $settings['page-exhibitions-exhibition'], $exhibitor_permalink);
         if( $rc['stat'] != 'ok' ) {
             return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.87', 'msg'=>"I'm sorry, but we can't find the exhibitor your requested.", $rc['err']));
         }
@@ -297,7 +297,7 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
     //
     else {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'exhibitions', 'web', 'participantList');
-        $rc = ciniki_exhibitions_web_participantList($ciniki, $settings, $ciniki['request']['business_id'], $settings['page-exhibitions-exhibition'], 'tourexhibitor');
+        $rc = ciniki_exhibitions_web_participantList($ciniki, $settings, $ciniki['request']['tnid'], $settings['page-exhibitions-exhibition'], 'tourexhibitor');
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
@@ -464,33 +464,33 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
             . "";
         
         //
-        // Check which parts of the business contact information to display automatically
+        // Check which parts of the tenant contact information to display automatically
         //
-        ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'web', 'contact');
-        $rc = ciniki_businesses_web_contact($ciniki, $settings, $ciniki['request']['business_id']);
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'web', 'contact');
+        $rc = ciniki_tenants_web_contact($ciniki, $settings, $ciniki['request']['tnid']);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
         $contact_details = $rc['details'];
         
-        $business_address = '';
+        $tenant_address = '';
         if( isset($contact_details['contact.address.street1']) && $contact_details['contact.address.street1'] != '' ) {
-            $business_address .= $contact_details['contact.address.street1'] . "<br/>";
+            $tenant_address .= $contact_details['contact.address.street1'] . "<br/>";
         }
         if( isset($contact_details['contact.address.street2']) && $contact_details['contact.address.street2'] != '' ) {
-            $business_address .= $contact_details['contact.address.street2'] . "<br/>";
+            $tenant_address .= $contact_details['contact.address.street2'] . "<br/>";
         }
         if( isset($contact_details['contact.address.city']) && $contact_details['contact.address.city'] != '' ) {
-            $business_address .= $contact_details['contact.address.city'];
+            $tenant_address .= $contact_details['contact.address.city'];
         }
         if( isset($contact_details['contact.address.city']) && $contact_details['contact.address.city'] != ''
             && isset($contact_details['contact.address.province']) && $contact_details['contact.address.province'] != '' ) {
-            $business_address .= ", " . $contact_details['contact.address.province'] . "";
+            $tenant_address .= ", " . $contact_details['contact.address.province'] . "";
         }
         if( isset($contact_details['contact.address.postal']) && $contact_details['contact.address.postal'] != '' ) {
-            $business_address .= "  " . $contact_details['contact.address.postal'] . "<br/>";
+            $tenant_address .= "  " . $contact_details['contact.address.postal'] . "<br/>";
         } else {
-            $business_address .= "<br/>";
+            $tenant_address .= "<br/>";
         }
         // 
         // Setup the javascript to display the map
@@ -513,7 +513,7 @@ function ciniki_web_generatePageTourExhibitors($ciniki, $settings) {
                 . '';
         if( isset($settings['ciniki-exhibitions-exhibitors-active']) 
             && $settings['ciniki-exhibitions-exhibitors-active'] == 'yes' ) {
-            $ciniki['request']['inline_javascript'] .= 'gmap_showParticipant(' . $settings['page-contact-map-latitude'] . ',' . $settings['page-contact-map-longitude'] . ',"","<p><b>' . $ciniki['business']['details']['name'] . '</b></p><p>' . $business_address . '</p>");';
+            $ciniki['request']['inline_javascript'] .= 'gmap_showParticipant(' . $settings['page-contact-map-latitude'] . ',' . $settings['page-contact-map-longitude'] . ',"","<p><b>' . $ciniki['tenant']['details']['name'] . '</b></p><p>' . $tenant_address . '</p>");';
         }
 //              . 'var marker = new google.maps.Marker({'
 //                  . 'position: myLatlng,'
