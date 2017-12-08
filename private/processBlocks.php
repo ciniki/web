@@ -14,7 +14,7 @@
 //
 function ciniki_web_processBlocks(&$ciniki, $settings, $tnid, $blocks) {
 
-    $rsp = array('stat'=>'ok', 'content'=>'');
+    $rsp = array('stat'=>'ok', 'content'=>'', 'css'=>'');
 
     //
     // Process the blocks of content
@@ -55,6 +55,7 @@ function ciniki_web_processBlocks(&$ciniki, $settings, $tnid, $blocks) {
             case 'pricetable': $processor = 'processBlockPriceTable'; break;
             case 'printoptions': $processor = 'processBlockPrintOptions'; break;
             case 'productcards': $processor = 'processBlockProductCards'; break;
+            case 'foldingtable': $processor = 'processBlockFoldingTable'; break;
             case 'sharebuttons': $processor = 'processBlockShareButtons'; break;
             case 'sectionedform': $processor = 'processBlockSectionedForm'; break;
             case 'sponsors': $processor = 'processBlockSponsors'; break;
@@ -90,6 +91,12 @@ function ciniki_web_processBlocks(&$ciniki, $settings, $tnid, $blocks) {
                     } else {
                         $rsp['content'] .= $rc['content'];
                     }
+                }
+                if( isset($rc['css']) ) {
+                    if( !isset($ciniki['response']['blocks-css']) ) {
+                        $ciniki['response']['blocks-css'] = '';
+                    }
+                    $ciniki['response']['blocks-css'] .= $rc['css'];
                 }
             }
         }
