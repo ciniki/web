@@ -196,7 +196,6 @@ function ciniki_web_processBlockSectionedForm(&$ciniki, $settings, $tnid, $block
         $content .= "<div class='sectioned-form-nav'><div class='sectioned-form-nav-content'>";
         $content .= "<span class='sectioned-form-nav-button sectioned-form-nav-button-prev'>";
         if( $prev_section != null ) {
-//            $content .= "<a href='" . $block['base_url'] . "?section=" . $prev_section['id'] . "'><span>Previous</span></a>";
             $content .= "<input type='hidden' name='previous' value='" . $prev_section['id'] . "'/>";
             $content .= "<input class='submit' type='submit' name='action' value='Previous'/>";
         }
@@ -205,10 +204,8 @@ function ciniki_web_processBlockSectionedForm(&$ciniki, $settings, $tnid, $block
         if( $next_section != null ) {
             $content .= "<input type='hidden' name='next' value='" . $next_section['id'] . "'/>";
             $content .= "<input class='submit' type='submit' name='action' value='Next'/>";
-            //$content .= "<a href='" . $block['base_url'] . "?section=" . $next_section['id'] . "'><span>Next</span></a>";
         } else {
             $content .= "<input class='submit' type='submit' name='action' value='Submit'/>";
-            //$content .= "<a href='" . $block['base_url'] . "?section=" . $next_section['id'] . "'><span>Submit</span></a>";
         }
         $content .= "</span>";
         $content .= "</div></div>";
