@@ -543,6 +543,16 @@ div.thumbnail-list-item-text {
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#faa51a', endColorstr='#f47a20');
     background: linear-gradient(to bottom, #faa51a, #f47a20);
 }
+#content div.decision-buttons a {
+    font-size: 1.2em;
+    border: 2px solid #da7c0c;
+    border-radius: 10px;
+    color: #fef4e9;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+    padding: 0.35em;
+    width: 100%;
+    background: linear-gradient(to bottom, #faa51a, #f47a20);
+}
 
 #content div.largebutton-list div.button-list-button a {
     padding: 0.5em 0 0.5em 0;
@@ -661,7 +671,7 @@ div.thumbnail-list-item-text {
     border-radius: 8px;
     text-shadow: 0 1px 1px rgba(0,0,0,0.5);
     padding: 0.45em 1.5em 0.45em 1.5em;
-    color: #d9eef7;    
+    color: #fff;    
     border: 2px solid #0076a3;    
     background: #0095cd;    
     background: -webkit-gradient(linear, left top, left bottom, from(#00adee), to(#0078a5));    
@@ -1423,6 +1433,82 @@ aside div.borderless {
 }
 #content div.table table tbody tr:nth-child(even) {
     background: #f5f5f5;
+}
+
+/* Block: FoldingTable */
+#content div.folding-table table {
+    border: 1px solid #ddd;
+}
+#content div.folding-table thead tr {
+    background: #ddd;
+    font-weight: bold;
+}
+#content div.folding-table tr {
+    border-top: 1px solid #ddd;
+}
+#content div.folding-table th,
+#content div.folding-table td {
+    color: #606060;
+}
+#content div.folding-table tr.odd,
+#content div.folding-table tr td.odd {
+    background: #f5f5f5;
+}
+#content div.folding-table tr.even,
+#content div.folding-table tr td.even {
+    background: #fff;
+}
+#content div.folding-table tr td:first-child {
+    background: #ddd;
+    font-weight: bold;
+}
+
+/* Block: RegistrationForm */
+#content form.registration-form div.section-content {
+    border: 1px solid #ccc;
+    padding: 0.5em 0px 0px 0.5em;
+    margin-bottom: 1.5em;
+    background: #eee;
+}
+#content form.registration-form div.section-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    padding-left: 0.5em;
+    color: #555;
+}
+#content form.registration-form div.section-field {
+    padding: 0px 0.5em 0.5em 0px;
+}
+#content form.registration-form div.section-field select {
+    margin: 0px;
+}
+#content form.registration-form div.section-field label {
+    margin: 0px;
+    padding-left: 0.5em;
+    color: #707070;
+}
+#content form.registration-form div.section-fields input {
+    background: #fff;
+}
+#content form.registration-form div.input-details {
+    border: 1px solid #aaa;
+    margin: 0px 0.5em 0.5em 0px;
+    background: #f9f9f9;
+}
+#content form.registration-form div.input-details-item span.label,
+#content form.registration-form div.input-details-item span.value {
+    padding: 0.3em 0.5em 0.25em 0.5em;
+    background: #f8f8f8;
+    border-bottom: 1px solid #ddd;
+}
+#content form.registration-form div.input-details-item span.label {
+    border-right: 1px solid #ddd;
+    color: #555;
+}
+#content form.registration-form input.delete {
+    background: red;
+    border-color: #c30000;
+    background: linear-gradient(to bottom, #fe0000, #c50000);
 }
 
 /* Styles show fullscreen slideshows */

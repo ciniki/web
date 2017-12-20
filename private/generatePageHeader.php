@@ -359,8 +359,11 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     //
     // Check if there is CSS from processing blocks to include
     //
-    if( isset($ciniki['response']['blocks-css']) && $ciniki['response']['blocks-css'] ) {
+    if( isset($ciniki['response']['blocks-css']) && $ciniki['response']['blocks-css'] != '' ) {
         $content .= "<style>" . $ciniki['response']['blocks-css'] . "</style>";
+    }
+    if( isset($ciniki['response']['blocks-js']) && $ciniki['response']['blocks-js'] != '' ) {
+        $content .= "<script type='text/javascript'>" . $ciniki['response']['blocks-js'] . "</script>";
     }
 
     //

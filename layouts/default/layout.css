@@ -155,7 +155,18 @@ div.sponsor-gallery div.sponsor-gallery-thumbnail {
     width: auto;
     max-width: 100%;
 }
-
+#content article.page form.medium {
+    margin: 0 auto;
+    max-width: 45em;
+}
+#content article.page form.medium div.input,
+#content article.page form.medium div.submit {
+    max-width: 45em;
+}
+#content article.page form.medium div.submit input.submit {
+    width: 20em;
+    max-width: 20em;
+}
 #content article.page form.wide {
     width: 100%;
     max-width: 100%;

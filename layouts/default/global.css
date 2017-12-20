@@ -139,6 +139,10 @@ h2 {
     max-width: 23em;
 }
 
+.hidden {
+    display: none !important;
+}
+
 .evensplit p, 
 .evensplit ul, 
 .evensplit ol, 
@@ -558,6 +562,127 @@ article {
     text-align: right;
 }
 
+/* Block: DecisionButtons */
+#content div.decision-buttons {
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+#content div.decision-buttons div.decision-button {
+    width: 100%;
+    margin-bottom: 0.25em;
+    max-width: 35em;
+    margin: 0 auto 0.25em auto;
+}
+#content div.decision-buttons a {
+    display: inline-block;
+    padding: 0.25em;
+}
+
+/* Block: FoldingTable */
+#content div.folding-table {
+    display: block;
+    width: 100%;
+}
+#content div.folding-table div.folding-table-add {
+    text-align: right;
+    padding: 0.25em 0.5em 0.25em 0.5em;
+}
+#content div.folding-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+#content div.folding-table thead {
+    display: none;
+}
+#content div.folding-table .folded-label {
+    font-weight: bold;
+    text-align: right;
+    vertical-align: top;
+}
+#content div.folding-table tr th,
+#content div.folding-table tr td {
+    display: inline-block;
+    width: 50%;
+}
+#content div.folding-table tr td:first-child {
+    width: 100%;
+    max-width: 100%;
+}
+#content div.folding-table tr th {
+    padding: 0.35em 0.5em;
+}
+#content div.folding-table tr.editable a,
+#content div.folding-table tr.ediable .no-a {
+    display: inline-block;
+    color: inherit;
+    padding: 0.35em 0.5em;
+    width: 100%;
+}
+#content div.folding-table tr.editable td.row-button {
+    display: none;
+    text-align: right;
+}
+#content div.folding-table tr.editable .cell-button {
+    float: right;
+    text-align: right;
+    vertical-align: top;
+    font-size: 1.2em;
+}
+#content div.folding-table .folded-label span.fa-icon {
+    display: none;
+}
+
+/* Block: RegistrationForm */
+#content article.page form.registration-form {
+    width: 100%;
+    max-width: 100%;
+}
+#content form.registration-form div.section-field {
+    display: inline-block;
+    width: 100%;
+    max-width: 100%;
+}
+#content form.registration-form div.d {
+}
+#content form.registration-form div.buttons {
+    text-align: right;
+}
+#content form.registration-form div.buttons input {
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+}
+#content form.registration-form div.input-details-item span.label {
+    display: inline-block;
+    font-weight: bold;
+    width: 25%;
+    text-align: right;
+    padding: 0.2em;
+    vertical-align: top;
+}
+#content form.registration-form div.input-details-item span.value {
+    display: inline-block;
+    width: 75%;
+    padding: 0.2em;
+    vertical-align: top;
+}
+#content form.registration-form div.input-details-button a {
+    display: block;
+}
+#content form.registration-form div.input-details-button span.label {
+    display: inline-block;
+    text-align: center;
+    width: 95%;
+    padding: 0.25em 0.5em;
+}
+#content form.registration-form div.input-details-button span.fa-icon {
+    display: inline-block;
+    text-align: right;
+    width: 5%;
+    padding: 0.25em 0.5em;
+}
 
 /* Thumbnail List */
 #content div.thumbnail-list {
@@ -1132,6 +1257,10 @@ div.sponsor-gallery-thumbnail img {
 #content form input.bigsubmit2 {
     margin-top: 1em;
     cursor: pointer;
+}
+#content form.medium div.submit input.submit {
+    width: 100%;
+    max-width: 100%;
 }
 
 #content form p.formhelp {
