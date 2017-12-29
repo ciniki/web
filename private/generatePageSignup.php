@@ -490,17 +490,17 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
             $err = 11;
         }
         if( !isset($_POST['tenant_name']) || $_POST['tenant_name'] == '' || strlen($_POST['tenant_name']) < 2 ) {
-            $tenant_name_err = 'You must specify a tenant name.';
+            $tenant_name_err = 'You must specify a business name.';
             $err = 12;
         }
         // Check for invalid tenant names
         if( in_array(strtolower($_POST['tenant_name']), $invalid_tenant_names) ) {
-            $tenant_name_err = "This tenant name is restricted, please choose another.";
+            $tenant_name_err = "This business name is restricted, please choose another.";
             $err = 13;
         }
         $sitename = preg_replace('/[^a-z0-9\-_]/', '', strtolower($_POST['tenant_name']));
         if( in_array($sitename, $invalid_tenant_names) ) {
-            $tenant_name_err = "The tenant name you choose is restricted, please choose another.";
+            $tenant_name_err = "The business name you choose is restricted, please choose another.";
             $err = 14;
         }
         if( !isset($_POST['email_address']) || $_POST['email_address'] == '' ) {
@@ -790,8 +790,8 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
                     if( $uid != $ciniki['session']['user']['id'] ) {
                         $ciniki['emailqueue'][] = array('user_id'=>$uid,
                             'subject'=>'Sign Up: ' . $signup['tenant_name'],
-                            'textmsg'=>"New tenant signup: \n" 
-                                . "Tenant Name: " . $signup['tenant_name'] . "\n"
+                            'textmsg'=>"New business signup: \n" 
+                                . "Business Name: " . $signup['tenant_name'] . "\n"
                                 . "User: " . $signup['firstname'] . " " . $signup['lastname'] . "\n"
                                 . "Sitename: " . $signup['sitename'] . "\n"
                                 . "Email: " . $signup['email_address'] . "\n"
@@ -919,11 +919,11 @@ function ciniki_web_generatePageSignup(&$ciniki, $settings) {
             $page_content .= "<p class='formerror'>$lastname_err</p>";
         }
         $page_content .= "</div>";
-        $page_content .= "<div class='input'><label for='tenant_name'>Tenant Name</label><input type='text' class='text' name='tenant_name' value='$tenant_name'>";
+        $page_content .= "<div class='input'><label for='tenant_name'>Business Name</label><input type='text' class='text' name='tenant_name' value='$tenant_name'>";
         if( $tenant_name_err != '' ) {
             $page_content .= "<p class='formerror'>$tenant_name_err</p>";
         }
-        $page_content .= "<p class='formhelp'>If you don't have a tenant name, just use your first and last name.</p></div>";
+        $page_content .= "<p class='formhelp'>If you don't have a business name, just use your first and last name.</p></div>";
 //      $page_content .= "<label for='sitename'>Site Name</label><input type='text' class='text' name='sitename' value='$sitename'>";
         $page_content .= "<div class='input'><label for='email_address'>Email</label><input type='text' class='text' name='email_address' value='$email_address'>";
         if( $email_address_err != '' ) {
