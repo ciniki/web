@@ -41,6 +41,7 @@ function ciniki_web_processBlocks(&$ciniki, $settings, $tnid, $blocks) {
             case 'gallery': $processor = 'processBlockGallery'; break;
             case 'galleryimage': $processor = 'processBlockGalleryImage'; break;
             case 'links': $processor = 'processBlockLinks'; break;
+            case 'login': $processor = 'processBlockLogin'; break;
             case 'map': $processor = 'processBlockMap'; break;
             case 'message': $processor = 'processBlockMessage'; break;
             case 'meta': $processor = 'processBlockMeta'; break;

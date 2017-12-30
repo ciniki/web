@@ -23,6 +23,7 @@ function ciniki_web_generateModulePage(&$ciniki, $settings, $tnid, $module) {
             'uri_split'=>$ciniki['request']['uri_split'],
             'base_url'=>$ciniki['request']['base_url'] . '/' . $ciniki['request']['page'],
             'domain_base_url'=>$ciniki['request']['domain_base_url'] . '/' . $ciniki['request']['page'],
+            'ssl_domain_base_url'=>$ciniki['request']['ssl_domain_base_url'] . '/' . $ciniki['request']['page'],
             'page_title'=>'',
             'article_title'=>'',
             'breadcrumbs'=>array(),

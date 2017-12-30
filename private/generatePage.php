@@ -143,6 +143,7 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
     if( $page['page_type'] == '30' ) {
         $base_url .= '/' . $rc['page']['permalink'];
         $domain_base_url = $ciniki['request']['domain_base_url'] . '/' . $ciniki['request']['page'];
+        $ssl_domain_base_url = $ciniki['request']['ssl_domain_base_url'] . '/' . $ciniki['request']['page'];
         $ciniki['request']['page-container-class'] = str_replace('.', '-', $page['page_module']);
 
 //      $breadcrumbs[] = array('name'=>$page['title'], 'url'=>$base_url . '/' . $ciniki['request']['page']);
@@ -169,6 +170,7 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
                 'uri_split'=>$uri_split,
                 'base_url'=>$base_url,
                 'domain_base_url'=>$domain_base_url,
+                'ssl_domain_base_url'=>$ssl_domain_base_url,
                 'page_title'=>$page['title'],
                 'page_menu'=>$page_menu,
                 'breadcrumbs'=>$breadcrumbs,
