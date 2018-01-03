@@ -1253,22 +1253,34 @@ aside div.borderless {
 #content div.order-repeats button,
 #content div.cart form input.cart-submit, 
 #content form div.cart-buttons input.cart-submit, 
+#content form button.cart-submit, 
 #content div.cart-buttons form input.cart-submit, 
 #content div.cart-pricelist form input.cart-submit {
     outline: 0;
     cursor: pointer;
     font-size: 0.9em;
+    box-shadow: none;
     border-radius: 8px;
     text-shadow: 0 1px 1px rgba(0,0,0,0.5);
     margin-left: 1em;
     padding: 0.25em 1.0em 0.25em 1.0em;
     color: #d9eef7;    
-    border: 2px solid #0076a3;    
+    border: 2px solid #0076a3;
     background: #0095cd;    
     background: -webkit-gradient(linear, left top, left bottom, from(#00adee), to(#0078a5));    
     background: -moz-linear-gradient(top,  #00adee,  #0078a5);    
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0078a5');
     background: linear-gradient(to bottom, #00adee, #0078a5);
+}
+#content form button.stripe-button-el span {
+    background: none;
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+    min-height: auto !important;
+    height: auto !important;
+    line-height: inherit;
+    box-shadow: none;
 }
 
 #content div.cart-pricelist form input.cart-submit {

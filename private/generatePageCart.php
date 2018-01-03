@@ -14,6 +14,7 @@
 // -------
 //
 function ciniki_web_generatePageCart(&$ciniki, $settings) {
+
     //
     // Check if maintanence mode
     //
@@ -656,27 +657,73 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
     //
     // FIXME: Check if checkout via stripe
     //
-    elseif( $stripe_checkout == 'yes' && isset($_POST['stripecheckout']) && $_POST['stripecheckout'] != '' && $cart != NULL 
+    elseif( $stripe_checkout == 'yes' 
+        && isset($_POST['stripe-token']) && $_POST['stripe-token'] != '' 
+        && isset($_POST['stripe-email']) && $_POST['stripe-email'] != '' 
+        && $cart != NULL 
         && isset($cart['customer_id']) && $cart['customer_id'] > 0 
         ) {
-/*        //
-        // Load stripe settings
         //
-        ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'paypalExpressCheckoutSet');
-        $rc = ciniki_sapos_web_paypalExpressCheckoutSet($ciniki, $ciniki['request']['tnid'], array(
-            'amount'=>$cart['total_amount'],
-            'type'=>'Sale',
-            'returnurl'=>$ciniki['request']['ssl_domain_base_url'] . '/cart/pesuccess',
-            'cancelurl'=>$ciniki['request']['ssl_domain_base_url'] . '/cart/pecancel',
-            'currency'=>$intl_currency,
-            'shipping'=>($cart['shipping_status'] > 0 ? 'yes' : 'no'),
-            ));
-        if( $rc['stat'] != 'ok' ) {
-            $carterrors = $rc['err']['msg'];
+        // Load stripe library
+        //
+        require_once($ciniki['config']['ciniki.core']['lib_dir'] . '/Stripe/init.php');
+        \Stripe\Stripe::setApiKey($sapos_settings['stripe-sk']);
+
+        //
+        // Create customer
+        //
+        try {
+            $customer = \Stripe\Customer::create(array(
+                'email'=>$_POST['stripe-email'],
+                'source'=>$_POST['stripe-token'],
+                ));
+        } catch( Exception $e) {
+            $carterrors = "Oops, we seem to have a problem with your payment. Please try again or contact us for help.";
+            //return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.197', 'msg'=>$e->getMessage()));
         }
 
-        $display_cart = 'review';
-        $page_title = 'Checkout - Review'; */
+        if( !isset($carterrors) || $carterrors == '' ) {
+            try {
+                $charge = \Stripe\Charge::create(array(
+                    'customer' => $customer->id,
+                    'amount'   => number_format($cart['total_amount'] * 100, 0, '', ''),
+                    'currency' => $intl_currency,
+                    ));
+            } catch( Exception $e) {
+                $carterrors = "Oops, we seem to have a problem with your payment. Please try again or contact us for help.";
+                // return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.197', 'msg'=>$e->getMessage()));
+            }
+        }
+
+        if( !isset($carterrors) || $carterrors == '' ) {
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartPaymentReceived');
+            $rc = ciniki_sapos_web_cartPaymentReceived($ciniki, $settings, $ciniki['request']['tnid'], $cart);
+            if( $rc['stat'] != 'ok' ) {
+                $carterrors = "We have received your payment, thank you. There was a problem processing your order, so have notified the approriate people to look into it.";
+                error_log('ERR-CART: ' . print_r($rc['err']));
+                $ciniki['emailqueue'][] = array('to'=>$ciniki['config']['ciniki.core']['alerts.notify'],
+                    'subject'=>'Web Cart ERR 500',
+                    'textmsg'=>$_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "\n"
+                        . $carterrors . "\n"
+                        . "Customer: \n" 
+                        . print_r($ciniki['session']['customer'], true) 
+                        . "\n"
+                        . print_r($rc, true)
+                        . "\n",
+                    );
+            } else {
+                //
+                // Checkout success
+                //
+                $display_success = 'yes';
+                $display_cart = 'checkout_success';
+                $cart = NULL;
+                $_SESSION['cart']['sapos_id'] = 0;
+                $_SESSION['cart']['num_items'] = 0;
+                $ciniki['session']['cart']['sapos_id'] = 0;
+                $ciniki['session']['cart']['num_items'] = 0;
+            }
+        }
     }
 
     //
@@ -1263,7 +1310,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                 . "</script>\n"
                 . "";
             
-            $content .= "<form action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' class='wide' method='POST' >";
+            $content .= "<form id='cart' action='" .  $ciniki['request']['ssl_domain_base_url'] . "/cart' class='wide' method='POST' >";
             $content .= "<input type='hidden' name='action' value='update'/>";
             if( $cart_err_msg != '' ) {
                 $content .= $cart_err_msg;
@@ -1587,7 +1634,33 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                     $content .= "<span class='cart-submit'>"
                         . "<input class='cart-submit' type='submit' name='continue' value='Back'/>";
                     if( $stripe_checkout == 'yes' ) {
-                        $content .= "<input class='cart-submit' type='submit' name='strikecheckout' value='Pay Now'/>";
+                        if( !isset($ciniki['response']['head']['scripts']) ) {
+                            $ciniki['response']['head']['scripts'] = array();
+                        }
+                        $ciniki['response']['head']['scripts'][] = array(
+                            'src'=>'https://checkout.stripe.com/checkout.js', 
+                            'type'=>'text/javascript',
+                            );
+                        $ciniki['request']['inline_javascript'] = "<script type='text/javascript'>\n"
+                            . "var stripeCheckout = StripeCheckout.configure({"
+                                . 'key: "' . $sapos_settings['stripe-pk'] . '", '
+                                . 'image: "https://s3.amazonaws.com/stripe-uploads/acct_104IPT4DnKptjnBBmerchant-icon-319979-logo.jpg", '
+                                . 'locale: "auto", '
+                                . 'name: "' . $ciniki['tenant']['details']['name'] . '", '
+                                . 'description: "", '
+                                . 'amount: ' . number_format($cart['total_amount'] * 100, 0, '', '') . ', '
+                                . 'zipCode: true, '
+                                . 'currency: "' . $intl_currency . '", '
+                                . 'token: function(token) {'
+                                    . 'document.getElementById("stripe-token").value=token.id;'
+                                    . 'document.getElementById("stripe-email").value=token.email;'
+                                    . 'document.getElementById("cart").submit();'
+                                . '},'
+                                . '});'
+                                . '</script>';
+                        $content .= "<input id='stripe-token' type='hidden' name='stripe-token' value=''/>";
+                        $content .= "<input id='stripe-email' type='hidden' name='stripe-email' value=''/>";
+                        $content .= "<button class='cart-submit' onclick='stripeCheckout.open();return false;' type='submit' name='stripecheckout'>Pay Now</button>";
                     }
                     if( $paypal_checkout == 'yes' ) {
                         $content .= "<input class='cart-submit' type='submit' name='paypalexpresscheckout' value='Checkout via Paypal'/>";
