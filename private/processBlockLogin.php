@@ -20,6 +20,8 @@ function ciniki_web_processBlockLogin(&$ciniki, $settings, $tnid, $block) {
     $signinerrors = '';
     $signinmsg = '';
 
+    $post_email = isset($_POST['email_address']) ? $_POST['email_address'] : '';
+
     if( isset($block['title']) && $block['title'] != '' ) {
         $content .= "<h2>" . $block['title'] . "</h2>";
     }
