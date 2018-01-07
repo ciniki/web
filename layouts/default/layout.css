@@ -423,6 +423,9 @@ div.sponsor-gallery div.sponsor-gallery-thumbnail {
     box-sizing: border-box;
     padding-right: 0em;
 }
+#content form div.submit.wide {
+    max-width: 100%;
+}
 
 #content form div.bigsubmit,
 #content form div.bigsubmit2 {
