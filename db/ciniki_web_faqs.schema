@@ -31,7 +31,7 @@ create table ciniki_web_faqs (
     flags tinyint not null,
     category varchar(100) not null,
     question varchar(250) not null,
-    answer varchar(60000) not null,
+    answer text not null,
     date_added datetime not null,
     last_updated datetime not null,
     primary key (id),
