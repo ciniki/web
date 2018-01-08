@@ -1650,6 +1650,8 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                                 . 'description: "", '
                                 . 'amount: ' . number_format($cart['total_amount'] * 100, 0, '', '') . ', '
                                 . 'zipCode: true, '
+                                . 'allowRememberMe: false, '
+//                                . 'email: "' . $ciniki['session']['customer']['email'] . '", '
                                 . 'currency: "' . $intl_currency . '", '
                                 . 'token: function(token) {'
                                     . 'document.getElementById("stripe-token").value=token.id;'
