@@ -41,7 +41,7 @@ create table ciniki_web_collections (
     image_id int not null,
     image_caption varchar(250) not null,
     synopsis varchar(6000) not null,
-    description varchar(10000) not null,
+    description text not null,
     date_added datetime not null,
     last_updated datetime not null,
     primary key (id),
