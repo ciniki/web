@@ -4,7 +4,7 @@
 // -----------
 // This function will generate a customers account page.  This page allows the customer
 // to login to their account, change their password and subscribe/unsubscribe to public
-// subscriptions (newsletters).
+// subscriptions (newsletters) and logout.
 //
 // Arguments
 // ---------
