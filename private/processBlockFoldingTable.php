@@ -93,10 +93,15 @@ function ciniki_web_processBlockFoldingTable(&$ciniki, $settings, $tnid, $block)
             $content .= "<td class='value " . (($colcount%2) ? 'odd' : 'even') 
                 . (isset($column['class']) && $column['class'] != '' ? " " . $column['class'] : "") . "'>"
                 . $a_start;
-            if( isset($row[$column['field']]) ) {
+            if( isset($row[$column['field']]) && $row[$column['field']] != '' ) {
                 $content .= $row[$column['field']];
-            } 
-            if( !isset($column['fold']) || $column['fold'] != 'yes' ) {
+            } else {
+                $content .= '&nbsp;';
+            }
+            if( (!isset($column['fold']) || $column['fold'] != 'yes')
+                && isset($block['editable']) && $block['editable'] == 'yes' 
+                && isset($row['edit-url']) && $row['edit-url'] != '' 
+                ) {
                 $content .= "<span class='fa-icon cell-button'>&#xf105;</span>";
             }
             $content .= $a_end . "</td>";
@@ -120,10 +125,10 @@ function ciniki_web_processBlockFoldingTable(&$ciniki, $settings, $tnid, $block)
     //
     $css = ""
         . "#content #ft-{$id}.folding-table tr td.label {"
-            . "width: 25%;"
+            . "width: " . (isset($block['label-width']) ? $block['label-width'] : '25%;')
         . "}"
         . "#content #ft-{$id}.folding-table tr td.value {"
-            . "width: 75%;"
+            . "width: " . (isset($block['value-width']) ? $block['value-width'] : '75%;')
         . "}"
         . "#content #ft-{$id}.folding-table tr td.value:first-child {"
             . "width: 100%;"
