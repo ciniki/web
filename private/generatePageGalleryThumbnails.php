@@ -100,7 +100,7 @@ function ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $base_url,
 
         $content .= "<div class='image-gallery-thumbnail'>"
             . "<a href='" . $base_url . "/" . $img['permalink'] . "'>"
-            . "<img title='" . htmlspecialchars(strip_tags($img['title'])) . "' "
+            . '<img title="' . htmlspecialchars(strip_tags($img['title'])) . '" '
             . "alt='" . htmlspecialchars(strip_tags($img['title'])) . "' src='$img_url' /></a></div>";
             // width='" . $maxlength . "px' height='" . $maxlength . "px' /></div>";
     }
