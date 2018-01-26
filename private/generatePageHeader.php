@@ -1024,6 +1024,11 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
                     $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='gallery'?' menu-item-selected':'') . "'>"
                         . "<a href='" . $ciniki['request']['base_url'] . "/gallery/pottery'>Pottery</a></li>";
                 } 
+                if( isset($settings['page-gallery-artcatalog-graphicart']) 
+                    && $settings['page-gallery-artcatalog-graphicart'] == 'yes' ) {
+                    $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='gallery'?' menu-item-selected':'') . "'>"
+                        . "<a href='" . $ciniki['request']['base_url'] . "/gallery/graphicart'>Graphic Art</a></li>";
+                } 
             } else {
                 $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='gallery'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/gallery'>";
                 if( isset($settings['page-gallery-name']) && $settings['page-gallery-name'] != '' ) {

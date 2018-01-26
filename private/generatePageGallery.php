@@ -40,6 +40,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
                     case 'fibrearts': $artcatalog_type = 5; break;
                     case 'printmaking': $artcatalog_type = 6; break;
                     case 'pottery': $artcatalog_type = 8; break;
+                    case 'graphicart': $artcatalog_type = 11; break;
                 }
                 if( $artcatalog_type > 0 ) {
                     $ciniki['response']['head']['og']['url'] .= '/' . $uri_split[0];
@@ -182,6 +183,9 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
                     break;
                 case 8:
                     $tags[] = 'pottery';
+                    break;
+                case 11:
+                    $tags[] = 'graphicart';
                     break;
             }
         }
