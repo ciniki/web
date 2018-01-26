@@ -1374,7 +1374,7 @@ function ciniki_web_main() {
         this.recipes.addClose('Cancel');
 
         //
-        // The options and information for the blog page
+        // The options and information for the buy/sell jiji page
         //
         this.jiji = new M.panel('Buy/Sell',
             'ciniki_web_main', 'jiji',
@@ -1408,6 +1408,7 @@ function ciniki_web_main() {
                 'page-blog-share-buttons':{'label':'Sharing', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
                 'page-blog-thumbnail-format':{'label':'Thumbnail Format', 'type':'toggle', 'default':'square-cropped', 'toggles':{'square-cropped':'Cropped', 'square-padded':'Padded'}},
                 'page-blog-thumbnail-padding-color':{'label':'Padding Color', 'type':'colour'},
+                'page-blog-num-past-months':{'label':'Number of Past Months', 'type':'text', 'size':'small'},
                 }},
             '_save':{'label':'', 'buttons':{
                 'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'blog\');'},
@@ -1573,6 +1574,7 @@ function ciniki_web_main() {
                 'page-memberblog-active':{'label':'Display Member News', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-memberblog-menu-active':{'label':'Always in Menu', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-memberblog-name':{'label':'Name', 'type':'text', 'hint':'Member News'},
+                'page-memberblog-num-past-months':{'label':'Number of Past Months', 'type':'text', 'size':'small'},
                 }},
             '_save':{'label':'', 'buttons':{
                 'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'memberblog\');'},
