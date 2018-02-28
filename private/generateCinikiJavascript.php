@@ -41,7 +41,7 @@ function ciniki_web_generateCinikiJavascript($ciniki) {
             . "x.onreadystatechange=function(){"
                 . "if(x.readyState==4&&x.status==200){"
                     . "var r=eval('('+x.responseText+')');"
-                    . "if(r.stat!='ok'){console.log(x.responseText);}"
+                    . "if(r.stat!='ok'&&r.stat!='noavail'){console.log(x.responseText);}"
                     . "f(r);"
                 . "};"
                 . "if(x.readyState>2&&x.status>=300){f({'stat':'fail', 'err':{'code':'300', 'msg':'Error connecting to server.'}});console.log('apierr:'+x.status);}"

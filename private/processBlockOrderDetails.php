@@ -44,6 +44,8 @@ function ciniki_web_processBlockOrderDetails(&$ciniki, $settings, $tnid, $block)
         $content .= "<h2" . ((isset($block['size'])&&$block['size']!='') ? " class='" . $block['size'] . "'" : '') . ">" . $block['title'] . "</h2>";
     }
 
+    $js_variables = array();
+
     //
     // Make sure there is content to edit
     //
@@ -92,6 +94,7 @@ function ciniki_web_processBlockOrderDetails(&$ciniki, $settings, $tnid, $block)
                         . ($item['quantity'] > 1 ? ' ' . $item['quantity_plural'] : ' ' . $item['quantity_single'])
                         . "</td>";
                 }
+                $js_variables['order_item_quantity_' . $item['id']] = (float)$item['quantity'];
                 if( isset($item['flags']) && ($item['flags']&0x0200) == 0x0200 ) {
                     //
                     // Prepaid item, hide the price and total
@@ -134,6 +137,12 @@ function ciniki_web_processBlockOrderDetails(&$ciniki, $settings, $tnid, $block)
     }
     $ciniki['request']['ciniki_api'] = 'yes';
     $ciniki['request']['inline_javascript'] .= "<script type='text/javascript'>"
+        . "var org_val={"
+        . "";
+        foreach($js_variables as $k => $v) {
+            $ciniki['request']['inline_javascript'] .= "'$k':'$v',";
+        }
+    $ciniki['request']['inline_javascript'] .= "};"
         . "function orderQtyUp(id){"
             . "var e=C.gE('order_item_quantity_' + id);"
             . "if(e.value==''){"
@@ -166,13 +175,18 @@ function ciniki_web_processBlockOrderDetails(&$ciniki, $settings, $tnid, $block)
                     . "e.value=0;"
                 . "}"
             . "}"
-            . "if(e.value!=e.old_value){"
+            . "if(e.value!=org_val['order_item_quantity_'+id]){"
                 . "C.getBg('" . $api_item_update . "'+id,{'quantity':e.value},function(r){"
-                    . "if(r.stat!='ok'){"
-                        . "e.value=e.old_value;"
+                    . "if(r.stat=='noavail'){"
+                        . "e.value=org_val['order_item_quantity_' + id];"
+                        . "alert(\"We're sorry, but there are no more available.\");"
+                        . "return false;"
+                    . "} else if(r.stat!='ok'){"
+                        . "e.value=org_val['order_item_quantity_' + id];"
                         . "alert('We had a problem updating your order. Please try again or contact us for help.');"
                         . "return false;"
                     . "}"
+                    . "org_val['order_item_quantity_'+id]=e.value;"
                     . "if(r.order!=null&&r.order.items!=null&&r.order.items[id]!=null){"
                         . "var i=r.order.items[id];"
                         . "C.gE('order_item_price_'+id).innerHTML=i.price_html;"
