@@ -45,6 +45,7 @@ function ciniki_web_processBlocks(&$ciniki, $settings, $tnid, $blocks) {
             case 'map': $processor = 'processBlockMap'; break;
             case 'message': $processor = 'processBlockMessage'; break;
             case 'meta': $processor = 'processBlockMeta'; break;
+            case 'monthlyavailability': $processor = 'processBlockMonthlyAvailability'; break;
             case 'multipagenav': $processor = 'processBlockMultiPageNav'; break;
             case 'orderdetails': $processor = 'processBlockOrderDetails'; break;
             case 'orderoptions': $processor = 'processBlockOrderOptions'; break;

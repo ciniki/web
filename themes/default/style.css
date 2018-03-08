@@ -1447,6 +1447,18 @@ aside div.borderless {
     background: #f5f5f5;
 }
 
+/* Block: MonthlyAvailability */
+#content div.monthly-availability table {
+    max-width: 30em;
+}
+#content div.table.monthly-availability table thead tr,
+#content div.table.monthly-availability table th,
+#content div.table.monthly-availability table td {
+    background: transparent;
+    border: 1px solid #ddd;
+    width: 8.33%;
+}
+
 /* Block: FoldingTable */
 #content div.folding-table table {
     border: 1px solid #ddd;
