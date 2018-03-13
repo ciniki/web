@@ -425,6 +425,19 @@ article {
     font-size: 1.5em;
 }
 
+#content .entry-title-buttons h1 {
+    width: 100%;
+}
+#content .entry-title-buttons h1,
+#content .entry-title-buttons div.title-buttons {
+    display: table-cell;
+}
+#content .entry-title-buttons div.title-buttons a {
+    display: inline;
+    padding: 0.25em;
+    box-sizing: border-box;
+}
+
 #content header h1 {
     margin-bottom: 0.2em;
 }
