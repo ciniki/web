@@ -497,7 +497,7 @@ function ciniki_web_pages() {
         this[pn].sections._page_type.visible = 'hidden';
         this[pn].sections._page_type.fields.page_type.toggles = {'10':'Custom'};
         // Check if flags for page menu and page redirects
-        if( (M.curTenant.modules['ciniki.web'].flags&0x0600) > 0 ) {
+        if( (M.curTenant.modules['ciniki.web'].flags&0x0640) > 0 ) {
             this[pn].sections._page_type.visible = 'yes';
             if( (M.curTenant.modules['ciniki.web'].flags&0x0800) > 0 ) {
                 this[pn].sections._page_type.fields.page_type.toggles['11'] = 'Manual';
@@ -505,7 +505,7 @@ function ciniki_web_pages() {
             if( (M.curTenant.modules['ciniki.web'].flags&0x0400) > 0 ) {
                 this[pn].sections._page_type.fields.page_type.toggles['20'] = 'Redirect';
             }
-            if( (M.curTenant.modules['ciniki.web'].flags&0x0200) > 0 ) {
+            if( (M.curTenant.modules['ciniki.web'].flags&0x0240) > 0 ) {
                 this[pn].sections._page_type.fields.page_type.toggles['30'] = 'Module';
                 this[pn].sections._module.fields.page_module.options = {};
                 if( rsp.modules_pages != null ) {
