@@ -136,7 +136,9 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $tnid, $module_pag
         } else {
             $rsp['content'] .= "<article class='page'>\n";
         }
-        $rsp['content'] .= "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$article_title</h1>";
+        $rsp['content'] .= "<header class='entry-title"
+            . (isset($page['title-buttons']['buttons']) ? ' entry-title-buttons' : '')
+            . "'><h1 id='entry-title' class='entry-title'>$article_title</h1>";
         if( isset($page['subtitle']) && $page['subtitle'] != '' ) {
             $rsp['content'] .= "<h2>" . $page['subtitle'] . "</h2>";
         }
@@ -146,6 +148,15 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $tnid, $module_pag
             if( $rc['stat'] == 'ok' ) {
                 $rsp['content'] .= $rc['content'];
             }
+        }
+        if( isset($page['title-buttons']['buttons']) ) {
+            $rsp['content'] .= "<div class='title-buttons'>";
+            foreach($page['title-buttons']['buttons'] as $button) {
+                $rsp['content'] .= "<a class='"
+                    . (isset($button['class']) && $button['class'] != '' ? $button['class'] : '')
+                    . "' href='{$button['href']}'><span>{$button['label']}</span></a>";
+            }
+            $rsp['content'] .= "</div>";
         }
 
         //

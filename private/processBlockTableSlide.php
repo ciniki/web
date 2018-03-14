@@ -41,6 +41,7 @@ function ciniki_web_processBlockTableSlide(&$ciniki, $settings, $tnid, $block) {
                 $content .= "<div class='table-slide-coldata" 
                     . (isset($row['dataclass']) && $row['dataclass'] != '' ? ' table-slide-' . $row['dataclass'] : 
                         (isset($row['class']) && $row['class'] != '' ? ' table-slide-' . $row['class'] : '&nbsp;'))
+                    . (isset($col[$row['field']]) && $col[$row['field']] < 0 ? ' table-slide-negative' : '')
                     . "'>"
                     . (isset($col[$row['field']]) ? $col[$row['field']] : '&nbsp;')
                     . "</div>";
