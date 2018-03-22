@@ -78,7 +78,15 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
         $files = '';
         foreach($page['files'] as $fid => $file) {
             $url = $base_url . ($page['permalink']!=''?'/' . $page['permalink']:'') . '/download/' . $file['permalink'] . '.' . $file['extension'];
-            $files .= "<p><a target='_blank' href='" . $url . "' title='" . $file['name'] . "'>" . $file['name'] . "</a></p>";
+            $files .= "<div class='file'><a target='_blank' href='" . $url . "' title='" . $file['name'] . "'>" . $file['name'] . "</a>";
+            if( isset($file['description']) && $file['description'] != '' ) {
+                $rc = ciniki_web_processContent($ciniki, $settings, $file['description']);
+                if( $rc['stat'] != 'ok' ) {
+                    return $rc;
+                }
+                $files .= $rc['content'];
+            }
+            $files .= "</div>";
         }
         if( $files != '' ) {
             $share = 'content';

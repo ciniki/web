@@ -299,6 +299,7 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
                 . "ciniki_web_page_files.name, "
                 . "ciniki_web_page_files.permalink, "
                 . "ciniki_web_page_files.extension, "
+                . "ciniki_web_page_files.description, "
                 . "ciniki_web_page_files.binary_content "
                 . "FROM ciniki_web_pages, ciniki_web_page_files "
                 . "WHERE ciniki_web_pages.tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
