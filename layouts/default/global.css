@@ -571,6 +571,12 @@ article {
 #content div.table-slide-horizontal div.table-slide-coldata:nth-child(odd) {
     background: #eee;
 }
+#content div.table-slide-horizontal div.table-slide-alignleft {
+    text-align: left;
+}
+#content div.table-slide-horizontal div.table-slide-aligncenter {
+    text-align: center;
+}
 #content div.table-slide-horizontal div.table-slide-alignright {
     text-align: right;
 }
