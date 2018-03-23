@@ -491,6 +491,7 @@ function ciniki_web_siteSettings($ciniki) {
         'site-header-landingpage1-title',
         'site-header-landingpage1-permalink',
         'site-header-address',
+        'site-header-title-override',
         );
     foreach($header_keys as $header_key) {
         if( isset($settings[$header_key]) && $settings[$header_key] != '' ) {

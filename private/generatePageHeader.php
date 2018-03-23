@@ -632,10 +632,14 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     $hgroup = '';
     $class = 'hgroup-wrapper logo-nav-wrapper';
     if( !isset($settings['site-header-title']) || $settings['site-header-title'] == 'yes' ) {
+        $site_title = $ciniki['tenant']['details']['name'];
+        if( isset($settings['site-header-title-override']) && $settings['site-header-title-override'] != '' ) {
+            $site_title = $settings['site-header-title-override'];
+        }
         $hgroup .= "<hgroup>\n";
         if( isset($page_home_image) && $page_home_image['stat'] == 'ok' ) {
             $hgroup .= "<div class='title-logo'>"
-                . "<a href='" . $page_home_url . "' title='" . $ciniki['tenant']['details']['name'] 
+                . "<a href='" . $page_home_url . "' title='" . $site_title
                 . "' rel='home'><img alt='Home' src='" . $page_home_image['url'] . "' /></a>"
                 . "</div>";
         }
@@ -645,7 +649,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
             $hgroup .= "<div class='title-block no-tagline'>";
         }
         $hgroup .= "<h1 id='site-title'>";
-        $hgroup .= "<span class='title'><a href='" . $page_home_url . "' title='" . $ciniki['tenant']['details']['name'] . "' rel='home'>" . $ciniki['tenant']['details']['name'] . "</a></span></h1>\n";
+        $hgroup .= "<span class='title'><a href='" . $page_home_url . "' title='" . $site_title . "' rel='home'>" . $site_title . "</a></span></h1>\n";
         if( isset($ciniki['tenant']['details']['tagline']) && $ciniki['tenant']['details']['tagline'] != '' ) {
             $hgroup .= "<h2 id='site-description'>" . $ciniki['tenant']['details']['tagline'] . "</h2>\n";
         }

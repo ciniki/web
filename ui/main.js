@@ -278,6 +278,7 @@ function ciniki_web_main() {
             'options':{'label':'Options', 'fields':{
                 'site-header-image-size':{'label':'Image Size', 'type':'select', 'default':'medium', 'options':this.headerImageSize},
                 'site-header-title':{'label':'Display Tenant Name', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles, 'editFn':'M.startApp(\'ciniki.tenants.info\',null,\'M.ciniki_web_main.header.show();\');'},
+                'site-header-title-override':{'label':'Site Title', 'type':'text'},
                 }},
             '_landingpage1':{'label':'Landing Page', 'active':function() {return (M.curTenant.modules['ciniki.landingpages']!=null?'yes':'no');}, 'fields':{
                 'site-header-landingpage1-title':{'label':'Title', 'type':'text'},

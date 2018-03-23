@@ -482,6 +482,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'site-header-image-size',
         'site-header-og-image',
         'site-header-title',
+        'site-header-title-override',
         'site-header-address',
         'site-header-landingpage1-title',
         'site-header-landingpage1-permalink',
