@@ -63,23 +63,44 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
     // Check if there should be a submenu
     //
     $submenu = array();
+    $first_course_cat = '';
     $first_course_type = '';
     if( isset($ciniki['tenant']['modules']['ciniki.courses']) ) {
-        ciniki_core_loadMethod($ciniki, 'ciniki', 'courses', 'web', 'courseTypes');
-        $rc = ciniki_courses_web_courseTypes($ciniki, $settings, $ciniki['request']['tnid']);
-        if( $rc['stat'] == 'ok' ) {
-            if( count($rc['types']) > 1 ) {
-                foreach($rc['types'] as $cid => $type) {
-                    if( $first_course_type == '' ) {
-                        $first_course_type = $type['name'];
+        if( isset($settings['page-courses-submenu-categories']) && $settings['page-courses-submenu-categories'] == 'yes' ) {
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'courses', 'web', 'categories');
+            $rc = ciniki_courses_web_categories($ciniki, $settings, $ciniki['request']['tnid']);
+            if( $rc['stat'] == 'ok' ) {
+                if( count($rc['categories']) > 1 ) {
+                    foreach($rc['categories'] as $cid => $cat) {
+                        if( $first_course_cat == '' ) {
+                            $first_course_cat = $cat['name'];
+                        }
+                        if( $cat['name'] != '' ) {
+                            $submenu[$cid] = array('name'=>$cat['name'], 'url'=>$ciniki['request']['base_url'] . "/courses/" . urlencode($cat['name']));
+                        }
                     }
-                    if( $type != '' ) {
-                        $submenu[$cid] = array('name'=>$type['name'], 'url'=>$ciniki['request']['base_url'] . "/courses/" . urlencode($type['name']));
-                    }
+                } elseif( count($rc['categories']) == 1 ) {
+                    $first_cat = array_pop($rc['categories']);
+                    $first_course_cat = $first_type['name'];
                 }
-            } elseif( count($rc['types']) == 1 ) {
-                $first_type = array_pop($rc['types']);
-                $first_course_type = $first_type['name'];
+            }
+        } else {
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'courses', 'web', 'courseTypes');
+            $rc = ciniki_courses_web_courseTypes($ciniki, $settings, $ciniki['request']['tnid']);
+            if( $rc['stat'] == 'ok' ) {
+                if( count($rc['types']) > 1 ) {
+                    foreach($rc['types'] as $cid => $type) {
+                        if( $first_course_type == '' ) {
+                            $first_course_type = $type['name'];
+                        }
+                        if( $type != '' ) {
+                            $submenu[$cid] = array('name'=>$type['name'], 'url'=>$ciniki['request']['base_url'] . "/courses/" . urlencode($type['name']));
+                        }
+                    }
+                } elseif( count($rc['types']) == 1 ) {
+                    $first_type = array_pop($rc['types']);
+                    $first_course_type = $first_type['name'];
+                }
             }
         }
         if( ($ciniki['tenant']['modules']['ciniki.courses']['flags']&0x02) == 0x02 ) {
@@ -586,6 +607,7 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
     // Generate the list of courses upcoming, current, past
     //
     else {
+        $coursecategory = '';
         $coursetype = '';
         if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
             $coursetype = urldecode($ciniki['request']['uri_split'][0]);
