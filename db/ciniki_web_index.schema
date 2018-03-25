@@ -58,4 +58,4 @@ create table ciniki_web_index (
     index (secondary_words), 
     index (tertiary_words),
     index sync (tnid, uuid, last_updated)
-) ENGINE='InnoDB', COMMENT='v1.01', CHARACTER SET latin1;
+) ENGINE='InnoDB', COMMENT='v1.01', CHARACTER SET latin1, ROW_FORMAT=DYNAMIC;
