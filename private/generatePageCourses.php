@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This function will generate the courses page for the tenant.
+// DEPRECATED: NO LONGER USED. This function will generate the courses page for the tenant.
 //
 // Arguments
 // ---------
@@ -541,6 +541,17 @@ function ciniki_web_generatePageCourses($ciniki, $settings) {
             }
             $page_content .= "</tbody></table>\n";
             $page_content .= "</div>\n";
+        }
+
+        if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.courses', 0x0200) && isset($offering['images']) ) {
+            $page_content .= "<h2>Gallery</h2>";
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
+            $img_base_url = $ciniki['request']['base_url'] . "/courses/course/" . $course_permalink . '/' . $offering_permalink . "/gallery";
+            $rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $offering['images'], 125);
+            if( $rc['stat'] != 'ok' ) {
+                return $rc;
+            }
+            $page_content .= "<div class='image-gallery'>" . $rc['content'] . "</div>";
         }
 
         $page_content .= "</article>";

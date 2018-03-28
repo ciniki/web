@@ -833,8 +833,10 @@ if( $found == 'no' ) {
     // Courses
     elseif( $ciniki['request']['page'] == 'courses' 
         && isset($settings['page-courses-active']) && $settings['page-courses-active'] == 'yes' ) {
-        require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageCourses.php');
-        $rc = ciniki_web_generatePageCourses($ciniki, $settings);
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
+        $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['tnid'], 'ciniki.courses');
+        //require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageCourses.php');
+        //$rc = ciniki_web_generatePageCourses($ciniki, $settings);
     }
     // Classes
     elseif( $ciniki['request']['page'] == 'classes' 
