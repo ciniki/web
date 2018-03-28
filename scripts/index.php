@@ -326,7 +326,7 @@ if( $ciniki['request']['tnid'] == 0 ) {
             exit;
         }
         elseif( isset($rc['domain']) && $rc['domain'] != '' && $preview == 'no'
-            && (!isset($ciniki['config']['ciniki.web']['redirects']) || $ciniki['config']['ciniki.web']['redirects'] != 'off')
+            && (isset($ciniki['config']['ciniki.web']['redirects']) && $ciniki['config']['ciniki.web']['redirects'] != 'off')
             && (!isset($ciniki['config']['ciniki.web']['shop.domain']) || $ciniki['config']['ciniki.web']['shop.domain'] != $_SERVER['HTTP_HOST'])
             ) {
             Header('HTTP/1.1 301 Moved Permanently'); 
