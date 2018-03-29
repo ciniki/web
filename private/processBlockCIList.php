@@ -83,66 +83,71 @@ function ciniki_web_processBlockCIList(&$ciniki, $settings, $tnid, $block) {
                 $url_display = $rc['display'];
             }
 
-            // Setup the item image
-            if( isset($block['notitle']) 
-                && ($block['notitle'] == 'yes' || $block['notitle'] == 'hide')
-                ) {
-                $content .= "<tr><td class='cilist-image' rowspan='2'>";
-            } else {
-                $content .= "<tr><td class='cilist-image' rowspan='3'>";
+            $content .= "<tr>";
+            if( $block['type'] == 'cilist' ) {
+                //
+                // Setup the item image
+                // 
+                if( isset($block['notitle']) 
+                    && ($block['notitle'] == 'yes' || $block['notitle'] == 'hide')
+                    ) {
+                    $content .= "<td class='cilist-image' rowspan='2'>";
+                } else {
+                    $content .= "<td class='cilist-image' rowspan='3'>";
+                }
+                if( isset($item['image_id']) && $item['image_id'] > 0 ) {
+                    if( isset($block['thumbnail_format']) && $block['thumbnail_format'] == 'square-padded' ) {
+                        $version = ((isset($block['image_version'])&&$block['image_version']!='')?$block['image_version']:'original');
+                        $rc = ciniki_web_getPaddedImageURL($ciniki, $item['image_id'], 'original', 
+                            ((isset($block['image_width'])&&$block['image_width']!='')?$block['image_width']:'150'), 
+                            ((isset($block['image_height'])&&$block['image_height']!='')?$block['image_height']:'0'),
+                            ((isset($block['thumbnail_padding_color'])&&$block['thumbnail_padding_color']!='')?$block['thumbnail_padding_color']:'#ffffff') 
+                            );
+                    } else {
+                        $version = ((isset($block['image_version'])&&$block['image_version']!='')?$block['image_version']:'thumbnail');
+                        $rc = ciniki_web_getScaledImageURL($ciniki, $item['image_id'], $version, 
+                            ((isset($block['image_width'])&&$block['image_width']!='')?$block['image_width']:'150'), 
+                            ((isset($block['image_height'])&&$block['image_height']!='')?$block['image_height']:'0') 
+                            );
+                    }
+                    if( $rc['stat'] != 'ok' ) {
+                        return $rc;
+                    }
+                    if( $url != '' ) {
+                        $content .= "<div class='image-cilist-$version'>"
+                            . "<a href='$url' target='$url_target' title='" . $item['title'] . "'>"
+                            . "<img title='' alt='" . $item['title'] . "' src='" . $rc['url'] . "' /></a>"
+                            . "</div>";
+                    } else {
+                        $content .= "<div class='image-cilist-$version'>"
+                            . "<img title='' alt='" . $item['title'] . "' src='" . $rc['url'] . "' />"
+                            . "</div>";
+                    }
+                } elseif( isset($block['noimage']) && $block['noimage'] == 'yes' ) {
+                    if( $url != '' ) {
+                        $content .= "<div class='image-cilist-thumbnail'>"
+                            . "<a href='$url' target='$url_target' title='" . $item['title'] . "'>"
+                            . "<img title='' alt='" . $item['title'] . "' src='/ciniki-web-layouts/default/img/noimage_240.png' /></a>"
+                            . "</div>";
+                    } else {
+                        $content .= "<div class='image-cilist-thumbnail'>"
+                            . "<img title='' alt='" . $item['title'] . "' src='/ciniki-web-layouts/default/img/noimage_240.png' />"
+                            . "</div>";
+                    }
+                } elseif( isset($block['noimage']) && $block['noimage'] != '' ) {
+                    if( $url != '' ) {
+                        $content .= "<div class='image-cilist-thumbnail'>"
+                            . "<a href='$url' target='$url_target' title='" . $item['title'] . "'>"
+                            . "<img title='' alt='" . $item['title'] . "' src='" . $block['noimage'] . "' /></a>"
+                            . "</div>";
+                    } else {
+                        $content .= "<div class='image-cilist-thumbnail'>"
+                            . "<img title='' alt='" . $item['title'] . "' src='" . $block['noimage'] . "' />"
+                            . "</div>";
+                    }
+                } 
+                $content .= "</td>";
             }
-            if( isset($item['image_id']) && $item['image_id'] > 0 ) {
-                if( isset($block['thumbnail_format']) && $block['thumbnail_format'] == 'square-padded' ) {
-                    $version = ((isset($block['image_version'])&&$block['image_version']!='')?$block['image_version']:'original');
-                    $rc = ciniki_web_getPaddedImageURL($ciniki, $item['image_id'], 'original', 
-                        ((isset($block['image_width'])&&$block['image_width']!='')?$block['image_width']:'150'), 
-                        ((isset($block['image_height'])&&$block['image_height']!='')?$block['image_height']:'0'),
-                        ((isset($block['thumbnail_padding_color'])&&$block['thumbnail_padding_color']!='')?$block['thumbnail_padding_color']:'#ffffff') 
-                        );
-                } else {
-                    $version = ((isset($block['image_version'])&&$block['image_version']!='')?$block['image_version']:'thumbnail');
-                    $rc = ciniki_web_getScaledImageURL($ciniki, $item['image_id'], $version, 
-                        ((isset($block['image_width'])&&$block['image_width']!='')?$block['image_width']:'150'), 
-                        ((isset($block['image_height'])&&$block['image_height']!='')?$block['image_height']:'0') 
-                        );
-                }
-                if( $rc['stat'] != 'ok' ) {
-                    return $rc;
-                }
-                if( $url != '' ) {
-                    $content .= "<div class='image-cilist-$version'>"
-                        . "<a href='$url' target='$url_target' title='" . $item['title'] . "'>"
-                        . "<img title='' alt='" . $item['title'] . "' src='" . $rc['url'] . "' /></a>"
-                        . "</div>";
-                } else {
-                    $content .= "<div class='image-cilist-$version'>"
-                        . "<img title='' alt='" . $item['title'] . "' src='" . $rc['url'] . "' />"
-                        . "</div>";
-                }
-            } elseif( isset($block['noimage']) && $block['noimage'] == 'yes' ) {
-                if( $url != '' ) {
-                    $content .= "<div class='image-cilist-thumbnail'>"
-                        . "<a href='$url' target='$url_target' title='" . $item['title'] . "'>"
-                        . "<img title='' alt='" . $item['title'] . "' src='/ciniki-web-layouts/default/img/noimage_240.png' /></a>"
-                        . "</div>";
-                } else {
-                    $content .= "<div class='image-cilist-thumbnail'>"
-                        . "<img title='' alt='" . $item['title'] . "' src='/ciniki-web-layouts/default/img/noimage_240.png' />"
-                        . "</div>";
-                }
-            } elseif( isset($block['noimage']) && $block['noimage'] != '' ) {
-                if( $url != '' ) {
-                    $content .= "<div class='image-cilist-thumbnail'>"
-                        . "<a href='$url' target='$url_target' title='" . $item['title'] . "'>"
-                        . "<img title='' alt='" . $item['title'] . "' src='" . $block['noimage'] . "' /></a>"
-                        . "</div>";
-                } else {
-                    $content .= "<div class='image-cilist-thumbnail'>"
-                        . "<img title='' alt='" . $item['title'] . "' src='" . $block['noimage'] . "' />"
-                        . "</div>";
-                }
-            }
-            $content .= "</td>";
             
             // Setup the details
             if( isset($block['notitle']) && $block['notitle'] == 'yes' ) {
@@ -156,6 +161,9 @@ function ciniki_web_processBlockCIList(&$ciniki, $settings, $tnid, $block) {
                     $content .= $item['title'];
                 }
                 $content .= "</p>";
+                if( isset($item['subtitle']) && $item['subtitle'] != '' ) {
+                    $content .= "<p class='cilist-subtitle'>" . $item['subtitle'] . "</p>";
+                }
                 $content .= "</td></tr>";
                 $content .= "<tr>";
             }

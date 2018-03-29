@@ -1795,6 +1795,12 @@ function ciniki_web_main() {
                 'page-courses-catalog-download-active':{'label':'Display Catalog Download', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-courses-level-display':{'label':'Display course level', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-courses-submenu-categories':{'label':'Display Categories Submenu', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                'page-courses-submenu-categories':{'label':'Display Categories Submenu', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                'page-courses-list-format':{'label':'Format', 'active':'yes', 'type':'select', 'options':{
+                    'clist':'Single Column', 
+                    'cilist':'Single Column + Images', 
+                    'imagelist':'Image List', 
+                    }},
 //              'page-courses-past-name':{'label':'Name', 'type':'text', 'hint':'Past Courses'},
                 }},
             '_image':{'label':'Image', 'type':'imageform', 'fields':{

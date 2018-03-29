@@ -30,7 +30,7 @@ function ciniki_web_processBlocks(&$ciniki, $settings, $tnid, $blocks) {
             case 'calendar': $processor = 'processBlockCalendar'; break;
             case 'chartoverlay': $processor = 'processBlockChartOverlay'; break;
             case 'cilist': $processor = 'processBlockCIList'; break;
-            case 'clist': $processor = 'processBlockCList'; break;
+            case 'clist': $processor = 'processBlockCIList'; break;
             case 'content': $processor = 'processBlockContent'; break;
             case 'decisionbuttons': $processor = 'processBlockDecisionButtons'; break;
             case 'details': $processor = 'processBlockDetails'; break;

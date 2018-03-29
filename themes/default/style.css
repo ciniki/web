@@ -424,6 +424,7 @@ div.thumbnail-list-item-text {
 }
 
 #content table.cilist td p.clist-subtitle,
+#content table.cilist td p.cilist-subtitle,
 #content table.clist td p.clist-subtitle {
     margin-bottom: 0;
     font-style: italic;
