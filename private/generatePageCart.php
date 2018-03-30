@@ -663,43 +663,23 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         && $cart != NULL 
         && isset($cart['customer_id']) && $cart['customer_id'] > 0 
         ) {
-        //
-        // Load stripe library
-        //
-        require_once($ciniki['config']['ciniki.core']['lib_dir'] . '/Stripe/init.php');
-        \Stripe\Stripe::setApiKey($sapos_settings['stripe-sk']);
 
-        //
-        // Create customer
-        //
-        try {
-            $customer = \Stripe\Customer::create(array(
-                'email'=>$_POST['stripe-email'],
-                'source'=>$_POST['stripe-token'],
-                ));
-        } catch( Exception $e) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'stripeCustomerCharge');
+        $rc = ciniki_sapos_web_stripeCustomerCharge($ciniki, $ciniki['request']['tnid'], array(
+            'invoice_id' => $cart['id'],
+            'stripe-token' => $_POST['stripe-token'],
+            'stripe-email' => $_POST['stripe-email'],
+            'charge-amount' => $cart['total_amount'],
+            ));
+        if( $rc['stat'] != 'ok' ) {
             $carterrors = "Oops, we seem to have a problem with your payment. Please try again or contact us for help.";
-            //return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.197', 'msg'=>$e->getMessage()));
         }
-
-        if( !isset($carterrors) || $carterrors == '' ) {
-            try {
-                $charge = \Stripe\Charge::create(array(
-                    'customer' => $customer->id,
-                    'amount'   => number_format($cart['total_amount'] * 100, 0, '', ''),
-                    'currency' => $intl_currency,
-                    ));
-            } catch( Exception $e) {
-                $carterrors = "Oops, we seem to have a problem with your payment. Please try again or contact us for help.";
-                // return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.197', 'msg'=>$e->getMessage()));
-            }
-        }
-
+         
         if( !isset($carterrors) || $carterrors == '' ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartPaymentReceived');
             $rc = ciniki_sapos_web_cartPaymentReceived($ciniki, $settings, $ciniki['request']['tnid'], $cart);
             if( $rc['stat'] != 'ok' ) {
-                $carterrors = "We have received your payment, thank you. There was a problem processing your order, so have notified the approriate people to look into it.";
+                $carterrors = "We have received your payment, thank you. There was a problem processing your order, so we have notified the approriate people to look into it.";
                 error_log('ERR-CART: ' . print_r($rc['err']));
                 $ciniki['emailqueue'][] = array('to'=>$ciniki['config']['ciniki.core']['alerts.notify'],
                     'subject'=>'Web Cart ERR 500',
