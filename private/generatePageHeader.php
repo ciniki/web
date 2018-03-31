@@ -1388,11 +1388,15 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
         }
         $content .= "</a></li>";
     }
+    if( isset($settings['page-search-active']) && $settings['page-search-active'] == 'yes' ) {
+        $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='search'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/search'>Search</a></li>";
+    }
     if( isset($settings['page-contact-active']) && $settings['page-contact-active'] == 'yes' ) {
         $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='contact'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/contact'>Contact</a></li>";
     }
-    $content .= "</ul>\n"
-        . "</div>\n";
+    $content .= "</ul>\n";
+
+    $content .= "</div>\n";
 
     //
     // Check if there is a submenu to display
