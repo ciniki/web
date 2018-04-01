@@ -463,6 +463,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-cart-payment-success-emails',         // Emails to send notification to when order paid for
         'page-signup-active',
         'page-signup-menu',
+        'page-search-active',
         'page-api-active',
         'page-tutorials-active',
         'page-tutorials-image',
