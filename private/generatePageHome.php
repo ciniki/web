@@ -494,7 +494,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
     // List the blog entries
     //
     if( isset($ciniki['tenant']['modules']['ciniki.blog']) 
-        && isset($settings['page-blog-active']) && $settings['page-blog-active'] == 'yes' 
+//        && isset($settings['page-blog-active']) && $settings['page-blog-active'] == 'yes' 
         && (!isset($settings['page-home-latest-blog']) || $settings['page-home-latest-blog'] == 'yes') 
         ) {
         $list_size = 2;
@@ -517,15 +517,10 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
             $rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $posts, 
                 array('limit'=>$list_size,
-//                  'prev'=>'&larr; Newer Posts',
-//                  'next'=>'Older Posts &rarr;',
                     'base_url'=>$ciniki['request']['base_url'] . "/blog",
                     'thumbnail_format'=>(isset($settings['page-blog-thumbnail-format'])&&$settings['page-blog-thumbnail-format']!=''?$settings['page-blog-thumbnail-format']:'square-cropped'),
                     'thumbnail_padding_color'=>(isset($settings['page-blog-thumbnail-padding-color'])&&$settings['page-blog-thumbnail-padding-color']!=''?$settings['page-blog-thumbnail-padding-color']:'#ffffff'),
                 ));
-//          $rc = ciniki_web_processCIList($ciniki, $settings, $base_url, array('0'=>array(
-//              'name'=>'', 'noimage'=>'/ciniki-web-layouts/default/img/noimage_240.png',
-//              'list'=>$posts)), array('limit'=>$list_size));
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -904,7 +899,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
     // List any current events
     //
     if( isset($ciniki['tenant']['modules']['ciniki.events']) 
-        && isset($settings['page-events-active']) && $settings['page-events-active'] == 'yes' 
+//        && isset($settings['page-events-active']) && $settings['page-events-active'] == 'yes' 
         && isset($settings['page-home-current-events']) && $settings['page-home-current-events'] == 'yes'
         ) {
         $list_size = 2;
@@ -959,7 +954,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
     // List any upcoming events
     //
     if( isset($ciniki['tenant']['modules']['ciniki.events']) 
-        && isset($settings['page-events-active']) && $settings['page-events-active'] == 'yes' 
+//        && isset($settings['page-events-active']) && $settings['page-events-active'] == 'yes' 
         && (!isset($settings['page-home-upcoming-events']) || $settings['page-home-upcoming-events'] == 'yes') 
         ) {
         $list_size = 2;
