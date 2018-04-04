@@ -214,7 +214,6 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
                     $page_content .= $rc['content'];
                 }
             }
-            error_log('TEST');
             if( isset($page_menu) && count($page_menu) > 0 ) {
                 $page_content .= "<div class='page-menu-container'><ul class='page-menu'>";
                 foreach($page_menu as $item) {  
