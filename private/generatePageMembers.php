@@ -101,12 +101,13 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
             if( isset($settings['page-members-list-format']) && $settings['page-members-list-format'] == 'thumbnail-list' ) {
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockThumbnailList');
                 $rc = ciniki_web_processBlockThumbnailList($ciniki, $settings, $ciniki['request']['tnid'], array(
+                    'anchors'=>'permalink',
                     'base_url'=>$base_url,
                     'list'=>$members,
                     ));
             } else {
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
-                $rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $members, array('notitle'=>'yes'));
+                $rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $members, array('notitle'=>'yes', 'anchors'=>'permalink'));
             }
 //              array('0'=>array('name'=>'', 'list'=>$members)), array());
             if( $rc['stat'] != 'ok' ) {
@@ -468,12 +469,13 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
                     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockThumbnailList');
 //                    print "<pre>" . print_r($members, true) . "</pre>";
                     $rc = ciniki_web_processBlockThumbnailList($ciniki, $settings, $ciniki['request']['tnid'], array(
+                        'anchors'=>'permalink',
                         'base_url'=>$base_url,
                         'list'=>$members,
                         ));
                 } else {
                     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
-                    $rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $members, array('notitle'=>'yes'));
+                    $rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $members, array('notitle'=>'yes', 'anchors'=>'permalink'));
                 }
 //                  array('0'=>array('name'=>'', 'list'=>$members)), array());
                 if( $rc['stat'] != 'ok' ) {

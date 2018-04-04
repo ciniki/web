@@ -39,7 +39,11 @@ function ciniki_web_processBlockThumbnailList(&$ciniki, $settings, $tnid, $block
         } else {
             $img_url = $rc['url'];
         }
-        $content .= "<div class='thumbnail-list-item-wrap'>"
+        $anchor = '';
+        if( isset($block['anchors']) && $block['anchors'] == 'permalink' ) {
+            $anchor = " id='" . $item['permalink'] . "'";
+        }
+        $content .= "<div{$anchor} class='thumbnail-list-item-wrap'>"
             . "<div class='thumbnail-list-item'>"
             . "<a href='" . $block['base_url'] . '/' . $item['permalink'] . "' " . "title='$name'>"
             . "<div class='thumbnail-list-item-image'>"

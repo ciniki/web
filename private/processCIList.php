@@ -85,12 +85,17 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
             }
 
             // Setup the item image
+            $anchor = '';
+            if( isset($args['anchors']) && $args['anchors'] == 'permalink' ) {
+                error_log('anchor');
+                $anchor = " id='" . $item['permalink']  . "'";
+            }
             if( isset($args['notitle']) 
                 && ($args['notitle'] == 'yes' || $args['notitle'] == 'hide')
                 ) {
-                $content .= "<tr><td class='cilist-image' rowspan='2'>";
+                $content .= "<tr{$anchor}><td class='cilist-image' rowspan='2'>";
             } else {
-                $content .= "<tr><td class='cilist-image' rowspan='3'>";
+                $content .= "<tr{$anchor}><td class='cilist-image' rowspan='3'>";
             }
             if( isset($item['image_id']) && $item['image_id'] > 0 ) {
                 $version = ((isset($args['image_version'])&&$args['image_version']!='')?$args['image_version']:'thumbnail');
