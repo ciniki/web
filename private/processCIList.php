@@ -87,7 +87,6 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
             // Setup the item image
             $anchor = '';
             if( isset($args['anchors']) && $args['anchors'] == 'permalink' ) {
-                error_log('anchor');
                 $anchor = " id='" . $item['permalink']  . "'";
             }
             if( isset($args['notitle']) 
