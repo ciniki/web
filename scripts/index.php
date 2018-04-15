@@ -291,7 +291,11 @@ if( $ciniki['request']['tnid'] == 0 || $ciniki['request']['reseller'] == 'yes' )
         // If client is reseller, or master domain check for a sitename below domain,
         //
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'lookupClientDomain');
-        $rc = ciniki_web_lookupClientDomain($ciniki, $ciniki['request']['uri_split'][0], 'sitename', $ciniki['request']['tnid']);
+        if( isset($ciniki['request']['reseller']) && $ciniki['request']['reseller'] == 'yes' ) {
+            $rc = ciniki_web_lookupClientDomain($ciniki, $ciniki['request']['uri_split'][0], 'sitename', $ciniki['request']['tnid']);
+        } else {
+            $rc = ciniki_web_lookupClientDomain($ciniki, $ciniki['request']['uri_split'][0], 'sitename', $ciniki['config']['ciniki.core']['master_tnid']);
+        }
         if( $rc['stat'] != 'ok' ) {
             //
             // Only generate 404 if a master domain, all others that are resellers let continue to normal processing
