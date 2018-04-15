@@ -52,7 +52,8 @@ function ciniki_web_lookupTenantURL(&$ciniki, $tnid) {
     //
     // Get the sitename if no domain is specified
     //
-    $strsql = "SELECT sitename FROM ciniki_tenants "
+    $strsql = "SELECT sitename "
+        . "FROM ciniki_tenants "
         . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "";
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');

@@ -14,7 +14,7 @@
 // Returns
 // -------
 //
-function ciniki_web_lookupClientDomain(&$ciniki, $domain, $type) {
+function ciniki_web_lookupClientDomain(&$ciniki, $domain, $type, $reseller_id=0) {
 
     //
     // Strip the www from the domain before looking up
@@ -27,15 +27,16 @@ function ciniki_web_lookupClientDomain(&$ciniki, $domain, $type) {
     $sitename = '';
     if( $type == 'sitename' ) {
         $sitename = $domain;
-        $strsql = "SELECT id AS tnid, uuid, 'no' AS isprimary, 'no' as forcessl "
+        $strsql = "SELECT id AS tnid, uuid, 'no' AS isprimary, 'no' as forcessl, 'no' as reseller "
             . "FROM ciniki_tenants "
             . "WHERE sitename = '" . ciniki_core_dbQuote($ciniki, $domain) . "' "
             . "AND status = 1 "
-            . "";
+            . "AND reseller_id = '" . ciniki_core_dbQuote($ciniki, $reseller_id) . "' ";
     } else {
         $strsql = "SELECT ciniki_tenant_domains.tnid, ciniki_tenants.uuid, "
             . "IF((ciniki_tenant_domains.flags&0x01)=0x01, 'yes', 'no') AS isprimary, "
-            . "IF((ciniki_tenant_domains.flags&0x10)=0x10, 'yes', 'no') AS forcessl "
+            . "IF((ciniki_tenant_domains.flags&0x10)=0x10, 'yes', 'no') AS forcessl, "
+            . "IF((ciniki_tenants.flags&0x01)=0x01, 'yes', 'no') AS reseller "
             . "FROM ciniki_tenant_domains, ciniki_tenants "
             . "WHERE ciniki_tenant_domains.domain = '" . ciniki_core_dbQuote($ciniki, $domain) . "' "
             . "AND ciniki_tenant_domains.status < 50 "
@@ -57,6 +58,7 @@ function ciniki_web_lookupClientDomain(&$ciniki, $domain, $type) {
     }
     $isprimary = $rc['tenant']['isprimary'];
     $forcessl = $rc['tenant']['forcessl'];
+    $reseller = $rc['tenant']['reseller'];
     $tnid = $rc['tenant']['tnid'];
     $tenant_uuid = $rc['tenant']['uuid'];
 
@@ -164,6 +166,6 @@ function ciniki_web_lookupClientDomain(&$ciniki, $domain, $type) {
         }
     }
 
-    return array('stat'=>'ok', 'tnid'=>$tnid, 'tenant_uuid'=>$tenant_uuid, 'modules'=>$modules, 'pages'=>$pages, 'module_pages'=>$module_pages, 'redirect'=>$redirect, 'domain'=>$domain, 'sitename'=>$sitename, 'forcessl'=>$forcessl);
+    return array('stat'=>'ok', 'tnid'=>$tnid, 'tenant_uuid'=>$tenant_uuid, 'modules'=>$modules, 'pages'=>$pages, 'module_pages'=>$module_pages, 'redirect'=>$redirect, 'domain'=>$domain, 'sitename'=>$sitename, 'forcessl'=>$forcessl, 'reseller'=>$reseller);
 }
 ?>
