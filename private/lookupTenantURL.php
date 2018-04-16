@@ -52,7 +52,7 @@ function ciniki_web_lookupTenantURL(&$ciniki, $tnid) {
     //
     // Get the sitename if no domain is specified
     //
-    $strsql = "SELECT sitename "
+    $strsql = "SELECT sitename, reseller_id "
         . "FROM ciniki_tenants "
         . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "";
@@ -62,15 +62,39 @@ function ciniki_web_lookupTenantURL(&$ciniki, $tnid) {
         return $rc;
     }
     if( isset($rc['tenant']) ) {
+        $sitename = $rc['tenant']['sitename'];
+        $reseller_id = $rc['tenant']['reseller_id'];
+        //
+        // Get the reseller domain
+        //
+        $strsql = "SELECT domain, "
+            . "(flags&0x01) AS isprimary "
+            . "FROM ciniki_tenant_domains "
+            . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $reseller_id) . "' "
+            . "AND status < 50 "
+            . "ORDER BY isprimary DESC "
+            . "LIMIT 1"
+            . "";
+        $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.tenants', 'tenant');
+        if( $rc['stat'] != 'ok' ) {
+            return $rc;
+        }
+        if( isset($rc['tenant']['domain']) ) {
+            return array('stat'=>'ok', 
+                'url'=>"http://" . $rc['tenant']['domain'] . '/' . $sitename, 
+                'secure_url'=>"https://" . $rc['tenant']['domain'] . '/' . $sitename,
+                );
+        }
+
         if( isset($ssl_settings['site-ssl-active']) && $ssl_settings['site-ssl-active'] == 'yes' ) {
             return array('stat'=>'ok', 
-                'url'=>"http://" . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $rc['tenant']['sitename'],
-                'secure_url'=>"https://" . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $rc['tenant']['sitename'],
+                'url'=>"http://" . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $sitename,
+                'secure_url'=>"https://" . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $sitename,
                 );
         } else {
             return array('stat'=>'ok', 
-                'url'=>"http://" . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $rc['tenant']['sitename'],
-                'secure_url'=>"http://" . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $rc['tenant']['sitename'],
+                'url'=>"http://" . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $sitename,
+                'secure_url'=>"http://" . $ciniki['config']['ciniki.web']['master.domain'] . '/' . $sitename,
                 );
         }
     }
