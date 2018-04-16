@@ -237,11 +237,15 @@ if( $ciniki['request']['tnid'] == 0 || $ciniki['request']['reseller'] == 'yes' )
             $ciniki['request']['tnid'] = $ciniki['config']['ciniki.core']['shop_tnid'];
             $ciniki['request']['base_url'] = '';
         } else {
-            $ciniki['request']['page'] = 'masterindex';
+//            $ciniki['request']['page'] = 'masterindex';
+            $ciniki['request']['page'] = 'home';
             $ciniki['request']['tnid'] = $ciniki['config']['ciniki.core']['master_tnid'];
             $ciniki['request']['base_url'] = '';
         }
-    } elseif( $ciniki['request']['tnid'] == 0 && 
+//
+// Removed on Apr 15, 2018 -- This allows for any pages on master tenant
+//
+/*    } elseif( $ciniki['request']['tnid'] == 0 && 
         ($ciniki['request']['uri_split'][0] == 'about' 
             || $ciniki['request']['uri_split'][0] == 'contact'
             || $ciniki['request']['uri_split'][0] == 'features'
@@ -285,7 +289,7 @@ if( $ciniki['request']['tnid'] == 0 || $ciniki['request']['reseller'] == 'yes' )
         }
         $ciniki['tenant']['uuid'] = '';
         $ciniki['tenant']['modules'] = $rc['modules'];
-
+*/
     } elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' ) {
         //
         // If client is reseller, or master domain check for a sitename below domain,
@@ -296,25 +300,23 @@ if( $ciniki['request']['tnid'] == 0 || $ciniki['request']['reseller'] == 'yes' )
         } else {
             $rc = ciniki_web_lookupClientDomain($ciniki, $ciniki['request']['uri_split'][0], 'sitename', $ciniki['config']['ciniki.core']['master_tnid']);
         }
+        //
+        // Did not find a resold tenant
+        //
         if( $rc['stat'] != 'ok' ) {
             //
             // Only generate 404 if a master domain, all others that are resellers let continue to normal processing
             //
-            if( !isset($ciniki['request']['reseller']) || $ciniki['request']['reseller'] != 'yes' ) {
-                if( $ciniki['request']['uri_split'][0] == 'robots.txt' ) {
-                    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageRobots');
-                    $rc = ciniki_web_generatePageRobots($ciniki, array());
-                } else {
-                    // Generate the master tenant 404 page
-                    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateMaster404');
-                    $rc = ciniki_web_generateMaster404($ciniki, $rc);
-                }
-                if( isset($rc['content']) ) {
-                    print $rc['content'];
-                } else {
-                    print_error($rc, 'Unknown tenant ' . $ciniki['request']['uri_split'][0]);
-                }
-                exit;
+            if( $ciniki['request']['uri_split'][0] == 'robots.txt' ) {
+                ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageRobots');
+                $rc = ciniki_web_generatePageRobots($ciniki, array());
+            } elseif( $ciniki['request']['tnid'] == 0 ) {
+                $ciniki['request']['page'] = $ciniki['request']['uri_split'][0];
+                $ciniki['request']['tnid'] = $ciniki['config']['ciniki.core']['master_tnid'];
+                $ciniki['request']['base_url'] = '';
+                $uris = $ciniki['request']['uri_split'];
+                array_shift($uris);
+                $ciniki['request']['uri_split'] = $uris;
             } else {
                 //
                 // Only setup page and shift uris if this is a reseller and did not find sitename
@@ -326,7 +328,11 @@ if( $ciniki['request']['tnid'] == 0 || $ciniki['request']['reseller'] == 'yes' )
                     $ciniki['request']['uri_split'] = $uris;
                 }
             }
-        } elseif( $rc['stat'] == 'ok' ) {
+        } 
+        //
+        // Found a resold tenant based on sitename
+        //
+        elseif( $rc['stat'] == 'ok' ) {
             $ciniki['request']['tnid'] = $rc['tnid'];
             $ciniki['tenant']['uuid'] = $rc['tenant_uuid'];
             $ciniki['tenant']['modules'] = $rc['modules'];
@@ -375,10 +381,6 @@ if( $ciniki['request']['tnid'] == 0 || $ciniki['request']['reseller'] == 'yes' )
                 && (!isset($_SESSION['customer']['id']) || $_SESSION['customer']['id'] == 0)      // Not logged in
                 && !preg_match("/^\/[^\/]+\/account/", $_SERVER['REQUEST_URI'])                                     // Not going to account page
                 ) {
-    /*            print "<pre>";
-                print_r($_SESSION);
-                print "</pre>";
-                print "Redirect";  */
                 //
                 // Check if a redirect is specified
                 //
@@ -421,6 +423,27 @@ if( $ciniki['request']['tnid'] == 0 || $ciniki['request']['reseller'] == 'yes' )
             }
         }
     }
+}
+
+//
+// Lookup master tenant modules in database
+//
+if( $ciniki['request']['tnid'] == $ciniki['config']['ciniki.core']['master_tnid'] ) {
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'private', 'getActiveModules');
+    $rc = ciniki_tenants_getActiveModules($ciniki, $ciniki['request']['tnid']);
+    if( $rc['stat'] != 'ok' ) {
+        // Generate the master tenant 404 page
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateMaster404');
+        $rc = ciniki_web_generateMaster404($ciniki, $rc);
+        if( isset($rc['content']) ) {
+            print $rc['content'];
+        } else {
+            print_error($rc, 'Unknown tenant ' . $ciniki['request']['uri_split'][0]);
+        }
+        exit;
+    }
+    $ciniki['tenant']['uuid'] = '';
+    $ciniki['tenant']['modules'] = $rc['modules'];
 }
 
 //
@@ -503,10 +526,6 @@ $ciniki['session']['tnid'] = $ciniki['request']['tnid'];
 if( isset($ciniki['tenant']['uuid']) && $ciniki['tenant']['uuid'] != '' ) {
     $ciniki['tenant']['cache_dir'] = $ciniki['config']['ciniki.core']['cache_dir'] . '/'
         . $ciniki['tenant']['uuid'][0] . '/' . $ciniki['tenant']['uuid'];
-//  $ciniki['tenant']['web_cache_dir'] = $ciniki['request']['cache_dir'] . '/' 
-//      . $ciniki['tenant']['uuid'][0] . $ciniki['tenant']['uuid'][1] . '/' . $ciniki['tenant']['uuid'];
-//  $ciniki['tenant']['web_cache_url'] = $ciniki['request']['cache_url'] . '/'
-//      . $ciniki['tenant']['uuid'][0] . $ciniki['tenant']['uuid'][1] . '/' . $ciniki['tenant']['uuid'];
     $ciniki['tenant']['web_cache_dir'] = $ciniki['config']['ciniki.core']['modules_dir'] . '/web/cache/'
         . $ciniki['tenant']['uuid'][0] . '/' . $ciniki['tenant']['uuid'];
     $ciniki['tenant']['web_cache_url'] = $ciniki['request']['cache_url'] . '/'
@@ -516,7 +535,6 @@ if( isset($ciniki['tenant']['uuid']) && $ciniki['tenant']['uuid'] != '' ) {
 //
 // Get the details for the tenant
 //
-//require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/tenants/web/details.php');
 ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'web', 'details');
 $rc = ciniki_tenants_web_details($ciniki, $ciniki['request']['tnid']);
 if( $rc['stat'] != 'ok' ) {
@@ -538,7 +556,6 @@ if( isset($rc['details']) ) {
 //
 // Get the web settings for the tenant
 //
-//require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/settings.php');
 ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'settings');
 $rc = ciniki_web_settings($ciniki, $ciniki['request']['tnid']);
 if( $rc['stat'] != 'ok' ) {
@@ -761,7 +778,7 @@ if( $found == 'no' ) {
     } 
     // Search
     elseif( $ciniki['request']['page'] == 'search' 
-//        && isset($settings['page-search-active']) && $settings['page-search-active'] == 'yes' 
+        && isset($settings['page-search-active']) && $settings['page-search-active'] == 'yes' 
         ) {
         require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageSearch.php');
         $rc = ciniki_web_generatePageSearch($ciniki, $settings);
