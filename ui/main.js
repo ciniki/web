@@ -127,6 +127,10 @@ function ciniki_web_main() {
                     'visible':function() { return (M.curTenant.modules['ciniki.web'].flags&0x02000000)>0?'yes':'no';}, 
                     'fn':'M.ciniki_web_main.showMyLiveChat(\'M.ciniki_web_main.showMenu();\');',
                     },
+                'talkwithlead':{'label':'Talk with Lead', 
+                    'visible':function() {return (M.userPerms&0x01) == 0x01 ? 'yes' :'no';}, 
+                    'fn':'M.ciniki_web_main.talkwithlead.open(\'M.ciniki_web_main.showMenu();\');',
+                    },
                 'redirects':{'label':'Redirects', 
                     'visible':function() { return (M.curTenant.modules['ciniki.web'].flags&0x04000000)>0?'yes':'no';}, 
                     'fn':'M.startApp(\'ciniki.web.redirects\',null,\'M.ciniki_web_main.showMenu();\');',
@@ -450,6 +454,38 @@ function ciniki_web_main() {
         this.mylivechat.fieldHistoryArgs = this.fieldHistoryArgs;
         this.mylivechat.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'mylivechat\');');
         this.mylivechat.addClose('Cancel');
+
+        //
+        // This panel is for My Live Chat
+        //
+        this.talkwithlead = new M.panel('My Live Chat Settings',
+            'ciniki_web_main', 'talkwithlead',
+            'mc', 'medium', 'sectioned', 'ciniki.web.main.talkwithlead');
+        this.talkwithlead.sections = {
+            '_talkwithlead':{'label':'Meta Settings', 'fields':{
+                'site-talkwithlead-agentnew':{'label':'Agent', 'type':'text'},
+                'site-talkwithlead-id':{'label':'ID', 'type':'text'},
+                }},
+            '_save':{'label':'', 'buttons':{
+                'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'talkwithlead\');'},
+                }},
+        };
+        this.talkwithlead.fieldValue = this.fieldValue;
+        this.talkwithlead.fieldHistoryArgs = this.fieldHistoryArgs;
+        this.talkwithlead.open = function(cb) {
+            M.api.getJSONCb('ciniki.web.siteSettingsGet', {'tnid':M.curTenantID}, function(rsp) {
+                if( rsp.stat != 'ok' ) {
+                    M.api.err(rsp);
+                    return false;
+                }
+                var p = M.ciniki_web_main.talkwithlead;
+                p.data = rsp.settings;
+                p.refresh();
+                p.show(cb);
+            });
+        };
+        this.talkwithlead.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'talkwithlead\');');
+        this.talkwithlead.addClose('Cancel');
 
         //
         // The panel to allow the user to setup google analytics
