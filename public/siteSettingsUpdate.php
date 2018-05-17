@@ -530,8 +530,6 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'site-footer-message',
         'site-mylivechat-enable',
         'site-mylivechat-userid',
-        'site-talkwithlead-agentnew',
-        'site-talkwithlead-id',
         );
 
     //

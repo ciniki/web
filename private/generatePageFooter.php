@@ -404,28 +404,6 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
                 . "window.attachEvent('onload',setupMyLiveChat);"
             . "};";
     }
-    //
-    // Check if Talk with lead is enabled
-    //
-    if( isset($settings['site-talkwithlead-agentnew']) && $settings['site-talkwithlead-agentnew'] != '' 
-        && isset($settings['site-talkwithlead-id']) && $settings['site-talkwithlead-id'] != '' 
-        ) {
-        $content .= '<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous" async="yes"></script>';
-        $content .= '<script type="text/javascript" src="https://widgets.talkwithlead.com/Scripts/js/Librarytwl.js" async="yes"></script>';
-//        $content .= '<script type="text/javascript">';
-        $javascript .= ''
-            . "var _Xyz_UserData = 'MTU2Nw==';"
-            . "var _Xyz_AgentNew = '" . $settings['site-talkwithlead-agentnew'] . "';"
-            . 'var ___Twl = { "id": "' . $settings['site-talkwithlead-id'] . 'XB6GWExSf64fKIpqc2RRy1gOgKtQ6bMGIY2MIKA0rCk", "version": "1.1" }; (function (window, document) {'
-            . "var s1 = document.createElement('script');"
-            . "s1.type = 'text/javascript';"
-            . "s1.async = true;"
-            . "s1.src = \"https://widgets.talkwithlead.com/Scripts/js/javascript.js\".replace(/[+]/g, '/').replace(/[=]/g, '.');"
-            . "document.getElementsByTagName('head')[0].appendChild(s1);"
-            . "})(window, document);";
-//            . "</script>";
-    }
-
 
     if( $javascript != '' ) {
         $content .= "<script type='text/javascript'>$javascript</script>";
