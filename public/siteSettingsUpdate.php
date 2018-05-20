@@ -530,6 +530,13 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'site-footer-message',
         'site-mylivechat-enable',
         'site-mylivechat-userid',
+        'site-callbacks-active',
+        'site-callbacks-number',
+        'site-callbacks-email',
+        'site-callbacks-label',
+        'site-callbacks-intro-msg',
+        'site-callbacks-submitted-msg',
+        'site-callbacks-error-msg',
         );
 
     //

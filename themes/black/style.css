@@ -968,6 +968,80 @@ footer div.social-icons a:active {
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0078a5');
 }
 
+/* Popup Styles */
+div.popup-container {
+    background: rgba(48,48,48,0.8);
+    background: rgba(128,128,128,0.8);
+    box-sizing: border-box;
+    color: #333;
+}
+div.popup-container div.popup-wrapper {
+    background: #fff;
+    padding: 1em;
+    border: 2px solid #333;
+    border-radius: 1em;
+}
+div.popup-container div.popup-content {
+    text-align: center;
+    padding-top: 0.25em;
+    font-size: 1.3em;
+}
+div.popup-container input {
+    border: 1px solid #ddd;
+}
+div.popup-container div.popup-footer {
+    text-align: center;
+}
+div.popup-container .popup-button {
+    width: 100%;
+    display: inline-block;
+    font-size: 1em;
+    padding: 0.5em;
+    margin: 0.25em 0em;
+    border-radius: 0.5em;
+}
+div.popup-container .popup-button.callbacks-cancel {
+    border: 1px solid #ddd;
+    background: linear-gradient(#ddd,  #aaa);
+}
+div.popup-container .popup-button.callbacks-call {
+    border: 1px solid #ddd;
+    background: linear-gradient(#00adee,  #0078a5);	
+    color: #fff;
+}
+div.popup-container .popup-button.callbacks-close {
+    border: 1px solid #ddd;
+    background: linear-gradient(#ddd,  #aaa);
+}
+div.popup-container input {
+    width: 95%;
+}
+
+/* Callbacks Styles */
+div.callback-button {
+    background: #fff;
+}
+div.callback-button div.icon {
+    background: #fff;
+    color: #ff5555;
+}
+div.callback-button div.label {
+    color: #ff5555;
+}
+@media screen and (min-width: 40em) {
+    div.callback-button {
+        background: rgba(64,64,64,0.95);
+        border-radius: 0.25em;
+        border: 1px solid #666;
+    }
+    div.callback-button div.label {
+        color: inherit;
+    }
+    div.popup-container .popup-button {
+        width: 47%;
+        margin: 0.25em;
+    }
+}
 
 /* Styles for larger screens */
 @media screen and (min-width: 33em) {

@@ -1727,11 +1727,12 @@ div.popup-container {
 }
 
 div.popup-wrapper {
-    margin: 10px;
     width: auto;
     position: relative;
-    max-width: 60em;
+    max-width: 30em;
+    margin: 1em;
     overflow: hidden;
+    vertical-align: middle;
 }
 
 div.popup-header button {
@@ -1740,9 +1741,14 @@ div.popup-header button {
 
 div.popup-content {
     overflow-y: auto;
-    height: 100px;
 }
 
+div.popup-content input {
+    box-sizing: border-box;
+    width: 100%;
+    font-size: 1.4em;
+    padding: 0.2em;
+}
 div.popup-content p,
 div.popup-content ol,
 div.popup-content ul {
@@ -2163,6 +2169,45 @@ div.sectioned-form {
 }
 #content .slideshow-option-price {
     float: right;
+}
+
+/* Callbacks */
+div.callback-button-page-padding {
+    height: 3em;
+}
+div.callback-button {
+    display: block;
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    width: 100%;
+    text-align: center;
+}
+div.callback-button a {
+    text-decoration: none;
+}
+div.callback-button div.icon {
+    display: inline-block;
+    font-size: 1.8em;
+    line-height: 1.2em;
+    width: 1.2em;
+    height: 1.2em;
+    box-sizing: border-box;
+    border-radius: 50%;
+    margin: 0.25em;
+    vertical-align: middle;
+}
+div.callback-button a:hover div.icon span.fa-icon {
+    font-size: 1.2em;
+}
+div.callback-button span.fa-icon {
+    vertical-align: middle;
+}
+div.callback-button div.label {
+    display: inline-block;
+    line-height: 1.8em;
+    font-size: 1.5em;
+    vertical-align: middle;
 }
 
 /* 7. BROWSER AND NON-SEMANTIC STYLING

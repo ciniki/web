@@ -289,6 +289,18 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
 //          . '';
 //  }
 
+    
+    //
+    // Check if callback enabled
+    //
+    if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.web', 0x08000000) 
+        && isset($settings['site-callbacks-active']) && $settings['site-callbacks-active'] == 'yes'
+        && isset($settings['site-callbacks-number']) && $settings['site-callbacks-number'] != ''
+        && isset($settings['site-callbacks-label']) && $settings['site-callbacks-label'] != ''
+        ) {
+        $ciniki['request']['ciniki_api'] = 'yes';
+    }
+
     //
     // Include any inline javascript
     //

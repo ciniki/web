@@ -29,6 +29,7 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
     //
     $content = '';
     $popup_box_content = '';
+    $popups = 'no';
     $javascript = '';
 
     // Generate the footer content
@@ -238,8 +239,11 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
             . "</span>"
             . $social;
     }
+
     //
     // Check if any links should be added to the footer
+    // Only works with custom themes, none of standard themes contain this code.
+    // Popup layouts css needs to be change to accomodate full screen popups, currently set for small popup window.
     //
     $links = '';
     $content_types = array();
@@ -261,32 +265,8 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
         //
         // Setup the javascript for the popups
         //
-        $javascript = ""
-            . "var curPopup = '';"
-            . "function popupShow(p) {"
-            . "var e = document.getElementById(p);"
-            . "e.style.display='block';"
-            . "curPopup = p;"
-            . "popupResize();"
-            . "window.addEventListener('resize', popupResize);"
-            . "};"
-            . "function popupHide(p) {"
-            . "var e = document.getElementById(p);"
-            . "e.style.display='none';"
-            . "curPopup = '';"
-            . "window.removeEventListener('resize', popupResize);"
-            . "};"
-            . "function popupResize() {"
-            . "var e = document.getElementById(curPopup);"
-            . "var h = document.getElementById(curPopup+'-header');"
-            . "var c = document.getElementById(curPopup+'-content');"
-            . "var f = document.getElementById(curPopup+'-footer');"
-            . "if(h!=null&&c!=null&&f!=null){"
-                . "var s=h.parentNode.parentNode.currentStyle||window.getComputedStyle(h.parentNode.parentNode);"
-                . "c.style.height=(window.innerHeight-h.clientHeight-f.clientHeight-(parseInt(s.marginTop)*2))+'px';"
-            . "}"
-            . "};"
-            . "";
+        $popups = 'yes';
+
         //
         // Load the content to be setup for popups
         //
@@ -361,6 +341,7 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
         $content .= "</div>";
     }
 
+
     //
     // Extra information for the bottom of the page, error messages, debug info, etc
     //
@@ -381,11 +362,97 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
     $content .= "</div>\n";
 
     //
+    // Check for callbacks enabled
+    //
+    if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.web', 0x08000000) 
+        && isset($settings['site-callbacks-active']) && $settings['site-callbacks-active'] == 'yes'
+        && isset($settings['site-callbacks-number']) && $settings['site-callbacks-number'] != ''
+        && isset($settings['site-callbacks-label']) && $settings['site-callbacks-label'] != ''
+        ) {
+        //
+        // Setup the javascript for the popups
+        //
+        $popups = 'yes';
+
+        //
+        // Generate one time use key
+        //
+        if( !isset($ciniki['session']['ciniki.web']) ) {
+            $ciniki['session']['ciniki.web'] = array();
+        }
+        $ciniki['session']['ciniki.web']['callback-key'] = ''; 
+        $chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+        for($i=0;$i<32;$i++) {
+            $ciniki['session']['ciniki.web']['callback-key'] .= substr($chars, rand(0, strlen($chars)-1), 1); 
+        }
+        $javascript .= ""
+            . "function callbacksDone(rsp) {"
+                . "if( rsp.stat == 'ok' ) {"
+                    . "document.getElementById('callbacks-form').style.display = 'none';"
+                    . "document.getElementById('callbacks-success').style.display = 'block';"
+                . "} else {"
+                    . "document.getElementById('callbacks-form').style.display = 'none';"
+                    . "document.getElementById('callbacks-error').style.display = 'block';"
+                . "}"
+            . "};"
+            . "function callbacksSubmit() {"
+                . "var v = document.getElementById('callbacks-popup-number').value;"
+                . "C.getBg('callback/' + v + '/" . $ciniki['session']['ciniki.web']['callback-key'] . "', {}, callbacksDone);"
+            . "};";
+
+        //
+        // Add the content for the popup modal
+        // 
+        $popup_box_content .= "<div id='callbacks-popup' class='popup-container' style='display:none;'>\n"
+            . "<div class='popup-wrapper'>\n"
+                . "<div id='callbacks-form' class='popup-body'>"
+                . "<div id='callbacks-popup-content' class='popup-content'>"
+                . "<p>" . (isset($settings['site-callbacks-intro-msg']) && $settings['site-callbacks-intro-msg'] != '' ? $settings['site-callbacks-intro-msg'] : 'What phone number should we call you at?') . "</p>"
+                . "<p><input id='callbacks-popup-number' autofocus='yes'/></p>"
+                . "</div>"
+                . "<div id='callbacks-popup-footer' class='popup-footer'>"
+                    . "<button type='button' class='popup-button callbacks-cancel' onclick='popupHide(\"callbacks-popup\");'>Cancel</button>"
+                    . "<button type='button' class='popup-button callbacks-call' onclick='callbacksSubmit();'>Call Me</button>"
+                . "</div>"
+                . "</div>"
+                . "<div id='callbacks-success' class='popup-body' style='display:none;'>"
+                . "<div id='callbacks-popup-content' class='popup-content'>"
+                . "<p>" . (isset($settings['site-callbacks-submitted-msg']) && $settings['site-callbacks-submitted-msg'] != '' ? $settings['site-callbacks-submitted-msg'] : 'Thank you, expect a call back soon.') . "</p>"
+                . ""
+                . "</div>"
+                . "<div id='callbacks-popup-footer' class='popup-footer'>"
+                    . "<button type='button' class='popup-button callbacks-close' onclick='popupHide(\"callbacks-popup\");'>Close</button>"
+                . "</div>"
+                . "</div>"
+                . "<div id='callbacks-error' class='popup-body' style='display:none;'>"
+                . "<div id='callbacks-popup-content' class='popup-content'>"
+                . "<p>" . (isset($settings['site-callbacks-error-msg']) && $settings['site-callbacks-error-msg'] != '' ? $settings['site-callbacks-error-msg'] : 'We were unable to process your request, please try again or go to our contact page.') . "</p>"
+                . ""
+                . "</div>"
+                . "<div id='callbacks-popup-footer' class='popup-footer'>"
+                    . "<button type='button' class='popup-button callbacks-close' onclick='popupHide(\"callbacks-popup\");'>Close</button>"
+                . "</div>"
+                . "</div>"
+            . "</div>"
+            . "</div>";
+        //
+        // Add button 
+        //
+        $content .= "<div class='callback-button-page-padding'></div>";
+        $content .= "<div class='callback-button'>"
+            . "<a href='javascript: popupShow(\"callbacks-popup\");'>"
+            . "<div class='icon'><span class='fa-icon'>&#xf095;</span></div>"
+            . "<div class='label'>" . $settings['site-callbacks-label'] . "</div>"
+            . "</a>"
+            . "</div>";
+    }
+    //
     // Include any modal boxes
     //
     if( $popup_box_content != '' ) {
         $content .= $popup_box_content;
     }
+
     //
     // Check if My Live Chat is enabled
     //
@@ -405,6 +472,37 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
             . "};";
     }
 
+    //
+    // Check if popups requested
+    //
+    if( $popups == 'yes' ) {
+        $javascript .= ""
+            . "var curPopup = '';"
+            . "function popupShow(p) {"
+                . "var e = document.getElementById(p);"
+                . "e.style.display='block';"
+                . "curPopup = p;"
+//                . "popupResize();"
+//                . "window.addEventListener('resize', popupResize);"
+            . "};"
+            . "function popupHide(p) {"
+                . "var e = document.getElementById(p);"
+                . "e.style.display='none';"
+                . "curPopup = '';"
+//                . "window.removeEventListener('resize', popupResize);"
+            . "};"
+            . "function popupResize() {"
+                . "var e = document.getElementById(curPopup);"
+                . "var h = document.getElementById(curPopup+'-header');"
+                . "var c = document.getElementById(curPopup+'-content');"
+                . "var f = document.getElementById(curPopup+'-footer');"
+                . "if(h!=null&&c!=null&&f!=null){"
+                    . "var s=h.parentNode.parentNode.currentStyle||window.getComputedStyle(h.parentNode.parentNode);"
+                    . "c.style.height=(window.innerHeight-h.clientHeight-f.clientHeight-(parseInt(s.marginTop)*2))+'px';"
+                . "}"
+            . "};"
+            . "";
+    }
     if( $javascript != '' ) {
         $content .= "<script type='text/javascript'>$javascript</script>";
     }

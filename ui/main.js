@@ -127,9 +127,13 @@ function ciniki_web_main() {
                     'visible':function() { return (M.curTenant.modules['ciniki.web'].flags&0x02000000)>0?'yes':'no';}, 
                     'fn':'M.ciniki_web_main.showMyLiveChat(\'M.ciniki_web_main.showMenu();\');',
                     },
-                'redirects':{'label':'Redirects', 
-                    'visible':function() { return (M.curTenant.modules['ciniki.web'].flags&0x04000000)>0?'yes':'no';}, 
-                    'fn':'M.startApp(\'ciniki.web.redirects\',null,\'M.ciniki_web_main.showMenu();\');',
+                'mylivechat':{'label':'My Live Chat', 
+                    'visible':function() { return (M.curTenant.modules['ciniki.web'].flags&0x02000000)>0?'yes':'no';}, 
+                    'fn':'M.ciniki_web_main.showMyLiveChat(\'M.ciniki_web_main.showMenu();\');',
+                    },
+                'callbacks':{'label':'Callbacks', 
+                    'visible':function() { return M.modFlagSet('ciniki.web', 0x08000000);}, 
+                    'fn':'M.ciniki_web_main.showSiteSettings(\'M.ciniki_web_main.showMenu();\',\'callbacks\');',
                     },
                 }},
 //          'advanced':{'label':'Advanced', 'type':'simplegrid', 'num_cols':1, 'sortable':'no',
@@ -2107,6 +2111,36 @@ function ciniki_web_main() {
         this.search.fieldHistoryArgs = this.fieldHistoryArgs;
         this.search.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'search\');');
         this.search.addClose('Cancel');
+
+        //
+        // The callbacks options
+        //
+        this.callbacks = new M.panel('Callbacks', 'ciniki_web_main', 'callbacks', 'mc', 'medium', 'sectioned', 'ciniki.web.main.callbacks');
+        this.callbacks.data = {};
+        this.callbacks.sections = {
+            'options':{'label':'Options', 'fields':{
+                'site-callbacks-active':{'label':'Active', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                'site-callbacks-number':{'label':'Cell Number', 'type':'text'},
+                'site-callbacks-email':{'label':'Email Address', 'type':'text'},
+                'site-callbacks-label':{'label':'Label', 'type':'text'},
+                }},
+            '_intro_msg':{'label':'Intro', 'fields':{
+                'site-callbacks-intro-msg':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'small'},
+                }},
+            '_submitted_msg':{'label':'Response', 'fields':{
+                'site-callbacks-submitted-msg':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'small'},
+                }},
+            '_error_msg':{'label':'On Error', 'fields':{
+                'site-callbacks-error-msg':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'small'},
+                }},
+            '_save':{'label':'', 'buttons':{
+                'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'callbacks\');'},
+                }},
+        };
+        this.callbacks.fieldValue = this.fieldValue;
+        this.callbacks.fieldHistoryArgs = this.fieldHistoryArgs;
+        this.callbacks.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'callbacks\');');
+        this.callbacks.addClose('Cancel');
     }
 
     //
@@ -2869,16 +2903,15 @@ function ciniki_web_main() {
     };
 
     this.showSiteSettings = function(cb, page) {
-        var rsp = M.api.getJSONCb('ciniki.web.siteSettingsGet', 
-            {'tnid':M.curTenantID, 'content':'yes'}, function(rsp) {
-                if( rsp.stat != 'ok' ) {
-                    M.api.err(rsp);
-                    return false;
-                }
-                M.ciniki_web_main[page].data = rsp.settings;
-                M.ciniki_web_main[page].refresh();
-                M.ciniki_web_main[page].show(cb);
-            });
+        M.api.getJSONCb('ciniki.web.siteSettingsGet', {'tnid':M.curTenantID, 'content':'yes'}, function(rsp) {
+            if( rsp.stat != 'ok' ) {
+                M.api.err(rsp);
+                return false;
+            }
+            M.ciniki_web_main[page].data = rsp.settings;
+            M.ciniki_web_main[page].refresh();
+            M.ciniki_web_main[page].show(cb);
+        });
     };
 
     this.savePage = function(page, cb) {

@@ -1199,10 +1199,20 @@ elseif( $rc['stat'] == '404' ) {
 } 
 
 if( isset($ciniki['response']['format']) && $ciniki['response']['format'] == 'json' ) {
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'printHashToJSON');
     header("Content-Type: text/plain; charset=utf-8");
     header("Cache-Control: no-cache, must-revalidate");
-    ciniki_core_printHashToJSON($rc);
+    $rc['content'] = json_encode($rc);   
+/*    //
+    // Only output if no queues to process
+    //
+    if( (!isset($ciniki['emailqueue']) || count($ciniki['emailqueue']) == 0) 
+        && (isset($ciniki['smsqueue']) || count($ciniki['smsqueue']) == 0) 
+        ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'printHashToJSON');
+        ciniki_core_printHashToJSON($rc);
+    } else {
+        
+    } */
 }
 
 elseif( $rc['stat'] != 'ok' && $rc['stat'] != 'exit' ) {
@@ -1225,13 +1235,13 @@ foreach($ciniki['tenant']['modules'] as $module => $m) {
 //
 // Check for emailqueue
 //
-if( isset($ciniki['emailqueue']) && count($ciniki['emailqueue']) > 0 ) {
+if( (isset($ciniki['emailqueue']) && count($ciniki['emailqueue']) > 0) || (isset($ciniki['smsqueue']) && count($ciniki['smsqueue']) > 0) ) {
     ob_start();
     if( isset($_SERVER['HTTP_ACCEPT_ENCODING']) && strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false ) {
         ob_start("ob_gzhandler");
         print $rc['content'];
         ob_end_flush();
-    } else {
+    } elseif( isset($rc['content']) && $rc['content'] != '' ) {
         print $rc['content'];
     }
     header("Connection: close");
@@ -1245,8 +1255,14 @@ if( isset($ciniki['emailqueue']) && count($ciniki['emailqueue']) > 0 ) {
         ob_end_clean();
     }
 
-    require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/emailQueueProcess.php');
-    ciniki_core_emailQueueProcess($ciniki);
+    if( isset($ciniki['emailqueue']) && count($ciniki['emailqueue']) > 0 ) {
+        require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/emailQueueProcess.php');
+        ciniki_core_emailQueueProcess($ciniki);
+    }
+    if( isset($ciniki['smsqueue']) && count($ciniki['smsqueue']) > 0 ) {
+        require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/core/private/smsQueueProcess.php');
+        ciniki_core_smsQueueProcess($ciniki);
+    }
 } 
 
 elseif( isset($rc['content']) && $rc['content'] != '' ) {

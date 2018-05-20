@@ -13,7 +13,7 @@
 // Returns
 // -------
 //
-function ciniki_web_generatePageAPI($ciniki, $settings) {
+function ciniki_web_generatePageAPI(&$ciniki, $settings) {
 
     //
     // Store the content created by the page
@@ -63,6 +63,66 @@ function ciniki_web_generatePageAPI($ciniki, $settings) {
         }
     }
 
+    //
+    // Check for Callback requests
+    //
+    elseif( $ciniki['request']['uri_split'][0] == 'callback'
+        && $ciniki['request']['uri_split'][1] != ''
+        && $ciniki['request']['uri_split'][2] != '' 
+        ) {
+        $number = $ciniki['request']['uri_split'][1];
+        $key = $ciniki['request']['uri_split'][2];
+        if( !isset($ciniki['session']['ciniki.web']['callback-key']) || $key != $ciniki['session']['ciniki.web']['callback-key'] ) {
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.197', 'msg'=>'Invalid request'));
+        }
+
+        error_log("CALLBACK: " . $number);
+
+        //
+        // Submit text message
+        //
+        if( isset($settings['site-callbacks-active']) && $settings['site-callbacks-active'] == 'yes' 
+            && isset($settings['site-callbacks-number']) && $settings['site-callbacks-number'] != '' 
+            ) {
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'sms', 'hooks', 'addMessage');
+            $rc = ciniki_sms_hooks_addMessage($ciniki, $ciniki['request']['tnid'], array(
+                'cell_number' => $settings['site-callbacks-number'],
+                'content' => "Website callback requested at: " . $number,
+                'object' => 'ciniki.web.callback',
+                'object_id' => 0,
+                ));
+            if( $rc['stat'] != 'ok' ) {
+                return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.198', 'msg'=>'Error trying to send sms alert.', 'err'=>$rc['err']));
+            }
+            $ciniki['smsqueue'][] = array('sms_id'=>$rc['id'], 'tnid' => $ciniki['request']['tnid']);
+        }
+
+        //
+        // Submit email
+        //
+        if( isset($settings['site-callbacks-active']) && $settings['site-callbacks-active'] == 'yes' 
+            && isset($settings['site-callbacks-email']) && $settings['site-callbacks-email'] != '' 
+            ) {
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'mail', 'hooks', 'addMessage');
+            $rc = ciniki_mail_hooks_addMessage($ciniki, $ciniki['request']['tnid'], array(
+                'customer_email' => $settings['site-callbacks-email'],
+                'subject' => "Website callback requested: " . $number,
+                'text_content' => "A visitor to your website has requested a callback at: " . $number,
+                'html_content' => "A visitor to your website has requested a callback at: " . $number,
+                'object' => 'ciniki.web.callback',
+                'object_id' => 0,
+                ));
+            if( $rc['stat'] != 'ok' ) {
+                return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.198', 'msg'=>'Error trying to send email alert.', 'err'=>$rc['err']));
+            }
+            $ciniki['emailqueue'][] = array('mail_id'=>$rc['id'], 'tnid' => $ciniki['request']['tnid']);
+        }
+
+        //
+        // Return ok
+        //
+        return array('stat'=>'ok');
+    }
     //
     // Check for module processing
     //
