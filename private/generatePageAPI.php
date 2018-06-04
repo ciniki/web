@@ -70,7 +70,7 @@ function ciniki_web_generatePageAPI(&$ciniki, $settings) {
         && $ciniki['request']['uri_split'][1] != ''
         && $ciniki['request']['uri_split'][2] != '' 
         ) {
-        $number = $ciniki['request']['uri_split'][1];
+        $number = urldecode($ciniki['request']['uri_split'][1]);
         $key = $ciniki['request']['uri_split'][2];
         if( !isset($ciniki['session']['ciniki.web']['callback-key']) || $key != $ciniki['session']['ciniki.web']['callback-key'] ) {
             return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.197', 'msg'=>'Invalid request'));
