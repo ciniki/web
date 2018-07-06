@@ -233,6 +233,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     if( isset($ciniki['response']['web-app']) && $ciniki['response']['web-app'] == 'yes' ) {
         $content .= '<meta name="apple-mobile-web-app-capable" content="yes" />' . "\n";
         $content .= '<meta id="apple_sbarstyle" name="apple-mobile-web-app-status-bar-style" content="black" />' . "\n";
+        $content .= '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />' . "\n";
     }
     
     //
