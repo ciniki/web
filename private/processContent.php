@@ -68,7 +68,7 @@ function ciniki_web_processContent($ciniki, $settings, $unprocessed_content, $pc
         $content = preg_replace("/ (width|height)=(\'|\")[0-9]+(\'|\")/", "", $matches[1]);
         return "<div class=\'embed-video\'><div class=\'embed-video-wrap\'>" . $content . "</div></div>";
         ');
-    $processed_content = preg_replace_callback('/(<iframe[^>]+youtube.com[^>]+><\/iframe>)/', $youtube_callback, $processed_content);
+    $processed_content = preg_replace_callback('/(<iframe[^>]+(youtube|vimeo).com[^>]+><\/iframe>)/', $youtube_callback, $processed_content);
 
     //
     // Check for callbacks to find content to substitute
