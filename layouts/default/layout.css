@@ -585,6 +585,7 @@ span.exhibitors-description {
     #content.evensplit form div.submit { max-width: 100%; }
     #content ul { max-width: 45em; }
     #content p,
+    #content div.embed-video,
     #content dl.wide,
     #content ol.wide,
     #content ul.wide {
