@@ -594,12 +594,30 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
     //
     // Generate the complete page
     //
+    $submenu = array();
+    if( isset($settings['page-members-categories-display']) && $settings['page-members-categories-display'] == 'submenu' ) {
+        error_log('testing');
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'tagCloud');
+        $base_url = $ciniki['request']['base_url'] . '/members/category';
+        $rc = ciniki_customers_web_tagCloud($ciniki, $settings, $ciniki['request']['tnid'], 40);
+        if( $rc['stat'] != 'ok' ) {
+            return $rc;
+        }
+        if( isset($rc['tags']) && count($rc['tags']) > 0 ) {
+            foreach($rc['tags'] as $tag) {
+                $submenu[] = array(
+                    'name' => $tag['name'],
+                    'url' => $ciniki['request']['base_url'] . '/members/category/' . $tag['permalink'],
+                    );
+            }
+        }
+    }
 
     //
     // Add the header
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
-    $rc = ciniki_web_generatePageHeader($ciniki, $settings, $page_title, array());
+    $rc = ciniki_web_generatePageHeader($ciniki, $settings, $page_title, $submenu);
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }
