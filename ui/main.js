@@ -1462,6 +1462,7 @@ function ciniki_web_main() {
                     'no':'No',
                     'wordlist':'List',
                     'wordcloud':'Cloud',
+                    'submenu':'Submenu',
                     }},
                 'page-members-list-format':{'label':'Listing Content', 'type':'select', 'options':{
                     'shortbio':'Short Bio',
