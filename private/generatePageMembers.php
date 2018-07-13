@@ -596,7 +596,6 @@ function ciniki_web_generatePageMembers($ciniki, $settings) {
     //
     $submenu = array();
     if( isset($settings['page-members-categories-display']) && $settings['page-members-categories-display'] == 'submenu' ) {
-        error_log('testing');
         ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'tagCloud');
         $base_url = $ciniki['request']['base_url'] . '/members/category';
         $rc = ciniki_customers_web_tagCloud($ciniki, $settings, $ciniki['request']['tnid'], 40);
