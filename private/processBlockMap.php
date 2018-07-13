@@ -48,10 +48,14 @@ function ciniki_web_processBlockMap(&$ciniki, $settings, $tnid, $block) {
         . '};'
         . '</script>'
         . $ciniki['request']['inline_javascript'];
+    $display = '';
+    if( isset($block['display']) && $block['display'] == 'none' ) {
+        $display = " style='display: none;'";
+    }
     if( isset($block['aside']) && $block['aside'] == 'yes' ) {
-        $content .= "<aside><div class='googlemap' id='googlemap'></div></aside>";
+        $content .= "<aside><div class='googlemap' id='googlemap'$display></div></aside>";
     } else {
-        $content .= "<div class='googlemap' id='googlemap'></div>";
+        $content .= "<div class='googlemap' id='googlemap'$display></div>";
     }
 
     return array('stat'=>'ok', 'content'=>$content);
