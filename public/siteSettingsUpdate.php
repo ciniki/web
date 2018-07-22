@@ -406,6 +406,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-contact-form-display',
         'page-contact-form-emails',
         'page-contact-form-phone',
+        'page-contact-debug-log',
         'page-contact-form-intro-message',
         'page-contact-form-submitted-message',
         'page-contact-tenant-name-display',

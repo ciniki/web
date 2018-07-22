@@ -856,6 +856,7 @@ function ciniki_web_main() {
             '_contact_form':{'label':'Contact Form', 'active':'no', 'fields':{
                 'page-contact-form-display':{'label':'Display Form', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-contact-form-phone':{'label':'Phone #', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                'page-contact-debug-log':{'label':'Debug Log', 'active':function() {return (M.userPerms&0x01) == 0x01 ? 'yes' : 'no';}, 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-contact-form-emails':{'label':'Emails', 'type':'text'},
                 }},
             '_contact_form_intro_message':{'label':'Contact Form Introduction', 'active':'no', 'fields':{
