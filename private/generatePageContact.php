@@ -269,9 +269,7 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
     //
     // Check if contact form should be displayed
     //
-    if( isset($ciniki['tenant']['modules']['ciniki.web']['flags'])
-        && ($ciniki['tenant']['modules']['ciniki.web']['flags']&0x04) > 0 
-        ) {
+    if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.web', 0x04) ) {
         if( isset($settings['page-contact-form-display']) 
             && $settings['page-contact-form-display'] == 'yes' 
             && $contact_form_submitted == 'no' 
@@ -289,8 +287,12 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
                 . "<label for='contact-form-name'>Name</label>"
                 . "<input type='text' class='text' value='' name='contact-form-name' id='contact-form-name'/>"
                 . "</div>";
+            $content .= "<div class='input hidden'>"
+                . "<label for='contact-form-name-again'>Email Again</label>"
+                . "<input type='email' class='text' value='' name='contact-form-email-again' id='contact-form-email-again'/>"
+                . "</div>";
             $content .= "<div class='input'>"
-                . "<label for='contact-form-name'>Email</label>"
+                . "<label for='contact-form-email'>Email</label>"
                 . "<input type='email' class='text' value='' name='contact-form-email' id='contact-form-email'/>"
                 . "</div>";
             if( isset($settings['page-contact-form-phone']) && $settings['page-contact-form-phone'] == 'yes' ) {

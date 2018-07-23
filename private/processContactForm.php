@@ -44,6 +44,13 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $tnid) {
     }
 
     //
+    // Check for hidden email filled out and ignore
+    //
+    if( isset($_POST['contact-form-email-again']) && $_POST['contact-form-email-again'] != '' ) {
+        error_log('WEB: SPAM BLOCKED FROM ' . $_POST['contact-form-email'] . ' - ' . $_SERVER['HTTP_REFERER']);
+        return array('stat'=>'ok', 'error_message'=>$error_message, 'success_message'=>"Your message was sent");
+    }
+    //
     // Log the details of the submitter
     //
     if( isset($settings['page-contact-debug-log']) && $settings['page-contact-debug-log'] == 'yes' ) {
