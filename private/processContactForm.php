@@ -97,6 +97,11 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $tnid) {
                 . "Message: \n\n"
                 . $msg
                 . "";
+            $htmlmsg = "New message from " . $_POST['contact-form-name'] . " (" . $_POST['contact-form-email'] . ")"
+                . ($phone!=''?" - " . $phone:'')
+                . "<br/><br/>"
+                . preg_replace("/\n/", '<br/>', $_POST['contact-form-message'])
+                . "";
             if( isset($settings['page-contact-form-emails']) && $settings['page-contact-form-emails'] != '' ) {
                 $send_to_emails = explode(',', $settings['page-contact-form-emails']);
                 foreach($send_to_emails as $email) {
@@ -106,6 +111,7 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $tnid) {
                         'replyto_name'=>$_POST['contact-form-name'],
                         'subject'=>$subject,
                         'textmsg'=>$msg,
+                        'htmlmsg'=>$htmlmsg,
                         );
                 }
             } else {
@@ -122,6 +128,7 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $tnid) {
                         'replyto_name'=>$_POST['contact-form-name'],
                         'subject'=>$subject,
                         'textmsg'=>$msg,
+                        'htmlmsg'=>$htmlmsg,
                         );
                 }
             }
