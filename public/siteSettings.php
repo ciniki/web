@@ -198,6 +198,7 @@ function ciniki_web_siteSettings($ciniki) {
         || isset($ciniki['tenant']['modules']['ciniki.products']) 
         || isset($ciniki['tenant']['modules']['ciniki.subscriptions']) 
         || isset($ciniki['tenant']['modules']['ciniki.merchandise']) 
+        || isset($ciniki['tenant']['modules']['ciniki.customers']) 
         ) {
         $pages['account'] = array('display_name'=>'Account', 'active'=>'no');
     }
