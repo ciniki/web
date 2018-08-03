@@ -584,6 +584,7 @@ article {
 /* Block: MonthlyAvailability */
 #content div.monthly-availability table {
     max-width: 30em;
+    margin-bottom: 1em;
 }
 #content div.monthly-availability table td {
     text-align: center;
