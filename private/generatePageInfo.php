@@ -342,6 +342,7 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
     // Special page for about page
     //
     elseif( $pg == 'about' && $content_type == 1 ) {
+        $ciniki['request']['page-container-class'] = 'page-about';
         ciniki_core_loadMethod($ciniki, 'ciniki', 'info', 'web', 'pageDetails');
         $rc = ciniki_info_web_pageDetails($ciniki, $settings, $ciniki['request']['tnid'], 
             array('content_type'=>1));
