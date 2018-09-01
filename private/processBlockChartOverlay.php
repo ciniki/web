@@ -364,7 +364,6 @@ function ciniki_web_processBlockChartOverlay(&$ciniki, $settings, $tnid, $block)
                 $js .= 'borderDash: [10,5],';
             }
             if( isset($dataset['hideline']) && $dataset['hideline'] == 'yes' ) {
-                error_log('hideline');
                 $js .= 'showLine: false,';
             }
             if( isset($dataset['lineTension']) ) {
