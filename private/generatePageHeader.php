@@ -1431,6 +1431,9 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
         $cur_url = '';
         if( isset($ciniki['request']['uri_split'][0]) ) {
             $cur_url = $ciniki['request']['base_url'] . '/' . $ciniki['request']['page'] . '/' . $ciniki['request']['uri_split'][0];
+            if( $ciniki['request']['uri_split'][0] == 'category' && isset($ciniki['request']['uri_split'][1]) ) {
+                $cur_url .= '/' . $ciniki['request']['uri_split'][1];
+            }
         }
         foreach($submenu as $sid => $item) {
             if( (isset($item['selected']) && $item['selected'] == 'yes') || ($cur_url != '' && strncmp($item['url'], $cur_url, strlen($cur_url)) == 0) ) {

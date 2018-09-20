@@ -1411,6 +1411,7 @@ function ciniki_web_main() {
             'options':{'label':'', 'fields':{
                 'page-blog-active':{'label':'Display Blog', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-blog-name':{'label':'Name', 'type':'text', 'hint':'default is Blog'},
+                'page-blog-submenu':{'label':'Submenu', 'type':'toggle', 'default':'yes', 'toggles':{'no':'Off', 'yes':'Default', 'categories':'Categories'}},
                 'page-blog-share-buttons':{'label':'Sharing', 'active':'yes', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
                 'page-blog-thumbnail-format':{'label':'Thumbnail Format', 'type':'toggle', 'default':'square-cropped', 'toggles':{'square-cropped':'Cropped', 'square-padded':'Padded'}},
                 'page-blog-thumbnail-padding-color':{'label':'Padding Color', 'type':'colour'},
