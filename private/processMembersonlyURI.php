@@ -88,6 +88,8 @@ function ciniki_web_processMembersonlyURI(&$ciniki, $settings, $depth, $base_url
                 $file = $rc['file'];
                 if( $file['extension'] == 'pdf' ) {
                     header('Content-Type: application/pdf');
+                } elseif( $file['extension'] == 'mp3' ) {
+                    header('Content-Type: audio/mpeg');
                 }
 //              header('Content-Disposition: attachment;filename="' . $file['filename'] . '"');
                 header('Content-Length: ' . strlen($file['binary_content']));
