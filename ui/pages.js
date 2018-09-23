@@ -53,6 +53,11 @@ function ciniki_web_pages() {
                         'active':(M.curTenant.modules['ciniki.customers'] != null ? 'yes' : 'no'),
                         },
                     'menu_flags':{'label':'Menu Options', 'type':'flags', 'flags':this.menuFlags},
+                    '_flags_4':{'label':'Password', 'type':'flagtoggle', 'bit':0x08, 'field':'flags_4', 'default':'off',
+                        'active':(M.modFlagSet('ciniki.web', 0x2000)),
+                        'on_fields':['page_password'],
+                        },
+                    'page_password':{'label':'', 'type':'text', 'visible':(M.modFlagOn('ciniki.web', 0x2000) && (rsp.page.flags&0x08) == 0x08 ? 'yes' : 'no')},
                 }},
                 '_page_type':{'label':'', 'aside':'yes', 'visible':'hidden', 'fields':{
                     'page_type':{'label':'Page Type', 'type':'toggle', 'toggles':{}, 'onchange':'M.ciniki_web_pages[\'' + pn + '\'].setPageType();'},
@@ -401,6 +406,11 @@ function ciniki_web_pages() {
                 } else {
                     flags &= ~0x02;
                 }
+                if( this.formValue('_flags_4') == 'on' ) {
+                    flags |= 0x08;
+                } else {
+                    flags &= ~0x08;
+                }
                 if( this.formValue('_flags_14') == 'on' ) {
                     flags |= 0x1000;
                 } else {
@@ -485,6 +495,7 @@ function ciniki_web_pages() {
         // Remove child_format flags
         this[pn].data.flags_1 = (rsp.page.flags&0xFFFFFF0F);
         this[pn].data.flags_2 = (rsp.page.flags&0xFFFFFF0F);
+        this[pn].data.flags_4 = (rsp.page.flags&0xFFFFFF0F);
         this[pn].data.flags_14 = (rsp.page.flags&0x0000F000);
         this[pn].data.child_format = (rsp.page.flags&0x00000FF0);
         this[pn].sections.details.fields.parent_id.active = 'yes';
@@ -531,7 +542,7 @@ function ciniki_web_pages() {
         } else {
             this[pn].sections.sponsors.visible = 'no';
         }
-
+            
         this[pn].refresh();
         this[pn].show(cb);
         this[pn].setPageType();

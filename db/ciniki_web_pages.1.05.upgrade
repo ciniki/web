@@ -1,0 +1,5 @@
+#
+# add page password field for password protected pages
+#
+ALTER TABLE ciniki_web_pages ADD COLUMN page_password varchar(50) not null AFTER flags;
+ALTER TABLE ciniki_web_pages COMMENT='v1.05';

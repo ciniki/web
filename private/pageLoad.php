@@ -17,8 +17,9 @@ function ciniki_web_pageLoad($ciniki, $settings, $tnid, $args) {
     // Get an intermediate page
     //
     if( isset($args['intermediate_permalink']) && $args['intermediate_permalink'] != '' 
-        && isset($args['parent_id']) ) {
-        $strsql = "SELECT id, title, flags, permalink "
+        && isset($args['parent_id']) 
+        ) {
+        $strsql = "SELECT id, uuid, title, flags, permalink, page_password "
             . "FROM ciniki_web_pages "
             . "WHERE ciniki_web_pages.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . "AND ciniki_web_pages.parent_id = '" . ciniki_core_dbQuote($ciniki, $args['parent_id']) . "' "
@@ -35,7 +36,7 @@ function ciniki_web_pageLoad($ciniki, $settings, $tnid, $args) {
         // Check for children
         //
         $page['children'] = array();
-        $strsql = "SELECT id, title, permalink "
+        $strsql = "SELECT id, title, flags, permalink, page_password "
             . "FROM ciniki_web_pages "
             . "WHERE parent_id = '" . ciniki_core_dbQuote($ciniki, $page['id']) . "' "
             . "AND tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
@@ -49,7 +50,7 @@ function ciniki_web_pageLoad($ciniki, $settings, $tnid, $args) {
             . "";
         $rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.customers', array(
             array('container'=>'children', 'fname'=>'permalink', 
-                'fields'=>array('id', 'name'=>'title', 'permalink')),
+                'fields'=>array('id', 'name'=>'title', 'flags', 'permalink', 'page_password')),
             ));
         if( $rc['stat'] != 'ok' ) {
             return $rc;
@@ -86,6 +87,7 @@ function ciniki_web_pageLoad($ciniki, $settings, $tnid, $args) {
     // Get the main information
     //
     $strsql = "SELECT ciniki_web_pages.id, "
+        . "ciniki_web_pages.uuid, "
         . "ciniki_web_pages.parent_id, "
         . "ciniki_web_pages.title, "
         . "ciniki_web_pages.permalink, "
@@ -94,6 +96,7 @@ function ciniki_web_pageLoad($ciniki, $settings, $tnid, $args) {
         . "ciniki_web_pages.page_redirect_url, "
         . "ciniki_web_pages.page_module, "
         . "ciniki_web_pages.flags, "
+        . "ciniki_web_pages.page_password, "
         . "ciniki_web_pages.primary_image_id, "
         . "ciniki_web_pages.primary_image_caption, "
         . "ciniki_web_pages.primary_image_url, "
@@ -128,8 +131,8 @@ function ciniki_web_pageLoad($ciniki, $settings, $tnid, $args) {
     }
     $rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.info', array(
         array('container'=>'page', 'fname'=>'id',
-            'fields'=>array('id', 'parent_id', 
-                'title', 'permalink', 'sequence', 'page_type', 'page_redirect_url', 'page_module', 'flags',
+            'fields'=>array('id', 'uuid', 'parent_id', 
+                'title', 'permalink', 'sequence', 'page_type', 'page_redirect_url', 'page_module', 'flags', 'page_password',
                 'image_id'=>'primary_image_id', 'image_caption'=>'primary_image_caption', 
                 'image_url'=>'primary_image_url', 'child_title', 'synopsis', 'content')),
         array('container'=>'images', 'fname'=>'image_id', 

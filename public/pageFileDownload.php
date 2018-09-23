@@ -79,6 +79,8 @@ function ciniki_web_pageFileDownload($ciniki) {
 
     if( $file['extension'] == 'pdf' ) {
         header('Content-Type: application/pdf');
+    } elseif( $file['extension'] == 'mp3' ) {
+        header('Content-Type: audio/mpeg');
     } else {
         return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.144', 'msg'=>'Unsupported file type'));
     }

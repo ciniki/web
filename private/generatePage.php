@@ -14,7 +14,7 @@
 function ciniki_web_generatePage(&$ciniki, $settings) {
 
     //
-    // Check if module has generatePage.php override
+    // Check if there is a landing page override
     //
     if( isset($ciniki['tenant']['modules']['ciniki.landingpages']) && $ciniki['request']['page'] == 'landingpage' ) {
         $rc = ciniki_core_loadMethod($ciniki, 'ciniki', 'landingpages', 'web', 'generatePage');
@@ -45,8 +45,17 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
     $depth = count($request_pages);
     $base_url = $ciniki['request']['base_url'];
     $sponsors = array();
+    $pwdpage = array(
+        'uuid' => '',           // Used as unique page key for storing session password, allows different passwords on different pages
+        'permalink' => '',      // The permalink of the page with the password, could be intermediate page
+        'password' => '',
+        'page_title' => '',
+        );
     for($i=0;$i<$depth;$i++) {
         $uri_depth = $i-1;
+        //
+        // The end of the URI string for loading pages
+        //
         if( $i == ($depth-1) ) {
             // Last Page
             $rc = ciniki_web_pageLoad($ciniki, $settings, $ciniki['request']['tnid'], 
@@ -81,8 +90,11 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
                 $prev_page = $page;
                 $base_url .= '/' . $rc['page']['permalink'];
             }
-        } else {
-            // Intermediate page, need title and id only
+        } 
+        //
+        // Intermediate page
+        //
+        else {
             $rc = ciniki_web_pageLoad($ciniki, $settings, $ciniki['request']['tnid'], 
                 array('intermediate_permalink'=>$request_pages[$i], 'parent_id'=>$prev_parent_id));
             if( $rc['stat'] != 'ok' ) {
@@ -96,6 +108,18 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
 
             if( isset($rc['page']['sponsors']) && count($rc['page']['sponsors']) > 0 ) {
                 $sponsors = $rc['page']['sponsors'];
+            }
+
+            //
+            // Check if intermediate page is password protected
+            //
+            if( isset($rc['page']['flags']) && ($rc['page']['flags']&0x08) == 0x08 
+                && $rc['page']['page_password'] != '' 
+                ) {
+                $pwdpage['password'] = $rc['page']['page_password'];
+                $pwdpage['permalink'] = $rc['page']['permalink'];
+                $pwdpage['title'] = $rc['page']['title'];
+                $pwdpage['uuid'] = $rc['page']['uuid'];
             }
 
             //
@@ -120,6 +144,83 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
                     $article_title .= ($article_title!=''?' - ':'') . "<a href='$base_url'>" . $rc['page']['title'] . "</a>";
                 }
             }
+        }
+    }
+
+    //
+    // Check if last page is password protected
+    //
+    if( isset($page['flags']) && ($page['flags']&0x08) == 0x08 && $page['page_password'] != '' ) {
+        $pwdpage['password'] = $page['page_password'];
+        $pwdpage['permalink'] = $page['permalink'];
+        $pwdpage['title'] = $page['title'];
+        $pwdpage['uuid'] = $page['uuid'];
+    }
+
+    //
+    // If a password protected page or a page below, make sure password is entered
+    //
+    if( $pwdpage['password'] != '' ) {
+        error_log($pwdpage['uuid']);
+        error_log($_SESSION['pwdpages'][$pwdpage['uuid']]['authenticated']);
+        if( !isset($_SESSION['pwdpages'][$pwdpage['uuid']]['authenticated']) 
+            || $_SESSION['pwdpages'][$pwdpage['uuid']]['authenticated'] != 'yes' 
+            ) {
+            $err_msg = '';  
+            if( isset($_POST['password']) && $_POST['password'] == $pwdpage['password'] ) {
+                if( !isset($_SESSION['pwdpages']) ) {
+                    $_SESSION['pwdpages'] = array();
+                }
+                $_SESSION['pwdpages'][$pwdpage['uuid']] = array('authenticated' => 'yes');
+                header('Location: http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+                exit;
+            } elseif( isset($_POST['password']) ) {
+                $err_msg = 'Incorrect password';
+            }
+            //
+            // Display the password form
+            //
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageHeader');
+            $rc = ciniki_web_generatePageHeader($ciniki, $settings, $page['title'], array());
+            if( $rc['stat'] != 'ok' ) { 
+                return $rc;
+            }
+            $content = $rc['content'];
+
+            $content .= "<div id='content'><article class='page'>\n";
+/*                if( isset($settings['page-membersonly-message']) && $settings['page-membersonly-message'] != '' ) {
+                ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+                $rc = ciniki_web_processContent($ciniki, $settings, $settings['page-membersonly-message'], 'wide');   
+                if( $rc['stat'] != 'ok' ) {
+                    return $rc;
+                }
+                $content .= $rc['content'];
+            } else { */
+                $content .= "<p>This page is password protected.</p>";
+//                }
+            $content .= "<form method='POST' action=''>";
+            if( $err_msg != '' ) {
+                $content .= "<p class='formerror'>$err_msg</p>\n";
+            }
+            $content .= "<input type='hidden' name='action' value='signin'>\n"
+                . "<div class='input'><label for='password'>Password</label><input id='password' type='password' class='text' maxlength='100' name='password' value='' /></div>\n"
+                . "<div class='submit'><input type='submit' class='submit' value='Continue' /></div>\n"
+                . "</form>"
+                . "<br/>";
+            $content .= "</form>";
+            $content .= "<br style='clear: both;' />\n";
+            $content .= "</article></div>\n";
+
+            //
+            // Add the footer
+            //
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageFooter');
+            $rc = ciniki_web_generatePageFooter($ciniki, $settings);
+            if( $rc['stat'] != 'ok' ) { 
+                return $rc;
+            }
+            $content .= $rc['content'];
+            return array('stat'=>'ok', 'content'=>$content);
         }
     }
 
