@@ -131,28 +131,6 @@ function ciniki_web_pageSettingsGet($ciniki) {
     }
 
     //
-    // Check if home page links should be included
-    //
-    if( $args['page'] == 'home' ) {
-        $strsql = "SELECT id, title "
-            . "FROM ciniki_web_hplinks "
-            . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
-            . "AND parent_id = 0 "
-            . "ORDER BY sequence, title "
-            . "";
-        ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryArrayTree');
-        $rc = ciniki_core_dbHashQueryArrayTree($ciniki, $strsql, 'ciniki.web', array(
-            array('container'=>'hplinks', 'fname'=>'id', 'fields'=>array('id', 'title')),
-            ));
-        if( $rc['stat'] != 'ok' ) {
-            return $rc;
-        }
-        if( isset($rc['hplinks']) ) {
-            $rsp['hplinks'] = $rc['hplinks'];
-        }
-    }
-
-    //
     // Check if sponsors should be included
     //
     if( isset($args['sponsors']) && $args['sponsors'] == 'yes'
