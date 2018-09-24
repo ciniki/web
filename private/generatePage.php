@@ -161,8 +161,6 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
     // If a password protected page or a page below, make sure password is entered
     //
     if( $pwdpage['password'] != '' ) {
-        error_log($pwdpage['uuid']);
-        error_log($_SESSION['pwdpages'][$pwdpage['uuid']]['authenticated']);
         if( !isset($_SESSION['pwdpages'][$pwdpage['uuid']]['authenticated']) 
             || $_SESSION['pwdpages'][$pwdpage['uuid']]['authenticated'] != 'yes' 
             ) {
