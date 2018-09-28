@@ -21,14 +21,39 @@
 //
 function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $maxheight, $quality='60') {
 
+    if( $maxwidth == 0 && $maxheight == 0 ) {
+        $size = 'o';
+    } elseif( $maxwidth == 0 ) {
+        $size = 'h' . $maxheight;
+    } else {
+        $size = 'w' . $maxwidth;
+    }
+
     //
     // Load last_updated date to check against the cache
     //
-    $strsql = "SELECT id, type, UNIX_TIMESTAMP(ciniki_images.last_updated) AS last_updated "
-        . "FROM ciniki_images "
-        . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $image_id) . "' "
-        . "AND tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
-        . "";
+    $reload_image = 'no';
+    if( isset($ciniki['config']['ciniki.web']['cache.db']) && $ciniki['config']['ciniki.web']['cache.db'] == 'on' ) {
+        $strsql = "SELECT ciniki_images.id, "
+            . "ciniki_images.type, "
+            . "UNIX_TIMESTAMP(ciniki_images.last_updated) AS last_updated,  "
+            . "UNIX_TIMESTAMP(ciniki_web_image_cache.last_updated) AS cache_last_updated "
+            . "FROM ciniki_images "
+            . "LEFT JOIN ciniki_web_image_cache ON ("
+                . "ciniki_images.id = ciniki_web_image_cache.image_id "
+                . "AND ciniki_web_image_cache.tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
+                . "AND ciniki_web_image_cache.size = '" . ciniki_core_dbQuote($ciniki, $size) . "' "
+                . ") "
+            . "WHERE ciniki_images.id = '" . ciniki_core_dbQuote($ciniki, $image_id) . "' "
+            . "AND ciniki_images.tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
+            . "";
+    } else {
+        $strsql = "SELECT id, type, UNIX_TIMESTAMP(ciniki_images.last_updated) AS last_updated "
+            . "FROM ciniki_images "
+            . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $image_id) . "' "
+            . "AND tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
+            . "";
+    }
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.images', 'image');
     if( $rc['stat'] != 'ok' ) { 
         return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.103', 'msg'=>'Unable to load image', 'err'=>$rc['err']));
@@ -72,7 +97,12 @@ function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $
     //
     // Check db for cache details
     //
-    $reload_image = 'no';
+    if( isset($ciniki['config']['ciniki.web']['cache.db']) && $ciniki['config']['ciniki.web']['cache.db'] == 'on'
+        && isset($img['cache_last_updated']) && $img['cache_last_updated'] >= $img['last_updated']
+        ) {
+        return array('stat'=>'ok', 'url'=>$img_url, 'domain_url'=>$img_domain_url);
+    }
+/*    $reload_image = 'no';
     if( isset($ciniki['config']['ciniki.web']['cache.db']) && $ciniki['config']['ciniki.web']['cache.db'] == 'on' ) {
         $strsql = "SELECT UNIX_TIMESTAMP(last_updated) AS last_updated "
             . "FROM ciniki_web_image_cache "
@@ -91,7 +121,7 @@ function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $
             return array('stat'=>'ok', 'url'=>$img_url, 'domain_url'=>$img_domain_url);
         }
         $reload_image = 'yes';
-    }
+    } */
 
     //
     // Check last_updated against the file timestamp, if the file exists
