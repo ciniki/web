@@ -51,16 +51,19 @@ function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $
 //          . sprintf('%07d', $ciniki['request']['tnid'])
 //          . '/o/' . sprintf('%010d', $img['id']) . '.' . $extension;
         $filename = '/o/' . sprintf('%010d', $img['id']) . '.' . $extension;
+        $size = 'o';
     } elseif( $maxwidth == 0 ) {
 //      $filename = '/' . sprintf('%02d', ($ciniki['request']['tnid']%100)) . '/'
 //          . sprintf('%07d', $ciniki['request']['tnid'])
 //          . '/h' . $maxheight . '/' . sprintf('%010d', $img['id']) . '.' . $extension;
         $filename = '/h' . $maxheight . '/' . sprintf('%010d', $img['id']) . '.' . $extension;
+        $size = 'h' . $maxheight;
     } else {
 //      $filename = '/' . sprintf('%02d', ($ciniki['request']['tnid']%100)) . '/'
 //          . sprintf('%07d', $ciniki['request']['tnid'])
 //          . '/w' . $maxwidth . '/' . sprintf('%010d', $img['id']) . '.' . $extension;
         $filename = '/w' . $maxwidth . '/' . sprintf('%010d', $img['id']) . '.' . $extension;
+        $size = 'w' . $maxwidth;
     }
     $img_filename = $ciniki['tenant']['web_cache_dir'] . $filename;
     $img_url = $ciniki['tenant']['web_cache_url'] . $filename;
@@ -72,8 +75,10 @@ function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $
     $reload_image = 'no';
     if( isset($ciniki['config']['ciniki.web']['cache.db']) && $ciniki['config']['ciniki.web']['cache.db'] == 'on' ) {
         $strsql = "SELECT UNIX_TIMESTAMP(last_updated) AS last_updated "
-            . "FROM ciniki_web_cache USE INDEX (filename_2) "
-            . "WHERE filename = '" . ciniki_core_dbQuote($ciniki, $img_filename) . "' "
+            . "FROM ciniki_web_image_cache "
+            . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
+            . "AND image_id = '" . ciniki_core_dbQuote($ciniki, $img['id']) . "' "
+            . "AND size = '" . ciniki_core_dbQuote($ciniki, $size) . "' "
             . "";
         $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'item');
         if( $rc['stat'] != 'ok' ) {
@@ -83,7 +88,6 @@ function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $
         // Check to make sure the cache was updated after the last updated for the image
         //
         if( isset($rc['item']['last_updated']) && $rc['item']['last_updated'] >= $img['last_updated'] ) {
-            error_log('found');
             return array('stat'=>'ok', 'url'=>$img_url, 'domain_url'=>$img_domain_url);
         }
         $reload_image = 'yes';
@@ -144,8 +148,10 @@ function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $
         // Update database
         //
         if( isset($ciniki['config']['ciniki.web']['cache.db']) && $ciniki['config']['ciniki.web']['cache.db'] == 'on' ) {
-            $strsql = "INSERT INTO ciniki_web_cache (filename, last_updated) "    
-                . "VALUES('" . ciniki_core_dbQuote($ciniki, $img_filename) . "'"
+            $strsql = "INSERT INTO ciniki_web_image_cache (tnid, image_id, size, last_updated) "    
+                . "VALUES('" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "'"
+                . ", '" . ciniki_core_dbQuote($ciniki, $img['id']) . "'"
+                . ", '" . ciniki_core_dbQuote($ciniki, $size) . "'"
                 . ", UTC_TIMESTAMP()) "
                 . "ON DUPLICATE KEY UPDATE last_updated = UTC_TIMESTAMP() "
                 . "";

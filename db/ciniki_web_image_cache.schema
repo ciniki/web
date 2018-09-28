@@ -1,0 +1,20 @@
+#
+# Description
+# -----------
+# This table stores the files written to the web cache directory.
+# Amazon EFS system is slow, so faster to save last updated date in database.
+#
+# This table is not synced, and is only used for internal use.
+#
+# Fields
+# ------
+#
+create table ciniki_web_image_cache (
+    tnid int not null,
+    image_id int not null,
+    size varchar(10) not null,
+    last_updated datetime not null,
+    unique index (tnid, image_id, size),
+    index (last_updated)
+) ENGINE=InnoDB, COMMENT='v1.01';
+
