@@ -67,11 +67,33 @@ function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $
     $img_domain_url = 'http://' . $ciniki['request']['domain'] . $ciniki['tenant']['web_cache_url'] . $filename;
 
     //
+    // Check db for cache details
+    //
+    $reload_image = 'no';
+    if( isset($ciniki['config']['ciniki.web']['cache.db']) && $ciniki['config']['ciniki.web']['cache.db'] == 'on' ) {
+        $strsql = "SELECT UNIX_TIMESTAMP(last_updated) AS last_updated "
+            . "FROM ciniki_web_cache USE INDEX (filename_2) "
+            . "WHERE filename = '" . ciniki_core_dbQuote($ciniki, $img_filename) . "' "
+            . "";
+        $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'item');
+        if( $rc['stat'] != 'ok' ) {
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.178', 'msg'=>'Unable to load item', 'err'=>$rc['err']));
+        }
+        //
+        // Check to make sure the cache was updated after the last updated for the image
+        //
+        if( isset($rc['item']['last_updated']) && $rc['item']['last_updated'] >= $img['last_updated'] ) {
+            error_log('found');
+            return array('stat'=>'ok', 'url'=>$img_url, 'domain_url'=>$img_domain_url);
+        }
+        $reload_image = 'yes';
+    }
+
+    //
     // Check last_updated against the file timestamp, if the file exists
     //
 //  $utc_offset = date_offset_get(new DateTime);
-    if( !file_exists($img_filename) 
-        || filemtime($img_filename) < $img['last_updated'] ) {
+    if( $reload_image == 'yes' || !file_exists($img_filename) || filemtime($img_filename) < $img['last_updated'] ) {
 
         //
         // Load the image from the database
@@ -116,6 +138,23 @@ function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $
             fclose($h);
         } else {
             return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.105', 'msg'=>'Unable to load image'));
+        }
+
+        //
+        // Update database
+        //
+        if( isset($ciniki['config']['ciniki.web']['cache.db']) && $ciniki['config']['ciniki.web']['cache.db'] == 'on' ) {
+            $strsql = "INSERT INTO ciniki_web_cache (filename, last_updated) "    
+                . "VALUES('" . ciniki_core_dbQuote($ciniki, $img_filename) . "'"
+                . ", UTC_TIMESTAMP()) "
+                . "ON DUPLICATE KEY UPDATE last_updated = UTC_TIMESTAMP() "
+                . "";
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbInsert');
+            $rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.tenants');
+            if( $rc['stat'] != 'ok' ) {
+                error_log('CACHE: Unable to save ' . $img_filename . ' to ciniki_web_cache');
+                return $rc;
+            }
         }
     }
 

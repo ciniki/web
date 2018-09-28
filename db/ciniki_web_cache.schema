@@ -1,0 +1,35 @@
+#
+# Description
+# -----------
+# This table stores the files written to the web cache directory.
+# Amazon EFS system is slow, so faster to save last updated date in database.
+#
+# This table is not synced, and is only used for internal use.
+#
+# Fields
+# ------
+# id:               The id of the question.
+# uuid:             The Universal Unique ID.
+# tnid:             The tenant the question is for.
+#
+# flags:            0x01 - hidden, do not display on website, used when preparing questions.
+#                   0x02 - 
+#                   0x04 - 
+#                   0x08 -
+#
+# category:         The category of the question.
+#
+# question:         The question being asked.
+#
+# answer:           The answer to the question.
+#
+# date_added:       The date and time the domain was added to the table.
+# last_updated:     The date and time the domain was last updated.
+#
+create table ciniki_web_cache (
+    filename varchar(250) not null,
+    last_updated datetime not null,
+    unique index (filename),
+    index (filename, last_updated)
+) ENGINE=InnoDB, COMMENT='v1.01';
+
