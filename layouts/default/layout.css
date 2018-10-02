@@ -441,7 +441,9 @@ aside {
     float: right;
     clear: right;
     width: 25em;
+    max-width: 100%;
     height: auto;
+    margin-left: 2em;
 }
 
 #content article.page {
