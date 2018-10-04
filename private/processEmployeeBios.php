@@ -19,9 +19,9 @@ function ciniki_web_processEmployeeBios($ciniki, $settings, $page, $employees) {
 
     // Check if any employees have name display turned on
     $display_names = 'no';
-    foreach($employees as $unum => $u) {
+    foreach($employees as $unum => $u) {    
         $setting = "page-{$page}-user-display-flags-" . $u['user']['id'];
-        if( isset($settings[$setting]) && ($settings[$setting]&0x01) == 0x01 && ((isset($u['user']['firstname']) && $u['user']['firstname'] != '' )
+        if( isset($settings[$setting]) && $settings[$setting] > 0 && ($settings[$setting]&0x01) == 0x01 && ((isset($u['user']['firstname']) && $u['user']['firstname'] != '' )
             || (isset($u['user']['lastname']) && $u['user']['lastname'] != '')) ) {
             $display_names = 'yes';
         }
