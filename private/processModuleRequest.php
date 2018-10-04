@@ -211,7 +211,7 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $tnid, $module_pag
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlocks');
     if( isset($page['blocks']) ) {
-        $rc = ciniki_web_processBlocks($ciniki, $settings, $tnid, $page['blocks']);
+        $rc = ciniki_web_processBlocks($ciniki, $settings, $tnid, $page['blocks'], $args);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }

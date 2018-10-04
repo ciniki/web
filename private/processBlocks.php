@@ -12,7 +12,7 @@
 // Returns
 // -------
 //
-function ciniki_web_processBlocks(&$ciniki, $settings, $tnid, $blocks) {
+function ciniki_web_processBlocks(&$ciniki, $settings, $tnid, $blocks, $args = array()) {
 
     $rsp = array('stat'=>'ok', 'content'=>'', 'css'=>'');
 
@@ -74,6 +74,10 @@ function ciniki_web_processBlocks(&$ciniki, $settings, $tnid, $blocks) {
             case 'videolinks': $processor = 'processBlockVideoLinks'; break;
         }
         if( $processor != '' ) {
+            if( isset($args['password_protected']) && $args['password_protected'] == 'yes' && $processor == 'processBlockShareButtons' ) {
+                // Skip the addition of share buttons password protected pages
+                continue;
+            }
             $rc = ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', $processor);
             if( $rc['stat'] == 'ok' ) {
                 $fn = "ciniki_web_$processor";
