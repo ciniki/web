@@ -60,6 +60,8 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $tnid, $module_pag
         header('Pragma: no-cache');
         if( $file['extension'] == 'pdf' ) {
             header('Content-Type: application/pdf');
+        } elseif( $file['extension'] == 'mp3' ) {
+            header('Content-Type: audio/mpeg');
         }
 //      header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Content-Length: ' . strlen($file['binary_content']));
