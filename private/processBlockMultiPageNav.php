@@ -17,9 +17,12 @@ function ciniki_web_processBlockMultiPageNav(&$ciniki, $settings, $tnid, $block)
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processMeta');
 
     $content = '';
+    if( !is_numeric($block['cur_page']) ) {
+        $block['cur_page'] = 1;
+    }
 
     if( isset($block['total_pages']) && isset($block['cur_page']) ) {
-        if( $block['cur_page'] > 1 ) {
+        if( is_numeric($block['cur_page']) && $block['cur_page'] > 1 ) {
             //
             // Reverse lets the multipage nav start at the highest page
             //
