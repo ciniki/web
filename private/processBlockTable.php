@@ -37,7 +37,18 @@ function ciniki_web_processBlockTable(&$ciniki, $settings, $tnid, $block) {
         $content .= "<tr>";
         foreach($block['columns'] as $column) {
             $content .= "<td" . (isset($column['class']) && $column['class'] != '' ? " class='" . $column['class'] . "'" : "") . ">";
-            if( isset($row[$column['field']]) ) {
+            if( isset($column['strsub']) && $column['strsub'] != '' ) {
+                $value = $column['strsub'];
+                if( preg_match('/{_([a-zA-Z0-9_]+)_}/', $column['strsub'], $m) ) {
+                    foreach($m as $field) {
+                        if( isset($row[$field]) ) {
+                            $value = str_replace("{_{$field}_}", $row[$field], $value);
+                        } 
+                    }
+                }
+                $content .= $value;
+            }
+            if( isset($column['field']) && isset($row[$column['field']]) ) {
                 $content .= $row[$column['field']];
             } 
             $content .= "</td>";

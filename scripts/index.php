@@ -477,6 +477,9 @@ if( isset($_SESSION['tnid']) && $_SESSION['tnid'] == $ciniki['request']['tnid'] 
     if( isset($_SESSION['customer']) ) {
         $ciniki['session']['customer'] = $_SESSION['customer'];
     }
+    if( isset($_SESSION['account']) ) {
+        $ciniki['session']['account'] = $_SESSION['account'];
+    }
     if( isset($_SESSION['customers']) ) {
         $ciniki['session']['customers'] = $_SESSION['customers'];
     }
@@ -498,6 +501,7 @@ if( isset($_SESSION['tnid']) && $_SESSION['tnid'] == $ciniki['request']['tnid'] 
 } else {
     if( isset($_SESSION['login']) ) { unset($_SESSION['login']); };
     if( isset($_SESSION['customer']) ) { unset($_SESSION['customer']); };
+    if( isset($_SESSION['account']) ) { unset($_SESSION['account']); };
     if( isset($_SESSION['customers']) ) { unset($_SESSION['customers']); };
     if( isset($_SESSION['cart']) ) { unset($_SESSION['cart']); };
     if( isset($ciniki['session']['login']) ) { unset($ciniki['session']['login']); };
