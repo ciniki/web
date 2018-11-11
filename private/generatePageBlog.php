@@ -134,8 +134,8 @@ function ciniki_web_generatePageBlog($ciniki, $settings, $blogtype='blog') {
             }
             $ciniki['response']['head']['og']['image'] = $rc['domain_url'];
         }
-        if( isset($post['excerpt']) && $post['excerpt'] != '' ) {
-            $ciniki['response']['head']['og']['description'] = strip_tags($post['excerpt']);
+        if( isset($post['synopsis']) && $post['synopsis'] != '' ) {
+            $ciniki['response']['head']['og']['description'] = strip_tags($post['synopsis']);
         } elseif( isset($post['content']) && $post['content'] != '' ) {
             $ciniki['response']['head']['og']['description'] = strip_tags($post['content']);
         }

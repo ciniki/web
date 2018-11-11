@@ -58,8 +58,8 @@ function ciniki_web_processBlogPost(&$ciniki, $settings, $post, $args) {
         $content .= "</div></aside>";
     }
 
-    if( isset($post['excerpt']) && $post['excerpt'] != '' ) {
-        $ciniki['response']['head']['og']['description'] = strip_tags($post['excerpt']);
+    if( isset($post['synopsis']) && $post['synopsis'] != '' ) {
+        $ciniki['response']['head']['og']['description'] = strip_tags($post['synopsis']);
     } elseif( isset($post['content']) && $post['content'] != '' ) {
         $ciniki['response']['head']['og']['description'] = strip_tags($post['content']);
     }
