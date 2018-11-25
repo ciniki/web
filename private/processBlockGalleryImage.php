@@ -79,7 +79,7 @@ function ciniki_web_processBlockGalleryImage(&$ciniki, $settings, $tnid, $block)
         . "<div id='gallery-image-details' class='gallery-image-details'>"
         . "<span class='image-title'>" . $block['image']['title'] . '</span>'
         . "<span class='image-details'></span>";
-    if( $block['image']['description'] != '' ) {
+    if( isset($block['image']['description']) && $block['image']['description'] != '' ) {
         $content .= "<span class='image-description'>" . preg_replace('/\n/', '<br/>', $block['image']['description']) . "</span>";
     }
     $content .= "</div></div>";
