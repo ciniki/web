@@ -1087,8 +1087,7 @@ hr.footer-section-divider {
 	color: #555;
 	margin-top: 0px;
     margin-top: 1em;
-	padding-top: 1em;
-	padding-bottom: 1em;
+    padding: 1em;
 	border-radius: 0px;
 	background: #ddd;
 	width: 100%;
