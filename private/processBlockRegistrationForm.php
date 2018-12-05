@@ -95,6 +95,14 @@ function ciniki_web_processBlockRegistrationForm(&$ciniki, $settings, $tnid, $bl
                 $content .= "<input class='text' id='{$fid}' name='{$fid}' value='{$field['value']}'/>";
             }
             //
+            // checkbox input field
+            //
+            elseif( $field['type'] == 'checkbox' ) {
+                $content .= "<input type='checkbox' class='checkbox' id='{$fid}' name='{$fid}' value='{$field['checked_value']}'"
+                    . ($field['value'] == $field['checked_value'] ? ' checked' : '')
+                    . ">{$field['msg']}</input>";
+            }
+            //
             // Hidden input field
             //
             elseif( $field['type'] == 'hidden' ) {

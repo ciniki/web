@@ -1327,7 +1327,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                 //
                 // Check for registration customer
                 //
-                if( $display_registration_customer == 'yes' ) {
+                if( $display_registration_customer == 'yes' && $item['object'] != 'ciniki.musicfestivals.registration' ) {
                     if( $cart_edit == 'yes' ) {
                         $content .= " for <select name='student_" . $item['id'] . "' name='student_" . $item['id'] . "'"
 //                            . " onchange='if(this.options[this.selectedIndex].value==0){window.open(\"" . $ciniki['request']['ssl_domain_base_url'] . "/account/children/cartadd" . "\",\"_self\");return false;}'"
@@ -1349,6 +1349,9 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                             }
                         }
                     }
+                }
+                if( $display_registration_customer == 'yes' && $item['object'] == 'ciniki.musicfestivals.registration' ) {
+                    $content .= " for " . $item['notes'];
                 }
 
                 $content .= "</td>";
