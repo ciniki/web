@@ -29,7 +29,7 @@ function ciniki_web_processBlockLoginAccount(&$ciniki, $settings, $tnid, $block)
     $required_account_fields = array(
         'first'=>'First Name', 
         'last'=>'Last Name', 
-        'email'=>'Email Address', 
+        'primary_email'=>'Email Address', 
         'password'=>'Password',
         'mailing_address1'=>'Mailing Address', 
         'mailing_city'=>'City', 
@@ -56,6 +56,11 @@ function ciniki_web_processBlockLoginAccount(&$ciniki, $settings, $tnid, $block)
         if( isset($args['billing_province_code_' . $args['billing_country']]) && $args['billing_province_code_' . $args['billing_country']] != '' ) {
             $args['billing_province'] = $args['billing_province_code_' . $args['billing_country']];
         }
+        if( isset($args['billingflag']) && $args['billingflag'] == 'no' ) {
+            $args['mailing_flags'] = 0x04;
+        } else {
+            $args['mailing_flags'] = 0x06;
+        }
         $missing_fields = array();
         foreach($required_account_fields as $fid => $fname) {
             if( !isset($args[$fid]) || trim($args[$fid]) == '' ) {
@@ -67,16 +72,28 @@ function ciniki_web_processBlockLoginAccount(&$ciniki, $settings, $tnid, $block)
         } elseif( count($missing_fields) > 0 ) {
             $signinerrors = "You must enter " . implode(', ', $missing_fields) . " to create your account.";
         }
+        if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.customers', 0x8000) ) {
+            if( isset($_POST['birthday']) && $_POST['birthday'] != '' ) {
+                $ts = strtotime($_POST['birthday']);
+                if( $ts === FALSE ) {
+                    $signinerrors = "Invalid birthdate, please enter in the format 'month day, year'.";
+                    $errors = 'yes';
+                } else {
+                    $args['birthdate'] = strftime("%Y-%m-%d", $ts);
+                }
+            }
+        }
         if( $signinerrors == '' ) {
             //
             // Check if email address already exists
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'hooks', 'customerLookup');
-            $rc = ciniki_customers_hooks_customerLookup($ciniki, $ciniki['request']['tnid'], array('email'=>$_POST['email']));
+            $rc = ciniki_customers_hooks_customerLookup($ciniki, $ciniki['request']['tnid'], array('email'=>$_POST['primary_email']));
             if( $rc['stat'] != 'noexist' ) {
                 $signinerrors = "There is already an account for that email address, please use the Forgot Password link to recover your password.";
             }
         }
+        $args['primary_email_flags'] = 0x01;
         if( $signinerrors == '' ) {
             //
             // Setup the customer defaults
@@ -92,7 +109,7 @@ function ciniki_web_processBlockLoginAccount(&$ciniki, $settings, $tnid, $block)
             // Once the account is created, authenticate
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'auth');
-            $rc = ciniki_customers_web_auth($ciniki, $settings, $ciniki['request']['tnid'], $args['email'], $args['password']);
+            $rc = ciniki_customers_web_auth($ciniki, $settings, $ciniki['request']['tnid'], $args['primary_email'], $args['password']);
             if( $rc['stat'] != 'ok' ) {
                 $signinerrors = "Unable to authenticate, please try again or click Forgot your password to get a new one.";
             } else {
@@ -354,15 +371,28 @@ function ciniki_web_processBlockLoginAccount(&$ciniki, $settings, $tnid, $block)
             if( $_POST['type'] == 20 ) {
                 $content .= "<div class='contact-details-section'>"
                     . "<div class='input'>"
-                    . "<label for='parent_name'>Family Name</label>"
+                    . "<label for='parent_name'>Family Name*</label>"
                     . "<input type='text' class='text' name='parent_name' value='" . (isset($_POST['parent_name'])?$_POST['parent_name']:'') . "'>"
                     . "</div>"
                     . "</div>";
+                $content .= "<h2 class='wide'>Parent/Guardian</h2>";
             } elseif( $_POST['type'] == 30 ) {
                 $content .= "<div class='contact-details-sect'>"
                     . "<div class='input'>"
                     . "<label for='parent_name'>Business Name*</label>"
                     . "<input type='text' class='text' name='parent_name' value='" . (isset($_POST['parent_name'])?$_POST['parent_name']:'') . "'>"
+                    . "</div>"
+                    . "<div class='input'>"
+                    . "<label for='parent_email'>Business Email</label>"
+                    . "<input type='text' class='text' name='parent_email' value='" . (isset($_POST['parent_email'])?$_POST['parent_email']:'') . "'>"
+                    . "</div>"
+                    . "<div class='input'>"
+                    . "<label for='parent_work'>Business Phone</label>"
+                    . "<input type='text' class='text' name='parent_work' value='" . (isset($_POST['parent_work'])?$_POST['parent_work']:'') . "'>"
+                    . "</div>"
+                    . "<div class='input'>"
+                    . "<label for='parent_fax'>Business Fax</label>"
+                    . "<input type='text' class='text' name='parent_fax' value='" . (isset($_POST['parent_fax'])?$_POST['parent_fax']:'') . "'>"
                     . "</div>"
                     . "</div>";
                 //
@@ -451,12 +481,19 @@ function ciniki_web_processBlockLoginAccount(&$ciniki, $settings, $tnid, $block)
                 . "<div class='input'>"
                 . "<label for='last'>Last Name*</label>"
                 . "<input type='text' class='text' name='last' value='" . (isset($_POST['last'])?$_POST['last']:'') . "'>"
-                . "</div>"
                 . "</div>";
+            if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.customers', 0x0800) ) {
+                // Specified as birthday, and converted to birthdate when parsed
+                $content .= "<div class='input'>"
+                    . "<label for='birthday'>Birthday</label>"
+                    . "<input type='text' class='text' name='birthday' value='" . (isset($_POST['birthday'])?$_POST['birthday']:'') . "'>"
+                    . "</div>";
+            }
+            $content .= "</div>";
             $content .= "<div class='contact-details-section'>"
                 . "<div class='input'>"
-                . "<label for='email'>Email Address*</label>"
-                . "<input type='text' class='text' name='email' value='" . (isset($_POST['email'])?$_POST['email']:'') . "'>"
+                . "<label for='primary_email'>Email Address*</label>"
+                . "<input type='text' class='text' name='primary_email' value='" . (isset($_POST['primary_email'])?$_POST['primary_email']:'') . "'>"
                 . "</div>"
                 . "<div class='input'>"
                 . "<label for='password'>Password*</label>"
@@ -538,7 +575,7 @@ function ciniki_web_processBlockLoginAccount(&$ciniki, $settings, $tnid, $block)
             }
             $content .= "</div>";
             $content .= "<div class='input mailing_postal'>"
-                . "<label for='mailing_postal'>ZIP/Postal Code</label>"
+                . "<label for='mailing_postal'>ZIP/Postal Code*</label>"
                 . "<input type='text' class='text' name='mailing_postal' value='" . $customer['mailing_postal'] . "'>"
                 . "</div>";
             $content .= "<script type='text/javascript'>"
@@ -592,7 +629,9 @@ function ciniki_web_processBlockLoginAccount(&$ciniki, $settings, $tnid, $block)
                 . "<label for='billing_country'>Country</label>"
                 . "<select id='billing_country_code' type='select' class='select' name='billing_country' onchange='updateBillingProvince()'>"
                 . "<option value=''></option>";
-            $selected_country = 'Canada';
+            if( $customer['billing_country'] == '' ) {
+                $customer['billing_country'] = 'Canada';
+            }
             foreach($country_codes as $country_code => $country_name) {
                 $content .= "<option value='" . $country_code . "' " 
                     . (($country_code == $customer['billing_country'] || $country_name == $customer['billing_country'])?' selected':'')

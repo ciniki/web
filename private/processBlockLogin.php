@@ -317,6 +317,7 @@ function ciniki_web_processBlockLogin(&$ciniki, $settings, $tnid, $block) {
     // Display the signup for a new account form
     //
     if( isset($block['register']) && $block['register'] == 'yes' ) {
+        error_log('testing');
         $content .= "<h2>Create a new account</h2>";
         $content .= "<form action='' method='POST'>";
         $content .= "<input type='hidden' name='action' value='createaccount'>";

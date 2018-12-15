@@ -23,16 +23,19 @@ function ciniki_web_processBlockTable(&$ciniki, $settings, $tnid, $block) {
         . (isset($block['class']) && $block['class'] != '' ? ' table-' . $block['class'] : '')
         . "'>";
     $content .= "<table>";
+    $num_cols = 0;
     if( !isset($block['headers']) || $block['headers'] == 'yes' ) {
         $content .= "<thead><tr>";
         foreach($block['columns'] as $column) {
             $content .= "<th" . (isset($column['class']) && $column['class'] != '' ? " class='" . $column['class'] . "'" : "") . ">"
                 . $column['label']
                 . "</th>";
+            $num_cols++;
         }
         $content .= "</tr></thead>";
     }
     $content .= "<tbody>";
+    $count = 0;
     foreach($block['rows'] as $row) {
         $content .= "<tr>";
         foreach($block['columns'] as $column) {
@@ -54,6 +57,10 @@ function ciniki_web_processBlockTable(&$ciniki, $settings, $tnid, $block) {
             $content .= "</td>";
         }
         $content .= "</tr>";
+        $count++;
+    }
+    if( $count == 0 && isset($block['empty']) ) {
+        $content .= "<tr><td class='empty' colspan='" . $num_cols . "'>" . $block['empty'] . "</td></tr>";
     }
     $content .= "</table>";
     $content .= "</div>";
