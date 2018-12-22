@@ -136,6 +136,7 @@ a img {
 }
 
 #content h2,
+#content div.block-audio span.audiolabel,
 #content h1 a,
 #content h1 a:visited,
 #content h1 a:hover,
@@ -144,7 +145,6 @@ a img {
 #content h2 a:visited,
 #content h2 a:hover,
 #content h2 a:active {
-	color: #ccc;
 	color: #63BBDD;
 }
 
