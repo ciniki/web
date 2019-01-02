@@ -29,7 +29,7 @@ function ciniki_web_processBlockPricedItems(&$ciniki, $settings, $tnid, $block) 
 
     $content = '';
     if( isset($block['title']) && $block['title'] != '' ) {
-        $content .= "<h2><span>" . $block['title'] . "</span></h2>";
+        $content .= "<h2" . ((isset($block['wide'])&&$block['wide']=='yes')?" class='wide'":'') . ">" . $block['title'] . "</h2>";
     }
     $content .= "<div class='image-list priced-items'>\n";
 
