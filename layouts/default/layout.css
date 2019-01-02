@@ -899,6 +899,22 @@ span.exhibitors-description {
     }
 }
 
+/* 11a. Anything over 45em 
+------------------------------------------------------------------------------*/
+@media screen and (min-width: 45em) {
+    #content div.priced-items div.image-list-entry-wrap {
+        width: 50%;
+        display: inline-block;
+        vertical-align: top;
+    }
+    #content div.priced-items div.image-list-entry-wrap:nth-child(even) {
+        padding-left: 15px;
+    }
+    #content div.priced-items div.image-list-entry-wrap:nth-child(odd) {
+        padding-right: 15px;
+    }
+}
+
 /* 12. Anything over 50 em
 ------------------------------------------------------------------------------*/
 @media screen and (min-width: 50em) {
@@ -1029,6 +1045,21 @@ span.exhibitors-description {
     } */
 }
 
+@media screen and (min-width: 62em) {
+    #content div.priced-items div.image-list-entry-wrap {
+        width: 33%;
+        display: inline-block;
+        vertical-align: top;
+    }
+    #content div.priced-items div.image-list-entry-wrap:nth-child(even) {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    #content div.priced-items div.image-list-entry-wrap:nth-child(odd) {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
 
 /* 13. Print 
 ------------------------------------------------------------------------------*/

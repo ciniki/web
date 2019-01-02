@@ -49,7 +49,7 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $tnid) {
     if( isset($_POST['contact-form-email-again']) && $_POST['contact-form-email-again'] != '' ) {
         if( isset($ciniki['config']['ciniki.core']['log_dir']) && $ciniki['config']['ciniki.core']['log_dir'] != '' ) {
             file_put_contents($ciniki['config']['ciniki.core']['log_dir'] . '/spam.log', 
-                'WEB: SPAM BLOCKED FROM ' . $_POST['contact-form-email'] . ' - ' . $_SERVER['HTTP_REFERER'],
+                'WEB: SPAM BLOCKED FROM ' . $_POST['contact-form-email'] . ' - ' . $_SERVER['HTTP_REFERER'] . "\n",
                 FILE_APPEND);
         } else {
             error_log('WEB: SPAM BLOCKED FROM ' . $_POST['contact-form-email'] . ' - ' . $_SERVER['HTTP_REFERER']);

@@ -819,7 +819,35 @@ article {
     text-align: right;
     padding-bottom: 1.5em;
 }
-
+/* Priced Items */
+#content div.priced-items div.image-list-entry {
+    margin-bottom: 1.0em;
+}
+#content div.priced-items div.image-list-details {
+    display: inline-block;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    vertical-align: top;
+    text-align: left;
+    padding: 0px;
+}
+#content div.priced-items div.image-list-title {
+    display: inline-block;
+    width: 70%;
+}
+#content div.priced-items div.image-list-price {
+    display: inline-block;
+    width: 30%;
+    text-align: right;
+    vertical-align: top;
+}
+#content div.priced-items div.image-list-content {
+    margin-top: 5px;
+}
+#content div.priced-items div.image-list-content p {
+    margin-bottom: 0px;
+}
 
 
 
