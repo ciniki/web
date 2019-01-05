@@ -174,7 +174,7 @@ function ciniki_web_processBlockLoginAccount(&$ciniki, $settings, $tnid, $block)
     // Check if forgot password was used
     //
     if( isset($_POST['action']) && $_POST['action'] == 'forgot' ) {
-        $url = $block['redirect'];
+        $url = $ciniki['request']['ssl_domain_base_url'] . $block['redirect'];
         if( strstr($block['redirect'], '?') !== false ) {
             $url .= '&pwreset=1';
         } else {
@@ -674,7 +674,6 @@ function ciniki_web_processBlockLoginAccount(&$ciniki, $settings, $tnid, $block)
                     . "}else{"
                         . "document.getElementById('billingform').style.display = 'block';"
                     . "}"
-                    . "console.log('updateform');"
                 . "}"
                 . "function updateBillingProvince() {"
                     . "var cc = document.getElementById('billing_country_code');"
