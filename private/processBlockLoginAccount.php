@@ -701,11 +701,11 @@ function ciniki_web_processBlockLoginAccount(&$ciniki, $settings, $tnid, $block)
             $content .= "<input type='hidden' name='type' value='30'>";
             $content .= "<div class='big-button aligncenter'><input type='submit' name='continue' class='submit' value='Business with Employees' /></div>\n";
             $content .= "</form>";
-            $content .= "<form action='' method='POST'>";
+/*            $content .= "<form action='' method='POST'>";
             $content .= "<input type='hidden' name='action' value='selecttype'>";
             $content .= "<input type='hidden' name='type' value='20'>";
             $content .= "<div class='big-button aligncenter'><input type='submit' name='continue' class='submit' value='Family with Children' /></div>\n";
-            $content .= "</form>";
+            $content .= "</form>"; */
             $content .= "<form action='' method='POST'>";
             $content .= "<input type='hidden' name='action' value='selecttype'>";
             $content .= "<input type='hidden' name='type' value='10'>";
