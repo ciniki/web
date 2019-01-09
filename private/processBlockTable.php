@@ -22,6 +22,17 @@ function ciniki_web_processBlockTable(&$ciniki, $settings, $tnid, $block) {
     $content .= "<div class='table"
         . (isset($block['class']) && $block['class'] != '' ? ' table-' . $block['class'] : '')
         . "'>";
+    if( isset($block['intro']) && $block['intro'] != '' ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+        $rc = ciniki_web_processContent($ciniki, $settings, $block['intro'], ((isset($block['wide'])&&$block['wide']=='yes')?'wide':''));
+        if( $rc['stat'] != 'ok' ) {
+            return $rc;
+        }
+        if( $rc['content'] != '' ) {
+            $content .= $rc['content'];
+        }
+    }
+
     $content .= "<table>";
     $num_cols = 0;
     if( !isset($block['headers']) || $block['headers'] == 'yes' ) {
