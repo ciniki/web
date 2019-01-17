@@ -83,6 +83,11 @@ function ciniki_web_processBlockLoginAccount(&$ciniki, $settings, $tnid, $block)
                 }
             }
         }
+        if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.customers', 0x4000) ) {
+            if( isset($_POST['connection']) && $_POST['connection'] != '' ) {
+                $args['connection'] = $_POST['connection'];
+            }
+        }
         if( $signinerrors == '' ) {
             //
             // Check if email address already exists
@@ -358,6 +363,7 @@ function ciniki_web_processBlockLoginAccount(&$ciniki, $settings, $tnid, $block)
                 'billing_postal' => (isset($_POST['billing_postal']) ? $_POST['billing_postal'] : ''),
                 'billing_country' => (isset($_POST['billing_country']) ? $_POST['billing_country'] : ''),
                 'mailing_flags' => (isset($_POST['mailing_flags']) ? $_POST['mailing_flags'] : 0x06),
+                'connection' => (isset($_POST['connection']) ? $_POST['connection'] : ''),
                 );
             $content .= "<h2 class='wide'>Create a new account</h2>";
             $content .= "<form class='wide' action='' method='POST'>";
@@ -666,6 +672,15 @@ function ciniki_web_processBlockLoginAccount(&$ciniki, $settings, $tnid, $block)
                 . "<input type='text' class='text' name='billing_postal' value='" . $customer['billing_postal'] . "'>"
                 . "</div>";
             $content .= "</div>"; // End wrapper div id billingform 
+            // How did you hear about us
+            if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.customers', 0x4000) ) {
+                $content .= "<div class='contact-details-section contact-details-form-connection'>";
+                $content .= "<div class='input connection wide'>"
+                    . "<label for='connection'>How did you hear about us?</label>"
+                    . "<input type='text' class='text' name='connection' value='" . $customer['connection'] . "'>"
+                    . "</div>";
+                $content .= "</div>"; 
+            }
             $content .= "<script type='text/javascript'>"
                 . "function updateBillingForm() {"
                     . "var f = document.getElementById('billingflag').value;"
