@@ -464,6 +464,9 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         $ciniki['session']['cart']['num_items'] = count($cart['items']);
     }
 
+    error_log(print_r($_POST, true));
+    error_log(print_r($cart['num_items'], true));
+
     //
     // Check if dealer is submitting an order
     //
@@ -652,6 +655,42 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 
         $display_cart = 'review';
         $page_title = 'Checkout - Review';
+    }
+
+    //
+    // When the cart total is $0.00, then no charge checkout
+    //
+    elseif( isset($_POST['action']) && $_POST['action'] == 'update' 
+        && isset($_POST['nocharge_checkout']) 
+        && isset($cart['items']) && count($cart['items']) > 0 && $cart['total_amount'] == 0 
+        ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartPaymentReceived');
+        $rc = ciniki_sapos_web_cartPaymentReceived($ciniki, $settings, $ciniki['request']['tnid'], $cart);
+        if( $rc['stat'] != 'ok' ) {
+            $carterrors = "We have received your payment, thank you. There was a problem processing your order, so we have notified the approriate people to look into it.";
+            error_log('ERR-CART: ' . print_r($rc['err']));
+            $ciniki['emailqueue'][] = array('to'=>$ciniki['config']['ciniki.core']['alerts.notify'],
+                'subject'=>'Web Cart ERR 500',
+                'textmsg'=>$_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "\n"
+                    . $carterrors . "\n"
+                    . "Customer: \n" 
+                    . print_r($ciniki['session']['customer'], true) 
+                    . "\n"
+                    . print_r($rc, true)
+                    . "\n",
+                );
+        } else {
+            //
+            // Checkout success
+            //
+            $display_success = 'yes';
+            $display_cart = 'checkout_success';
+            $cart = NULL;
+            $_SESSION['cart']['sapos_id'] = 0;
+            $_SESSION['cart']['num_items'] = 0;
+            $ciniki['session']['cart']['sapos_id'] = 0;
+            $ciniki['session']['cart']['num_items'] = 0;
+        }
     }
 
     //
@@ -1616,7 +1655,10 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                 if( $display_cart == 'review' ) {
                     $content .= "<span class='cart-submit'>"
                         . "<input class='cart-submit' type='submit' name='continue' value='Back'/>";
-                    if( $stripe_checkout == 'yes' ) {
+                    if( $stripe_checkout == 'yes' && $cart['total_amount'] == 0 ) {
+                        $content .= "<button class='cart-submit' onclick='' type='submit' name='nocharge_checkout'>Confirm</button>";
+                    }
+                    elseif( $stripe_checkout == 'yes' ) {
                         if( !isset($ciniki['response']['head']['scripts']) ) {
                             $ciniki['response']['head']['scripts'] = array();
                         }
