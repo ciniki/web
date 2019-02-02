@@ -464,9 +464,6 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         $ciniki['session']['cart']['num_items'] = count($cart['items']);
     }
 
-    error_log(print_r($_POST, true));
-    error_log(print_r($cart['num_items'], true));
-
     //
     // Check if dealer is submitting an order
     //
