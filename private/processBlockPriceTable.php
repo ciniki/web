@@ -69,6 +69,7 @@ function ciniki_web_processBlockPriceTable(&$ciniki, $settings, $tnid, $block) {
                 if( $field == 'price' ) {
                     $content .= "<td>"
                         . numfmt_format_currency($intl_currency_fmt, $final_price, $intl_currency)
+                        . (isset($block['price_info']) && $block['price_info'] != '' ? $block['price_info'] : '')
                         . "</td>";
                 } else {
                     $content .= "<td>"
