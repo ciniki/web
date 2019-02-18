@@ -464,6 +464,7 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
                 . "var e=document.createElement('script');"
                 . "e.src='https://mylivechat.com/chatwidget.aspx?hccid=" . $settings['site-mylivechat-userid'] . "';"
                 . "document.body.appendChild(e);"
+                . "setTimeout(function() {MyLiveChat_ShowChatWidget();}, 1500);"
             . "}"
             . "if(window.addEventListener){"
                 . "window.addEventListener('load', setupMyLiveChat, false);"
