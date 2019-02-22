@@ -110,7 +110,11 @@ function ciniki_web_processBlockPrices(&$ciniki, $settings, $tnid, $block) {
             if( isset($price['limited_units']) && isset($price['units_available']) 
                 && $price['limited_units'] == 'yes' && $price['units_available'] < 1 
                 ) {
-                $content .= ' Sold Out';
+                if( isset($price['individual_ticket']) && $price['individual_ticket'] == 'yes' ) {
+                    $content .= ' Sold';
+                } else {
+                    $content .= ' Sold Out';
+                }
             }
 
             //
