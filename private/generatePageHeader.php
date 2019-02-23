@@ -1156,6 +1156,13 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
                 $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='musicfestivals'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/musicfestivals'>Music Festival</a></li>";
             }
         }
+        if( isset($settings['page-writingfestivals-active']) && $settings['page-writingfestivals-active'] == 'yes' ) {
+            if( isset($settings['page-writingfestivals-title']) && $settings['page-writingfestivals-title'] != '' ) {
+                $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='writingfestivals'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/writingfestivals'>" . $settings['page-writingfestivals-title'] . "</a></li>";
+            } else {
+                $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='writingfestivals'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/writingfestivals'>Writing Festival</a></li>";
+            }
+        }
         if( isset($settings['page-directory-active']) && $settings['page-directory-active'] == 'yes' ) {
             if( isset($settings['page-directory-title']) && $settings['page-directory-title'] != '' ) {
                 $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='directory'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/directory'>" . $settings['page-directory-title'] . "</a></li>";

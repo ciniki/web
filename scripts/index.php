@@ -1081,6 +1081,12 @@ if( $found == 'no' ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
         $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['tnid'], 'ciniki.musicfestivals');
     } 
+    // Writing Festival
+    elseif( $ciniki['request']['page'] == 'writingfestivals' 
+        && isset($settings['page-writingfestivals-active']) && $settings['page-writingfestivals-active'] == 'yes' ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
+        $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['tnid'], 'ciniki.writingfestivals');
+    } 
     // Merchandise
     elseif( $ciniki['request']['page'] == 'merchandise' 
         && isset($settings['page-merchandise-active']) && $settings['page-merchandise-active'] == 'yes' ) {

@@ -1042,6 +1042,25 @@ function ciniki_web_main() {
         this.musicfestivals.addClose('Cancel');
 
         //
+        // The options and information for the Writing Festival page
+        //
+        this.writingfestivals = new M.panel('Writing Festival', 'ciniki_web_main', 'writingfestivals', 'mc', 'medium', 'sectioned', 'ciniki.web.main.writingfestivals');
+        this.writingfestivals.data = {};
+        this.writingfestivals.sections = {
+            'options':{'label':'Options', 'fields':{
+                'page-writingfestivals-active':{'label':'Show Writing Festival', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                'page-writingfestivals-title':{'label':'Title', 'hint':'Writing Festival', 'type':'text'},
+                }},
+            '_save':{'label':'', 'buttons':{
+                'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'writingfestivals\');'},
+                }},
+        };
+        this.writingfestivals.fieldValue = this.fieldValue;
+        this.writingfestivals.fieldHistoryArgs = this.fieldHistoryArgs;
+        this.writingfestivals.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'writingfestivals\');');
+        this.writingfestivals.addClose('Cancel');
+
+        //
         // The options and information for the Events page
         //
         this.filmschedule = new M.panel('Schedule',
