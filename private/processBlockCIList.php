@@ -164,6 +164,9 @@ function ciniki_web_processBlockCIList(&$ciniki, $settings, $tnid, $block) {
                 if( isset($item['subtitle']) && $item['subtitle'] != '' ) {
                     $content .= "<p class='cilist-subtitle'>" . $item['subtitle'] . "</p>";
                 }
+                if( isset($item['subtitle2']) && $item['subtitle2'] != '' ) {
+                    $content .= "<p class='cilist-subtitle'>" . $item['subtitle2'] . "</p>";
+                }
                 $content .= "</td></tr>";
                 $content .= "<tr>";
             }
