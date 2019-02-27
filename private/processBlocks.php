@@ -68,6 +68,7 @@ function ciniki_web_processBlocks(&$ciniki, $settings, $tnid, $blocks, $args = a
             case 'foldingtable': $processor = 'processBlockFoldingTable'; break;
             case 'sharebuttons': $processor = 'processBlockShareButtons'; break;
             case 'sectionedform': $processor = 'processBlockSectionedForm'; break;
+            case 'slider': $processor = 'processBlockSlider'; break;
             case 'sponsors': $processor = 'processBlockSponsors'; break;
             case 'table': $processor = 'processBlockTable'; break;
             case 'tableslide': $processor = 'processBlockTableSlide'; break;
