@@ -193,6 +193,10 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
             }
             $content .= "</tr>";
 
+            if( isset($item['prices']) && $item['prices'] != '' ) {
+                $content .= "<tr><td class='cilist-more'>" . $item['prices'] . "</td></tr>";
+            }
+
             if( $url != '' ) {
                 $content .= "<tr><td class='cilist-more'><a href='$url' target='$url_target'>$url_display</a></td></tr>";
             } elseif( isset($item['urls']) && count($item['urls']) > 0 ) {

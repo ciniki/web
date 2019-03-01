@@ -211,6 +211,10 @@ function ciniki_web_processBlockCIList(&$ciniki, $settings, $tnid, $block) {
             }
             $content .= "</tr>";
 
+            if( isset($item['prices']) && $item['prices'] != '' ) {
+                $content .= "<tr><td class='cilist-prices'>" . $item['prices'] . "</td></tr>";
+            }
+
             if( $url != '' ) {
                 $content .= "<tr><td class='cilist-more'><a href='$url' target='$url_target'>$url_display</a></td></tr>";
             } elseif( isset($item['urls']) && count($item['urls']) > 0 ) {

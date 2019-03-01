@@ -993,6 +993,9 @@ article {
     min-width: 9.0em;
 }
 
+#content table.cilist td.cilist-prices {
+    text-align: right;
+}
 div.googlemap p.exhibitors-more,
 #content table.clist p.clist-more,
 #content table.cilist td.cilist-more,
