@@ -60,7 +60,7 @@ function ciniki_web_processEmployeeBios($ciniki, $settings, $page, $employees) {
 
             // Setup the event image
             $content .= "<tr><td class='cilist-image' rowspan='1'>";
-            if( ($settings[$setting]&0x40) == 0x40 ) {
+            if( isset($settings[$setting]) && ($settings[$setting]&0x40) == 0x40 ) {
                 if( isset($u['user']['employee-bio-image']) && $u['user']['employee-bio-image'] != '' && $u['user']['employee-bio-image'] > 0 ) {
                     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
                     $rc = ciniki_web_getScaledImageURL($ciniki, $u['user']['employee-bio-image'], 'thumbnail', '150', 0);
@@ -76,7 +76,7 @@ function ciniki_web_processEmployeeBios($ciniki, $settings, $page, $employees) {
             // Setup the details
             $content .= "<td class='cilist-details'>";
             // Check if employee bio content is to be displayed.
-            if( ($settings[$setting]&0x40) == 0x40 ) {
+            if( isset($settings[$setting]) && ($settings[$setting]&0x40) == 0x40 ) {
                 if( isset($u['user']['employee-bio-content']) && $u['user']['employee-bio-content'] != '' ) {
                     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
                     $rc = ciniki_web_processContent($ciniki, $settings, $u['user']['employee-bio-content']);    
@@ -87,16 +87,16 @@ function ciniki_web_processEmployeeBios($ciniki, $settings, $page, $employees) {
                 }
             }
             $content .= '<p>';
-            if( ($settings[$setting]&0x04) == 0x04 && isset($u['user']['contact.phone.number']) && $u['user']['contact.phone.number'] != '' ) {
+            if( isset($settings[$setting]) && ($settings[$setting]&0x04) == 0x04 && isset($u['user']['contact.phone.number']) && $u['user']['contact.phone.number'] != '' ) {
                 $content .= 'T: ' . $u['user']['contact.phone.number'] . '<br/>';
             }
-            if( ($settings[$setting]&0x08) == 0x08 && isset($u['user']['contact.cell.number']) && $u['user']['contact.cell.number'] != '' ) {
+            if( isset($settings[$setting]) && ($settings[$setting]&0x08) == 0x08 && isset($u['user']['contact.cell.number']) && $u['user']['contact.cell.number'] != '' ) {
                 $content .= 'C: ' . $u['user']['contact.cell.number'] . '<br/>';
             }
-            if( ($settings[$setting]&0x10) == 0x10 && isset($u['user']['contact.fax.number']) && $u['user']['contact.fax.number'] != '' ) {
+            if( isset($settings[$setting]) && ($settings[$setting]&0x10) == 0x10 && isset($u['user']['contact.fax.number']) && $u['user']['contact.fax.number'] != '' ) {
                 $content .= 'F: ' . $u['user']['contact.fax.number'] . '<br/>';
             }
-            if( ($settings[$setting]&0x20) == 0x20 && isset($u['user']['contact.email.address']) && $u['user']['contact.email.address'] != '' ) {
+            if( isset($settings[$setting]) && ($settings[$setting]&0x20) == 0x20 && isset($u['user']['contact.email.address']) && $u['user']['contact.email.address'] != '' ) {
                 $content .= 'E: <a class="contact-email" href="mailto:' . $u['user']['contact.email.address'] . '">' . $u['user']['contact.email.address'] . '</a><br/>';
             }
             $content .= '</p>';
