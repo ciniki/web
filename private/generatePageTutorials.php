@@ -307,8 +307,8 @@ function ciniki_web_generatePageTutorials($ciniki, $settings) {
                 }
                 $last = $step;
             }
-            if( !isset($tutorial['steps']) || count($tutorial['steps']) < 1 ) {
-                return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.91', 'msg'=>'Unable to find step'));
+            if( $cur_step == NULL || !isset($tutorial['steps']) || count($tutorial['steps']) < 1 ) {
+                return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.91', 'msg'=>'Would could not find the tutorial you requested.'));
             }
             if( count($tutorial['steps']) == 1 ) {
                 $prev = NULL;
@@ -343,6 +343,7 @@ function ciniki_web_generatePageTutorials($ciniki, $settings) {
                     return $rc;
                 }
                 $step_description = $rc['content'];
+            } else {
             }
 
             //
