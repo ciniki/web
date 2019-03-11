@@ -21,6 +21,13 @@ function ciniki_web_processEmployeeBios($ciniki, $settings, $page, $employees) {
     $display_names = 'no';
     foreach($employees as $unum => $u) {    
         $setting = "page-{$page}-user-display-flags-" . $u['user']['id'];
+        //
+        // Remove any employees that don't have the flags set
+        //
+        if( isset($settings[$setting]) && $settings[$setting] == 'NaN' ) {
+            unset($employees[$unum]);
+            continue;
+        }
         if( isset($settings[$setting]) && $settings[$setting] > 0 && ($settings[$setting]&0x01) == 0x01 && ((isset($u['user']['firstname']) && $u['user']['firstname'] != '' )
             || (isset($u['user']['lastname']) && $u['user']['lastname'] != '')) ) {
             $display_names = 'yes';
@@ -108,7 +115,7 @@ function ciniki_web_processEmployeeBios($ciniki, $settings, $page, $employees) {
         $count = 0;
         foreach($employees as $unum => $u) {
             $setting = "page-{$page}-user-display-flags-" . $u['user']['id'];
-            if( isset($settings[$setting]) && $settings[$setting] > 0 ) {
+            if( isset($settings[$setting]) && is_numeric($settings[$setting]) && $settings[$setting] > 0 ) {
                 $content .= '<p' . ($count>0?' style="clear: right;"':'') . '>';
                 // Check if employee bio image is to be displayed
                 if( ($settings[$setting]&0x40) == 0x40 ) {
