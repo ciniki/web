@@ -1,0 +1,174 @@
+@import "/ciniki-web-themes/default/style.css";
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  font-family: helvetica, arial, sans-serif;
+}
+header div.signin div.signin-wrapper {
+  border: 0px;
+  background: inherit;
+  font-size: 1.2em;
+}
+#sub-menu-container {
+    filter: none;
+}
+#main-menu-container {
+    filter: none;
+}
+#sub-menu-container li a,
+#sub-menu-container li a:visited,
+#sub-menu-container li a:hover,
+#sub-menu-container li a:active {
+    color: #999;
+    font-weight: 100;
+}
+#main-menu-container li a,
+#main-menu-container li a:visited,
+#main-menu-container li a:hover,
+#main-menu-container li a:active {
+    color: #999;
+    font-weight: 100;
+}
+#sub-menu-container li.menu-item {
+    border: 0px;
+    text-shadow: none;
+    box-shadow: none;
+    background: inherit;
+    filter:  none;
+    border-radius: 0px;
+    border-top: 1px solid #ddd;
+    margin-bottom: 0px;
+}
+#sub-menu-container {
+    border-bottom: 1px solid #ddd;
+}
+#main-menu-container li.menu-item {
+    border: 0px;
+    text-shadow: none;
+    box-shadow: none;
+    background: inherit;
+    filter:  none;
+    color: #999;
+    border-radius: 0px;
+    border-top: 1px solid #ddd;
+    margin-bottom: 0px;
+}
+#main-menu-container {
+    border-bottom: 1px solid #ddd; 
+}
+a,
+a:visited,
+a:hover,
+a:active,
+#content a,
+#content a:visited,
+#content a:hover,
+#content a:active,
+#content h1,
+#content h2,
+#content h1.entry-title {
+  color: #333;
+}
+#content div.slider ul li img {
+  padding: 1px;
+}
+#content form textarea,
+#content form input.text {
+  border: 1px solid #ddd;
+}
+#content h1.entry-title,
+#content h1 {
+  /* font-size: 2em;*/
+  color: #333;
+}
+#content h1.entry-title a,
+#content h1 a {
+  color: #333;
+}
+#content h2 {
+/*  font-size: 1.5em;*/
+  color: #333;
+}
+#content h2 a {
+  color: #333;
+}
+#content div.image-list-details h2 {
+}
+#content div.image-list-more a,
+#content td.cilist-more a,
+#content p.cilist-title a,
+#content span.cilist-title,
+#content p.cilist-title {
+  color: #333;
+}
+@media screen and (min-width: 33em) {
+    #sub-menu-container {
+        border: 0px;
+        background: inherit;
+        filter:  none;
+    }
+    #main-menu-container {
+        border: 0px;
+        border-radius: 0px;
+        background: inherit;
+        filter: none;
+        text-shadow: none;
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        text-align: center;
+    }
+    #sub-menu-container ul.menu li.menu-item {
+       text-shadow: none;
+       border-bottom: 1px solid #ddd;
+       border-radius: 0px;
+    }
+    #main-menu-container ul.menu li.menu-item {
+       text-shadow: none;
+       font-size: 1.2em;
+       text-align: center;
+       color: #999;
+    }
+}
+@media screen and (min-width: 45em) {
+    #main-menu-container ul.menu li.menu-item {
+       font-size: 1.3em;
+       padding-left: 1.2em;
+       padding-right: 1.2em;
+    }
+}
+@media screen and (min-width: 50em) {
+  #content div.image-list {
+    text-align: center;
+  }
+  #content div.image-list-entry-wrap {
+    margin: 0 auto;
+    display: block;
+    width: 100%;
+    max-width: 45em;
+  }
+  #content div.image-list-image {
+    width: 12em;
+    padding-right: 1em;
+  }
+  #content div.image-list-entry-wrap:nth-child(even) div.image-list-entry {
+    text-align: left;
+  }
+}
+@media screen and (min-width: 55em) {
+    #main-menu-container ul.menu li.menu-item {
+       font-size: 1.5em;
+       padding-left: 1.5em;
+       padding-right: 1.5em;
+    }
+}
