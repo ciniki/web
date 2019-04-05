@@ -35,16 +35,23 @@ function ciniki_web_processBlockGalleryImage(&$ciniki, $settings, $tnid, $block)
     //
     // Load the image
     //
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-    $rc = ciniki_web_getScaledImageURL($ciniki, $block['image']['image_id'], 'original', 0, $height, $quality);
-    if( $rc['stat'] != 'ok' ) {
-        return $rc;
-    }
-    $img_url = $rc['url'];
+    if( isset($block['url']) && $block['url'] != '' ) {
+        //
+        // Allow the override of the url, used when the image should not be put in the public cache directory
+        //
+        $img_url = $block['url'];
+    } else {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+        $rc = ciniki_web_getScaledImageURL($ciniki, $block['image']['image_id'], 'original', 0, $height, $quality);
+        if( $rc['stat'] != 'ok' ) {
+            return $rc;
+        }
+        $img_url = $rc['url'];
 
-    // Setup the og image
-    if( isset($block['primary']) && $block['primary'] == 'yes' ) {
-        $ciniki['response']['head']['og']['image'] = $rc['domain_url'];
+        // Setup the og image, only for public images
+        if( isset($block['primary']) && $block['primary'] == 'yes' ) {
+            $ciniki['response']['head']['og']['image'] = $rc['domain_url'];
+        }
     }
 
     //
