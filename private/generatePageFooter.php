@@ -220,7 +220,7 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
         $copyright .= "<span class='copyright'>" . file_get_contents($ciniki['request']['theme_dir'] . '/' . $settings['site-theme'] . '/copyright.html') . "</span><br/>";
     }
 
-    if( isset($ciniki['config']['ciniki.web']['poweredby.url']) && $ciniki['config']['ciniki.web']['poweredby.url'] != '' && $ciniki['config']['ciniki.core']['master_tnid'] != $ciniki['request']['tnid'] ) {
+    if( isset($ciniki['config']['ciniki.web']['poweredby.url']) && $ciniki['config']['ciniki.web']['poweredby.url'] != '' ) {
         $copyright .= "<span class='poweredby'>Powered by <a href='" . $ciniki['config']['ciniki.web']['poweredby.url'] . "'>" . $ciniki['config']['ciniki.web']['poweredby.name'] . "</a></span>";
     }
 
