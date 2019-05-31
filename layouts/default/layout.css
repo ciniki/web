@@ -1030,6 +1030,9 @@ span.exhibitors-description {
     #content table.order-repeats tbody td > div.repeat-option:nth-child(2) { 
         width: 40%;
     }
+    div.block-mappedtickets div.ticketmap {
+        max-width: 60em;
+    }
 /*    #content table.order-repeats tbody td:nth-child(1) {
         width: 40%;
     }
