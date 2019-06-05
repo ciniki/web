@@ -82,27 +82,48 @@ function ciniki_web_processBlockMappedTickets(&$ciniki, $settings, $tnid, $block
                 . "fill='" . (($price['webflags']&0x04) == 0 ? 'blue' : 'red') . "' />";
         }
         $js_tickets .= "};";
+        $js_addons = "var addons={";
+        foreach($block['addons'] as $pid => $price) {
+            $js_addons .= "{$price['price_id']}:" . json_encode($price) . ",";
+        }
+        $js_addons .= "};";
 
         $ticketmap .= "</svg>";
         $ticketmap .= "</div>";
         $ticketmap .= "<form method='POST' action='" . $ciniki['request']['ssl_domain_base_url'] . "/cart' class='wide' onsubmit='return submitTickets(event);'>";
-        $ticketmap .= "<input type='hidden' name='action' value='addprices'>";
-        $ticketmap .= "<input type='hidden' name='object' value='" . $block['object'] . "'>";
-        $ticketmap .= "<input type='hidden' name='object_id' value='" . $block['object_id'] . "'>";
-        $ticketmap .= "<input type='hidden' id='price_ids' name='price_ids' value=''>";
-        $ticketmap .= "<input type='hidden' name='quantity' value='1'>";
+//        $ticketmap .= "<input type='hidden' name='action' value='addprices'>";
+//        $ticketmap .= "<input type='hidden' name='object' value='" . $block['object'] . "'>";
+//        $ticketmap .= "<input type='hidden' name='object_id' value='" . $block['object_id'] . "'>";
+//        $ticketmap .= "<input type='hidden' id='price_ids' name='price_ids' value=''>";
+//        $ticketmap .= "<input type='hidden' name='quantity' value='1'>";
         $ticketmap .= "<div class='ticketmap-tickets'>";
+        $ticketmap .= "<h2>Cart</h2>";
         $ticketmap .= "<table class='ticketmap-tickets'>";
         $ticketmap .= "<tbody id='ticketmap1-tickets'>";
         $ticketmap .= "<tr><td colspan=3>" . (isset($block['empty-text']) && $block['empty-text'] != '' ? $block['empty-text'] : 'No tickets selected') . "</td></tr>";
         $ticketmap .= "</tbody>";
         $ticketmap .= "</table>";
         $ticketmap .= "</div>";
+        if( isset($block['addons']) && count($block['addons']) > 0 ) {
+            $ticketmap .= "<div class='ticketmap-addons'>";
+            $ticketmap .= "<h2>Additional Options</h2>";
+            $ticketmap .= "<table class='ticketmap-tickets'>";
+            $ticketmap .= "<tbody>";
+            foreach($block['addons'] as $addon) {
+                $ticketmap .= "<tr><td>" . $addon['name'] . "</td>"
+                    . "<td>$" . number_format($addon['unit_amount'], 2) . "</td>"
+                    . "<td><a href='javascript:addItem({$addon['price_id']});'>Add</a></td>"
+                    . "</tr>";
+            }
+            $ticketmap .= "</tbody>";
+            $ticketmap .= "</table>";
+            $ticketmap .= "</div>";
+        }
         $ticketmap .= "<br/>";
         $ticketmap .= "<div class='ticketmap-buttons'>";
         $ticketmap .= "<div class='cart-buttons wide aligncenter'>";
-        $ticketmap .= "<button class='cart-submit button' onclick='closeMap(event);'>Cancel</button>&nbsp;";
-        $ticketmap .= "<input id='ticketmap-submit' class='cart-submit' type='submit' value='Add to Cart' />";
+        $ticketmap .= "<button class='cart-submit button' onclick='closeMap(event);'>Close</button>&nbsp;";
+        $ticketmap .= "<input id='ticketmap-submit' class='cart-submit' type='submit' name='checkout' value='Checkout' />";
         $ticketmap .= "</div>";
         $ticketmap .= "</form>";
         $ticketmap .= "</div>";
@@ -118,16 +139,45 @@ function ciniki_web_processBlockMappedTickets(&$ciniki, $settings, $tnid, $block
             $content .= "<br/>";
             $content .= $ticketmap;
 
+            // Enable the API
+            $ciniki['request']['ciniki_api'] = 'yes';
+            $api_cart_load = (isset($block['api_cart_load']) ? $block['api_cart_load'] : '/ciniki/sapos/cartLoad');
             $js = ""
                 . $js_tickets
+                . $js_addons
                 . "var selectedTickets = [];"
+                . "var selectedAddons = {};"
                 . "function openMap() {"
-                    . "var e=document.getElementById('ticketmap1-background');"
-                    . "e.style.display='block';" 
-                    . "var e=document.getElementById('ticketmap1-wrap');"
-                    . "e.style.display='block';" 
-                    . "updateTickets();"
-                    . "window.scrollTo(0, 0);"
+                    // Load cart
+                    . "C.getBg('ciniki/sapos/cartLoad',{},function(r){"
+                        . "if(r.stat!='ok'&&r.stat!='noexist'){"
+                            . "alert(\"We're sorry, but we were unable to load your cart.  Please try again or contact us for help.\");"
+                            . "return false;"
+                        . "}"
+                        . "if(r.cart!=null&&r.cart.items!=null){"
+                            . "for(var i in r.cart.items){"
+                                . "if(r.cart.items[i].item.object=='" . $block['object'] . "'"
+                                    . "&&r.cart.items[i].item.object_id=='" . $block['object_id'] . "'"
+                                    . "){"
+                                        . "if(tickets[r.cart.items[i].item.price_id]!=null){"
+                                            . "tickets[r.cart.items[i].item.price_id].item_id=r.cart.items[i].item.id;"
+                                            . "selectedTickets.push(parseInt(r.cart.items[i].item.price_id));"
+                                            . "var e=document.getElementById('ticket_' + r.cart.items[i].item.price_id);"
+                                            . "e.setAttribute('fill', 'green');"
+                                        . "} else if(addons[r.cart.items[i].item.price_id]!=null){"
+                                            . "addons[r.cart.items[i].item.price_id].item_id=r.cart.items[i].item.id;"
+                                            . "selectedAddons[r.cart.items[i].item.price_id] = {'quantity':parseInt(r.cart.items[i].item.quantity)};"
+                                        . "}"
+                                . "}"
+                            . "}"
+                        . "}"
+                        . "var e=document.getElementById('ticketmap1-background');"
+                        . "e.style.display='block';" 
+                        . "var e=document.getElementById('ticketmap1-wrap');"
+                        . "e.style.display='block';" 
+                        . "updateTickets();"
+                        . "window.scrollTo(0, 0);"
+                    . "});"
                 . "};"
                 . "function closeMap(evt) {"
                     . "evt.preventDefault();"
@@ -139,27 +189,105 @@ function ciniki_web_processBlockMappedTickets(&$ciniki, $settings, $tnid, $block
                     . "e.style.display='none';" 
                     . "var e=document.getElementById('ticketmap1-wrap');"
                     . "e.style.display='none';" 
+                    . "location.reload();"
+                . "};"
+                . "function addItem(tid) {"
+                    . "if(addons[tid] != null){"
+                        . "if(selectedAddons[tid]!=null){"
+                            . "var t=addons[tid];"
+                            . "C.getBg('ciniki/sapos/cartItemUpdate',{"
+                                . "'item_id':t.item_id,"
+                                . "'quantity':(selectedAddons[tid].quantity+1),"
+                                . "},function(r){"
+                                    . "if(r.stat!='ok'){"
+                                        . "alert(\"We're sorry, we ran into a problem.  Please try again or contact us for help.\");"
+                                        . "return false;"
+                                    . "}"
+                                    . "selectedAddons[tid].quantity++;"
+                                    . "updateTickets();"
+                                . "});"
+                        . "}else{"
+                            . "C.getBg('ciniki/sapos/cartItemAdd',{"
+                                . "'object':'" . $block['object'] . "',"
+                                . "'object_id':'" . $block['object_id'] . "',"
+                                . "'quantity':'1',"
+                                . "'price_id':tid,"
+                                . "},function(r){"
+                                    . "if(r.stat!='ok'){"
+                                        . "alert(\"We're sorry, we ran into a problem.  Please try again or contact us for help.\");"
+                                        . "return false;"
+                                    . "}"
+                                    . "selectedAddons[tid] = {'quantity':1};"
+                                    . "addons[tid].item_id=r.id;"
+                                    . "updateTickets();"
+                                . "});"
+                        . "}"
+                    . "}"
+                . "};"
+                . "function removeItem(tid) {"
+                    . "if(addons[tid] != null){"
+                        . "if(selectedAddons[tid]!=null){"
+                            . "var t=addons[tid];"
+                            . "C.getBg('ciniki/sapos/cartItemDelete',{"
+                                . "'item_id':t.item_id,"
+                                . "},function(r){"
+                                    . "if(r.stat!='ok'){"
+                                        . "alert(\"We're sorry, we ran into a problem.  Please try again or contact us for help.\");"
+                                        . "return false;"
+                                    . "}"
+                                    . "delete selectedAddons[tid];"
+                                    . "addons[tid].item_id=0;"
+                                    . "updateTickets();"
+                                . "});"
+                        . "}"
+                    . "}"
                 . "};"
                 . "function selectTicket(tid) {"
                     . "var e=document.getElementById('ticket_' + tid);"
                     . "if(selectedTickets.indexOf(tid)==-1){"
-                        . "e.setAttribute('fill', 'green');"
-                        . "selectedTickets.push(tid);"
+                        // Add to cart
+                        . "C.getBg('ciniki/sapos/cartItemAdd',{"
+                            . "'object':'" . $block['object'] . "',"
+                            . "'object_id':'" . $block['object_id'] . "',"
+                            . "'quantity':'1',"
+                            . "'price_id':tid,"
+                            . "},function(r){"
+                                . "if(r.stat!='ok'){"
+                                    . "alert(\"We're sorry, we ran into a problem.  Please try again or contact us for help.\");"
+                                    . "return false;"
+                                . "}"
+                                . "e.setAttribute('fill', 'green');"
+                                . "selectedTickets.push(tid);"
+                                . "tickets[tid].item_id=r.id;"
+                                . "updateTickets();"
+                            . "});"
                     . "}else{" 
-                        . "selectedTickets.splice(selectedTickets.indexOf(tid), 1);"
-                        . "e.setAttribute('fill', 'blue');"
+                        // Remove from cart
+                        . "C.getBg('ciniki/sapos/cartItemDelete',{"
+                            . "'item_id':tickets[tid].item_id,"
+                            . "},function(r){"
+                                . "if(r.stat!='ok'){"
+                                    . "alert(\"We're sorry, we ran into a problem.  Please try again or contact us for help.\");"
+                                    . "return false;"
+                                . "}"
+                                . "selectedTickets.splice(selectedTickets.indexOf(tid), 1);"
+                                . "e.setAttribute('fill', 'blue');"
+                                . "tickets[tid].item_id=0;"
+                                . "updateTickets();"
+                            . "});"
                     . "}"
-                    . "updateTickets();"
                 . "};"
                 . "function updateTickets() {"
                     . "var e=document.getElementById('ticketmap1-tickets');"
                     . "var h='';"
-                    . "var p=document.getElementById('price_ids');"
-                    . "p.value='';"
                     . "for(var i in selectedTickets) {"
                         . "var t=tickets[selectedTickets[i]];"
-                        . "h+='<tr><td>'+t.name+'</td><td>'+t.amount_display+'</td><td><a href=\"javascript:selectTicket('+t.price_id+');\">Remove</a></td></tr>';"
-                        . "p.value+=selectedTickets[i]+',';"
+                        . "h+='<tr><td>'+t.name+'</td><td></td><td>'+t.amount_display+'</td><td><a href=\"javascript:selectTicket('+t.price_id+');\">Remove</a></td></tr>';"
+                    . "}"
+                    // Update the addons
+                    . "for(var i in selectedAddons) {"
+                        . "var t=addons[i];"
+                        . "h+='<tr><td>'+t.name+'</td><td>' + selectedAddons[i].quantity + '</td><td>'+t.unit_amount_display+'</td><td><a href=\"javascript:removeItem('+t.price_id+');\">Remove</a></td></tr>';"
                     . "}"
                     . "if(h!=''){"
                         . "e.innerHTML=h;"
