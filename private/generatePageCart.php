@@ -694,7 +694,40 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
     // Check if checkout
     //
     elseif( isset($_POST['checkout']) && $_POST['checkout'] != '' && $cart != NULL ) {
-        if( isset($cart['customer_id']) && $cart['customer_id'] > 0 ) {
+        //
+        // Check the items in the cart before checkout to make sure still available
+        //
+        $unavailable = '';
+        foreach($cart['items'] as $iid => $item) {
+            list($pkg, $mod, $f) = explode('.', $item['item']['object']);
+            $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'sapos', 'cartItemCheck');
+            if( $rc['stat'] == 'ok' ) {
+                $fn = $rc['function_call'];
+                $rc = $fn($ciniki, $ciniki['request']['tnid'], $ciniki['session']['customer'], $item['item']);
+                if( $rc['stat'] == 'unavailable' ) {
+                    //
+                    // Remove item from cart
+                    //
+                    $unavailable = ($unavailable != '' ? ', ' : '') . $item['item']['description'];
+                    ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartItemDelete');
+                    $rc = ciniki_sapos_web_cartItemDelete($ciniki, $settings, $ciniki['request']['tnid'],
+                        array('item_id'=>$item['item']['id']));
+                    if( $rc['stat'] != 'ok' ) {
+                        return $rc;
+                    }
+                    unset($cart['items'][$iid]);
+                }
+                elseif( $rc['stat'] != 'ok' ) {
+                    return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.178', 'msg'=>'Unable to confirm availability', 'err'=>$rc['err']));
+                }
+            }
+        }
+        if( $unavailable != '' ) {
+            $carterrors = 'The following items are no longer available and have been removed from your cart: ' . $unavailable;
+            $cart_edit = 'yes';
+            $display_cart = 'yes';
+        }
+        elseif( isset($cart['customer_id']) && $cart['customer_id'] > 0 ) {
             $display_cart = 'review';
             $cart_edit = 'no';
             $page_title = 'Checkout - Review';
