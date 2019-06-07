@@ -698,10 +698,14 @@ span.exhibitors-description {
 
     table.order-details thead tr,
     table.order-details tbody tr,
-    table.order-details tfoot tr {
+    table.order-details tfoot tr,
+    table.order-season thead tr,
+    table.order-season tbody tr,
+    table.order-season tfoot tr {
         display: table-row;
     }
-    table.order-details thead th {
+    table.order-details thead th,
+    table.order-season thead th {
         display: table-cell;
         width: auto;
     }
@@ -716,6 +720,10 @@ span.exhibitors-description {
         display: table-cell;
         width: auto;
     }
+    table.order-season tbody td:nth-child(1) { display: table-cell; width: auto; }
+    table.order-season tbody td:nth-child(2) { display: table-cell; width: auto; padding: 0.5em 0em 0.5em 0.5em; }
+    table.order-season tbody td:nth-child(3) { display: table-cell; width: auto; }
+    table.order-season tbody td:nth-child(4) { display: table-cell; width: auto; }
     #content table.order-repeats tbody td > div.repeat-option { 
         display: inline-block;
         width: 50%;
