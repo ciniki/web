@@ -385,6 +385,90 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
     }
 
     //
+    // Check if multiple prices are being added at once. Used by mapped ticket selector
+    //
+    elseif( isset($_POST['action']) && $_POST['action'] == 'addprices' && isset($_POST['price_ids']) ) {
+        if( $cart == NULL ) {
+            // Create a shopping cart
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartCreate');
+            $rc = ciniki_sapos_web_cartCreate($ciniki, $settings, $ciniki['request']['tnid'], array());
+            if( $rc['stat'] != 'ok' ) {
+                return $rc;
+            }
+            $sapos_id = $rc['sapos_id'];
+            $_SESSION['cart']['sapos_id'] = $sapos_id;
+            $_SESSION['cart']['num_items'] = 0;
+            $ciniki['session']['cart'] = array();
+            $ciniki['session']['cart']['sapos_id'] = $sapos_id;
+            $ciniki['session']['cart']['num_items'] = 0;
+        } 
+
+        $price_ids = explode(',', $_POST['price_ids']);
+        foreach($price_ids as $price_id) {
+            if( $price_id == '' ) {
+                continue;
+            }
+            //
+            // Check if item already exists in the cart
+            //
+            $item_exists = 'no';
+            if( isset($cart['items']) ) {
+                foreach($cart['items'] as $item) {
+                    $item = $item['item'];
+                    if( $item['object'] == $_POST['object']
+                        && $item['object_id'] == $_POST['object_id'] 
+                        && $item['price_id'] == $price_id
+                        && ($item['flags']&0x08) == 0
+                        ) {
+                        $item_exists = 'yes';
+                        //
+                        // Update the quantity
+                        //
+                        ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartItemUpdate');
+                        $rc = ciniki_sapos_web_cartItemUpdate($ciniki, $settings, $ciniki['request']['tnid'],
+                            array('item_id'=>$item['id'], 'quantity'=>$item['quantity'] + $_POST['quantity']));
+                        if( $rc['stat'] != 'ok' ) {
+                            return $rc;
+                        }
+                        break;
+                    }
+                }
+            }
+            //
+            // Add the item to the cart, if they don't already exist
+            //
+            if( $item_exists == 'no' ) {
+                ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartItemAdd');
+                $rc = ciniki_sapos_web_cartItemAdd($ciniki, $settings, $ciniki['request']['tnid'],
+                    array('object'=>$_POST['object'],
+                        'object_id'=>$_POST['object_id'],
+                        'price_id'=>$price_id,
+                        'quantity'=>$_POST['quantity']));
+                if( $rc['stat'] != 'ok' ) {
+                    return $rc;
+                }
+            }
+        }
+
+        //
+        // Redirect to avoid form duplicate submission
+        //
+        header("Location: " . $ciniki['request']['ssl_domain_base_url'] . "/cart");
+        exit;
+
+        //
+        // Incase redirect fails, Load the updated cart
+        //
+        $rc = ciniki_sapos_web_cartLoad($ciniki, $settings, $ciniki['request']['tnid']);
+        if( $rc['stat'] != 'ok' ) { 
+            return $rc;
+        }
+        $cart = $rc['cart'];
+        $_SESSION['cart']['num_items'] = count($cart['items']);
+        $ciniki['session']['cart']['num_items'] = count($cart['items']);
+    }
+
+    //
     // Check if cart quantities were updated
     //
     elseif( (isset($_POST['update']) && $_POST['update'] != '' && isset($_POST['action']) && $_POST['action'] == 'update')
@@ -610,7 +694,40 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
     // Check if checkout
     //
     elseif( isset($_POST['checkout']) && $_POST['checkout'] != '' && $cart != NULL ) {
-        if( isset($cart['customer_id']) && $cart['customer_id'] > 0 ) {
+        //
+        // Check the items in the cart before checkout to make sure still available
+        //
+        $unavailable = '';
+        foreach($cart['items'] as $iid => $item) {
+            list($pkg, $mod, $f) = explode('.', $item['item']['object']);
+            $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'sapos', 'cartItemCheck');
+            if( $rc['stat'] == 'ok' ) {
+                $fn = $rc['function_call'];
+                $rc = $fn($ciniki, $ciniki['request']['tnid'], $ciniki['session']['customer'], $item['item']);
+                if( $rc['stat'] == 'unavailable' ) {
+                    //
+                    // Remove item from cart
+                    //
+                    $unavailable = ($unavailable != '' ? ', ' : '') . $item['item']['description'];
+                    ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartItemDelete');
+                    $rc = ciniki_sapos_web_cartItemDelete($ciniki, $settings, $ciniki['request']['tnid'],
+                        array('item_id'=>$item['item']['id']));
+                    if( $rc['stat'] != 'ok' ) {
+                        return $rc;
+                    }
+                    unset($cart['items'][$iid]);
+                }
+                elseif( $rc['stat'] != 'ok' ) {
+                    return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.178', 'msg'=>'Unable to confirm availability', 'err'=>$rc['err']));
+                }
+            }
+        }
+        if( $unavailable != '' ) {
+            $carterrors = 'The following items are no longer available and have been removed from your cart: ' . $unavailable;
+            $cart_edit = 'yes';
+            $display_cart = 'yes';
+        }
+        elseif( isset($cart['customer_id']) && $cart['customer_id'] > 0 ) {
             $display_cart = 'review';
             $cart_edit = 'no';
             $page_title = 'Checkout - Review';

@@ -127,6 +127,63 @@ div.block-audio audio {
     width: 100%;
 }
 
+div.block-mappedtickets div.ticketmap-background {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 5;
+    width: 100vw;
+    height: 100vh;
+    min-height: 100vh;
+    max-width: 100vw;
+    background: rgba(128,128,128,0.75);
+}
+div.block-mappedtickets div.ticketmap-wrap {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 5;
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    max-width: 100%;
+    padding: 0.5em;
+}
+div.block-mappedtickets div.ticketmap {
+    position: relative;
+    max-width: 100%;
+    background: white;
+    padding: 1em;
+    margin: auto auto;
+}
+div.block-mappedtickets svg {
+    width: 100%;
+    border: 1px solid black;
+}
+div.block-mappedtickets svg image {
+    width: 100%;
+    height: 100%;
+}
+div.block-mappedtickets div.ticketmap-tickets,
+div.block-mappedtickets div.ticketmap-addons {
+    max-width: 40em;
+    margin: 0 auto;
+}
+div.block-mappedtickets table.ticketmap-tickets {
+    width: 100%;
+    border-collapse: collapse;
+}
+div.block-mappedtickets table.ticketmap-tickets td {
+    width: 100%;
+    text-align: right;
+    padding: 0.25em 1em;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+div.block-mappedtickets table.ticketmap-tickets td:first-child {
+    text-align: left;
+}
+
 #content div.cart-pricetable {
     box-sizing: border-box;
 }
@@ -1799,6 +1856,7 @@ div.popup-content ul {
 
 /* POMA Orders */
 div.order-details,
+div.order-season,
 div.order-substitutions {
     max-width: 100%;
 }
@@ -1807,6 +1865,7 @@ div.order-options {
     margin: 0 auto;
 }
 table.order-details,
+table.order-season,
 table.order-substitutions,
 table.order-repeats,
 table.order-options {
@@ -1818,6 +1877,8 @@ table.order-options {
 }
 table.order-details th,
 table.order-details td,
+table.order-season th,
+table.order-season td,
 table.order-substitutions th,
 table.order-substitutions td,
 table.order-repeats th,
@@ -1826,6 +1887,7 @@ table.order-options td {
     padding: 0.6em 0.5em;
     box-sizing: border-box;
 }
+table.order-season tbody td:nth-child(4),
 table.order-repeats tbody td:nth-child(2),
 table.order-repeats tbody td:nth-child(3) {
     text-align: right;
@@ -1840,20 +1902,32 @@ table.order-options tbody td:nth-child(4) {
     vertical-align: middle;
     padding: 0.1em;
 }
-table.order-details thead th {
+table.order-details thead th,
+table.order-season thead th {
     display: none;
     text-align: right;
 }
-table.order-details tbody td {
+table.order-details tbody td,
+table.order-season tbody td {
     display: inline-block;
     box-sizing: border-box;
     vertical-align: center;
 }
 table.order-details thead th:first-child,
-table.order-details tbody td:first-child {
+table.order-details tbody td:first-child,
+table.order-season thead th:first-child {
     display: block;
     width: 100%;
     text-align: left;
+}
+table.order-season tbody td:first-child,
+table.order-season tbody td:nth-child(2) {
+    display: inline-block;
+    width: 50%;
+    text-align: left;
+}
+table.order-season tbody td:nth-child(2) {
+    text-align: right;
 }
 table.order-details thead th:nth-child(2) {
     padding-right: 1.5em;
@@ -1865,14 +1939,16 @@ table.order-substitutions thead th:nth-child(2),
 table.order-substitutions tbody td:nth-child(2) {
     text-align: right;
 }
-table.order-details tbody tr {
+table.order-details tbody tr,
+table.order-season tbody tr {
     display: block;
     text-align: right;
     display: flex;
     flex-flow: row wrap;
     align-items: bottom;
 }
-table.order-details tbody td {
+table.order-details tbody td,
+table.order-season tbody td {
     flex: 1 1 auto;
     bottom: 0px;
     font-size: 1em;

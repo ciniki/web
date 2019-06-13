@@ -180,6 +180,6 @@ function ciniki_web_getScaledImageURL($ciniki, $image_id, $version, $maxwidth, $
         } */
     }
 
-    return array('stat'=>'ok', 'url'=>$img_url, 'domain_url'=>$img_domain_url);
+    return array('stat'=>'ok', 'url'=>$img_url, 'domain_url'=>$img_domain_url, 'filename'=>$img_filename);
 }
 ?>

@@ -420,6 +420,26 @@ function ciniki_web_main() {
         this.google.addClose('Cancel');
 
         //
+        // The panel to allow the user to setup facebook pixel
+        //
+        this.facebook = new M.panel('Facebook Settings',
+            'ciniki_web_main', 'facebook',
+            'mc', 'narrow', 'sectioned', 'ciniki.web.main.facebook');
+        this.facebook.data = {'site-facebook-pixel-id':''};
+        this.facebook.sections = {
+            '_analytics':{'label':'Facebook Pixel ID', 'fields':{
+                'site-facebook-pixel-id':{'label':'', 'type':'text', 'hidelabel':'yes'},
+                }},
+            '_save':{'label':'', 'buttons':{
+                'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'facebook\');'},
+                }},
+        };
+        this.facebook.fieldValue = this.fieldValue;
+        this.facebook.fieldHistoryArgs = this.fieldHistoryArgs;
+        this.facebook.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'facebook\');');
+        this.facebook.addClose('Cancel');
+
+        //
         // The panel to allow the user to meta tags for your site
         //
         this.metatags = new M.panel('Meta Tags',
@@ -461,7 +481,7 @@ function ciniki_web_main() {
         this.mylivechat.addClose('Cancel');
 
         //
-        // The panel to allow the user to setup google analytics
+        // The panel to allow the user to setup meta robots
         //
         this.meta = new M.panel('Meta Settings',
             'ciniki_web_main', 'meta',
@@ -2318,6 +2338,7 @@ function ciniki_web_main() {
             this.menu.sections.module_pages.aside = 'yes';
             this.menu.sections.adm = {'label':'Admin Options', 'list':{
                 'google':{'label':'Google Settings', 'fn':'M.ciniki_web_main.showSiteSettings(\'M.ciniki_web_main.showMenu();\',\'google\');' },
+                'facebook':{'label':'Facebook Settings', 'fn':'M.ciniki_web_main.showSiteSettings(\'M.ciniki_web_main.showMenu();\',\'facebook\');' },
                 'meta':{'label':'Meta Settings', 'fn':'M.ciniki_web_main.showSiteSettings(\'M.ciniki_web_main.showMenu();\',\'meta\');' },
                 'ssl':{'label':'SSL', 'fn':'M.ciniki_web_main.showSiteSettings(\'M.ciniki_web_main.showMenu();\',\'ssl\');'},
                 'css':{'label':'Custom CSS', 'fn':'M.ciniki_web_main.showSiteSettings(\'M.ciniki_web_main.showMenu();\',\'css\');'},

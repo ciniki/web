@@ -48,6 +48,7 @@ function ciniki_web_processBlocks(&$ciniki, $settings, $tnid, $blocks, $args = a
                     $processor = 'processBlockLogin'; break;
                 }
             case 'map': $processor = 'processBlockMap'; break;
+            case 'mappedtickets': $processor = 'processBlockMappedTickets'; break;
             case 'message': $processor = 'processBlockMessage'; break;
             case 'meta': $processor = 'processBlockMeta'; break;
             case 'monthlyavailability': $processor = 'processBlockMonthlyAvailability'; break;
@@ -57,6 +58,7 @@ function ciniki_web_processBlocks(&$ciniki, $settings, $tnid, $blocks, $args = a
             case 'orderrepeats': $processor = 'processBlockOrderRepeats'; break;
             case 'orderqueue': $processor = 'processBlockOrderQueue'; break;
             case 'ordersubstitutions': $processor = 'processBlockOrderSubstitutions'; break;
+            case 'orderseason': $processor = 'processBlockOrderSeason'; break;
             case 'priceditems': $processor = 'processBlockPricedItems'; break;
             case 'prices': $processor = 'processBlockPrices'; break;
             case 'pricecards': $processor = 'processBlockPriceCards'; break;
