@@ -1993,6 +1993,15 @@ function ciniki_web_main() {
                 'page-account-content':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'medium', 
                     'hint':'This appears when the customer signs into your website'},
                 }},
+            'failed':{'label':'Autolock Accounts', 'fields':{
+                'page-account-allowed-attempts':{'label':'Allowed Attempts', 'type':'text', 'size':'small'},
+                'page-account-lock-hours':{'label':'Hours Locked', 'type':'text', 'size':'small'},
+                'weblogin-locked-admin-emails':{'label':'Admin Emails', 'type':'text'},
+                }},
+            'failed_email':{'label':'Account Lock Email', 'fields':{
+                'weblogin-locked-email-subject':{'label':'Subject', 'type':'text'},
+                'weblogin-locked-email-message':{'label':'Message', 'type':'textarea'},
+                }},
 //          'subscriptions':{'label':'Subscription Message', 'active':'no', 'fields':{
 //              'page-account-content-subscriptions':{'label':'', 'hidelabel':'yes', 'type':'textarea', 'size':'medium', 'hint':''},
 //              }},

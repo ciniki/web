@@ -131,6 +131,21 @@ function ciniki_web_pageSettingsGet($ciniki) {
     }
 
     //
+    // Check for customer settings
+    //
+    if( $args['page'] == 'account' ) {
+        $rc = ciniki_core_dbDetailsQueryDash($ciniki, 'ciniki_customer_settings', 'tnid', $args['tnid'], 'ciniki.customers', 'settings', 'weblogin');
+        if( $rc['stat'] != 'ok' ) {
+            return $rc;
+        }
+        if( isset($rc['settings']) ) {
+            foreach($rc['settings'] as $k => $v) {
+                $rsp['settings'][$k] = $v;
+            }
+        }
+    }
+
+    //
     // Check if sponsors should be included
     //
     if( isset($args['sponsors']) && $args['sponsors'] == 'yes'

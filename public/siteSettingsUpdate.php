@@ -447,6 +447,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-account-invoices-list',
         'page-account-invoices-view-details',
         'page-account-invoices-view-pdf',
+        'page-account-allowed-attempts',
+        'page-account-lock-hours',
         'page-cart-active',
         'page-cart-inventory-customers-display',    // Display current inventory to customers
         'page-cart-inventory-members-display',      // Display current inventory to members
@@ -873,6 +875,43 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
                 2, 'ciniki_web_content', $field, 'detail_value', $ciniki['request']['args'][$field]);
             $ciniki['syncqueue'][] = array('push'=>'ciniki.web.content',
                 'args'=>array('id'=>$field));
+        }
+    }
+
+    //
+    // **** weblogin customer settings ****
+    //
+    
+    //
+    // The list of fields to set in customer settings
+    //
+    $customer_setting_fields = array(
+        'weblogin-locked-admin-emails',
+        'weblogin-locked-email-subject',
+        'weblogin-locked-email-message',
+        );
+
+    //
+    // Check if the field was passed, and then try an insert, but if that fails, do an update
+    //
+    foreach($customer_setting_fields as $field) {
+        if( isset($ciniki['request']['args'][$field]) ) {
+            $strsql = "INSERT INTO ciniki_customer_settings (tnid, detail_key, detail_value, date_added, last_updated) "
+                . "VALUES ('" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args']['tnid']) . "'"
+                . ", '" . ciniki_core_dbQuote($ciniki, $field) . "' "
+                . ", '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args'][$field]) . "'"
+                . ", UTC_TIMESTAMP(), UTC_TIMESTAMP()) "
+                . "ON DUPLICATE KEY UPDATE detail_value = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['args'][$field]) . "' "
+                . ", last_updated = UTC_TIMESTAMP() "
+                . "";
+            $rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
+            if( $rc['stat'] != 'ok' ) {
+                ciniki_core_dbTransactionRollback($ciniki, 'ciniki.web');
+                return $rc;
+            }
+            ciniki_core_dbAddModuleHistory($ciniki, 'ciniki.customers', 'ciniki_customer_history', $args['tnid'], 
+                2, 'ciniki_customer_settings', $field, 'detail_value', $ciniki['request']['args'][$field]);
+            $ciniki['syncqueue'][] = array('push'=>'ciniki.customer.settings', 'args'=>array('id'=>$field));
         }
     }
 

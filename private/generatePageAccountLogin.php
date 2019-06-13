@@ -56,7 +56,16 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $tnid, $breadc
             ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'auth');
             $rc = ciniki_customers_web_auth($ciniki, $settings, $tnid, $_POST['email'], $_POST['password']);
-            if( $rc['stat'] != 'ok' ) {
+            if( $rc['stat'] == 'locked' ) {
+                if( isset($settings['page-account-lock-hours']) && $settings['page-account-lock-hours'] > 0 ) { 
+                    $blocks[] = array('type'=>'formmessage', 'level'=>'error', 
+                        'message'=>"Too many login attempts, your account has been locked for " . $settings['page-account-lock-hours'] . " hour" . ($settings['page-account-lock-hours'] > 1 ? 's' : '') . '.');
+                } else {
+                    $blocks[] = array('type'=>'formmessage', 'level'=>'error', 
+                        'message'=>"Too many login attempts, your account has been locked. Please contact us for help.");
+                }
+                $display_form = 'login';
+            } elseif( $rc['stat'] != 'ok' ) {
                 $blocks[] = array('type'=>'formmessage', 'level'=>'error', 
                     'message'=>"Unable to authenticate, please try again or click Forgot your password to get a new one");
                 $display_form = 'login';
