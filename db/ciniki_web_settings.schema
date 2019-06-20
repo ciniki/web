@@ -38,6 +38,12 @@
 # Featured on master tenant homepage
 # - site-featured = yes
 #
+# To limit the number of failed login attempts on a customer account
+# the following settings can be used. Additional email settings are
+# located in ciniki_customers_settings table.
+# page-account-allowed-attempts     = The number of failed attempts before account is locked
+# page-account-lock-hours           = The number of hours the account is locked for
+#
 # Fields
 # ------
 # tnid:             The tenant the domain is part of.

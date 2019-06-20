@@ -96,6 +96,7 @@ function ciniki_web_processBlockLogin(&$ciniki, $settings, $tnid, $block) {
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'auth');
             $rc = ciniki_customers_web_auth($ciniki, $settings, $ciniki['request']['tnid'], $args['email_address'], $args['password']);
+            error_log('RETURN');
             if( $rc['stat'] != 'ok' ) {
                 $signinerrors = "Unable to authenticate, please try again or click Forgot your password to get a new one.";
             } else {
