@@ -83,7 +83,7 @@ function ciniki_web_processBlockMappedTickets(&$ciniki, $settings, $tnid, $block
                 . "cy='" . $price['position_y'] . "' "
                 . "r='" . $price['diameter'] . "' "
                 . "stroke='green' stroke-width='0' "
-                . (($price['webflags']&0x04) == 0 ? "onclick='selectTicket({$price['price_id']});' " : "")
+                . (($price['webflags']&0x04) == 0 ? "style='cursor:pointer;' onclick='selectTicket({$price['price_id']});' " : "")
                 . "fill='" . (($price['webflags']&0x04) == 0 ? 'blue' : 'red') . "' />";
             if( isset($price['position_num']) && $price['position_num'] != '' ) {
                 $ticketmap .= "<text "
@@ -94,6 +94,7 @@ function ciniki_web_processBlockMappedTickets(&$ciniki, $settings, $tnid, $block
                     . "fill='#fff' "
                     . "dominant-baseline='middle' "
                     . "text-anchor='middle' "
+                    . (($price['webflags']&0x04) == 0 ? "style='cursor:pointer;' onclick='event.stopPropagation();selectTicket({$price['price_id']});' " : "")
                     . "class='pricelabel'>" 
                     . $price['position_num'] 
                     . "</text>";
