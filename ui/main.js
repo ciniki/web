@@ -1833,6 +1833,7 @@ function ciniki_web_main() {
 //              'page-courses-current-name':{'label':'Name', 'type':'text', 'hint':'Current Courses'},
                 'page-courses-past-active':{'label':'Past Courses', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-courses-catalog-download-active':{'label':'Display Catalog Download', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                'page-courses-hide-codes':{'label':'Hide Course Codes', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-courses-level-display':{'label':'Display course level', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-courses-submenu-categories':{'label':'Display Categories Submenu', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-courses-submenu-categories':{'label':'Display Categories Submenu', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
