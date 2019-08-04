@@ -31,14 +31,19 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $tnid) {
         $error_message = "You must enter your email address to get a response.<br/>";
         return array('stat'=>'ok', 'error_message'=>$error_message, 'success_message'=>'');
     }
+    if( !preg_match('/^[^ ]+\@[^ ]+\.[^ ]+$/', trim($_POST['contact-form-email'])) ) {
+        $error_message = "You must enter a valid email address to get a response.<br/>";
+        return array('stat'=>'ok', 'error_message'=>$error_message, 'success_message'=>'');
+    }
     if( !isset($_POST['contact-form-subject']) || $_POST['contact-form-subject'] == '' ) {
         $error_message = "Please add a subject.<br/>";
         return array('stat'=>'ok', 'error_message'=>$error_message, 'success_message'=>'');
     } else {
         $subject = $_POST['contact-form-subject'];
     }
-    if( !isset($_POST['contact-form-message']) || $_POST['contact-form-message'] == '' ) {
-        $msg = 'No message added';
+    if( !isset($_POST['contact-form-message']) || trim($_POST['contact-form-message']) == '' ) {
+        $error_message = "Please enter a message.<br/>";
+        return array('stat'=>'ok', 'error_message'=>$error_message, 'success_message'=>'');
     } else {
         $msg = $_POST['contact-form-message'];
     }
@@ -51,6 +56,24 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $tnid) {
         ciniki_core_logFileMsg($ciniki, $tnid, 'spam', 
             'BLOCKED FROM ' . $_POST['contact-form-email'] . ' - ' 
                 . (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'NO REFERER'));
+        return array('stat'=>'ok', 'error_message'=>$error_message, 'success_message'=>"Your message was sent");
+    }
+    if( !isset($_SERVER['HTTP_REFERER']) ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'logFileMsg');
+        ciniki_core_logFileMsg($ciniki, $tnid, 'spam', 
+            'BLOCKED FROM ' . $_POST['contact-form-email'] . ' - NO REFERER');
+        return array('stat'=>'ok', 'error_message'=>$error_message, 'success_message'=>"Your message was sent");
+    }
+    if( preg_match("/^[0-9]+$/", trim($subject)) ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'logFileMsg');
+        ciniki_core_logFileMsg($ciniki, $tnid, 'spam', 
+            'BLOCKED FROM ' . $_POST['contact-form-email'] . ' - NUMERIC SUBJECT');
+        return array('stat'=>'ok', 'error_message'=>$error_message, 'success_message'=>"Your message was sent");
+    }
+    if( preg_match("/^[0-9]+$/", trim($msg)) ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'logFileMsg');
+        ciniki_core_logFileMsg($ciniki, $tnid, 'spam', 
+            'BLOCKED FROM ' . $_POST['contact-form-email'] . ' - NUMERIC MESSAGE');
         return array('stat'=>'ok', 'error_message'=>$error_message, 'success_message'=>"Your message was sent");
     }
 /*        if( isset($ciniki['config']['ciniki.core']['log_dir']) && $ciniki['config']['ciniki.core']['log_dir'] != '' ) {
