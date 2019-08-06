@@ -79,6 +79,7 @@ function ciniki_web_processBlocks(&$ciniki, $settings, $tnid, $blocks, $args = a
             case 'tagimagelist': $processor = 'processBlockTagImageList'; break;
             case 'tagimages': $processor = 'processBlockTagImages'; break;
             case 'taglist': $processor = 'processBlockTagList'; break;
+            case 'thumbnaillist': $processor = 'processBlockThumbnailList'; break;
             case 'tradingcards': $processor = 'processBlockTradingCards'; break;
             case 'videolinks': $processor = 'processBlockVideoLinks'; break;
         }
