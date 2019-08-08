@@ -186,6 +186,21 @@ function ciniki_web_pageUpdate(&$ciniki) {
                         $ciniki['syncqueue'][] = array('push'=>'ciniki.web.setting',
                             'args'=>array('id'=>$option['setting']));
                     }
+                    //
+                    // Check for triggers by changing settings
+                    //
+                    if( $option['setting'] == 'page-members-list-format'
+                        || $option['setting'] == 'page-dealers-list-format' 
+                        || $option['setting'] == 'page-distributors-list-format' 
+                        ) {
+                        $rc = ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'settingChange');
+                        if( $rc['stat'] == 'ok' ) {
+                            $rc = ciniki_customers_web_settingChange($ciniki, $args['tnid'], $option['setting'], $ciniki['request']['args'][$option['setting']]);
+                            if( $rc['stat'] != 'ok' ) {
+                                return $rc;
+                            }
+                        }
+                    }
                 }
             }
         }
