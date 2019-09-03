@@ -90,7 +90,6 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $tnid) {
     //
     if( isset($settings['page-contact-debug-log']) && $settings['page-contact-debug-log'] == 'yes' ) {
         error_log('WEB: Contact form from ' . $_POST['contact-form-email'] . ' - ' . $_SERVER['HTTP_REFERER']);
-        error_log(print_r($_SERVER, true));
     }
 
     //
