@@ -362,15 +362,25 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                     'user_amount'=>(isset($_POST['user_amount'])?$_POST['user_amount']:0),
                     'quantity'=>$_POST['quantity']));
             if( $rc['stat'] != 'ok' ) {
-                return $rc;
+                if( $rc['stat'] == 'soldout' ) {
+                    $cart_err_msg .= "<p class='wide cart-error'>" . $rc['err']['msg'] . "</p>";
+                    $display_cart = 'yes';
+                } else {
+                    return $rc;
+                }
+            } elseif( isset($rc['error_message']) && $rc['error_message'] != '' ) {
+                $cart_err_msg .= "<p class='wide cart-error'>" . $rc['error_message'] . "</p>";
+                $display_cart = 'yes';
             }
         }
 
         //
         // Redirect to avoid form duplicate submission
         //
-        header("Location: " . $ciniki['request']['ssl_domain_base_url'] . "/cart");
-        exit;
+        if( $display_cart != 'yes' || $cart_err_msg == '' ) {
+            header("Location: " . $ciniki['request']['ssl_domain_base_url'] . "/cart");
+            exit;
+        }
 
         //
         // Incase redirect fails, Load the updated cart
