@@ -111,9 +111,9 @@ function ciniki_web_processBlockShareButtons(&$ciniki, $settings, $tnid, $block)
     //
     // Setup google+ button
     //
-    $content .= "<a href='https://plus.google.com/share?url=" . urlencode($ciniki['response']['head']['og']['url']) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
-        . "<span title='Share on Google+' class='socialsymbol social-googleplus'>" . $social_icons['googleplus'] . "</span>"
-        . "</a>";
+//    $content .= "<a href='https://plus.google.com/share?url=" . urlencode($ciniki['response']['head']['og']['url']) . "' onclick='window.open(this.href, \"_blank\", \"height=430,width=640\"); return false;' target='_blank'>"
+//        . "<span title='Share on Google+' class='socialsymbol social-googleplus'>" . $social_icons['googleplus'] . "</span>"
+//        . "</a>";
 
     //
     // Done

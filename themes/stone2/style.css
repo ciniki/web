@@ -810,7 +810,7 @@ aside div.image {
 
 #content div.image {
 	display: inline-block;
-	border: 1px solid #ccc;
+	border: 1px solid #aaa;
 	height: auto;
 	padding: 9px;
 	line-height: 0em;
@@ -940,7 +940,7 @@ div.word-cloud {
 
 #content div.slider-cropped div.slider-image-wrap {
 	background: #fff;
-	border: 2px solid #ccc;
+	border: 1px solid #aaa;
 	margin: 0px;
 	padding: 9px;
 }
@@ -951,7 +951,7 @@ div.word-cloud {
 
 #content div.slider-scaled div.slider-image-wrap ul li img {
 	background: #fff;
-    border: 2px solid #ccc;
+    border: 1px solid #aaa;
     padding: 9px;
     margin: 2px;
 }
