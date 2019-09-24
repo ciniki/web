@@ -87,7 +87,7 @@ function ciniki_web_pageimages() {
                 });
         } else {
             this.edit.reset();
-            this.edit.data = {};
+            this.edit.data = {'webflags':0};
             this.edit.refresh();
             this.edit.show(cb);
         }
