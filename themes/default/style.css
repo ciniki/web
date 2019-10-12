@@ -1243,6 +1243,28 @@ aside div.borderless {
     text-align: center;
     color: #555;
 }
+#content div.cart .cart-submit input.quantity {
+    max-width: 4em;
+    margin-left: 0.25em;
+}
+#content div.cart .cart-submit-donations {
+    line-height: 2.5em;
+}
+#content div.cart .cart-submit span.donation-amount {
+    white-space: nowrap;
+}
+#content div.cart p.cart-donation-message {
+    margin-bottom: 0.5em;
+}
+#content div.cart div.cart-donations {
+    margin-bottom: 1em;
+    text-align: center;
+    padding: 1em 0.5em;
+    border: 2px solid #6acaec;
+    border-radius: 0.5em;
+    background: #ddf6ff;
+    color: #555;
+}
 
 #content div.cart div.cart-buttons {
     padding-top: 1.5em;

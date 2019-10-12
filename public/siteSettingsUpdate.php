@@ -468,6 +468,9 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-cart-noaccount-message',
         'page-cart-payment-success-message',
         'page-cart-payment-success-emails',         // Emails to send notification to when order paid for
+        'page-cart-donation-message',
+        'page-cart-donation-amounts',
+        'page-cart-donation-thankyou',
         'page-signup-active',
         'page-signup-menu',
         'page-search-active',

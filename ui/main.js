@@ -2076,6 +2076,13 @@ function ciniki_web_main() {
             '_dealersubmit_email_textmsg':{'label':'Dealer Submit Order Email Message', 'active':'no', 'fields':{
                 'page-cart-dealersubmit-email-textmsg':{'label':'', 'hidelabel':'yes', 'type':'textarea'},
                 }},
+            'donations':{'label':'Cart Donation Request', 
+                'visible':function() { return M.modFlagSet('ciniki.sapos', 0x02000000); },
+                'fields':{
+                    'page-cart-donation-message':{'label':'Message', 'type':'textarea', 'size':'medium'},
+                    'page-cart-donation-amounts':{'label':'Amounts', 'type':'text'},
+                    'page-cart-donation-thankyou':{'label':'Thank You', 'type':'textarea', 'size':'medium'},
+                }},
             '_save':{'label':'', 'buttons':{
                 'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'cart\');'},
                 }},

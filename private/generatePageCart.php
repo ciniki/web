@@ -556,6 +556,43 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         $cart = $rc['cart'];
         $_SESSION['cart']['num_items'] = count($cart['items']);
         $ciniki['session']['cart']['num_items'] = count($cart['items']);
+    } 
+    //
+    // Check if donation being added to cart
+    //
+    elseif( isset($_POST['donate']) && $_POST['donate'] != '' ) {
+        if( $_POST['donate'] == 'Add' && isset($_POST['amount']) && $_POST['amount'] != '' ) {
+            $amount = preg_replace("/[^0-9\.]/", '', $_POST['amount']);
+        } else {
+            $amount = preg_replace("/[^0-9\.]/", '', $_POST['donate']);
+        }
+        if( $amount != '' && $amount > 0 ) {
+            //
+            // Add the donation to the cart
+            //
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartItemAdd');
+            $rc = ciniki_sapos_web_cartItemAdd($ciniki, $settings, $ciniki['request']['tnid'],
+                array('object'=>'ciniki.sapos.cartdonation',
+                    'object_id'=>$cart['id'],
+                    'price_id'=>0,
+                    'flags' => 0x8000,
+                    'user_amount'=>$amount,
+                    'quantity'=>1));
+            if( $rc['stat'] != 'ok' ) {
+                if( $rc['stat'] == 'soldout' ) {
+                    $cart_err_msg .= "<p class='wide cart-error'>" . $rc['err']['msg'] . "</p>";
+                    $display_cart = 'yes';
+                } else {
+                    return $rc;
+                }
+            } elseif( isset($rc['error_message']) && $rc['error_message'] != '' ) {
+                $cart_err_msg .= "<p class='wide cart-error'>" . $rc['error_message'] . "</p>";
+                $display_cart = 'yes';
+            } else {
+                header("Location: " . $ciniki['request']['ssl_domain_base_url'] . "/cart");
+                exit;
+            }
+        }
     }
 
     //
@@ -1734,11 +1771,51 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                 }
             }
                     
+            // 
+            // Check if donation requests should be displayed
+            //
+            if( $cart_edit == 'yes' 
+                && isset($settings['page-cart-donation-message']) && $settings['page-cart-donation-message'] != ''
+                && isset($settings['page-cart-donation-amounts']) && $settings['page-cart-donation-amounts'] != '' ) {
+
+                //
+                // Check if donation already in cart
+                // 
+                $donations = 'no';
+                if( isset($cart['items']) ) {
+                    foreach($cart['items'] as $item) {
+                        if( ($item['item']['flags']&0x8000) == 0x8000 ) {
+                            $donations = 'yes';
+                        }
+                    }
+                }
+              
+                if( $donations == 'yes' ) {
+                    if( isset($settings['page-cart-donation-thankyou']) && $settings['page-cart-donation-thankyou'] != '' ) {
+                        $content .= "<div class='cart-donations'><p class='wide cart-donation-message'>" . $settings['page-cart-donation-thankyou'] . "</p></div>";
+                    }
+
+                } else {
+                    $content .= "<div class='cart-donations'><p class='wide cart-donation-message'>" . $settings['page-cart-donation-message'] . "</p>";
+                    $content .= "<span class='cart-submit cart-submit-donations'>";
+                        $content .= "<b>Add Donation</b>: <input class='cart-submit' type='submit' name='donate' value='$25'/>";
+                        $content .= "<input class='cart-submit' type='submit' name='donate' value='$50'/>";
+                        $content .= "<input class='cart-submit' type='submit' name='donate' value='$75'/>";
+                        $content .= "<input class='cart-submit' type='submit' name='donate' value='$100'/>";
+                        $content .= "<input class='cart-submit' type='submit' name='donate' value='$200'/>";
+                        $content .= "<br/><span class='donation-amount'><b>Other Amount</b>:<input class='quantity' type='text' name='amount' value=''/>";
+                        $content .= "<input class='cart-submit' type='submit' name='donate' value='Add'/></span>";
+                    $content .= "</span>";
+                    $content .= "</div>";     
+                }
+            }
+
             if( $cart_edit == 'yes' && isset($settings['page-cart-noaccount-message']) && $settings['page-cart-noaccount-message'] != '' 
                 && (!isset($ciniki['session']['customer']['id']) || $ciniki['session']['customer']['id'] == 0)
                 ) {
                 $content .= "<div><p class='wide cart-noaccount-message'>" . $settings['page-cart-noaccount-message'] . "</p></div>";
             }
+
             // cart buttons
 //          $content .= "<table class='cart-buttons'>"
 //              . "<tfoot>";
