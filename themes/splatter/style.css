@@ -743,6 +743,12 @@ div.word-cloud {
 	padding: 9px;
 	margin: 2px 0px 2px 0px;
 }
+#content div.slider div.label {
+    font-size: 1.2em;
+    line-height: 1.5em;
+    color: #aaa;
+    padding-top: 0.25em;
+}
 
 #content div.slider-pager-wrap {
 	padding-top: 0.5em;
