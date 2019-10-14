@@ -78,6 +78,7 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
 
     $image_list = '';
     $pager_list = '';
+    $labels = 'no';
     $count = 0;
     $style = 'width:1024px;';
     foreach($slider['images'] as $image) {
@@ -117,6 +118,11 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
+        $label = '';
+        if( isset($image['label']) && $image['label'] != '' ) {
+            $label = $image['label'];
+            $labels = 'yes';
+        }
         if( $image['url'] != '' ) {
             $url_target = '';
             if( preg_match("/^http/", $image['url']) ) {
@@ -124,11 +130,13 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
             }
             $image_list .= "<li style='${style}height:${slider_height}px;max-height:${slider_height}px;'>"
                 . "<a href='" . $image['url'] . "' target='$url_target' title='" . (isset($image['caption'])?$image['caption']:'') . "'>"
-                . "<img title='' alt='" . (isset($image['caption'])?$image['caption']:'') . "' src='" . $rc['url'] . "' /></a>"
-                . "</li>";
+                . "<img title='' alt='" . (isset($image['caption'])?$image['caption']:'') . "' src='" . $rc['url'] . "' />"
+                . ($label != '' ? "<div class='label'>$label</div>" : '')
+                . "</a></li>";
         } else {
             $image_list .= "<li style='${style}height:${slider_height}px;max-height:${slider_height}px;'>"
                 . "<img title='' alt='" . (isset($image['caption'])?$image['caption']:'') . "' src='" . $rc['url'] . "' />"
+                . ($label != '' ? "<div class='label'>$label</div>" : '')
                 . "</li>";
         }
 
@@ -176,12 +184,19 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
         $javascript .= "                        height_spacing += parseInt(li_e.currentStyle['padding'].replace(/px/,''))*2;";
         $javascript .= "                        height_spacing += parseInt(li_e.currentStyle['borderLeftWidth'].replace(/px/,''))*2;";
         $javascript .= "                    }";
+        if( $labels == 'yes' ) {
+            $javascript .= "                    height_spacing += 25;";
+        }
         $javascript .= "                    height_spacing += 4;";
 //      $javascript .= "console.log(height_spacing);\n";
         $javascript .= "                }\n";
         $javascript .= "                this.li[i].style.width = (this.ul.parentElement.clientWidth - 0) + 'px';";
         $javascript .= "                this.li[i].style.maxHeight = $slider_height + height_spacing + 'px';";
-        $javascript .= "                this.li[i].style.lineHeight = $slider_height + 'px';";
+        if( $labels == 'yes' ) {
+            $javascript .= "                this.li[i].style.lineHeight = ($slider_height - 40) + 'px';";
+        } else {
+            $javascript .= "                this.li[i].style.lineHeight = $slider_height + 'px';";
+        }
         $javascript .= "                li_e.style.maxWidth = (this.ul.parentElement.clientWidth - height_spacing) + 'px';";
         $javascript .= "                li_e.style.maxHeight = ($slider_height - height_spacing) + 'px';";
         $javascript .= "                this.li[i].style.display = 'inline-block';\n";
@@ -249,6 +264,9 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
     $javascript .= "}\n";
     $javascript .= "function slider_start_timer() {\n";
     $javascript .= "    slider_timer = setInterval(function() {sliders[0].goToNext()}, $slider_pause_time);\n";
+    $javascript .= "}\n";
+    $javascript .= "function slider_stop() {\n";
+    $javascript .= "    clearInterval(slider_timer);\n";
     $javascript .= "}\n";
     $javascript .= "function slider_resize(i) {\n";
     $javascript .= "    if( sliders != null && sliders[i] != null ) { sliders[i].resize(); };\n";

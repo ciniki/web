@@ -83,6 +83,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-home-gallery-random-title',
         'page-home-membergallery-slider-type',
         'page-home-membergallery-slider-size',
+        'page-home-membergallery-slider-labels',
         'page-home-membergallery-latest',
         'page-home-membergallery-latest-title',
         'page-home-membergallery-random',

@@ -119,8 +119,18 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
         }
         if( isset($rc['images']) && count($rc['images']) > 0 ) {
             foreach($rc['images'] as $iid => $img) {
-//              $rc['images'][$iid]['url'] = $ciniki['request']['base_url'] . '/members/' . $img['member_permalink'] . '/gallery/' . $img['image_permalink'];
                 $rc['images'][$iid]['url'] = $ciniki['request']['base_url'] . '/members/' . $img['member_permalink'];
+                if( isset($settings['page-home-membergallery-slider-labels']) 
+                    && $settings['page-home-membergallery-slider-labels'] == 'yes' 
+                    ) {
+                    $rc['images'][$iid]['label'] = '';
+                    if( isset($img['title']) && $img['title'] != '' ) {
+                        $rc['images'][$iid]['label'] = '<i>' . $img['title'] . '</i>';
+                    }
+                    if( isset($img['display_name']) && $img['display_name'] != '' ) {
+                        $rc['images'][$iid]['label'] .= ($rc['images'][$iid]['label'] != '' ? ' - ' : '') . $img['display_name'];
+                    }
+                }
             }
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processSlider');
             $size = 'xlarge';

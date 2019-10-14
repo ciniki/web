@@ -573,6 +573,7 @@ function ciniki_web_main() {
             '_memberslideshow':{'label':'Members Slide Show', 'aside':'yes', 'fields':{
                 'page-home-membergallery-slider-type':{'label':'Display Slide Show', 'type':'toggle', 'default':'no', 'toggles':{'no':'Off', 'random':'Random', 'latest':'Latest'}},
                 'page-home-membergallery-slider-size':{'label':'Size', 'type':'select', 'default':'large', 'options':this.sliderSizeOptions},
+                'page-home-membergallery-slider-labels':{'label':'Labels', 'type':'toggle', 'default':'no', 'toggles':{'no':'Off', 'yes':'On'}},
                 }},
             '_artcatalog':{'label':'Art Catalog', 'aside':'yes', 'fields':{
                 'page-home-gallery-latest':{'label':'Latest Work', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
@@ -2540,6 +2541,9 @@ function ciniki_web_main() {
             }
             if( this[page].data != null && this[page].data['page-home-membergallery-slider-size'] == null ) {
                 this[page].data['page-home-membergallery-slider-size'] = 'xlarge';
+            }
+            if( this[page].data != null && this[page].data['page-home-membergallery-slider-labels'] == null ) {
+                this[page].data['page-home-membergallery-slider-labels'] = 'no';
             }
             this.home.sections._imagetabs.selected = 1;
             if( (M.curTenant.modules['ciniki.web'].flags&0x02) > 0 ) {
