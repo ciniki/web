@@ -1775,6 +1775,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
             // Check if donation requests should be displayed
             //
             if( $cart_edit == 'yes' 
+                && ciniki_core_checkModuleFlags($ciniki, 'ciniki.sapos', 0x02000000)
                 && isset($settings['page-cart-donation-message']) && $settings['page-cart-donation-message'] != ''
                 && isset($settings['page-cart-donation-amounts']) && $settings['page-cart-donation-amounts'] != '' ) {
 
