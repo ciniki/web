@@ -1563,6 +1563,10 @@ span.exhibitors-description {
 #content table.cart-details {
     width: 100%;
 }
+#content table.cart-items span.notes {
+    display: block;
+    padding-left: 1em;
+}
 
 #content table .alignleft {
     text-align: left;

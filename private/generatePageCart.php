@@ -61,8 +61,23 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
     $paypal_checkout = 'no';
     $stripe_checkout = 'no';
     $page_title = "Shopping Cart";
-    $required_account_fields = array('first'=>'First Name', 'last'=>'Last Name', 'email_address'=>'Email Address', 'password'=>'Password', 
-        'address1'=>'Address', 'city'=>'City', 'province'=>'State/Province', 'postal'=>'ZIP/Postal Code', 'country'=>'Country');
+    $required_account_fields = array(
+        'first'=>'First Name', 
+        'last'=>'Last Name', 
+        'email_address'=>'Email Address', 
+        'password'=>'Password', 
+        'address1'=>'Address', 
+        'city'=>'City', 
+        'province'=>'State/Province', 
+        'postal'=>'ZIP/Postal Code', 
+        'country'=>'Country',
+        );
+    if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.sapos', 0x40) ) {
+        $required_account_fields['shipaddress1'] = 'Address';
+        $required_account_fields['shipcity'] = 'City';
+        $required_account_fields['shipprovince'] = 'Province';
+        $required_account_fields['shippostal'] = 'Zip/Postal Code';
+    }
 
     //
     // Required methods
@@ -1105,21 +1120,29 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         if( $display_signup == 'createaccount' ) {
             $content .= "<input type='hidden' name='next' value='edit'>";
         }
-        $fields = array(
-            'first'=>array('name'=>'First Name', 'type'=>'text', 'class'=>'text', 'value'=>(isset($_POST['first'])?$_POST['first']:'')),
-            'last'=>array('name'=>'Last Name', 'type'=>'text', 'class'=>'text', 'value'=>(isset($_POST['last'])?$_POST['last']:'')),
-            'email_address'=>array('name'=>'Email Address', 'type'=>'email', 'class'=>'text', 'value'=>(isset($_POST['email_address'])?$_POST['email_address']:'')),
-            'password'=>array('name'=>'Password', 'type'=>'password', 'class'=>'text', 'value'=>(isset($_POST['password'])?$_POST['password']:'')),
-            'phone'=>array('name'=>'Phone Number', 'type'=>'text', 'class'=>'text', 'value'=>(isset($_POST['phone'])?$_POST['phone']:'')),
-            );
+        $fields = array();
+        //
+        // Check if callsign enabled
+        //
+        if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.customers', 0x0400) ) {
+            $fields['callsign'] = array('name'=>'Callsign', 'type'=>'text', 'class'=>'text', 'value'=>(isset($_POST['callsign'])?$_POST['callsign']:''));
+        }
+        $fields['first'] = array('name'=>'First Name', 'type'=>'text', 'class'=>'text', 'value'=>(isset($_POST['first'])?$_POST['first']:''), 'autocomplete'=>'given-name');
+        $fields['last'] = array('name'=>'Last Name', 'type'=>'text', 'class'=>'text', 'value'=>(isset($_POST['last'])?$_POST['last']:''), 'autocomplete'=>'family-name');
+        $fields['email_address'] = array('name'=>'Email Address', 'type'=>'email', 'class'=>'text', 'value'=>(isset($_POST['email_address'])?$_POST['email_address']:''), 'autocomplete'=>'email');
+        $fields['password'] = array('name'=>'Password', 'type'=>'password', 'class'=>'text', 'value'=>(isset($_POST['password'])?$_POST['password']:''));
+        $fields['phone'] = array('name'=>'Phone Number', 'type'=>'text', 'class'=>'text', 'value'=>(isset($_POST['phone'])?$_POST['phone']:''), 'autocomplete'=>'tel');
         foreach($fields as $fid => $field) {
             $content .= "<div class='input'><label for='$fid'>" . $field['name'] . (array_key_exists($fid, $required_account_fields)?' *':'') . "</label>"
-                . "<input type='" . $field['type'] . "' class='" . $field['class'] . "' name='$fid' value='" . $field['value'] . "'>";
+                . "<input type='" . $field['type'] . "' class='" . $field['class'] . "' name='$fid' value='" . $field['value'] . "'"
+                . (isset($field['autocomplete']) && $field['autocomplete'] != '' ? " autocomplete='" . $field['autocomplete'] . "'" : '')
+                . ">";
             if( isset($errors[$fid]) && $errors[$fid] != '' ) {
                 $content .= "<p class='formerror'>" . $errors[$fid] . "</p>";
             }
             $content .= "</div>";
         }
+
 
         //
         // Setup the address fields
@@ -1154,26 +1177,26 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         $form .= "</select></div>";
         $form .= "<div class='input address1'>"
             . "<label for='address1'>Address" . (array_key_exists('address1', $required_account_fields)?' *':'') . "</label>"
-            . "<input type='text' class='text' name='address1' value='" . $address['address1'] . "'>"
+            . "<input type='text' class='text' name='address1' value='" . $address['address1'] . "' autocomplete='billing address-line1>"
             . "</div>";
         $form .= "<div class='input address2'>"
             . "<label for='address2'>" . (array_key_exists('address2', $required_account_fields)?' *':'') . "</label>"
-            . "<input type='text' class='text' name='address2' value='" . $address['address2'] . "'>"
+            . "<input type='text' class='text' name='address2' value='" . $address['address2'] . "' autocomplete='billing address-line2>"
             . "</div>";
         $form .= "<div class='input city'>"
             . "<label for='city'>City" . (array_key_exists('city', $required_account_fields)?' *':'') . "</label>"
-            . "<input type='text' class='text' name='city' value='" . $address['city'] . "'>"
+            . "<input type='text' class='text' name='city' value='" . $address['city'] . "' autocomplete='billing address-level2'>"
             . "</div>";
         $form .= "<div class='input province'>"
             . "<label for='province'>State/Province" . (array_key_exists('province', $required_account_fields)?' *':'') . "</label>"
             . "<input id='province_text' type='text' class='text' name='province' "
                 . ((isset($province_codes[$selected_country]) && $province_codes[$selected_country])?" style='display:none;'":"")
-                . "value='" . $address['province'] . "'>";
+                . "value='" . $address['province'] . "' autocomplete='billing address-level1'>";
         $js = '';
         foreach($province_codes as $country_code => $provinces) {
             $form .= "<select id='province_code_{$country_code}' type='select' class='select' "
                 . (($country_code != $selected_country)?" style='display:none;'":"")
-                . " name='province_code_{$country_code}' >"
+                . " name='province_code_{$country_code}' autocomplete='billing address-level1'>"
                 . "<option value=''></option>";
             $js .= "document.getElementById('province_code_" . $country_code . "').style.display='none';";
             foreach($provinces as $province_code => $province_name) {
@@ -1186,7 +1209,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         $form .= "</div>";
         $form .= "<div class='input postal'>"
             . "<label for='postal'>ZIP/Postal Code" . (array_key_exists('postal', $required_account_fields)?' *':'') . "</label>"
-            . "<input type='text' class='text' name='postal' value='" . $address['postal'] . "'>"
+            . "<input type='text' class='text' name='postal' value='" . $address['postal'] . "' autocomplete='address postal-code'>"
             . "</div>";
         $form .= "<script type='text/javascript'>"
             . "function updateProvince() {"
@@ -1203,6 +1226,89 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
             . "}"
             . "</script>";
         $content .= $form;
+
+        //
+        // Check if shipping enabled and then display shipping address
+        //
+        if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.sapos', 0x40) ) {
+            $country_codes = $rc['countries'];
+            $province_codes = $rc['provinces'];
+            $address = array(
+                'shipaddress1'=>(isset($_POST['shipaddress1'])?$_POST['shipaddress1']:''),
+                'shipaddress2'=>(isset($_POST['shipaddress2'])?$_POST['shipaddress2']:''),
+                'shipcity'=>(isset($_POST['shipcity'])?$_POST['shipcity']:''),
+                'shipprovince'=>(isset($args['shipprovince'])?$args['shipprovince']:''),
+                'shippostal'=>(isset($_POST['shippostal'])?$_POST['shippostal']:''),
+                'shipcountry'=>(isset($_POST['shipcountry'])?$_POST['shipcountry']:'Canada'),
+                );
+            $form = '';
+            $form .= "<h2>Shipping Address</h2>";
+            $form .= "<div class='input shipcountry'>"
+                . "<label for='shipcountry'>Country" . (array_key_exists('shipcountry', $required_account_fields)?' *':'') . "</label>"
+                . "<select id='shipcountry_code' type='select' class='select' name='shipcountry' onchange='updateShipProvince()' autocomplete='shipping country'>"
+                . "<option value=''></option>";
+            $selected_country = '';
+            foreach($country_codes as $country_code => $country_name) {
+                $form .= "<option value='" . $country_code . "' " 
+                    . (($country_code == $address['shipcountry'] || $country_name == $address['shipcountry'])?' selected':'')
+                    . ">" . $country_name . "</option>";
+                if( $country_code == $address['shipcountry'] || $country_name == $address['shipcountry'] ) {
+                    $selected_country = $country_code;
+                }
+            }
+            $form .= "</select></div>";
+            $form .= "<div class='input shipaddress1'>"
+                . "<label for='shipaddress1'>Address" . (array_key_exists('shipaddress1', $required_account_fields)?' *':'') . "</label>"
+                . "<input type='text' class='text' name='shipaddress1' value='" . $address['shipaddress1'] . "' autocomplete='shipping address-line1'>"
+                . "</div>";
+            $form .= "<div class='input shipaddress2'>"
+                . "<label for='shipaddress2'>" . (array_key_exists('shipaddress2', $required_account_fields)?' *':'') . "</label>"
+                . "<input type='text' class='text' name='shipaddress2' value='" . $address['shipaddress2'] . "' autocomplete='shipping address-line1'>"
+                . "</div>";
+            $form .= "<div class='input shipcity'>"
+                . "<label for='shipcity'>City" . (array_key_exists('shipcity', $required_account_fields)?' *':'') . "</label>"
+                . "<input type='text' class='text' name='shipcity' value='" . $address['shipcity'] . "' autocomplete='shipping address-level2'>"
+                . "</div>";
+            $form .= "<div class='input shipprovince'>"
+                . "<label for='shipprovince'>State/Province" . (array_key_exists('shipprovince', $required_account_fields)?' *':'') . "</label>"
+                . "<input id='shipprovince_text' type='text' class='text' name='shipprovince' "
+                    . ((isset($province_codes[$selected_country]) && $province_codes[$selected_country])?" style='display:none;'":"")
+                    . "value='" . $address['shipprovince'] . "' autocomplete='shipping address-level1'>";
+            $js = '';
+            foreach($province_codes as $country_code => $provinces) {
+                $form .= "<select id='shipprovince_code_{$country_code}' type='select' class='select' "
+                    . (($country_code != $selected_country)?" style='display:none;'":"")
+                    . " name='shipprovince_code_{$country_code}'  autocomplete='shipping address-level1'>"
+                    . "<option value=''></option>";
+                $js .= "document.getElementById('shipprovince_code_" . $country_code . "').style.display='none';";
+                foreach($provinces as $province_code => $province_name) {
+                    $form .= "<option value='" . $province_code . "'" 
+                        . (($province_code == (isset($_POST["shipprovince_code_{$country_code}"])?$_POST["shipprovince_code_{$country_code}"]:'') || $province_name == (isset($_POST["shipprovince_code_{$country_code}"])?$_POST["shipprovince_code_{$country_code}"]:''))?' selected':'')
+                        . ">" . $province_name . "</option>";
+                }
+                $form .= "</select>";
+            }
+            $form .= "</div>";
+            $form .= "<div class='input shippostal'>"
+                . "<label for='shippostal'>ZIP/Postal Code" . (array_key_exists('shippostal', $required_account_fields)?' *':'') . "</label>"
+                . "<input type='text' class='text' name='shippostal' value='" . $address['shippostal'] . "' autocomplete='shipping postal-code'>"
+                . "</div>";
+            $form .= "<script type='text/javascript'>"
+                . "function updateShipProvince() {"
+                    . "var cc = document.getElementById('shipcountry_code');"
+                    . "var pr = document.getElementById('shipprovince_text');"
+                    . "var pc = document.getElementById('shipprovince_code_'+cc.value);"
+                    . $js
+                    . "if( pc != null ) {"
+                        . "pc.style.display='';"
+                        . "pr.style.display='none';"
+                    . "}else{"
+                        . "pr.style.display='';"
+                    . "}"
+                . "}"
+                . "</script>";
+            $content .= $form;
+        }
 
         $content .= "<div class='submit'><input type='submit' name='continue' class='submit' value='Back' />";
         $content .= " <input type='submit' name='continue' class='submit' value='Next' /></div>\n";
@@ -1556,9 +1662,10 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                 }
                 if( $display_registration_customer == 'yes' && $item['object'] == 'ciniki.musicfestivals.registration' ) {
                     $content .= " for " . $item['notes'];
-                }
-                if( $display_registration_customer == 'yes' && $item['object'] == 'ciniki.writingfestivals.registration' ) {
+                } elseif( $display_registration_customer == 'yes' && $item['object'] == 'ciniki.writingfestivals.registration' ) {
                     $content .= " for " . $item['notes'];
+                } elseif( $item['notes'] != '' ) {
+                    $content .= "<span class='notes'>" . preg_replace("/\n/", '<br/>', $item['notes']) . "</span>";
                 }
 
                 $content .= "</td>";
