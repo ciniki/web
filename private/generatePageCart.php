@@ -843,8 +843,8 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'sapos', 'web', 'cartPaymentReceived');
         $rc = ciniki_sapos_web_cartPaymentReceived($ciniki, $settings, $ciniki['request']['tnid'], $cart);
         if( $rc['stat'] != 'ok' ) {
-            $carterrors = "We have received your payment, thank you. There was a problem processing your order, so we have notified the approriate people to look into it.";
-            error_log('ERR-CART: ' . print_r($rc['err']));
+            $carterrors = "We have received your payment, thank you. There was a problem processing your order, so we have notified the approriate people to look into it. Please do not submit payment again. ";
+            error_log('ERR-CART: ' . print_r($rc['err'], true));
             $ciniki['emailqueue'][] = array('to'=>$ciniki['config']['ciniki.core']['alerts.notify'],
                 'subject'=>'Web Cart ERR 500',
                 'textmsg'=>$_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "\n"
@@ -895,7 +895,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
             $rc = ciniki_sapos_web_cartPaymentReceived($ciniki, $settings, $ciniki['request']['tnid'], $cart);
             if( $rc['stat'] != 'ok' ) {
                 $carterrors = "We have received your payment, thank you. There was a problem processing your order, so we have notified the approriate people to look into it.";
-                error_log('ERR-CART: ' . print_r($rc['err']));
+                error_log('ERR-CART: ' . print_r($rc['err'], true));
                 $ciniki['emailqueue'][] = array('to'=>$ciniki['config']['ciniki.core']['alerts.notify'],
                     'subject'=>'Web Cart ERR 500',
                     'textmsg'=>$_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "\n"
@@ -976,7 +976,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
             $rc = ciniki_sapos_web_cartPaymentReceived($ciniki, $settings, $ciniki['request']['tnid'], $cart);
             if( $rc['stat'] != 'ok' ) {
                 $carterrors = "We have received your payment, thank you. There was a problem processing your order, so have notified the approriate people to look into it.";
-                error_log('ERR-CART: ' . print_r($rc['err']));
+                error_log('ERR-CART: ' . print_r($rc['err'], true));
                 $ciniki['emailqueue'][] = array('to'=>$ciniki['config']['ciniki.core']['alerts.notify'],
                     'subject'=>'Web Cart ERR 500',
                     'textmsg'=>$_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "\n"
@@ -2028,7 +2028,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                 if( $display_cart == 'review' ) {
                     $content .= "<span class='cart-submit'>"
                         . "<input class='cart-submit' type='submit' name='continue' value='Back'/>";
-                    if( $stripe_checkout == 'yes' && $cart['total_amount'] == 0 ) {
+                    if( $stripe_checkout == 'yes' && $cart['total_amount'] == 0 && $cart['preorder_total_amount'] == 0 ) {
                         $content .= "<button class='cart-submit' onclick='' type='submit' name='nocharge_checkout'>Confirm</button>";
                     }
                     elseif( $stripe_checkout == 'yes' ) {
