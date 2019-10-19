@@ -2057,11 +2057,15 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                                     . 'document.getElementById("stripe-email").value=token.email;'
                                     . 'document.getElementById("cart").submit();'
                                 . '},'
+                                . 'opened: function() {'
+                                . '},'
+                                . 'closed: function(e) {'
+                                . '},'
                                 . '});'
                                 . '</script>';
                         $content .= "<input id='stripe-token' type='hidden' name='stripe-token' value=''/>";
                         $content .= "<input id='stripe-email' type='hidden' name='stripe-email' value=''/>";
-                        $content .= "<button class='cart-submit' onclick='stripeCheckout.open();return false;' type='submit' name='stripecheckout'>Pay Now</button>";
+                        $content .= "<button class='cart-submit' onclick='stripeCheckout.open(); return false;' type='submit' name='stripecheckout'>Pay Now</button>";
                     }
                     if( $paypal_checkout == 'yes' ) {
                         $content .= "<input class='cart-submit' type='submit' name='paypalexpresscheckout' value='Checkout via Paypal'/>";

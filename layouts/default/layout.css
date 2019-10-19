@@ -375,6 +375,9 @@ div.sponsor-gallery div.sponsor-gallery-thumbnail {
     box-sizing: border-box;
     max-width: 30em;
 }
+#content div.cart form {
+    max-width: 100%;
+}
 
 #content article.account form,
 #content article.cart form {
