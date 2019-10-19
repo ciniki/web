@@ -1155,7 +1155,8 @@ aside div.borderless {
     border-bottom: 2px solid #aaa;
 }
 
-#content div.cart table.cart-items tfoot {
+#content div.cart table.cart-items tfoot tr.separator td {
+    border-top: 2px solid #aaa;
 }
 
 #content div.cart table.cart-items thead tr {

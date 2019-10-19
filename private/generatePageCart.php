@@ -1725,51 +1725,104 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                 $count++;
             }
             $content .= "</tbody>";
-            $content .= "<tfoot>";
+
             // cart totals
             $num_cols = 3;
             if( $inv == 'yes' ) { $num_cols++; }
-            if( $cart['shipping_amount'] > 0 || (isset($cart['taxes']) && count($cart['taxes']) > 0) ) {
+            $content .= "<tfoot>";
+
+            $separator = '';
+            $duenow = '';
+            if( isset($cart['preorder_subtotal_amount']) && $cart['preorder_subtotal_amount'] > 0 ) {
+                $separator = 'separator ';
+                $duenow = ' (Due Now)';
                 $content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
-                $content .= "<td colspan='$num_cols' class='alignright'>Sub-Total:</td>"
+                $content .= "<td colspan='$num_cols' class='alignright'>Pre-Order Subtotal:</td>"
+                    . "<td class='alignright'>"
+                    . numfmt_format_currency($intl_currency_fmt, $cart['preorder_subtotal_amount'], $intl_currency)
+                    . "</td>"
+                    . ($cart_edit=='yes'?'<td></td>':'') . "</tr>";
+                $count++;
+                $content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
+                $content .= "<td colspan='$num_cols' class='alignright'>Shipping:</td>"
+                    . "<td class='alignright'>"
+                    . numfmt_format_currency($intl_currency_fmt, $cart['preorder_shipping_amount'], $intl_currency)
+                    . "</td>"
+                    . ($cart_edit=='yes'?'<td></td>':'') . "</tr>";
+                $count++;
+
+                if( isset($cart['preorder_taxes']) ) {
+                    foreach($cart['preorder_taxes'] as $tax) {
+                        $tax = $tax['tax'];
+                        $content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
+                        $content .= "<td colspan='$num_cols' class='alignright'>" . $tax['description'] . ":</td>"
+                            . "<td class='alignright'>"
+                            . numfmt_format_currency($intl_currency_fmt, $tax['amount'], $intl_currency)
+                            . "</td>"
+                            . ($cart_edit=='yes'?'<td></td>':'') . "</tr>";
+                        $count++;
+                    }
+                }
+
+                $content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
+                $content .= "<td colspan='$num_cols' class='alignright'><b>Pre-Order Total (Due On Shipment):</b></td>"
+                    . "<td class='alignright'>"
+                    . numfmt_format_currency($intl_currency_fmt, $cart['preorder_total_amount'], $intl_currency)
+                    . "</td>"
+                    . ($cart_edit=='yes'?'<td></td>':'') . "</tr>";
+                $count++;
+            } 
+
+            if( $cart['shipping_status'] > 0 || (isset($cart['taxes']) && count($cart['taxes']) > 0) ) {
+                $content .= "<tr class='{$separator}" . (($count%2)==0?'item-even':'item-odd') . "'>";
+                $content .= "<td colspan='$num_cols' class='alignright'>Subtotal:</td>"
                     . "<td class='alignright'>"
                     . numfmt_format_currency($intl_currency_fmt, $cart['subtotal_amount'], $intl_currency)
                     . "</td>"
                     . ($cart_edit=='yes'?'<td></td>':'') . "</tr>";
                 $count++;
+                $separator = '';
             }
-            if( isset($cart['shipping_amount']) && $cart['shipping_amount'] > 0 ) {
-                $content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
+            if( $cart['shipping_status'] > 0 || (isset($cart['shipping_amount']) && $cart['shipping_amount'] > 0) ) {
+                $content .= "<tr class='{$separator}" . (($count%2)==0?'item-even':'item-odd') . "'>";
                 $content .= "<td colspan='$num_cols' class='alignright'>Shipping:</td>"
-                    . "<td class='alignright'>"
-                    . numfmt_format_currency($intl_currency_fmt, $cart['shipping_amount'], $intl_currency)
-                    . "</td>"
+                    . "<td class='alignright'>";
+                if( $cart['subtotal_amount'] > 0 && $cart['customer_id'] == 0 ) {
+                    $content .= "TBD";
+                } else {
+                    $content .= numfmt_format_currency($intl_currency_fmt, $cart['shipping_amount'], $intl_currency);
+                }
+                $content .= "</td>"
                     . ($cart_edit=='yes'?'<td></td>':'') . "</tr>";
                 $count++;
+                $separator = '';
             }
             if( isset($cart['taxes']) ) {
                 foreach($cart['taxes'] as $tax) {
                     $tax = $tax['tax'];
-                    $content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
+                    $content .= "<tr class='{$separator}" . (($count%2)==0?'item-even':'item-odd') . "'>";
                     $content .= "<td colspan='$num_cols' class='alignright'>" . $tax['description'] . ":</td>"
                         . "<td class='alignright'>"
                         . numfmt_format_currency($intl_currency_fmt, $tax['amount'], $intl_currency)
                         . "</td>"
                         . ($cart_edit=='yes'?'<td></td>':'') . "</tr>";
                     $count++;
+                    $separator = '';
                 }
             }
-            $content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
-            $content .= "<td colspan='$num_cols' class='alignright'><b>Total:</b></td>"
+            $content .= "<tr class='{$separator}" . (($count%2)==0?'item-even':'item-odd') . "'>";
+            $content .= "<td colspan='$num_cols' class='alignright'><b>Total{$duenow}:</b></td>"
                 . "<td class='alignright'>"
                 . numfmt_format_currency($intl_currency_fmt, $cart['total_amount'], $intl_currency)
                 . "</td>"
                 . ($cart_edit=='yes'?'<td></td>':'') . "</tr>";
             $count++;
+            $separator = '';
+
             $content .= "</foot>";
             $content .= "</table>";
             $content .= "</div>";
-            $content .= "<br/>";
+//            $content .= "<br/>";
 
             //
             // Display the bill to and ship to information
@@ -1867,11 +1920,11 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 
             if( isset($settings['page-cart-customer-notes']) && $settings['page-cart-customer-notes'] == 'yes' ) {
                 if( $cart_edit == 'yes' ) {
-                $content .= "<label for='customer_notes'>Notes</label>"
-                    . "<textarea class='' class='text' id='customer_notes' name='customer_notes'>" 
-                    . $cart['customer_notes'] 
-                    . "</textarea>"
-                    . "";
+                    $content .= "<label for='customer_notes'>Notes</label>"
+                        . "<textarea class='' class='text' id='customer_notes' name='customer_notes'>" 
+                        . $cart['customer_notes'] 
+                        . "</textarea>"
+                        . "";
                 } else {
                     $content .= "<label for='customer_notes'>Notes</label>"
                         . "<p>" . $cart['customer_notes'] . "</p>";
@@ -1921,7 +1974,11 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
             if( $cart_edit == 'yes' && isset($settings['page-cart-noaccount-message']) && $settings['page-cart-noaccount-message'] != '' 
                 && (!isset($ciniki['session']['customer']['id']) || $ciniki['session']['customer']['id'] == 0)
                 ) {
-                $content .= "<div><p class='wide cart-noaccount-message'>" . $settings['page-cart-noaccount-message'] . "</p></div>";
+                $content .= "<div><p class='wide cart-message cart-noaccount-message'>" . $settings['page-cart-noaccount-message'] . "</p></div>";
+            }
+
+            if( $cart_edit == 'yes' && isset($sapos_settings['invoice-preorder-message']) && $sapos_settings['invoice-preorder-message'] != '' ) {
+                $content .= "<div><p class='wide cart-message'>" . $sapos_settings['invoice-preorder-message'] . "</p></div>";
             }
 
             // cart buttons
@@ -1985,7 +2042,8 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                         $ciniki['request']['inline_javascript'] = "<script type='text/javascript'>\n"
                             . "var stripeCheckout = StripeCheckout.configure({"
                                 . 'key: "' . $sapos_settings['stripe-pk'] . '", '
-                                . 'image: "https://s3.amazonaws.com/stripe-uploads/acct_104IPT4DnKptjnBBmerchant-icon-319979-logo.jpg", '
+                                //. 'image: "https://s3.amazonaws.com/stripe-uploads/acct_104IPT4DnKptjnBBmerchant-icon-319979-logo.jpg", '
+                                . 'image: "/ciniki-web-themes/default/stripe_checkout.jpg", '
                                 . 'locale: "auto", '
                                 . 'name: "' . $ciniki['tenant']['details']['name'] . '", '
                                 . 'description: "", '
