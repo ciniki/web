@@ -62,6 +62,9 @@ function ciniki_web_pages() {
                 '_page_type':{'label':'', 'aside':'yes', 'visible':'hidden', 'fields':{
                     'page_type':{'label':'Page Type', 'type':'toggle', 'toggles':{}, 'onchange':'M.ciniki_web_pages[\'' + pn + '\'].setPageType();'},
                     }},
+                '_synopsis':{'label':'Synopsis', 'visible':'hidden', 'fields':{
+                    'synopsis':{'label':'', 'type':'textarea', 'size':'small', 'hidelabel':'yes'},
+                }},
                 '_redirect':{'label':'Redirect', 'visible':'hidden', 'fields':{
                     'page_redirect_url':{'label':'URL', 'type':'text'},
                     }},
@@ -84,9 +87,6 @@ function ciniki_web_pages() {
                 '_image_caption':{'label':'', 'aside':'yes', 'visible':'hidden', 'fields':{
                     'primary_image_caption':{'label':'Caption', 'type':'text'},
     //              'primary_image_url':{'label':'URL', 'type':'text'},
-                }},
-                '_synopsis':{'label':'Synopsis', 'visible':'hidden', 'fields':{
-                    'synopsis':{'label':'', 'type':'textarea', 'size':'small', 'hidelabel':'yes'},
                 }},
                 '_content':{'label':'Content', 'visible':'hidden', 'fields':{
                     'content':{'label':'', 'type':'textarea', 'size':'large', 'hidelabel':'yes'},
@@ -307,7 +307,7 @@ function ciniki_web_pages() {
             this[pn].setPageType = function() {
                 var pt = this.formValue('page_type');
                 var p = M.gE(this.panelUID);
-                if( pt == '10' ) {
+                if( pt == '10' || (pt == 30 && this.data.parent_id > 0) ) {
                     p.children[0].className = 'medium mediumaside';
                 } else if( pt == '11' ) {
                     p.children[0].className = 'xlarge';
@@ -315,9 +315,9 @@ function ciniki_web_pages() {
                     p.children[0].className = 'medium';
                 }
                 this.sections._module_options.visible = 'hidden';
-                this.sections._image.visible = (pt=='10' || (pt==20 && this.data.parent_id > 0)?'yes':'hidden');
+                this.sections._image.visible = (pt=='10' || ((pt==20 || pt==30) && this.data.parent_id > 0) ?'yes':'hidden');
                 this.sections._image_caption.visible = (pt=='10'?'yes':'hidden');
-                this.sections._synopsis.visible = (pt=='10' || (pt==20 && this.data.parent_id > 0)?'yes':'hidden');
+                this.sections._synopsis.visible = (pt=='10' || ((pt==20 || pt==30) && this.data.parent_id > 0)?'yes':'hidden');
                 this.sections._content.visible = ((pt=='10'||pt==11)?'yes':'hidden');
                 this.sections.files.visible = (pt=='10'?'yes':'hidden');
                 this.sections._files.visible = (pt=='10'?'yes':'hidden');
