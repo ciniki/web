@@ -116,7 +116,7 @@ function ciniki_web_processBlockPricedItems(&$ciniki, $settings, $tnid, $block) 
             . $item['title'] 
             . "";
         $content .= "</div>";
-        $content .= "<div class='image-list-price'>" 
+        $content .= "<div class='image-list-price'>"
             . number_format($item['price'], 2) 
             . "";
         $content .= "</div>";

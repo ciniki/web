@@ -58,11 +58,9 @@ function ciniki_web_processBlockImageList(&$ciniki, $settings, $tnid, $block) {
         }
 
         $url_target = '';
-//      $javascript_onclick = '';
         if( isset($item['is_details']) && $item['is_details'] == 'yes' 
             && isset($item['permalink']) && $item['permalink'] != '' ) {
             $url = $block['base_url'] . "/" . $item['permalink'];
-//          $javascript_onclick = " onclick='javascript:location.href=\"$url\";' ";
         } elseif( isset($item['url']) && $item['url'] != '' ) {
             $rc = ciniki_web_processURL($ciniki, $item['url']);
             if( $rc['stat'] != 'ok' ) {
@@ -123,8 +121,13 @@ function ciniki_web_processBlockImageList(&$ciniki, $settings, $tnid, $block) {
         $content .= "<div class='image-list-details'>";
         $content .= "<div class='image-list-title'><h2>" 
             . ($url!=''?"<a href='$url' target='$url_target' title='" . $item['title'] . "'>":'')
-            . $item['title'] 
-            . ($url!=''?'</a>':'')
+            . $item['title'];
+        if( isset($block['title-prices']) && $block['title-prices'] == 'yes' 
+            && isset($item['title_price']) && $item['title_price'] != '' 
+            ) {
+            $content .= "<span class='image-list-price'>" . $item['title_price'] . "</span>";
+        }
+        $content .= ($url!=''?'</a>':'')
             . "</h2>";
         if( isset($item['subtitle']) && $item['subtitle'] != '' ) {
             $content .= "<h3>" 
