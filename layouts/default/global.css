@@ -876,8 +876,17 @@ article {
     text-align: right;
     padding-bottom: 1.5em;
 }
+#content h2 span.image-list-price-title {
+    display: table-row;
+    width: 100%;
+}
+#content h2 span.image-list-price-title span.image-list-title {
+    display:table-cell;
+    width: 100%;
+}
 #content h2 span.image-list-price {
-    float: right;
+    display:table-cell;
+    text-align: right;
 }
 /* Priced Items */
 #content div.priced-items div.image-list-entry {

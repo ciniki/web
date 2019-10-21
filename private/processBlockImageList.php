@@ -120,12 +120,14 @@ function ciniki_web_processBlockImageList(&$ciniki, $settings, $tnid, $block) {
         //
         $content .= "<div class='image-list-details'>";
         $content .= "<div class='image-list-title'><h2>" 
-            . ($url!=''?"<a href='$url' target='$url_target' title='" . $item['title'] . "'>":'')
-            . $item['title'];
+            . ($url!=''?"<a href='$url' target='$url_target' title='" . $item['title'] . "'>":'');
         if( isset($block['title-prices']) && $block['title-prices'] == 'yes' 
             && isset($item['title_price']) && $item['title_price'] != '' 
             ) {
-            $content .= "<span class='image-list-price'>" . $item['title_price'] . "</span>";
+            $content .= "<span class='image-list-price-title'><span class='image-list-title'>" . $item['title'] . "</span>"
+                . "<span class='image-list-price'>" . $item['title_price'] . "</span></span>";
+        } else {
+            $content .= $item['title'];
         }
         $content .= ($url!=''?'</a>':'')
             . "</h2>";
