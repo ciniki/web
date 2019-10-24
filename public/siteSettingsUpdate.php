@@ -451,6 +451,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-account-invoices-view-pdf',
         'page-account-allowed-attempts',
         'page-account-lock-hours',
+        'page-account-callsign-required',
         'page-cart-active',
         'page-cart-inventory-customers-display',    // Display current inventory to customers
         'page-cart-inventory-members-display',      // Display current inventory to members

@@ -61,22 +61,27 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
     $paypal_checkout = 'no';
     $stripe_checkout = 'no';
     $page_title = "Shopping Cart";
-    $required_account_fields = array(
-        'first'=>'First Name', 
-        'last'=>'Last Name', 
-        'email_address'=>'Email Address', 
-        'password'=>'Password', 
-        'address1'=>'Address', 
-        'city'=>'City', 
-        'province'=>'State/Province', 
-        'postal'=>'ZIP/Postal Code', 
-        'country'=>'Country',
-        );
+    $required_account_fields = array();
+    if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.customers', 0x0400) 
+        && isset($settings['page-account-callsign-required']) 
+        && $settings['page-account-callsign-required'] == 'yes'
+        ) {
+        $required_account_fields['callsign'] = 'Callsign';
+    }
+    $required_account_fields['first'] = 'First Name';
+    $required_account_fields['last'] = 'Last Name';
+    $required_account_fields['email_address'] = 'Email Address';
+    $required_account_fields['password'] = 'Password';
+    $required_account_fields['address1'] = 'Billing Address';
+    $required_account_fields['city'] = 'Billing City';
+    $required_account_fields['province'] = 'Billing State/Province'; 
+    $required_account_fields['postal'] = 'Billing ZIP/Postal Code'; 
+    $required_account_fields['country'] = 'Billing Country';
     if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.sapos', 0x40) ) {
-        $required_account_fields['shipaddress1'] = 'Address';
-        $required_account_fields['shipcity'] = 'City';
-        $required_account_fields['shipprovince'] = 'Province';
-        $required_account_fields['shippostal'] = 'Zip/Postal Code';
+        $required_account_fields['shipaddress1'] = 'Shipping Address';
+        $required_account_fields['shipcity'] = 'Shipping City';
+        $required_account_fields['shipprovince'] = 'Shipping State/Province';
+        $required_account_fields['shippostal'] = 'Shipping Zip/Postal Code';
     }
 
     //
@@ -1745,9 +1750,13 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                 $count++;
                 $content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
                 $content .= "<td colspan='$num_cols' class='alignright'>Shipping:</td>"
-                    . "<td class='alignright'>"
-                    . numfmt_format_currency($intl_currency_fmt, $cart['preorder_shipping_amount'], $intl_currency)
-                    . "</td>"
+                    . "<td class='alignright'>";
+                if( $cart['preorder_subtotal_amount'] > 0 && $cart['customer_id'] == 0 ) {
+                    $content .= "TBD";
+                } else {
+                    $content .= numfmt_format_currency($intl_currency_fmt, $cart['preorder_shipping_amount'], $intl_currency);
+                }
+                $content .= "</td>"
                     . ($cart_edit=='yes'?'<td></td>':'') . "</tr>";
                 $count++;
 
