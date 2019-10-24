@@ -217,6 +217,9 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         if( isset($args['province_code_' . $args['country']]) && $args['province_code_' . $args['country']] != '' ) {
             $args['province'] = $args['province_code_' . $args['country']];
         }
+        if( isset($args['shipprovince_code_' . $args['country']]) && $args['shipprovince_code_' . $args['country']] != '' ) {
+            $args['shipprovince'] = $args['shipprovince_code_' . $args['country']];
+        }
         $missing_fields = array();
         foreach($required_account_fields as $fid => $fname) {
             if( !isset($args[$fid]) || trim($args[$fid]) == '' ) {
