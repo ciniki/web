@@ -908,6 +908,21 @@ span.exhibitors-description {
     #content div.table-slide-horizontal div.table-slide-data {
         width: 60%;
     }
+    #page-container.page-account-contact-details #content form {
+        width: 100%;
+        max-width: 100%;
+    }
+    #content div.contact-details-section div.input {
+        display: inline-block;
+        width: 50%;
+        margin: 0px;
+    }
+    #content div.contact-details-section div.input:nth-child(even) {
+        padding-left: 1em;
+    }
+    #content div.contact-details-section div.input:nth-child(odd) {
+        padding-right: 1em;
+    }
 }
 
 /* 11a. Anything over 45em 

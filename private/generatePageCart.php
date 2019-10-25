@@ -62,14 +62,14 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
     $stripe_checkout = 'no';
     $page_title = "Shopping Cart";
     $required_account_fields = array();
+    $required_account_fields['first'] = 'First Name';
+    $required_account_fields['last'] = 'Last Name';
     if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.customers', 0x0400) 
         && isset($settings['page-account-callsign-required']) 
         && $settings['page-account-callsign-required'] == 'yes'
         ) {
         $required_account_fields['callsign'] = 'Callsign';
     }
-    $required_account_fields['first'] = 'First Name';
-    $required_account_fields['last'] = 'Last Name';
     $required_account_fields['email_address'] = 'Email Address';
     $required_account_fields['password'] = 'Password';
     $required_account_fields['address1'] = 'Billing Address';
@@ -1132,11 +1132,11 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         //
         // Check if callsign enabled
         //
+        $fields['first'] = array('name'=>'First Name', 'type'=>'text', 'class'=>'text', 'value'=>(isset($_POST['first'])?$_POST['first']:''), 'autocomplete'=>'given-name');
+        $fields['last'] = array('name'=>'Last Name', 'type'=>'text', 'class'=>'text', 'value'=>(isset($_POST['last'])?$_POST['last']:''), 'autocomplete'=>'family-name');
         if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.customers', 0x0400) ) {
             $fields['callsign'] = array('name'=>'Callsign', 'type'=>'text', 'class'=>'text', 'value'=>(isset($_POST['callsign'])?$_POST['callsign']:''));
         }
-        $fields['first'] = array('name'=>'First Name', 'type'=>'text', 'class'=>'text', 'value'=>(isset($_POST['first'])?$_POST['first']:''), 'autocomplete'=>'given-name');
-        $fields['last'] = array('name'=>'Last Name', 'type'=>'text', 'class'=>'text', 'value'=>(isset($_POST['last'])?$_POST['last']:''), 'autocomplete'=>'family-name');
         $fields['email_address'] = array('name'=>'Email Address', 'type'=>'email', 'class'=>'text', 'value'=>(isset($_POST['email_address'])?$_POST['email_address']:''), 'autocomplete'=>'email');
         $fields['password'] = array('name'=>'Password', 'type'=>'password', 'class'=>'text', 'value'=>(isset($_POST['password'])?$_POST['password']:''));
         $fields['phone'] = array('name'=>'Phone Number', 'type'=>'text', 'class'=>'text', 'value'=>(isset($_POST['phone'])?$_POST['phone']:''), 'autocomplete'=>'tel');
