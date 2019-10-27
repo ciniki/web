@@ -55,10 +55,11 @@ body {
 }
 
 #content header h1,
+#content header h1 a,
 #content header h1 a:visited,
 #content header h1 a:hover,
 #content header h1 a:active {
-	color: #333;
+    color: #333;
 }
 
 header div.signin {
