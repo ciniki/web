@@ -82,7 +82,39 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         $required_account_fields['shipcity'] = 'Shipping City';
         $required_account_fields['shipprovince'] = 'Shipping State/Province';
         $required_account_fields['shippostal'] = 'Shipping Zip/Postal Code';
+        $required_account_fields['shipcountry'] = 'Shipping Country';
     }
+
+    //
+    // Setup restricted countries
+    //
+    $restricted_countries = array(
+        'CU' => array(), // Cuba
+        'IR' => array(), // Iran
+        'KP' => array(), // North Korea
+        'SY' => array(), // Syria
+        'SD' => array(), // Sudan
+//        '' => array(), // Crimea Region of Ukraine **No 2 letter country code recognized
+        'BY' => array(), // Belarus
+        'BI' => array(), // Burundi
+        'CF' => array(), // Central African Republic
+//        '' => array(), // Darfur ** Part of Sudan
+        'CD' => array(), // Democratic Republic of the Congo
+        'ER' => array(), // Eritrea
+        'IQ' => array(), // Iraq
+        'LB' => array(), // Lebanon
+        'LY' => array(), // Libya
+//        'ML' => array(), // Mali ** Canada Only, Asset Freeze
+//        'MM' => array(), // Myanmar ** Canada only, arms embargo, asset freeze, arms tech support
+        'NI' => array(), // Nicaragua
+        'SO' => array(), // Somalia
+        'SS' => array(), // South Sudan
+        'UA' => array(), // Ukraine
+        'RU' => array(), // Russia
+        'VE' => array(), // Venezuela
+        'YE' => array(), // Yemen
+        'ZW' => array(), // Zimbabwe
+        );
 
     //
     // Required methods
@@ -217,8 +249,8 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         if( isset($args['province_code_' . $args['country']]) && $args['province_code_' . $args['country']] != '' ) {
             $args['province'] = $args['province_code_' . $args['country']];
         }
-        if( isset($args['shipprovince_code_' . $args['country']]) && $args['shipprovince_code_' . $args['country']] != '' ) {
-            $args['shipprovince'] = $args['shipprovince_code_' . $args['country']];
+        if( isset($args['shipprovince_code_' . $args['shipcountry']]) && $args['shipprovince_code_' . $args['shipcountry']] != '' ) {
+            $args['shipprovince'] = $args['shipprovince_code_' . $args['shipcountry']];
         }
         $missing_fields = array();
         foreach($required_account_fields as $fid => $fname) {
@@ -240,6 +272,16 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
             if( $rc['stat'] != 'noexist' ) {
                 $signinerrors = "There is already an account for that email address, please use the Forgot Password link to recover your password.";
             }
+        }
+
+        //
+        // Check for restricted countries
+        //
+        if( isset($restricted_countries[$args['country']]) ) {
+            $signinerrors = "We're sorry, we are unable to deliver goods or services to your country. Please contact us and we'll determine if we can.";
+        }
+        if( isset($args['shipcountry']) && isset($restricted_countries[$args['shipcountry']]) ) {
+            $signinerrors = "We're sorry, we are unable to deliver goods or services to your country. Please contact us and we'll determine if we can.";
         }
 
         if( $signinerrors == '' ) {
@@ -1239,8 +1281,6 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         // Check if shipping enabled and then display shipping address
         //
         if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.sapos', 0x40) ) {
-            $country_codes = $rc['countries'];
-            $province_codes = $rc['provinces'];
             $address = array(
                 'shipaddress1'=>(isset($_POST['shipaddress1'])?$_POST['shipaddress1']:''),
                 'shipaddress2'=>(isset($_POST['shipaddress2'])?$_POST['shipaddress2']:''),
