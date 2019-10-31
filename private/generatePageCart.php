@@ -1952,7 +1952,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
             if( isset($cart['shipping_country']) && $cart['shipping_country'] != '' ) {
                 $saddr .= ($saddr!=''?'<br/>':'') . $cart['shipping_country'];
             }
-            if( $saddr != '' && $cart['shipping_status'] > 0 ) {
+            if( $saddr != '' && ($cart['shipping_status'] > 0 || ($cart['preorder_total_amount'] > 0)) ) {
                 $cart_details .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
                 $cart_details .= "<th>Ship To:</th><td>";
                 $cart_details .= $saddr;
