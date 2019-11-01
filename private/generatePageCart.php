@@ -1311,7 +1311,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                 . "</div>";
             $form .= "<div class='input shipaddress2'>"
                 . "<label for='shipaddress2'>" . (array_key_exists('shipaddress2', $required_account_fields)?' *':'') . "</label>"
-                . "<input type='text' class='text' name='shipaddress2' value='" . $address['shipaddress2'] . "' autocomplete='shipping address-line1'>"
+                . "<input type='text' class='text' name='shipaddress2' value='" . $address['shipaddress2'] . "' autocomplete='shipping address-line2'>"
                 . "</div>";
             $form .= "<div class='input shipcity'>"
                 . "<label for='shipcity'>City" . (array_key_exists('shipcity', $required_account_fields)?' *':'') . "</label>"
