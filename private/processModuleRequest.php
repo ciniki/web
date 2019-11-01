@@ -245,6 +245,7 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $tnid, $module_pag
     //
     // Return the content
     //
+    error_log('return: ' . print_r($rsp['submenu'], true));
     return $rsp;
 }
 ?>

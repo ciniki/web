@@ -291,7 +291,7 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
             $article_title = $rc['page_title'];
         }
         if( isset($rc['submenu']) ) {
-            $page['submenu'] = $rc['submenu'];
+            $submenu = $rc['submenu'];
         }
     } 
 
