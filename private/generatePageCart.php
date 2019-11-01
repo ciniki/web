@@ -111,7 +111,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         'SS' => array(), // South Sudan
         'UA' => array(), // Ukraine
         'RU' => array(), // Russia
-        'VE' => array(), // Venezuela
+//        'VE' => array(), // Venezuela ** Certain individuals only
         'YE' => array(), // Yemen
         'ZW' => array(), // Zimbabwe
         );
