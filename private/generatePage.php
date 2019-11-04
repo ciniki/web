@@ -434,6 +434,8 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
             header('Pragma: no-cache');
             if( $file['extension'] == 'pdf' ) {
                 header('Content-Type: application/pdf');
+            } elseif( $file['extension'] == 'zip' ) {
+                header('Content-Type: application/zip');
             }
     //      header('Content-Disposition: attachment;filename="' . $filename . '"');
             header('Content-Length: ' . strlen($binary_content));

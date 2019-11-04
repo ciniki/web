@@ -90,7 +90,10 @@ function ciniki_web_pageFileAdd(&$ciniki) {
     //
     // Check the extension is a PDF, currently only accept PDF files
     //
-    if( $args['extension'] != 'pdf' && $args['extension'] != 'mp3' ) {
+    if( $args['extension'] != 'pdf' 
+        && $args['extension'] != 'mp3' 
+        && $args['extension'] != 'zip' 
+        ) {
         return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.141', 'msg'=>'The file must be a PDF file.'));
     }
 //    $args['binary_content'] = file_get_contents($_FILES['uploadfile']['tmp_name']);
