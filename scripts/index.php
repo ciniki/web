@@ -201,7 +201,6 @@ if( isset($_SERVER['HTTP_HOST']) && $ciniki['config']['ciniki.web']['master.doma
     }
 }
 
-
 //
 // Start the session here so we have access to _SESSION when checking if redirect
 //
@@ -229,7 +228,7 @@ if( $ciniki['request']['tnid'] == 0 || $ciniki['request']['reseller'] == 'yes' )
     //
     // Check which page, or if they requested a clients website
     //
-    if( $ciniki['request']['tnid'] == 0 && $uri == '' ) {
+    if( $ciniki['request']['tnid'] == 0 && ($uri == '' || (isset($uri[0]) && $uri[0] == '?')) ) {
         if( isset($ciniki['config']['ciniki.web']['shop.domain']) && isset($_SERVER['HTTP_HOST']) 
             && $_SERVER['HTTP_HOST'] == $ciniki['config']['ciniki.web']['shop.domain'] && isset($ciniki['config']['ciniki.core']['shop_tnid']) 
             ) {
