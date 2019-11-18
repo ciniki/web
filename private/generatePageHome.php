@@ -523,11 +523,24 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
         }
         if( isset($rc['posts']) && count($rc['posts']) > 0 ) {
             $posts = $rc['posts'];
-            $base_url = $ciniki['request']['base_url'] . "/blog";
+            //
+            // Get the blog url
+            //
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'indexModuleBaseURL');
+            $rc = ciniki_web_indexModuleBaseURL($ciniki, $ciniki['request']['tnid'], 'ciniki.blog.latest');
+            if( $rc['stat'] != 'ok' ) {
+                return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.183', 'msg'=>'Unable to find page', 'err'=>$rc['err']));
+            }
+            if( isset($rc['base_url']) && $rc['base_url'] != '' ) {
+                $base_url = $ciniki['request']['base_url'] . $rc['base_url'];
+            } else {
+                $base_url = $ciniki['request']['base_url'] . "/blog";
+            }
+
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
             $rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $posts, 
                 array('limit'=>$list_size,
-                    'base_url'=>$ciniki['request']['base_url'] . "/blog",
+                    'base_url'=>$base_url,
                     'thumbnail_format'=>(isset($settings['page-blog-thumbnail-format'])&&$settings['page-blog-thumbnail-format']!=''?$settings['page-blog-thumbnail-format']:'square-cropped'),
                     'thumbnail_padding_color'=>(isset($settings['page-blog-thumbnail-padding-color'])&&$settings['page-blog-thumbnail-padding-color']!=''?$settings['page-blog-thumbnail-padding-color']:'#ffffff'),
                 ));
@@ -548,7 +561,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
                 . "";
             if( $num_posts > $list_size ) {
                 $page_content .= "<div class='entry-content'>";
-                $page_content .= "<div class='cilist-more'><a href='" . $ciniki['request']['base_url'] . "/blog'>";
+                $page_content .= "<div class='cilist-more'><a href='" . $base_url . "'>";
                 if( isset($settings['page-home-latest-blog-more']) 
                     && $settings['page-home-latest-blog-more'] != '' ) {
                     $page_content .= $settings['page-home-latest-blog-more'];
