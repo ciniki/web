@@ -15,10 +15,25 @@
 //
 function ciniki_web_processURL($ciniki, $url) {
 
-    if( $url != '' && !preg_match('/^\s*http/i', $url) ) {
+    //
+    // Check if the url is a email address, without the mailto
+    //
+    if( $url != '' && preg_match('/^\s*[^ ]+\@[^ ]+\.[^ ]+/i', $url) && !preg_match('/\s*mailto/i', $url) ) {
+        $display_url = $url;
+        $url = "mailto: " . $url;
+    } 
+    
+    //
+    // Check if url is missing http://
+    //
+    elseif( $url != '' && !preg_match('/^\s*http/i', $url) ) {
         $display_url = $url;
         $url = "http://" . $url;
-    } else {
+    } 
+    //
+    // Display the URL
+    //
+    else {
         $display_url = preg_replace('/^\s*http:\/\//i', '', $url);
         $display_url = preg_replace('/\/$/i', '', $display_url);
     }

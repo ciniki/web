@@ -310,7 +310,10 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
                     } else {
                         $url = '';
                     }
-                    if( $url != '' && !preg_match('/^\s*http/i', $url) ) {
+                    if( $url != '' && preg_match('/^\s*[^ ]+\@[^ ]+\.[^ ]+/i', $url) ) {
+                        $display_url = $url;
+                        $url = "mailto: " . $url;
+                    } elseif( $url != '' && !preg_match('/^\s*http/i', $url) ) {
                         $display_url = $url;
                         $url = "http://" . $url;
                     } else {
