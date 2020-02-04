@@ -66,7 +66,9 @@ function ciniki_web_processBlockMappedTickets(&$ciniki, $settings, $tnid, $block
         if( isset($block['mappedtickets'][0]['diameter']) ) {
             $font_size = $block['mappedtickets'][0]['diameter'];
         }
-        $ticketmap .= "<style>.pricelabel {font: bold {$font_size}px sans-serif; color: #fff; text-align: center;}</style>"; 
+        $ticketmap .= "<style>"
+            . ".pricelabel {font: bold {$font_size}px sans-serif; color: #fff; text-align: center;}"
+            . "</style>"; 
         $num_available = 0;
         $js_tickets = "var tickets={";
         foreach($block['mappedtickets'] as $pid => $price) {
@@ -95,7 +97,7 @@ function ciniki_web_processBlockMappedTickets(&$ciniki, $settings, $tnid, $block
                     . "dominant-baseline='middle' "
                     . "text-anchor='middle' "
                     . (($price['webflags']&0x04) == 0 ? "style='cursor:pointer;' onclick='event.stopPropagation();selectTicket({$price['price_id']});' " : "")
-                    . "class='pricelabel'>" 
+                    . "class='pricelabel pricelabel-{$price['diameter']}'>" 
                     . $price['position_num'] 
                     . "</text>";
                 
