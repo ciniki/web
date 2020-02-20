@@ -504,6 +504,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
 //      'site-logo-display',
         'site-google-analytics-account',
         'site-google-site-verification',
+        'site-google-gtm-code',
         'site-facebook-pixel-id',
         'site-pinterest-site-verification',
         'site-featured',

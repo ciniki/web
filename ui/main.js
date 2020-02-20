@@ -410,6 +410,9 @@ function ciniki_web_main() {
             '_verification':{'label':'Google Site Verification', 'fields':{
                 'site-google-site-verification':{'label':'', 'type':'text', 'hidelabel':'yes'},
                 }},
+            '_gtm':{'label':'Google Tag Manager', 'fields':{
+                'site-google-gtm-code':{'label':'', 'type':'text', 'hidelabel':'yes'},
+                }},
             '_save':{'label':'', 'buttons':{
                 'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'google\');'},
                 }},
