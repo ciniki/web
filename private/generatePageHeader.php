@@ -372,7 +372,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
             . "'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);"
             . "})(window,document,'script','dataLayer','"
                 . $settings['site-google-gtm-code'] 
-            . "}');</script>"
+            . "');</script>"
             . "";
     }
 
