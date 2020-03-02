@@ -647,6 +647,11 @@ article {
     text-align: right;
 }
 
+/* Blocks */
+#content div.block-section {
+    clear: right;
+}
+
 /* Block: MonthlyAvailability */
 #content div.monthly-availability table {
     max-width: 30em;
