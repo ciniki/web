@@ -31,7 +31,7 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
 
 //  print "<pre>";
 //  print_r($ciniki['request']);
-//  print_r($request_pages);
+//  error_log(print_r($request_pages), true);
 
     $breadcrumbs = array();
 
@@ -79,8 +79,10 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
             }
             //
             // Check if last page, empty with children and page_menu
+            // Only display child page automatically when children
+            // are to be displayed as a submenu.
             //
-            if( $i == 0 && $page['image_id'] == 0 && $page['content'] == '' && isset($page['children']) && count($page['children']) > 0 ) {
+            if( $i == 0 && $page['image_id'] == 0 && $page['content'] == '' && isset($page['children']) && count($page['children']) > 0 && ($page['flags']&0x90) == 0 ) {
                 $depth++;
                 $child = array_shift($page['children']);
                 reset($page['children']);
