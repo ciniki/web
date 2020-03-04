@@ -527,7 +527,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
             // Get the blog url
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'indexModuleBaseURL');
-            $rc = ciniki_web_indexModuleBaseURL($ciniki, $ciniki['request']['tnid'], 'ciniki.blog.latest');
+            $rc = ciniki_web_indexModuleBaseURL($ciniki, $ciniki['request']['tnid'], ['ciniki.blog.latest', 'ciniki.blog']);
             if( $rc['stat'] != 'ok' ) {
                 return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.183', 'msg'=>'Unable to find page', 'err'=>$rc['err']));
             }
@@ -930,6 +930,17 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
             && $settings['page-home-current-events-number'] > 0 ) {
             $list_size = $settings['page-home-current-events-number'];
         }
+        // Load the base url
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'indexModuleBaseURL');
+        $rc = ciniki_web_indexModuleBaseURL($ciniki, $ciniki['request']['tnid'], ['ciniki.events.upcoming', 'ciniki.events']);
+        if( $rc['stat'] != 'ok' ) {
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.183', 'msg'=>'Unable to find page', 'err'=>$rc['err']));
+        }
+        if( isset($rc['base_url']) && $rc['base_url'] != '' ) {
+            $base_url = $ciniki['request']['base_url'] . $rc['base_url'];
+        } else {
+            $base_url = $ciniki['request']['base_url'] . "/events";
+        }
         //
         // Load and parse the events
         //
@@ -942,7 +953,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
         if( isset($rc['events']) && $number_of_events > 0 ) {
             $events = $rc['events'];
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processEvents');
-            $rc = ciniki_web_processEvents($ciniki, $settings, $events, $list_size);
+            $rc = ciniki_web_processEvents($ciniki, $settings, $events, $list_size, $base_url);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -958,7 +969,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
                 . $rc['content']
                 . "";
             if( $number_of_events > $list_size ) {
-                $page_content .= "<div class='cilist-more'><a href='" . $ciniki['request']['base_url'] . "/events'>";
+                $page_content .= "<div class='cilist-more'><a href='" . $base_url . "'>";
                 if( isset($settings['page-home-current-events-more']) && $settings['page-home-current-events-more'] != '' ) {
                     $page_content .= $settings['page-home-current-events-more'];
                 } else {
@@ -985,6 +996,17 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
             && $settings['page-home-upcoming-events-number'] > 0 ) {
             $list_size = $settings['page-home-upcoming-events-number'];
         }
+        // Load the base url
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'indexModuleBaseURL');
+        $rc = ciniki_web_indexModuleBaseURL($ciniki, $ciniki['request']['tnid'], ['ciniki.events.upcoming', 'ciniki.events']);
+        if( $rc['stat'] != 'ok' ) {
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.183', 'msg'=>'Unable to find page', 'err'=>$rc['err']));
+        }
+        if( isset($rc['base_url']) && $rc['base_url'] != '' ) {
+            $base_url = $ciniki['request']['base_url'] . $rc['base_url'];
+        } else {
+            $base_url = $ciniki['request']['base_url'] . "/events";
+        }
         //
         // Load and parse the events
         //
@@ -1001,7 +1023,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
         if( isset($rc['events']) && $number_of_events > 0 ) {
             $events = $rc['events'];
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processEvents');
-            $rc = ciniki_web_processEvents($ciniki, $settings, $events, $list_size);
+            $rc = ciniki_web_processEvents($ciniki, $settings, $events, $list_size, $base_url);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -1017,7 +1039,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
                 . $rc['content']
                 . "";
             if( $number_of_events > $list_size ) {
-                $page_content .= "<div class='cilist-more'><a href='" . $ciniki['request']['base_url'] . "/events'>";
+                $page_content .= "<div class='cilist-more'><a href='" . $base_url . "'>";
                 if( isset($settings['page-home-upcoming-events-more']) && $settings['page-home-upcoming-events-more'] != '' ) {
                     $page_content .= $settings['page-home-upcoming-events-more'];
                 } else {

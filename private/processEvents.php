@@ -14,11 +14,15 @@
 // Returns
 // -------
 //
-function ciniki_web_processEvents($ciniki, $settings, $events, $limit) {
+function ciniki_web_processEvents($ciniki, $settings, $events, $limit, $base_url='') {
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+
+    if( $base_url == '' ) {
+        $base_url = $ciniki['request']['base_url'] . '/events';
+    }
 
     $content = "<table class='cilist'><tbody>";
     $count = 0;
@@ -42,7 +46,7 @@ function ciniki_web_processEvents($ciniki, $settings, $events, $limit) {
         $url_target = '';
         if( $event['isdetails'] == 'yes' || (isset($event['num_images']) && $event['num_images'] > 0)
             || (isset($event['num_files']) & $event['num_files'] > 0) ) {
-            $event_url = $ciniki['request']['base_url'] . "/events/" . $event['permalink'];
+            $event_url = $base_url . "/" . $event['permalink'];
             $javascript_onclick = " onclick='javascript:location.href=\"$event_url\";' ";
         } else {
             if( $event['url'] != '' ) {

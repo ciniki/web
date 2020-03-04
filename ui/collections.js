@@ -78,6 +78,12 @@ function ciniki_web_collections() {
                 'ciniki.artgallery.exhibition-num_items':{'label':'Number of events', 'type':'text', 'size':'small'},
                 'ciniki.artgallery.exhibition-more':{'label':'More', 'type':'text', 'hint':'... more exhibitions'},
                 }},
+            'ciniki.ags':{'label':'Market Places & Exhibitions', 'active':'no', 'aside':'yes', 'fields':{
+                'ciniki.ags.exhibit-title':{'label':'Name', 'type':'text', 'hint':'Exhibitions'},
+                'ciniki.ags.exhibit-sequence':{'label':'Sequence', 'type':'text', 'size':'small'},
+                'ciniki.ags.exhibit-num_items':{'label':'Number of events', 'type':'text', 'size':'small'},
+                'ciniki.ags.exhibit-more':{'label':'More', 'type':'text', 'hint':'... more exhibitions'},
+                }},
             'ciniki.events':{'label':'Events', 'active':'no', 'aside':'yes', 'fields':{
                 'ciniki.events.event-title':{'label':'Name', 'type':'text', 'hint':'Events'},
                 'ciniki.events.event-sequence':{'label':'Sequence', 'type':'text', 'size':'small'},

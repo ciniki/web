@@ -33,7 +33,6 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
     // FIXME: Check if anything has changed, and if not load from cache
     //
 
-
     //
     // Check if requested a specific collection of one object
     //
@@ -384,6 +383,18 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
             if( isset($cobj['num_display_items']) && $cobj['num_display_items'] > 0 ) {
                 $list_size = $cobj['num_display_items'];
             }
+            // Load the base url
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'indexModuleBaseURL');
+            $rc = ciniki_web_indexModuleBaseURL($ciniki, $ciniki['request']['tnid'], ['ciniki.blog.latest', 'ciniki.blog']);
+            if( $rc['stat'] != 'ok' ) {
+                return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.183', 'msg'=>'Unable to find page', 'err'=>$rc['err']));
+            }
+            if( isset($rc['base_url']) && $rc['base_url'] != '' ) {
+                $base_url = $ciniki['request']['base_url'] . $rc['base_url'];
+            } else {
+                $base_url = $ciniki['request']['base_url'] . "/blog";
+            }
+
             // Load the list entries
             ciniki_core_loadMethod($ciniki, 'ciniki', 'blog', 'web', 'webCollectionList');
             $rc = ciniki_blog_web_webCollectionList($ciniki, $settings, $ciniki['request']['tnid'], 
@@ -394,10 +405,9 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
             $block_content = '';
             if( isset($rc['posts']) && count($rc['posts']) > 0 ) {
                 $posts = $rc['posts'];
-                $base_url = $ciniki['request']['base_url'] . "/blog";
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processCIList');
                 $rc = ciniki_web_processCIList($ciniki, $settings, $base_url, $posts, 
-                    array('limit'=>$list_size, 'base_url'=>$ciniki['request']['base_url'] . "/blog"));
+                    array('limit'=>$list_size, 'base_url'=>$base_url));
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;
                 }
@@ -410,7 +420,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
                     . "";
                 if( $num_posts > $list_size ) {
                     $block_content .= "<div class='cilist-more'>"
-                        . "<a href='" . $more_base_url . "/blog'>"
+                        . "<a href='" . $base_url . "'>"
                         . ((isset($cobj['more']) && $cobj['more'] != '')?$cobj['more']:'... more blog posts')
                         . "</a></div>";
                 }
@@ -432,6 +442,18 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
             if( isset($cobj['num_display_items']) && $cobj['num_display_items'] > 0 ) {
                 $list_size = $cobj['num_display_items'];
             }
+            // Load the base url
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'indexModuleBaseURL');
+            $rc = ciniki_web_indexModuleBaseURL($ciniki, $ciniki['request']['tnid'], ['ciniki.events.upcoming', 'ciniki.events']);
+            if( $rc['stat'] != 'ok' ) {
+                return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.183', 'msg'=>'Unable to find page', 'err'=>$rc['err']));
+            }
+            if( isset($rc['base_url']) && $rc['base_url'] != '' ) {
+                $base_url = $ciniki['request']['base_url'] . $rc['base_url'];
+            } else {
+                $base_url = $ciniki['request']['base_url'] . "/events";
+            }
+
             //
             // Load and parse the events
             //
@@ -445,7 +467,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
             if( isset($rc['events']) && count($rc['events']) > 0 ) {
                 $events = $rc['events'];
                 ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processEvents');
-                $rc = ciniki_web_processEvents($ciniki, $settings, $events, $list_size);
+                $rc = ciniki_web_processEvents($ciniki, $settings, $events, $list_size, $base_url);
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;
                 }
@@ -462,7 +484,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
                         && $cobj['num_items'] > count($events))
                     ) {
                     $block_content .= "<div class='cilist-more'>"
-                        . "<a href='" . $more_base_url . "/events'>"
+                        . "<a href='" . $base_url . "/events'>"
                         . ((isset($cobj['more']) && $cobj['more'] != '')?$cobj['more']:'... more events')
                         . "</a></div>";
                 }
@@ -522,6 +544,69 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
             }
             if( $block_content != '' ) {
                 $blocks['ciniki.artgallery.exhibition'] = array('content'=>$block_content, 'display'=>'no');
+            }
+        }
+
+        //
+        // Load the AGS exhibitions
+        //
+        if( isset($ciniki['tenant']['modules']['ciniki.ags']) 
+            && isset($collection['objects']['ciniki.ags.exhibit'])
+            ) {
+            $cobj = $collection['objects']['ciniki.ags.exhibit'];
+            $list_size = 2;
+            if( isset($cobj['num_display_items']) && $cobj['num_display_items'] > 0 ) {
+                $list_size = $cobj['num_display_items'];
+            }
+            // Load the base url
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'indexModuleBaseURL');
+            $rc = ciniki_web_indexModuleBaseURL($ciniki, $ciniki['request']['tnid'], 'ciniki.ags.exhibitions');
+            if( $rc['stat'] != 'ok' ) {
+                return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.183', 'msg'=>'Unable to find page', 'err'=>$rc['err']));
+            }
+            if( isset($rc['base_url']) && $rc['base_url'] != '' ) {
+                $base_url = $ciniki['request']['base_url'] . $rc['base_url'];
+            } else {
+                $base_url = $ciniki['request']['base_url'] . "/exhibits";
+            }
+            //
+            // Load and parse the exhibitions
+            //
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'ags', 'web', 'webCollectionList');
+            $rc = ciniki_ags_web_webCollectionList($ciniki, $settings, $ciniki['request']['tnid'], 
+                array('collection_id'=>$collection['id'], 'type'=>'upcoming', 'limit'=>$list_size+1));
+            if( $rc['stat'] != 'ok' ) {
+                return $rc;
+            }
+            $block_content = '';
+            if( isset($rc['exhibits']) && count($rc['exhibits']) > 0 ) {
+                $exhibits = $rc['exhibits'];
+                ciniki_core_loadMethod($ciniki, 'ciniki', 'ags', 'web', 'processExhibits');
+                $rc = ciniki_ags_web_processExhibits($ciniki, $settings, $exhibits, array('limit'=>$list_size, 'base_url'=>$base_url));
+                if( $rc['stat'] != 'ok' ) {
+                    return $rc;
+                }
+                $block_content .= "<article class='page page-home'>\n"
+                    . "<header class='entry-title'><h1 class='entry-title'>Upcoming "
+                    . ((isset($cobj['title']) && $cobj['title'] != '')?$cobj['title']:'Exhibitions')
+                    . "</h1></header>\n"
+                    . "<div class='entry-content'>"
+                    . $rc['content']
+                    . "</div>"
+                    . "";
+                if( count($exhibits) > $list_size 
+                    || (isset($settings['page-ags-exhibits-past']) && $settings['page-ags-exhibits-past'] == 'yes'
+                        && $cobj['num_items'] > count($exhibits))
+                    ) {
+                    $block_content .= "<div class='cilist-more'>"
+                        . "<a href='" . $base_url . "'>"
+                        . ((isset($cobj['more']) && $cobj['more'] != '')?$cobj['more']:'... more exhibits')
+                        . "</a></div>";
+                }
+                $block_content .= "</article>\n";
+            }
+            if( $block_content != '' ) {
+                $blocks['ciniki.ags.exhibit'] = array('content'=>$block_content, 'display'=>'no');
             }
         }
 

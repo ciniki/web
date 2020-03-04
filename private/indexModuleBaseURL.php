@@ -13,6 +13,7 @@
 //
 function ciniki_web_indexModuleBaseURL(&$ciniki, $tnid, $module) {
     
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuoteList');
     //
     // Get the base_url for this module, as it may be inside a custom page.
     //
@@ -20,9 +21,13 @@ function ciniki_web_indexModuleBaseURL(&$ciniki, $tnid, $module) {
         $strsql = "SELECT id, parent_id, title, permalink "
             . "FROM ciniki_web_pages "
             . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
-            . "AND page_type = 30 "
-            . "AND page_module = '" . ciniki_core_dbQuote($ciniki, $module) . "' "
-            . "AND (flags&0x01) = 0x01 "
+            . "AND page_type = 30 ";
+        if( is_array($module) && count($module) > 0 ) {
+            $strsql .= "AND page_module IN (" . ciniki_core_dbQuoteList($ciniki, $module) . ") ";
+        } else {
+            $strsql .= "AND page_module = '" . ciniki_core_dbQuote($ciniki, $module) . "' ";
+        }
+        $strsql .= "AND (flags&0x01) = 0x01 "
             . "LIMIT 1 "
             . "";
         $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'item');
