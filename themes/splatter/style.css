@@ -1103,6 +1103,153 @@ aside div.borderless {
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0078a5');
 	background: linear-gradient(to bottom, #00adee, #0078a5);
 }
+#content div.cart .cart-submit input.quantity {
+    max-width: 4em;
+    margin-left: 0.25em;
+}
+#content div.cart .cart-submit-donations {
+    line-height: 2.5em;
+}
+#content div.cart .cart-submit span.donation-amount {
+    white-space: nowrap;
+}
+#content div.cart p.cart-donation-message {
+    margin-bottom: 0.5em;
+}
+#content div.cart div.cart-donations {
+    margin-bottom: 1em;
+    text-align: center;
+    padding: 1em 0.5em;
+    border: 2px solid #6acaec;
+    border-radius: 0.5em;
+    background: #ddf6ff;
+    color: #555;
+}
+
+#content div.cart div.cart-buttons {
+    padding-top: 1.5em;
+    text-align: center;
+}
+
+#content div.price-cards form input.cart-submit,
+#content div.order-options button,
+#content div.order-repeats button,
+#content div.cart form input.cart-submit, 
+#content form div.cart-buttons input.cart-submit, 
+#content form button.cart-submit, 
+#content div.cart-buttons form input.cart-submit, 
+#content div.cart-pricelist form input.cart-submit {
+    outline: 0;
+    cursor: pointer;
+    font-size: 0.9em;
+    box-shadow: none;
+    border-radius: 8px;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+    margin-left: 1em;
+    padding: 0.25em 1.0em 0.25em 1.0em;
+    color: #d9eef7;    
+    border: 2px solid #0076a3;
+    background: #0095cd;    
+    background: -webkit-gradient(linear, left top, left bottom, from(#00adee), to(#0078a5));    
+    background: -moz-linear-gradient(top,  #00adee,  #0078a5);    
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0078a5');
+    background: linear-gradient(to bottom, #00adee, #0078a5);
+}
+#content form button.stripe-button-el span {
+    background: none;
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+    min-height: auto !important;
+    height: auto !important;
+    line-height: inherit;
+    box-shadow: none;
+}
+
+#content div.cart-pricelist form input.cart-submit {
+    margin-bottom: 0.5em;
+}
+
+#content div.price-card {
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    padding: 0.75em;
+}
+
+/* Styles for calendar */
+#page-container.ciniki-calendars article header {
+    display: none;
+}
+#content table.calendar {
+}
+#content table.calendar tr {
+    padding-bottom: 5px;
+    border-bottom: 1px dashed #aaa;
+    margin-bottom: 5px;
+}
+#content table.calendar th,
+#content table.calendar td {
+    border-left: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+#content table.calendar tr:last-child {
+    border-bottom: 0px;
+}
+@media (min-width: 50em) {
+    #content table.calendar td {
+        border-right: 1px solid #ddd;
+    }
+    #content table.calendar tr:last-child {
+/*        border-bottom: 1px solid #ddd; */
+    }
+}
+#content table.calendar th {
+    background: #eee;
+    color: #333;
+}
+#content div.calendar-controls {
+    font-size: 1.5em;
+    font-style: italic;
+    color: #333;
+    margin-bottom: 1em;
+}
+#content table.calendar div.calendar-date {
+    padding-right: 0.5em;
+    width: 5em;
+    min-width: 5em;
+}
+#content span.calendar-day-date {
+    color: #333;
+    font-size: 1.3em;
+    font-family: helvetica, arial, sans-serif;
+    width: 1.8em;
+    padding-right: 0.2em;
+}
+#content span.calendar-day-weekday {
+    font-size: 0.7em;
+    text-transform: uppercase;
+    font-family: helvetica, arial, sans-serif
+}
+#content div.calendar-legend-item,
+#content div.calendar-item {
+    border: 1px solid #ddd;
+    background: #eee;
+    padding: 0.25em 0.5em;
+}
+#content div.calendar-item-events {
+    border: 1px solid #dfd;
+    background: #dfd;
+}
+#content div.calendar-item-exhibitions {
+    border: 1px solid #fdf;
+    background: #fdf;
+}
+#content div.calendar-item-courses {
+    border: 1px solid #cff;
+    background: #dff;
+}
 
 /* Styles for larger screens */
 @media screen and (min-width: 33em) {

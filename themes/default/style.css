@@ -1317,6 +1317,12 @@ aside div.borderless {
     margin-bottom: 0.5em;
 }
 
+#content div.price-card {
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    padding: 0.75em;
+}
+
 /* Styles for POMA */
 #content table.order-details tr th,
 #content table.order-season tr th,
