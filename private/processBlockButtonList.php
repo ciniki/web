@@ -18,12 +18,12 @@ function ciniki_web_processBlockButtonList($ciniki, $settings, $tnid, $block) {
         return array('stat'=>'ok', 'content'=>'');
     }
 
-    $content = "<div class='tag-list-wrap" . ((isset($block['tag_type'])&&$block['tag_type']!='')?' tag-list-'.$block['tag_type']:'') . "'>";
+    $content = "";
     if( isset($block['title']) && $block['title'] != '' ) {
         $content .= "<h2>{$block['title']}</h2>";
     }
 
-    $content = "<div class='largebutton-list'>";
+    $content .= "<div class='largebutton-list'>";
 
     foreach($block['tags'] as $tag) {
         $content .= "<div class='button-list-wrap'>";

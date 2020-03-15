@@ -50,6 +50,9 @@ function ciniki_web_processBlockTradingCards($ciniki, $settings, $tnid, $block) 
         if( isset($card['subname']) && $card['subname'] != '' ) {
             $content .= "<span class='trading-card-subtitle'>" . $card['subname'] . "</span>";
         }
+        if( isset($card['display_price']) && $card['display_price'] != '' ) {
+            $content .= "<span class='trading-card-price'>" . $card['display_price'] . "</span>";
+        }
         $content .= "</div></a></div></div>";
     }
     $content .= "</div>";

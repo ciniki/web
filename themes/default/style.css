@@ -4,6 +4,9 @@ html {
 
 body {
     color: #777;
+}
+
+#page-container {
     background: #fff;
 }
 
@@ -141,6 +144,65 @@ div.product-card-text {
 }
 div.product-card-title {
     color: #333;
+}
+
+/* Trading Cards */
+div.trading-cards {
+    text-align: center;
+    display: flex;
+    align-items: stretch;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: stretch;
+}
+div.trading-card-wrap {
+    display: inline-block;
+    padding: 0.5em;
+    box-sizing: border-box;
+    width: 14em;
+    max-width: 14em;
+    flex-shrink: 1;
+    flex-grow: 1;
+}
+@media screen and (min-width: 25em) {
+    div.trading-card-wrap {
+        width: 50%;
+    }
+}
+@media screen and (min-width: 40em) {
+    div.trading-card-wrap {
+        width: 30%;
+    }
+}
+@media screen and (min-width: 52em) {
+    div.trading-card-wrap {
+        width: 14em;
+        flex-basis: 14em;
+        max-width: 14em;
+    }
+}
+div.trading-card {
+    border: 0px solid #ddd;
+    padding: 0.25em;
+    text-align: left;
+}
+div.trading-card-text span.trading-card-title {
+    font-size: 1.1em;
+    color: #333;
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: pre;
+}
+div.trading-card-text span.trading-card-subtitle {
+    color: #777;
+    display: block;
+}
+div.trading-card-text span.trading-card-price {
+    color: #111;
+    font-size: 1.2em;
+    display: block;
 }
 
 /* Price Cards */
