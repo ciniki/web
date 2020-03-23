@@ -128,7 +128,7 @@ a img {
     background: linear-gradient(to bottom, #888, #555);
 }
 
-/* Product Cards */
+/* Block: Product Cards */
 div.product-card-wrap {
     border: 1px solid #ddd;
     padding: 0.75em;
@@ -146,7 +146,7 @@ div.product-card-title {
     color: #333;
 }
 
-/* Trading Cards */
+/* Block: Trading Cards */
 div.trading-cards {
     text-align: center;
     display: flex;
@@ -204,8 +204,11 @@ div.trading-card-text span.trading-card-price {
     font-size: 1.2em;
     display: block;
 }
+div.trading-card img {
+    box-shadow: 1px 1px 5px #555;
+}
 
-/* Price Cards */
+/* Block: Price Cards */
 div.price-card-wrap {
     padding: 0.75em;
 }
@@ -1591,6 +1594,23 @@ aside div.borderless {
     background: #ddd;
     font-weight: bold;
 }
+
+/* Block: content */
+#content .block.block-sold-out {
+    font-size: 1.1em;
+    color: #333;
+}
+#content .block.block-artist-link {
+    font-size: 1.1em;
+    color: #333;
+}
+
+/* Block: price-list */
+#content .block.block-price-list {
+    font-size: 1.1em;
+    color: #333;
+}
+
 
 /* Block: RegistrationForm */
 #content form.registration-form div.section-content {

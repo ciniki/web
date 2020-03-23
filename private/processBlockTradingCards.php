@@ -23,6 +23,10 @@ function ciniki_web_processBlockTradingCards($ciniki, $settings, $tnid, $block) 
 
     $content = "";
 
+    if( isset($block['title']) && $block['title'] != '' ) {
+        $content .= "<h2>" . $block['title'] . "</h2>";
+    }
+
     $content .= "<div class='trading-cards'>";
     foreach($block['cards'] as $cid => $card) {
         if( isset($card['name']) ) {
