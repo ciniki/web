@@ -1379,6 +1379,9 @@ div.sponsor-gallery-thumbnail img {
     width: 100%;
     height: 9em;
 }
+#content form textarea.large {
+    height: 15em;
+}
 #content form input.text {
     width: 100%;
     box-sizing: border-box;

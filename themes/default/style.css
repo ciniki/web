@@ -683,7 +683,7 @@ div.thumbnail-list-item-text {
     font-weight: normal;
     padding: 0.5em;
 /*    border-radius: 0.5em;  */
-    border: 1px solid #ccc; 
+    border: 1px solid #aaa; 
     color: #555;
 }
 
@@ -732,6 +732,7 @@ div.thumbnail-list-item-text {
     color: #439BBD;
 }
 
+#content form button.submit,
 #content form input.submit {
     font-size: 1.0em;
     border-radius: 8px;
@@ -746,6 +747,7 @@ div.thumbnail-list-item-text {
     background: linear-gradient(to bottom, #00adee, #0078a5);
 }
 
+#content form button.bigsubmit,
 #content form input.bigsubmit {
     min-width: 13em;
     font-size: 1.3em;
@@ -761,6 +763,7 @@ div.thumbnail-list-item-text {
     background: linear-gradient(to bottom, #faa51a, #f47a20);
 }
 
+#content form button.bigsubmit2,
 #content form input.bigsubmit2 {
     min-width: 13em;
     font-size: 1.3em;
