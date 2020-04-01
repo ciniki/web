@@ -25,13 +25,8 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
             return ciniki_landingpages_web_generatePage($ciniki, $settings);
         }
     }
-//    print "<pre>" . print_r($ciniki, true) . "</pre>";
 
     $request_pages = array_merge(array($ciniki['request']['page']), $ciniki['request']['uri_split']);
-
-//  print "<pre>";
-//  print_r($ciniki['request']);
-//  error_log(print_r($request_pages), true);
 
     $breadcrumbs = array();
 
