@@ -683,6 +683,20 @@ article {
     padding: 0.25em;
 }
 
+/* Block: OptionList */
+#content div.option-list {
+}
+#content div.option-list-item {
+    width: 100%;
+}
+#content div.option-list-item span {
+    display: inline-block;
+    padding: 0.25em 0.5em;
+}
+#content div.option-list-button a {
+    display: inline-block;
+}
+
 /* Block: FoldingTable */
 #content div.folding-table {
     display: block;

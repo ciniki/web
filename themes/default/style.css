@@ -779,6 +779,21 @@ div.thumbnail-list-item-text {
     background: linear-gradient(to bottom, #00adee, #0078a5);
 }
 
+#content .option-list-button a {
+    display: inline-block;
+    border: 2px solid #0076a3;
+    border-radius: 8px;
+    color: #fff;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+    padding: 0.7em 2.0em 0.7em 2.0em;
+    padding: 0.25em 1.5em 0.25em 1.5em;
+    background: #0095cd;
+    background: -webkit-gradient(linear, left top, left bottom, from(#00adee), to(#0078a5));
+    background: -moz-linear-gradient(top,  #00adee,  #0078a5);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0078a5');
+    background: linear-gradient(to bottom, #00adee, #0078a5);
+}
+
 
 #content div.embed-video {
     border: 2px solid #ccc;
