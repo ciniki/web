@@ -31,14 +31,14 @@ header div.signin div.signin-wrapper {
 #sub-menu-container li a:visited,
 #sub-menu-container li a:hover,
 #sub-menu-container li a:active {
-    color: #999;
+    color: #777;
     font-weight: 100;
 }
 #main-menu-container li a,
 #main-menu-container li a:visited,
 #main-menu-container li a:hover,
 #main-menu-container li a:active {
-    color: #999;
+    color: #777;
     font-weight: 100;
 }
 #sub-menu-container li.menu-item {
@@ -48,11 +48,11 @@ header div.signin div.signin-wrapper {
     background: inherit;
     filter:  none;
     border-radius: 0px;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #ccc;
     margin-bottom: 0px;
 }
 #sub-menu-container {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #bbb;
 }
 #main-menu-container li.menu-item {
     border: 0px;
@@ -253,6 +253,7 @@ header h1 a:active,
     border-bottom: 2px dashed #ddd;
 }
 /* Setup drop shadows and borderless on images */
+#content div.gallery-image-wrap,
 #content div.image-categories-thumbnail {
     border: 0px;
 }
@@ -265,10 +266,34 @@ header h1 a:active,
 #content div.image {
     border: 0px;
 }
+#content div.gallery-image-wrap img,
 #content div.image-gallery-thumbnail img,
 #content div.image-categories-thumbnail img,
 #content div.image-cilist-thumbnail img,
 #content div.image-list-wrap img,
 #content div.image img {
     box-shadow: 1px 1px 5px #555;
+}
+#content div.gallery-image-wrap a.gallery-image-prev div,
+#content div.gallery-image-wrap a.gallery-image-next div {
+    background-color: transparent;
+}
+#content table.blist > tbody > tr > th, 
+#content table.blist > tbody > tr > td,
+#content table.clist > tbody > tr > th,
+#content table.clist > tbody > tr > td,
+#content table.cilist > tbody > tr > th,
+#content table.cilist > tbody > tr > td,
+#content table.members-list > tbody > tr > th,
+#content table.members-list > tbody > tr > td,
+#content table.sponsors-list > tbody > tr > th,
+#content table.sponsors-list > tbody > tr > td,
+#content table.exhibitors-list > tbody > tr > th,
+#content table.exhibitors-list > tbody > tr > td,
+#content table.downloads-list th,
+#content table.downloads-list td,
+#content table.event-list th,
+#content table.event-list td,
+hr.footer-section-divider {
+    border-color: #bbb;
 }
