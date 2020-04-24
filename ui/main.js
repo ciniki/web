@@ -1373,9 +1373,10 @@ function ciniki_web_main() {
             'options':{'label':'', 'fields':{
                 'page-products-active':{'label':'Display Products', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-products-name':{'label':'Name', 'type':'text', 'hint':'default is Products'},
-                'page-products-categories-format':{'label':'Category Format', 'type':'toggle', 'default':'thumbnails', 'toggles':{'thumbnails':'Thumbnails', 'list':'List'}},
+                'page-products-categories-format':{'label':'Category Format', 'type':'toggle', 'default':'thumbnails', 'toggles':{'thumbnails':'Thumbnails', 'list':'List', 'tradingcards':'Trading Cards'}},
                 'page-products-categories-size':{'label':'Category Thumbnail Size', 'type':'toggle', 'default':'auto', 'toggles':this.productThumbnailToggles},
                 'page-products-subcategories-size':{'label':'Sub-Category Thumbnail Size', 'type':'toggle', 'default':'auto', 'toggles':this.productThumbnailToggles},
+                'page-products-list-format':{'label':'List Format', 'type':'toggle', 'default':'imagelist', 'toggles':{'imagelist':'Image List', 'tradingcards':'Trading Cards'}},
                 'page-products-thumbnail-format':{'label':'Thumbnail Format', 'type':'toggle', 'default':'square-cropped', 'toggles':{'square-cropped':'Cropped', 'square-padded':'Padded'}},
                 'page-products-thumbnail-padding-color':{'label':'Padding Color', 'type':'colour'},
                 'page-products-path':{'label':'Path', 'type':'toggle', 'default':'yes', 'toggles':this.activeToggles},

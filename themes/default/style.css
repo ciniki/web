@@ -1152,7 +1152,8 @@ aside div.borderless {
     padding: 5px;
 }
 #content div.cart-pricelist {
-    font-size: 1.0em;
+    font-size: 1.1em;
+    color: #555;
 }
 
 #content div.cart-pricelist form {
