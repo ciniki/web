@@ -27,6 +27,7 @@ function ciniki_web_main() {
     this.themesAvailable = {
         'default':'Simple - Black/White',
         'plainwhite':'Plain White - Black/White',
+        'whitedrop':'Drop Shadows - Black/White',
         'black':'Midnight Blue - Blue/Black',
         'midnightorange':'Midnight Orange - Orange/Black',
         'davinci':'Davinci - Brown/Beige',
