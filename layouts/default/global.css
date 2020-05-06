@@ -1938,17 +1938,33 @@ table.order-options td {
     padding: 0.6em 0.5em;
     box-sizing: border-box;
 }
-table.order-season tbody td:nth-child(4),
-table.order-repeats tbody td:nth-child(2),
-table.order-repeats tbody td:nth-child(3) {
+table.order-options td span.queue-slots {
+    padding: 0em 0.5em;
+}
+#content table.order-options span.order-options-queue-slot-open {
+    font-size: 1.072em;
+}
+#content table.order-options span.order-options-queue-slot-filled,
+#content table.order-options span.order-options-queue-slot-open {
+    padding: 0em 0.1em;
+    display: inline-block;
+    vertical-align: middle;
+}
+table.order-season tbody td:nth-child(5),
+table.order-repeats tbody td:nth-child(3),
+table.order-repeats tbody td:nth-child(4) {
     text-align: right;
 }
 table.order-options tbody tr td {
     min-width: 2em;
     vertical-align: middle;
 }
-table.order-options tbody td:nth-child(3),
-table.order-options tbody td:nth-child(4) {
+table.order-options tbody td:nth-child(2) {
+    text-align: right;
+}
+table.order-options tbody td:nth-child(2),
+table.order-options tbody td:nth-child(4),
+table.order-options tbody td:nth-child(5) {
     font-size: 1.2em;
     vertical-align: middle;
     padding: 0.1em;
