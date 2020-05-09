@@ -92,7 +92,6 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $tnid, $block)
                 if( isset($option['queue_slots_total']) && $option['queue_slots_total'] > 0 
                     && isset($option['queue_slots_filled']) 
                     ) {
-                    error_log(print_r($option,true));
                     $js_variables['queue_size_other_' . $option['id']] = ($option['queue_size'] - $option['queue_quantity']);
                     $js_variables['queue_slots_total_' . $option['id']] = $option['queue_slots_total'];
                     $js_variables['queue_slots_filled_' . $option['id']] = $option['queue_slots_filled'];
@@ -200,7 +199,6 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $tnid, $block)
                         . "</div>";
                     $js_variables['repeat_quantity_' . $option['id']] = $option['repeat_quantity'];
                     $js_variables['repeat_days_' . $option['id']] = isset($option['repeat_days']) ? $option['repeat_days'] : 0;
-//                        $content .= "<pre>" . print_r($option, true) . "</pre>";
                     $content .=  "<div id='repeat_option_next_" . $option['id'] . "' class='repeat-option " . ($option['repeat_quantity']>0?'':"repeat-next-hide") . "'>"
                         . "Next order on <span id='repeat_date_next_" . $option['id'] . "'>" . $option['repeat_next_date'] . "</span>"
                         . " <button onclick='repeatSkip_{$blkid}(" . $option['id'] . ");'>Skip</button>"
