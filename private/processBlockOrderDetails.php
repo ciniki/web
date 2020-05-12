@@ -56,19 +56,43 @@ function ciniki_web_processBlockOrderDetails(&$ciniki, $settings, $tnid, $block)
         if( isset($block['order']['items']) && count($block['order']['items']) > 0 ) {
             $content .= "<tbody>";   
             foreach($block['order']['items'] as $item) {
+                $subitem_text = '';
+                if( isset($item['subitems']) ) {
+                    ciniki_core_loadMethod($ciniki, 'ciniki', 'poma', 'private', 'formatItems');
+                    $rc = ciniki_poma_formatItems($ciniki, $tnid, $item['subitems']);
+                    if( $rc['stat'] != 'ok' ) {
+                        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.184', 'msg'=>'Unable to load order', 'err'=>$rc['err']));
+                    }
+                    $subitems = isset($rc['items']) ? $rc['items'] : array();
+                    foreach($subitems as $subitem) {
+                        if( $subitem['quantity'] > 0 ) {
+                            if( $subitem['quantity'] > 1 ) {
+                                $subitem_text .= $subitem['quantity'] 
+                                    . ($subitem['quantity_plural'] != '' ? ' ' . $subitem['quantity_plural'] : '');
+                            } else {
+                                $subitem_text .= $subitem['quantity']
+                                    . ($subitem['quantity_single'] != '' ? ' ' . $subitem['quantity_single'] : '');
+                            }
+                            $subitem_text .= ' - ' . $subitem['description'] . '<br/>';
+                        }
+                    }
+                }
+                if( $subitem_text != '' ) {
+                    $subitem_text = '<div class="subitems">' . $subitem_text . '</div>';
+                }
                 $sub_button = '';
                 if( isset($item['substitutions']) && $item['substitutions'] == 'yes' ) {
                     $sub_button = "<span class='order-details-substitutions'><a href='" . $block['base_url'] . "/substitutions/" . $item['id'] . "'>Customize</a></span>";
                 }
                 $content .= "<tr id='order_item_" . $item['id'] . "'>";
                 if( isset($item['code']) && $item['code'] != '' && isset($item['description']) && $item['description'] != '' ) {
-                    $content .= "<td>" . $item['code'] . ' - ' . $item['description'] . " $sub_button</td>";
+                    $content .= "<td>" . $item['code'] . ' - ' . $item['description'] . " $sub_button$subitem_text</td>";
                 } elseif( $item['code'] != '' ) {
-                    $content .= "<td>" . $item['code'] . " $sub_button</td>";
+                    $content .= "<td>" . $item['code'] . " $sub_button$subitem_text</td>";
                 } elseif( $item['description'] != '' ) {
-                    $content .= "<td>" . $item['description'] . " $sub_button</td>";
+                    $content .= "<td>" . $item['description'] . " $sub_button$subitem_text</td>";
                 } else {
-                    $content .= "<td>$sub_button</td>";
+                    $content .= "<td>$sub_button$subitem_text</td>";
                 }
                 if( isset($block['order']['editable']) && $block['order']['editable'] == 'yes' 
                     && isset($item['modifications']) && $item['modifications'] == 'yes'

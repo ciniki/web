@@ -683,6 +683,20 @@ article {
     padding: 0.25em;
 }
 
+/* Block: OptionList */
+#content div.option-list {
+}
+#content div.option-list-item {
+    width: 100%;
+}
+#content div.option-list-item span {
+    display: inline-block;
+    padding: 0.25em 0.5em;
+}
+#content div.option-list-button a {
+    display: inline-block;
+}
+
 /* Block: FoldingTable */
 #content div.folding-table {
     display: block;
@@ -1379,6 +1393,9 @@ div.sponsor-gallery-thumbnail img {
     width: 100%;
     height: 9em;
 }
+#content form textarea.large {
+    height: 15em;
+}
 #content form input.text {
     width: 100%;
     box-sizing: border-box;
@@ -1921,17 +1938,33 @@ table.order-options td {
     padding: 0.6em 0.5em;
     box-sizing: border-box;
 }
-table.order-season tbody td:nth-child(4),
-table.order-repeats tbody td:nth-child(2),
-table.order-repeats tbody td:nth-child(3) {
+table.order-options td span.queue-slots {
+    padding: 0em 0.5em;
+}
+#content table.order-options span.order-options-queue-slot-open {
+    font-size: 1.072em;
+}
+#content table.order-options span.order-options-queue-slot-filled,
+#content table.order-options span.order-options-queue-slot-open {
+    padding: 0em 0.1em;
+    display: inline-block;
+    vertical-align: middle;
+}
+table.order-season tbody td:nth-child(5),
+table.order-repeats tbody td:nth-child(3),
+table.order-repeats tbody td:nth-child(4) {
     text-align: right;
 }
 table.order-options tbody tr td {
     min-width: 2em;
     vertical-align: middle;
 }
-table.order-options tbody td:nth-child(3),
-table.order-options tbody td:nth-child(4) {
+table.order-options tbody td:nth-child(2) {
+    text-align: right;
+}
+table.order-options tbody td:nth-child(2),
+table.order-options tbody td:nth-child(4),
+table.order-options tbody td:nth-child(5) {
     font-size: 1.2em;
     vertical-align: middle;
     padding: 0.1em;

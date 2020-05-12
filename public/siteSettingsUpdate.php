@@ -291,6 +291,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-products-categories-format',
         'page-products-categories-size',
         'page-products-subcategories-size',
+        'page-products-list-format',
         'page-products-thumbnail-format',
         'page-products-thumbnail-padding-color',
         'page-pdfcatalogs-active',

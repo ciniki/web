@@ -499,6 +499,11 @@ span.exhibitors-description {
     margin: 0px;
 }
 
+#content div.option-list-item {
+    display: inline-block;
+    width: 50%;
+}
+
 /* 9. CUSTOM LAYOUT & TYPOGRAPHY (Mummy bear)
 ----------------------------------------------------------------------------------------*/
 @media screen and (min-width: 30em) and (max-width: 63.236em) {
@@ -628,6 +633,7 @@ span.exhibitors-description {
         max-width: 45em;
         margin: 0 auto;
     }
+
 }
 
 /* 10. CUSTOM LAYOUT & TYPOGRAPHY (Older Sister bear)
@@ -1044,6 +1050,10 @@ span.exhibitors-description {
     #content table.order-repeats tbody td > div.repeat-option:nth-child(2) {
         margin-top: 1em;
     }*/
+    #content div.option-list-item {
+        display: inline-block;
+        width: 33%;
+    }
 }
 
 @media screen and (min-width: 60em) {
@@ -1072,6 +1082,10 @@ span.exhibitors-description {
     #content table.order-repeats tbody td > div.repeat-option:nth-child(2) {
         margin-top: 0;
     } */
+    #content div.option-list-item {
+        display: inline-block;
+        width: 25%;
+    }
 }
 
 @media screen and (min-width: 62em) {

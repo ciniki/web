@@ -128,7 +128,7 @@ a img {
     background: linear-gradient(to bottom, #888, #555);
 }
 
-/* Product Cards */
+/* Block: Product Cards */
 div.product-card-wrap {
     border: 1px solid #ddd;
     padding: 0.75em;
@@ -146,7 +146,7 @@ div.product-card-title {
     color: #333;
 }
 
-/* Trading Cards */
+/* Block: Trading Cards */
 div.trading-cards {
     text-align: center;
     display: flex;
@@ -204,8 +204,11 @@ div.trading-card-text span.trading-card-price {
     font-size: 1.2em;
     display: block;
 }
+div.trading-card img {
+    box-shadow: 1px 1px 5px #555;
+}
 
-/* Price Cards */
+/* Block: Price Cards */
 div.price-card-wrap {
     padding: 0.75em;
 }
@@ -680,7 +683,7 @@ div.thumbnail-list-item-text {
     font-weight: normal;
     padding: 0.5em;
 /*    border-radius: 0.5em;  */
-    border: 1px solid #ccc; 
+    border: 1px solid #aaa; 
     color: #555;
 }
 
@@ -729,6 +732,7 @@ div.thumbnail-list-item-text {
     color: #439BBD;
 }
 
+#content form button.submit,
 #content form input.submit {
     font-size: 1.0em;
     border-radius: 8px;
@@ -743,6 +747,7 @@ div.thumbnail-list-item-text {
     background: linear-gradient(to bottom, #00adee, #0078a5);
 }
 
+#content form button.bigsubmit,
 #content form input.bigsubmit {
     min-width: 13em;
     font-size: 1.3em;
@@ -758,6 +763,7 @@ div.thumbnail-list-item-text {
     background: linear-gradient(to bottom, #faa51a, #f47a20);
 }
 
+#content form button.bigsubmit2,
 #content form input.bigsubmit2 {
     min-width: 13em;
     font-size: 1.3em;
@@ -766,6 +772,21 @@ div.thumbnail-list-item-text {
     color: #fff;
     text-shadow: 0 1px 1px rgba(0,0,0,0.5);
     padding: 0.7em 2.0em 0.7em 2.0em;
+    background: #0095cd;
+    background: -webkit-gradient(linear, left top, left bottom, from(#00adee), to(#0078a5));
+    background: -moz-linear-gradient(top,  #00adee,  #0078a5);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0078a5');
+    background: linear-gradient(to bottom, #00adee, #0078a5);
+}
+
+#content .option-list-button a {
+    display: inline-block;
+    border: 2px solid #0076a3;
+    border-radius: 8px;
+    color: #fff;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+    padding: 0.7em 2.0em 0.7em 2.0em;
+    padding: 0.25em 1.5em 0.25em 1.5em;
     background: #0095cd;
     background: -webkit-gradient(linear, left top, left bottom, from(#00adee), to(#0078a5));
     background: -moz-linear-gradient(top,  #00adee,  #0078a5);
@@ -1131,7 +1152,8 @@ aside div.borderless {
     padding: 5px;
 }
 #content div.cart-pricelist {
-    font-size: 1.0em;
+    font-size: 1.1em;
+    color: #555;
 }
 
 #content div.cart-pricelist form {
@@ -1591,6 +1613,23 @@ aside div.borderless {
     background: #ddd;
     font-weight: bold;
 }
+
+/* Block: content */
+#content .block.block-sold-out {
+    font-size: 1.1em;
+    color: #333;
+}
+#content .block.block-artist-link {
+    font-size: 1.1em;
+    color: #333;
+}
+
+/* Block: price-list */
+#content .block.block-price-list {
+    font-size: 1.1em;
+    color: #333;
+}
+
 
 /* Block: RegistrationForm */
 #content form.registration-form div.section-content {

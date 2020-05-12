@@ -29,7 +29,7 @@ function ciniki_web_pageImageAdd(&$ciniki) {
         return $rc;
     }   
     $args = $rc['args'];
-error_log(print_r($args, true));
+
     //  
     // Make sure this module is activated, and
     // check permission to run this function for this tenant
