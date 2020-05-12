@@ -1419,6 +1419,26 @@ function ciniki_web_main() {
         //
         // The options and information for the buy/sell jiji page
         //
+        this.fielddaylog = new M.panel('Field Day',
+            'ciniki_web_main', 'fielddaylog',
+            'mc', 'medium', 'sectioned', 'ciniki.web.main.fielddaylog');
+        this.fielddaylog.data = {};
+        this.fielddaylog.sections = {
+            'options':{'label':'', 'fields':{
+                'page-fielddaylog-active':{'label':'Field Day', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                }},
+            '_save':{'label':'', 'buttons':{
+                'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'fielddaylog\');'},
+                }},
+        };
+        this.fielddaylog.fieldValue = this.fieldValue;
+        this.fielddaylog.fieldHistoryArgs = this.fieldHistoryArgs;
+        this.fielddaylog.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'fielddaylog\');');
+        this.fielddaylog.addClose('Cancel');
+
+        //
+        // The options and information for the buy/sell jiji page
+        //
         this.jiji = new M.panel('Buy/Sell',
             'ciniki_web_main', 'jiji',
             'mc', 'medium', 'sectioned', 'ciniki.web.main.jiji');
