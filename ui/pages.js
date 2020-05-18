@@ -464,7 +464,7 @@ function ciniki_web_pages() {
             };
             this[pn].deletePage = function() {
                 var p = this;
-                if( confirm('Are you sure you want to delete this page? All files and images will also be removed from this page.') ) {
+                M.confirm('Are you sure you want to delete this page? All files and images will also be removed from this page.',null,function() {
                     M.api.getJSONCb('ciniki.web.pageDelete', {'tnid':M.curTenantID, 
                         'page_id':p.page_id}, function(rsp) {
                             if( rsp.stat != 'ok' ) {
@@ -473,7 +473,7 @@ function ciniki_web_pages() {
                             }
                             p.close();
                         });
-                }
+                });
             };
         }
 
@@ -562,7 +562,7 @@ function ciniki_web_pages() {
         //
         var appContainer = M.createContainer(appPrefix, 'ciniki_web_pages', 'yes');
         if( appContainer == null ) {
-            alert('App Error');
+            M.alert('App Error');
             return false;
         } 
 

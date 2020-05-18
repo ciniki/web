@@ -137,7 +137,7 @@ function ciniki_web_collections() {
         //
         var appContainer = M.createContainer(ap, 'ciniki_web_collections', 'yes');
         if( appContainer == null ) {
-            alert('App Error');
+            M.alert('App Error');
             return false;
         } 
 
@@ -216,7 +216,7 @@ function ciniki_web_collections() {
         } else {
             var name = this.edit.formValue('name');
             if( name == '' ) {
-                alert('You must enter the name of the collection first');
+                M.alert('You must enter the name of the collection first');
                 return false;
             }
             var c = this.edit.serializeForm('yes');
@@ -232,9 +232,9 @@ function ciniki_web_collections() {
     };
 
     this.deleteCollection = function() {
-        if( confirm('Are you sure you want to this collection?') ) {
+        M.confirm('Are you sure you want to this collection?',null,function() {
             var rsp = M.api.getJSONCb('ciniki.web.collectionDelete', {'tnid':M.curTenantID, 
-                'collection_id':this.edit.collection_id}, 
+                'collection_id':M.ciniki_web_collections.edit.collection_id}, 
                 function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
@@ -242,6 +242,6 @@ function ciniki_web_collections() {
                     }
                     M.ciniki_web_collections.edit.close();
                 });
-        }
+        });
     };
 };

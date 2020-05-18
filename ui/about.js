@@ -99,7 +99,7 @@ function ciniki_web_about() {
         //
         var appContainer = M.createContainer(ap, 'ciniki_web_about', 'yes');
         if( appContainer == null ) {
-            alert('App Error');
+            M.alert('App Error');
             return false;
         } 
 

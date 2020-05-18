@@ -117,7 +117,7 @@ function ciniki_web_pagefiles() {
             }
         }
         this.edit.remove = function() {
-            if( confirm('Are you sure you want to delete \'' + this.data.name + '\'?  All information about it will be removed and unrecoverable.') ) {
+            M.confirm('Are you sure you want to delete \'' + this.data.name + '\'?  All information about it will be removed and unrecoverable.',null,function() {
                 var rsp = M.api.getJSONCb('ciniki.web.pageFileDelete', {'tnid':M.curTenantID, 
                     'file_id':M.ciniki_web_pagefiles.edit.file_id}, function(rsp) {
                         if( rsp.stat != 'ok' ) {
@@ -126,7 +126,7 @@ function ciniki_web_pagefiles() {
                         } 
                         M.ciniki_web_pagefiles.edit.close();
                     });
-            }
+            });
         }
         this.edit.addButton('save', 'Save', 'M.ciniki_web_pagefiles.edit.save();');
         this.edit.addClose('Cancel');
@@ -141,7 +141,7 @@ function ciniki_web_pagefiles() {
         //
         var appContainer = M.createContainer(appPrefix, 'ciniki_web_pagefiles', 'yes');
         if( appContainer == null ) {
-            alert('App Error');
+            M.alert('App Error');
             return false;
         }
 
@@ -150,7 +150,7 @@ function ciniki_web_pagefiles() {
         } else if( args.page_id != null && args.page_id > 0 ) {
             this.add.open(cb, args.page_id);
         } else {
-            alert('Invalid request');
+            M.alert('Invalid request');
         }
     }
 }

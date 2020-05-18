@@ -165,7 +165,7 @@ function ciniki_web_sliders() {
         //
         var appContainer = M.createContainer(ap, 'ciniki_web_sliders', 'yes');
         if( appContainer == null ) {
-            alert('App Error');
+            M.alert('App Error');
             return false;
         } 
 
@@ -219,7 +219,7 @@ function ciniki_web_sliders() {
         } else {
             var name = this.edit.formValue('name');
             if( name == '' ) {
-                alert('You must enter the name of the slider first');
+                M.alert('You must enter the name of the slider first');
                 return false;
             }
             // Save the slider
@@ -265,7 +265,7 @@ function ciniki_web_sliders() {
         } else {
             var name = this.edit.formValue('name');
             if( name == '' ) {
-                alert('You must enter the name of the slider first');
+                M.alert('You must enter the name of the slider first');
                 return false;
             }
             var c = this.edit.serializeForm('yes');
@@ -284,9 +284,9 @@ function ciniki_web_sliders() {
     };
 
     this.deleteSlider = function() {
-        if( confirm('Are you sure you want to this slider?') ) {
+        M.confirm('Are you sure you want to this slider?',null,function() {
             var rsp = M.api.getJSONCb('ciniki.web.sliderDelete', {'tnid':M.curTenantID, 
-                'slider_id':this.edit.slider_id}, 
+                'slider_id':M.ciniki_web_sliders.edit.slider_id}, 
                 function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
@@ -294,6 +294,6 @@ function ciniki_web_sliders() {
                     }
                     M.ciniki_web_sliders.edit.close();
                 });
-        }
+        });
     };
 };

@@ -105,7 +105,7 @@ function ciniki_web_faq() {
         //
         var appContainer = M.createContainer(ap, 'ciniki_web_faq', 'yes');
         if( appContainer == null ) {
-            alert('App Error');
+            M.alert('App Error');
             return false;
         } 
 
@@ -241,9 +241,9 @@ function ciniki_web_faq() {
     };
 
     this.deleteFAQ = function() {
-        if( confirm('Are you sure you want to this question?') ) {
+        M.confirm('Are you sure you want to this question?',null,function() {
             var rsp = M.api.getJSONCb('ciniki.web.faqDelete', {'tnid':M.curTenantID, 
-                'faq_id':this.edit.faq_id}, 
+                'faq_id':M.ciniki_web_faq.edit.faq_id}, 
                 function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
@@ -251,6 +251,6 @@ function ciniki_web_faq() {
                     }
                     M.ciniki_web_faq.edit.close();
                 });
-        }
+        });
     };
 };

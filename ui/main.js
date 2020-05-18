@@ -931,7 +931,7 @@ function ciniki_web_main() {
                     M.ciniki_web_main.contact.setFieldValue('page-contact-map-longitude', results[0].geometry.location.lng());
                     M.stopLoad();
                 } else {
-                    alert('We were unable to lookup your latitude/longitude, please check your address in Settings: ' + status);
+                    M.alert('We were unable to lookup your latitude/longitude, please check your address in Settings: ' + status);
                     M.stopLoad();
                 }
             }); 
@@ -2215,7 +2215,7 @@ function ciniki_web_main() {
         //
         var appContainer = M.createContainer(ap, 'ciniki_web_main', 'yes');
         if( appContainer == null ) {
-            alert('App Error');
+            M.alert('App Error');
             return false;
         } 
 
@@ -2857,36 +2857,36 @@ function ciniki_web_main() {
     };
 
     this.clearCache = function(page) {
-        if( confirm('Are you sure you wish to clear the web cache?') ) {
-            var rsp = M.api.getJSONCb('ciniki.web.clearCache', {'tnid':M.curTenantID}, function(rsp) {
+        M.confirm('Are you sure you wish to clear the web cache?',null,function() {
+            M.api.getJSONCb('ciniki.web.clearCache', {'tnid':M.curTenantID}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
                 }
-                alert("The cache has been cleared. ****** REBUILD INDEX ******* ");
+                M.alert("The cache has been cleared. ****** REBUILD INDEX ******* ");
             });
-        }
+        });
     };
 
     this.clearContentCache = function(page) {
-        if( confirm('Are you sure you wish to clear the web cache?') ) {
-            var rsp = M.api.getJSONCb('ciniki.web.clearContentCache', {'tnid':M.curTenantID}, function(rsp) {
+        M.confirm('Are you sure you wish to clear the web cache?',null,function() {
+            M.api.getJSONCb('ciniki.web.clearContentCache', {'tnid':M.curTenantID}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
                 }
-                alert("The cache has been cleared");
+                M.alert("The cache has been cleared");
             });
-        }
+        });
     };
 
     this.updateIndex = function(page) {
-        var rsp = M.api.getJSONCb('ciniki.web.indexUpdateNow', {'tnid':M.curTenantID}, function(rsp) {
+        M.api.getJSONCb('ciniki.web.indexUpdateNow', {'tnid':M.curTenantID}, function(rsp) {
             if( rsp.stat != 'ok' ) {
                 M.api.err(rsp);
                 return false;
             }
-            alert("The index has been updated");
+            M.alert("The index has been updated");
         });
     };
 

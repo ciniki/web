@@ -317,7 +317,7 @@ function ciniki_web_privatethemes() {
         //
         var appContainer = M.createContainer(ap, 'ciniki_web_privatethemes', 'yes');
         if( appContainer == null ) {
-            alert('App Error');
+            M.alert('App Error');
             return false;
         } 
 
@@ -390,7 +390,7 @@ function ciniki_web_privatethemes() {
         } else {
             var name = this.edit.formValue('name');
             if( name == '' ) {
-                alert('You must enter the name of the theme first');
+                M.alert('You must enter the name of the theme first');
                 return false;
             }
             var c = this.edit.serializeForm('yes');
@@ -408,8 +408,8 @@ function ciniki_web_privatethemes() {
     };
 
     this.themeDelete = function() {
-        if( confirm('Are you sure you want to this theme?') ) {
-            var rsp = M.api.getJSONCb('ciniki.web.privateThemeDelete', {'tnid':M.curTenantID, 'theme_id':this.edit.theme_id}, 
+        M.confirm('Are you sure you want to this theme?',null,function() {
+            var rsp = M.api.getJSONCb('ciniki.web.privateThemeDelete', {'tnid':M.curTenantID, 'theme_id':M.ciniki_web_privatethemes.edit.theme_id}, 
                 function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
@@ -417,7 +417,7 @@ function ciniki_web_privatethemes() {
                     }
                     M.ciniki_web_privatethemes.edit.close();
                 });
-        }
+        });
     };
 
     this.contentEdit = function(cb, cid, tid, ctype) {
@@ -425,7 +425,7 @@ function ciniki_web_privatethemes() {
         if( cid == 0 && tid != null && tid == 0 ) {
             var name = this.edit.formValue('name');
             if( name == '' ) {
-                alert('You must enter the name of the theme first');
+                M.alert('You must enter the name of the theme first');
                 return false;
             }
             var c = this.edit.serializeForm('yes');
@@ -483,7 +483,7 @@ function ciniki_web_privatethemes() {
         } else {
             var name = this.content.formValue('name');
             if( name == '' ) {
-                alert('You must enter the name of the theme first');
+                M.alert('You must enter the name of the theme first');
                 return false;
             }
             var c = this.content.serializeForm('yes');
@@ -499,8 +499,8 @@ function ciniki_web_privatethemes() {
     };
 
     this.contentDelete = function() {
-        if( confirm('Are you sure you want to this content?') ) {
-            var rsp = M.api.getJSONCb('ciniki.web.privateThemeContentDelete', {'tnid':M.curTenantID, 'content_id':this.content.content_id}, 
+        M.confirm('Are you sure you want to this content?',null,function() {
+            var rsp = M.api.getJSONCb('ciniki.web.privateThemeContentDelete', {'tnid':M.curTenantID, 'content_id':M.ciniki_web_privatethemes.content.content_id}, 
                 function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
@@ -508,7 +508,7 @@ function ciniki_web_privatethemes() {
                     }
                     M.ciniki_web_privatethemes.content.close();
                 });
-        }
+        });
     };
 
     this.imageEdit = function(cb, iid, tid) {
@@ -570,15 +570,15 @@ function ciniki_web_privatethemes() {
     };
 
     this.imageDelete = function() {
-        if( confirm('Are you sure you want to delete this image?') ) {
+        M.confirm('Are you sure you want to delete this image?',null,function() {
             var rsp = M.api.getJSONCb('ciniki.web.privateThemeImageDelete', {'tnid':M.curTenantID, 
-                'theme_image_id':this.image.theme_image_id}, function(rsp) {
+                'theme_image_id':M.ciniki_web_privatethemes.image.theme_image_id}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;
                     }
                     M.ciniki_web_privatethemes.image.close();
                 });
-        }
+        });
     };
 };

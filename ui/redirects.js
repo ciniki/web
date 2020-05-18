@@ -75,7 +75,7 @@ function ciniki_web_redirects() {
         //
         var appContainer = M.createContainer(appPrefix, 'ciniki_web_redirects', 'yes');
         if( appContainer == null ) {
-            alert('App Error');
+            M.alert('App Error');
             return false;
         } 
 
@@ -150,7 +150,7 @@ function ciniki_web_redirects() {
     };
 
     this.redirectDelete = function() {
-        if( confirm("Are you sure you want to remove this redirect?") ) {
+        M.confirm("Are you sure you want to remove this redirect?",null,function() {
             var rsp = M.api.getJSONCb('ciniki.web.redirectDelete', 
                 {'tnid':M.curTenantID, 'redirect_id':M.ciniki_web_redirects.edit.redirect_id}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
@@ -159,6 +159,6 @@ function ciniki_web_redirects() {
                     }
                     M.ciniki_web_redirects.edit.close();
                 });
-        }
+        });
     }
 };
