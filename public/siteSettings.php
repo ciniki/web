@@ -182,6 +182,9 @@ function ciniki_web_siteSettings($ciniki) {
             $pages['memberblog'] = array('display_name'=>'Member News', 'active'=>'no');
         }
     }
+    if( isset($ciniki['tenant']['modules']['qruqsp.fielddaylog']) ) {
+        $pages['fielddaylog'] = array('display_name'=>'Field Day', 'active'=>'no');
+    }
     if( isset($ciniki['tenant']['modules']['ciniki.jiji']) ) {
         $pages['jiji'] = array('display_name'=>'Buy/Sell', 'active'=>'no');
     }
@@ -328,6 +331,9 @@ function ciniki_web_siteSettings($ciniki) {
     }
     if( isset($settings['page-patents-active']) && $settings['page-patents-active'] == 'yes' ) {
         $pages['patents']['active'] = 'yes';
+    }
+    if( isset($settings['page-fielddaylog-active']) && $settings['page-fielddaylog-active'] == 'yes' ) {
+        $pages['fielddaylog']['active'] = 'yes';
     }
     if( isset($settings['page-jiji-active']) && $settings['page-jiji-active'] == 'yes' ) {
         $pages['jiji']['active'] = 'yes';

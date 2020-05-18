@@ -988,6 +988,12 @@ if( $found == 'no' ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
         $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['tnid'], 'ciniki.patents');
     } 
+    // fielddaylog
+    elseif( $ciniki['request']['page'] == 'fieldday' 
+        && isset($settings['page-fielddaylog-active']) && $settings['page-fielddaylog-active'] == 'yes' ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
+        $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['tnid'], 'qruqsp.fielddaylog');
+    } 
     // jiji
     elseif( $ciniki['request']['page'] == 'buysell' 
         && isset($settings['page-jiji-active']) && $settings['page-jiji-active'] == 'yes' ) {
