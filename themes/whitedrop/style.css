@@ -31,14 +31,14 @@ header div.signin div.signin-wrapper {
 #sub-menu-container li a:visited,
 #sub-menu-container li a:hover,
 #sub-menu-container li a:active {
-    color: #777;
+    color: #555;
     font-weight: 100;
 }
 #main-menu-container li a,
 #main-menu-container li a:visited,
 #main-menu-container li a:hover,
 #main-menu-container li a:active {
-    color: #777;
+    color: #555;
     font-weight: 100;
 }
 #sub-menu-container li.menu-item {
@@ -48,11 +48,11 @@ header div.signin div.signin-wrapper {
     background: inherit;
     filter:  none;
     border-radius: 0px;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #aaa;
     margin-bottom: 0px;
 }
 #sub-menu-container {
-    border-bottom: 1px solid #bbb;
+    border-bottom: 1px solid #aaa;
 }
 #main-menu-container li.menu-item {
     border: 0px;
@@ -62,11 +62,11 @@ header div.signin div.signin-wrapper {
     filter:  none;
     color: #999;
     border-radius: 0px;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #aaa;
     margin-bottom: 0px;
 }
 #main-menu-container {
-    border-bottom: 1px solid #ddd; 
+    border-bottom: 1px solid #aaa; 
 }
 a,
 a:visited,
@@ -129,13 +129,13 @@ header h1 a:active,
         background: inherit;
         filter: none;
         text-shadow: none;
-        border-top: 1px solid #ddd;
-        border-bottom: 1px solid #ddd;
+        border-top: 1px solid #aaa;
+        border-bottom: 1px solid #aaa;
         text-align: center;
     }
     #sub-menu-container ul.menu li.menu-item {
        text-shadow: none;
-       border-bottom: 1px solid #ddd;
+       border-bottom: 1px solid #aaa;
        border-radius: 0px;
     }
     #main-menu-container ul.menu li.menu-item {
@@ -295,5 +295,5 @@ header h1 a:active,
 #content table.event-list th,
 #content table.event-list td,
 hr.footer-section-divider {
-    border-color: #bbb;
+    border-color: #aaa;
 }
