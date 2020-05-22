@@ -85,12 +85,18 @@ header h1 a:active,
 #content h1.entry-title {
   color: #333;
 }
+#content div.slider-cropped div.slider-image-wrap {
+    border: 1px solid #777;
+    padding: 0px;
+    box-shadow: 1px 1px 5px #555;
+}
 #content div.slider ul li img {
-  padding: 1px;
+  padding: 0px;
 }
 #content form textarea,
+#content article.page form input.text,
 #content form input.text {
-  border: 1px solid #ddd;
+  border: 1px solid #999;
 }
 #content h1.entry-title,
 #content h1 {
@@ -296,4 +302,24 @@ header h1 a:active,
 #content table.event-list td,
 hr.footer-section-divider {
     border-color: #aaa;
+}
+div.thumbnail-list {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-around;
+    align-content: stretch;
+}
+#content div.thumbnail-list-item-wrap {
+    min-width: 10em;
+    flex-basis: 12em;
+    max-width: 14em;
+    flex-shrink: 1;
+    flex-grow: 1;
+}
+@media screen and (min-width: 25em) {
+    #content div.thumbnail-list-item-wrap {
+        width: 50%;
+    }
 }
