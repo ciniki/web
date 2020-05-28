@@ -110,7 +110,7 @@ function ciniki_web_pages() {
                 '_content':{'label':'Content', 
                     'visible':function() { return M.ciniki_web_pages[pn].sectionVisible('_content'); },
                     'fields':{
-                        'content':{'label':'', 'type':'textarea', 'size':'large', 'hidelabel':'yes'},
+                        'content':{'label':'', 'type':'textarea', 'size':'xlarge', 'hidelabel':'yes'},
                     }},
                 'files':{'label':'Files', // 'aside':'yes', //'visible':'hidden', 
                     'visible':function() { return M.ciniki_web_pages[pn].sectionVisible('files'); },
