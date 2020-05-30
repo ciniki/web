@@ -202,7 +202,11 @@ function ciniki_web_pageLoad($ciniki, $settings, $tnid, $args) {
     }
     if( isset($rc['children']) ) {  
         // If only one category or no category, then display as a list.
-        if( count($rc['children']) == 1 ) {
+        if( isset($page['flags']) && ($page['flags']&0x0400) == 0x0400 ) {
+            $page['children'] = array_pop($rc['children']);
+            $page['children'] = $page['children']['list'];
+        }
+        elseif( count($rc['children']) == 1 ) {
             $page['children'] = array();
             $list = array_pop($rc['children']);
             $list = $list['list'];

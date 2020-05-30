@@ -77,7 +77,7 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
             // Only display child page automatically when children
             // are to be displayed as a submenu.
             //
-            if( $i == 0 && $page['image_id'] == 0 && $page['content'] == '' && isset($page['children']) && count($page['children']) > 0 && ($page['flags']&0x90) == 0 ) {
+            if( $i == 0 && $page['image_id'] == 0 && $page['content'] == '' && isset($page['children']) && count($page['children']) > 0 && ($page['flags']&0x0490) == 0 ) {
                 $depth++;
                 $child = array_shift($page['children']);
                 reset($page['children']);
