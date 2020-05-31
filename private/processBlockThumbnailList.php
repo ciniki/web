@@ -28,7 +28,6 @@ function ciniki_web_processBlockThumbnailList(&$ciniki, $settings, $tnid, $block
 
     $content .= "<div class='thumbnail-list'>";
     foreach($block['list'] as $cid => $item) {
-    error_log(print_r($item,true));
         $image_id = 0;
         if( isset($item['image_id']) && $item['image_id'] > 0 ) {
             $image_id = $item['image_id'];
