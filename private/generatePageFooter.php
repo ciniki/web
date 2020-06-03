@@ -77,7 +77,7 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
     // Check if there is a footer menu
     //
     if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.web', 0x0200) 
-//        && isset($settings['theme']['footer-menu']) && $settings['theme']['footer-menu'] == 'yes' 
+        && (!isset($settings['theme']['footer-menu']) || $settings['theme']['footer-menu'] == 'yes')
         && isset($ciniki['response']['pages'])
         ) {
         //
@@ -182,11 +182,6 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
         $content .= "</ul>";
         $content .= "</div>";
         $content .= "</nav>";
-    }
-    //
-    // If theme didn't specifiy footer menu, then
-    else {
-
     }
 
     //
