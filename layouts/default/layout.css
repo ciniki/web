@@ -28,6 +28,7 @@ header span.title {
     margin-top: 0.5em;
 }
 
+/* .footer-menu-container ul.menu li.menu-item, */
 #sub-menu-container ul.menu li.menu-item,
 #main-menu-container ul.menu li.menu-item {
     display: inline-block;
@@ -36,6 +37,7 @@ header span.title {
     border: 0px;
 }
 
+.footer-menu-container ul.menu li.menu-item a,
 #sub-menu-container ul.menu li.menu-item a,
 #main-menu-container ul.menu li.menu-item a {
     width: auto;
@@ -44,6 +46,7 @@ header span.title {
     display: inline;
 }
 
+.footer-menu-container ul.menu li.compact-hidden, 
 #sub-menu-container ul.menu li.compact-hidden, 
 #main-menu-container ul.menu li.compact-hidden {
     display: inline-block;

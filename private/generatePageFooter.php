@@ -77,7 +77,7 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
     // Check if there is a footer menu
     //
     if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.web', 0x0200) 
-        && isset($settings['theme']['footer-menu']) && $settings['theme']['footer-menu'] == 'yes' 
+//        && isset($settings['theme']['footer-menu']) && $settings['theme']['footer-menu'] == 'yes' 
         && isset($ciniki['response']['pages'])
         ) {
         //
@@ -114,8 +114,9 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
             }
             //
             // If the footer menu item is the account page and the customer is not logged in, display the login form
+            // Old Code, no longer used
             //
-            if( isset($page['id']) && $page['id'] == 'account' 
+/*            if( isset($page['id']) && $page['id'] == 'account' 
                 && (!isset($ciniki['session']['customer']['id']) || $ciniki['session']['customer']['id'] < 1) 
                 ) {
                 if( isset($settings['page-account-signin-redirect']) 
@@ -175,12 +176,17 @@ function ciniki_web_generatePageFooter(&$ciniki, $settings) {
                         . "return true;\n"
                     . "}\n"
                     . "";
-            }
+            } */
             $content .= "</li>";
         }
         $content .= "</ul>";
         $content .= "</div>";
         $content .= "</nav>";
+    }
+    //
+    // If theme didn't specifiy footer menu, then
+    else {
+
     }
 
     //

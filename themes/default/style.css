@@ -90,6 +90,13 @@ a img {
     text-decoration: none;
     color: #fff;
 }
+.footer-menu-container li a,
+.footer-menu-container li a:visited,
+.footer-menu-container li a:hover,
+.footer-menu-container li a:active {
+    text-decoration: none;
+    color: #333;
+}
 #main-menu-container li a,
 #main-menu-container li a:visited,
 #main-menu-container li a:hover,
@@ -113,6 +120,19 @@ a img {
     background: linear-gradient(to bottom, #53ABCD, #136B8D);
 }
 
+.footer-menu-container li.menu-item {
+    font-size: 1.2em;
+    color: #555;
+    display: inline-block;
+}
+.footer-menu-container li.menu-item:first-child::before {
+    content: "\2022";
+    padding-right: 1em;
+}
+.footer-menu-container li.menu-item::after {
+    content: "\2022";
+    padding-left: 1em;
+}
 #main-menu-container li.menu-item {
     border: 2px solid #000;
     margin-bottom: 5px;

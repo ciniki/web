@@ -429,12 +429,21 @@ nav {
     text-align: center;
 }
 
+.footer-menu-container {
+    padding-left: 0px;
+    padding-right: 0px;
+    text-align: center;
+    font-size: 1em;
+    color: #777;
+    padding: 1em;
+}
 #main-menu-container {
     padding-left: 0px;
     padding-right: 0px;
     text-align: left;
 }
 
+.footer-menu-container > ul > li > ul.sub-menu,
 #main-menu-container > ul > li > ul.sub-menu {
     display: none;
 }
@@ -449,6 +458,12 @@ nav div.menu-divider {
     text-align: center;
 }
 
+.footer-menu-container ul {
+    display: inline-block;
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}
 #sub-menu-container ul,
 #main-menu-container ul {
     display: inline;    
@@ -457,6 +472,10 @@ nav div.menu-divider {
     margin: 0px;
 }
     
+.footer-menu-container ul.menu li.menu-item {
+    display: inline-block;
+    padding: 0px 0.5em;
+}
 #sub-menu-container ul.menu li.menu-item,
 #main-menu-container ul.menu li.menu-item {
     display: block;
@@ -467,6 +486,10 @@ nav div.menu-divider {
     display: none;
 }
 
+.footer-menu-container ul.menu li.menu-item a {
+    display: inline;
+    padding: 0.5em 0 0.5em 0;
+}
 #sub-menu-container ul.menu li.menu-item a,
 #main-menu-container ul.menu li.menu-item a {
     display: inline-block;
@@ -474,6 +497,7 @@ nav div.menu-divider {
     padding: 0.5em 0 0.5em 0;
 }
 
+.footer-menu-container ul.menu li.compact-hidden,
 #sub-menu-container ul.menu li.compact-hidden,
 #main-menu-container ul.menu li.compact-hidden {
     display: none;

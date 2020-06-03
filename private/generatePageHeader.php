@@ -1306,6 +1306,9 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
 //      print "<pre>" .  print_r($pages, true) . "</pre>";
 
         foreach($pages as $page) {
+            if( isset($page['menu_flags']) && ($page['menu_flags']&0x01) == 0 ) {
+                continue;
+            }
             if( $page['page_type'] == '20' ) {
                 //
                 // Redirect to another url
