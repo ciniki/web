@@ -301,7 +301,7 @@ function ciniki_web_processBlockOrderOptions(&$ciniki, $settings, $tnid, $block)
                 . "}"
                 . "orderQtyChange_{$blkid}(id);"
             . "}"
-            . "function orderQtyDown(id){"
+            . "function orderQtyDown_{$blkid}(id){"
                 . "var e=C.gE('order_quantity_' + id);"
                 . "if(parseInt(e.value)<1){"
                     . "e.value=0;"
