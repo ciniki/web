@@ -150,15 +150,15 @@ function ciniki_web_pageLoad($ciniki, $settings, $tnid, $args) {
     //
     // Check if any files are attached to the page
     //
-    $strsql = "SELECT id, name, extension, permalink, description "
+    $strsql = "SELECT id, name, extension, permalink, sequence, description "
         . "FROM ciniki_web_page_files "
         . "WHERE ciniki_web_page_files.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "AND ciniki_web_page_files.page_id = '" . ciniki_core_dbQuote($ciniki, $page['id']) . "' "
         . "";
     if( ($page['flags']&0x1000) == 0x1000 ) {
-        $strsql .= "ORDER BY name DESC ";
+        $strsql .= "ORDER BY sequence DESC, name DESC ";
     } else {
-        $strsql .= "ORDER BY name ASC ";
+        $strsql .= "ORDER BY sequence ASC, name ASC ";
     }
     $rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.info', array(
         array('container'=>'files', 'fname'=>'id', 

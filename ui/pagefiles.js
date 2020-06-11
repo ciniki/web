@@ -15,6 +15,7 @@ function ciniki_web_pagefiles() {
             }},
             'info':{'label':'Information', 'fields':{
                 'name':{'label':'Title', 'type':'text'},
+                'sequence':{'label':'Order', 'type':'text', 'size':'small'},
             }},
             '_description':{'label':'Description', 
                 'fields':{
@@ -66,6 +67,7 @@ function ciniki_web_pagefiles() {
         this.edit.sections = {
             'info':{'label':'Details', 'type':'simpleform', 'fields':{
                 'name':{'label':'Title', 'type':'text'},
+                'sequence':{'label':'Order', 'type':'text', 'size':'small'},
             }},
             '_description':{'label':'Description', 
                 'fields':{

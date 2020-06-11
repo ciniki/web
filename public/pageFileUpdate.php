@@ -23,6 +23,7 @@ function ciniki_web_pageFileUpdate(&$ciniki) {
         'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'file_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'File'), 
         'name'=>array('required'=>'no', 'trimblanks'=>'yes', 'blank'=>'yes', 'name'=>'First Name'),
+        'sequence'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Order'), 
         'description'=>array('required'=>'no', 'trimblanks'=>'yes', 'blank'=>'yes', 'name'=>'Description'),
         'webflags'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Web Flags'),
         'publish_date'=>array('required'=>'no', 'blank'=>'yes', 'type'=>'date', 'name'=>'Publish Date'),

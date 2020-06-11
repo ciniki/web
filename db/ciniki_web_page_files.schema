@@ -18,6 +18,8 @@
 # permalink:        The url safe version of the file name.  This is automatically created
 #                   when a file is uploaded, or the name changed.
 #
+# sequence:         The order to display the file in.
+#
 # webflags:         Flags for displaying the file on the website.
 #
 #                   0x01 - Hidden, Do now show the file on the website
@@ -38,6 +40,7 @@ create table ciniki_web_page_files (
     extension varchar(10) not null,
     name varchar(200) not null,
     permalink varchar(250) not null,
+    sequence int not null,
     webflags tinyint unsigned not null,
     description varchar(6000) not null,
     org_filename varchar(250) not null,
@@ -47,4 +50,4 @@ create table ciniki_web_page_files (
     primary key (id),
     unique index (tnid, page_id, permalink), 
     index sync (tnid, uuid, last_updated)
-) ENGINE='InnoDB', COMMENT='v1.01';
+) ENGINE='InnoDB', COMMENT='v1.02';

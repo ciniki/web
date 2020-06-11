@@ -46,6 +46,7 @@ function ciniki_web_pageFileGet($ciniki) {
     //
     $strsql = "SELECT ciniki_web_page_files.id, "
         . "ciniki_web_page_files.name, "
+        . "ciniki_web_page_files.sequence, "
         . "ciniki_web_page_files.permalink, "
         . "ciniki_web_page_files.webflags, "
         . "IF(ciniki_web_page_files.webflags&0x01=1,'Hidden','Visible') AS webvisible, "
