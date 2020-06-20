@@ -123,10 +123,11 @@ function ciniki_web_pageGet($ciniki) {
         // Get the files
         //
         if( isset($args['files']) && $args['files'] == 'yes' ) {
-            $strsql = "SELECT id, name, extension, permalink "
+            $strsql = "SELECT id, name, sequence, extension, permalink "
                 . "FROM ciniki_web_page_files "
                 . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
                 . "AND ciniki_web_page_files.page_id = '" . ciniki_core_dbQuote($ciniki, $args['page_id']) . "' "
+                . "ORDER BY sequence, name "
                 . "";
             $rc = ciniki_core_dbHashQueryTree($ciniki, $strsql, 'ciniki.web', array(
                 array('container'=>'files', 'fname'=>'id', 'name'=>'file',

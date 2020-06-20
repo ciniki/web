@@ -30,6 +30,7 @@ function ciniki_web_pageFileAdd(&$ciniki) {
         'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'page_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Page'),
         'name'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Name'), 
+        'sequence'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Order'), 
         'description'=>array('required'=>'no', 'default'=>'', 'blank'=>'yes', 'name'=>'Description'), 
         'webflags'=>array('required'=>'no', 'blank'=>'yes', 'default'=>'0', 'name'=>'Web Flags'), 
         )); 

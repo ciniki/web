@@ -1,0 +1,5 @@
+# Add the field to store sort order
+#
+ALTER TABLE ciniki_web_page_files ADD COLUMN sequence int not null after permalink;
+UPDATE ciniki_web_page_files SET sequence = 1;
+ALTER TABLE ciniki_web_page_files COMMENT='v1.02';
