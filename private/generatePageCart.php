@@ -2122,7 +2122,10 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                         $content .= "<input id='stripe-email' type='hidden' name='stripe-email' value=''/>";
                         $content .= "<button class='cart-submit' onclick='stripeCheckout.open(); return false;' type='submit' name='stripecheckout'>Pay Now</button>";
                     }
-                    if( $paypal_checkout == 'yes' ) {
+                    if( $paypal_checkout == 'yes' && $cart['total_amount'] == 0 && $cart['preorder_total_amount'] == 0 ) {
+                        $content .= "<button class='cart-submit' onclick='' type='submit' name='nocharge_checkout'>Confirm</button>";
+                    }
+                    elseif( $paypal_checkout == 'yes' ) {
                         $content .= "<input class='cart-submit' type='submit' name='paypalexpresscheckout' value='Checkout via Paypal'/>";
                     }
 //                      . "<input class='paypal-checkout' type='image' name='paypalexpresscheckout' src='/ciniki-web-layouts/default/img/paypal_checkout_large.png' value='Checkout via Paypal'/>"
