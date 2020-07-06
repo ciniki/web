@@ -2093,6 +2093,14 @@ function ciniki_web_main() {
             '_nologinmessage':{'label':'No Account Message', 'fields':{
                 'page-cart-noaccount-message':{'label':'', 'hidelabel':'yes', 'type':'textarea'},
                 }},
+            '_bottommessage':{'label':'Cart Bottom Message', 'fields':{
+                // Shows up at bottom of cart page when editing only
+                'page-cart-bottom-message':{'label':'', 'hidelabel':'yes', 'type':'textarea'},
+                }},
+            '_checkoutmessage':{'label':'Cart Checkout Message', 'fields':{
+                // Shows up on checkout page in green box
+                'page-cart-checkout-message':{'label':'', 'hidelabel':'yes', 'type':'textarea'},
+                }},
             '_paymentsuccessmessage':{'label':'Payment Success Message', 'fields':{
                 'page-cart-payment-success-message':{'label':'', 'hidelabel':'yes', 'type':'textarea'},
                 }},

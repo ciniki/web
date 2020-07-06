@@ -397,7 +397,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                     $item = $item['item'];
                     if( $item['object'] == $_POST['object']
                         && $item['object_id'] == $_POST['object_id'] 
-                        && $item['price_id'] == $_POST['price_id'] 
+                        && ((!isset($_POST['price_id']) && $item['price_id'] == 0) || $item['price_id'] == $_POST['price_id'])
                         && ($item['flags']&0x08) == 0
                         ) {
                         $item_exists = 'yes';
@@ -1535,7 +1535,11 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         //
         elseif( $display_cart == 'review' && (!isset($carterrors) || $carterrors == '') ) {
             $content .= "<div class='form-message-content'><div class='form-result-message form-success-message'><div class='form-message-wrapper'>";
-            $content .= "<p>Please review your order.</p>";
+            if( isset($settings['page-cart-checkout-message']) && $settings['page-cart-checkout-message'] != '' ) {
+                $content .= "<p>" . $settings['page-cart-checkout-message'] . "</p>";
+            } else {
+                $content .= "<p>Please review your order.</p>";
+            }
             $content .= "</div></div></div>";
         }
         elseif( $display_cart == 'paypalexpresscheckoutconfirm' && (!isset($carterrors) || $carterrors == '') ) {
@@ -2034,6 +2038,10 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
 
             if( $cart_edit == 'yes' && isset($sapos_settings['invoice-preorder-message']) && $sapos_settings['invoice-preorder-message'] != '' && $sapos_settings['invoice-preorder-message'] != 'null' ) {
                 $content .= "<div><p class='wide cart-message'>" . $sapos_settings['invoice-preorder-message'] . "</p></div>";
+            }
+
+            if( $cart_edit == 'yes' && isset($settings['page-cart-bottom-message']) && $settings['page-cart-bottom-message'] != '' && $settings['page-cart-bottom-message'] != 'null' ) {
+                $content .= "<div><p class='wide cart-message'>" . $settings['page-cart-bottom-message'] . "</p></div>";
             }
 
             // cart buttons
