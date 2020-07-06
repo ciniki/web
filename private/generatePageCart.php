@@ -2032,7 +2032,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                 $content .= "<div><p class='wide cart-message cart-noaccount-message'>" . $settings['page-cart-noaccount-message'] . "</p></div>";
             }
 
-            if( $cart_edit == 'yes' && isset($sapos_settings['invoice-preorder-message']) && $sapos_settings['invoice-preorder-message'] != '' ) {
+            if( $cart_edit == 'yes' && isset($sapos_settings['invoice-preorder-message']) && $sapos_settings['invoice-preorder-message'] != '' && $sapos_settings['invoice-preorder-message'] != 'null' ) {
                 $content .= "<div><p class='wide cart-message'>" . $sapos_settings['invoice-preorder-message'] . "</p></div>";
             }
 
