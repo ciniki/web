@@ -85,6 +85,15 @@ header h1 a:active,
 #content h1.entry-title {
   color: #333;
 }
+#slider-ctl {
+}
+#content div.slider-scaled div.slider-image-wrap ul li {
+}
+#content div.slider-scaled div.slider-image-wrap ul li img {
+    border: 0px;
+    padding: 0px;
+    box-shadow: 1px 1px 5px #555;
+}
 #content div.slider-cropped div.slider-image-wrap {
     border: 1px solid #777;
     padding: 0px;

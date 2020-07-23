@@ -197,7 +197,7 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
         } else {
             $javascript .= "                this.li[i].style.lineHeight = $slider_height + 'px';";
         }
-        $javascript .= "                li_e.style.maxWidth = (this.ul.parentElement.clientWidth - height_spacing) + 'px';";
+        $javascript .= "                li_e.style.maxWidth = (this.ul.parentElement.clientWidth - height_spacing-7) + 'px';";
         $javascript .= "                li_e.style.maxHeight = ($slider_height - height_spacing) + 'px';";
         $javascript .= "                this.li[i].style.display = 'inline-block';\n";
         $javascript .= "                ulwidth += this.ul.parentElement.clientWidth;\n";
