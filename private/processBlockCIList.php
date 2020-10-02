@@ -71,10 +71,11 @@ function ciniki_web_processBlockCIList(&$ciniki, $settings, $tnid, $block) {
             $javascript_onclick = '';
             if( isset($item['is_details']) && $item['is_details'] == 'yes' 
                 && isset($item['permalink']) && $item['permalink'] != '' 
-                && (!isset($block['jslink']) || $block['jslink'] != 'no') 
                 ) {
                 $url = $block['base_url'] . "/" . $item['permalink'];
-                $javascript_onclick = " onclick='javascript:location.href=\"$url\";' ";
+                if( !isset($block['jslink']) || $block['jslink'] != 'no' ) {
+                    $javascript_onclick = " onclick='javascript:location.href=\"$url\";' ";
+                }
             } elseif( isset($item['url']) && $item['url'] != '' ) {
                 $rc = ciniki_web_processURL($ciniki, $item['url']);
                 if( $rc['stat'] != 'ok' ) {
