@@ -276,6 +276,10 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
             ) {
             $content .= "<br>";
             $content .= "<form action='' method='post' id='contact-form'>";
+            if( isset($settings['page-contact-form-heading']) 
+                && $settings['page-contact-form-heading'] != '' ) {
+                $content .= "<h2>" . $settings['page-contact-form-heading'] . "</h2>";
+            }
             if( isset($settings['page-contact-form-intro-message']) 
                 && $settings['page-contact-form-intro-message'] != '' ) {
                 $content .= "<p>" . $settings['page-contact-form-intro-message'] . "</p>";
