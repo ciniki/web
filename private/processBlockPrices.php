@@ -167,7 +167,7 @@ function ciniki_web_processBlockPrices(&$ciniki, $settings, $tnid, $block) {
                 $content .= "</form>";
             }
             
-            if( isset($price['description']) && $price['description'] != '' ) {
+            if( isset($price['description']) && $price['description'] != '' && isset($block['descriptions']) && $block['descriptions'] == 'yes' ) {
                 $content .= "<div class='cart-pricedescription'>" . $price['description'] . "</div>";
             }
 
