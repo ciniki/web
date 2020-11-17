@@ -415,6 +415,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-contact-form-emails',
         'page-contact-form-phone',
         'page-contact-debug-log',
+        'page-contact-form-heading',
         'page-contact-form-intro-message',
         'page-contact-form-submitted-message',
         'page-contact-tenant-name-display',
@@ -471,6 +472,8 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-cart-account-create-button',
         'page-cart-child-create-button',
         'page-cart-noaccount-message',
+        'page-cart-bottom-message',
+        'page-cart-checkout-message',
         'page-cart-payment-success-message',
         'page-cart-payment-success-emails',         // Emails to send notification to when order paid for
         'page-cart-donation-message',

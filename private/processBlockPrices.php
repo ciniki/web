@@ -38,7 +38,7 @@ function ciniki_web_processBlockPrices(&$ciniki, $settings, $tnid, $block) {
             $content .= "<h2>" . $block['title'] . "</h2>";
         }
         $content .= "<div class='cart-pricelist'>";
-        foreach($block['prices'] as $pid => $price) {
+        foreach($block['prices'] as $pid => $price) { 
             $content .= "<div class='price'>";
             if( isset($price['name']) && $price['name'] != '' ) {
                 $content .= "<span class='cart-pricelabel'>" . $price['name'] . ": </span>";
@@ -165,6 +165,10 @@ function ciniki_web_processBlockPrices(&$ciniki, $settings, $tnid, $block) {
                 }
                 $content .= "'/></span>";
                 $content .= "</form>";
+            }
+            
+            if( isset($price['description']) && $price['description'] != '' && isset($block['descriptions']) && $block['descriptions'] == 'yes' ) {
+                $content .= "<div class='cart-pricedescription'>" . $price['description'] . "</div>";
             }
 
             $content .= "</div>";

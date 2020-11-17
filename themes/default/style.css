@@ -1175,7 +1175,6 @@ aside div.borderless {
     font-size: 1.1em;
     color: #555;
 }
-
 #content div.cart-pricelist form {
     display: inline;
 }
@@ -1189,6 +1188,12 @@ aside div.borderless {
     border: 1px solid #aaa;
     text-align: center;
     color: #555;
+}
+#content div.cart-pricedescription {
+    margin-left: 1em;
+    font-size: 0.9em;
+    margin-bottom: 1em;
+    font-style: italic;
 }
 
 #content p.cart-error {

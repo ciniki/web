@@ -397,7 +397,7 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                     $item = $item['item'];
                     if( $item['object'] == $_POST['object']
                         && $item['object_id'] == $_POST['object_id'] 
-                        && $item['price_id'] == $_POST['price_id'] 
+                        && ((!isset($_POST['price_id']) && $item['price_id'] == 0) || $item['price_id'] == $_POST['price_id'])
                         && ($item['flags']&0x08) == 0
                         ) {
                         $item_exists = 'yes';
@@ -1535,7 +1535,11 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
         //
         elseif( $display_cart == 'review' && (!isset($carterrors) || $carterrors == '') ) {
             $content .= "<div class='form-message-content'><div class='form-result-message form-success-message'><div class='form-message-wrapper'>";
-            $content .= "<p>Please review your order.</p>";
+            if( isset($settings['page-cart-checkout-message']) && $settings['page-cart-checkout-message'] != '' ) {
+                $content .= "<p>" . $settings['page-cart-checkout-message'] . "</p>";
+            } else {
+                $content .= "<p>Please review your order.</p>";
+            }
             $content .= "</div></div></div>";
         }
         elseif( $display_cart == 'paypalexpresscheckoutconfirm' && (!isset($carterrors) || $carterrors == '') ) {
@@ -2032,8 +2036,12 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                 $content .= "<div><p class='wide cart-message cart-noaccount-message'>" . $settings['page-cart-noaccount-message'] . "</p></div>";
             }
 
-            if( $cart_edit == 'yes' && isset($sapos_settings['invoice-preorder-message']) && $sapos_settings['invoice-preorder-message'] != '' ) {
+            if( $cart_edit == 'yes' && isset($sapos_settings['invoice-preorder-message']) && $sapos_settings['invoice-preorder-message'] != '' && $sapos_settings['invoice-preorder-message'] != 'null' ) {
                 $content .= "<div><p class='wide cart-message'>" . $sapos_settings['invoice-preorder-message'] . "</p></div>";
+            }
+
+            if( $cart_edit == 'yes' && isset($settings['page-cart-bottom-message']) && $settings['page-cart-bottom-message'] != '' && $settings['page-cart-bottom-message'] != 'null' ) {
+                $content .= "<div><p class='wide cart-message'>" . $settings['page-cart-bottom-message'] . "</p></div>";
             }
 
             // cart buttons
@@ -2122,7 +2130,10 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                         $content .= "<input id='stripe-email' type='hidden' name='stripe-email' value=''/>";
                         $content .= "<button class='cart-submit' onclick='stripeCheckout.open(); return false;' type='submit' name='stripecheckout'>Pay Now</button>";
                     }
-                    if( $paypal_checkout == 'yes' ) {
+                    if( $paypal_checkout == 'yes' && $cart['total_amount'] == 0 && $cart['preorder_total_amount'] == 0 ) {
+                        $content .= "<button class='cart-submit' onclick='' type='submit' name='nocharge_checkout'>Confirm</button>";
+                    }
+                    elseif( $paypal_checkout == 'yes' ) {
                         $content .= "<input class='cart-submit' type='submit' name='paypalexpresscheckout' value='Checkout via Paypal'/>";
                     }
 //                      . "<input class='paypal-checkout' type='image' name='paypalexpresscheckout' src='/ciniki-web-layouts/default/img/paypal_checkout_large.png' value='Checkout via Paypal'/>"

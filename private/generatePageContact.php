@@ -275,6 +275,11 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
             && $contact_form_submitted == 'no' 
             ) {
             $content .= "<br>";
+            $content .= "<form action='' method='post' id='contact-form'>";
+            if( isset($settings['page-contact-form-heading']) 
+                && $settings['page-contact-form-heading'] != '' ) {
+                $content .= "<h2>" . $settings['page-contact-form-heading'] . "</h2>";
+            }
             if( isset($settings['page-contact-form-intro-message']) 
                 && $settings['page-contact-form-intro-message'] != '' ) {
                 $content .= "<p>" . $settings['page-contact-form-intro-message'] . "</p>";
@@ -282,7 +287,6 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
             if( isset($contact_form_errors) && $contact_form_errors != '' ) {
                 $content .= "<p>" . $contact_form_errors . "</p>";
             }
-            $content .= "<form action='' method='post' id='contact-form'>";
             $content .= "<div class='input'>"
                 . "<label for='contact-form-name'>Name</label>"
                 . "<input type='text' class='text' value='' name='contact-form-name' id='contact-form-name'/>"

@@ -878,6 +878,9 @@ function ciniki_web_main() {
                 'page-contact-debug-log':{'label':'Debug Log', 'active':function() {return (M.userPerms&0x01) == 0x01 ? 'yes' : 'no';}, 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-contact-form-emails':{'label':'Emails', 'type':'text'},
                 }},
+            '_contact_form_heading':{'label':'Contact Form Heading', 'active':'no', 'fields':{
+                'page-contact-form-heading':{'label':'Form Heading', 'hidelabel':'yes', 'type':'text'},
+                }},
             '_contact_form_intro_message':{'label':'Contact Form Introduction', 'active':'no', 'fields':{
                 'page-contact-form-intro-message':{'label':'Form Message', 'hidelabel':'yes', 'type':'textarea', 'size':'small'},
                 }},
@@ -2113,6 +2116,14 @@ function ciniki_web_main() {
             '_nologinmessage':{'label':'No Account Message', 'fields':{
                 'page-cart-noaccount-message':{'label':'', 'hidelabel':'yes', 'type':'textarea'},
                 }},
+            '_bottommessage':{'label':'Cart Bottom Message', 'fields':{
+                // Shows up at bottom of cart page when editing only
+                'page-cart-bottom-message':{'label':'', 'hidelabel':'yes', 'type':'textarea'},
+                }},
+            '_checkoutmessage':{'label':'Cart Checkout Message', 'fields':{
+                // Shows up on checkout page in green box
+                'page-cart-checkout-message':{'label':'', 'hidelabel':'yes', 'type':'textarea'},
+                }},
             '_paymentsuccessmessage':{'label':'Payment Success Message', 'fields':{
                 'page-cart-payment-success-message':{'label':'', 'hidelabel':'yes', 'type':'textarea'},
                 }},
@@ -2271,10 +2282,12 @@ function ciniki_web_main() {
         if( M.curTenant.modules['ciniki.web'] != null ) {
             if( (M.curTenant.modules['ciniki.web'].flags&0x04) > 0 ) {
                 this.contact.sections._contact_form.active = 'yes';
+                this.contact.sections._contact_form_heading.active = 'yes';
                 this.contact.sections._contact_form_intro_message.active = 'yes';
                 this.contact.sections._contact_form_submitted_message.active = 'yes';
             } else {
                 this.contact.sections._contact_form.active = 'no';
+                this.contact.sections._contact_form_heading.active = 'no';
                 this.contact.sections._contact_form_intro_message.active = 'no';
                 this.contact.sections._contact_form_submitted_message.active = 'no';
             }

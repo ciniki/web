@@ -28,7 +28,8 @@ function ciniki_web_generatePageAPI(&$ciniki, $settings) {
     //
     // Search for products that can be added to the cart
     //
-    if( $ciniki['request']['uri_split'][0] == 'cart'
+    if( isset($ciniki['request']['uri_split'][2]) 
+        && $ciniki['request']['uri_split'][0] == 'cart'
         && $ciniki['request']['uri_split'][1] == 'search'
         && $ciniki['request']['uri_split'][2] != '' 
         && isset($settings['page-cart-active']) && $settings['page-cart-active'] == 'yes'
@@ -50,7 +51,8 @@ function ciniki_web_generatePageAPI(&$ciniki, $settings) {
     //
     // Search the site
     //
-    elseif( $ciniki['request']['uri_split'][0] == 'site'
+    elseif( isset($ciniki['request']['uri_split'][2]) 
+        && $ciniki['request']['uri_split'][0] == 'site'
         && $ciniki['request']['uri_split'][1] == 'search'
         && $ciniki['request']['uri_split'][2] != '' 
         ) {
@@ -66,7 +68,8 @@ function ciniki_web_generatePageAPI(&$ciniki, $settings) {
     //
     // Check for Callback requests
     //
-    elseif( $ciniki['request']['uri_split'][0] == 'callback'
+    elseif( isset($ciniki['request']['uri_split'][2]) 
+        && $ciniki['request']['uri_split'][0] == 'callback'
         && $ciniki['request']['uri_split'][1] != ''
         && $ciniki['request']['uri_split'][2] != '' 
         ) {
@@ -126,7 +129,8 @@ function ciniki_web_generatePageAPI(&$ciniki, $settings) {
     //
     // Check for module processing
     //
-    elseif( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' 
+    elseif( isset($ciniki['request']['uri_split'][1]) 
+        && isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] != '' 
         && isset($ciniki['request']['uri_split'][1]) && $ciniki['request']['uri_split'][1] != '' 
         ) {
         $pkg = $ciniki['request']['uri_split'][0];
