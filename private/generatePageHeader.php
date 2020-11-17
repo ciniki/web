@@ -1393,6 +1393,13 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
                 $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='fielddaylog'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/fieldday'>Field Day</a></li>";
             }
         }
+        if( isset($settings['page-winterfielddaylog-active']) && $settings['page-winterfielddaylog-active'] == 'yes' ) {
+            if( isset($settings['page-winterfielddaylog-name']) && $settings['page-winterfielddaylog-name'] != '' ) {
+                $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='winterfielddaylog'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/winterfieldday'>" . $settings['page-winterfielddaylog-name'] . "</a></li>";
+            } else {
+                $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='winterfielddaylog'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/winterfieldday'>Field Day</a></li>";
+            }
+        }
         if( isset($settings['page-jiji-active']) && $settings['page-jiji-active'] == 'yes' ) {
             if( isset($settings['page-jiji-name']) && $settings['page-jiji-name'] != '' ) {
                 $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='jiji'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/buysell'>" . $settings['page-jiji-name'] . "</a></li>";

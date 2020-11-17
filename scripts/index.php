@@ -994,6 +994,12 @@ if( $found == 'no' ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
         $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['tnid'], 'qruqsp.fielddaylog');
     } 
+    // winterfielddaylog
+    elseif( $ciniki['request']['page'] == 'winterfieldday' 
+        && isset($settings['page-winterfielddaylog-active']) && $settings['page-winterfielddaylog-active'] == 'yes' ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
+        $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['tnid'], 'qruqsp.winterfielddaylog');
+    } 
     // jiji
     elseif( $ciniki['request']['page'] == 'buysell' 
         && isset($settings['page-jiji-active']) && $settings['page-jiji-active'] == 'yes' ) {

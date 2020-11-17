@@ -1419,7 +1419,7 @@ function ciniki_web_main() {
         this.recipes.addClose('Cancel');
 
         //
-        // The options and information for the buy/sell jiji page
+        // The options and information for the QRUQSP Field Day
         //
         this.fielddaylog = new M.panel('Field Day',
             'ciniki_web_main', 'fielddaylog',
@@ -1437,6 +1437,26 @@ function ciniki_web_main() {
         this.fielddaylog.fieldHistoryArgs = this.fieldHistoryArgs;
         this.fielddaylog.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'fielddaylog\');');
         this.fielddaylog.addClose('Cancel');
+
+        //
+        // The options and information for the QRUQSP Winter Field Day
+        //
+        this.winterfielddaylog = new M.panel('Field Day',
+            'ciniki_web_main', 'winterfielddaylog',
+            'mc', 'medium', 'sectioned', 'ciniki.web.main.winterfielddaylog');
+        this.winterfielddaylog.data = {};
+        this.winterfielddaylog.sections = {
+            'options':{'label':'', 'fields':{
+                'page-winterfielddaylog-active':{'label':'Field Day', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                }},
+            '_save':{'label':'', 'buttons':{
+                'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'winterfielddaylog\');'},
+                }},
+        };
+        this.winterfielddaylog.fieldValue = this.fieldValue;
+        this.winterfielddaylog.fieldHistoryArgs = this.fieldHistoryArgs;
+        this.winterfielddaylog.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'winterfielddaylog\');');
+        this.winterfielddaylog.addClose('Cancel');
 
         //
         // The options and information for the buy/sell jiji page

@@ -185,6 +185,9 @@ function ciniki_web_siteSettings($ciniki) {
     if( isset($ciniki['tenant']['modules']['qruqsp.fielddaylog']) ) {
         $pages['fielddaylog'] = array('display_name'=>'Field Day', 'active'=>'no');
     }
+    if( isset($ciniki['tenant']['modules']['qruqsp.winterfielddaylog']) ) {
+        $pages['winterfielddaylog'] = array('display_name'=>'Winter Field Day', 'active'=>'no');
+    }
     if( isset($ciniki['tenant']['modules']['ciniki.jiji']) ) {
         $pages['jiji'] = array('display_name'=>'Buy/Sell', 'active'=>'no');
     }
@@ -334,6 +337,9 @@ function ciniki_web_siteSettings($ciniki) {
     }
     if( isset($settings['page-fielddaylog-active']) && $settings['page-fielddaylog-active'] == 'yes' ) {
         $pages['fielddaylog']['active'] = 'yes';
+    }
+    if( isset($settings['page-winterfielddaylog-active']) && $settings['page-winterfielddaylog-active'] == 'yes' ) {
+        $pages['winterfielddaylog']['active'] = 'yes';
     }
     if( isset($settings['page-jiji-active']) && $settings['page-jiji-active'] == 'yes' ) {
         $pages['jiji']['active'] = 'yes';
