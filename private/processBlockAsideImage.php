@@ -17,11 +17,19 @@ function ciniki_web_processBlockAsideImage(&$ciniki, $settings, $tnid, $block) {
         return array('stat'=>'ok', 'content'=>'');
     }
 
+    $quality = 60;
+    $width = 500;
+
+    if( isset($block['quality']) && $block['quality'] == 'high' ) {
+        $quality = 90;
+        $width = 1000;
+    }
+
     //
     // Generate the image url
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-    $rc = ciniki_web_getScaledImageURL($ciniki, $block['image_id'], 'original', '500', 0);
+    $rc = ciniki_web_getScaledImageURL($ciniki, $block['image_id'], 'original', $width, 0, $quality);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
