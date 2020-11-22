@@ -479,6 +479,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-cart-donation-message',
         'page-cart-donation-amounts',
         'page-cart-donation-thankyou',
+//        'page-cart-instore-address-message',
         'page-signup-active',
         'page-signup-menu',
         'page-search-active',

@@ -1801,7 +1801,12 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                 $content .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
                 $content .= "<td colspan='$num_cols' class='alignright'>Shipping:</td>"
                     . "<td class='alignright'>";
-                if( $cart['preorder_subtotal_amount'] > 0 && $cart['customer_id'] == 0 ) {
+                if( !ciniki_core_checkModuleFlags($ciniki, 'ciniki.sapos', 0x04)
+                    && !ciniki_core_checkModuleFlags($ciniki, 'ciniki.sapos', 0x10000000)
+                    && ciniki_core_checkModuleFlags($ciniki, 'ciniki.sapos', 0x20000000)
+                    ) {
+                    $content .= 'In Store Pickup';
+                } elseif( $cart['preorder_subtotal_amount'] > 0 && $cart['customer_id'] == 0 ) {
                     $content .= "TBD";
                 } else {
                     $content .= numfmt_format_currency($intl_currency_fmt, $cart['preorder_shipping_amount'], $intl_currency);
@@ -1846,7 +1851,12 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                 $content .= "<tr class='{$separator}" . (($count%2)==0?'item-even':'item-odd') . "'>";
                 $content .= "<td colspan='$num_cols' class='alignright'>Shipping:</td>"
                     . "<td class='alignright'>";
-                if( $cart['subtotal_amount'] > 0 && $cart['customer_id'] == 0 ) {
+                if( !ciniki_core_checkModuleFlags($ciniki, 'ciniki.sapos', 0x04)
+                    && !ciniki_core_checkModuleFlags($ciniki, 'ciniki.sapos', 0x10000000)
+                    && ciniki_core_checkModuleFlags($ciniki, 'ciniki.sapos', 0x20000000)
+                    ) {
+                    $content .= 'In Store Pickup';
+                } elseif( $cart['subtotal_amount'] > 0 && $cart['customer_id'] == 0 ) {
                     $content .= "TBD";
                 } else {
                     $content .= numfmt_format_currency($intl_currency_fmt, $cart['shipping_amount'], $intl_currency);
@@ -1959,10 +1969,25 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
             if( isset($cart['shipping_country']) && $cart['shipping_country'] != '' ) {
                 $saddr .= ($saddr!=''?'<br/>':'') . $cart['shipping_country'];
             }
-            if( $saddr != '' && ($cart['shipping_status'] > 0 || ($cart['preorder_total_amount'] > 0)) ) {
+            $tenant_flags = isset($ciniki['tenant']['modules']['ciniki.sapos']['flags']) ? $ciniki['tenant']['modules']['ciniki.sapos']['flags'] : 0;
+            // 
+            // Make sure shipping, simple shipping or instore pickup are enabled
+            //
+            if( ($tenant_flags&0x30000040) > 0 && $saddr != '' && ($cart['shipping_status'] > 0 || ($cart['preorder_total_amount'] > 0)) ) {
                 $cart_details .= "<tr class='" . (($count%2)==0?'item-even':'item-odd') . "'>";
                 $cart_details .= "<th>Ship To:</th><td>";
-                $cart_details .= $saddr;
+                // 
+                // Check if tenant has ONLY instore pickup
+                //
+/*                if( ($tenant_flags&0x30000040) == 0x20000000 ) {
+                    if( isset($settings['page-cart-instore-address-message']) && $settings['page-cart-instore-address-message'] != '' ) {
+                        $cart_details .= preg_replace("/\n/", "<br/>", $settings['page-cart-instore-address-message']);
+                    } else {
+                        $cart_details .= "**IN STORE PICKUP**";
+                    }
+                } else { */
+                    $cart_details .= $saddr;
+//                }
                 $cart_details .= "</td></tr>";
                 $count++;
             }

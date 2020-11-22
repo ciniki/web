@@ -2124,6 +2124,10 @@ function ciniki_web_main() {
                 // Shows up on checkout page in green box
                 'page-cart-checkout-message':{'label':'', 'hidelabel':'yes', 'type':'textarea'},
                 }},
+//            '_cartinstoreaddrmsg':{'label':'Cart Ship To Instore Pickup Message', 'fields':{
+//                // Shows up at bottom of cart page when editing only
+//                'page-cart-instore-address-message':{'label':'', 'hidelabel':'yes', 'type':'textarea'},
+//                }},
             '_paymentsuccessmessage':{'label':'Payment Success Message', 'fields':{
                 'page-cart-payment-success-message':{'label':'', 'hidelabel':'yes', 'type':'textarea'},
                 }},
