@@ -95,6 +95,13 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
     }
 
     //
+    // If child pages, share at bottom
+    //
+    if( isset($page['children']) && count($page['children']) > 0 ) {
+        $share = 'end';
+    }
+
+    //
     // Display the share buttons, if they haven't been disabled.
     //
     if( $share == 'content' && isset($settings['site-social-share-buttons']) && $settings['site-social-share-buttons'] == 'yes' 
