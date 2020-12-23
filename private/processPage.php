@@ -161,6 +161,16 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
                     $content .= $rc['content'];
                 }
             } 
+            elseif( isset($page['flags']) && ($page['flags']&0x0800) == 0x0800 ) {
+                ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockButtonList');
+                $rc = ciniki_web_processBlockButtonList($ciniki, $settings, $ciniki['request']['tnid'], array(
+                    'base_url' => $base_url . '/' . $page['permalink'],
+                    'tags' => $page['children'],
+                    ));
+                if( $rc['stat'] == 'ok' ) {
+                    $content .= $rc['content'];
+                }
+            } 
             elseif( isset($page['flags']) && ($page['flags']&0x80) > 0 ) {
                 foreach($page['children'] as $cid => $child) {
                     $page['children'][$cid]['title'] = $child['name'];

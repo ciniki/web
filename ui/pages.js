@@ -10,6 +10,7 @@ function ciniki_web_pages() {
         '8':{'name':'Image List'},
         '10':{'name':'Name List'},
         '11':{'name':'Thumbnails'},
+        '12':{'name':'Buttons'},
 
 //      '6':{'name':'Menu'},
 //      '32':{'name':'List'},
@@ -20,6 +21,7 @@ function ciniki_web_pages() {
         '7':{'name':'Page Menu'},
         '8':{'name':'Image List'},
         '11':{'name':'Thumbnails'},
+        '12':{'name':'Buttons'},
 //      '32':{'name':'List'},
         };
     this.menuFlags = {
