@@ -2159,9 +2159,9 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                         $content .= "<button class='cart-submit' onclick='' type='submit' name='nocharge_checkout'>Confirm</button>";
                     }
                     elseif( $paypal_checkout == 'yes' ) {
-                        $content .= "<input class='cart-submit' type='submit' name='paypalexpresscheckout' value='Checkout via Paypal'/>";
+                        $content .= "<input class='cart-submit' type='submit' name='paypalexpresscheckout' value='Checkout with a Credit Card'/>";
                     }
-//                      . "<input class='paypal-checkout' type='image' name='paypalexpresscheckout' src='/ciniki-web-layouts/default/img/paypal_checkout_large.png' value='Checkout via Paypal'/>"
+//                      . "<input class='paypal-checkout' type='image' name='paypalexpresscheckout' src='/ciniki-web-layouts/default/img/paypal_checkout_large.png' value='Checkout with a Credit Card'/>"
                     $content .= "</span>";
                 } elseif( $display_cart == 'paypalexpresscheckoutconfirm' ) {
                     $content .= "<span class='cart-submit'>"
