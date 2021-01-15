@@ -26,7 +26,7 @@ function ciniki_web_sliderimages() {
             }},
             'info':{'label':'Information', 'type':'simpleform', 'fields':{
                 'sequence':{'label':'Sequence', 'type':'text', 'size':'small'},
-//              'caption':{'label':'Sequence', 'type':'text', 'size':'small'},
+                'caption':{'label':'Caption', 'type':'text'},
                 'image_offset':{'label':'Position', 'type':'toggle', 'toggles':this.imageOffsets},
                 'url':{'label':'URL', 'type':'text'},
                 'start_date':{'label':'Start', 'type':'date', 'size':'small'},

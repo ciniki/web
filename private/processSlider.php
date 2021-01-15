@@ -119,7 +119,11 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
             return $rc;
         }
         $label = '';
-        if( isset($image['label']) && $image['label'] != '' ) {
+        if( isset($image['caption']) && $image['caption'] != '' ) {
+            $label = $image['caption'];
+            $labels = 'yes';
+        }
+        elseif( isset($image['label']) && $image['label'] != '' ) {
             $label = $image['label'];
             $labels = 'yes';
         }
