@@ -571,6 +571,13 @@ function ciniki_web_main() {
                 },
             '_slideshow':{'label':'Slide Show', 'aside':'yes', 'fields':{
                 'page-home-gallery-slider-type':{'label':'Display Slide Show', 'type':'toggle', 'default':'no', 'toggles':{'no':'Off', 'random':'Random', 'latest':'Latest', 'forsale':'For Sale'}},
+                'page-home-gallery-slider-captions':{'label':'Options', 'type':'select', 'options':{
+                    'none':'No Captions',
+                    'title':'Title',
+                    'title-price':'Title, Price',
+                    'title-size-price':'Title, Size, Price',
+                    'title-media-size-price':'Title, Media, Size, Price',
+                    }},
                 'page-home-gallery-slider-size':{'label':'Size', 'type':'select', 'default':'large', 'options':this.sliderSizeOptions},
                 'page-home-gallery-slider-title':{'label':'Title', 'type':'text'},
                 }},
