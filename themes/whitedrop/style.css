@@ -233,6 +233,9 @@ header h1 a:active,
 #content form input.submit,
 #content div.cart-buttons form input.cart-submit,
 #content a.button, 
+#content a.button:hover, 
+#content a.button:active, 
+#content a.button:visited, 
 #content div.cart-pricelist form input.cart-submit {
     display: inline-block;
     border: 0px;
