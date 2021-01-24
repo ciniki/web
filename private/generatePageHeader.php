@@ -1397,7 +1397,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
             if( isset($settings['page-winterfielddaylog-name']) && $settings['page-winterfielddaylog-name'] != '' ) {
                 $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='winterfielddaylog'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/winterfieldday'>" . $settings['page-winterfielddaylog-name'] . "</a></li>";
             } else {
-                $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='winterfielddaylog'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/winterfieldday'>Field Day</a></li>";
+                $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='winterfielddaylog'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/winterfieldday'>Winter Field Day</a></li>";
             }
         }
         if( isset($settings['page-jiji-active']) && $settings['page-jiji-active'] == 'yes' ) {
