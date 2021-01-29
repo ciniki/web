@@ -37,6 +37,7 @@ require_once($ciniki_root . '/ciniki-mods/core/private/dbQuote.php');
 require_once($ciniki_root . '/ciniki-mods/core/private/dbHashQuery.php');
 require_once($ciniki_root . '/ciniki-mods/core/private/loadMethod.php');
 require_once($ciniki_root . '/ciniki-mods/core/private/checkModuleFlags.php');
+require_once($ciniki_root . '/ciniki-mods/core/private/checkModuleActive.php');
 
 //
 // Initialize Database
