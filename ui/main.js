@@ -1457,7 +1457,7 @@ function ciniki_web_main() {
         this.winterfielddaylog.data = {};
         this.winterfielddaylog.sections = {
             'options':{'label':'', 'fields':{
-                'page-winterfielddaylog-active':{'label':'Field Day', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                'page-winterfielddaylog-active':{'label':'Winter Field Day', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 }},
             '_save':{'label':'', 'buttons':{
                 'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'winterfielddaylog\');'},
