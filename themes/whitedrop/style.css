@@ -273,6 +273,7 @@ header h1 a:active,
 }
 /* Setup drop shadows and borderless on images */
 #content div.gallery-image-wrap,
+#content div.thumbnail-list-item-image, 
 #content div.image-categories-thumbnail {
     border: 0px;
 }
@@ -285,6 +286,7 @@ header h1 a:active,
 #content div.image {
     border: 0px;
 }
+#content div.thumbnail-list-item-image img, 
 #content div.gallery-image-wrap img,
 #content div.image-gallery-thumbnail img,
 #content div.image-categories-thumbnail img,
