@@ -1585,6 +1585,12 @@ aside div.borderless {
     color: #0d5;
 }
 
+/* Blocks for ags exhibit items */
+#content div.block-member-exhibits,
+#content div.block-exhibit-items {
+    clear: both;
+}
+
 /* Styles for block table */
 #content div.table table {
     border: 1px solid #ddd;
