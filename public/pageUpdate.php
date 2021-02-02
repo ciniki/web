@@ -192,6 +192,7 @@ function ciniki_web_pageUpdate(&$ciniki) {
                     if( isset($option['setting']) && ($option['setting'] == 'page-members-list-format'
                         || $option['setting'] == 'page-dealers-list-format' 
                         || $option['setting'] == 'page-distributors-list-format' )
+                        && isset($ciniki['request']['args'][$option['setting']])
                         ) {
                         $rc = ciniki_core_loadMethod($ciniki, 'ciniki', 'customers', 'web', 'settingChange');
                         if( $rc['stat'] == 'ok' ) {
