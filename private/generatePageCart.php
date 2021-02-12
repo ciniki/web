@@ -2125,11 +2125,23 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                 } else {
                     $content .= "<div class='cart-donations'><p class='wide cart-donation-message'>" . $settings['page-cart-donation-message'] . "</p>";
                     $content .= "<span class='cart-submit cart-submit-donations'>";
-                        $content .= "<b>Add Donation</b>: <input class='cart-submit' type='submit' name='donate' value='$25'/>";
+                    $content .= "<b>Add Donation</b>: ";
+                    if( isset($settings['page-cart-donation-amounts']) 
+                        && $settings['page-cart-donation-amounts'] != '' 
+                        ) {
+                        $amounts = explode(',', $settings['page-cart-donation-amounts']);
+                        foreach($amounts as $amount) {
+                            $amount = preg_replace("/[^0-9\.]/", '', $amount);
+                            $content .= "<input class='cart-submit' type='submit' name='donate' value='$" . number_format($amount, 0) . "'/>";
+                        }
+                    } else {
+                        $content .= "<input class='cart-submit' type='submit' name='donate' value='$25'/>";
                         $content .= "<input class='cart-submit' type='submit' name='donate' value='$50'/>";
                         $content .= "<input class='cart-submit' type='submit' name='donate' value='$75'/>";
                         $content .= "<input class='cart-submit' type='submit' name='donate' value='$100'/>";
                         $content .= "<input class='cart-submit' type='submit' name='donate' value='$200'/>";
+
+                    }
                         $content .= "<br/><span class='donation-amount'><b>Other Amount</b>:<input class='quantity' type='text' name='amount' value=''/>";
                         $content .= "<input class='cart-submit' type='submit' name='donate' value='Add'/></span>";
                     $content .= "</span>";
