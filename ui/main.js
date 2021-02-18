@@ -586,6 +586,11 @@ function ciniki_web_main() {
                 'page-home-membergallery-slider-size':{'label':'Size', 'type':'select', 'default':'large', 'options':this.sliderSizeOptions},
                 'page-home-membergallery-slider-labels':{'label':'Labels', 'type':'toggle', 'default':'no', 'toggles':{'no':'Off', 'yes':'On'}},
                 }},
+            '_agsslideshow':{'label':'Exhibitions Slide Show', 'aside':'yes', 'fields':{
+                'page-home-ags-slider-type':{'label':'Display Slide Show', 'type':'toggle', 'default':'no', 'toggles':{'no':'Off', 'random':'Random', 'latest':'Latest'}},
+                'page-home-ags-slider-size':{'label':'Size', 'type':'select', 'default':'large', 'options':this.sliderSizeOptions},
+                'page-home-ags-slider-labels':{'label':'Labels', 'type':'toggle', 'default':'no', 'toggles':{'no':'Off', 'yes':'On'}},
+                }},
             '_artcatalog':{'label':'Art Catalog', 'aside':'yes', 'fields':{
                 'page-home-gallery-latest':{'label':'Latest Work', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
                 'page-home-gallery-latest-title':{'label':'Latest Work Title', 'type':'text', 'hint':'Latest Work'},

@@ -99,6 +99,12 @@ header h1 a:active,
     padding: 0px;
     box-shadow: 1px 1px 5px #555;
 }
+#content div.slider div.label {
+    font-size: 1.3em;
+    line-height: 1.5em;
+    color: #555;
+    padding-top: 0.25em;
+}
 #content div.slider ul li img {
   padding: 0px;
 }

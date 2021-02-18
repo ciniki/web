@@ -148,6 +148,50 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
         }
     }
 
+    //
+    // Check if there is a slider to be displayed based on exhibitions
+    //
+    if( isset($ciniki['tenant']['modules']['ciniki.ags']) 
+        && isset($settings['page-home-ags-slider-type']) 
+        && ($settings['page-home-ags-slider-type'] == 'latest' || $settings['page-home-ags-slider-type'] == 'random') 
+        ) {
+
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'ags', 'web', 'sliderImages');
+        $rc = ciniki_ags_web_sliderImages($ciniki, $settings, $ciniki['request']['tnid'], 
+            $settings['page-home-ags-slider-type'], 15);
+        if( $rc['stat'] != 'ok' ) {
+            return $rc;
+        }
+        if( isset($rc['images']) && count($rc['images']) > 0 ) {
+            foreach($rc['images'] as $iid => $img) {
+                if( isset($settings['page-home-ags-slider-labels']) 
+                    && $settings['page-home-ags-slider-labels'] == 'yes' 
+                    ) {
+                    $rc['images'][$iid]['label'] = '';
+                    if( isset($img['title']) && $img['title'] != '' ) {
+                        $rc['images'][$iid]['label'] = '<i>' . $img['title'] . '</i>';
+                    }
+                    if( isset($img['display_name']) && $img['display_name'] != '' ) {
+                        $rc['images'][$iid]['label'] .= ($rc['images'][$iid]['label'] != '' ? ' - ' : '') . $img['display_name'];
+                    }
+                }
+            }
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processSlider');
+            $size = 'xlarge';
+            if( isset($settings['page-home-ags-slider-size']) && $settings['page-home-ags-slider-size'] != '' ) {
+                $size = $settings['page-home-ags-slider-size'];
+            }
+            $rc = ciniki_web_processSlider($ciniki, $settings, array(
+                'size'=>$size,
+                'speed'=>'medium',
+                'resize'=>'scaled',
+                'images'=>$rc['images']));
+            if( $rc['stat'] == 'ok' ) {
+                $slider_content = $rc['content'];
+            }
+        }
+    }
+
     $page_content .= "<div id='content'>\n"
         . "";
     if( $slider_content != '' ) {
