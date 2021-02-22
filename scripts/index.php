@@ -589,9 +589,14 @@ if( isset($settings['site-header-og-image']) && $settings['site-header-og-image'
     }
 }
 
-if( isset($settings['site-ssl-active']) && $settings['site-ssl-active'] == 'yes' ) {
+//
+// Check if ssl is enabled on domain
+//
+if( (isset($settings['site-ssl-active']) && $settings['site-ssl-active'] == 'yes')
+    || (isset($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] == 'https') 
+    ) {
     $ciniki['request']['ssl_domain_base_url'] = preg_replace('/^http:/', 'https:', $ciniki['request']['ssl_domain_base_url']);
-}
+} 
 
 //
 // Check for the SSL Shop configuration
