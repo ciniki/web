@@ -43,6 +43,7 @@ function ciniki_web_main() {
         this.themesAvailable['redbrick'] = 'Red Brick';
         this.themesAvailable['redbrick2'] = 'Red Brick 2';
         this.themesAvailable['bluepaws'] = 'Blue Paws';
+        this.themesAvailable['2021'] = 'Twenty One';
         this.themesAvailable['private'] = 'Private';
 //      this.themesAvailable['orangebrick'] = 'Orange Brick';
 //      this.themesAvailable['splatter'] = 'Splatter';
@@ -1572,7 +1573,7 @@ function ciniki_web_main() {
                     'addresses-blank-shortbio-phones-emails-links':'Addresses, Short Bio, Phones, Emails, Links',
                     'thumbnail-list':'Thumbnails with Names',
                     }},
-                'page-members-membership-details':{'label':'Display Membership Information', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                'page-members-membership-details':{'label':'Display Membership Information', 'type':'multitoggle', 'default':'no', 'toggles':{'no':'No', 'top':'Top', 'yes':'Bottom'}},
                 }},
             '_save':{'label':'', 'buttons':{
                 'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'members\');'},
