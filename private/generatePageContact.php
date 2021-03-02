@@ -281,8 +281,14 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
                 $content .= "<h2>" . $settings['page-contact-form-heading'] . "</h2>";
             }
             if( isset($settings['page-contact-form-intro-message']) 
-                && $settings['page-contact-form-intro-message'] != '' ) {
-                $content .= "<p>" . $settings['page-contact-form-intro-message'] . "</p>";
+                && $settings['page-contact-form-intro-message'] != '' 
+                ) {
+                ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
+                $rc = ciniki_web_processContent($ciniki, $settings, $settings['page-contact-form-intro-message']);    
+                if( $rc['stat'] != 'ok' ) {
+                    return $rc;
+                }
+                $content .= $rc['content'];
             }
             if( isset($contact_form_errors) && $contact_form_errors != '' ) {
                 $content .= "<p>" . $contact_form_errors . "</p>";
