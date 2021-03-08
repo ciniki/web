@@ -596,11 +596,21 @@ function ciniki_web_siteSettings($ciniki) {
             }
         }
         $rsp['pages'] = $pages;
-        $rsp['module_pages'] = $ciniki_pages;
-//      $rsp = array('stat'=>'ok', 'featured'=>$featured, 'pages'=>$pages, 'module_pages'=>$ciniki_pages, 'settings'=>$rc_settings, 'header'=>$rc_header, 'footer'=>$rc_footer, 'advanced'=>$rc_advanced, 'url'=>$url);
+        foreach($ciniki_pages as $pid => $page) {
+            if( $page['page']['name'] == 'home' ) {
+                array_unshift($rsp['pages'], $page);
+            } elseif( $page['page']['name'] == 'contact' ) {
+                $rsp['pages'][] = $page;
+            } elseif( $page['page']['active'] == 'yes' ) {
+                $rsp['pages'][] = $page;
+            }
+        }
+        // Only show module pages to sysadmin
+        if( ($ciniki['session']['user']['perms'] & 0x01) == 0x01 ) {
+            $rsp['module_pages'] = $ciniki_pages;
+        }
     } else {
         $rsp['pages'] = $ciniki_pages;
- //       $rsp = array('stat'=>'ok', 'featured'=>$featured, 'pages'=>$ciniki_pages, 'settings'=>$rc_settings, 'header'=>$rc_header, 'footer'=>$rc_footer, 'advanced'=>$rc_advanced, 'url'=>$url);
     }
 
     //
