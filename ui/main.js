@@ -111,7 +111,7 @@ function ciniki_web_main() {
                 'addTxt':'',
                 'addFn':'M.startApp(\'ciniki.web.pages\',null,\'M.ciniki_web_main.showMenu();\',\'mc\',{\'page_id\':0,\'parent_id\':0});',
                 },
-            'module_pages':{'label':'Other Pages', 'aside':'no', 'type':'simplegrid', 'num_cols':1, 'sortable':'yes',
+            'module_pages':{'label':'Other Pages (Admin Only)', 'aside':'no', 'type':'simplegrid', 'num_cols':1, 'sortable':'yes',
                 'headerValues':null,
                 'addTxt':'',
                 'addFn':'M.startApp(\'ciniki.web.pages\',null,\'M.ciniki_web_main.showMenu();\',\'mc\',{\'page_id\':0,\'parent_id\':0});',

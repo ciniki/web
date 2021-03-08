@@ -596,10 +596,21 @@ function ciniki_web_siteSettings($ciniki) {
             }
         }
         $rsp['pages'] = $pages;
+        // 
+        // Check which built in pages should be added automatically to the pages menu
+        //
         foreach($ciniki_pages as $pid => $page) {
             if( $page['page']['name'] == 'home' ) {
                 array_unshift($rsp['pages'], $page);
             } elseif( $page['page']['name'] == 'contact' ) {
+                $rsp['pages'][] = $page;
+            } elseif( $page['page']['name'] == 'membersonly' ) {
+                $rsp['pages'][] = $page;
+            } elseif( $page['page']['name'] == 'account' ) {
+                $rsp['pages'][] = $page;
+            } elseif( $page['page']['name'] == 'cart' ) {
+                $rsp['pages'][] = $page;
+            } elseif( $page['page']['name'] == 'search' ) {
                 $rsp['pages'][] = $page;
             } elseif( $page['page']['active'] == 'yes' ) {
                 $rsp['pages'][] = $page;
