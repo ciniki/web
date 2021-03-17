@@ -82,10 +82,16 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $tnid) {
             'BLOCKED FROM ' . $_POST['contact-form-email'] . ' - domainworld.com');
         return array('stat'=>'ok', 'error_message'=>$error_message, 'success_message'=>"Your message was sent");
     } */
-    if( preg_match("/domainreg[a-z]*corp.com/", $_POST['contact-form-email']) ) {
+    if( preg_match("/domainreg[a-z]*.com/", $_POST['contact-form-email']) ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'logFileMsg');
         ciniki_core_logFileMsg($ciniki, $tnid, 'spam', 
             'BLOCKED FROM ' . $_POST['contact-form-email'] . ' - domainworld.com');
+        return array('stat'=>'ok', 'error_message'=>$error_message, 'success_message'=>"Your message was sent");
+    }
+    if( preg_match("/IMPORT.*NOTICE/", $subject) ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'logFileMsg');
+        ciniki_core_logFileMsg($ciniki, $tnid, 'spam', 
+            'BLOCKED SUBJECT ' . $subject . ' - ' . $_POST['contact-form-email']);
         return array('stat'=>'ok', 'error_message'=>$error_message, 'success_message'=>"Your message was sent");
     }
     if( preg_match("/domainworld.com/", $_POST['contact-form-email']) ) {
