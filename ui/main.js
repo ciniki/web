@@ -435,6 +435,9 @@ function ciniki_web_main() {
             '_analytics':{'label':'Facebook Pixel ID', 'fields':{
                 'site-facebook-pixel-id':{'label':'', 'type':'text', 'hidelabel':'yes'},
                 }},
+            '_verify':{'label':'Facebook Domain Verification Code', 'fields':{
+                'site-facebook-domain-verification':{'label':'', 'type':'text', 'hidelabel':'yes'},
+                }},
             '_save':{'label':'', 'buttons':{
                 'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'facebook\');'},
                 }},

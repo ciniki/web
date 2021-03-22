@@ -516,6 +516,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'site-google-analytics-account',
         'site-google-site-verification',
         'site-google-gtm-code',
+        'site-facebook-domain-verification',
         'site-facebook-pixel-id',
         'site-pinterest-site-verification',
         'site-featured',

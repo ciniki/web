@@ -247,6 +247,11 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
         ) {
         $content .= '<meta name="google-site-verification" content="' . $settings['site-google-site-verification'] . '"/>' . "\n";
     }
+    if( isset($settings['site-facebook-domain-verification']) 
+        && $settings['site-facebook-domain-verification'] != '' 
+        ) {
+        $content .= '<meta name="facebook-domain-verification" content="' . $settings['site-facebook-domain-verification'] . '"/>' . "\n";
+    }
     if( isset($settings['site-pinterest-site-verification']) 
         && $settings['site-pinterest-site-verification'] != '' 
         ) {
