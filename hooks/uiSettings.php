@@ -57,7 +57,8 @@ function ciniki_web_hooks_uiSettings($ciniki, $tnid, $args) {
         ) {
         $menu_item = array(
             'priority'=>1000,
-            'label'=>'Website', 
+//            'label'=>'Website' . (ciniki_core_checkModuleActive($ciniki, 'ciniki.wng') ? ' (legacy)' : ''), 
+            'label'=>'Website',
             'edit'=>array('app'=>'ciniki.web.main'),
             );
         $rsp['menu_items'][] = $menu_item;
