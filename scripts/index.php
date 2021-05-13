@@ -73,7 +73,11 @@ if( !is_array($ciniki['request']['uri_split']) ) {
 //
 if( isset($_GET) && is_array($_GET) ) {
     foreach($_GET as $arg_key => $arg_value) {
-        $ciniki['request']['args'][$arg_key] = rawurldecode($arg_value);
+        if( is_array($arg_value) ) {
+            error_log("Unsupported arguments: $arg_key");
+        } else {
+            $ciniki['request']['args'][$arg_key] = rawurldecode($arg_value);
+        }
     }
 }
 
