@@ -295,7 +295,7 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
             }
             $content .= "<div class='input'>"
                 . "<label for='contact-form-name'>Name</label>"
-                . "<input type='text' class='text' value='' name='contact-form-name' id='contact-form-name'/>"
+                . "<input type='text' class='text' value='" . (isset($_POST['contact-form-name']) ? $_POST['contact-form-name'] : '' ) . "' name='contact-form-name' id='contact-form-name'/>"
                 . "</div>";
             $content .= "<div class='input hidden'>"
                 . "<label for='contact-form-name-again'>Email Again</label>"
@@ -303,21 +303,21 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
                 . "</div>";
             $content .= "<div class='input'>"
                 . "<label for='contact-form-email'>Email</label>"
-                . "<input type='email' class='text' value='' name='contact-form-email' id='contact-form-email'/>"
+                . "<input type='email' class='text' value='" . (isset($_POST['contact-form-email']) ? $_POST['contact-form-email'] : '' ) . "' name='contact-form-email' id='contact-form-email'/>"
                 . "</div>";
             if( isset($settings['page-contact-form-phone']) && $settings['page-contact-form-phone'] == 'yes' ) {
                 $content .= "<div class='input'>"
                     . "<label for='contact-form-phone'>Phone Number</label>"
-                    . "<input type='text' class='text' value='' name='contact-form-phone' id='contact-form-phone'/>"
+                    . "<input type='text' class='text' value='" . (isset($_POST['contact-form-phone']) ? $_POST['contact-form-phone'] : '') . "' name='contact-form-phone' id='contact-form-phone'/>"
                     . "</div>";
             }
             $content .= "<div class='input'>"
                 . "<label for='contact-form-subject'>Subject</label>"
-                . "<input type='text' class='text' value='' name='contact-form-subject' id='contact-form-subject'/>"
+                . "<input type='text' class='text' value='" . (isset($_POST['contact-form-subject']) ? $_POST['contact-form-subject'] : '') . "' name='contact-form-subject' id='contact-form-subject'/>"
                 . "</div>";
             $content .= "<div class='textarea'>"
                 . "<label for='contact-form-message'>Message</label>"
-                . "<textarea name='contact-form-message' class='medium' id='contact-form-message'></textarea>"
+                . "<textarea name='contact-form-message' class='medium' id='contact-form-message'>" . (isset($_POST['contact-form-message']) ? $_POST['contact-form-message'] : '') . "</textarea>"
                 . "</div>";
             $content .= "<div class='submit'>"
                 . "<input type='submit' value='Submit' name='submit' id='contact-form-submit' class='submit'>"
