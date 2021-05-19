@@ -12,7 +12,7 @@
 // Returns
 // -------
 //
-function ciniki_web_processContactForm(&$ciniki, $settings, $tnid) {
+function ciniki_web_processContactForm(&$ciniki, $settings, $tnid, $args=array()) {
 
     $success_message = '';
     $error_message = '';
@@ -125,6 +125,10 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $tnid) {
         ) {
         $phone .= $_POST['contact-form-phone'];
     }
+    $dateofstay = '';
+    if( isset($_POST['contact-form-dateofstay']) && $_POST['contact-form-dateofstay'] != '') {
+        $dateofstay .= $_POST['contact-form-dateofstay'];
+    }
     if( $error_message == '' ) {
         //
         // If the mail inbox flag has been sent, put the message into the inbox
@@ -151,12 +155,14 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $tnid) {
         else {
             $msg = "New message from " . $_POST['contact-form-name'] . " (" . $_POST['contact-form-email'] . ")"
                 . ($phone!=''?" - " . $phone:'')
+                . ($dateofstay != '' ? "\n\nDate of Stay: " . $dateofstay . "":'')
                 . "\n\n"
                 . "Message: \n\n"
                 . $msg
                 . "";
             $htmlmsg = "New message from " . $_POST['contact-form-name'] . " (" . $_POST['contact-form-email'] . ")"
                 . ($phone!=''?" - " . $phone:'')
+                . ($dateofstay != '' ? "<br/><br/>Date of Stay: " . $dateofstay . "":'')
                 . "<br/><br/>"
                 . preg_replace("/\n/", '<br/>', $_POST['contact-form-message'])
                 . "";
@@ -167,6 +173,40 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $tnid) {
                         'tnid'=>$tnid,
                         'replyto_email'=>$_POST['contact-form-email'],
                         'replyto_name'=>$_POST['contact-form-name'],
+                        'subject'=>$subject,
+                        'textmsg'=>$msg,
+                        'htmlmsg'=>$htmlmsg,
+                        );
+                }
+                //
+                // Check if send copy to submitter
+                //
+                if( isset($send_to_emails[0]) 
+                    && isset($settings['page-contact-form-copy-submitter']) 
+                    && $settings['page-contact-form-copy-submitter'] == 'yes' 
+                    ) {
+                    $msg = "We have sent your request, here is a copy."
+                        . "\n\n"
+                        . "From: " . $_POST['contact-form-email'] . "\n"
+                        . ($phone != '' ? "Phone: " . $phone . "\n" : '')
+                        . ($dateofstay != '' ? "Date of Stay: " . $dateofstay . "\n" : '')
+                        . "\n"
+                        . "Message: \n\n"
+                        . $msg
+                        . "";
+                    $htmlmsg = "We have send your request, here is a copy."
+                        . "<br/><br/>"
+                        . "From: " . $_POST['contact-form-email'] . "<br/>"
+                        . ($phone != '' ? "Phone: " . $phone . "<br/>" : '')
+                        . ($dateofstay != '' ? "Date of Stay: " . $dateofstay . "<br/>" : '')
+                        . "<br/>"
+                        . preg_replace("/\n/", '<br/>', $_POST['contact-form-message'])
+                        . "";
+                    $ciniki['emailqueue'][] = array(
+                        'to'=>trim($_POST['contact-form-email']),
+                        'tnid'=>$tnid,
+                        'replyto_email'=>$send_to_emails[0],
+//                        'replyto_name'=>$_POST['contact-form-name'],
                         'subject'=>$subject,
                         'textmsg'=>$msg,
                         'htmlmsg'=>$htmlmsg,

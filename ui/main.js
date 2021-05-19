@@ -893,6 +893,7 @@ function ciniki_web_main() {
                 'page-contact-form-phone':{'label':'Phone #', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-contact-debug-log':{'label':'Debug Log', 'active':function() {return (M.userPerms&0x01) == 0x01 ? 'yes' : 'no';}, 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
                 'page-contact-form-emails':{'label':'Emails', 'type':'text'},
+                'page-contact-form-copy-submitter':{'label':'Email Copy', 'type':'toggle', 'default':'no', 'toggles':this.activeToggles},
                 }},
             '_contact_form_heading':{'label':'Contact Form Heading', 'active':'no', 'fields':{
                 'page-contact-form-heading':{'label':'Form Heading', 'hidelabel':'yes', 'type':'text'},

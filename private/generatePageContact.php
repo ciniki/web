@@ -324,7 +324,7 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
                 . "</div>";
             $content .= "</form>";
         } elseif( $contact_form_submitted == 'yes' ) {
-            $content .= "<p>" . $contact_form_success . "</p>";
+            $content .= "<p class='success-message'>" . $contact_form_success . "</p>";
 /*          if( isset($settings['page-contact-form-submitted-message']) 
                 && $settings['page-contact-form-submitted-message'] != '' ) {
                 $content .= "<p>" . $settings['page-contact-form-submitted-message'] . "</p>";
