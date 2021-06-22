@@ -46,9 +46,17 @@ function ciniki_web_pages() {
             this[pn].stackedData = [];
             this[pn].page_id = pid;
             this[pn].page_type = (rsp.page != null && rsp.page.page_type != null ? rsp.page.page_type : 10);
+            this[pn].showSelect = function() {
+                M.ciniki_web_pages['edit_'+pid].editSelect('details', 'parent_id', 'yes');
+            }
             this[pn].sections = {
                 'details':{'label':'', 'aside':'yes', 'fields':{
-                    'parent_id':{'label':'Parent Page', 'type':'select', 'options':{}},
+                    'parent_id':{'label':'Parent Page', 'type':'select', 'options':{},
+                        'editable':'afterclick',
+                        'confirmMsg':'Are you sure you want to move this page on your website?',
+                        'confirmButton':'Move Page',
+                        'confirmFn':this[pn].showSelect,
+                        },
                     'title':{'label':'Menu Title', 'type':'text'},
                     'article_title':{'label':'Page Title', 'visible':'no', 'type':'text'},
                     'sequence':{'label':'Page Order', 'type':'text', 'size':'small'},
