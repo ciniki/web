@@ -45,7 +45,7 @@
 #
 #                   0x01 - Visible
 #                   0x02 - Visible to logged in ciniki.customers only
-#                   0x04 -
+#                   0x04 - Visible to logged in Members only (Must be member in ciniki.customers).
 #                   0x08 - Password Protected Page
 #                   0x10 - Display children as cilist **default**
 #                   0x20 - Display children as submenu (only valid on parent_id = 0)

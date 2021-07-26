@@ -62,7 +62,10 @@ function ciniki_web_pages() {
                     'sequence':{'label':'Page Order', 'type':'text', 'size':'small'},
                     '_flags_1':{'label':'Visible', 'type':'flagtoggle', 'bit':0x01, 'field':'flags_1', 'default':'on'},
                     '_flags_2':{'label':'Private', 'type':'flagtoggle', 'bit':0x02, 'field':'flags_2', 'default':'off',
-                        'active':(M.curTenant.modules['ciniki.customers'] != null ? 'yes' : 'no'),
+                        'active':function() { return M.modFlagSet('ciniki.customers', 0x01); },
+                        },
+                    '_flags_3':{'label':'Members Only', 'type':'flagtoggle', 'bit':0x04, 'field':'flags_3', 'default':'off',
+                        'active':function() { return M.modFlagSet('ciniki.customers', 0x02); },
                         },
                     'menu_flags':{'label':'Menu Options', 'type':'flags', 'flags':this.menuFlags},
                     '_flags_4':{'label':'Password', 'type':'flagtoggle', 'bit':0x08, 'field':'flags_4', 'default':'off',
@@ -503,6 +506,11 @@ function ciniki_web_pages() {
                 } else {
                     flags &= ~0x02;
                 }
+                if( this.formValue('_flags_3') == 'on' ) {
+                    flags |= 0x04;
+                } else {
+                    flags &= ~0x04;
+                }
                 if( this.formValue('_flags_4') == 'on' ) {
                     flags |= 0x08;
                 } else {
@@ -592,6 +600,7 @@ function ciniki_web_pages() {
         // Remove child_format flags
         this[pn].data.flags_1 = (rsp.page.flags&0xFFFFFF0F);
         this[pn].data.flags_2 = (rsp.page.flags&0xFFFFFF0F);
+        this[pn].data.flags_3 = (rsp.page.flags&0xFFFFFF0F);
         this[pn].data.flags_4 = (rsp.page.flags&0xFFFFFF0F);
         this[pn].data.flags_14 = (rsp.page.flags&0x0000F000);
         this[pn].data.child_format = (rsp.page.flags&0x00000FF0);

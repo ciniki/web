@@ -59,6 +59,24 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
                 return $rc;
             }
             $page = $rc['page'];
+            //
+            // Check if a members only section
+            //
+            if( ($page['flags']&0x04) == 0x04 ) {
+                if( isset($ciniki['session']['customer']['id']) && (!isset($ciniki['session']['customer']['member_status']) || $ciniki['session']['customer']['member_status'] != 10) ) {
+                    // Logged in but not member
+                    return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.185', 'msg'=>'You must be an active member to view this page'));
+                } elseif( !isset($ciniki['session']['customer']['id']) || $ciniki['session']['customer']['id'] <= 0 ) {
+                    // Redirect to login
+                    if( isset($_SERVER['HTTPS']) ) {
+                        $_SESSION['login_referer'] = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+                    } else {
+                        $_SESSION['login_referer'] = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+                    }
+                    header('Location: ' . $ciniki['request']['ssl_domain_base_url'] . '/account');
+                    return array('stat'=>'exit');
+                }
+            }
             if( ($page['flags']&0x02) == 0x02 && (!isset($ciniki['session']['customer']['id']) || $ciniki['session']['customer']['id'] < 1) ) {
                 return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.99', 'msg'=>'Page not found'));
             }
@@ -110,6 +128,21 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
             //
             // Check if intermediate page is password protected
             //
+            if( ($rc['page']['flags']&0x04) == 0x04 ) {
+                if( isset($ciniki['session']['customer']['id']) && (!isset($ciniki['session']['customer']['member_status']) || $ciniki['session']['customer']['member_status'] != 10) ) {
+                    // Logged in but not member
+                    return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.185', 'msg'=>'You must be an active member to view this page'));
+                } elseif( !isset($ciniki['session']['customer']['id']) || $ciniki['session']['customer']['id'] <= 0 ) {
+                    // Redirect to login
+                    if( isset($_SERVER['HTTPS']) ) {
+                        $_SESSION['login_referer'] = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+                    } else {
+                        $_SESSION['login_referer'] = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+                    }
+                    header('Location: ' . $ciniki['request']['ssl_domain_base_url'] . '/account');
+                    return array('stat'=>'exit');
+                }
+            }
             if( isset($rc['page']['flags']) && ($rc['page']['flags']&0x08) == 0x08 
                 && $rc['page']['page_password'] != '' 
                 ) {
