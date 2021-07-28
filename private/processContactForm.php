@@ -100,6 +100,24 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $tnid, $args=array()
             'BLOCKED FROM ' . $_POST['contact-form-email'] . ' - domainworld.com');
         return array('stat'=>'ok', 'error_message'=>$error_message, 'success_message'=>"Your message was sent");
     }
+    if( preg_match("/firebasestorage.googleapis.com.*DMCA/i", $msg) ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'logFileMsg');
+        ciniki_core_logFileMsg($ciniki, $tnid, 'spam', 
+            'BLOCKED FROM ' . $_POST['contact-form-email'] . ' - DMCA');
+        return array('stat'=>'ok', 'error_message'=>$error_message, 'success_message'=>"Your message was sent");
+    }
+    if( preg_match("/SpellPerfect.com/i", $msg) ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'logFileMsg');
+        ciniki_core_logFileMsg($ciniki, $tnid, 'spam', 
+            'BLOCKED FROM ' . $_POST['contact-form-email'] . ' - spellperfect.com');
+        return array('stat'=>'ok', 'error_message'=>$error_message, 'success_message'=>"Your message was sent");
+    }
+    if( preg_match("/DeadLinkCheck.com/i", $msg) ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'logFileMsg');
+        ciniki_core_logFileMsg($ciniki, $tnid, 'spam', 
+            'BLOCKED FROM ' . $_POST['contact-form-email'] . ' - deadlinkcheck.com');
+        return array('stat'=>'ok', 'error_message'=>$error_message, 'success_message'=>"Your message was sent");
+    }
 /*        if( isset($ciniki['config']['ciniki.core']['log_dir']) && $ciniki['config']['ciniki.core']['log_dir'] != '' ) {
 //            file_put_contents($ciniki['config']['ciniki.core']['log_dir'] . '/spam.log', 
 //                'WEB: SPAM BLOCKED FROM ' . $_POST['contact-form-email'] . ' - ' . $_SERVER['HTTP_REFERER'] . "\n",
