@@ -488,6 +488,17 @@ function ciniki_web_pages() {
                         this.sections._module_options.fields[option.setting].options[option.options[i].value] = option.options[i].label;
                     }
                 }
+                else if( option.type == 'image_id' ) {
+                    this.sections._module_options.fields[option.setting].addDropImage = function(iid) {
+                        M.ciniki_web_pages[pn].setFieldValue(option.setting, iid, null, null);
+                        return true;
+                        };
+                    if( option.controls != null ) {
+                        this.sections._module_options.fields[option.setting].controls = option.controls;
+                    } else {
+                        this.sections._module_options.fields[option.setting].controls = 'all';
+                    }
+                }
                 this.data[option.setting] = option.value;
             };
             this[pn].addButton('save', 'Save', 'M.ciniki_web_pages.'+pn+'.savePage();');
