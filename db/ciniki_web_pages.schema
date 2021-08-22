@@ -57,7 +57,7 @@
 #                   0x0800 - Display children as Large Buttons
 #                   0x1000 - Reverse sort on files
 #                   0x2000 - Hide share buttons
-#                   0x4000 - 
+#                   0x4000 - Hide primary image
 #                   0x8000 - 
 #
 # page_password:    The password for this page and all other pages.

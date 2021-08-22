@@ -37,7 +37,9 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
     $content .= "</header>";
 
     $content .= "<div class='entry-content'>";
-    if( isset($page['image_id']) && $page['image_id'] != '' && $page['image_id'] != 0 ) {
+    if( isset($page['image_id']) && $page['image_id'] != '' && $page['image_id'] != 0 
+        && ($page['flags']&0x4000) == 0     // Show image on page
+        ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
         $rc = ciniki_web_getScaledImageURL($ciniki, $page['image_id'], 'original', '500', 0);
         if( $rc['stat'] != 'ok' ) {

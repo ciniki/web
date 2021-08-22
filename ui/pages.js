@@ -115,6 +115,7 @@ function ciniki_web_pages() {
                 '_image_caption':{'label':'', 'aside':'yes',
                     'visible':function() { return M.ciniki_web_pages[pn].sectionVisible('_image_caption'); },
                     'fields':{
+                        '_flags_15':{'label':'Show Image', 'type':'flagtoggle', 'field':'flags_15', 'reverse':'yes', 'bit':0x4000},
                         'primary_image_caption':{'label':'Caption', 'type':'text'},
         //              'primary_image_url':{'label':'URL', 'type':'text'},
                     }},
@@ -139,7 +140,7 @@ function ciniki_web_pages() {
                 '_files':{'label':'', // 'aside':'yes', //'visible':'hidden', 
                     'visible':function() { return M.ciniki_web_pages[pn].sectionVisible('_files'); },
                     'fields':{
-                        '_flags_14':{'label':'Reverse Order', 'type':'flagtoggle', 'bit':0x1000, 'field':'flags_14', 'default':'on'},
+                        '_flags_13':{'label':'Reverse Order', 'type':'flagtoggle', 'bit':0x1000, 'field':'flags_13', 'default':'on'},
                     }},
                 'images':{'label':'Gallery', 'type':'simplethumbs',
                     'visible':function() { return M.ciniki_web_pages[pn].sectionVisible('images'); },
@@ -527,10 +528,15 @@ function ciniki_web_pages() {
                 } else {
                     flags &= ~0x08;
                 }
-                if( this.formValue('_flags_14') == 'on' ) {
+                if( this.formValue('_flags_13') == 'on' ) {
                     flags |= 0x1000;
                 } else {
                     flags &= ~0x1000;
+                }
+                if( this.formValue('_flags_15') == 'on' ) {
+                    flags |= 0x4000;
+                } else {
+                    flags &= ~0x4000;
                 }
                 if( this.page_id > 0 ) {
                     var c = this.serializeFormData('no');
@@ -613,7 +619,8 @@ function ciniki_web_pages() {
         this[pn].data.flags_2 = (rsp.page.flags&0xFFFFFF0F);
         this[pn].data.flags_3 = (rsp.page.flags&0xFFFFFF0F);
         this[pn].data.flags_4 = (rsp.page.flags&0xFFFFFF0F);
-        this[pn].data.flags_14 = (rsp.page.flags&0x0000F000);
+        this[pn].data.flags_13 = (rsp.page.flags&0x00001000);
+        this[pn].data.flags_15 = (rsp.page.flags&0x00004000);
         this[pn].data.child_format = (rsp.page.flags&0x00000FF0);
         this[pn].sections.details.fields.parent_id.active = 'yes';
         if( this[pn].page_id == 0 && parent_id != null ) {
