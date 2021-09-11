@@ -222,7 +222,7 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
-        $page_content .= "<article class='page links'>\n"
+        $page_content .= "<article class='page links ciniki-links'>\n"
             . "<header class='entry-title'><h1 class='entry-title'>$article_title</h1></header>\n"
             . "<div class='entry-content'>\n"
             . "";
@@ -278,7 +278,7 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
                 $page_title .= ' - ' . $section_name;
             } 
         }
-        $page_content .= "<article class='page links'>\n"
+        $page_content .= "<article class='page links ciniki-links'>\n"
             . "<header class='entry-title'><h1 class='entry-title'>$article_title</h1></header>\n"
             . "<div class='entry-content'>\n"
             . "";

@@ -31,6 +31,9 @@ function ciniki_web_processBlockGalleryImage(&$ciniki, $settings, $tnid, $block)
     if( isset($block['size']) && $block['size'] == 'large' ) {
         $height = 1200;
     }
+    if( isset($settings['default-image-height']) && $settings['default-image-height'] > $height ) {
+        $height = $settings['default-image-height'];
+    }
 
     //
     // Load the image

@@ -90,6 +90,9 @@ a, a:hover, a:visited, a:active {
 .fa-bars:before {
     content: "\f0c9";
 }
+.fa-times:before {
+  content: "\f00d"; 
+}
 #page-container {
     display: flex;
     flex-direction: column;
@@ -160,7 +163,6 @@ header .title-block h1 {
 }
 header .title-block h2 {
     font-size: 1.2rem;
-    font-style: italic;
     color: #777;
 }
 header .signin-wrapper {
@@ -202,12 +204,21 @@ header button {
     font-size: 2rem;
     color: #777;
     padding: 0rem;
-    flex-basis: 20%;
+    flex-basis: 10%;
     text-align: right;
 }
-header nav,
+header button:focus {
+    outline: none;
+}
+header button .fa-times {
+    display: none;
+}
+header button.close .fa-bars { display: none; }
+header button.close .fa-times { display: block; }
 header nav .menu-divider,
-header nav #sub-menu-container,
+/* header nav,
+header nav #sub-menu-container, */
+header #main-menu-container,
 header nav h3 {
     display: none;
 }
@@ -215,13 +226,19 @@ header nav {
     position: relative;
     width: 100%;
     flex-basis: 100%;
-    border-top: 1px solid #bbb;
     font-size: 1.2rem;
 }
 header .title-block h2 {
     padding-bottom: 0rem;
 }
-header nav ul > li {
+header #main-menu-container ul,
+header #sub-menu-container ul {
+    display: block;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #bbb;
+}
+header #main-menu-container > ul > li {
     position: relative;
     width: 100%;
     list-style-type: none;
@@ -229,8 +246,19 @@ header nav ul > li {
     text-align: center;
     padding: 0.5rem 1rem;
 }
-header nav.visible {
+header #sub-menu-container ul {
     display: block;
+    text-align: center;
+}
+header #sub-menu-container li {
+    display: inline-block;
+    padding: 0.25rem 1rem;
+    list-style-type: none;
+}
+/* header nav.visible { */
+header #main-menu-container.visible {
+    display: block;
+    margin-top: 1rem;
 }
 footer {
     background: #f7f7f7;
@@ -259,6 +287,9 @@ footer p {
         padding-top: 2.2rem;
         line-height: 2rem;
     }
+    header button.close:before {
+        content: none;
+    }
     header .social-divider {
         display: inline-block;
         padding: 0rem 1rem;
@@ -283,6 +314,8 @@ footer p {
     header.switch-at-80 button {
         display: none;
     }
+    header.switch-at-80 button.close .fa-bars { display: block; }
+    header.switch-at-80 button.close .fa-times { display: none; }
     header.switch-at-80 nav {
         display: flex;
         flex-direction: column;
@@ -293,15 +326,23 @@ footer p {
         width: auto;
         flex-basis: auto;
         border: 0px;
+        margin-top: 0px;
     }
-    header.switch-at-80 nav #main-menu-container {
+    header.switch-at-80 #main-menu-container {
+        display: block;
         font-size: 1.3rem;
         text-align: right;
     }
-    header.switch-at-80 nav ul {
+    header.switch-at-80 #main-menu-container ul {
         align-self: center;
+        border-top: 0px;
     }
-    header.switch-at-80 nav ul > li {
+    header.switch-at-80 #main-menu-container ul,
+    header.switch-at-80 #sub-menu-container ul {
+        margin-top: 0px;
+        padding-top: 0px;
+    }
+    header.switch-at-80 #main-menu-container ul > li {
         display: inline-block;
         padding: 0.5rem 0.5rem;
         vertical-align: middle;
@@ -309,9 +350,8 @@ footer p {
         text-align: auto;
         width: auto;
     }
-    header.switch-at-80 nav #sub-menu-container {
+    header.switch-at-80 #sub-menu-container {
         display: inline-block;
-        border-top: 1px solid #bbb;
         font-size: 1.1rem;
         align-self: flex-end;
     }
@@ -332,6 +372,7 @@ footer p {
 .block-primary-image img {
     margin: 0 auto;
     max-width: 100%;
+    max-height: 80vh;
 }
 .block-primary-image .image-caption {
     font-style: italic;
@@ -350,11 +391,13 @@ article.page-artiststatement,
 article.page-cv,
 article.ciniki-events,
 article.ciniki-blog,
+article.page-home-blog,
+article.page-home-events,
 article.page-awards {
     max-width: 90rem;
     margin: 0 auto;
 }
-article.links {
+article.ciniki-links {
     max-width: 60rem;
     margin: 0 auto;
 }
@@ -370,6 +413,10 @@ article.links {
 }
 .block-links {
     padding: 0rem 1rem 1rem 1rem;
+}
+.home-more {
+    padding: 0rem 1rem 2rem 1rem;
+    text-align: right;
 }
 
 /* Slider */
@@ -434,20 +481,69 @@ article.links {
 /* image-categories */
 div.image-categories {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-flow: row wrap;
     justify-content: space-around;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
+
+    align-items: stretch;
+    align-content: stretch;
 }
 div.image-categories .image-categories-thumbnail-wrap {
     flex-grow: 1;
     text-align: center;
     padding: 0rem 0.5rem 0.5rem 0.5rem;
+    min-width: 100%;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 25%;
+}
+@media (min-width: 40rem) {
+    div.image-gallery .image-gallery-thumbnail,
+    div.image-categories .image-categories-thumbnail-wrap {
+        min-width: 150px;
+        flex-basis: 50%;
+    }
+}
+@media (min-width: 50rem) {
+    div.image-gallery .image-gallery-thumbnail,
+    div.image-categories .image-categories-thumbnail-wrap {
+        min-width: 150px;
+        flex-basis: 33.3%;
+    }
+}
+@media (min-width: 60rem) {
+    div.image-gallery .image-gallery-thumbnail,
+    div.image-categories .image-categories-thumbnail-wrap {
+        min-width: 150px;
+        flex-basis: 25%;
+    }
+}
+@media (min-width: 80rem) {
+    div.image-gallery .image-gallery-thumbnail,
+    div.image-categories .image-categories-thumbnail-wrap {
+        min-width: 150px;
+        flex-basis: 20%;
+    }
+}
+@media (min-width: 100rem) {
+    div.image-gallery .image-gallery-thumbnail,
+    div.image-categories .image-categories-thumbnail-wrap {
+        min-width: 150px;
+        flex-basis: 15%;
+    }
+}
+@media (min-width: 120rem) {
+    div.image-gallery .image-gallery-thumbnail,
+    div.image-categories .image-categories-thumbnail-wrap {
+        min-width: 150px;
+        flex-basis: 12%;
+    }
 }
 div.image-categories img {
-    width: 100%;
-    max-width: 500px;
+    max-width: 100%;
+    min-width: 200px;
+    max-height: 50vh;
 }
 
 /* Image-gallery */
@@ -462,6 +558,7 @@ div.image-gallery {
     justify-content: space-around;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
+    padding-bottom: 1.5rem;
 }
 div.additional-image-gallery .image-gallery-thumbnail,
 div.image-gallery .image-gallery-thumbnail {
@@ -472,7 +569,8 @@ div.image-gallery .image-gallery-thumbnail {
 div.additional-image-gallery img,
 div.image-gallery img {
     width: 100%;
-    max-width: 250px;
+    max-width: 100%;
+    max-width: 800px;
 }
 div.gallery-image {
     text-align: center;
@@ -667,8 +765,11 @@ article.ciniki-events .block > h2 {
 }
 
 /* Image list */
+.image-list {
+    padding-bottom: 0rem;
+}
 .image-list-entry-wrap {
-    padding-bottom: 2rem;
+    padding-bottom: 1rem;
 }
 .image-list-image img {
     width: 100%;
@@ -695,6 +796,7 @@ article.ciniki-events .block > h2 {
     .image-list-entry-wrap:nth-child(even) .image-list-image {
         order: 2;
     }
+    .image-list-image,
     .image-list-details {
         display: flex;
         flex-direction: column;
@@ -785,6 +887,7 @@ form .checkbox p {
 @media screen and (min-width: 60em) {
     div.block-form,
     div.block-mailing-lists,
+    .home-more,
     #content h1 {
         padding: 1rem 2rem;
     }
@@ -802,6 +905,7 @@ form .checkbox p {
     .block-links,
     article.ciniki-blog .entry-content > h2, 
     .image-list,
+    article.ciniki-events .block > h2,
     .block-content {
         padding-left: 2rem;
         padding-right: 2rem;
@@ -815,11 +919,11 @@ form .checkbox p {
     div.image-categories .image-categories-thumbnail-wrap {
         padding: 0rem 1rem 1rem 1rem;
     }
-    .block-upcoming-events,
+/*    .block-upcoming-events,
     .block-current-events,
     .block-past-events {
         padding: 1rem;
-    }
+    } */
 }
 
 /* Hide elements from printer */

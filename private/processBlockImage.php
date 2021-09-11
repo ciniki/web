@@ -24,15 +24,22 @@ function ciniki_web_processBlockImage(&$ciniki, $settings, $tnid, $block) {
     // Check for quality setting
     //
     $quality = 60;
+    if( isset($settings['default-image-quality']) && $settings['default-image-quality'] > 0 ) {
+        $quality = $settings['default-image-quality'];
+    }
     if( isset($block['quality']) && $block['quality'] == 'high' ) {
         $quality = 90;
+    }
+    $width = 600;
+    if( isset($settings['default-image-width']) && $settings['default-image-width'] > 0 ) {
+        $width = $settings['default-image-width'];
     }
 
     //
     // Load the image
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-    $rc = ciniki_web_getScaledImageURL($ciniki, $block['image_id'], 'original', 0, 600, $quality);
+    $rc = ciniki_web_getScaledImageURL($ciniki, $block['image_id'], 'original', 0, $width, $quality);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }

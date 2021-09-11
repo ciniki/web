@@ -20,10 +20,17 @@ function ciniki_web_processBlockAsideImage(&$ciniki, $settings, $tnid, $block) {
     $quality = 60;
     $width = 500;
 
+    if( isset($settings['default-image-quality']) && $settings['default-image-quality'] > 0 ) {
+        $quality = $settings['default-image-quality'];
+    }
     if( isset($block['quality']) && $block['quality'] == 'high' ) {
         $quality = 90;
         $width = 1000;
     }
+    if( isset($settings['default-image-width']) && $settings['default-image-width'] > $width ) {
+        $width = $settings['default-image-width'];
+    }
+
 
     //
     // Generate the image url

@@ -516,6 +516,13 @@ function ciniki_web_processRequest(&$ciniki) {
     }
     $settings = $rc['settings'];
 
+    if( isset($settings['site-theme']) && $settings['site-theme'] == 'twentyone' ) {
+        $settings['default-image-width'] = 1200;
+        $settings['default-image-height'] = 1800;
+        $settings['default-image-thumbnail-version'] = 'thumbnail';
+        $settings['default-image-thumbnail-width'] = 800;
+    }
+
     if( isset($settings['site-header-og-image']) && $settings['site-header-og-image'] > 0 ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
         $rc = ciniki_web_getScaledImageURL($ciniki, $settings['site-header-og-image'], 'original', '0', '300', '85');

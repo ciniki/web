@@ -78,7 +78,11 @@ function ciniki_web_processBlockImageList(&$ciniki, $settings, $tnid, $block) {
         //
         $content .= "<div class='image-list-image'>";
         if( isset($item['image_id']) && $item['image_id'] > 0 ) {
-            if( isset($block['thumbnail_format']) && $block['thumbnail_format'] == 'square-padded' ) {
+            if( isset($settings['site-theme']) && $settings['site-theme'] == 'twentyone' ) {
+                $version = 'original';
+                $rc = ciniki_web_getScaledImageURL($ciniki, $item['image_id'], 'original', 1200, 0, 70);
+
+            } elseif( isset($block['thumbnail_format']) && $block['thumbnail_format'] == 'square-padded' ) {
                 $version = ((isset($block['image_version'])&&$block['image_version']!='')?$block['image_version']:'thumbnail');
                 $rc = ciniki_web_getPaddedImageURL($ciniki, $item['image_id'], 'original', 
                     ((isset($block['image_width'])&&$block['image_width']!='')?$block['image_width']:'400'), 

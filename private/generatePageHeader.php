@@ -170,6 +170,9 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
                 . '/' . $settings['site-theme'] . "/ie.css' />\n"
                 . "<![endif]-->\n";
         }
+        if( file_exists($ciniki['request']['theme_dir'] . '/' . $settings['site-theme'] . '/site.js') ) {
+            $content .= "<script async type='text/javascript' src='{$ciniki['request']['theme_url']}/{$settings['site-theme']}/site.js'></script>\n";
+        }
 //      if( file_exists($ciniki['request']['theme_dir'] . '/' . $settings['site-theme'] . '/print.css') ) {
 //          $content .= "<link rel='stylesheet' type='text/css' media='print' href='" . $ciniki['request']['theme_url'] . '/' . $settings['site-theme'] . "/print.css' />\n";
 //      }
@@ -916,9 +919,9 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
         $content .= "<a href='" . $ciniki['request']['base_url'] . '/search' . "' id='main-search-button' class='menu-toggle'><i class='fa fa-search'></i></a>";
     }
     if( isset($settings['theme']['header-menu-button']) && $settings['theme']['header-menu-button'] == 'yes' ) {
-        $content .= "<button type='button' id='main-menu-toggle' onclick='cinikiMainMenuToggle()' class='menu-toggle'><i class='fa fa-bars'></i></button>";
+        $content .= "<button type='button' id='main-menu-toggle' onclick='cinikiMainMenuToggle()' class='menu-toggle'><i class='fa fa-bars'></i><i class='fa fa-times'></i></button>";
     } else {
-        $content .= "<button type='button' id='main-menu-toggle' class='menu-toggle'><i class='fa fa-bars'></i></button>";
+        $content .= "<button type='button' id='main-menu-toggle' onclick='toggleMainMenu();' class='menu-toggle'><i class='fa fa-bars'></i><i class='fa fa-times'></i></button>";
     }
     if( isset($settings['theme']['header-signin-button']) && $settings['theme']['header-signin-button'] == 'yes' ) {
         if( isset($ciniki['session']['customer']['id']) && $ciniki['session']['customer']['id'] > 0 ) {
@@ -1289,7 +1292,6 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
             }
             $content .= "</a></li>";
         }
-
     }
 
     //
