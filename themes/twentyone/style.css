@@ -249,11 +249,14 @@ header #main-menu-container > ul > li {
 header #sub-menu-container ul {
     display: block;
     text-align: center;
+    border-bottom: 1px solid #bbb;
+    padding-bottom: 1rem;
 }
 header #sub-menu-container li {
     display: inline-block;
     padding: 0.25rem 1rem;
     list-style-type: none;
+    font-weight: bold;
 }
 /* header nav.visible { */
 header #main-menu-container.visible {
@@ -305,6 +308,9 @@ footer p {
     }
 }
 @media screen and (min-width: 80em) { 
+    header.switch-at-80 {
+        margin-bottom: 1rem;
+    }
     header.switch-at-80 .hgroup-wrapper {
         flex-wrap: nowrap;
     }
@@ -341,6 +347,8 @@ footer p {
     header.switch-at-80 #sub-menu-container ul {
         margin-top: 0px;
         padding-top: 0px;
+        padding-bottom: 0px;
+        border-bottom: 0px;
     }
     header.switch-at-80 #main-menu-container ul > li {
         display: inline-block;
