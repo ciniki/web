@@ -21,7 +21,7 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
 
     $content = '';
 
-    $content .= "<article class='page'>\n"
+    $content .= "<article class='page page-{$page['permalink']}'>\n"
         . "<header class='entry-title'><h1 class='entry-title'>" 
         . (isset($args['article_title'])&&$args['article_title']!=''?$args['article_title'] . ' - ':'')
         . $page['title'] . "</h1>"

@@ -135,6 +135,8 @@ function ciniki_web_processModuleRequest(&$ciniki, $settings, $tnid, $module_pag
     if( !isset($page['fullscreen-content']) || $page['fullscreen-content'] != 'yes' ) {
         if( isset($page['sidebar']) && count($page['sidebar']) > 0 ) {
             $rsp['content'] .= "<article class='page col-left-wide'>\n";
+        } elseif( isset($page['article-class']) && $page['article-class'] != '' ) {
+            $rsp['content'] .= "<article class='page {$page['article-class']}'>\n";
         } else {
             $rsp['content'] .= "<article class='page'>\n";
         }

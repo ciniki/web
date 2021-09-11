@@ -252,12 +252,13 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
     // Put together all the contact content
     //
     $content .= "<div id='content'>\n"
-        . "<article class='page'>\n"
+        . "<article class='page page-contact'>\n"
         . "<header class='entry-title'><h1 class='entry-title'>Contact</h1></header>\n";
     if( isset($map_content) && $map_content != '' ) {
         $content .= $map_content;
     }
     $content .= "<div class='entry-content'>\n";
+    $content .= "<div class='block-content'>";
     if( isset($page_content) && $page_content != '' ) {
         $content .= $page_content;
     }
@@ -265,11 +266,13 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
 //      $content .= "<p>" . $contact_content . "</p>";
         $content .= $contact_content;
     }
+    $content .= "</div>";
 
     //
     // Check if contact form should be displayed
     //
     if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.web', 0x04) ) {
+        $content .= "<div class='block-form'>";
         if( isset($settings['page-contact-form-display']) 
             && $settings['page-contact-form-display'] == 'yes' 
             && $contact_form_submitted == 'no' 
@@ -332,6 +335,7 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
                 $content .= "<p>Your message has been sent.</p>";
             } */
         }
+        $content .= "</div>";
     }
 
 //  $content .= "<br style='clear: both;'/>";

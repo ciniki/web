@@ -260,7 +260,7 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
 
         $ciniki['request']['onresize'] = "gallery_resize_arrows();";
         $ciniki['request']['onload'] = "scrollto_header();";
-        $page_content .= "<article class='page'>\n"
+        $page_content .= "<article class='page page-info'>\n"
             . "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$page_title</h1></header>\n"
             . "<div class='entry-content'>\n"
             . "";
@@ -299,7 +299,7 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
         }
         $testimonials = $rc['testimonials'];
 
-        $page_content .= "<article class='page'>\n"
+        $page_content .= "<article class='page page-info'>\n"
             . "<header class='entry-title'><h1 class='entry-title'>Testimonials</h1></header>\n"
             . "<div class='entry-content'>";
 
@@ -378,7 +378,7 @@ function ciniki_web_generatePageInfo($ciniki, $settings, $pg) {
                 return $rc;
             }
             if( isset($rc['content']) && $rc['content'] != '' ) {
-              $page_content .= "<article class='page'>\n";
+              $page_content .= "<article class='page page-info'>\n";
                 if( isset($settings['page-about-bios-title']) && $settings['page-about-bios-title'] != '' ) {
                     $page_content .= "<h2>" . $settings['page-about-bios-title'] . "</h2>\n";
                 } 

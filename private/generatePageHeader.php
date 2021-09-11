@@ -27,6 +27,12 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
         $page_home_url = $settings['page-home-url'];
     }
 
+    if( isset($settings['site-theme']) && $settings['site-theme'] == 'twentyone' 
+        && isset($settings['site-layout']) && $settings['site-layout'] == 'default'
+        ) {
+        $settings['site-layout'] = 'none';
+    }
+
     // Generate the head content
     $content .= "<!DOCTYPE html>\n"
         . "<html>\n"
@@ -89,7 +95,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     if( file_exists($ciniki['request']['layout_dir'] . '/' . $settings['site-layout'] . '/global.css') ) {
         $content .= "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['layout_url'] 
             . '/' . $settings['site-layout'] . "/global.css' />\n";
-    } else if( $settings['site-layout'] != 'private' && file_exists($ciniki['request']['layout_dir'] . '/default/global.css') ) {
+    } else if( $settings['site-layout'] != 'private' && $settings['site-layout'] != 'none' && file_exists($ciniki['request']['layout_dir'] . '/default/global.css') ) {
         $content .= "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['layout_url'] 
             . "/default/global.css' />\n";
     }
@@ -110,7 +116,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
             . "</script>\n"
             . "<![endif]-->\n"
             . "";
-    } else if( $settings['site-layout'] != 'private' && file_exists($ciniki['request']['layout_dir'] . '/default/layout.css') ) {
+    } else if( $settings['site-layout'] != 'private' && $settings['site-layout'] != 'none' && file_exists($ciniki['request']['layout_dir'] . '/default/layout.css') ) {
         $content .= "<link rel='stylesheet' type='text/css' media='all and (min-width: 33.236em)' href='" . $ciniki['request']['layout_url'] 
             . "/default/layout.css' />\n"
             . "<!--[if (lt IE 9) & (!IEMobile)]>\n"
@@ -128,7 +134,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
             . '/' . $settings['site-layout'] . "/ie8.css' />\n"
             . "<![endif]-->\n"
             . "";
-    } else if( $settings['site-layout'] != 'private' && file_exists($ciniki['request']['layout_dir'] . '/default/ie8.css') ) {
+    } else if( $settings['site-layout'] != 'private' && $settings['site-layout'] != 'none' && file_exists($ciniki['request']['layout_dir'] . '/default/ie8.css') ) {
         $content .= "<!--[if IE 8]>\n"
             . "<link rel='stylesheet' type='text/css' media='all' href='" . $ciniki['request']['layout_url'] 
             . "/default/ie8.css' />\n"
@@ -636,7 +642,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     }
     $content .= ">\n";
 
-    $content .= "<header>\n";
+    $content .= "<header class='switch-at-80'>\n";
     $content .= "<div class='header-wrapper'>\n";
 
 //    if( $social_icons != '' ) {

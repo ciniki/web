@@ -63,23 +63,32 @@ function ciniki_web_processBlockGalleryImage(&$ciniki, $settings, $tnid, $block)
         $ciniki['request']['page-container-class'] .= ' page-container-wide';
     }
 
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateGalleryJavascript');
-    $rc = ciniki_web_generateGalleryJavascript($ciniki, isset($block['next'])?$block['next']:NULL, isset($block['prev'])?$block['prev']:NULL);
-    if( $rc['stat'] != 'ok' ) {
-        return $rc;
+    $svg_prev = '';
+    $svg_next = '';
+    if( isset($settings['site-theme']) && $settings['site-theme'] == 'twentyone' ) {
+        $ciniki['request']['inline_javascript'] = '';
+        $ciniki['request']['onresize'] = "";
+        $ciniki['request']['onload'] = "";
+        $svg_prev = '<svg viewbox="0 0 80 80" stroke="#fff" fill="none"><polyline stroke-width="5" stroke-linecap="round" stroke-linejoin="round" points="50,70 20,40 50,10"></polyline></svg>';
+        $svg_next = '<svg viewbox="0 0 80 80" stroke="#fff" fill="none"><polyline stroke-width="5" stroke-linecap="round" stroke-linejoin="round" points="30,70 60,40 30,10"></polyline></svg>';
+    } else {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateGalleryJavascript');
+        $rc = ciniki_web_generateGalleryJavascript($ciniki, isset($block['next'])?$block['next']:NULL, isset($block['prev'])?$block['prev']:NULL);
+        if( $rc['stat'] != 'ok' ) {
+            return $rc;
+        }
+        $ciniki['request']['inline_javascript'] = $rc['javascript'];
+        $ciniki['request']['onresize'] = "gallery_resize_arrows();";
+        $ciniki['request']['onload'] = "scrollto_header();";
     }
-    $ciniki['request']['inline_javascript'] = $rc['javascript'];
-
-    $ciniki['request']['onresize'] = "gallery_resize_arrows();";
-    $ciniki['request']['onload'] = "scrollto_header();";
 
     $content .= "<div id='gallery-image' class='gallery-image'>";
     $content .= "<div id='gallery-image-wrap' class='gallery-image-wrap'>";
     if( isset($block['prev']['url']) ) {
-        $content .= "<a id='gallery-image-prev' class='gallery-image-prev' href='" . $block['prev']['url'] . "'><div id='gallery-image-prev-img'></div></a>";
+        $content .= "<a id='gallery-image-prev' class='gallery-image-prev' href='" . $block['prev']['url'] . "'><div id='gallery-image-prev-img'>{$svg_prev}</div></a>";
     }
     if( isset($block['next']['url']) ) {
-        $content .= "<a id='gallery-image-next' class='gallery-image-next' href='" . $block['next']['url'] . "'><div id='gallery-image-next-img'></div></a>";
+        $content .= "<a id='gallery-image-next' class='gallery-image-next' href='" . $block['next']['url'] . "'><div id='gallery-image-next-img'>{$svg_next}</div></a>";
     }
     $content .= "<img id='gallery-image-img' title='" . $block['image']['title'] . "' alt='" . $block['image']['title'] . "' src='" . $img_url . "' onload='javascript: gallery_resize_arrows();' />";
     $content .= "</div><br/>"

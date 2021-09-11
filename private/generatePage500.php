@@ -43,7 +43,9 @@ function ciniki_web_generatePage500(&$ciniki, $settings, $errors) {
     $content .= "<article class='page'>\n";
     $content .= "<div class='entry-content'>\n";
     $content .= "<header class='entry-title'><h1 class='entry-title'>We seem to have hit a snag</h1></header>";
+    $content .= "<div class='block-content'>";
     $content .= "<p>I'm sorry, but we seem to be having trouble processing your request.  You can continue browsing the site while we fix the problem.</p>";
+    $content .= "</div>";
     $content .= "</div>";
     $content .= "</article>";
     $content .= "</div>";

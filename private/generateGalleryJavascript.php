@@ -165,7 +165,7 @@ function ciniki_web_generateGalleryJavascript(&$ciniki, $next, $prev) {
         . "function preload_images() {"
             . $images
         . "}\n";
-    $javascript.= "</script>\n";
+    $javascript .= "</script>\n";
 
     return array('stat'=>'ok', 'javascript'=>$javascript);
 }

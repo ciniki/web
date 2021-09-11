@@ -65,6 +65,7 @@ function ciniki_web_generatePage503($ciniki, $settings, $errors) {
     $content .= "<article class='page'>\n";
     $content .= "<div class='entry-content'>\n";
     $content .= "<header class='entry-title'><h1 class='entry-title'>Maintenance</h1></header>";
+    $content .= "<div class='block-content'>";
     if( $errors != null && isset($errors['err']['msg']) ) {
         $content .= "<p>" . $errors['err']['msg'] . "</p>";
         $ciniki['request']['error_codes_msg'] = 'err:' . $errors['err']['code'];
@@ -79,6 +80,7 @@ function ciniki_web_generatePage503($ciniki, $settings, $errors) {
     } else {
         $content .= "<p>I'm sorry, but we are unable to find the page you requested.</p>";
     }
+    $content .= "</div>";
     $content .= "</div>";
     $content .= "</article>";
     $content .= "</div>";

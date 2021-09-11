@@ -39,7 +39,10 @@ function ciniki_web_socialIcons($ciniki, $settings, $location) {
 // Settings for regular social font without circle
 //
     // FontAwesome settings
-    if( isset($settings['theme'][$location . '-social-icons']) && $settings['theme'][$location . '-social-icons'] == 'FontAwesome' ) {
+//    if( (isset($settings['site-theme']) && $settings['site-theme'] == 'twentyone') 
+//        || (isset($settings['theme'][$location . '-social-icons']) && $settings['theme'][$location . '-social-icons'] == 'FontAwesome')
+//        ) {
+    if( isset($settings['theme'][$location . '-social-icons']) && $settings['theme'][$location . '-social-icons'] == 'FontAwesome') {
         $social_icons['facebook'] = '&#xf09a;';
         $social_icons['twitter'] = '&#xf099;';
 //      $social_icons['etsy'] = '&#xe026;';     // Missing etsy logo

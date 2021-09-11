@@ -236,13 +236,13 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
             if( isset($settings['page-home-title']) && $settings['page-home-title'] != '' ) {
                 $home_page_welcome_title = '<h1 class="entry-title">' . $settings['page-home-title'] . '</h1>';
             }
-            $home_page_welcome = $rc['content'];
+            $home_page_welcome = "<div class='block-content'>" . $rc['content'] . "</div>";
         } else {
             $home_page_welcome_title = '';
             if( isset($settings['page-home-title']) && $settings['page-home-title'] != '' ) {
                 $home_page_welcome_title = '<h1 class="entry-title">' . $settings['page-home-title'] . '</h1>';
             }
-            $home_page_welcome = $rc['content']['page-home-content'];
+            $home_page_welcome = "<div class='block-content'>" . $rc['content']['page-home-content'] . "</div>";
         }
     } else {
         $home_page_welcome_title = '';
@@ -342,7 +342,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
             $_href2 = "</a>";
         }
         //
-        // Setup the image for wine format
+        // Setup the image for wide format
         //
         $home_page_wide_image .= "<div class='wide aligncenter'>";
         $home_page_wide_image .= "<div class='image'>$href<img title='' alt='" . $ciniki['tenant']['details']['name'] . "' src='" . $rc['url'] . "' />$_href</div>";
@@ -355,6 +355,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
         //
         $home_page_aside_image .= "<aside>";
         // 1st image
+        $home_page_aside_image .= "<div class='block block-primary-image'>";
         $home_page_aside_image .= "<div class='image-wrap'>"
             . "<div class='image'>$href<img title='' alt='" . $ciniki['tenant']['details']['name'] . "' src='" . $url . "' />$_href</div>";
         if( $ciniki['response']['head']['og']['image'] == '' ) {
@@ -370,6 +371,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
         if( isset($settings['page-home-image2-caption']) && $settings['page-home-image2-caption'] != '' ) {
             $home_page_aside_image .= "<div class='image-caption'>$href2" . $settings['page-home-image2-caption'] . "$_href2</div>";
         }
+        $home_page_aside_image .= "</div>";
         $home_page_aside_image .= "</div>";
         $home_page_aside_image .= "</aside>";
 
@@ -403,7 +405,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
         //
         // Setup the image for the aside
         //
-        $home_page_aside_image .= "<aside><div class='image-wrap'>"
+        $home_page_aside_image .= "<aside><div class='block block-primary-image'><div class='image-wrap'>"
             . "<div class='image'>$href<img title='' alt='" . $ciniki['tenant']['details']['name'] . "' src='" . $rc['url'] . "' />$_href</div>";
         if( $ciniki['response']['head']['og']['image'] == '' ) {
             $ciniki['response']['head']['og']['image'] = $rc['domain_url'];
@@ -411,7 +413,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
         if( isset($settings['page-home-image-caption']) && $settings['page-home-image-caption'] != '' ) {
             $home_page_aside_image .= "<div class='image-caption'>$href" . $settings['page-home-image-caption'] . "$_href</div>";
         }
-        $home_page_aside_image .= "</div></aside>";
+        $home_page_aside_image .= "</div></div></aside>";
     } 
     
     //
@@ -466,7 +468,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
     if( $content1 != '' 
         && (!isset($settings['page-home-content-sequence']) || $settings['page-home-content-sequence'] == '' || $settings['page-home-content-sequence'] < 2)
         ) {
-        $page_content .= "<article class='page page-home'>\n"
+        $page_content .= "<article class='page page-home page-home-content'>\n"
 //          . "<header><h1></h1></header>\n"
             . "<div class='entry-content'>\n"
             . $content1
