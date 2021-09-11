@@ -925,7 +925,7 @@ form .checkbox p {
     }
     div.image-gallery .image-gallery-thumbnail,
     div.image-categories .image-categories-thumbnail-wrap {
-        padding: 0rem 1rem 1rem 1rem;
+        padding: 0.5rem 1rem 1rem 1rem;
     }
 /*    .block-upcoming-events,
     .block-current-events,
