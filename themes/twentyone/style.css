@@ -204,7 +204,7 @@ header button {
     font-size: 2rem;
     color: #777;
     padding: 0rem;
-    flex-basis: 10%;
+    flex-basis: 20%;
     text-align: right;
 }
 header button:focus {
