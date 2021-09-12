@@ -19,10 +19,9 @@ function ciniki_web_processBlockCIList(&$ciniki, $settings, $tnid, $block) {
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getPaddedImageURL');
 
     $page_limit = 0;
-    if( isset($args['limit']) ) {
-        $page_limit = $args['limit'];
+    if( isset($block['limit']) ) {
+        $page_limit = $block['limit'];
     }
-
     $content = '';
 
     if( isset($block['title']) && $block['title'] != '' ) {

@@ -247,7 +247,6 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
             $page_content .= $rc['content'];
         } else {
             // Default to wordcloud
-            error_log('one');
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processTagCloud');
             $rc = ciniki_web_processTagCloud($ciniki, $settings, $base_url, $rc['tags']);   
             if( $rc['stat'] != 'ok' ) {
@@ -300,7 +299,7 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
                         . "<td>";
                     // $page_content .= "<h2>" . $c['name'] . "</h2>";
                 } else {
-                    $page_content .= "<tr><th>"
+                    $page_content .= "<tr><th class='clist-category-empty'>"
                         . "<span class='clist-category'></span></th>"
                         . "<td>";
                 }

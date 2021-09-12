@@ -126,6 +126,7 @@ h3 {
 .block-links a:active,
 .block-links a:hover,
 .block-links a:visited,
+.largebutton-list a,
 form .submit input.submit {
     display: block;
     width: 100%;
@@ -136,6 +137,10 @@ form .submit input.submit {
     padding: 0.75rem;
     cursor: pointer;
 }
+.clist .clist-url:hover,
+.image-list-more a:hover,
+.block-links a:hover,
+.largebutton-list a:hover,
 form .submit input.submit:hover,
 .image-list-more a:hover {
     background: #fff;
@@ -425,6 +430,40 @@ article.ciniki-links {
 .home-more {
     padding: 0rem 1rem 2rem 1rem;
     text-align: right;
+}
+
+/* dl list */
+dl.wide {
+    padding: 1rem;
+}
+dl.wide dt {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+dl.wide dd {
+    padding-left: 5rem;
+    padding-bottom: 1rem;
+}
+/* multipage nav */
+.multipage-nav {
+    padding: 1rem;
+    text-align: center;
+}
+.multipage-nav-content {
+    border-top: 1px solid #bbb;
+    border-bottom: 1px solid #bbb;
+}
+.multipage-nav a {
+    padding: 1rem;
+    display: inline-block;
+}
+
+/* largebutton list */
+.largebutton-list {
+    padding: 1rem;
+}
+.largebutton-list a {
+    margin-bottom: 1rem;
 }
 
 /* Slider */
@@ -764,6 +803,9 @@ article.ciniki-events .block > h2 {
     margin-top: 1rem;
     display: inline-block;
 }
+.clist .clist-category-empty {
+    display: none;
+}
 .clist .clist-description {
     margin-bottom: 0.5rem;
     display: inline-block;
@@ -911,9 +953,11 @@ form .checkbox p {
 @media screen and (min-width: 60em) {
     div.block-form,
     div.block-mailing-lists,
-    .home-more,
-    #content h1 {
+    .home-more {
         padding: 1rem 2rem;
+    }
+    #content h1 {
+        padding: 1rem 2rem 2rem 2rem;
     }
     .block-primary-image {
         float: right;
@@ -930,6 +974,8 @@ form .checkbox p {
     article.ciniki-blog .entry-content > h2, 
     .image-list,
     article.ciniki-events .block > h2,
+    dl.wide,
+    .multipage-nav,
     .block-content {
         padding-left: 2rem;
         padding-right: 2rem;
@@ -942,6 +988,17 @@ form .checkbox p {
     div.image-gallery .image-gallery-thumbnail,
     div.image-categories .image-categories-thumbnail-wrap {
         padding: 0.5rem 1rem 1rem 1rem;
+    }
+    .largebutton-list {
+        display: flex;
+        flex-flow: row wrap;
+    }
+    .largebutton-list .button-list-wrap {
+        display: inline-block;
+        width: 50%;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        padding-bottom: 1rem;
     }
 /*    .block-upcoming-events,
     .block-current-events,

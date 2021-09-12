@@ -382,6 +382,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-events-title',
         'page-events-current',
         'page-events-past',
+        'page-events-past-limit',
         'page-events-categories-display',
         'page-events-image',
         'page-events-image-caption',
