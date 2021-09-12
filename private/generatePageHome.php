@@ -533,7 +533,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
 
         ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
         $img_base_url = $ciniki['request']['base_url'] . "/gallery/image";
-        $rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $rc['images'], $thumbnail_width150);
+        $rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $rc['images'], $thumbnail_width);
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
