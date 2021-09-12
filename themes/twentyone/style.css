@@ -195,7 +195,7 @@ header .hgroup-wrapper {
     justify-content: space-between;
 }
 header hgroup {
-    flex-basis: 80%;
+    flex-basis: 79%;
 }
 header button {
     display: block;
@@ -204,7 +204,7 @@ header button {
     font-size: 2rem;
     color: #777;
     padding: 0rem;
-    flex-basis: 20%;
+    flex-basis: 21%;
     text-align: right;
 }
 header button:focus {
@@ -749,6 +749,14 @@ article.ciniki-events .block > h2 {
 .clist td {
     display: block;
 }
+.clist th {
+    font-size: 1.4rem;
+    font-weight: bold;
+    padding-bottom: 0.5rem;
+    padding-top: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #bbb;
+}
 .clist .clist-title {
     font-weight: bold;
     font-size: 1.2em;
@@ -769,6 +777,14 @@ article.ciniki-events .block > h2 {
         width: auto;
         padding-left: 2rem;
         padding-right: 2rem;
+    }
+    .clist td {
+        padding-left: 2rem;
+    }
+}
+@media screen and (min-width: 60em) {
+    .clist td {
+        padding-left: 5rem;
     }
 }
 

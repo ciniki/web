@@ -247,6 +247,7 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
             $page_content .= $rc['content'];
         } else {
             // Default to wordcloud
+            error_log('one');
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processTagCloud');
             $rc = ciniki_web_processTagCloud($ciniki, $settings, $base_url, $rc['tags']);   
             if( $rc['stat'] != 'ok' ) {
