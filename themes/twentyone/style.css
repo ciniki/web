@@ -733,9 +733,7 @@ article.page-contact div.entry-content {
 article.ciniki-events .block > p {
     padding: 0rem 0rem 1rem 0rem;
 }
-article.ciniki-events .block-upcoming-events > p,
-article.ciniki-events .block-current-events > p,
-article.ciniki-events .block-past-events > p {
+article.ciniki-events .block > p {
     padding: 0rem 1rem 1rem 1rem;
 }
 article.ciniki-blog .entry-content > h2,
@@ -976,6 +974,7 @@ form .checkbox p {
     article.ciniki-events .block > h2,
     dl.wide,
     .multipage-nav,
+    article.ciniki-events .block > p,
     .block-content {
         padding-left: 2rem;
         padding-right: 2rem;
@@ -1000,11 +999,6 @@ form .checkbox p {
         padding-right: 1rem;
         padding-bottom: 1rem;
     }
-/*    .block-upcoming-events,
-    .block-current-events,
-    .block-past-events {
-        padding: 1rem;
-    } */
 }
 
 /* Hide elements from printer */
