@@ -54,7 +54,6 @@ function ciniki_web_processBlockGallery(&$ciniki, $settings, $tnid, $block) {
                     );
             } else {
                 $version = ((isset($block['image_version'])&&$block['image_version']!='')?$block['image_version']:'thumbnail');
-                error_log($width);
                 $rc = ciniki_web_getScaledImageURL($ciniki, $img['image_id'], $version, 
                     $width,
                     ((isset($block['image_height'])&&$block['image_height']!='')?$block['image_height']:'0') 
