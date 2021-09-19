@@ -813,6 +813,9 @@ article.ciniki-blog .entry-content > h2,
 article.ciniki-events .block > h2 {
     padding: 1rem;
 }
+article.ciniki-events .block-upcoming-events > p.wide {
+    padding: 0rem 1rem 1rem 1rem;
+}
 
 /* Word cloud */
 .word-cloud-wrap {
@@ -1160,6 +1163,7 @@ form .checkbox p {
     article.ciniki-events .block > h2,
     dl.wide,
     .multipage-nav,
+    article.ciniki-events .block-upcoming-events > p.wide,
     .block-content {
         padding-left: 2rem;
         padding-right: 2rem;
