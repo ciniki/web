@@ -150,12 +150,15 @@ form .submit input.submit:hover,
 /* Header/footer */
 #page-container > header {
     background: #f7f7f7;
-    padding: 1rem;
 }
 header div.signin {
     display: none;
     text-align: right;
     padding: 0.25rem 1rem;
+    background: #333;
+}
+header .hgroup-wrapper {
+    padding: 1rem;
 }
 header hgroup {
     align-self: center;
@@ -192,6 +195,9 @@ header .social-icons {
     padding: 0rem 0.15rem;
     vertical-align: bottom;
 }
+header .socialsymbol {
+    color: #fff;
+}
 header .hgroup-wrapper {
     display: flex;
     flex-direction: row;
@@ -200,7 +206,7 @@ header .hgroup-wrapper {
     justify-content: space-between;
 }
 header hgroup {
-    flex-basis: 79%;
+    flex-basis: 78%;
 }
 header button {
     display: block;
@@ -209,7 +215,7 @@ header button {
     font-size: 2rem;
     color: #777;
     padding: 0rem;
-    flex-basis: 21%;
+    flex-basis: 22%;
     text-align: right;
 }
 header button:focus {
@@ -283,9 +289,25 @@ footer .social-icons {
 footer p {
     margin-bottom: 1rem;
 }
+@media screen and (max-width: 25em) {
+    header hgroup,
+    header button {
+        flex-basis: 100%;
+    }
+    header button {
+        text-align: center;
+        padding-top: 1rem;
+    }
+}
 @media screen and (min-width: 35em) {
     header div.signin {
         display: block;
+    }
+    header hgroup {
+        flex-basis: 74%;
+    }
+    header button {
+        flex-basis: 25%;
     }
     header button:before {
         content: "Menu";
@@ -307,7 +329,11 @@ footer p {
     }
 }
 @media screen and (min-width: 60rem) {
-    #page-container > header {
+    header div.signin {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+    #page-container > header .hgroup-wrapper {
         padding-left: 2rem;
         padding-right: 2rem;
     }
@@ -318,6 +344,12 @@ footer p {
     }
     header.switch-at-80 .hgroup-wrapper {
         flex-wrap: nowrap;
+        min-height: 6.75rem;
+    }
+    header.switch-at-80 .hgroup-wrapper.no-tagline {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        min-height: 5.75rem;
     }
     header.switch-at-80 hgroup {
         flex-basis: auto;

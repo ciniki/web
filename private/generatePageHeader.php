@@ -725,6 +725,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
             $hgroup .= "<div class='title-block'>";
         } else {
             $hgroup .= "<div class='title-block no-tagline'>";
+            $class .= " no-tagline";
         }
         $hgroup .= "<h1 id='site-title'>";
         $hgroup .= "<span class='title'><a href='" . $page_home_url . "' title='" . $site_title . "' rel='home'>" . $site_title . "</a></span></h1>\n";

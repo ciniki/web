@@ -1058,30 +1058,32 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
             if( $rc['stat'] != 'ok' ) {
                 return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.186', 'msg'=>'', 'err'=>$rc['err']));
             }
-            $page_content .= "<article class='page page-home page-home-events'>\n"
-                . "<header class='entry-title'><h1 class='entry-title'>";
-            if( isset($settings['page-home-current-events-title']) && $settings['page-home-current-events-title'] != '' ) {
-                $page_content .= $settings['page-home-current-events-title'];
-            } else {
-                $page_content .= "Current Events";
-            }
-            $page_content .= "</h1></header>\n"
-                . "<div class='entry-content'>"
-                . $rc['content']
-                . "";
-            if( count($events) > $list_size ) {
-                $page_content .= "<div class='home-more'><a href='" . $base_url . "'>";
-                if( isset($settings['page-home-current-events-more']) && $settings['page-home-current-events-more'] != '' ) {
-                    $page_content .= $settings['page-home-current-events-more'];
+            if( count($events) > 0 ) {
+                $page_content .= "<article class='page page-home page-home-events'>\n"
+                    . "<header class='entry-title'><h1 class='entry-title'>";
+                if( isset($settings['page-home-current-events-title']) && $settings['page-home-current-events-title'] != '' ) {
+                    $page_content .= $settings['page-home-current-events-title'];
                 } else {
-                    $page_content .= "... more events";
+                    $page_content .= "Current Events";
                 }
-                $page_content .= "</a></div>";
-//              $page_content .= "<div class='cilist-more'><a href='" . $ciniki['request']['base_url'] . "/events'>... more events</a></div>";
+                $page_content .= "</h1></header>\n"
+                    . "<div class='entry-content'>"
+                    . $rc['content']
+                    . "";
+                if( count($events) > $list_size ) {
+                    $page_content .= "<div class='home-more'><a href='" . $base_url . "'>";
+                    if( isset($settings['page-home-current-events-more']) && $settings['page-home-current-events-more'] != '' ) {
+                        $page_content .= $settings['page-home-current-events-more'];
+                    } else {
+                        $page_content .= "... more events";
+                    }
+                    $page_content .= "</a></div>";
+    //              $page_content .= "<div class='cilist-more'><a href='" . $ciniki['request']['base_url'] . "/events'>... more events</a></div>";
+                }
+                $page_content .= "</div>";
+                $page_content .= "</article>\n"
+                    . "";
             }
-            $page_content .= "</div>";
-            $page_content .= "</article>\n"
-                . "";
         } else {
             //
             // Load and parse the events
