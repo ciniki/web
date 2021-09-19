@@ -30,6 +30,49 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
 //  print_r($categories);
 //  print "</pre>";
 
+    //
+    // Change a CILIst with no titles displays for theme twentyone
+    //
+    if( isset($args['notitle']) && $args['notitle'] == 'yes' 
+        && isset($settings['site-theme']) && $settings['site-theme'] == 'twentyone' 
+        ) {
+        $cards = array();
+        foreach($categories as $cid => $category) {
+            if( count($category['list']) == 1 ) {
+                $item = array_slice($category['list'], 0, 1);
+                $card = array_pop($item);
+                if( !isset($card['synopsis']) && isset($card['description']) ) {
+                    $card['synopsis'] = $card['description'];
+                }
+                $cards[] = $card;
+            } else {
+                error_log('Incorrect use of CIList');
+                break;
+            }
+        }
+        if( count($cards) > 0 ) {
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockTradingCards');
+            $rc = ciniki_web_processBlockTradingCards($ciniki, $settings, $ciniki['request']['tnid'], array(
+                'base_url' => $base_url,
+                'thumbnail_format' => isset($args['thumbnail_format']) ? $args['thumbnail_format'] : 'thumbnail',
+                'image_width' => isset($args['image_width']) ? $args['image_width'] : '',
+                'image_height' => isset($args['image_height']) ? $args['image_height'] : '',
+                'thumbnail_padding_color' => isset($args['thumbnail_padding_color']) ? $args['thumbnail_padding_color'] : '',
+                'more-button' => 'yes',
+                'more-button-text' => 'More Details',
+                'cards' => $cards,
+                ));
+            if( $rc['stat'] != 'ok' ) {
+                return $rc;
+            }
+            if( isset($rc['content']) ) {
+                $content = "<div class='block-tradingcards'>" . $rc['content'] . "</div>";
+                return array('stat'=>'ok', 'content'=>$content);
+            }
+        }
+    }
+
+
     $content = "<table class='cilist'><tbody>";
     $count = 0;
     foreach($categories as $cid => $category) {
@@ -98,7 +141,10 @@ function ciniki_web_processCIList(&$ciniki, $settings, $base_url, $categories, $
             }
             if( isset($item['image_id']) && $item['image_id'] > 0 ) {
                 $version = ((isset($args['image_version'])&&$args['image_version']!='')?$args['image_version']:'thumbnail');
-                if( isset($args['thumbnail_format']) && $args['thumbnail_format'] == 'square-padded' ) {
+                if( isset($settings['site-theme']) && $settings['site-theme'] == 'twentyone' ) {
+                    $version = 'original';
+                    $rc = ciniki_web_getScaledImageURL($ciniki, $item['image_id'], 'original', 1200, 0, 70);
+                } elseif( isset($args['thumbnail_format']) && $args['thumbnail_format'] == 'square-padded' ) {
                     $rc = ciniki_web_getPaddedImageURL($ciniki, $item['image_id'], 'original', 
                         ((isset($args['image_width'])&&$args['image_width']!='')?$args['image_width']:'150'), 
                         ((isset($args['image_height'])&&$args['image_height']!='')?$args['image_height']:'0'),

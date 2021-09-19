@@ -179,21 +179,21 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
         }
         $class = $rc['class'];
         $page_title = $class['name'];
-        $page_content .= "<article class='page'>\n"
+        $page_content .= "<article class='page ciniki-classes'>\n"
             . "<header class='entry-title'><h1 class='entry-title'>" . $class['name'] . "</h1></header>\n"
             . "";
         //
         // Add primary image
         //
-        if( isset($class['image_id']) && $class['image_id'] > 0 ) {
+        if( isset($class['primary_image_id']) && $class['primary_image_id'] > 0 ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-            $rc = ciniki_web_getScaledImageURL($ciniki, $class['image_id'], 'original', '500', 0);
+            $rc = ciniki_web_getScaledImageURL($ciniki, $class['primary_image_id'], 'original', '500', 0);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
-            $page_content .= "<aside><div class='image-wrap'><div class='image'>"
+            $page_content .= "<aside><div class='block-primary-image'><div class='image-wrap'><div class='image'>"
                 . "<img title='' alt='" . $class['name'] . "' src='" . $rc['url'] . "' />"
-                . "</div></div></aside>";
+                . "</div></div></div></aside>";
         }
         
         //
@@ -205,14 +205,14 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
-            $page_content .= $rc['content'];
+            $page_content .= "<div class='block-content'>" . $rc['content'] . "</div>";
         }
 
         $page_content .= "</div>";
         $page_content .= "</article>";
 
         if( isset($class['images']) && count($class['images']) > 0 ) {
-            $page_content .= "<article class='page'>"   
+            $page_content .= "<article class='page page-class-gallery'>"   
                 . "<header class='entry-title'><h1 class='entry-title'>Gallery</h1></header>\n"
                 . "";
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryThumbnails');
@@ -270,7 +270,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
-            $page_content .= $rc['content'];
+            $page_content .= "<div class='block-content'>" . $rc['content'] . "</div>";
         }
         if( isset($info['image_id']) && $info['image_id'] != '' && $info['image_id'] != 0 ) {
             $page_content .= "<br style='clear:both;' />\n";
@@ -358,11 +358,12 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
                 return $rc;
             }
             $page_content .= "<aside><div class='image-wrap'>"
+                . "<div class='block-primary-image'>"
                 . "<div class='image'><img title='' src='" . $rc['url'] . "' /></div>";
             if( isset($info['image_caption']) && $info['image_caption'] != '' ) {
                 $page_content .= "<div class='image-caption'>" . $info['image_caption'] . "</div>";
             }
-            $page_content .= "</div></aside>";
+            $page_content .= "</div></div></aside>";
         }
 
         $page_content .= "<div class='entry-content'>";
@@ -372,7 +373,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
-            $page_content .= $rc['content'];
+            $page_content .= "<div class='block-content'>" . $rc['content'] . "</div>";
         }
         if( isset($info['image_id']) && $info['image_id'] != '' && $info['image_id'] != 0 ) {
             $page_content .= "<br style='clear:both;' />\n";

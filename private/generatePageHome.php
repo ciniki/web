@@ -503,7 +503,7 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
-        $page_content .= "<article class='page'>\n"
+        $page_content .= "<article class='page page-home-latestwork'>\n"
             . "<header class='entry-title'><h1 class='entry-title'>";
         if( isset($settings['page-home-gallery-latest-title']) && $settings['page-home-gallery-latest-title'] != '' ) {
             $page_content .= $settings['page-home-gallery-latest-title'];

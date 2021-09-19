@@ -109,7 +109,7 @@ function ciniki_web_processBlocks(&$ciniki, $settings, $tnid, $blocks, $args = a
                             . $rc['content']
                             . "</div>";
                     } else {
-                        $rsp['content'] .= $rc['content'];
+                        $rsp['content'] .= "<div class='block-{$block['type']}'>" . $rc['content'] . "</div>";
                     }
                 }
                 if( isset($rc['css']) ) {

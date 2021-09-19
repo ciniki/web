@@ -19,6 +19,9 @@ time, mark, audio, video, input {
   vertical-align: baseline;
   box-sizing: border-box;
 }
+img {
+    box-sizing: border-box;
+}
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
     display: block;
 }
@@ -31,6 +34,7 @@ body {
     font-size: 1.1rem;
     line-height: 1.6rem;
     color: #333;
+    background: #ffffffbb;
 }
 a, a:hover, a:visited, a:active {
     color: #111;
@@ -126,6 +130,15 @@ h3 {
 .block-links a:active,
 .block-links a:hover,
 .block-links a:visited,
+.block-files a,
+.block-files a:active,
+.block-files a:hover,
+.block-files a:visited,
+.cilist-more a,
+.cilist-more a:active,
+.cilist-more a:hover,
+.cilist-more a:visited,
+.trading-card-more span,
 .largebutton-list a,
 form .submit input.submit {
     display: block;
@@ -140,7 +153,10 @@ form .submit input.submit {
 .clist .clist-url:hover,
 .image-list-more a:hover,
 .block-links a:hover,
+.block-files a:hover,
+.cilist-more a:hover,
 .largebutton-list a:hover,
+.trading-card-more span:hover,
 form .submit input.submit:hover,
 .image-list-more a:hover {
     background: #fff;
@@ -206,7 +222,7 @@ header .hgroup-wrapper {
     justify-content: space-between;
 }
 header hgroup {
-    flex-basis: 78%;
+    flex-basis: 77%;
 }
 header button {
     display: block;
@@ -215,7 +231,7 @@ header button {
     font-size: 2rem;
     color: #777;
     padding: 0rem;
-    flex-basis: 22%;
+    flex-basis: 20%;
     text-align: right;
 }
 header button:focus {
@@ -257,6 +273,9 @@ header #main-menu-container > ul > li {
     text-align: center;
     padding: 0.5rem 1rem;
 }
+header #main-menu-container > ul > li > ul.sub-menu-hidden {
+    display: none;
+}
 header #sub-menu-container ul {
     display: block;
     text-align: center;
@@ -289,7 +308,7 @@ footer .social-icons {
 footer p {
     margin-bottom: 1rem;
 }
-@media screen and (max-width: 25em) {
+@media screen and (max-width: 23em) {
     header hgroup,
     header button {
         flex-basis: 100%;
@@ -408,6 +427,9 @@ footer p {
 #content {
     min-height: 50vh;
 }
+.entry-content > h2 {
+    padding: 1rem;
+}
 
 /* Primary Image */
 .block-primary-image {
@@ -430,7 +452,7 @@ footer p {
     }
 }
 /* Content */
-article.page-home-content,
+/* article.page-home-content,
 article.page-about,
 article.page-artiststatement,
 article.page-cv,
@@ -438,13 +460,25 @@ article.ciniki-events,
 article.ciniki-blog,
 article.page-home-blog,
 article.page-home-events,
-article.page-awards {
+.block-children, 
+article.page-awards {*/
+article.page {
     max-width: 90rem;
     margin: 0 auto;
+}
+article.page.page-home-slider,
+article.page.page-home-latestwork,
+article.page.page-gallery {
+    max-width: 100%;
+    margin: 0;
 }
 article.ciniki-links {
     max-width: 60rem;
     margin: 0 auto;
+}
+.page-class-gallery,
+.block-children {
+    clear: right;
 }
 .entry-meta,
 .block-share {
@@ -456,6 +490,8 @@ article.ciniki-links {
 .block-content p {
     padding: 0rem 0rem 1rem 0rem;
 }
+.block-message,
+.block-files,
 .block-links {
     padding: 0rem 1rem 1rem 1rem;
 }
@@ -573,7 +609,7 @@ div.image-categories .image-categories-thumbnail-wrap {
     text-align: center;
     padding: 0rem 0.5rem 0.5rem 0.5rem;
     min-width: 100%;
-    flex-grow: 1;
+    flex-grow: 0;
     flex-shrink: 1;
     flex-basis: 25%;
 }
@@ -609,14 +645,14 @@ div.image-categories .image-categories-thumbnail-wrap {
     div.image-gallery .image-gallery-thumbnail,
     div.image-categories .image-categories-thumbnail-wrap {
         min-width: 150px;
-        flex-basis: 15%;
+        flex-basis: 20%;
     }
 }
 @media (min-width: 120rem) {
     div.image-gallery .image-gallery-thumbnail,
     div.image-categories .image-categories-thumbnail-wrap {
         min-width: 150px;
-        flex-basis: 12%;
+        flex-basis: 16.666%;
     }
 }
 div.image-categories img {
@@ -641,7 +677,7 @@ div.image-gallery {
 }
 div.additional-image-gallery .image-gallery-thumbnail,
 div.image-gallery .image-gallery-thumbnail {
-    flex-grow: 1;
+    flex-grow: 0;
     text-align: center;
     padding: 0rem 0.5rem 0.5rem 0.5rem;
 }
@@ -706,6 +742,14 @@ div.gallery-image .gallery-image-details {
     padding: 1rem;
     text-align: left;
 }
+div.gallery-image .image-title {
+    padding-bottom: 1rem;
+}
+div.gallery-image .image-title,
+div.gallery-image .image-details,
+div.gallery-image .image-description {
+    display: block;
+}
 @media screen and (min-width: 40em) {
     div.gallery-image .gallery-image-details {
         display: inline-block;
@@ -764,9 +808,6 @@ article.page-contact div.entry-content {
 /* Events */
 article.ciniki-events .block > p {
     padding: 0rem 0rem 1rem 0rem;
-}
-article.ciniki-events .block > p {
-    padding: 0rem 1rem 1rem 1rem;
 }
 article.ciniki-blog .entry-content > h2,
 article.ciniki-events .block > h2 {
@@ -860,6 +901,108 @@ article.ciniki-events .block > h2 {
     }
 }
 
+/* Trading Cards */
+.trading-cards {
+}
+.trading-card-wrap {
+    padding-bottom: 2rem;
+}
+.trading-cards img {
+    width: 100%;
+}
+.trading-cards .trading-card-text {
+    padding: 0.5rem 1rem;
+}
+.trading-card-title {
+    display: block;
+    font-size: 1.3em;
+    font-weight: bold;
+    padding-bottom: 0.5rem;
+}
+.trading-card-synopsis p {
+    padding-bottom: 1rem;
+}
+.trading-card-more {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+@media screen and (min-width: 50em) {
+    .trading-cards {
+        display: flex;
+        flex-flow: row wrap;
+    }
+    .trading-card-wrap {
+        flex-basis: 50%;
+    }
+    .trading-cards img {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+@media screen and (min-width: 80em) {
+    .trading-card-wrap {
+        flex-basis: 33.3%;
+    }
+}
+
+/* CI List */
+.cilist,
+.cilist tr,
+.cilist th,
+.cilist td,
+.cilist table {
+    display: block;
+}
+.cilist > tbody {
+    display: flex;
+    flex-flow: row wrap;
+    padding: 1rem;
+}
+.cilist > tbody > tr {
+    flex-basis: 100%;
+    padding-bottom: 2rem;
+}
+.cilist-title {
+    display: block;
+    font-size: 1.3em;
+    font-weight: bold;
+    padding: 0.5rem 0rem;
+    text-align: center;
+}
+.cilist-image img {
+    width: 100%;
+}
+.cilist-details {
+    padding-bottom: 1rem;
+}
+@media screen and (min-width: 50em) {
+    .cilist > tbody {
+        align-items: stretch;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+    .cilist > tbody > tr {
+        flex-basis: 50%;
+        height: 100%;
+        padding: 0.5rem;
+        align-items: stretch;
+    }
+}
+@media screen and (min-width: 60em) {
+    .cilist > tbody {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    .cilist > tbody > tr {
+        padding: 1rem;
+    }
+}
+@media screen and (min-width: 80em) {
+    .cilist > tbody > tr {
+        flex-basis: 33.3%;
+    }
+}
+
 /* Image list */
 .image-list {
     padding-bottom: 0rem;
@@ -902,10 +1045,18 @@ article.ciniki-events .block > h2 {
     .image-list-more a:active,
     .image-list-more a:hover,
     .image-list-more a:visited,
+    .block-files a,
+    .block-files a:active,
+    .block-files a:hover,
+    .block-files a:visited,
     .block-links a,
     .block-links a:active,
     .block-links a:hover,
-    .block-links a:visited {
+    .block-links a:visited,
+    .cilist-more a,
+    .cilist-more a:active,
+    .cilist-more a:hover,
+    .cilist-more a:visited {
         display: inline-block;
         width: auto;
         padding-left: 2rem;
@@ -987,7 +1138,7 @@ form .checkbox p {
         padding: 1rem 2rem;
     }
     #content h1 {
-        padding: 1rem 2rem 2rem 2rem;
+        padding: 1rem 2rem 1rem 2rem;
     }
     .block-primary-image {
         float: right;
@@ -997,21 +1148,24 @@ form .checkbox p {
     }
     .entry-meta,
     .block-share,
+    .entry-content > h2,
     .block-gallery h2,
     .word-cloud-wrap,
     .clist,
+    .block-message,
     .block-links,
+    .block-files,
     article.ciniki-blog .entry-content > h2, 
     .image-list,
     article.ciniki-events .block > h2,
     dl.wide,
     .multipage-nav,
-    article.ciniki-events .block > p,
     .block-content {
         padding-left: 2rem;
         padding-right: 2rem;
     }
     div.image-gallery,
+    .trading-cards,
     div.image-categories {
         padding-left: 1rem;
         padding-right: 1rem;

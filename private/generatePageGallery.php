@@ -651,7 +651,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
     // Build the page content
     //
     $content .= "<div id='content'>\n"
-        . "<article class='page'>\n"
+        . "<article class='page page-gallery'>\n"
         . "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$article_title</h1></header>\n"
         . "<div class='entry-content'>\n"
         . "";

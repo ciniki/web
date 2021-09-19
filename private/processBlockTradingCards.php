@@ -72,7 +72,19 @@ function ciniki_web_processBlockTradingCards($ciniki, $settings, $tnid, $block) 
         if( isset($card['display_price']) && $card['display_price'] != '' ) {
             $content .= "<span class='trading-card-price'>" . $card['display_price'] . "</span>";
         }
-        $content .= "</div></a></div></div>";
+        if( isset($card['synopsis']) && $card['synopsis'] != '' ) {
+            $rc = ciniki_web_processContent($ciniki, $settings, $card['synopsis'], '');
+            if( $rc['stat'] == 'ok' ) {
+                $content .= "<div class='trading-card-synopsis'>" . $rc['content'] . "</div>";
+            }
+        }
+        $content .= "</div>";
+        if( isset($block['more-button']) && $block['more-button'] == 'yes' ) {
+            $content .= "<div class='trading-card-more'><span>"
+                . (isset($block['more-button-text']) ? $block['more-button-text'] : '... more')
+                . "</span></div>";
+        }
+        $content .= "</a></div></div>";
     }
     $content .= "</div>";
 
