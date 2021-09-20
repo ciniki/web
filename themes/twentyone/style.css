@@ -468,6 +468,7 @@ article.page {
 }
 article.page.page-home-slider,
 article.page.page-home-latestwork,
+article.page-contact,
 article.page.page-gallery {
     max-width: 100%;
     margin: 0;
@@ -950,13 +951,14 @@ article.ciniki-events .block-upcoming-events > p.wide {
 
 /* CI List */
 .cilist,
+.cilist tbody,
 .cilist tr,
 .cilist th,
 .cilist td,
 .cilist table {
     display: block;
 }
-.cilist > tbody {
+/*.cilist > tbody {
     display: flex;
     flex-flow: row wrap;
     padding: 1rem;
@@ -964,13 +966,25 @@ article.ciniki-events .block-upcoming-events > p.wide {
 .cilist > tbody > tr {
     flex-basis: 100%;
     padding-bottom: 2rem;
+} */
+.cilist {
+    padding: 1rem;
+    border-collapse: collapse;
+}
+.cilist-category {
+    display: block;
+    border-bottom: 1px solid #aaa;
+    font-size: 1.6rem;
+    font-weight: bold;
+    text-align: left;
+    padding-bottom: 0.5rem;
 }
 .cilist-title {
     display: block;
-    font-size: 1.3em;
+    font-size: 1.3rem;
     font-weight: bold;
     padding: 0.5rem 0rem;
-    text-align: center;
+    text-align: left;
 }
 .cilist-image img {
     width: 100%;
@@ -978,7 +992,21 @@ article.ciniki-events .block-upcoming-events > p.wide {
 .cilist-details {
     padding-bottom: 1rem;
 }
+.cilist-more {
+    margin-bottom: 2rem;
+    overflow: hidden;
+}
+.cilist-more a {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 @media screen and (min-width: 50em) {
+    .cilist-categories {
+        padding-left: 5rem;
+    }
+}
+/*@media screen and (min-width: 50em) {
     .cilist > tbody {
         align-items: stretch;
         padding-left: 0.5rem;
@@ -1005,7 +1033,7 @@ article.ciniki-events .block-upcoming-events > p.wide {
         flex-basis: 33.3%;
     }
 }
-
+*/
 /* Image list */
 .image-list {
     padding-bottom: 0rem;
@@ -1155,6 +1183,7 @@ form .checkbox p {
     .block-gallery h2,
     .word-cloud-wrap,
     .clist,
+    .cilist,
     .block-message,
     .block-links,
     .block-files,
