@@ -126,6 +126,9 @@ h3 {
 .image-list-more a:hover,
 .image-list-more a:visited,
 .clist .clist-url,
+.clist .clist-url:active,
+.clist .clist-url:hover,
+.clist .clist-url:visited,
 .block-links a,
 .block-links a:active,
 .block-links a:hover,
@@ -839,7 +842,7 @@ article.ciniki-events .block-upcoming-events > p.wide {
     padding: 0.2em; 
     padding-left: 0.6em; 
     padding-right: 0.6em; 
-    white-space:nowrap;
+    white-space: nowrap;
     vertical-align: middle;
 }
 .word-cloud span.size-0 { font-size: 1em; line-height: 1.5em;}
@@ -855,10 +858,11 @@ article.ciniki-events .block-upcoming-events > p.wide {
 
 /* clist */
 .clist {
-    padding: 1rem;
     display: block;
+    padding: 1rem;
 }
 .clist tbody,
+.clist tr,
 .clist th,
 .clist td {
     display: block;
@@ -884,6 +888,12 @@ article.ciniki-events .block-upcoming-events > p.wide {
 .clist .clist-description {
     margin-bottom: 0.5rem;
     display: inline-block;
+}
+.clist .clist-url {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
 }
 @media screen and (min-width: 40em) {
     .clist .clist-url,
