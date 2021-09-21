@@ -439,11 +439,13 @@ footer p {
     margin-bottom: 1rem;
     text-align: center;
 }
+.block-content aside img,
 .block-primary-image img {
     margin: 0 auto;
     max-width: 100%;
     max-height: 80vh;
 }
+.block-content aside .image-caption,
 .block-primary-image .image-caption {
     font-style: italic;
     text-align: center;
@@ -468,10 +470,13 @@ article.page-awards {*/
 article.page {
     max-width: 90rem;
     margin: 0 auto;
+    clear: both;
 }
 article.page.page-home-slider,
 article.page.page-home-latestwork,
 article.page-contact,
+article.page-members,
+article.page.fullwidth,
 article.page.page-gallery {
     max-width: 100%;
     margin: 0;
@@ -480,6 +485,7 @@ article.ciniki-links {
     max-width: 60rem;
     margin: 0 auto;
 }
+.page-gallery,
 .page-class-gallery,
 .block-children {
     clear: right;
@@ -488,11 +494,17 @@ article.ciniki-links {
 .block-share {
     padding: 0rem 1rem 1rem 1rem;
 }
+.block-member-contact,
+.block-member-links,
+.block-additional-images h2,
 .block-content {
     padding: 1rem;
 }
 .block-content p {
     padding: 0rem 0rem 1rem 0rem;
+}
+.block-content aside {
+    padding-bottom: 1rem;
 }
 .block-message,
 .block-files,
@@ -597,6 +609,48 @@ dl.wide dd {
     background-color: #77f;
 }
 
+/* Additional images in gallery */
+div.gallery-image-details .additional-image-gallery {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+div.gallery-image-details .image-gallery-thumbnail {
+    text-align: center;
+    padding: 0rem 0rem 1rem 0rem;
+    min-width: 100%;
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: 100%;
+}
+div.gallery-image-details .image-gallery-thumbnail img {
+    width: 100%;
+    max-width: 100%;
+}
+@media screen and (min-width: 40em) {
+    div.gallery-image-details .image-gallery-thumbnail {
+        min-width: 50%;
+        flex-basis: 50%;
+        padding: 0.5rem;
+    }
+}
+@media screen and (min-width: 60em) {
+    div.gallery-image-details .image-gallery-thumbnail {
+        min-width: 33.3%;
+        flex-basis: 33.3%;
+        padding: 0.5rem;
+    }
+}
+@media screen and (min-width: 80em) {
+    div.gallery-image-details .image-gallery-thumbnail {
+        min-width: 25%;
+        flex-basis: 25%;
+        padding: 0.5rem;
+    }
+}
+
 /* image-categories */
 div.image-categories {
     display: flex;
@@ -658,6 +712,9 @@ div.image-categories .image-categories-thumbnail-wrap {
         min-width: 150px;
         flex-basis: 16.666%;
     }
+    .block-additional-images div.image-gallery .image-gallery-thumbnail {
+        flex-basis: 20%;
+    }
 }
 div.image-categories img {
     max-width: 100%;
@@ -669,7 +726,7 @@ div.image-categories img {
 .block-gallery h2 {
     padding: 1rem;
 }
-div.additional-image-gallery,
+div.thumbnail-list,
 div.image-gallery {
     display: flex;
     flex-direction: row;
@@ -679,13 +736,31 @@ div.image-gallery {
     padding-right: 0.5rem;
     padding-bottom: 1.5rem;
 }
-div.additional-image-gallery .image-gallery-thumbnail,
+div.thumbnail-list .thumbnail-list-item-wrap,
 div.image-gallery .image-gallery-thumbnail {
     flex-grow: 0;
     text-align: center;
     padding: 0rem 0.5rem 0.5rem 0.5rem;
 }
-div.additional-image-gallery img,
+div.thumbnail-list .thumbnail-list-item-wrap {
+    width: 100%;
+}
+@media screen and (min-width: 40em) {
+    div.thumbnail-list .thumbnail-list-item-wrap {
+        width: 50%;
+    }
+}
+@media screen and (min-width: 60em) {
+    div.thumbnail-list .thumbnail-list-item-wrap {
+        width: 33.3%;
+    }
+}
+@media screen and (min-width: 80em) {
+    div.thumbnail-list .thumbnail-list-item-wrap {
+        width: 25%;
+    }
+}
+div.thumbnail-list img,
 div.image-gallery img {
     width: 100%;
     max-width: 100%;
@@ -1207,6 +1282,7 @@ form .checkbox p {
     #content h1 {
         padding: 1rem 2rem 1rem 2rem;
     }
+    .block-content aside,
     .block-primary-image {
         float: right;
         max-width: 50%;
@@ -1229,16 +1305,21 @@ form .checkbox p {
     dl.wide,
     .multipage-nav,
     article.ciniki-events .block-upcoming-events > p.wide,
+    .block-member-contact,
+    .block-member-links,
+    .block-additional-images h2,
     .block-content {
         padding-left: 2rem;
         padding-right: 2rem;
     }
+    div.thumbnail-list,
     div.image-gallery,
     .trading-cards,
     div.image-categories {
         padding-left: 1rem;
         padding-right: 1rem;
     }
+    div.thumbnail-list .thumbnail-list-item-wrap,
     div.image-gallery .image-gallery-thumbnail,
     div.image-categories .image-categories-thumbnail-wrap {
         padding: 0.5rem 1rem 1rem 1rem;

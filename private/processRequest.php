@@ -856,8 +856,10 @@ function ciniki_web_processRequest(&$ciniki) {
         // Members
         elseif( $ciniki['request']['page'] == 'members' 
             && isset($settings['page-members-active']) && $settings['page-members-active'] == 'yes' ) {
-            require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageMembers.php');
-            $rc = ciniki_web_generatePageMembers($ciniki, $settings);
+            //require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageMembers.php');
+            //$rc = ciniki_web_generatePageMembers($ciniki, $settings);
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
+            $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['tnid'], 'ciniki.customers.members');
         }
         // Dealers
         elseif( $ciniki['request']['page'] == 'dealers' 

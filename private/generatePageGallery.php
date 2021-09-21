@@ -21,8 +21,10 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 
     $thumbnail_version = 'thumbnail';
     $thumbnail_width = 240;
+    $thumbnail_size = 75;
     if( isset($settings['default-image-thumbnail-width']) && $settings['default-image-thumbnail-width'] > $thumbnail_width ) {
         $thumbnail_width = $settings['default-image-thumbnail-width'];
+        $thumbnail_size = $settings['default-image-thumbnail-width'];
     }
     if( isset($settings['default-image-thumbnail-version']) && $settings['default-image-thumbnail-version'] != '' ) {
         $thumbnail_version = $settings['default-image-thumbnail-version'];
@@ -375,7 +377,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
                 ));
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryAdditionalThumbnails');
             $img_base_url = $base_url . "/$category_uri_component/" . $uri_split[1];
-            $rc = ciniki_web_generatePageGalleryAdditionalThumbnails($ciniki, $settings, $img_base_url, $img['additionalimages'], 75);
+            $rc = ciniki_web_generatePageGalleryAdditionalThumbnails($ciniki, $settings, $img_base_url, $img['additionalimages'], $thumbnail_size);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }

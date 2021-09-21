@@ -21,3 +21,12 @@ function tE(n,c) {
         }
     }
 }
+function gallery_swap_image(u) {
+    var i = gE('gallery-image-img');
+    i.src = u;
+    var e = gE('gallery-image');
+    if( e != null ) { 
+        window.scrollTo(0, e.offsetTop - 10);
+    }
+    return false;
+}
