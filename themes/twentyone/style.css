@@ -981,6 +981,9 @@ article.ciniki-events .block-upcoming-events > p.wide {
     padding: 1rem;
     border-collapse: collapse;
 }
+.cilist > tbody > tr {
+    padding-bottom: 2rem;
+}
 .cilist-category {
     display: block;
     border-bottom: 1px solid #aaa;
@@ -988,6 +991,7 @@ article.ciniki-events .block-upcoming-events > p.wide {
     font-weight: bold;
     text-align: left;
     padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
 }
 .cilist-title {
     display: block;
@@ -1003,7 +1007,7 @@ article.ciniki-events .block-upcoming-events > p.wide {
     padding-bottom: 1rem;
 }
 .cilist-more {
-    margin-bottom: 2rem;
+    padding-bottom: 2rem;
     overflow: hidden;
 }
 .cilist-more a {
@@ -1011,8 +1015,30 @@ article.ciniki-events .block-upcoming-events > p.wide {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-@media screen and (min-width: 50em) {
+@media screen and (min-width: 40em) {
+    .cilist-categories { display: table; }
+    .cilist-categories tbody { display: table-row-group; width: 100%; }
+    .cilist-categories tr { display: table-row; }
+    .cilist-categories th { display: table-cell; }
+    .cilist-categories td { display: table-cell; vertical-align: top; }
+    .cilist-categories .cilist-title { vertical-align: bottom; }
+    .cilist-categories .cilist-details { vertical-align: middle; padding: 0px;}
+    .cilist-image {
+        min-width: 5rem;
+    }
+    .cilist-image div {
+        padding-bottom: 2rem;
+    }
+    .cilist-image img {
+        max-width: 20rem;
+        width: 20rem;
+        padding-right: 1rem;
+    }
     .cilist-categories {
+    }
+}
+@media screen and (min-width: 70em) {
+    .cilist-image {
         padding-left: 5rem;
     }
 }
