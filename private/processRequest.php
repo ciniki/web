@@ -521,6 +521,8 @@ function ciniki_web_processRequest(&$ciniki) {
         $settings['default-image-height'] = 1800;
         $settings['default-image-thumbnail-version'] = 'thumbnail';
         $settings['default-image-thumbnail-width'] = 800;
+        // Force layout to be modern layout
+        $settings['site-layout'] = 'twentyone';
     }
 
     if( isset($settings['site-header-og-image']) && $settings['site-header-og-image'] > 0 ) {
@@ -808,8 +810,10 @@ function ciniki_web_processRequest(&$ciniki) {
         // Exhibitions
         elseif( $ciniki['request']['page'] == 'exhibitions' 
             && isset($settings['page-artgalleryexhibitions-active']) && $settings['page-artgalleryexhibitions-active'] == 'yes' ) {
-            require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageExhibitions.php');
-            $rc = ciniki_web_generatePageExhibitions($ciniki, $settings);
+            //require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageExhibitions.php');
+            //$rc = ciniki_web_generatePageExhibitions($ciniki, $settings);
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
+            $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['tnid'], 'ciniki.artgallery');
         }
         // Exhibitors
         elseif( $ciniki['request']['page'] == 'exhibitors' 

@@ -121,6 +121,10 @@ h3 {
     font-weight: bold;
     padding-bottom: 1rem;
 }
+.block-content a.button,
+.block-content a.button:active,
+.block-content a.button:hover,
+.block-content a.button:visited,
 .image-list-more a,
 .image-list-more a:active,
 .image-list-more a:hover,
@@ -153,6 +157,7 @@ form .submit input.submit {
     padding: 0.75rem;
     cursor: pointer;
 }
+.block-content a.button:hover,
 .clist .clist-url:hover,
 .image-list-more a:hover,
 .block-links a:hover,
@@ -179,8 +184,15 @@ header div.signin {
 header .hgroup-wrapper {
     padding: 1rem;
 }
+header .hgroup-wrapper.header-image {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
 header hgroup {
     align-self: center;
+}
+header hgroup.header-image img {
+    max-height: 4.5rem;
 }
 header .title-block h1 {
     font-size: 2.2rem;
@@ -373,6 +385,9 @@ footer p {
         padding-bottom: 0.5rem;
         min-height: 5.75rem;
     }
+    header .hgroup-wrapper.header-image img {
+        max-height: 5rem;
+    }
     header.switch-at-80 hgroup {
         flex-basis: auto;
     }
@@ -442,6 +457,7 @@ footer p {
 .block-content aside img,
 .block-primary-image img {
     margin: 0 auto;
+    width: 100%;
     max-width: 100%;
     max-height: 80vh;
 }
@@ -497,6 +513,7 @@ article.ciniki-links {
 .block-member-contact,
 .block-member-links,
 .block-additional-images h2,
+.block-exhibitions > h2,
 .block-content {
     padding: 1rem;
 }
@@ -896,6 +913,11 @@ article.ciniki-events .block-upcoming-events > p.wide {
     padding: 0rem 1rem 1rem 1rem;
 }
 
+/* Exhibitions */
+.block-exhibitions {
+    clear: right;
+}
+
 /* Word cloud */
 .word-cloud-wrap {
     padding-top: 2.0em;
@@ -1183,6 +1205,10 @@ article.ciniki-events .block-upcoming-events > p.wide {
         flex-direction: column;
         justify-content: center;
     }
+    .block-content a.button,
+    .block-content a.button:active,
+    .block-content a.button:hover,
+    .block-content a.button:visited,
     .image-list-more a,
     .image-list-more a:active,
     .image-list-more a:hover,
@@ -1308,6 +1334,7 @@ form .checkbox p {
     .block-member-contact,
     .block-member-links,
     .block-additional-images h2,
+    .block-exhibitions > h2,
     .block-content {
         padding-left: 2rem;
         padding-right: 2rem;

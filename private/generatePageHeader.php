@@ -28,7 +28,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     }
 
     if( isset($settings['site-theme']) && $settings['site-theme'] == 'twentyone' 
-        && isset($settings['site-layout']) && $settings['site-layout'] == 'default'
+//        && isset($settings['site-layout']) && $settings['site-layout'] == 'default'
         ) {
         $settings['site-layout'] = 'none';
     }
@@ -716,6 +716,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
         }
         $hgroup .= "<hgroup>\n";
         if( isset($page_home_image) && $page_home_image['stat'] == 'ok' ) {
+            $class .= ' header-image';
             $hgroup .= "<div class='title-logo'>"
                 . "<a href='" . $page_home_url . "' title='" . $site_title
                 . "' rel='home'><img alt='Home' src='" . $page_home_image['url'] . "' /></a>"
@@ -752,6 +753,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
         $hgroup .= "<hgroup class='header-image'>\n";
         $hgroup .= "<span><a href='" . $page_home_url . "' title='" . $ciniki['tenant']['details']['name'] . "' rel='home'>";
             if( isset($page_home_image) && $page_home_image['stat'] == 'ok' ) {
+                $class .= ' header-image';
                 $hgroup .= "<img alt='Home' src='" . $page_home_image['url'] . "' />";
             }
         $hgroup .= "</a></span>\n";

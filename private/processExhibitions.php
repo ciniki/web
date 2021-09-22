@@ -13,11 +13,86 @@
 // Returns
 // -------
 //
-function ciniki_web_processExhibitions($ciniki, $settings, $exhibitions, $args) {
+function ciniki_web_processExhibitions($ciniki, &$settings, $exhibitions, $args) {
+
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
 
     $page_limit = 0;
     if( isset($args['limit']) ) {
         $page_limit = $args['limit'];
+    }
+
+    if( isset($settings['site-layout']) && $settings['site-layout'] == 'twentyone' ) {
+        $content = "<div class='image-list'>";
+        $count = 0;
+        foreach($exhibitions as $eid => $e) {
+            if( $page_limit > 0 && $count >= $page_limit ) { $count++; break; }
+            $exhibition = $e['exhibition'];
+            // Display the date
+            $exhibition_date = $exhibition['start_month'];
+            $exhibition_date .= " " . $exhibition['start_day'];
+            if( $exhibition['end_day'] != '' && ($exhibition['start_day'] != $exhibition['end_day'] || $exhibition['start_month'] != $exhibition['end_month']) ) {
+                if( $exhibition['end_month'] != '' && $exhibition['end_month'] == $exhibition['start_month'] ) {
+                    $exhibition_date .= " - " . $exhibition['end_day'];
+                } else {
+                    $exhibition_date .= " - " . $exhibition['end_month'] . " " . $exhibition['end_day'];
+                }
+            }
+            $exhibition_date .= ", " . $exhibition['start_year'];
+            if( $exhibition['end_year'] != '' && $exhibition['start_year'] != $exhibition['end_year'] ) {
+                $exhibition_date .= "/" . $exhibition['end_year'];
+            }
+
+            $url = $args['base_url'] . '/' . $exhibition['permalink'];
+            $url_target = '';
+
+            //
+            // Start the image list item
+            //
+            $content .= "<div class='image-list-entry-wrap'>"
+                . "<div class='image-list-entry'>";
+
+            // Start image
+            $content .= "<div class='image-list-image'>";
+            if( $exhibition['image_id'] > 0 ) {
+                $rc = ciniki_web_getScaledImageURL($ciniki, $exhibition['image_id'], 'original', 1200, 0, 70);
+                if( $rc['stat'] != 'ok' ) {
+                    return $rc;
+                }
+                $content .= "<div class='image-list-wrap image-list-original'>"
+                    . ($url!=''?"<a href='$url' target='$url_target' title='" . $exhibition['name'] . "'>":'')
+                    . "<img title='' alt='" . $exhibition['name'] . "' src='" . $rc['url'] . "' />"
+                    . ($url!=''?'</a>':'')
+                    . "</div>";
+            }
+            $content .= "</div>";
+            
+            $content .= "<div class='image-list-details'>";
+            $content .= "<div class='image-list-title'><h2>" . $exhibition['name'] . "</h2></div>";
+            $content .= "<div class='image-list-subtitle'><h3>" . $exhibition_date . "</h3></div>";
+            $content .= "<div class='image-list-subtitle'><h3>" . $exhibition['location'] . "</h3></div>";
+            if( isset($exhibition['description']) && $exhibition['description'] != '' ) {
+                $rc = ciniki_web_processContent($ciniki, $settings, $exhibition['description'], 'image-list-description');
+                if( $rc['stat'] != 'ok' ) {
+                    return $rc;
+                }
+                $content .= "<div class='image-list-content'>" . $rc['content'] . "</div>";
+            }
+
+            if( $url != '' ) {
+                $content .= "<div class='image-list-more'>";
+                $content .= "<a href='$url' target='$url_target'>... more</a>";
+                $content .= "</div>";
+            } 
+            $content .= "</div>";
+
+            $content .= "</div></div>";
+            $count++;
+        }
+        $content .= "</div>";
+
+        return array('stat'=>'ok', 'content'=>$content);
     }
 
     $content = "<table class='cilist'>\n"
@@ -105,7 +180,7 @@ function ciniki_web_processExhibitions($ciniki, $settings, $exhibitions, $args) 
     // Check to see if we need prev and next buttons
     //
     $nav_content = '';
-    if( $page_limit > 0 && isset($args['base_url']) && $args['base_url'] != '' ) {
+/*    if( $page_limit > 0 && isset($args['base_url']) && $args['base_url'] != '' ) {
         $prev = '';
         if( isset($args['page']) && $args['page'] > 1 ) {
             if( isset($args['base_url']) ) {
@@ -139,7 +214,7 @@ function ciniki_web_processExhibitions($ciniki, $settings, $exhibitions, $args) 
                 . "</nav>"
                 . "";
         }
-    }
+    } */
 
     return array('stat'=>'ok', 'content'=>$content, 'nav'=>$nav_content);
 }
