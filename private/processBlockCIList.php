@@ -28,6 +28,20 @@ function ciniki_web_processBlockCIList(&$ciniki, $settings, $tnid, $block) {
         $content .= "<h2 class='wide'>" . $block['title'] . "</h2>";
     }
 
+    if( isset($settings['site-layout']) && $settings['site-layout'] == 'twentyone' 
+        && isset($block['notitle']) && $block['notitle'] == 'yes' 
+        ) {
+        foreach($block['categories'] as $category) {
+            if(isset($category['list']) ) {
+                foreach($category['list'] as $item) {
+                    $block['list'][] = $item;
+                }
+            }
+        }
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlockImageList');
+        return ciniki_web_processBlockImageList($ciniki, $settings, $tnid, $block);
+    }
+
 //  print "<pre>";
 //  print_r($categories);
 //  print "</pre>";
