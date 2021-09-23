@@ -37,13 +37,14 @@ function ciniki_web_main() {
         'stone2':'Stone - Black/White',
         'splatter':'Purple Splatter - Purple/White',
 //      'field':'Field - Green/White',
+        'twentyone':'Twenty One',
         };
     if( M.userPerms&0x01 == 0x01 ) {
         this.themesAvailable['field'] = 'Field - Green/White';
         this.themesAvailable['redbrick'] = 'Red Brick';
         this.themesAvailable['redbrick2'] = 'Red Brick 2';
         this.themesAvailable['bluepaws'] = 'Blue Paws';
-        this.themesAvailable['twentyone'] = 'Twenty One';
+//        this.themesAvailable['twentyone'] = 'Twenty One';
         this.themesAvailable['private'] = 'Private';
 //      this.themesAvailable['orangebrick'] = 'Orange Brick';
 //      this.themesAvailable['splatter'] = 'Splatter';
