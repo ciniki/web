@@ -20,6 +20,88 @@ function ciniki_web_processWorkshops($ciniki, $settings, $workshops, $limit) {
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 
+    $page_limit = 0;
+    if( isset($args['limit']) ) {
+        $page_limit = $args['limit'];
+    }
+
+    if( isset($settings['site-layout']) && $settings['site-layout'] == 'twentyone' ) {
+        $content = "<div class='image-list'>";
+        $count = 0;
+        foreach($workshops as $wid => $workshop) {
+            if( $page_limit > 0 && $count >= $page_limit ) { $count++; break; }
+            $workshop_date = $workshop['start_month'];
+            $workshop_date .= " " . $workshop['start_day'];
+            if( $workshop['end_day'] != '' && ($workshop['start_day'] != $workshop['end_day'] || $workshop['start_month'] != $workshop['end_month']) ) {
+                if( $workshop['end_month'] != '' && $workshop['end_month'] == $workshop['start_month'] ) {
+                    $workshop_date .= " - " . $workshop['end_day'];
+                } else {
+                    $workshop_date .= " - " . $workshop['end_month'] . " " . $workshop['end_day'];
+                }
+            }
+            $workshop_date .= ", " . $workshop['start_year'];
+            if( $workshop['end_year'] != '' && $workshop['start_year'] != $workshop['end_year'] ) {
+                $workshop_date .= "/" . $workshop['end_year'];
+            }
+
+            $url = $ciniki['request']['base_url'] . "/workshops/" . $workshop['permalink'];
+            $url_target = '';
+
+            //
+            // Start the image list item
+            //
+            $content .= "<div class='image-list-entry-wrap'>"
+                . "<div class='image-list-entry'>";
+
+            // Start image
+            $content .= "<div class='image-list-image'>";
+            if( $workshop['image_id'] > 0 ) {
+                $rc = ciniki_web_getScaledImageURL($ciniki, $workshop['image_id'], 'original', 1200, 0, 70);
+                if( $rc['stat'] != 'ok' ) {
+                    return $rc;
+                }
+                $content .= "<div class='image-list-wrap image-list-original'>"
+                    . ($url!=''?"<a href='$url' target='$url_target' title='" . $workshop['name'] . "'>":'')
+                    . "<img title='' alt='" . $workshop['name'] . "' src='" . $rc['url'] . "' />"
+                    . ($url!=''?'</a>':'')
+                    . "</div>";
+            } else {
+                $content .= "<div class='image-list-wrap image-list-original no-image'>"
+                    . ($url!=''?"<a href='$url' target='$url_target' title='" . $workshop['name'] . "'>":'')
+                    . "<img title='' alt='" . $workshop['name'] . "' src='/ciniki-web-layouts/default/img/noimage_240.png' />"
+                    . ($url!=''?'</a>':'')
+                    . "</div>";
+            }
+            $content .= "</div>";
+            
+            $content .= "<div class='image-list-details'>";
+            $content .= "<div class='image-list-title'><h2>" . $workshop['name'] . "</h2></div>";
+            $content .= "<div class='image-list-subtitle'><h3>" . $workshop_date . "</h3></div>";
+            $content .= "<div class='image-list-subtitle'><h3>" . $workshop['times'] . "</h3></div>";
+            if( isset($workshop['description']) && $workshop['description'] != '' ) {
+                $rc = ciniki_web_processContent($ciniki, $settings, $workshop['description'], 'image-list-description');
+                if( $rc['stat'] != 'ok' ) {
+                    return $rc;
+                }
+                $content .= "<div class='image-list-content'>" . $rc['content'] . "</div>";
+            }
+
+            if( $url != '' ) {
+                $content .= "<div class='image-list-more'>";
+                $content .= "<a href='$url' target='$url_target'>... more</a>";
+                $content .= "</div>";
+            } 
+            $content .= "</div>";
+
+            $content .= "</div></div>";
+            $count++;
+        }
+        $content .= "</div>";
+
+        return array('stat'=>'ok', 'content'=>$content);
+    }
+
+
     $content = "<table class='cilist'><tbody>";
     $count = 0;
     foreach($workshops as $workshop_num => $workshop) {

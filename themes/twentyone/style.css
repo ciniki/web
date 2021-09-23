@@ -196,8 +196,24 @@ header .hgroup-wrapper.header-image {
 header hgroup {
     align-self: center;
 }
-header hgroup.header-image img {
+header .header-image hgroup {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+}
+header .header-image hgroup img {
     max-height: 4.5rem;
+}
+header .title-logo {
+    display: inline-block;
+    padding-right: 1rem;
+}
+header .title-logo a {
+    display: block;
+    line-height: 0px;
+}
+header .title-block {
+    display: inline-block;
 }
 header .title-block h1 {
     font-size: 2.2rem;
@@ -284,6 +300,9 @@ header #sub-menu-container ul {
     margin-top: 1rem;
     padding-top: 1rem;
     border-top: 1px solid #bbb;
+}
+header .header-image #sub-menu-container ul {
+    margin-top: 0.5rem;
 }
 header #main-menu-container > ul > li {
     position: relative;
@@ -392,7 +411,7 @@ footer .sponsor-gallery-thumbnail {
     header.switch-at-80 .hgroup-wrapper.no-tagline {
         padding-top: 0.5rem;
         padding-bottom: 0.5rem;
-        min-height: 5.75rem;
+        min-height: 5.5rem;
     }
     header .hgroup-wrapper.header-image img {
         max-height: 5rem;

@@ -226,9 +226,9 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
                 return $rc;
             }
             $ciniki['response']['head']['og']['image'] = $rc['domain_url'];
-            $page_content .= "<aside><div class='image-wrap'><div class='image'>"
+            $page_content .= "<aside><div class='block-primary-image'><div class='image-wrap'><div class='image'>"
                 . "<img title='' alt='" . $workshop['name'] . "' src='" . $rc['url'] . "' />"
-                . "</div></div></aside>";
+                . "</div></div></div></aside>";
         }
         
         if( isset($workshop['short_description']) && $workshop['short_description'] != '' ) {
@@ -246,14 +246,14 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
-            $page_content .= $rc['content'];
+            $page_content .= "<div class='block-content'>" . $rc['content'];
         } elseif( isset($workshop['short_description']) ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
             $rc = ciniki_web_processContent($ciniki, $settings, $workshop['short_description']);    
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
-            $page_content .= $rc['content'];
+            $page_content .= "<div class='block-content'>" . $rc['content'];
         }
 
         if( isset($workshop['url']) ) {
@@ -307,6 +307,7 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
                 $page_content .= $rc['content'];
             }
         }
+        $page_content .= "</div>";
 
 
         $page_content .= "</article>";
@@ -356,7 +357,7 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
             }
             $page_content .= $rc['content'];
         } else {
-            $page_content .= "<p>Currently no workshops.</p>";
+            $page_content .= "<div class='block-content'><p>Currently no workshops.</p></div>";
         }
 
         $page_content .= "</div>\n"
@@ -388,7 +389,7 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
                 }
                 $page_content .= $rc['content'];
             } else {
-                $page_content .= "<p>No past workshops.</p>";
+                $page_content .= "<div class='block-content'><p>No past workshops.</p></div>";
             }
 
             $page_content .= "</div>\n"
