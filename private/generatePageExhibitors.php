@@ -136,7 +136,7 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
             $ciniki['request']['onload'] = "scrollto_header();";
         }
 
-        $page_content .= "<article class='page'>\n"
+        $page_content .= "<article class='page page-exhibitor-gallery'>\n"
             . "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$page_title</h1></header>\n"
             . "<div class='entry-content'>\n"
             . "";
@@ -179,7 +179,7 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
         }
         $participant = $rc['participant'];
         $page_title = $participant['name'];
-        $page_content .= "<article class='page'>\n"
+        $page_content .= "<article class='page page-exhibitor'>\n"
             . "<header class='entry-title'><h1 class='entry-title'>" . $participant['name'] . "</h1></header>\n"
             . "";
 
@@ -252,7 +252,7 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
         }
         $participants = $rc['categories'];
 
-        $page_content .= "<article class='page'>\n"
+        $page_content .= "<article class='page page-exhibitors'>\n"
             . "<header class='entry-title'><h1 class='entry-title'>$page_title</h1></header>\n"
             . "<div class='entry-content'>\n"
             . "";
