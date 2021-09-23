@@ -34,7 +34,7 @@ body {
     font-size: 1.1rem;
     line-height: 1.6rem;
     color: #333;
-    background: #ffffffbb;
+    background: #ffffffcc;
 }
 a, a:hover, a:visited, a:active {
     color: #111;
@@ -125,6 +125,10 @@ h3 {
 .block-content a.button:active,
 .block-content a.button:hover,
 .block-content a.button:visited,
+.sponsors-more a,
+.sponsors-more a:active,
+.sponsors-more a:hover,
+.sponsors-more a:visited,
 .image-list-more a,
 .image-list-more a:active,
 .image-list-more a:hover,
@@ -159,6 +163,7 @@ form .submit input.submit {
 }
 .block-content a.button:hover,
 .clist .clist-url:hover,
+.sponsors-more a:hover,
 .image-list-more a:hover,
 .block-links a:hover,
 .block-files a:hover,
@@ -497,6 +502,7 @@ article.page.page-home-latestwork,
 article.page-contact,
 article.page-members,
 article.page.fullwidth,
+article.page.ciniki-gallery,
 article.page.page-gallery {
     max-width: 100%;
     margin: 0;
@@ -634,7 +640,7 @@ dl.wide dd {
 div.gallery-image-details .additional-image-gallery {
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-around;
+    justify-content: center;
     padding-top: 1rem;
     padding-bottom: 1rem;
 }
@@ -676,7 +682,7 @@ div.gallery-image-details .image-gallery-thumbnail img {
 div.image-categories {
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-around;
+    justify-content: center;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
 
@@ -752,7 +758,7 @@ div.image-gallery {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: center;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     padding-bottom: 1.5rem;
@@ -1175,17 +1181,39 @@ article.ciniki-events .block-upcoming-events > p.wide {
 .image-list {
     padding-bottom: 0rem;
 }
+.sponsors-title {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding-bottom: 1rem;
+}
 .image-list-entry-wrap {
     padding-bottom: 1rem;
 }
 .image-list-image img {
     width: 100%;
 }
+.sponsors-more {
+    margin-bottom: 2rem;
+}
+.sponsors-details,
 .image-list-details {
     padding: 1rem;
 }
+.sponsors-details {
+    vertical-align: top;
+}
+.sponsors-details p,
 .image-list-details p {
     padding-bottom: 1rem;
+}
+.image-list-image {
+    text-align: center;
+    align-items: center;
+}
+.image-list-thumbnail.no-image {
+    display: inline-block;
+    max-width: 20rem;
 }
 @media screen and (min-width: 40em) {
     .image-list-entry {
@@ -1213,6 +1241,10 @@ article.ciniki-events .block-upcoming-events > p.wide {
     .block-content a.button:active,
     .block-content a.button:hover,
     .block-content a.button:visited,
+    .sponsors-more a,
+    .sponsors-more a:active,
+    .sponsors-more a:hover,
+    .sponsors-more a:visited,
     .image-list-more a,
     .image-list-more a:active,
     .image-list-more a:hover,

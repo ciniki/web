@@ -51,7 +51,12 @@ function ciniki_web_processSponsors($ciniki, $settings, $level, $categories) {
                 }
 
                 // Setup the sponsor image
-                $content .= "<tr class='sponsor-start'><td class='sponsors-image' rowspan='3'>";
+                $content .= "<tr class='sponsor-start'>";
+                if( isset($sponsor['description']) && $sponsor['description'] != '' ) {
+                    $content .= "<td class='sponsors-image'>";
+                } else {
+                    $content .= "<td class='sponsors-image' rowspan='3'>";
+                }
                 if( isset($sponsor['image_id']) && $sponsor['image_id'] > 0 ) {
                     if( $level == 50 ) {
                         $rc = ciniki_web_getScaledImageURL($ciniki, $sponsor['image_id'], 'original', 400, 0);
@@ -84,8 +89,12 @@ function ciniki_web_processSponsors($ciniki, $settings, $level, $categories) {
                     $content .= $sponsor['name'];
                 }
                 $content .= "</span>";
-                $content .= "</td></tr>";
-                $content .= "<tr><td class='sponsors-description'>";
+                if( isset($settings['site-layout']) && $settings['site-layout'] == 'twentyone' ) {
+                    $content .= "<div class='sponsors-description'>";
+                } else {
+                    $content .= "</td></tr>";
+                    $content .= "<tr><td class='sponsors-description'>";
+                }
                 if( isset($sponsor['description']) && $sponsor['description'] != '' ) {
                     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
                     $rc = ciniki_web_processContent($ciniki, $settings, $sponsor['description']);   
@@ -94,8 +103,18 @@ function ciniki_web_processSponsors($ciniki, $settings, $level, $categories) {
                     }
                     $content .= $rc['content'];
                 }
-                $content .= "</td></tr>";
-                $content .= "<tr><td class='sponsors-more'><a target='_blank' class='external-link' href='$url'>$display_url</a></td></tr>";
+                if( isset($settings['site-layout']) && $settings['site-layout'] == 'twentyone' ) {
+                    $content .= "</div><div class='sponsors-more'>";
+                } else {
+                    $content .= "</td></tr>";
+                    $content .= "<tr><td class='sponsors-more'>";
+                }
+                $content .= "<a target='_blank' class='external-link' href='$url'>$display_url</a>";
+                if( isset($settings['site-layout']) && $settings['site-layout'] == 'twentyone' ) {
+                    $content .= "</div></td></tr>";
+                } else {
+                    $content .= "</td></tr>";
+                }
             }
             $content .= "</tbody></table>";
         }

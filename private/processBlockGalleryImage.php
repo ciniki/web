@@ -68,7 +68,7 @@ function ciniki_web_processBlockGalleryImage(&$ciniki, $settings, $tnid, $block)
 
     $svg_prev = '';
     $svg_next = '';
-    if( isset($settings['site-theme']) && $settings['site-theme'] == 'twentyone' ) {
+    if( isset($settings['site-layout']) && $settings['site-layout'] == 'twentyone' ) {
         $ciniki['request']['inline_javascript'] = '';
         $ciniki['request']['onresize'] = "";
         $ciniki['request']['onload'] = "";

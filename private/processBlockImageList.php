@@ -105,7 +105,7 @@ function ciniki_web_processBlockImageList(&$ciniki, $settings, $tnid, $block) {
                 . ($url!=''?'</a>':'')
                 . "</div>";
         } elseif( isset($block['noimage']) && $block['noimage'] == 'yes' ) {
-            $content .= "<div class='image-list-wrap image-list-thumbnail'>"
+            $content .= "<div class='image-list-wrap image-list-thumbnail no-image'>"
                 . ($url!=''?"<a href='$url' target='$url_target' title='" . $item['title'] . "'>":'')
                 . "<img title='' alt='" . $item['title'] . "' src='/ciniki-web-layouts/default/img/noimage_240.png' />"
                 . ($url!=''?'</a>':'')

@@ -19,6 +19,17 @@ function ciniki_web_processGalleryImage(&$ciniki, $settings, $tnid, $args) {
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
 
     $content = '';
+    $quality = 60;
+    if( isset($block['quality']) && $block['quality'] == 'high' ) {
+        $quality = 90;
+    }
+    $height = 600;
+    if( isset($block['size']) && $block['size'] == 'large' ) {
+        $height = 1200;
+    }
+    if( isset($settings['default-image-height']) && $settings['default-image-height'] > $height ) {
+        $height = $settings['default-image-height'];
+    }
 
     if( !isset($args['item']['images']) || count($args['item']['images']) < 1 ) {
         return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.121', 'msg'=>"I'm sorry, but we don't seem to have the image your requested."));
@@ -66,7 +77,7 @@ function ciniki_web_processGalleryImage(&$ciniki, $settings, $tnid, $args) {
     // Load the image
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-    $rc = ciniki_web_getScaledImageURL($ciniki, $img['image_id'], 'original', 0, 600);
+    $rc = ciniki_web_getScaledImageURL($ciniki, $img['image_id'], 'original', 0, $height, $quality);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -80,15 +91,25 @@ function ciniki_web_processGalleryImage(&$ciniki, $settings, $tnid, $args) {
     //
     $ciniki['request']['page-container-class'] = 'page-container-wide';
 
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateGalleryJavascript');
-    $rc = ciniki_web_generateGalleryJavascript($ciniki, $next, $prev);
-    if( $rc['stat'] != 'ok' ) {
-        return $rc;
+    $svg_prev = '';
+    $svg_next = '';
+    if( isset($settings['site-layout']) && $settings['site-layout'] == 'twentyone' ) {
+        $ciniki['request']['inline_javascript'] = '';
+        $ciniki['request']['onresize'] = "";
+        $ciniki['request']['onload'] = "";
+        $svg_prev = '<svg viewbox="0 0 80 80" stroke="#fff" fill="none"><polyline stroke-width="5" stroke-linecap="round" stroke-linejoin="round" points="50,70 20,40 50,10"></polyline></svg>';
+        $svg_next = '<svg viewbox="0 0 80 80" stroke="#fff" fill="none"><polyline stroke-width="5" stroke-linecap="round" stroke-linejoin="round" points="30,70 60,40 30,10"></polyline></svg>';
+    } else {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateGalleryJavascript');
+        $rc = ciniki_web_generateGalleryJavascript($ciniki, isset($block['next'])?$block['next']:NULL, isset($block['prev'])?$block['prev']:NULL);
+        if( $rc['stat'] != 'ok' ) {
+            return $rc;
+        }
+        $ciniki['request']['inline_javascript'] = $rc['javascript'];
+        $ciniki['request']['onresize'] = "gallery_resize_arrows();";
+        $ciniki['request']['onload'] = "scrollto_header();";
     }
-    $ciniki['request']['inline_javascript'] = $rc['javascript'];
 
-    $ciniki['request']['onresize'] = "gallery_resize_arrows();";
-    $ciniki['request']['onload'] = "scrollto_header();";
     $content .= "<article class='page'>\n"
         . "<header class='entry-title'><h1 id='entry-title' class='entry-title'>" 
             . $args['article_title'] . "</h1></header>\n"
@@ -97,10 +118,10 @@ function ciniki_web_processGalleryImage(&$ciniki, $settings, $tnid, $args) {
     $content .= "<div id='gallery-image' class='gallery-image'>";
     $content .= "<div id='gallery-image-wrap' class='gallery-image-wrap'>";
     if( $prev != null ) {
-        $content .= "<a id='gallery-image-prev' class='gallery-image-prev' href='" . (isset($args['gallery_url'])?$args['gallery_url'].'/':'') . $prev['permalink'] . "'><div id='gallery-image-prev-img'></div></a>";
+        $content .= "<a id='gallery-image-prev' class='gallery-image-prev' href='" . (isset($args['gallery_url'])?$args['gallery_url'].'/':'') . $prev['permalink'] . "'><div id='gallery-image-prev-img'>{$svg_prev}</div></a>";
     }
     if( $next != null ) {
-        $content .= "<a id='gallery-image-next' class='gallery-image-next' href='" . (isset($args['gallery_url'])?$args['gallery_url'].'/':'') . $next['permalink'] . "'><div id='gallery-image-next-img'></div></a>";
+        $content .= "<a id='gallery-image-next' class='gallery-image-next' href='" . (isset($args['gallery_url'])?$args['gallery_url'].'/':'') . $next['permalink'] . "'><div id='gallery-image-next-img'>{$svg_next}</div></a>";
     }
     $content .= "<img id='gallery-image-img' title='" . $img['title'] . "' alt='" . $img['title'] . "' src='" . $img_url . "' onload='javascript: gallery_resize_arrows();' />";
     $content .= "</div><br/>"
