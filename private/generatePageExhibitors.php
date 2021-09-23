@@ -222,7 +222,7 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
         }
 
         if( $url != '' ) {
-            $page_content .= "<br/>Website: <a class='exhibitors-url' target='_blank' href='" . $url . "' title='" . $participant['name'] . "'>" . $display_url . "</a>";
+            $page_content .= "Website: <a class='exhibitors-url' target='_blank' href='" . $url . "' title='" . $participant['name'] . "'>" . $display_url . "</a>";
         }
         $page_content .= "</article>";
 
