@@ -278,6 +278,11 @@ header h1 a:active,
     border-bottom: 2px dashed #ddd;
 }
 /* Setup drop shadows and borderless on images */
+#content div.embed-video {
+    border: 0px;
+    padding: 0px;
+    box-shadow: 1px 1px 5px #555;
+}
 #content div.gallery-image-wrap,
 #content div.thumbnail-list-item-image, 
 #content div.image-categories-thumbnail {
