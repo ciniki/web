@@ -45,7 +45,7 @@ function ciniki_web_generatePageMembersonly($ciniki, $settings) {
                 }
                 $content = $rc['content'];
 
-                $content .= "<div id='content'>\n";
+                $content .= "<div id='content' class='block-content'>\n";
                 if( isset($settings['page-membersonly-message']) && $settings['page-membersonly-message'] != '' ) {
                     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
                     $rc = ciniki_web_processContent($ciniki, $settings, $settings['page-membersonly-message'], 'wide');   
@@ -56,7 +56,7 @@ function ciniki_web_generatePageMembersonly($ciniki, $settings) {
                 } else {
                     $content .= "<p>This page is password protected.</p>";
                 }
-                $content .= "<form method='POST' action=''>";
+                $content .= "<form method='POST' action='' class='small-form'>";
                 if( $err_msg != '' ) {
                     $content .= "<p class='formerror'>$err_msg</p>\n";
                 }
@@ -66,6 +66,7 @@ function ciniki_web_generatePageMembersonly($ciniki, $settings) {
                     . "</form>"
                     . "<br/>";
                 $content .= "</form>";
+                $content .= "</div>";
                 $content .= "<br style='clear: both;' />\n";
                 $content .= "</div>\n";
 

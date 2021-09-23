@@ -133,6 +133,10 @@ h3 {
 .image-list-more a:active,
 .image-list-more a:hover,
 .image-list-more a:visited,
+.downloads-list .downloads-url,
+.downloads-listclist .downloads-url:active,
+.downloads-listclist .downloads-url:hover,
+.downloads-listclist .downloads-url:visited,
 .clist .clist-url,
 .clist .clist-url:active,
 .clist .clist-url:hover,
@@ -149,7 +153,10 @@ h3 {
 .cilist-more a:active,
 .cilist-more a:hover,
 .cilist-more a:visited,
-.trading-card-more span,
+.trading-card-more a,
+.trading-card-more a:active,
+.trading-card-more a:hover,
+.trading-card-more a:visited,
 .largebutton-list a,
 form .submit input.submit {
     display: block;
@@ -160,8 +167,10 @@ form .submit input.submit {
     text-align: center;
     padding: 0.75rem;
     cursor: pointer;
+    margin-bottom: 1rem;
 }
 .block-content a.button:hover,
+.downloads-list .downloads-url:hover,
 .clist .clist-url:hover,
 .sponsors-more a:hover,
 .image-list-more a:hover,
@@ -169,7 +178,8 @@ form .submit input.submit {
 .block-files a:hover,
 .cilist-more a:hover,
 .largebutton-list a:hover,
-.trading-card-more span:hover,
+.trading-card-more a:hover,
+/*.trading-card-more span a:hover, */
 form .submit input.submit:hover,
 .image-list-more a:hover {
     background: #fff;
@@ -983,16 +993,22 @@ article.ciniki-events .block-upcoming-events > p.wide {
 .word-cloud span.size-9 { font-size: 1.9em; line-height: 1.5em;}
 
 /* clist */
+.downloads-list,
 .clist {
     display: block;
     padding: 1rem;
 }
+.downloads-list tbody,
+.downloads-list tr,
+.downloads-list th,
+.downloads-list td,
 .clist tbody,
 .clist tr,
 .clist th,
 .clist td {
     display: block;
 }
+.downloads-list th,
 .clist th {
     font-size: 1.4rem;
     font-weight: bold;
@@ -1001,6 +1017,7 @@ article.ciniki-events .block-upcoming-events > p.wide {
     text-align: left;
     border-bottom: 1px solid #bbb;
 }
+.downloads-list .downloads-title,
 .clist .clist-title {
     font-weight: bold;
     font-size: 1.2em;
@@ -1008,13 +1025,16 @@ article.ciniki-events .block-upcoming-events > p.wide {
     margin-top: 1rem;
     display: inline-block;
 }
+.downloads-list .downloads-category-empty,
 .clist .clist-category-empty {
     display: none;
 }
+.downloads-list .downloads-description,
 .clist .clist-description {
     margin-bottom: 0.5rem;
     display: inline-block;
 }
+.downloads-list .downloads-url,
 .clist .clist-url {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1022,6 +1042,10 @@ article.ciniki-events .block-upcoming-events > p.wide {
     max-width: 100%;
 }
 @media screen and (min-width: 40em) {
+    .downloads-list .downloads-url,
+    .downloads-list .downloads-url:active,
+    .downloads-list .downloads-url:hover,
+    .downloads-list .downloads-url:visited,
     .clist .clist-url,
     .clist .clist-url:active,
     .clist .clist-url:hover,
@@ -1030,12 +1054,15 @@ article.ciniki-events .block-upcoming-events > p.wide {
         width: auto;
         padding-left: 2rem;
         padding-right: 2rem;
+        min-width: 20rem;
     }
+    .downloads-list td,
     .clist td {
         padding-left: 2rem;
     }
 }
 @media screen and (min-width: 60em) {
+    .downloads-list td,
     .clist td {
         padding-left: 5rem;
     }
@@ -1046,6 +1073,9 @@ article.ciniki-events .block-upcoming-events > p.wide {
 }
 .trading-card-wrap {
     padding-bottom: 2rem;
+}
+.trading-card > a {
+    display: block;
 }
 .trading-cards img {
     width: 100%;
@@ -1222,6 +1252,7 @@ article.ciniki-events .block-upcoming-events > p.wide {
 .sponsors-details {
     vertical-align: top;
 }
+.cilist-details p,
 .sponsors-details p,
 .image-list-details p {
     padding-bottom: 1rem;
@@ -1306,6 +1337,10 @@ div.block-form {
     padding: 1rem;
     padding-bottom: 2rem;
 }
+form.small-form {
+    max-width: 30rem;
+    margin: 0 auto;
+}
 form .input label,
 form .textarea label {
     display: block;
@@ -1375,6 +1410,7 @@ form .checkbox p {
     .entry-content > h2,
     .block-gallery h2,
     .word-cloud-wrap,
+    .downloads-list,
     .clist,
     .cilist,
     .block-message,

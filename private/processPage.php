@@ -117,7 +117,7 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
             return $rc;
         }
         if( isset($rc['content']) ) {
-            $content .= $rc['content'];
+            $content .= "<div class='block-share'>" . $rc['content'] . "</div>";
         }
     }
 

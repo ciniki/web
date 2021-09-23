@@ -116,15 +116,26 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
         //
         $ciniki['request']['page-container-class'] = 'page-container-wide';
 
-        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateGalleryJavascript');
-        $rc = ciniki_web_generateGalleryJavascript($ciniki, $next, $prev);
-        if( $rc['stat'] != 'ok' ) {
-            return $rc;
-        }
-        $ciniki['request']['inline_javascript'] = $rc['javascript'];
+        $svg_prev = '';
+        $svg_next = '';
+        if( isset($settings['site-layout']) && $settings['site-layout'] == 'twentyone' ) {
+            $ciniki['request']['inline_javascript'] = '';
+            $ciniki['request']['onresize'] = "";
+            $ciniki['request']['onload'] = "scrollto_header();";
+            $svg_prev = '<svg viewbox="0 0 80 80" stroke="#fff" fill="none"><polyline stroke-width="5" stroke-linecap="round" stroke-linejoin="round" points="50,70 20,40 50,10"></polyline></svg>';
+            $svg_next = '<svg viewbox="0 0 80 80" stroke="#fff" fill="none"><polyline stroke-width="5" stroke-linecap="round" stroke-linejoin="round" points="30,70 60,40 30,10"></polyline></svg>';
 
-        $ciniki['request']['onresize'] = "gallery_resize_arrows();";
-        $ciniki['request']['onload'] = "scrollto_header();";
+        } else {
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateGalleryJavascript');
+            $rc = ciniki_web_generateGalleryJavascript($ciniki, $next, $prev);
+            if( $rc['stat'] != 'ok' ) {
+                return $rc;
+            }
+            $ciniki['request']['inline_javascript'] = $rc['javascript'];
+            $ciniki['request']['onresize'] = "gallery_resize_arrows();";
+            $ciniki['request']['onload'] = "scrollto_header();";
+        }
+
         $page_content .= "<article class='page'>\n"
             . "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$page_title</h1></header>\n"
             . "<div class='entry-content'>\n"
@@ -132,10 +143,10 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
         $page_content .= "<div id='gallery-image' class='gallery-image'>";
         $page_content .= "<div id='gallery-image-wrap' class='gallery-image-wrap'>";
         if( $prev != null ) {
-            $page_content .= "<a id='gallery-image-prev' class='gallery-image-prev' href='$gallery_url/" . $prev['permalink'] . "'><div id='gallery-image-prev-img'></div></a>";
+            $page_content .= "<a id='gallery-image-prev' class='gallery-image-prev' href='$gallery_url/" . $prev['permalink'] . "'><div id='gallery-image-prev-img'>{$svg_prev}</div></a>";
         }
         if( $next != null ) {
-            $page_content .= "<a id='gallery-image-next' class='gallery-image-next' href='$gallery_url/" . $next['permalink'] . "'><div id='gallery-image-next-img'></div></a>";
+            $page_content .= "<a id='gallery-image-next' class='gallery-image-next' href='$gallery_url/" . $next['permalink'] . "'><div id='gallery-image-next-img'>{$svg_next}</div></a>";
         }
         $page_content .= "<img id='gallery-image-img' title='" . $img['title'] . "' alt='" . $img['title'] . "' src='" . $img_url . "' onload='javascript: gallery_resize_arrows();' />";
         $page_content .= "</div><br/>"
@@ -181,14 +192,15 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
-            $page_content .= "<aside><div class='image-wrap'><div class='image'>"
+            $page_content .= "<aside><div class='block-primary-image'><div class='image-wrap'><div class='image'>"
                 . "<img title='' alt='" . $participant['name'] . "' src='" . $rc['url'] . "' />"
-                . "</div></div></aside>";
+                . "</div></div></div></aside>";
         }
         
         //
         // Add description
         //
+        $page_content .= "<div class='block-content'>";
         if( isset($participant['description']) ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
             $rc = ciniki_web_processContent($ciniki, $settings, $participant['description']);   

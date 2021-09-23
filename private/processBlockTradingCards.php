@@ -64,7 +64,9 @@ function ciniki_web_processBlockTradingCards($ciniki, $settings, $tnid, $block) 
             . "<div class='trading-card-thumbnail'>"
             . "<img title='$name' alt='$name' src='$img_url' />"
             . "</div>"
+            . "</a>"
             . "<div class='trading-card-text'>"
+            . "<a href='" . $block['base_url'] . '/' . $card['permalink'] . "' " . "title='$name'>"
             . "<span class='trading-card-title'>$name</span>";
         if( isset($card['subname']) && $card['subname'] != '' ) {
             $content .= "<span class='trading-card-subtitle'>" . $card['subname'] . "</span>";
@@ -78,13 +80,15 @@ function ciniki_web_processBlockTradingCards($ciniki, $settings, $tnid, $block) 
                 $content .= "<div class='trading-card-synopsis'>" . $rc['content'] . "</div>";
             }
         }
-        $content .= "</div>";
+        $content .= "</a></div>";
         if( isset($block['more-button']) && $block['more-button'] == 'yes' ) {
-            $content .= "<div class='trading-card-more'><span>"
+            $content .= "<div class='trading-card-more'>"
+                . "<a href='" . $block['base_url'] . '/' . $card['permalink'] . "' " . "title='$name'><span>"
                 . (isset($block['more-button-text']) ? $block['more-button-text'] : '... more')
-                . "</span></div>";
+                . "</span></a>"
+                . "</div>";
         }
-        $content .= "</a></div></div>";
+        $content .= "</div></div>";
     }
     $content .= "</div>";
 

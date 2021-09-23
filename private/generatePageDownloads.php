@@ -127,7 +127,7 @@ function ciniki_web_generatePageDownloads($ciniki, $settings) {
                 . "<td>";
             // $content .= "<h2>" . $c['category']['name'] . "</h2>";
         } else {
-            $content .= "<tr><th>"
+            $content .= "<tr><th class='downloads-category-empty'>"
                 . "<span class='downloads-category'></span></th>"
                 . "<td>";
         }
@@ -143,6 +143,11 @@ function ciniki_web_generatePageDownloads($ciniki, $settings) {
             $content .= "</span>";
             if( isset($download['file']['description']) && $download['file']['description'] != '' ) {
                 $content .= "<br/><span class='downloads-description'>" . $download['file']['description'] . "</span>";
+            }
+            if( isset($settings['site-layout']) && $settings['site-layout'] == 'twentyone' ) {
+                $content .= "<div class='downloads-more'>"
+                    . "<a class='downloads-url' target='_blank' href='" . $url . "' title='" . $download['file']['name'] . "'>Download</a>"
+                    . "</div>";
             }
 //          if( $url != '' ) {
 //              $content .= "<br/><a class='downloads-url' target='_blank' href='" . $url . "' title='" . $download['file']['name'] . "'>" . $display_url . "</a>";
