@@ -339,7 +339,7 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
             } 
             $page_content .= "</td></tr>\n</table>\n";
         } else {
-            $page_content .= "<p>I'm sorry, there are no links.</p>";
+            $page_content .= "<div class='block-content'><p>I'm sorry, there are no links.</p></div>";
         }
         $page_content .= "</div>"
             . "</article>"

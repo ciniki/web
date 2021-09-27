@@ -21,6 +21,12 @@ function tE(n,c) {
         }
     }
 }
+function gallery_resize_arrows() {
+}
+function scrollto_header() {
+    var e = gE('entry-title');
+    if( e != null ) window.scrollTo(0, e.offsetTop - 20);
+}
 function gallery_swap_image(u) {
     var i = gE('gallery-image-img');
     i.src = u;
