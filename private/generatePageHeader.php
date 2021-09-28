@@ -490,6 +490,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     if( isset($ciniki['request']['onload']) && $ciniki['request']['onload'] != '' ) {
         $content .= " onload='" . $ciniki['request']['onload'] . "'";
     }
+    $content .= " class='theme-" . $settings['site-theme'] . "'";
     $content .= ">\n";
 
     //
