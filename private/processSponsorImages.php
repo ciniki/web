@@ -52,6 +52,15 @@ function ciniki_web_processSponsorImages($ciniki, $settings, $base_url, $sponsor
         }
         else {
             //
+            // Load the image
+            //
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+            $rc = ciniki_web_getScaledImageURL($ciniki, $sponsor['image_id'], 'original', $maxlength, $maxheight, 60);
+            if( $rc['stat'] != 'ok' ) {
+                return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.187', 'msg'=>'Unable to load sponsor image', 'err'=>$rc['err']));
+            }
+            $img_url = $rc['url'];
+/*            //
             // Check for cached file, if not generate
             //
 //          $img_filename = $ciniki['request']['cache_dir'] . '/' . sprintf('%02d', ($ciniki['request']['tnid']%100)) . '/' 
@@ -96,7 +105,7 @@ function ciniki_web_processSponsorImages($ciniki, $settings, $base_url, $sponsor
                     fwrite($h, $image->getImageBlob());
                     fclose($h);
                 }
-            }
+            } */
         }
 
         $content .= "<div class='sponsor-gallery-thumbnail sponsor-gallery-thumbnail-$size_class'>";
