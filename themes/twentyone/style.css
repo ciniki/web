@@ -440,7 +440,7 @@ footer .sponsor-gallery-thumbnail {
         flex-grow: 2;
         padding-left: 2rem;
         text-align: right;
-        justify-content: space-around;
+        justify-content: center;
         width: auto;
         flex-basis: auto;
         border: 0px;
