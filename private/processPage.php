@@ -133,7 +133,11 @@ function ciniki_web_processPage(&$ciniki, $settings, $base_url, $page, $args) {
         } else {
             $img_base_url = $base_url . '/gallery';
         }
-        $rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $page['images'], 125);
+        if( isset($settings['site-layout']) && $settings['site-layout'] == 'twentyone' ) {
+            $rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $page['images'], 500);
+        } else {
+            $rc = ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $img_base_url, $page['images'], 125);
+        }
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }

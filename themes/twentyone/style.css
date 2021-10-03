@@ -686,7 +686,7 @@ div.gallery-image-details .image-gallery-thumbnail {
     text-align: center;
     padding: 0rem 0rem 1rem 0rem;
     min-width: 100%;
-    flex-grow: 0;
+    flex-grow: 1;
     flex-shrink: 1;
     flex-basis: 100%;
 }
@@ -696,6 +696,7 @@ div.gallery-image-details .image-gallery-thumbnail img {
 }
 @media screen and (min-width: 40em) {
     div.gallery-image-details .image-gallery-thumbnail {
+        flex-grow: 0;
         min-width: 50%;
         flex-basis: 50%;
         padding: 0.5rem;
@@ -739,6 +740,7 @@ div.image-categories .image-categories-thumbnail-wrap {
 @media (min-width: 40rem) {
     div.image-gallery .image-gallery-thumbnail,
     div.image-categories .image-categories-thumbnail-wrap {
+        flex-grow: 0;
         min-width: 150px;
         flex-basis: 50%;
     }
@@ -803,7 +805,7 @@ div.image-gallery {
 }
 div.thumbnail-list .thumbnail-list-item-wrap,
 div.image-gallery .image-gallery-thumbnail {
-    flex-grow: 0;
+    flex-grow: 1;
     text-align: center;
     padding: 0rem 0.5rem 0.5rem 0.5rem;
 }
@@ -811,7 +813,9 @@ div.thumbnail-list .thumbnail-list-item-wrap {
     width: 100%;
 }
 @media screen and (min-width: 40em) {
-    div.thumbnail-list .thumbnail-list-item-wrap {
+    div.thumbnail-list .thumbnail-list-item-wrap,
+    div.image-gallery .image-gallery-thumbnail {
+        flex-grow: 0;
         width: 50%;
     }
 }
