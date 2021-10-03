@@ -55,7 +55,7 @@ function ciniki_web_processSponsorImages($ciniki, $settings, $base_url, $sponsor
             // Load the image
             //
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
-            $rc = ciniki_web_getScaledImageURL($ciniki, $sponsor['image_id'], 'original', $maxlength, $maxheight, 60);
+            $rc = ciniki_web_getScaledImageURL($ciniki, $sponsor['image_id'], 'original', $maxlength, 0, 60);
             if( $rc['stat'] != 'ok' ) {
                 return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.187', 'msg'=>'Unable to load sponsor image', 'err'=>$rc['err']));
             }
