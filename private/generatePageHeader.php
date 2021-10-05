@@ -658,18 +658,18 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
 
     // Add signin button if any.
     if( $signin_content != '' && $social_icons != '' ) {
-        $content .= "<div class='signin'><div class='signin-wrapper'>";
+        $content .= "<div class='signin-social-bar signin social'><div class='signin-wrapper'>";
         $content .= $signin_content . "<span class='social-divider hide-babybear'>|</span>";
         $content .= "<span class='social-icons hide-babybear'>$social_icons</span>";
         $content .= "</div></div>\n";
     } 
     elseif( $signin_content != '' ) {
-        $content .= "<div class='signin'><div class='signin-wrapper'>";
+        $content .= "<div class='signin-social-bar signin'><div class='signin-wrapper'>";
         $content .= $signin_content;
         $content .= "</div></div>\n";
     } 
     elseif( $social_icons != '' ) {
-        $content .= "<div class='signin'><div class='signin-wrapper hide-babybear'>";
+        $content .= "<div class='signin-social-bar social'><div class='signin-wrapper hide-babybear'>";
         $content .= "<span class='social-icons hide-babybear'>$social_icons</span>";
         $content .= "</div></div>\n";
     }

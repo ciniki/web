@@ -84,11 +84,13 @@ a, a:hover, a:visited, a:active {
   src: url("fontawesome5/fa-brands-400.eot?#iefix") format("embedded-opentype"), url("fontawesome5/fa-brands-400.woff2") format("woff2"), url("fontawesome5/fa-brands-400.woff") format("woff"), url("fontawesome5/fa-brands-400.ttf") format("truetype"), url("fontawesome5/fa-brands-400.svg#fontawesome") format("svg"); }
 */
 .fa {   
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
     font-style: normal;
     font-variant: normal;
     text-rendering: auto;
     line-height: 1;
-    display: inline-block;
     font-family: 'Font Awesome 5 Free';
 }
 .fa-bars:before {
@@ -190,11 +192,21 @@ form .submit input.submit:hover,
 #page-container > header {
     background: #f7f7f7;
 }
-header div.signin {
-    display: none;
+header div.signin-social-bar {
+    display: block;
     text-align: right;
     padding: 0.25rem 1rem;
     background: #333;
+    color: #fff;
+} 
+header div.social {
+    display: none;
+}
+header div.signin {
+    display: block;
+}
+header div.signin-social-bar a {
+    color: #fff;
 }
 header .hgroup-wrapper {
     padding: 1rem;
@@ -236,11 +248,12 @@ header .title-block h2 {
     color: #777;
 }
 header .signin-wrapper {
-    padding-bottom: 0.5rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 header span.signin {
-    padding-top: 0.2rem;
-    vertical-align: bottom;
+    padding: 0.25rem 0rem;
 }
 header .social-divider,
 header .social-icons {
@@ -255,10 +268,12 @@ header .social-icons {
     font-family: MonoSocialIconsFont;
     font-size: 2.2rem;
     padding: 0rem 0.15rem;
-    vertical-align: bottom;
+    vertical-align: baseline;
 }
 header .socialsymbol {
     color: #fff;
+    font-size: 2rem;
+    padding: 0.1rem 0rem 0.1rem 0.3rem;
 }
 header .hgroup-wrapper {
     display: flex;
@@ -372,7 +387,7 @@ footer .sponsor-gallery-thumbnail {
     }
 }
 @media screen and (min-width: 35em) {
-    header div.signin {
+    header div.social {
         display: block;
     }
     header hgroup {
@@ -392,6 +407,7 @@ footer .sponsor-gallery-thumbnail {
     header button.close:before {
         content: none;
     }
+    header .account-divider,
     header .social-divider {
         display: inline-block;
         padding: 0rem 1rem;
@@ -401,7 +417,7 @@ footer .sponsor-gallery-thumbnail {
     }
 }
 @media screen and (min-width: 60rem) {
-    header div.signin {
+    header div.signin-social-bar {
         padding-left: 2rem;
         padding-right: 2rem;
     }
@@ -495,7 +511,7 @@ footer .sponsor-gallery-thumbnail {
 .block-content aside img,
 .block-primary-image img {
     margin: 0 auto;
-    width: 100%;
+/*    width: 100%; -- makes it stretch wide with restrict height */
     max-width: 100%;
     max-height: 80vh;
 }
@@ -528,6 +544,11 @@ article.page.page-gallery {
 }
 article.ciniki-links {
     max-width: 60rem;
+    margin: 0 auto;
+}
+article.page-account-chgpwd,
+article.page-account-login {
+    max-width: 30rem;
     margin: 0 auto;
 }
 .page-gallery,
@@ -571,6 +592,7 @@ div.embed-video div.embed-video-wrap iframe {
 .block-content aside {
     padding-bottom: 1rem;
 }
+.block-formmessage,
 .block-message,
 .block-files,
 .block-links {
@@ -1128,6 +1150,12 @@ article.ciniki-events .block-upcoming-events > p.wide {
     }
 }
 
+/* Login form */
+.page-account .signin-form {
+    max-width: 30em;
+    margin: 0 auto;
+}
+
 /* CI List */
 .cilist,
 .cilist tbody,
@@ -1426,6 +1454,7 @@ form .checkbox p {
     .downloads-list,
     .clist,
     .cilist,
+    .block-formmessage,
     .block-message,
     .block-links,
     .block-files,

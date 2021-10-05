@@ -320,7 +320,7 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $tnid, $breadc
     }
 
     $page_content .= "<div id='content'>\n"
-        . "<article class='page'>\n"
+        . "<article class='page page-account-login'>\n"
         . "<header class='entry-title'><h1 class='entry-title'>$article_title</h1></header>\n";
     //
     // Process the blocks of content

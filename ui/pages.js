@@ -62,7 +62,7 @@ function ciniki_web_pages() {
                     'sequence':{'label':'Page Order', 'type':'text', 'size':'small'},
                     '_flags_1':{'label':'Visible', 'type':'flagtoggle', 'bit':0x01, 'field':'flags_1', 'default':'on'},
                     '_flags_2':{'label':'Private', 'type':'flagtoggle', 'bit':0x02, 'field':'flags_2', 'default':'off',
-                        'active':function() { return M.modFlagSet('ciniki.customers', 0x01); },
+                        'active':function() { return M.modFlagAny('ciniki.customers', 0x03); },
                         },
                     '_flags_3':{'label':'Members Only', 'type':'flagtoggle', 'bit':0x04, 'field':'flags_3', 'default':'off',
                         'active':function() { return M.modFlagSet('ciniki.customers', 0x02); },

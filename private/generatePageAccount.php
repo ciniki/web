@@ -304,8 +304,10 @@ function ciniki_web_generatePageAccount(&$ciniki, $settings) {
         $page_content .= "<article class='page col-right-wide'>\n";
     } elseif( isset($settings['page-account-sidebar']) && $settings['page-account-sidebar'] == 'right' ) {
         $page_content .= "<article class='page col-left-wide'>\n";
+    } elseif( isset($page['article-class']) ) {
+        $page_content .= "<article class='page page-account " . $page['article-class'] . "'>\n";
     } else {
-        $page_content .= "<article class='page'>\n";
+        $page_content .= "<article class='page page-account'>\n";
     }
 
     $page_content .= "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$article_title</h1></header>";
