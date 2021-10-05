@@ -252,8 +252,17 @@ header .signin-wrapper {
     justify-content: flex-end;
     align-items: center;
 }
+header span.account,
 header span.signin {
     padding: 0.25rem 0rem;
+}
+header .account-divider {
+    display: inline-block;
+    padding: 0rem 0.5rem;
+}
+header .social-divider {
+    display: inline-block;
+    padding: 0rem 0rem 0rem 0.5rem;
 }
 header .social-divider,
 header .social-icons {
@@ -390,6 +399,9 @@ footer .sponsor-gallery-thumbnail {
     header div.social {
         display: block;
     }
+    header .social-divider {
+        display: inline-block;
+    }
     header hgroup {
         flex-basis: 74%;
     }
@@ -406,11 +418,6 @@ footer .sponsor-gallery-thumbnail {
     }
     header button.close:before {
         content: none;
-    }
-    header .account-divider,
-    header .social-divider {
-        display: inline-block;
-        padding: 0rem 1rem;
     }
     header .social-icons {
         display: inline-block;
