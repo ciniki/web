@@ -75,6 +75,7 @@ function ciniki_web_processBlockTradingCards($ciniki, $settings, $tnid, $block) 
             $content .= "<span class='trading-card-price'>" . $card['display_price'] . "</span>";
         }
         if( isset($card['synopsis']) && $card['synopsis'] != '' ) {
+            ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
             $rc = ciniki_web_processContent($ciniki, $settings, $card['synopsis'], '');
             if( $rc['stat'] == 'ok' ) {
                 $content .= "<div class='trading-card-synopsis'>" . $rc['content'] . "</div>";
