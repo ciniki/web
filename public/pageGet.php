@@ -147,7 +147,7 @@ function ciniki_web_pageGet($ciniki) {
         // Get the child items
         //
         if( isset($args['children']) && $args['children'] == 'yes' ) {
-            $strsql = "SELECT id, title "
+            $strsql = "SELECT id, title, sequence "
                 . "FROM ciniki_web_pages "
                 . "WHERE parent_id = '" . ciniki_core_dbQuote($ciniki, $args['page_id']) . "' "
                 . "AND tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
@@ -155,7 +155,7 @@ function ciniki_web_pageGet($ciniki) {
                 . "";
             $rc = ciniki_core_dbHashQueryTree($ciniki, $strsql, 'ciniki.web', array(
                 array('container'=>'pages', 'fname'=>'id', 'name'=>'page',
-                    'fields'=>array('id', 'title')),
+                    'fields'=>array('id', 'title', 'sequence')),
                     ));
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
@@ -181,7 +181,8 @@ function ciniki_web_pageGet($ciniki) {
         } else {
             $sequence = 1;
         }
-        $page = array('id'=>'0', 
+        $page = array(
+            'id'=>'0', 
             'title'=>'',
             'permalink'=>'',
             'parent_id'=>$args['parent_id'],

@@ -158,6 +158,20 @@ function ciniki_web_pages() {
                     }},
                 'pages':{'label':'', 'type':'simplegrid', 'num_cols':1, 
                     'visible':function() { return M.ciniki_web_pages[pn].sectionVisible('pages'); },
+                    'seqDrop':function(e,from,to) {
+                        M.ciniki_web_pages[pn].savePos();
+                        M.api.getJSONCb('ciniki.web.pageUpdate', {'tnid':M.curTenantID, 
+                            'page_id':M.ciniki_web_pages[pn].data.pages[from].page.id,
+                            'parent_id':M.ciniki_web_pages[pn].page_id,
+                            'sequence':M.ciniki_web_pages[pn].data.pages[to].page.sequence, 
+                            }, function(rsp) {
+                                if( rsp.stat != 'ok' ) {
+                                    M.api.err(rsp);
+                                    return false;
+                                }
+                                M.ciniki_web_pages[pn].updateChildren();
+                            });
+                        },
                     'addTxt':'Add Child Page',
                     'addFn':'M.ciniki_web_pages.'+pn+'.childEdit(0);',
                     },
