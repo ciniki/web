@@ -279,7 +279,7 @@ header .social-icons {
     padding: 0rem 0.15rem;
     vertical-align: baseline;
 }
-header .socialsymbol {
+.signin-social-bar .socialsymbol {
     color: #fff;
     font-size: 2rem;
     padding: 0.1rem 0rem 0.1rem 0.3rem;
@@ -564,6 +564,7 @@ article.page-account-login {
     clear: right;
 }
 .entry-meta,
+header .share-buttons-wrap,
 .block-share {
     padding: 0rem 1rem 1rem 1rem;
 }
@@ -1454,6 +1455,7 @@ form .checkbox p {
         padding-right: 2rem;
     }
     .entry-meta,
+    header .share-buttons-wrap,
     .block-share,
     .entry-content > h2,
     .block-gallery h2,
