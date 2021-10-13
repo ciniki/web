@@ -923,6 +923,9 @@ div.gallery-image .gallery-image-details {
 div.gallery-image .image-title {
     padding-bottom: 1rem;
 }
+div.gallery-image .image-title h1 {
+    padding: 0 0 1rem 0;
+}
 div.gallery-image .image-title,
 div.gallery-image .image-details,
 div.gallery-image .image-description {
@@ -1446,6 +1449,9 @@ form .checkbox p {
     }
     #content h1 {
         padding: 1rem 2rem 1rem 2rem;
+    }
+    #content div.gallery-image .image-title h1 {
+        padding: 0 0 1rem 0;
     }
     .block-content aside,
     .block-primary-image {

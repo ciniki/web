@@ -325,9 +325,13 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
         $page_content .= "<img id='gallery-image-img' title='" . $img['title'] . "' alt='" . $img['title'] . "' src='" . $img_url . "' onload='javascript: gallery_resize_arrows();' />";
         $page_content .= "</div><br/>";
         $page_content .= "<div id='gallery-image-details' class='gallery-image-details'>";
-
-        $page_content .= "<span class='image-title'>" . $img['title'] . '</span>'
-            . "<span class='image-details'><p>" . $img['details'] . '</p></span>';
+        
+        if( isset($settings['site-layout']) && $settings['site-layout'] == 'twentyone' ) {
+            $page_content .= "<span class='image-title'><h1>" . $img['title'] . '</h1></span>';
+        } else {
+            $page_content .= "<span class='image-title'>" . $img['title'] . '</span>';
+        }
+        $page_content .= "<span class='image-details'><p>" . $img['details'] . '</p></span>';
         if( $img['description'] != '' && (!isset($img['webflags']) || ($img['webflags']&0x0100) > 0) ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
             $rc = ciniki_web_processContent($ciniki, $settings, $img['description']);
@@ -652,10 +656,14 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
     //
     // Build the page content
     //
-    $content .= "<div id='content'>\n"
-        . "<article class='page page-gallery'>\n"
-        . "<header class='entry-title'><h1 id='entry-title' class='entry-title'>$article_title</h1></header>\n"
-        . "<div class='entry-content'>\n"
+    $content .= "<div id='content'>"
+        . "<article class='page page-gallery'>"
+        . "<header class='entry-title'>";
+    if( !isset($settings['site-layout']) || $settings['site-layout'] != 'twentyone' ) {
+        $content .= "<h1 id='entry-title' class='entry-title'>$article_title</h1>";
+    }
+    $content .= "</header>";
+    $content .= "<div class='entry-content'>"
         . "";
     if( $page_content != '' ) {
         $content .= $page_content;
