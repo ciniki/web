@@ -43,6 +43,15 @@ a, a:hover, a:visited, a:active {
 .section-divider {
     display: none;
 }
+.alignleft {
+    text-align: left;
+}
+.aligncenter {
+    text-align: center;
+}
+.alignright {
+    text-align: right;
+}
 @font-face {
     font-family: 'MonoSocialIconsFont';
     src: url('monosocial/MonoSocialIconsFont.eot');
@@ -996,6 +1005,44 @@ article.ciniki-events .block > h2 {
 }
 article.ciniki-events .block-upcoming-events > p.wide {
     padding: 0rem 1rem 1rem 1rem;
+}
+
+/* block image */
+article .block-image {
+    max-width: 100%;
+}
+article .block-image img {
+    display: block;
+    max-width: 100%;
+    max-height: 80vh;
+    margin: 0 auto;
+}
+
+/* block table */
+article .block-table {
+    width: 100%;
+}
+article .block-table.table-limit-width {
+    max-width: 60rem;
+    margin: 0 auto;
+}
+article .block-table table {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #bbb;
+}
+article .block-table th,
+article .block-table td {
+    padding: 0.35em 0.5em;
+    border-top: 1px solid #bbb;
+    border-bottom: 1px solid #bbb;
+}
+article .block-table tr:nth-child(even) td {
+    background: #eee;
+}
+article .block-table thead tr td,
+article .block-table tr th {
+    background: #ddd;
 }
 
 /* Exhibitions */
