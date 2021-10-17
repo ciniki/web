@@ -19,7 +19,7 @@ function ciniki_web_processBlockTable(&$ciniki, $settings, $tnid, $block) {
         $content .= "<h2>" . $block['title'] . "</h2>";
     }
 
-    $content .= "<div class='table"
+    $content .= "<div class='table block-table"
         . (isset($block['class']) && $block['class'] != '' ? ' table-' . $block['class'] : '')
         . "'>";
     if( isset($block['intro']) && $block['intro'] != '' ) {
