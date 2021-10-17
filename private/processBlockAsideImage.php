@@ -40,7 +40,7 @@ function ciniki_web_processBlockAsideImage(&$ciniki, $settings, $tnid, $block) {
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
-    $content = "<aside><div class='block block-primary-image'><div "
+    $content = "<aside><div "
         . (isset($block['cssid']) && $block['cssid'] != '' ? " id='" . $block['cssid'] . "'" : '')
         . "class='image-wrap'><div class='image'>"
         . "<img title='' alt='" . (isset($block['title'])?$block['title']:'') . "' src='" . $rc['url'] . "' />"
@@ -48,7 +48,7 @@ function ciniki_web_processBlockAsideImage(&$ciniki, $settings, $tnid, $block) {
     if( isset($block['caption']) && $block['caption'] != '' ) {
         $content .= "<div class='image-caption'>" . $block['caption'] . "</div>";
     }
-    $content .= "</div></div></aside>";
+    $content .= "</div></aside>";
 
     //
     // Check if this image should be used as the primary when linked from other sites eg: facebook
