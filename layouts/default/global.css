@@ -344,7 +344,7 @@ header {
     box-sizing: border-box;
 }
 
-header div.signin {
+header div.signin-social-bar {
     display: inline-block;
     float: right;
     margin-bottom: 1.0em;

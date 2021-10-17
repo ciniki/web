@@ -39,7 +39,7 @@ body {
     margin: 0px auto;
 }
 
-#page-container.signin {
+#page-container.signin-social-bar {
     padding-top: 0.0em;
 }
 
@@ -62,13 +62,13 @@ body {
     color: #333;
 }
 
-header div.signin {
+header div.signin-social-bar {
     width: auto;
     height: 0px;
     overflow: visible;
 }
 
-header div.signin div.signin-wrapper {
+header div.signin-social-bar div.signin-wrapper {
     border-left: 0px solid #422213;
     border-bottom: 0px solid #422213;
     border-right: 0px solid #422213;
@@ -76,7 +76,7 @@ header div.signin div.signin-wrapper {
     margin-top: 2px;
 }
 
-header div.signin a {
+header div.signin-social-bar a {
     text-decoration: none;
 }
 
@@ -84,24 +84,24 @@ header div.title-logo img {
     padding-right: 0.5em;
 }
 
-header div.signin span.social-icons {
+header div.signin-social-bar span.social-icons {
     font-size: 1.75em;
     font-size: 2.25em;
     margin-bottom: 0.15em;
     margin-top: -0.0em;
 }
 
-header div.signin span.social-divider {
+header div.signin-social-bar span.social-divider {
     margin-left: 0.1em;
     margin-right: 0.1em;
     font-size: 1.5em;
     color: #bbb;
 }
 
-header div.signin span.social-icons a,
-header div.signin span.social-icons a:visited,
-header div.signin span.social-icons a:hover,
-header div.signin span.social-icons a:active {
+header div.signin-social-bar span.social-icons a,
+header div.signin-social-bar span.social-icons a:visited,
+header div.signin-social-bar span.social-icons a:hover,
+header div.signin-social-bar span.social-icons a:active {
     color: #B9A296;
 }
 
