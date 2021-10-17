@@ -15,7 +15,7 @@ menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
   font-family: helvetica, arial, sans-serif;
 }
-header div.signin div.signin-wrapper {
+header div.signin-social-bar div.signin-wrapper {
   border: 0px;
   background: inherit;
   font-size: 1.2em;

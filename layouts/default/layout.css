@@ -475,7 +475,7 @@ aside {
 }
 
 header span.social-icons { display: inline-block; }
-header div.signin .hide-babybear { display: inline-block; }
+header div.signin-social-bar .hide-babybear { display: inline-block; }
 div.hide-babybear { display: block; }
 
 #content table.cilist td.cilist-image {

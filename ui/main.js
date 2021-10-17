@@ -30,9 +30,8 @@ function ciniki_web_main() {
         'whitedrop':'Drop Shadows - Black/White',
         'black':'Midnight Blue - Blue/Black',
         'midnightorange':'Midnight Orange - Orange/Black',
-        'davinci':'Davinci - Brown/Beige',
         'orangebrick':'Orange Brick - Brown/Beige',
-        'orangebrick2':'Brick - Brown/Beige',
+//        'orangebrick2':'Brick - Brown/Beige',
         'stone1':'Stone - Brown/Orange',
         'stone2':'Stone - Black/White',
         'splatter':'Purple Splatter - Purple/White',
@@ -46,6 +45,8 @@ function ciniki_web_main() {
         this.themesAvailable['bluepaws'] = 'Blue Paws';
 //        this.themesAvailable['twentyone'] = 'Twenty One';
         this.themesAvailable['private'] = 'Private';
+        this.themesAvailable['davinci'] = 'Davinci - Brown/Beige';
+        this.themesAvailable['orangebrick2'] = 'Brick - Brown/Beige';
 //      this.themesAvailable['orangebrick'] = 'Orange Brick';
 //      this.themesAvailable['splatter'] = 'Splatter';
     }
