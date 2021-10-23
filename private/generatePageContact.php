@@ -251,11 +251,19 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
     //
     // Put together all the contact content
     //
-    $content .= "<div id='content'>\n"
-        . "<article class='page page-contact'>\n"
-        . "<header class='entry-title'><h1 class='entry-title'>Contact</h1></header>\n";
-    if( isset($map_content) && $map_content != '' ) {
-        $content .= $map_content;
+    $content .= "<div id='content'>\n";
+    if( isset($settings['site-layout']) && $settings['site-layout'] == 'twentyone' ) {
+        if( isset($map_content) && $map_content != '' ) {
+            $content .= $map_content;
+        }
+        $content .= "<article class='page page-contact'>\n"
+            . "<header class='entry-title'><h1 class='entry-title'>Contact</h1></header>\n";
+    } else {
+        $content .= "<article class='page page-contact'>\n"
+            . "<header class='entry-title'><h1 class='entry-title'>Contact</h1></header>\n";
+        if( isset($map_content) && $map_content != '' ) {
+            $content .= $map_content;
+        }
     }
     $content .= "<div class='entry-content'>\n";
     $content .= "<div class='block-content'>";

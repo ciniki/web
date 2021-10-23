@@ -446,10 +446,13 @@ footer .sponsor-gallery-thumbnail {
         padding-left: 2rem;
         padding-right: 2rem;
     }
+    #page-container article header {
+        padding-top: 1rem;
+    }
 }
 @media screen and (min-width: 80em) { 
     header.switch-at-80 {
-        margin-bottom: 1rem;
+        /* margin-bottom: 1rem; */
     }
     header.switch-at-80 .hgroup-wrapper {
         flex-wrap: nowrap;
@@ -863,6 +866,13 @@ div.image-gallery .image-gallery-thumbnail {
 div.thumbnail-list .thumbnail-list-item-wrap {
     width: 100%;
 }
+.thumbnail-list-item-title {
+    display: inline-block;
+    font-family: 'Noto Serif';
+    font-weight: bold;
+    font-size: 1.2em;
+    padding: 0.5rem 0rem 1rem 0rem;
+}
 @media screen and (min-width: 40em) {
     div.thumbnail-list .thumbnail-list-item-wrap,
     div.image-gallery .image-gallery-thumbnail {
@@ -943,6 +953,8 @@ div.gallery-image .gallery-image-details {
 }
 div.gallery-image .image-title {
     padding-bottom: 1rem;
+    font-family: 'Noto Serif';
+    font-size: 1.2em;
 }
 div.gallery-image .image-title h1 {
     padding: 0 0 1rem 0;
