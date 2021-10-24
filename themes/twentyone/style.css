@@ -348,6 +348,9 @@ header #sub-menu-container ul {
     margin-top: 1rem;
     padding-top: 1rem;
     border-top: 1px solid #bbb;
+    margin-bottom: 0rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #bbb;
 }
 header .header-image #sub-menu-container ul {
     margin-top: 0.5rem;
@@ -499,6 +502,7 @@ footer .sponsor-gallery-thumbnail {
     header.switch-at-80 #sub-menu-container ul {
         margin-top: 0px;
         padding-top: 0px;
+        margin-bottom: 0px;
         padding-bottom: 0px;
         border-bottom: 0px;
     }
@@ -522,6 +526,9 @@ footer .sponsor-gallery-thumbnail {
 /* Content area */
 #content {
     min-height: 50vh;
+}
+#content h1 {
+    padding: 2rem 1rem 2rem 1rem;
 }
 .entry-content > h2 {
     padding: 1rem;
@@ -771,7 +778,7 @@ div.image-categories {
     justify-content: center;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-
+    padding-top: 1rem;
     align-items: stretch;
     align-content: stretch;
 }
@@ -1520,7 +1527,7 @@ form .checkbox p {
         padding: 1rem 2rem;
     }
     #content h1 {
-        padding: 1rem 2rem 1rem 2rem;
+        padding: 2rem 2rem 2rem 2rem;
     }
     #content div.gallery-image .image-title h1 {
         padding: 0 0 1rem 0;
