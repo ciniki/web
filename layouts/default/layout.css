@@ -1041,6 +1041,9 @@ span.exhibitors-description {
     #content table.calendar-grid td.calendar-day-blank {
         display: table-cell;
     }
+    #content table.calendar-grid div.calendar-item-title {
+        margin-right: 0em;
+    }
     #content table.calendar-grid div.calendar-item-blank {
         min-height: 5em;
     }
