@@ -90,6 +90,8 @@ function ciniki_web_processMembersonlyURI(&$ciniki, $settings, $depth, $base_url
                     header('Content-Type: application/pdf');
                 } elseif( $file['extension'] == 'mp3' ) {
                     header('Content-Type: audio/mpeg');
+                } elseif( $file['extension'] == 'wif' ) {
+                    header('Content-Type: application/wif');
                 }
 //              header('Content-Disposition: attachment;filename="' . $file['filename'] . '"');
                 header('Content-Length: ' . strlen($file['binary_content']));

@@ -15,7 +15,7 @@ function ciniki_web_social() {
         this.main.data = {};
         this.main.sections = {
             '_og_image':{'label':'Default Social Image', 'aside':'yes', 'type':'imageform', 'fields':{
-                'site-header-og-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
+                'site-header-og-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'delete':'yes', 'history':'no'},
                 }},
             'setup':{'label':'', 'list':{
                 'settings':{'label':'Social Media Accounts', 'fn':'M.ciniki_web_social.showSocialAccounts();'},
