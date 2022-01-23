@@ -619,6 +619,8 @@ div.embed-video div.embed-video-wrap iframe {
 .block-additional-images h2,
 .block-exhibitions > h2,
 .block-prices,
+.block-artist-link,
+.block-price-list,
 .block-content {
     padding: 1rem;
 }
@@ -1567,6 +1569,8 @@ form .checkbox p {
     .block-additional-images h2,
     .block-exhibitions > h2,
     .block-prices,
+    .block-artist-link,
+    .block-price-list,
     .block-content {
         padding-left: 2rem;
         padding-right: 2rem;
