@@ -618,6 +618,7 @@ div.embed-video div.embed-video-wrap iframe {
 .block-member-links,
 .block-additional-images h2,
 .block-exhibitions > h2,
+.block-member-exhibits > h2,
 .block-prices,
 .block-artist-link,
 .block-price-list,
@@ -1083,6 +1084,8 @@ article .block-table tr th {
 }
 
 /* Exhibitions */
+.block-member-exhibits,
+.block-exhibit-categories,
 .block-exhibitions {
     clear: right;
 }
@@ -1574,6 +1577,9 @@ form .checkbox p {
     .block-content {
         padding-left: 2rem;
         padding-right: 2rem;
+    }
+    .block-member-exhibits > h2 {
+        padding: 2rem;
     }
     div.thumbnail-list,
     div.image-gallery,
