@@ -1223,6 +1223,10 @@ article .block-table tr th {
     font-weight: bold;
     padding-bottom: 0.5rem;
 }
+.trading-card-subtitle,
+.trading-card-price {
+    display: block;
+}
 .trading-card-synopsis p {
     padding-bottom: 1rem;
 }
