@@ -121,6 +121,7 @@ div.breadcrumbs {
 h1 {
     font-family: 'Noto Serif';
     font-size: 2rem;
+    line-height: 2.5rem;
     font-weight: bold;
     padding: 1rem 1rem;
 }
