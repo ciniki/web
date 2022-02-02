@@ -31,6 +31,7 @@ function ciniki_web_social() {
                 'site-social-youtube-header-active':{'label':'YouTube', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
                 'site-social-vimeo-header-active':{'label':'Vimeo', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
                 'site-social-instagram-header-active':{'label':'Instagram', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+                'site-social-linktree-header-active':{'label':'Linktree', 'active':'no', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
             }},
             'footer':{'label':'Footer Links', 'fields':{
                 'site-social-facebook-footer-active':{'label':'Facebook', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
@@ -43,6 +44,7 @@ function ciniki_web_social() {
                 'site-social-youtube-footer-active':{'label':'YouTube', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
                 'site-social-vimeo-footer-active':{'label':'Vimeo', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
                 'site-social-instagram-footer-active':{'label':'Instagram', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
+                'site-social-linktree-footer-active':{'label':'Linktree', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles},
             }},
             'pages':{'label':'Share Buttons', 
                 'active':function() { return M.modFlagSet('ciniki.web', 0x40); },
@@ -204,6 +206,16 @@ function ciniki_web_social() {
                 } else {
                     p.sections.header.fields['site-social-instagram-header-active'].active = 'no';
                     p.sections.footer.fields['site-social-instagram-footer-active'].active = 'no';
+                }
+                // Linktree
+                if( rsp.details['social-linktree-username'] != null && rsp.details['social-linktree-username'] != '' ) {
+                    p.sections.header.fields['site-social-linktree-header-active'].active = 'yes';
+                    p.sections.footer.fields['site-social-linktree-footer-active'].active = 'yes';
+                    header = 'yes';
+                    footer = 'yes';
+                } else {
+                    p.sections.header.fields['site-social-linktree-header-active'].active = 'no';
+                    p.sections.footer.fields['site-social-linktree-footer-active'].active = 'no';
                 }
 
                 // Linkedin

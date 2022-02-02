@@ -307,6 +307,10 @@ span.fa-icon {
 span.order-icon.order-options-fav-on {
     color: red;
 }
+span.social-linktree svg {
+    height: 30px;
+    fill: #bbb;
+}
 
 /* 4. LINKS
 ----------------------------------------------------------------------------------------*/
