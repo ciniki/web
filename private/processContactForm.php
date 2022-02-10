@@ -112,13 +112,13 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $tnid, $args=array()
             'BLOCKED FROM ' . $_POST['contact-form-email'] . ' - Critical errors');
         return array('stat'=>'ok', 'error_message'=>$error_message, 'success_message'=>"Your message was sent");
     }
-    if( preg_match("/(SpellPerfect|SpellPros).com/i", $msg) ) {
+    if( preg_match("/(SpellPerfect|SpellPros|SpellAlerts).com/i", $msg) ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'logFileMsg');
         ciniki_core_logFileMsg($ciniki, $tnid, 'spam', 
             'BLOCKED FROM ' . $_POST['contact-form-email'] . ' - spellperfect.com');
         return array('stat'=>'ok', 'error_message'=>$error_message, 'success_message'=>"Your message was sent");
     }
-    if( preg_match("/(DeadLinkCheck|URLInspect|DeadLinkDetector).com/i", $msg) ) {
+    if( preg_match("/(DeadLinkCheck|URLInspect|DeadLinkDetector|DeadLinkReport).com/i", $msg) ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'logFileMsg');
         ciniki_core_logFileMsg($ciniki, $tnid, 'spam', 
             'BLOCKED FROM ' . $_POST['contact-form-email'] . ' - deadlinkcheck.com');
