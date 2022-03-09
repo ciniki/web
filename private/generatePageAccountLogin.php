@@ -32,7 +32,10 @@ function ciniki_web_generatePageAccountLogin(&$ciniki, $settings, $tnid, $breadc
     //
     // Check if reset request
     //
-    if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'passwordreset' ) {
+    if( isset($ciniki['request']['uri_split'][0]) && $ciniki['request']['uri_split'][0] == 'passwordreset' 
+        && isset($_GET['email']) && $_GET['email'] != ''
+        && isset($_GET['pwd']) && $_GET['pwd'] != '' 
+        ) {
         $display_form = 'reset';
     }
 
