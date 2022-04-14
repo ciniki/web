@@ -26,6 +26,12 @@ img {
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
     display: block;
 }
+b {
+    font-weight: bold;
+}
+i {
+    font-style: italic;
+}
 html {
     overflow-y: scroll;
     background: #fff;
