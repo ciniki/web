@@ -99,21 +99,22 @@ function ciniki_web_processBlockImageList(&$ciniki, $settings, $tnid, $block) {
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
+            error_log($item['title']);
             $content .= "<div class='image-list-wrap image-list-$version'>"
-                . ($url!=''?"<a href='$url' target='$url_target' title='" . $item['title'] . "'>":'')
-                . "<img title='' alt='" . $item['title'] . "' src='" . $rc['url'] . "' />"
+                . ($url!=''?"<a href='$url' target='$url_target' title=\"" . preg_replace("/\"/", "&quot;", $item['title']) . "\">":'')
+                . "<img title='' alt=\"" . preg_replace("/\"/", "&quot;", $item['title']) . "\" src='" . $rc['url'] . "' />"
                 . ($url!=''?'</a>':'')
                 . "</div>";
         } elseif( isset($block['noimage']) && $block['noimage'] == 'yes' ) {
             $content .= "<div class='image-list-wrap image-list-thumbnail no-image'>"
-                . ($url!=''?"<a href='$url' target='$url_target' title='" . $item['title'] . "'>":'')
-                . "<img title='' alt='" . $item['title'] . "' src='/ciniki-web-layouts/default/img/noimage_240.png' />"
+                . ($url!=''?"<a href='$url' target='$url_target' title=\"" . preg_replace("/\"/", "&quot;", $item['title']) . "\">":'')
+                . "<img title='' alt=\"" . preg_replace("/\"/", "&quot;", $item['title']) . "\" src='/ciniki-web-layouts/default/img/noimage_240.png' />"
                 . ($url!=''?'</a>':'')
                 . "</div>";
         } elseif( isset($block['noimage']) && $block['noimage'] != '' ) {
             $content .= "<div class='image-list-wrap image-list-thumbnail'>"
-                . ($url!=''?"<a href='$url' target='$url_target' title='" . $item['title'] . "'>":'')
-                . "<img title='' alt='" . $item['title'] . "' src='" . $block['noimage'] . "' />"
+                . ($url!=''?"<a href='$url' target='$url_target' title=\"" . preg_replace("/\"/", "&quot;", $item['title']) . "\">":'')
+                . "<img title='' alt=\"" . preg_replace("/\"/", "&quot;", $item['title']) . "\" src='" . $block['noimage'] . "' />"
                 . ($url!=''?'</a>':'')
                 . "</div>";
         }
@@ -124,7 +125,7 @@ function ciniki_web_processBlockImageList(&$ciniki, $settings, $tnid, $block) {
         //
         $content .= "<div class='image-list-details'>";
         $content .= "<div class='image-list-title'><h2>" 
-            . ($url!=''?"<a href='$url' target='$url_target' title='" . $item['title'] . "'>":'');
+            . ($url!=''?"<a href='$url' target='$url_target' title=\"" . preg_replace("/\"/", "&quot;", $item['title']) . "\">":'');
         if( isset($block['title-prices']) && $block['title-prices'] == 'yes' 
             && isset($item['title_price']) && $item['title_price'] != '' 
             ) {

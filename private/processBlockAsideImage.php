@@ -43,7 +43,7 @@ function ciniki_web_processBlockAsideImage(&$ciniki, $settings, $tnid, $block) {
     $content = "<aside><div "
         . (isset($block['cssid']) && $block['cssid'] != '' ? " id='" . $block['cssid'] . "'" : '')
         . "class='image-wrap'><div class='image'>"
-        . "<img title='' alt='" . (isset($block['title'])?$block['title']:'') . "' src='" . $rc['url'] . "' />"
+        . "<img title='' alt=\"" . (isset($block['title'])?preg_replace("/\"/", "&quot;", $block['title']):'') . "\" src='" . $rc['url'] . "' />"
         . "</div>";
     if( isset($block['caption']) && $block['caption'] != '' ) {
         $content .= "<div class='image-caption'>" . $block['caption'] . "</div>";
