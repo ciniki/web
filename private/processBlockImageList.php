@@ -99,7 +99,6 @@ function ciniki_web_processBlockImageList(&$ciniki, $settings, $tnid, $block) {
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
-            error_log($item['title']);
             $content .= "<div class='image-list-wrap image-list-$version'>"
                 . ($url!=''?"<a href='$url' target='$url_target' title=\"" . preg_replace("/\"/", "&quot;", $item['title']) . "\">":'')
                 . "<img title='' alt=\"" . preg_replace("/\"/", "&quot;", $item['title']) . "\" src='" . $rc['url'] . "' />"
