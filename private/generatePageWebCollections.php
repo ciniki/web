@@ -387,7 +387,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'indexModuleBaseURL');
             $rc = ciniki_web_indexModuleBaseURL($ciniki, $ciniki['request']['tnid'], ['ciniki.blog.latest', 'ciniki.blog']);
             if( $rc['stat'] != 'ok' ) {
-                return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.183', 'msg'=>'Unable to find page', 'err'=>$rc['err']));
+                return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.190', 'msg'=>'Unable to find page', 'err'=>$rc['err']));
             }
             if( isset($rc['base_url']) && $rc['base_url'] != '' ) {
                 $base_url = $ciniki['request']['base_url'] . $rc['base_url'];
@@ -446,7 +446,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'indexModuleBaseURL');
             $rc = ciniki_web_indexModuleBaseURL($ciniki, $ciniki['request']['tnid'], ['ciniki.events.upcoming', 'ciniki.events']);
             if( $rc['stat'] != 'ok' ) {
-                return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.183', 'msg'=>'Unable to find page', 'err'=>$rc['err']));
+                return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.199', 'msg'=>'Unable to find page', 'err'=>$rc['err']));
             }
             if( isset($rc['base_url']) && $rc['base_url'] != '' ) {
                 $base_url = $ciniki['request']['base_url'] . $rc['base_url'];
@@ -562,7 +562,7 @@ function ciniki_web_generatePageWebCollections(&$ciniki, $settings) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'indexModuleBaseURL');
             $rc = ciniki_web_indexModuleBaseURL($ciniki, $ciniki['request']['tnid'], 'ciniki.ags.exhibitions');
             if( $rc['stat'] != 'ok' ) {
-                return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.183', 'msg'=>'Unable to find page', 'err'=>$rc['err']));
+                return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.200', 'msg'=>'Unable to find page', 'err'=>$rc['err']));
             }
             if( isset($rc['base_url']) && $rc['base_url'] != '' ) {
                 $base_url = $ciniki['request']['base_url'] . $rc['base_url'];
