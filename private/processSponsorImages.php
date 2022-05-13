@@ -37,6 +37,7 @@ function ciniki_web_processSponsorImages($ciniki, $settings, $base_url, $sponsor
         case '30': $maxlength = 200; $size_class = 'medium'; break;
         case '40': $maxlength = 250; $size_class = 'large'; break;
         case '50': $maxlength = 300; $size_class = 'xlarge'; break;
+        case '90': $maxlength = 900; $size_class = 'xxlarge'; break;
     }
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processURL');
