@@ -109,7 +109,9 @@ function ciniki_web_processSponsors($ciniki, $settings, $level, $categories) {
                     $content .= "</td></tr>";
                     $content .= "<tr><td class='sponsors-more'>";
                 }
-                $content .= "<a target='_blank' class='external-link' href='$url'>$display_url</a>";
+                if( $url != '' ) {
+                    $content .= "<a target='_blank' class='external-link' href='$url'>$display_url</a>";
+                }
                 if( isset($settings['site-layout']) && $settings['site-layout'] == 'twentyone' ) {
                     $content .= "</div></td></tr>";
                 } else {

@@ -1396,7 +1396,6 @@ article .block-table tr th {
 .sponsors-more {
     margin-bottom: 2rem;
 }
-.sponsors-details,
 .image-list-details {
     padding: 1rem;
 }
@@ -1481,6 +1480,57 @@ article .block-table tr th {
     }
     .image-list-entry-wrap {
     } */
+}
+/* Sponsors */
+.sponsors-list,
+.sponsors-list tbody,
+.sponsors-list tr,
+.sponsors-list td {
+    display: block;
+}
+.sponsors-category-list tbody {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+.sponsor-start {
+    display: inline-block;
+    flex-basis: 50%:
+    flex-shrink: 1;
+    flex-grow: 1;
+    width: 100%;
+    padding: 1rem;
+}
+.sponsor-start img {
+    margin: 0 auto;
+    max-width: 100%;
+}
+.sponsor-start .image-sponsors-thumbnail a {
+    display: block;
+    text-align: center;
+}
+.sponsors-details {
+    padding: 1rem 0rem;
+    text-align: center;
+}
+.sponsors-more a,
+.sponsors-more a:hover {
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+@media screen and (min-width: 40em) {
+    .sponsors-category-list tbody {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+@media screen and (min-width: 45em) {
+    .sponsor-start {
+        width: auto;
+        min-width: 15rem;
+        max-width: 20rem;
+    }
 }
 
 /* Forms */
