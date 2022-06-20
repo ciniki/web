@@ -1188,9 +1188,9 @@ function ciniki_web_generatePageHome(&$ciniki, $settings) {
         if( isset($settings['site-theme']) && $settings['site-theme'] == 'twentyone' ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'events', 'web', 'list');
             if( isset($settings['page-home-current-events']) && $settings['page-home-current-events'] == 'yes' ) {
-                $rc = ciniki_events_web_list($ciniki, $settings, $ciniki['request']['tnid'], array('limit'=>$list_size+1, 'format'=>'imagelist'));
+                $rc = ciniki_events_web_list($ciniki, $settings, $ciniki['request']['tnid'], array('type'=>'future', 'limit'=>$list_size+1, 'format'=>'imagelist'));
             } else {
-                $rc = ciniki_events_web_list($ciniki, $settings, $ciniki['request']['tnid'], array('type'=>'future','limit'=>$list_size+1, 'format'=>'imagelist'));
+                $rc = ciniki_events_web_list($ciniki, $settings, $ciniki['request']['tnid'], array('type'=>'upcoming','limit'=>$list_size+1, 'format'=>'imagelist'));
             }
             $events = isset($rc['events']) ? $rc['events'] : array();
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processBlocks');
