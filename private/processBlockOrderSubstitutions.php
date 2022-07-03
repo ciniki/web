@@ -59,7 +59,7 @@ function ciniki_web_processBlockOrderSubstitutions(&$ciniki, $settings, $tnid, $
         foreach($block['subitems'] as $item) {
             $json_item .= "{"
                 . "'id':'" . $item['id'] . "',"
-                . "'description':'" . $item['description'] . "',"
+                . "'description':'" . preg_replace("/\'/", "\\'", $item['description']) . "',"
                 . "'unit_amount':'" . $item['unit_amount'] . "',"
                 . "'quantity':'" . $item['quantity'] . "',"
                 . "'quantity_plural':'" . $item['quantity_plural'] . "',"
@@ -101,7 +101,7 @@ function ciniki_web_processBlockOrderSubstitutions(&$ciniki, $settings, $tnid, $
                 . "'id':'" . $count++ . "',"
                 . "'object':'" . $sub['object'] . "',"
                 . "'object_id':'" . $sub['object_id'] . "',"
-                . "'description':'" . $sub['description'] . "',"
+                . "'description':'" . preg_replace("/\'/", "\\'", $sub['description']) . "',"
                 . "'unit_amount':'" . $sub['unit_amount'] . "',"
                 . "'quantity_plural':'" . $sub['quantity_plural'] . "',"
                 . "'quantity_single':'" . $sub['quantity_single'] . "',"
