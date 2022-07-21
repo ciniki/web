@@ -1216,6 +1216,11 @@ article .block-table tr th {
 .trading-card-wrap {
     padding-bottom: 2rem;
 }
+.trading-card {
+    display: flex;
+    flex-flow: column nowrap;
+    height: 100%;
+}
 .trading-card > a {
     display: block;
 }
@@ -1224,6 +1229,7 @@ article .block-table tr th {
 }
 .trading-cards .trading-card-text {
     padding: 0.5rem 1rem;
+    flex-grow: 2;
 }
 .trading-card-title {
     display: block;
@@ -1242,6 +1248,8 @@ article .block-table tr th {
 .trading-card-more {
     padding-left: 1rem;
     padding-right: 1rem;
+    align-self: flex-end;
+    width: 100%;
 }
 @media screen and (min-width: 50em) {
     .trading-cards {
