@@ -144,6 +144,10 @@ function ciniki_web_main() {
                     'visible':function() { return M.modFlagSet('ciniki.web', 0x02);}, 
                     'fn':'M.startApp(\'ciniki.web.sliders\',null,\'M.ciniki_web_main.showMenu();\');',
                     },
+                'qrcodes':{'label':'Generate QR Codes', 
+                    'visible':function() { return M.modFlagSet('ciniki.web', 0x0200);},  // show when pages menu enabled
+                    'fn':'M.startApp(\'ciniki.web.qrcodes\',null,\'M.ciniki_web_main.showMenu();\');',
+                    },
                 }},
 //          'advanced':{'label':'Advanced', 'type':'simplegrid', 'num_cols':1, 'sortable':'no',
 //              'headerValues':null,
