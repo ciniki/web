@@ -49,6 +49,6 @@ function ciniki_web_qrcodes() {
             return false;
         } 
 
-        this.main.open();
+        this.main.open(cb);
     }
 };
