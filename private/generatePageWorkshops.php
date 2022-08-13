@@ -120,13 +120,17 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
             // The requested image was the last in the list, set previous to last
             $next = $first;
         }
-        
-        $page_title = $workshop['name'] . ' - ' . $img['title'];
-
+       
         if( $img == NULL ) {
             return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.96', 'msg'=>'The image you requested does not exist.'));
         }
     
+        if( isset($img['title']) && $img['title'] != '' ) {
+            $page_title = $workshop['name'] . ' - ' . $img['title'];
+        } else {
+            $page_title = $workshop['name'];
+        }
+
         //
         // Load the image
         //
