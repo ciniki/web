@@ -91,7 +91,7 @@ function ciniki_web_generatePageExhibitors($ciniki, $settings) {
             $next = $first;
         }
 
-        if( $img['title'] != '' ) {
+        if( isset($img['title']) && $img['title'] != '' ) {
             $page_title = $participant['name'] . ' - ' . $img['title'];
         } else {
             $page_title = $participant['name'];
