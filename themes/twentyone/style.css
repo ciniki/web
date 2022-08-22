@@ -544,6 +544,7 @@ footer .sponsor-gallery-thumbnail {
     padding: 1rem;
 }
 
+
 /* Primary Image */
 .block-primary-image {
     margin-bottom: 1rem;
@@ -1599,6 +1600,22 @@ form .checkbox p {
     padding-left: 2rem;
 }
 
+/* Live search */
+#page-container.page-search #content {
+    flex-grow: 1;
+}
+#content div.live-search {
+    padding: 0rem 1rem 1rem 1rem;
+}
+#content div.live-search input {
+    font-size: 1.0em;
+    font-weight: normal;
+    padding: 0.5em;
+    border: 1px solid #aaa;
+    color: #555;
+    width: 100%;
+}
+
 /* Content area - wider screen */
 @media screen and (min-width: 60em) {
     div.block-form,
@@ -1608,6 +1625,9 @@ form .checkbox p {
     }
     #content h1 {
         padding: 2rem 2rem 2rem 2rem;
+    }
+    #content div.live-search {
+        padding: 0rem 2rem 2rem 2rem;
     }
     #content div.gallery-image .image-title h1 {
         padding: 0 0 1rem 0;
