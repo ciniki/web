@@ -53,7 +53,7 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
     //
     $content = '';
     $page_content = '';
-    $page_title = 'Exhibitors';
+    $page_title = 'Workshops';
     $ciniki['response']['head']['og']['url'] = $ciniki['request']['domain_base_url'] . '/workshops';
 
     //
