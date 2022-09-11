@@ -1525,6 +1525,10 @@ function ciniki_web_main() {
                 'page-blog-thumbnail-format':{'label':'Thumbnail Format', 'type':'toggle', 'default':'square-cropped', 'toggles':{'square-cropped':'Cropped', 'square-padded':'Padded'}},
                 'page-blog-thumbnail-padding-color':{'label':'Padding Color', 'type':'colour'},
                 'page-blog-num-past-months':{'label':'Number of Past Months', 'type':'text', 'size':'small'},
+                'page-blog-display-format':{'label':'Display Format', 'type':'toggle', 'default':'imagelist', 
+                    'visible':function() {return (M.ciniki_web_main.menu.data.settings[0].setting.value == 'twentyone' ? 'yes' : 'no');},
+                    'toggles':{'imagelist':'List', 'tradingcards':'Trading Cards'},
+                    },
                 }},
             '_save':{'label':'', 'buttons':{
                 'save':{'label':'Save', 'fn':'M.ciniki_web_main.savePage(\'blog\');'},

@@ -277,6 +277,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-blog-thumbnail-format',
         'page-blog-thumbnail-padding-color',
         'page-blog-num-past-months',
+        'page-blog-display-format',
         'page-memberblog-active',
         'page-memberblog-menu-active',
         'page-memberblog-name',
