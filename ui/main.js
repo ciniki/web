@@ -1044,6 +1044,10 @@ function ciniki_web_main() {
                 'page-events-categories-display':{'label':'Display Categories', 'type':'toggle', 'default':'off', 'toggles':this.eventCategoryDisplay},
                 'page-events-thumbnail-format':{'label':'Thumbnail Format', 'type':'toggle', 'default':'square-cropped', 'toggles':{'square-cropped':'Cropped', 'square-padded':'Padded'}},
                 'page-events-thumbnail-padding-color':{'label':'Padding Color', 'type':'colour'},
+                'page-events-display-format':{'label':'Display Format', 'type':'toggle', 'default':'imagelist', 
+                    'visible':function() {return (M.ciniki_web_main.menu.data.settings[0].setting.value == 'twentyone' ? 'yes' : 'no');},
+                    'toggles':{'imagelist':'List', 'tradingcards':'Trading Cards'},
+                    },
                 }},
             '_image':{'label':'Image', 'active':'no', 'type':'imageform', 'fields':{
                 'page-events-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
