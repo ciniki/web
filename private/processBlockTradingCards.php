@@ -58,15 +58,21 @@ function ciniki_web_processBlockTradingCards($ciniki, $settings, $tnid, $block) 
         } else {
             $img_url = $rc['url'];
         }
+        $start_url = '';
+        $end_url = '';
+        if( isset($card['permalink']) && $card['permalink'] != '' ) {
+            $start_url = "<a href='" . $block['base_url'] . '/' . $card['permalink'] . "' " . "title='$name'>";
+            $end_url = "</a>";
+        }
         $content .= "<div class='trading-card-wrap'>"
             . "<div class='trading-card'>"
-            . "<a href='" . $block['base_url'] . '/' . $card['permalink'] . "' " . "title='$name'>"
+            . $start_url
             . "<div class='trading-card-thumbnail'>"
             . "<img title='$name' alt='$name' src='$img_url' />"
             . "</div>"
-            . "</a>"
+            . $end_url
             . "<div class='trading-card-text'>"
-            . "<a href='" . $block['base_url'] . '/' . $card['permalink'] . "' " . "title='$name'>"
+            . $start_url
             . "<span class='trading-card-title'>$name</span>";
         if( isset($card['subname']) && $card['subname'] != '' ) {
             $content .= "<span class='trading-card-subtitle'>" . $card['subname'] . "</span>";
@@ -81,12 +87,14 @@ function ciniki_web_processBlockTradingCards($ciniki, $settings, $tnid, $block) 
                 $content .= "<div class='trading-card-synopsis'>" . $rc['content'] . "</div>";
             }
         }
-        $content .= "</a></div>";
-        if( isset($block['more-button']) && $block['more-button'] == 'yes' ) {
+        $content .= $end_url . "</div>";
+        if( isset($block['more-button']) && $block['more-button'] == 'yes' && $start_url != '' ) {
             $content .= "<div class='trading-card-more'>"
-                . "<a href='" . $block['base_url'] . '/' . $card['permalink'] . "' " . "title='$name'><span>"
+                . $start_url
+                . "<span>"
                 . (isset($block['more-button-text']) ? $block['more-button-text'] : '... more')
-                . "</span></a>"
+                . "</span>"
+                . $end_url
                 . "</div>";
         }
         $content .= "</div></div>";

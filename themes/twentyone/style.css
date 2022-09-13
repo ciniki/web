@@ -1252,7 +1252,7 @@ article .block-table tr th {
     align-self: flex-end;
     width: 100%;
 }
-@media screen and (min-width: 50em) {
+@media screen and (min-width: 40em) {
     .trading-cards {
         display: flex;
         flex-flow: row wrap;
@@ -1265,9 +1265,14 @@ article .block-table tr th {
         padding-right: 1rem;
     }
 }
-@media screen and (min-width: 80em) {
+@media screen and (min-width: 60em) {
     .trading-card-wrap {
         flex-basis: 33.3%;
+    }
+}
+@media screen and (min-width: 80em) {
+    .trading-card-wrap {
+        flex-basis: 25%;
     }
 }
 
