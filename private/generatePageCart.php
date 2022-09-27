@@ -434,7 +434,8 @@ function ciniki_web_generatePageCart(&$ciniki, $settings) {
                     $cart_err_msg .= "<p class='wide cart-error'>" . $rc['err']['msg'] . "</p>";
                     $display_cart = 'yes';
                 } else {
-                    return $rc;
+                    $cart_err_msg .= "<p class='wide cart-error'>Invalid request, please try again or contact us for help.</p>";
+                    $display_cart = 'yes';
                 }
             } elseif( isset($rc['error_message']) && $rc['error_message'] != '' ) {
                 $cart_err_msg .= "<p class='wide cart-error'>" . $rc['error_message'] . "</p>";
