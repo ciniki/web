@@ -49,7 +49,7 @@ function ciniki_web_hooks_uiSettings($ciniki, $tnid, $args) {
     // Check permissions for what menu items should be available
     //
     if( isset($ciniki['tenant']['modules']['ciniki.web'])
-        && $ciniki['tenant']['modules']['module_status'] > 0
+        && $ciniki['tenant']['modules']['ciniki.web']['module_status'] > 0
         && (isset($args['permissions']['owners'])
             || isset($args['permissions']['employees'])
             || isset($args['permissions']['resellers'])
