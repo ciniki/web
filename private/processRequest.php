@@ -599,8 +599,8 @@ function ciniki_web_processRequest(&$ciniki) {
             $ciniki['request']['page'] = 'members';
         } elseif( isset($settings['page-workshops-active']) && $settings['page-workshops-active'] == 'yes' ) {
             $ciniki['request']['page'] = 'workshops';
-        } elseif( isset($settings['page-directory-active']) && $settings['page-directory-active'] == 'yes' ) {
-            $ciniki['request']['page'] = 'directory';
+//        } elseif( isset($settings['page-directory-active']) && $settings['page-directory-active'] == 'yes' ) {
+//            $ciniki['request']['page'] = 'directory';
         } elseif( isset($settings['page-links-active']) && $settings['page-links-active'] == 'yes' ) {
             $ciniki['request']['page'] = 'links';
         } else {
@@ -1028,11 +1028,11 @@ function ciniki_web_processRequest(&$ciniki) {
             $rc = ciniki_web_generatePagePlans($ciniki, $settings);
         } 
         // Directory
-        elseif( $ciniki['request']['page'] == 'directory' 
-            && isset($settings['page-directory-active']) && $settings['page-directory-active'] == 'yes' ) {
-            require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageDirectory.php');
-            $rc = ciniki_web_generatePageDirectory($ciniki, $settings);
-        } 
+//        elseif( $ciniki['request']['page'] == 'directory' 
+//            && isset($settings['page-directory-active']) && $settings['page-directory-active'] == 'yes' ) {
+//            require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageDirectory.php');
+//            $rc = ciniki_web_generatePageDirectory($ciniki, $settings);
+//        } 
         // Web Collection
         elseif( $ciniki['request']['page'] == 'collection' 
             && isset($ciniki['tenant']['modules']['ciniki.web']['flags'])
