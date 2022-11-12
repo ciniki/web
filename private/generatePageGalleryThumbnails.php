@@ -64,19 +64,25 @@ function ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $base_url,
                     return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.63', 'msg'=>'Unable to generate image: ' . $img['image_id'], 'err'=>$rc['err']));
                 }
                 $image = $rc['image'];
-                
-                $image->thumbnailImage($maxlength, 0);
+                $image_type = (isset($rc['type']) ? $rc['type'] : 0);
+               
+                if( $image_type == 6 ) {
+                    $img_filename = $ciniki['tenant']['web_cache_dir'] . '/t' . $maxlength . '/' . sprintf('%010d', $img['image_id']) . '.svg';
+                    $img_url = $ciniki['tenant']['web_cache_url'] . '/t' . $maxlength . '/' . sprintf('%010d', $img['image_id']) . '.svg';
+                } else {
+                    $image->thumbnailImage($maxlength, 0);
 
-                //
-                // Check if they image is marked as sold, and add red dot
-                //
-                if( isset($img['sold']) && $img['sold'] == 'yes' ) {
-                    $draw = new ImagickDraw();
-                    $draw->setFillColor('red');
-                    $draw->setStrokeColor(new ImagickPixel('white') );
-                    $size = $maxlength/20;
-                    $draw->circle($maxlength-($size*2), $maxlength-($size*2), $maxlength-$size, $maxlength-$size);
-                    $image->drawImage($draw);
+                    //
+                    // Check if they image is marked as sold, and add red dot
+                    //
+                    if( isset($img['sold']) && $img['sold'] == 'yes' ) {
+                        $draw = new ImagickDraw();
+                        $draw->setFillColor('red');
+                        $draw->setStrokeColor(new ImagickPixel('white') );
+                        $size = $maxlength/20;
+                        $draw->circle($maxlength-($size*2), $maxlength-($size*2), $maxlength-$size, $maxlength-$size);
+                        $image->drawImage($draw);
+                    }
                 }
 
                 //
@@ -91,8 +97,12 @@ function ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $base_url,
                 //
                 $h = fopen($img_filename, 'w');
                 if( $h ) {
-                    $image->setImageCompressionQuality(60);
-                    fwrite($h, $image->getImageBlob());
+                    if( $image_type == 6 ) {
+                        fwrite($h, $image);
+                    } else {
+                        $image->setImageCompressionQuality(60);
+                        fwrite($h, $image->getImageBlob());
+                    } 
                     fclose($h);
                 }
             }
