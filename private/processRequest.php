@@ -462,6 +462,9 @@ function ciniki_web_processRequest(&$ciniki) {
             }
         }
     }
+    //
+    // The tenant ID is required to ensure the session is for the correct tenant
+    //
     $_SESSION['tnid'] = $ciniki['request']['tnid'];
     $ciniki['session']['tnid'] = $ciniki['request']['tnid'];
 
