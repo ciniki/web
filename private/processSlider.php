@@ -189,7 +189,11 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
         $javascript .= "                        height_spacing += parseInt(li_e.currentStyle['borderLeftWidth'].replace(/px/,''))*2;";
         $javascript .= "                    }";
         if( $labels == 'yes' ) {
-            $javascript .= "                    height_spacing += 25;";
+            if( $settings['site-layout'] == 'twentyone' ) {
+                $javascript .= "                    height_spacing += 45;";
+            } else {
+                $javascript .= "                    height_spacing += 25;";
+            }
         }
         $javascript .= "                    height_spacing += 4;";
 //      $javascript .= "console.log(height_spacing);\n";
@@ -197,7 +201,11 @@ function ciniki_web_processSlider(&$ciniki, $settings, $slider) {
         $javascript .= "                this.li[i].style.width = (this.ul.parentElement.clientWidth - 0) + 'px';";
         $javascript .= "                this.li[i].style.maxHeight = $slider_height + height_spacing + 'px';";
         if( $labels == 'yes' ) {
-            $javascript .= "                this.li[i].style.lineHeight = ($slider_height - 40) + 'px';";
+            if( $settings['site-layout'] == 'twentyone' ) {
+                $javascript .= "                this.li[i].style.lineHeight = ($slider_height - 60) + 'px';";
+            } else {
+                $javascript .= "                this.li[i].style.lineHeight = ($slider_height - 40) + 'px';";
+            }
         } else {
             $javascript .= "                this.li[i].style.lineHeight = $slider_height + 'px';";
         }

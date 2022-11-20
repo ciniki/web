@@ -744,6 +744,11 @@ dl.wide dd {
 .slider-pager a.active {
     background-color: #77f;
 }
+.slider .label {
+    font-size: 1.1rem;
+    line-height: 1.5em;
+    padding-top: 0.75em;
+}
 
 /* Additional images in gallery */
 div.gallery-image-details .additional-image-gallery {
