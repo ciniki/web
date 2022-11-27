@@ -268,76 +268,80 @@ function ciniki_web_generatePageLinks($ciniki, $settings) {
         if( $rc['stat'] != 'ok' ) {
             return $rc;
         }
-        $sections = isset($rc['categories'])?$rc['categories']:array();
-        if( $tag_permalink != '' ) {
-            $skeys = array_keys($sections);
-            $section_name = $skeys[0];
-            $sections[$section_name]['name'] = '';
-            if( $section_name != '' ) {
-                $article_title .= ' - ' . $section_name;
-                $page_title .= ' - ' . $section_name;
-            } 
-        }
-        $page_content .= "<article class='page links ciniki-links'>\n"
-            . "<header class='entry-title'><h1 class='entry-title'>$article_title</h1></header>\n"
-            . "<div class='entry-content'>\n"
-            . "";
-        if( count($sections) > 0 ) {
-            $page_content .= "<table class='clist'>\n"
+        if( isset($rc['categories']) ) {
+            $sections = isset($rc['categories'])?$rc['categories']:array();
+            if( $tag_permalink != '' ) {
+                $skeys = array_keys($sections);
+                $section_name = $skeys[0];
+                $sections[$section_name]['name'] = '';
+                if( $section_name != '' ) {
+                    $article_title .= ' - ' . $section_name;
+                    $page_title .= ' - ' . $section_name;
+                } 
+            }
+            $page_content .= "<article class='page links ciniki-links'>\n"
+                . "<header class='entry-title'><h1 class='entry-title'>$article_title</h1></header>\n"
+                . "<div class='entry-content'>\n"
                 . "";
-            $prev_sections = NULL;
-            foreach($sections as $cnum => $c) {
-                if( !isset($c['list']) ) {
-                    continue;
-                }
-                if( $prev_sections != NULL ) {
-                    $page_content .= "</td></tr>\n";
-                }
-                if( isset($c['name']) && $c['name'] != '' ) {
-                    $page_content .= "<tr><th>"
-                        . "<span class='clist-category'>" . $c['name'] . "</span></th>"
-                        . "<td>";
-                    // $page_content .= "<h2>" . $c['name'] . "</h2>";
-                } else {
-                    $page_content .= "<tr><th class='clist-category-empty'>"
-                        . "<span class='clist-category'></span></th>"
-                        . "<td>";
-                }
-                foreach($c['list'] as $fnum => $link) {
-                    //$page_content .= "<p>";
-                    if( isset($link['url']) ) {
-                        $url = $link['url'];
+            if( count($sections) > 0 ) {
+                $page_content .= "<table class='clist'>\n"
+                    . "";
+                $prev_sections = NULL;
+                foreach($sections as $cnum => $c) {
+                    if( !isset($c['list']) ) {
+                        continue;
+                    }
+                    if( $prev_sections != NULL ) {
+                        $page_content .= "</td></tr>\n";
+                    }
+                    if( isset($c['name']) && $c['name'] != '' ) {
+                        $page_content .= "<tr><th>"
+                            . "<span class='clist-category'>" . $c['name'] . "</span></th>"
+                            . "<td>";
+                        // $page_content .= "<h2>" . $c['name'] . "</h2>";
                     } else {
-                        $url = '';
+                        $page_content .= "<tr><th class='clist-category-empty'>"
+                            . "<span class='clist-category'></span></th>"
+                            . "<td>";
                     }
-                    if( $url != '' && preg_match('/^\s*[^ ]+\@[^ ]+\.[^ ]+/i', $url) ) {
-                        $display_url = $url;
-                        $url = "mailto: " . $url;
-                    } elseif( $url != '' && !preg_match('/^\s*http/i', $url) ) {
-                        $display_url = $url;
-                        $url = "http://" . $url;
-                    } else {
-                        $display_url = preg_replace('/^\s*http:\/\//i', '', $url);
-                        $display_url = preg_replace('/\/$/i', '', $display_url);
+                    foreach($c['list'] as $fnum => $link) {
+                        //$page_content .= "<p>";
+                        if( isset($link['url']) ) {
+                            $url = $link['url'];
+                        } else {
+                            $url = '';
+                        }
+                        if( $url != '' && preg_match('/^\s*[^ ]+\@[^ ]+\.[^ ]+/i', $url) ) {
+                            $display_url = $url;
+                            $url = "mailto: " . $url;
+                        } elseif( $url != '' && !preg_match('/^\s*http/i', $url) ) {
+                            $display_url = $url;
+                            $url = "http://" . $url;
+                        } else {
+                            $display_url = preg_replace('/^\s*http:\/\//i', '', $url);
+                            $display_url = preg_replace('/\/$/i', '', $display_url);
+                        }
+                        $page_content .= "<span class='clist-title'>";
+                        if( $url != '' ) {
+                            $page_content .= "<a target='_blank' href='" . $url . "' title='" . $link['name'] . "'>" . $link['name'] . "</a>";
+                        } else {
+                            $page_content .= $link['name'];
+                        }
+                        $page_content .= "</span>";
+                        if( isset($link['description']) && $link['description'] != '' ) {
+                            $page_content .= "<br/><span class='clist-description'>" . $link['description'] . "</span>";
+                        }
+                        if( $url != '' ) {
+                            $page_content .= "<br/><span class='oneline'><a class='clist-url' target='_blank' href='" . $url . "' title='" . $link['name'] . "'>" . $display_url . "</a></span>";
+                        }
+                        $page_content .= "<br/><br/>";
+                        // $page_content .= "</p>";
                     }
-                    $page_content .= "<span class='clist-title'>";
-                    if( $url != '' ) {
-                        $page_content .= "<a target='_blank' href='" . $url . "' title='" . $link['name'] . "'>" . $link['name'] . "</a>";
-                    } else {
-                        $page_content .= $link['name'];
-                    }
-                    $page_content .= "</span>";
-                    if( isset($link['description']) && $link['description'] != '' ) {
-                        $page_content .= "<br/><span class='clist-description'>" . $link['description'] . "</span>";
-                    }
-                    if( $url != '' ) {
-                        $page_content .= "<br/><span class='oneline'><a class='clist-url' target='_blank' href='" . $url . "' title='" . $link['name'] . "'>" . $display_url . "</a></span>";
-                    }
-                    $page_content .= "<br/><br/>";
-                    // $page_content .= "</p>";
-                }
-            } 
-            $page_content .= "</td></tr>\n</table>\n";
+                } 
+                $page_content .= "</td></tr>\n</table>\n";
+            } else {
+                $page_content .= "<div class='block-content'><p>I'm sorry, there are no links.</p></div>";
+            }
         } else {
             $page_content .= "<div class='block-content'><p>I'm sorry, there are no links.</p></div>";
         }

@@ -422,7 +422,7 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
     //
     // Generate the gallery page, showing the thumbnails
     //
-    elseif( isset($uri_split[0]) 
+    elseif( isset($uri_split[1]) 
         && $uri_split[0] != '' 
         && ($uri_split[0] == 'album' || $uri_split[0] == 'category' || $uri_split[0] == 'year')
         && $uri_split[1] != '' ) {
