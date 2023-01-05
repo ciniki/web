@@ -21,6 +21,13 @@ function ciniki_web_hooks_indexObject($ciniki, $tnid, $args) {
         return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.2', 'msg'=>'No object ID specified'));
     }
 
+    //
+    // Check if web is enabled
+    //
+    if( !isset($ciniki['tenant']['modules']['ciniki.web']) ) {
+        return array('stat'=>'ok');
+    }
+
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'indexUpdateObject');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'indexUpdateObjectImage');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
