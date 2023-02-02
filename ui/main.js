@@ -2352,6 +2352,7 @@ function ciniki_web_main() {
         }
         this.home.sections._slideshow.active=(M.curTenant.modules['ciniki.artcatalog']!=null)?'yes':'no';
         this.home.sections._memberslideshow.active=(M.curTenant.modules['ciniki.customers']!=null&&(M.curTenant.modules['ciniki.customers'].flags&0x02)>0)?'yes':'no';
+        this.home.sections._agsslideshow.active=(M.curTenant.modules['ciniki.ags']!=null)?'yes':'no';
         this.home.sections._artcatalog.active=(M.curTenant.modules['ciniki.artcatalog']!=null)?'yes':'no';
         this.home.sections._gallery.active=(M.curTenant.modules['ciniki.gallery']!=null)?'yes':'no';
         this.home.sections._recipes.active=(M.curTenant.modules['ciniki.recipes']!=null)?'yes':'no';
