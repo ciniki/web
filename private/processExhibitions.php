@@ -125,7 +125,12 @@ function ciniki_web_processExhibitions($ciniki, &$settings, $exhibitions, $args)
         // Display the brief details
         $content .= "<table class='cilist-categories'><tbody>\n";
         if( $exhibition['num_images'] > 0 || $exhibition['long_description'] != '' ) {
-            $exhibition_url = $ciniki['request']['base_url'] . "/exhibitions/" . $exhibition['permalink'];
+            if( isset($args['base_url']) ) {
+                $exhibition_url = $args['base_url'] . "/" . $exhibition['permalink'];
+
+            } else {
+                $exhibition_url = $ciniki['request']['base_url'] . "/exhibitions/" . $exhibition['permalink'];
+            }
         } else {
             $exhibition_url = '';
         }
