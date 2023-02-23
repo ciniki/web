@@ -271,6 +271,7 @@ function ciniki_web_siteSettingsUpdate(&$ciniki) {
         'page-blog-name',
         'page-blog-share-buttons',
         'page-blog-submenu',
+        'page-blog-hide-date',
         'page-blog-sidebar',
         'page-blog-list-image-version',
         'page-blog-more-button-text',

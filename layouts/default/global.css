@@ -907,6 +907,12 @@ article {
     max-width: 100%;
     line-height: 1.1em;
 }
+#content div.image-list-details h3 {
+    padding-top: 0px;
+    margin-top: 0.5rem;
+    max-width: 100%;
+    line-height: 1.1em;
+}
 #content div.image-list-meta {
     font-size: 0.85em;
 }

@@ -508,6 +508,7 @@ div.thumbnail-list-item-text {
     margin-bottom: 0;
 }
 
+#content table.cilist td .image-list-subtitle,
 #content table.cilist td p.clist-subtitle,
 #content table.cilist td p.cilist-subtitle,
 #content table.clist td p.clist-subtitle {
