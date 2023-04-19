@@ -248,7 +248,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     //
     // Header to support mobile device resize
     //
-    $content .= '<meta name="viewport" content="width=device-width, initial-scale=1.0">' . "\n";
+    $content .= '<meta name="viewport" content="width=device-width, initial-scale=1">' . "\n";
     $content .= '<meta charset="UTF-8">' . "\n";
 
     if( isset($settings['site-google-site-verification']) 
