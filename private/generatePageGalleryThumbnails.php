@@ -100,10 +100,16 @@ function ciniki_web_generatePageGalleryThumbnails($ciniki, $settings, $base_url,
                     if( $image_type == 6 ) {
                         fwrite($h, $image);
                     } else {
-                        $image->setImageCompressionQuality(60);
+//                        error_log("IMAGE: {$img['image_id']}");
+//                        error_log(print_r($image->getImageProperties(),true));
+//                        $image->setCompression(8);
+//                        $image->setCompressionQuality(60);
+//                        $image->setImageCompression(8);
+//                        $image->setImageCompressionQuality(60);
                         fwrite($h, $image->getImageBlob());
                     } 
                     fclose($h);
+                    $image->clear();
                 }
             }
         }
