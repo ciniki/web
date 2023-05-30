@@ -418,6 +418,9 @@ function ciniki_web_main() {
             '_verification':{'label':'Google Site Verification', 'fields':{
                 'site-google-site-verification':{'label':'', 'type':'text', 'hidelabel':'yes'},
                 }},
+            '_gtag':{'label':'Google Tag', 'fields':{
+                'site-google-gtag-code':{'label':'', 'type':'text', 'hidelabel':'yes'},
+                }},
             '_gtm':{'label':'Google Tag Manager', 'fields':{
                 'site-google-gtm-code':{'label':'', 'type':'text', 'hidelabel':'yes'},
                 }},
