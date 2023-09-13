@@ -625,7 +625,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
     //
     // Check if customer not logged in and there are landing page buttons
     //
-    if( isset($settings['site-header-landingpage1-permalink']) && $settings['site-header-landingpage1-permalink'] != '' 
+/*    if( isset($settings['site-header-landingpage1-permalink']) && $settings['site-header-landingpage1-permalink'] != '' 
         && isset($settings['site-header-landingpage1-title']) && $settings['site-header-landingpage1-title'] != '' 
         // Make sure customer is not logged in
         && (!isset($ciniki['session']['customer']['id']) || isset($ciniki['session']['customer']['id']) == 0)
@@ -635,7 +635,7 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
             . $settings['site-header-landingpage1-title']
             . "</a>"
             . "</span>";
-    }
+    } */
     //
     // Setup the page-container
     //
@@ -1429,13 +1429,13 @@ function ciniki_web_generatePageHeader(&$ciniki, $settings, $title, $submenu) {
                 $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='winterfielddaylog'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/winterfieldday'>Winter Field Day</a></li>";
             }
         }
-        if( isset($settings['page-jiji-active']) && $settings['page-jiji-active'] == 'yes' ) {
+/*        if( isset($settings['page-jiji-active']) && $settings['page-jiji-active'] == 'yes' ) {
             if( isset($settings['page-jiji-name']) && $settings['page-jiji-name'] != '' ) {
                 $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='jiji'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/buysell'>" . $settings['page-jiji-name'] . "</a></li>";
             } else {
                 $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='jiji'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/buysell'>Buy/Sell</a></li>";
             }
-        }
+        } */
         if( isset($settings['page-merchandise-active']) && $settings['page-merchandise-active'] == 'yes' ) {
             if( isset($settings['page-merchandise-name']) && $settings['page-merchandise-name'] != '' ) {
                 $content .= "<li class='menu-item$hide_menu_class" . ($ciniki['request']['page']=='merchandise'?' menu-item-selected':'') . "'><a href='" . $ciniki['request']['base_url'] . "/merchandise'>" . $settings['page-merchandise-name'] . "</a></li>";

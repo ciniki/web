@@ -188,9 +188,9 @@ function ciniki_web_siteSettings($ciniki) {
     if( isset($ciniki['tenant']['modules']['qruqsp.winterfielddaylog']) ) {
         $pages['winterfielddaylog'] = array('display_name'=>'Winter Field Day', 'active'=>'no');
     }
-    if( isset($ciniki['tenant']['modules']['ciniki.jiji']) ) {
+/*    if( isset($ciniki['tenant']['modules']['ciniki.jiji']) ) {
         $pages['jiji'] = array('display_name'=>'Buy/Sell', 'active'=>'no');
-    }
+    } */
     if( isset($ciniki['tenant']['modules']['ciniki.sapos']) && ($ciniki['tenant']['modules']['ciniki.sapos']['flags']&0x08) > 0 ) {
         $pages['cart'] = array('display_name'=>'Shopping Cart', 'active'=>'no');
     }

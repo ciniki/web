@@ -933,12 +933,12 @@ function ciniki_web_processRequest(&$ciniki) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
             $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['tnid'], 'ciniki.events');
         } 
-        // Film Schedule
+/*        // Film Schedule
         elseif( $ciniki['request']['page'] == 'schedule' 
             && isset($settings['page-filmschedule-active']) && $settings['page-filmschedule-active'] == 'yes' ) {
             require_once($ciniki['config']['ciniki.core']['modules_dir'] . '/web/private/generatePageFilmSchedule.php');
             $rc = ciniki_web_generatePageFilmSchedule($ciniki, $settings);
-        } 
+        }  */
         // Workshops
         elseif( $ciniki['request']['page'] == 'workshops' 
             && isset($settings['page-workshops-active']) && $settings['page-workshops-active'] == 'yes' ) {
@@ -963,12 +963,12 @@ function ciniki_web_processRequest(&$ciniki) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
             $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['tnid'], 'qruqsp.winterfielddaylog');
         } 
-        // jiji
+/*        // jiji
         elseif( $ciniki['request']['page'] == 'buysell' 
             && isset($settings['page-jiji-active']) && $settings['page-jiji-active'] == 'yes' ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generateModulePage');
             $rc = ciniki_web_generateModulePage($ciniki, $settings, $ciniki['request']['tnid'], 'ciniki.jiji');
-        } 
+        }  */
         // Blog
         elseif( $ciniki['request']['page'] == 'blog' 
             && isset($settings['page-blog-active']) && $settings['page-blog-active'] == 'yes' ) {

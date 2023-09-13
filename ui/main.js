@@ -86,9 +86,9 @@ function ciniki_web_main() {
         'order':'Default',
         };
 
-    this.landingpages = {
+/*    this.landingpages = {
         '':'None',
-        };
+        }; */
 
     this.deleteImage = function(fid) {
         this.setFieldValue(fid, 0);
@@ -297,10 +297,10 @@ function ciniki_web_main() {
                 'site-header-title':{'label':'Display Tenant Name', 'type':'multitoggle', 'default':'yes', 'toggles':this.activeToggles, 'editFn':'M.startApp(\'ciniki.tenants.info\',null,\'M.ciniki_web_main.header.show();\');'},
                 'site-header-title-override':{'label':'Site Title', 'type':'text'},
                 }},
-            '_landingpage1':{'label':'Landing Page', 'active':function() {return (M.curTenant.modules['ciniki.landingpages']!=null?'yes':'no');}, 'fields':{
-                'site-header-landingpage1-title':{'label':'Title', 'type':'text'},
-                'site-header-landingpage1-permalink':{'label':'Landing Page', 'type':'select', 'options':this.landingpages},
-                }},
+//            '_landingpage1':{'label':'Landing Page', 'active':function() {return (M.curTenant.modules['ciniki.landingpages']!=null?'yes':'no');}, 'fields':{
+//                'site-header-landingpage1-title':{'label':'Title', 'type':'text'},
+//                'site-header-landingpage1-permalink':{'label':'Landing Page', 'type':'select', 'options':this.landingpages},
+//                }},
             '_content':{'label':'Header Address', 'active':function() {return (M.curTenant.modules['ciniki.web'].flags&0x10000)>0?'yes':'no';}, 'fields':{
                 'site-header-address':{'label':'', 'hidelabel':'yes', 'hint':'', 'type':'textarea', 'size':'medium'},
                 }},
@@ -362,10 +362,10 @@ function ciniki_web_main() {
             '_copyright':{'label':'Copyright Message', 'fields':{
                 'site-footer-copyright-message':{'label':'', 'type':'textarea', 'size':'medium', 'hidelabel':'yes'},
                 }},
-            '_landingpage1':{'label':'Landing Page', 'active':function() {return (M.curTenant.modules['ciniki.landingpages']!=null?'yes':'no');}, 'fields':{
-                'site-footer-landingpage1-title':{'label':'Title', 'type':'text'},
-                'site-footer-landingpage1-permalink':{'label':'Landing Page', 'type':'select', 'options':this.landingpages},
-                }},
+//            '_landingpage1':{'label':'Landing Page', 'active':function() {return (M.curTenant.modules['ciniki.landingpages']!=null?'yes':'no');}, 'fields':{
+//                'site-footer-landingpage1-title':{'label':'Title', 'type':'text'},
+//                'site-footer-landingpage1-permalink':{'label':'Landing Page', 'type':'select', 'options':this.landingpages},
+//                }},
             'sponsors':{'label':'Sponsors', 'type':'simplegrid', 'num_cols':1,
                 'addTxt':'Manage Sponsors',
                 'addFn':'M.startApp(\'ciniki.sponsors.ref\',null,\'M.ciniki_web_main.updateSponsors("footer");\',\'mc\',{\'object\':\'ciniki.web.page\',\'object_id\':\'footer\'});',
@@ -1491,7 +1491,7 @@ function ciniki_web_main() {
         this.winterfielddaylog.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'winterfielddaylog\');');
         this.winterfielddaylog.addClose('Cancel');
 
-        //
+/*        //
         // The options and information for the buy/sell jiji page
         //
         this.jiji = new M.panel('Buy/Sell',
@@ -1511,7 +1511,7 @@ function ciniki_web_main() {
         this.jiji.fieldHistoryArgs = this.fieldHistoryArgs;
         this.jiji.addButton('save', 'Save', 'M.ciniki_web_main.savePage(\'jiji\');');
         this.jiji.addClose('Cancel');
-
+*/
         //
         // The options and information for the blog page
         //
@@ -2506,14 +2506,14 @@ function ciniki_web_main() {
             for(i in rsp.header) {
                 M.ciniki_web_main.header.data[rsp.header[i].setting.name] = rsp.header[i].setting.value;
             }
-            if( rsp.landingpages != null ) {
+/*            if( rsp.landingpages != null ) {
                 this.landingpages = {'':'None'};
                 for(i in rsp.landingpages) {
                     this.landingpages[rsp.landingpages[i].permalink] = rsp.landingpages[i].short_title;
                 }
                 M.ciniki_web_main.header.sections._landingpage1.fields['site-header-landingpage1-permalink'].options = this.landingpages;
                 M.ciniki_web_main.footer.sections._landingpage1.fields['site-footer-landingpage1-permalink'].options = this.landingpages;
-            }
+            } */
             M.ciniki_web_main.footer.data = {};
             for(i in rsp.footer) {
                 M.ciniki_web_main.footer.data[rsp.footer[i].setting.name] = rsp.footer[i].setting.value;
