@@ -1848,6 +1848,12 @@ function ciniki_web_main() {
                 'page-artgalleryexhibitions-initial-number':{'label':'Initial Exhibitions/page', 'active':'yes', 'type':'text', 'size':'small', 'hint':'2'},
                 'page-artgalleryexhibitions-archive-number':{'label':'Archive Exhibitions/page', 'active':'yes', 'type':'text', 'size':'small', 'hint':'10'},
                 'page-artgalleryexhibitions-application-details':{'label':'Display Application Information', 'type':'multitoggle', 'default':'no', 'toggles':this.activeToggles},
+                'page-artgalleryexhibitions-thumbnail-format':{'label':'Thumbnail Format', 'type':'toggle', 'default':'square-cropped', 'toggles':{'square-cropped':'Cropped', 'square-padded':'Padded'}},
+                'page-artgalleryexhibitions-thumbnail-padding-color':{'label':'Padding Color', 'type':'colour'},
+                'page-artgalleryexhibitions-display-format':{'label':'Display Format', 'type':'toggle', 'default':'imagelist', 
+                    'visible':function() {return (M.ciniki_web_main.menu.data.settings[0].setting.value == 'twentyone' ? 'yes' : 'no');},
+                    'toggles':{'imagelist':'List', 'tradingcards':'Trading Cards'},
+                    },
                 }},
             '_image':{'label':'Image', 'type':'imageform', 'fields':{
                 'page-artgalleryexhibitions-image':{'label':'', 'type':'image_id', 'controls':'all', 'hidelabel':'yes', 'history':'no'},
