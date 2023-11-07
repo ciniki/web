@@ -217,7 +217,6 @@ function ciniki_web_processBlockSectionedForm(&$ciniki, $settings, $tnid, $block
         //
         $content .= "<script type='text/javascript'>"
             . "function updateForm() {"
-            . "console.log('test');"
             . $javascript
             . "}"
             . "window.onLoad = updateForm;"
