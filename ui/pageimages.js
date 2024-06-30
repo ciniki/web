@@ -21,6 +21,7 @@ function ciniki_web_pageimages() {
             }},
             'info':{'label':'Information', 'type':'simpleform', 'fields':{
                 'name':{'label':'Title', 'type':'text'},
+                'sequence':{'label':'Order', 'type':'text', 'size':'small'},
                 'webflags':{'label':'Website', 'type':'flags', 'join':'yes', 'flags':this.webFlags},
             }},
             '_description':{'label':'Description', 'type':'simpleform', 'fields':{

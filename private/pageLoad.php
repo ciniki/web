@@ -129,6 +129,7 @@ function ciniki_web_pageLoad($ciniki, $settings, $tnid, $args) {
     } else {
         return array('stat'=>'404', 'err'=>array('code'=>'ciniki.web.114', 'msg'=>'I\'m sorry, we were unable to find the page you requested.'));
     }
+    $strsql .= "ORDER BY ciniki_web_pages.id, ciniki_web_page_images.sequence, ciniki_web_page_images.name, ciniki_web_page_images.date_added ";
     $rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.info', array(
         array('container'=>'page', 'fname'=>'id',
             'fields'=>array('id', 'uuid', 'parent_id', 

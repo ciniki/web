@@ -95,6 +95,7 @@ function ciniki_web_pageGet($ciniki) {
                 . "FROM ciniki_web_page_images "
                 . "WHERE page_id = '" . ciniki_core_dbQuote($ciniki, $args['page_id']) . "' "
                 . "AND tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
+                . "ORDER BY sequence, name "
                 . "";
             $rc = ciniki_core_dbHashQueryTree($ciniki, $strsql, 'ciniki.web', array(
                 array('container'=>'images', 'fname'=>'id', 'name'=>'image',

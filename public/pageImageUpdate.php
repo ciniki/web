@@ -25,6 +25,7 @@ function ciniki_web_pageImageUpdate(&$ciniki) {
         'image_id'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Image'),
         'name'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Title'), 
         'permalink'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Permalink'), 
+        'sequence'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Image Order'), 
         'webflags'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Website Flags'), 
         'description'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Description'), 
         )); 
