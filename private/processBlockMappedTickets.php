@@ -24,8 +24,6 @@ function ciniki_web_processBlockMappedTickets(&$ciniki, $settings, $tnid, $block
         return $rc;
     }
     $intl_timezone = $rc['settings']['intl-default-timezone'];
-    $intl_currency_fmt = numfmt_create($rc['settings']['intl-default-locale'], NumberFormatter::CURRENCY);
-    $intl_currency = $rc['settings']['intl-default-currency'];
 
     //
     // Make sure there is content to edit
