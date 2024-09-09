@@ -45,9 +45,9 @@ create table ciniki_web_index (
     synopsis varchar(5000) not null,
     object varchar(250) not null,
     object_id varchar(250) not null,
-    primary_words varchar(10000) not null,
-    secondary_words varchar(10000) not null,
-    tertiary_words varchar(10000) not null,
+    primary_words text not null,
+    secondary_words text not null,
+    tertiary_words text not null,
     weight smallint not null,
     url varchar(250) not null,
     date_added datetime not null,
@@ -58,4 +58,4 @@ create table ciniki_web_index (
     index (secondary_words), 
     index (tertiary_words),
     index sync (tnid, uuid, last_updated)
-) ENGINE='InnoDB', COMMENT='v1.01', CHARACTER SET latin1, ROW_FORMAT=DYNAMIC;
+) ENGINE='InnoDB', COMMENT='v1.01', ROW_FORMAT=DYNAMIC;

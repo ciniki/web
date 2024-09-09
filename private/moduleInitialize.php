@@ -83,14 +83,15 @@ function ciniki_web_moduleInitialize($ciniki, $tnid) {
             . "'" . ciniki_core_dbQuote($ciniki, $tnid) . "', "
             . "'page-gallery-active', 'yes', UTC_TIMESTAMP(), UTC_TIMESTAMP())";
         ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
-        //
-        // Set the theme to blue on black by default if artcatalog specified
-        //
-        $strsql = "INSERT INTO ciniki_web_settings (tnid, detail_key, detail_value, date_added, last_updated) VALUES ("
-            . "'" . ciniki_core_dbQuote($ciniki, $tnid) . "', "
-            . "'site-theme', 'black', UTC_TIMESTAMP(), UTC_TIMESTAMP())";
-        ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
     }
+
+    //
+    // Set the theme to twentyone by default if artcatalog specified
+    //
+    $strsql = "INSERT INTO ciniki_web_settings (tnid, detail_key, detail_value, date_added, last_updated) VALUES ("
+        . "'" . ciniki_core_dbQuote($ciniki, $tnid) . "', "
+        . "'site-theme', 'twentyone', UTC_TIMESTAMP(), UTC_TIMESTAMP())";
+    ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.web');
 
     //
     // Active events
