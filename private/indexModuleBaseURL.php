@@ -12,12 +12,12 @@
 // -------
 //
 function ciniki_web_indexModuleBaseURL(&$ciniki, $tnid, $module) {
-    
+   
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuoteList');
     //
     // Get the base_url for this module, as it may be inside a custom page.
     //
-    if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.web', 0x0200) ) {
+    if( ciniki_core_checkModuleFlags($ciniki, 'ciniki.web', 0x0240) ) {
         $strsql = "SELECT id, parent_id, title, permalink "
             . "FROM ciniki_web_pages "
             . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
