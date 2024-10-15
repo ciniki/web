@@ -97,7 +97,7 @@ function ciniki_web_generatePageClasses($ciniki, $settings) {
     
         $img_base_url = 
         $article_title = "<a href='" .  $ciniki['request']['base_url'] . "/classes/class/" . $class['permalink'] . "'>" . $class['name'] . "</a>";
-        if( $img['title'] != '' ) {
+        if( isset($img['title']) && $img['title'] != '' ) {
             $page_title = $class['name'] . ' - ' . $img['title'];
             $article_title .= ' - ' . $img['title'];
         } else {
