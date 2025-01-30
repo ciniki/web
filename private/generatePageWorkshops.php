@@ -284,7 +284,7 @@ function ciniki_web_generatePageWorkshops($ciniki, $settings) {
                 $url = $ciniki['request']['base_url'] . '/workshops/' . $ciniki['request']['uri_split'][0] . '/download/' . $file['permalink'] . '.' . $file['extension'];
 //              $page_content .= "<span class='downloads-title'>";
                 if( $url != '' ) {
-                    $page_content .= "<a target='_blank' href='" . $url . "' title='" . $file['name'] . "'>" . $file['name'] . "</a>";
+                    $page_content .= "<a target='_blank' class='button' href='" . $url . "' title='" . $file['name'] . "'>" . $file['name'] . "</a>";
                 } else {
                     $page_content .= $file['name'];
                 }
