@@ -271,13 +271,14 @@ function ciniki_web_processContactForm(&$ciniki, $settings, $tnid, $args=array()
 
     if( $error_message == '' ) {
         //
-        // Success message
+        // Redirect back to same page to stop resubmits of contact form
         //
-        if( isset($settings['page-contact-form-submitted-message']) && $settings['page-contact-form-submitted-message'] != '' ) {
-            $success_message .= $settings['page-contact-form-submitted-message'];
-        } else {
-            $success_message .= "Your message has been sent.";
-        }
+        header("Location: " . $_SERVER['REQUEST_URI'] . '?form-success=yes');
+//        if( isset($settings['page-contact-form-submitted-message']) && $settings['page-contact-form-submitted-message'] != '' ) {
+//            $success_message .= $settings['page-contact-form-submitted-message'];
+//        } else {
+//            $success_message .= "Your message has been sent.";
+//        }
     }
 
     return array('stat'=>'ok', 'error_message'=>$error_message, 'success_message'=>$success_message);

@@ -105,6 +105,21 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
         }
         */
     }
+    elseif( isset($ciniki['tenant']['modules']['ciniki.web']['flags'])
+        && ($ciniki['tenant']['modules']['ciniki.web']['flags']&0x04) > 0 
+        && isset($_GET['form-success']) 
+        && $_GET['form-success'] == 'yes'
+        ) {
+        //
+        // Success message
+        //
+        $contact_form_submitted = 'yes';
+        if( isset($settings['page-contact-form-submitted-message']) && $settings['page-contact-form-submitted-message'] != '' ) {
+            $contact_form_success .= $settings['page-contact-form-submitted-message'];
+        } else {
+            $contact_form_success .= "Your message has been sent.";
+        }
+    }
 
     //
     // Check which parts of the tenant contact information to display automatically
@@ -335,7 +350,7 @@ function ciniki_web_generatePageContact(&$ciniki, $settings) {
                 . "</div>";
             $content .= "</form>";
         } elseif( $contact_form_submitted == 'yes' ) {
-            $content .= "<p class='success-message'>" . $contact_form_success . "</p>";
+            $content .= "<br/><p class='success-message'>" . $contact_form_success . "</p>";
 /*          if( isset($settings['page-contact-form-submitted-message']) 
                 && $settings['page-contact-form-submitted-message'] != '' ) {
                 $content .= "<p>" . $settings['page-contact-form-submitted-message'] . "</p>";
