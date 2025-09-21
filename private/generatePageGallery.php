@@ -14,6 +14,7 @@
 //
 function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 
+error_log('test');
     //
     // Store the content created by the page
     //
@@ -381,7 +382,8 @@ function ciniki_web_generatePageGallery(&$ciniki, $settings) {
                 ));
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'generatePageGalleryAdditionalThumbnails');
             $img_base_url = $base_url . "/$category_uri_component/" . $uri_split[1];
-            $rc = ciniki_web_generatePageGalleryAdditionalThumbnails($ciniki, $settings, $img_base_url, $img['additionalimages'], $thumbnail_size);
+            // Add 1 pixel to thumbnails so we use different version, without red dot.
+            $rc = ciniki_web_generatePageGalleryAdditionalThumbnails($ciniki, $settings, $img_base_url, $img['additionalimages'], $thumbnail_size+1);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
