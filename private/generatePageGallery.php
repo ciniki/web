@@ -14,7 +14,6 @@
 //
 function ciniki_web_generatePageGallery(&$ciniki, $settings) {
 
-error_log('test');
     //
     // Store the content created by the page
     //
