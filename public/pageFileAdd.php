@@ -94,6 +94,7 @@ function ciniki_web_pageFileAdd(&$ciniki) {
     if( $args['extension'] != 'pdf' 
         && $args['extension'] != 'mp3' 
         && $args['extension'] != 'zip' 
+        && $args['extension'] != 'wif'  // Weaving files for Fibreworks
         ) {
         return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.web.141', 'msg'=>'The file must be a PDF file.'));
     }
