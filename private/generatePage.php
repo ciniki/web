@@ -431,11 +431,9 @@ function ciniki_web_generatePage(&$ciniki, $settings) {
                 . "ciniki_web_page_files.extension, "
                 . "ciniki_web_page_files.description, "
                 . "ciniki_web_page_files.binary_content "
-                . "FROM ciniki_web_pages, ciniki_web_page_files "
-                . "WHERE ciniki_web_pages.tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
-                . "AND ciniki_web_pages.permalink = '" . ciniki_core_dbQuote($ciniki, $page['permalink']) . "' "
-                . "AND ciniki_web_pages.id = ciniki_web_page_files.page_id "
-                . "AND ciniki_web_page_files.tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
+                . "FROM  ciniki_web_page_files "
+                . "WHERE ciniki_web_page_files.tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
+                . "AND ciniki_web_page_files.page_id = '" . ciniki_core_dbQuote($ciniki, $page['id']) . "' "
                 . "AND CONCAT_WS('.', ciniki_web_page_files.permalink, ciniki_web_page_files.extension) = '" . ciniki_core_dbQuote($ciniki, $file_permalink) . "' "
                 . "";
             $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'file');
