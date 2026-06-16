@@ -71,6 +71,7 @@ function ciniki_web_pageFileUpdate(&$ciniki) {
         $strsql = "SELECT id, name, permalink FROM ciniki_web_page_files "
             . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
             . "AND permalink = '" . ciniki_core_dbQuote($ciniki, $args['permalink']) . "' "
+            . "AND page_id = '" . ciniki_core_dbQuote($ciniki, $file['page_id']) . "' "
             . "AND id <> '" . ciniki_core_dbQuote($ciniki, $args['file_id']) . "' "
             . "";
         $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.web', 'files');
